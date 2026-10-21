@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eidos"
+version = "4.0.0"
+description = "Global reusable research pipeline: Quarto + BootLoops + complementary quality gates"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+# The framework core (gates, diagnosis) runs on stdlib + pyyaml alone.
+# Everything below is opt-in so a project only pays for what it uses.
+tracking = ["mlflow>=2.10", "dvc>=3.0"]
+semantic = ["inspect-ai>=0.3", "deepeval>=1.0", "ragas>=0.2"]
+all = [
+    "mlflow>=2.10",
+    "dvc>=3.0",
+    "inspect-ai>=0.3",
+    "deepeval>=1.0",
+    "ragas>=0.2",
+]
+dev = ["pytest>=7.0"]
+
+[tool.setuptools.packages.find]
+include = ["framework*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

@@ -1,0 +1,47 @@
+# Project configuration — the only file that is project-specific.
+#
+# Everything not stated here is inherited from configs/global/framework.yaml.
+# Delete a key to fall back to the global default; do not copy the whole
+# global file into a project (that is how two sources of truth appear).
+
+project:
+  name: "example_project"
+  description: "Replace with the research question this project answers"
+  created: "2026-10-20"
+  framework_version: "4.0"
+
+# Acceptance criteria. Direction is explicit: a bare number means ">=", while
+# a lower-is-better metric (error rate, latency, cost) must say so. Omitting
+# the direction silently passes metrics that should fail.
+criteria:
+  accuracy: 0.90
+  silent_error_rate:
+    threshold: 0.05
+    direction: "<="
+  coverage:
+    threshold: 0.80
+    direction: ">="
+
+# Human gates that must not be skipped for this project.
+human_gates:
+  mandatory:
+    - hypothesis_confirmation
+    - critical_experiment_design
+    - final_manuscript_submission
+
+# Stage → model mapping. Keep one large model resident at a time on 12 GB.
+inference:
+  max_concurrent: 1
+  stages:
+    hypothesis_generation: ["llama3.1:8b"]
+    literature_review: ["llama3.1:8b"]
+    experiment_design: ["qwen2.5:14b"]
+    experiment_execution: ["StartLux-Decision-4B-Q8_0"]
+    manuscript_drafting: ["llama3.1:8b"]
+
+paths:
+  data: "data"
+  manuscript: "manuscript"
+  experiments: "experiments"
+  outputs: "outputs"
+  scripts: "scripts"

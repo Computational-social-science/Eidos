@@ -1,0 +1,50 @@
+{
+  "boundaries": {
+    "quarto": {
+      "kind": "CLI",
+      "ok": true,
+      "version": "1.10.19",
+      "path": "C:\\Users\\Administrator\\.workbuddy-ai\\binaries\\quarto\\bin\\quarto.exe"
+    },
+    "dvc": {
+      "kind": "CLI",
+      "ok": true,
+      "version": "DVC version: 3.67.1 (pip)",
+      "reason": ""
+    },
+    "mlflow": {
+      "kind": "library",
+      "ok": true,
+      "version": "3.17.1",
+      "reason": ""
+    },
+    "decision": {
+      "kind": "HTTP",
+      "ok": true,
+      "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF",
+      "answer_kind": "auto_think",
+      "engine": "llamacpp"
+    },
+    "bootloops": {
+      "kind": "toolkit",
+      "ok": true,
+      "root": "E:/2026-AI4S/bootloops",
+      "has_activate": false
+    },
+    "runtimes": {
+      "kind": "HTTP/TCP",
+      "ollama": {
+        "ok": true,
+        "models": 59
+      },
+      "llamacpp_18434": {
+        "ok": true,
+        "note": "TCP reachability only (API needs a key)"
+      },
+      "llamacpp_8081": {
+        "ok": true
+      },
+      "ok": true
+    }
+  }
+}

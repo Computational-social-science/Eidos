@@ -1,0 +1,186 @@
+{
+  "modules": 10,
+  "hard": {
+    "tools.decision_probe": [
+      "framework.decision"
+    ],
+    "framework.decision": [],
+    "framework.diagnosis": [],
+    "framework.gates": [],
+    "framework.inference": [],
+    "framework.project": [],
+    "framework.quarto_bridge": [],
+    "framework.tracking": [],
+    "tools.audit_chains": [],
+    "tools.audit_coupling": []
+  },
+  "soft": {
+    "framework.diagnosis": [
+      "framework.decision"
+    ],
+    "tools.audit_chains": [
+      "framework.decision",
+      "framework.diagnosis",
+      "framework.gates",
+      "framework.inference",
+      "framework.project",
+      "framework.quarto_bridge",
+      "framework.tracking"
+    ],
+    "framework.decision": [],
+    "framework.gates": [],
+    "framework.inference": [],
+    "framework.project": [],
+    "framework.quarto_bridge": [],
+    "framework.tracking": [],
+    "tools.audit_coupling": [],
+    "tools.decision_probe": []
+  },
+  "fan_in": {
+    "framework.decision": 3,
+    "framework.quarto_bridge": 1,
+    "framework.diagnosis": 1,
+    "framework.inference": 1,
+    "framework.project": 1,
+    "framework.tracking": 1,
+    "framework.gates": 1
+  },
+  "cycles": [],
+  "process": {
+    "framework.gates": 1,
+    "framework.inference": 1,
+    "framework.project": 1,
+    "framework.quarto_bridge": 1,
+    "framework.tracking": 1
+  },
+  "network": {
+    "framework.decision": 2,
+    "framework.inference": 5
+  },
+  "absolute_paths": {
+    "tools.audit_coupling": 1
+  },
+  "env_reads": {
+    "framework.decision": 2,
+    "framework.gates": 1,
+    "framework.inference": 1,
+    "framework.quarto_bridge": 2
+  },
+  "symbols": {
+    "framework.decision": {
+      "public": [
+        "DEFAULT_TIMEOUT",
+        "DEFAULT_URL",
+        "Decision",
+        "DecisionClient",
+        "DecisionUnavailable",
+        "NONE_THRESHOLD"
+      ],
+      "used": [
+        "DecisionClient",
+        "DecisionUnavailable"
+      ]
+    },
+    "framework.diagnosis": {
+      "public": [
+        "DiagnosisReport",
+        "FailureCategory",
+        "FailureDiagnosis",
+        "FailureDiagnosisEngine",
+        "FailureSeverity",
+        "diagnose_gate_results",
+        "diagnose_pipeline_failure",
+        "refine_with_operator"
+      ],
+      "used": [
+        "diagnose_gate_results"
+      ]
+    },
+    "framework.gates": {
+      "public": [
+        "AcceptanceGate",
+        "BaseGate",
+        "DeepEvalGate",
+        "GateRegistry",
+        "GateResult",
+        "IndependenceBookkeepingGate",
+        "InspectGate",
+        "PlantedTruthGate",
+        "PromptfooGate",
+        "ProseLintGate",
+        "RagasGate",
+        "RefCheckGate",
+        "TimingDisciplineGate",
+        "ToolMissing",
+        "ToolStewardshipGate",
+        "resolve_bootloops_root",
+        "run_quantitative_gates",
+        "run_semantic_gates"
+      ],
+      "used": [
+        "GateRegistry"
+      ]
+    },
+    "framework.inference": {
+      "public": [
+        "InferenceRequest",
+        "InferenceResult",
+        "InferenceScheduler",
+        "ModelManager",
+        "ModelProvider",
+        "ModelSize",
+        "ModelSpec",
+        "StageAwareScheduler",
+        "create_model_manager",
+        "create_scheduler",
+        "create_stage_scheduler"
+      ],
+      "used": [
+        "ModelManager",
+        "create_stage_scheduler"
+      ]
+    },
+    "framework.project": {
+      "public": [
+        "DEFAULT_PROJECTS_DIR",
+        "ProjectRun",
+        "ProjectSpec",
+        "_COMMANDS",
+        "load_project",
+        "load_projects",
+        "main",
+        "run_command"
+      ],
+      "used": [
+        "load_projects"
+      ]
+    },
+    "framework.quarto_bridge": {
+      "public": [
+        "QuartoBridge",
+        "QuartoManuscriptBuilder"
+      ],
+      "used": [
+        "QuartoBridge"
+      ]
+    },
+    "framework.tracking": {
+      "public": [
+        "DVCDataVersioner",
+        "DVC_AVAILABLE",
+        "ExperimentRegistry",
+        "ExperimentRun",
+        "ExperimentTracker",
+        "MLFLOW_AVAILABLE",
+        "dvc_cmd",
+        "end_experiment",
+        "log_metrics",
+        "log_params",
+        "start_experiment"
+      ],
+      "used": [
+        "ExperimentTracker"
+      ]
+    }
+  }
+}

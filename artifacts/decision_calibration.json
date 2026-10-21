@@ -1,0 +1,188 @@
+{
+  "items": [
+    {
+      "id": "a1",
+      "class": "answerable",
+      "expected": "yes",
+      "choice": "yes",
+      "confidence": 0.9971,
+      "none": 0.0004599993580749725,
+      "latency_ms": 414.4
+    },
+    {
+      "id": "a2",
+      "class": "answerable",
+      "expected": "no",
+      "choice": "no",
+      "confidence": 0.993,
+      "none": 0.0010340273422266078,
+      "latency_ms": 112.2
+    },
+    {
+      "id": "a3",
+      "class": "answerable",
+      "expected": "yes",
+      "choice": "yes",
+      "confidence": 0.9967,
+      "none": 0.0006383287827636523,
+      "latency_ms": 107.2
+    },
+    {
+      "id": "a4",
+      "class": "answerable",
+      "expected": "yes",
+      "choice": "yes",
+      "confidence": 0.6584,
+      "none": 0.006646551832603797,
+      "latency_ms": 108.2
+    },
+    {
+      "id": "a5",
+      "class": "answerable",
+      "expected": "no",
+      "choice": "no",
+      "confidence": 0.9872,
+      "none": 0.00426797990206864,
+      "latency_ms": 97.3
+    },
+    {
+      "id": "a6",
+      "class": "answerable",
+      "expected": "no",
+      "choice": "no",
+      "confidence": 0.9924,
+      "none": 0.0023608424681561533,
+      "latency_ms": 114.2
+    },
+    {
+      "id": "a7",
+      "class": "answerable",
+      "expected": "no",
+      "choice": "no",
+      "confidence": 0.9885,
+      "none": 0.002278059119466462,
+      "latency_ms": 107.2
+    },
+    {
+      "id": "a8",
+      "class": "answerable",
+      "expected": "yes",
+      "choice": "yes",
+      "confidence": 0.997,
+      "none": 0.0004594999510766711,
+      "latency_ms": 109.5
+    },
+    {
+      "id": "a9",
+      "class": "answerable",
+      "expected": "yes",
+      "choice": "yes",
+      "confidence": 0.9429,
+      "none": 0.004242760793809096,
+      "latency_ms": 110.6
+    },
+    {
+      "id": "a10",
+      "class": "answerable",
+      "expected": "yes",
+      "choice": "yes",
+      "confidence": 0.5396,
+      "none": 0.01629558791806742,
+      "latency_ms": 110.8
+    },
+    {
+      "id": "u1",
+      "class": "unanswerable",
+      "expected": "not_stated",
+      "choice": "not_stated",
+      "confidence": 0.9934,
+      "none": 0.001838765903505191,
+      "latency_ms": 123.1
+    },
+    {
+      "id": "u2",
+      "class": "unanswerable",
+      "expected": "not_stated",
+      "choice": "not_stated",
+      "confidence": 0.9208,
+      "none": 0.0329905234409503,
+      "latency_ms": 108.8
+    },
+    {
+      "id": "u3",
+      "class": "unanswerable",
+      "expected": "not_stated",
+      "choice": "not_stated",
+      "confidence": 0.9966,
+      "none": 0.00357383797879506,
+      "latency_ms": 109.5
+    },
+    {
+      "id": "u4",
+      "class": "unanswerable",
+      "expected": "not_stated",
+      "choice": "not_stated",
+      "confidence": 0.9959,
+      "none": 0.002873255579494757,
+      "latency_ms": 109.4
+    },
+    {
+      "id": "u5",
+      "class": "unanswerable",
+      "expected": "not_stated",
+      "choice": "not_stated",
+      "confidence": 0.9885,
+      "none": 0.0049224772875279595,
+      "latency_ms": 111.0
+    },
+    {
+      "id": "u6",
+      "class": "unanswerable",
+      "expected": "not_stated",
+      "choice": "not_stated",
+      "confidence": 0.6935,
+      "none": 0.024005864730996963,
+      "latency_ms": 110.4
+    },
+    {
+      "id": "u7",
+      "class": "unanswerable",
+      "expected": "not_stated",
+      "choice": "not_stated",
+      "confidence": 0.8005,
+      "none": 0.02140544657156235,
+      "latency_ms": 110.3
+    },
+    {
+      "id": "u8",
+      "class": "unanswerable",
+      "expected": "not_stated",
+      "choice": "not_stated",
+      "confidence": 0.9634,
+      "none": 0.0059947672550151555,
+      "latency_ms": 106.6
+    },
+    {
+      "id": "u9",
+      "class": "unanswerable",
+      "expected": "not_stated",
+      "choice": "not_stated",
+      "confidence": 0.9798,
+      "none": 0.007955284610742094,
+      "latency_ms": 109.2
+    },
+    {
+      "id": "u10",
+      "class": "unanswerable",
+      "expected": "not_stated",
+      "choice": "not_stated",
+      "confidence": 0.8052,
+      "none": 0.01695423881573182,
+      "latency_ms": 109.8
+    }
+  ],
+  "accuracy": 1.0,
+  "abstain_answerable": 0.0,
+  "abstain_unanswerable": 1.0,
+  "fisher_p": 1.082508822446903e-05
+}

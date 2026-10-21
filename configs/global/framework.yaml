@@ -1,0 +1,104 @@
+# Global Research Framework Configuration
+# This is the central configuration for the entire framework
+
+framework:
+  name: "global_research_framework"
+  version: "4.0"
+  description: "Quarto + BootLoops + Complementary Quality Gates"
+  status: "production-ready"
+  
+  # Hardware target
+  hardware:
+    gpu: "RTX 4070 (12 GB VRAM)"
+    scheduling: "stage-aware"
+    max_concurrent_models: 1
+    unload_between_stages: true
+
+  # Dual quality gates
+  quality_gates:
+    quantitative:
+      name: "BootLoops"
+      repo: "https://github.com/BootLoops-ai/bootloops"
+      # Resolved from the shared install, never vendored into a project.
+      # Override with $BOOTLOOPS_ROOT when the toolbox lives elsewhere.
+      root: "E:/2026-AI4S/bootloops"
+      activate: "~/.bootloops/activate.sh"
+      protocols:
+        - acceptance-gate
+        - planted-truth
+        - independence-bookkeeping
+        - timing-discipline
+        - tool-stewardship
+        - lit-review
+        - ref-check
+        - prose-lint
+        - referee-sim
+    semantic:
+      tools:
+        - name: "Inspect"
+          license: "MIT"
+          purpose: "agent & tool-use evaluation, sandboxed execution"
+        - name: "DeepEval"
+          license: "Apache-2.0"
+          purpose: "pytest-style LLM/RAG/Agent unit tests, 50+ metrics"
+        - name: "Promptfoo"
+          license: "MIT"
+          purpose: "config-driven prompt comparison, red-teaming, CI gates"
+        - name: "Ragas"
+          license: "Apache-2.0"
+          purpose: "RAG-specific metrics (faithfulness, context precision/recall)"
+
+  # Human review gates (mandatory)
+  human_gates:
+    mandatory:
+      - "hypothesis_confirmation"
+      - "critical_experiment_design"
+      - "final_manuscript_submission"
+    recommended:
+      - "experiment_design"
+    optional:
+      - "experiment_execution"
+
+  # Cross-project memory
+  memory:
+    type: "lightweight_vector"
+    storage: "local_qdrant"
+    max_entries: 10000
+    auto_update: true
+
+  # Failure diagnosis
+  diagnosis:
+    enabled: true
+    auto_trigger_on_gate_failure: true
+    output_format: "structured_report"
+
+  # Multi-format delivery
+  delivery:
+    formats:
+      - "latex_pdf"
+      - "docx"
+      - "html"
+      - "code_artifacts"
+    quarto:
+      freeze: auto
+      cache: true
+
+  # Reproducibility package
+  executable_package:
+    docker: true
+    binder: true
+    freeze_cache: true
+    provenance: true
+
+  # Stage-aware inference scheduling
+  inference:
+    interactive:
+      provider: "ollama"
+      models: ["llama3.1:8b", "qwen2.5:14b", "gemma2:9b"]
+    batch:
+      provider: "vllm"
+      quantization: "awq"
+    bootloops_tools:
+      provider: "cpu"
+    max_concurrent: 1
+    unload_between_stages: true

@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv*/
+venv/
+.env
+
+# Data and outputs (projects keep their own .gitignore)
+projects/*/data/
+projects/*/outputs/
+projects/*/experiments/
+projects/*/manuscript/_freeze/
+projects/*/manuscript/_extensions/
+
+# Memory / tracking side-stores
+memory/chroma/
+memory/memory.json
+mlruns/
+mlruns.db
+.dvc/cache/
+.dvc/tmp/
+
+# Quarto
+_freeze/
+_site/
+.quarto/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Scratch
+*.log
+tmp/
+.pytest_cache/
+
+# Local test artifacts
+.memtest/
+.memchroma/

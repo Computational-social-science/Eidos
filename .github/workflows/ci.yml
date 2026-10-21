@@ -1,0 +1,57 @@
+name: ci
+
+# The framework's claim is that its chains work, not that they import. This job runs
+# the suite and then exercises each chain. Chains whose external dependency is absent
+# (no project checkout, no decision service) report SKIP; the job fails only on FAIL
+# or ERROR. That distinction is the point: a skip is not evidence, but it is not a
+# failure either, and collapsing the two is how a green badge starts lying.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev,tracking]"
+      - name: Unit tests
+        run: pytest -q
+
+  audit:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev,tracking]"
+      - name: Exercise every chain
+        run: python tools/audit_chains.py --ci
+      - name: Coupling gate (no import cycles)
+        run: python tools/audit_coupling.py
+      - name: External contracts (recorded, not gated)
+        run: python tools/contract_snapshot.py --check --allow-missing

@@ -55,7 +55,8 @@ def write_project(root: Path, *, claims=None, scope=None, power=None,
     (root / "analysis").mkdir(parents=True, exist_ok=True)
     (root / "docs" / "MANUSCRIPT.html").write_text(manuscript, encoding="utf-8")
     (root / "data" / "evidence.json").write_text(json.dumps(ARTIFACT), encoding="utf-8")
-    (root / "docs" / "REFEREE.md").write_text("objections resolved", encoding="utf-8")
+    (root / "docs" / "REFEREE.md").write_text(
+        "## O1. Something. `[RESOLVED]` — evidence\n", encoding="utf-8")
     (root / "lakefile.lean").write_text("-- stub\n", encoding="utf-8")
 
     default_claim = {
@@ -80,7 +81,7 @@ def write_project(root: Path, *, claims=None, scope=None, power=None,
                            "file": ARTPATH, "pointer": "/power/n"},
         "multiplicity": multiplicity or {"family": 3, "correction": "Holm",
                                          "file": ARTPATH, "pointer": "/multiplicity/family"},
-        "journal_fit": journal or {"file": "docs/REFEREE.md", "objections": 3,
+        "journal_fit": journal or {"file": "docs/REFEREE.md", "objections": 1,
                                    "unresolved": 0},
     }
     path = root / "analysis" / "CLAIMS.yaml"
@@ -170,10 +171,24 @@ def test_out_of_scope_axis_needs_a_reason(tmp_path: Path) -> None:
 
 
 def test_unresolved_referee_objection_fails(tmp_path: Path) -> None:
-    write_project(tmp_path, journal={"file": "docs/REFEREE.md", "objections": 3,
+    write_project(tmp_path, journal={"file": "docs/REFEREE.md", "objections": 1,
                                      "unresolved": 1})
+    (tmp_path / "docs" / "REFEREE.md").write_text(
+        "## O1. No second corpus. `[UNRESOLVED]`\n", encoding="utf-8")
     r = gate(tmp_path)
     assert r.status == "FAIL" and "S7" in codes(r)
+
+
+def test_understated_unresolved_count_fails(tmp_path: Path) -> None:
+    """A register that declares zero open objections while the document carries two is
+    the failure mode the count-parsing exists to catch."""
+    write_project(tmp_path, journal={"file": "docs/REFEREE.md", "objections": 2,
+                                     "unresolved": 0})
+    (tmp_path / "docs" / "REFEREE.md").write_text(
+        "## O1. `[UNRESOLVED]`\n\n## O2. `[UNRESOLVED]`\n", encoding="utf-8")
+    r = gate(tmp_path)
+    assert r.status == "FAIL" and "S7" in codes(r)
+    assert any("declares 0 unresolved" in f for f in r.details["findings"])
 
 
 def test_missing_register_fails(tmp_path: Path) -> None:

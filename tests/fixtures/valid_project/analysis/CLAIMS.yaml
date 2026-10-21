@@ -1,0 +1,27 @@
+scope:
+  corpus: ["fixture corpus"]
+  task: ["restoration"]
+  models: ["fixture model"]
+  writing_system: ["Latin"]
+  genre: ["desktop typing"]
+  out_of_scope: []
+claims:
+  - id: C1
+    text: "Operators are separable"
+    span: "separable at matched severity"
+    strength: tentative
+    design: preregistered
+    evidence: {file: data/evidence.json, pointer: /cross_arm/separated, value: true}
+    assumptions: ["severity matched"]
+power:
+  statement: "simulated power 0.86 at n=4200"
+  file: data/evidence.json
+  pointer: /power/n
+  value: 4200
+multiplicity:
+  family: 3
+  correction: "Holm"
+  file: data/evidence.json
+  pointer: /multiplicity/family
+  value: 3
+journal_fit: {file: docs/REFEREE.md, objections: 1, unresolved: 0}

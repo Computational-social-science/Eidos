@@ -17,6 +17,10 @@ gate_command: ["{python}", "scripts/check_handoff.py"]
 test_command: ["{python}", "-m", "pytest", "tests/", "-q"]
 render_command: ["{python}", "main.py", "render"]
 
+# Gate S reads this register: every claim, its evidence handle and its strength. Path is
+# relative to the project root, so the framework can find it without being told twice.
+validity_register: analysis/CLAIMS.yaml
+
 reports:
   - docs/MANUSCRIPT.html
   - docs/REPORT.html

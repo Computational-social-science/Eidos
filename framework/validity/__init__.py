@@ -272,9 +272,37 @@ class ScientificValidityGate:
             rel = self.root / fit["file"]
             if not rel.is_file():
                 findings.append(Finding("S7", f"referee simulation missing: {fit['file']}"))
-            if int(fit.get("unresolved", 0)) > 0:
-                findings.append(Finding("S7", f"{fit['unresolved']} referee objection(s) "
-                                               f"remain unresolved"))
+            else:
+                # The count is parsed, not trusted: a register that declares one open
+                # objection while the document carries five is under-reporting, and that
+                # is the exact failure this gate exists to catch.
+                text = rel.read_text(encoding="utf-8", errors="ignore")
+                # Count per objection block, not per marker: the document's own legend
+                # explains both tags, and counting raw markers would read the legend as
+                # two extra objections.
+                blocks = re.split(r"(?m)^##\s+O\d+\.", text)[1:]
+                open_markers = sum(1 for b in blocks if "[UNRESOLVED]" in b)
+                resolved_markers = sum(1 for b in blocks if "[RESOLVED]" in b)
+                untagged = [i for i, b in enumerate(blocks, 1)
+                            if "[UNRESOLVED]" not in b and "[RESOLVED]" not in b]
+                if untagged:
+                    findings.append(Finding("S7", f"objection block(s) {untagged} carry no "
+                                                   f"status tag, so they cannot be counted"))
+                declared_open = int(fit.get("unresolved", 0))
+                declared_total = int(fit.get("objections", len(blocks)))
+                if declared_open != open_markers:
+                    findings.append(Finding("S7", f"the register declares "
+                                                   f"{declared_open} unresolved objection(s) "
+                                                   f"but the document carries "
+                                                   f"{open_markers} [UNRESOLVED] markers"))
+                if declared_total != open_markers + resolved_markers:
+                    findings.append(Finding("S7", f"the register declares "
+                                                   f"{declared_total} objection(s) but the "
+                                                   f"document carries "
+                                                   f"{open_markers + resolved_markers}"))
+                if open_markers:
+                    findings.append(Finding("S7", f"{open_markers} referee objection(s) "
+                                                   f"remain unresolved"))
 
         # S8 -- Lean audit for formal claims
         if formal:

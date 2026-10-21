@@ -172,6 +172,36 @@ def audit_quarto():
         return ("PASS" if ok else "FAIL"), detail
 
 
+@chain("validity (Gate S)", "pyyaml")
+def audit_validity():
+    """Gate S must pass a valid register and refuse an under-reported one.
+
+    The fixture is a complete miniature project, so the check is the gate itself, not the
+    presence of a file. The second half mutates the fixture in a temporary copy and
+    requires a FAIL: a gate that cannot fail is not a gate.
+    """
+    import shutil
+    import tempfile
+
+    from framework.validity import ScientificValidityGate
+
+    fixture = ROOT / "tests" / "fixtures" / "valid_project"
+    good = ScientificValidityGate(fixture).run()
+    if good.status != "PASS":
+        return "FAIL", f"valid fixture did not pass: {good.details['findings']}"
+
+    with tempfile.TemporaryDirectory(prefix="gate_s_") as td:
+        copy = Path(td) / "project"
+        shutil.copytree(fixture, copy)
+        register = copy / "analysis" / "CLAIMS.yaml"
+        text = register.read_text(encoding="utf-8")
+        register.write_text(text.replace("unresolved: 0", "unresolved: 2"), encoding="utf-8")
+        bad = ScientificValidityGate(copy).run()
+    if bad.status != "FAIL":
+        return "FAIL", "a register with a false objection count was not caught"
+    return "PASS", "valid register PASS; overstated count FAIL"
+
+
 @chain("decision", "StartLux service")
 def audit_decision():
     """A known-answer probe: typed decisions must be correct AND measured.

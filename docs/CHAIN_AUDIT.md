@@ -236,3 +236,22 @@ it was for (`archive/retired-20261020/README.md`).
 
 The distinction matters: "works" means a run happened; "used" means a real project
 depends on it. Only the registry, the gates and tracking (in this audit) are used.
+
+## Gate S and the Lean audit — measured runs
+
+The chain is only credible if it has been pointed at real proofs. Two runs, both on
+2026-10-21, on this host:
+
+| target | module / theorem | verdict | wall |
+|---|---|---|---|
+| `lean-nhb` (core-only, no mathlib) | `NHB.PhaseI.Core` / `PhaseI.Selective.silent_iff_acceptedAndWrong` | **PASS** | 2.7 s |
+| `atlas-lean` (mathlib-backed, 1 000+ theorems) | `Atlas.AlgebraicCombinatorics.code.BooleanSperner` / `SpernerProperty.boolean_sperner` | **PASS** | 112.9 s |
+
+Each PASS means all four steps held: the module built (scoped to the audited module, not
+the whole library), `#print axioms` resolved the constant, the axiom list stayed inside
+`{propext, Classical.choice, Quot.sound}` with no `sorryAx`, and the control file
+asserting `(1 : Nat) = 2` **failed** to compile.
+
+The first attempt at the `lean-nhb` theorem used the unqualified name and was rejected in
+24.3 s with `error(lean.unknownIdentifier)`. That failure is the evidence that the chain
+bites: it does not report an empty axiom list for a name it could not resolve.

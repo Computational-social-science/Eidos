@@ -1,0 +1,63 @@
+# Gate S register -- surrogate reference study (fixture, synthetic truth)
+#
+# The empirical counterpart to lean_nhb: same gate, claims backed by a computed grid
+# instead of a kernel. The truth is known in closed form, so the study cannot be wrong
+# in the way an open empirical study can, and it is labelled a fixture for that reason.
+
+scope_axes: [lambda_range, operator, seed, data_source, non_goals]
+
+scope:
+  lambda_range: ["0.1 <= lam <= 1.0, the training interval; nothing outside it"]
+  operator: ["random-feature short-time stepper trained on 1200 pairs"]
+  seed: ["0"]
+  data_source: ["synthetic: RK4 integration of du/dt = lam - u^2"]
+  non_goals:
+    - "extrapolation outside the training interval"
+    - "any physical interpretation of the equation"
+
+claims:
+  - id: S1
+    text: "The learned stepper recovers the analytic fixed point on held-out branches"
+    span: "19 of 19 recover the analytic fixed point within 5% relative error"
+    strength: supported
+    design: preregistered
+    evidence:
+      file: docs/evidence.json
+      pointer: /forward/within_5pct
+      value: 19
+    control:
+      file: docs/evidence.json
+      pointer: /control/within_5pct
+      value: 1
+    assumptions:
+      - "the analytic fixed point sqrt(lam) is the truth; it is computed, not fitted"
+      - "the control shuffles the training labels and keeps every other step identical"
+    formal: false
+
+  - id: S2
+    text: "The recovered fixed points are stable"
+    span: "19 of 19 have spectral radius below 1 at the recovered point"
+    strength: supported
+    design: preregistered
+    evidence:
+      file: docs/evidence.json
+      pointer: /forward/stable
+      value: 19
+    control:
+      file: docs/evidence.json
+      pointer: /control/stable
+      value: 1
+    assumptions:
+      - "spectral radius is evaluated on the operator's linearisation at the recovered point"
+    formal: false
+
+power:
+  not_applicable: "deterministic audit over a fixed 19-point grid; no sampling, no estimate"
+
+multiplicity:
+  not_applicable: "two fixed checks, both reported; no family of tests to correct"
+
+journal_fit:
+  file: docs/REFEREE_SIM.md
+  objections: 2
+  unresolved: 0

@@ -46,5 +46,17 @@
       "open_objections": 1,
       "decision_ms": 182
     }
+  },
+  {
+    "version": "4.0.0",
+    "date": "2026-10-23",
+    "commit": "edc5693",
+    "metrics": {
+      "tests": 119,
+      "coverage": 72,
+      "chains": 11,
+      "open_objections": 1,
+      "decision_ms": 182
+    }
   }
 ]

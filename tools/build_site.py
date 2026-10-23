@@ -311,6 +311,21 @@ def lean_rows(rows: list[dict]) -> str:
         f"<td class='num'>{html.escape(r['time'])}</td></tr>" for r in rows)
 
 
+def render_strip() -> str:
+    path = ROOT / "docs" / "RENDER_CHECK.json"
+    if not path.exists():
+        return '<span class="contract miss">render chain not checked</span>'
+    data = json.loads(path.read_text(encoding="utf-8"))
+    out = []
+    for fmt, row in data.get("formats", {}).items():
+        cls = "ok" if row.get("ok") else "miss"
+        size = f"{row['bytes'] / 1024:.0f} KB" if row.get("bytes") else "no output"
+        out.append(f'<span class="contract {cls}">{fmt} <b>{size}</b></span>')
+    verdict = "ok" if data.get("ok") else "miss"
+    out.append(f'<span class="contract {verdict}">chain <b>{"passes" if data.get("ok") else "fails"}</b></span>')
+    return "".join(out)
+
+
 def contract_strip(rows: list[dict]) -> str:
     if not rows:
         return '<span class="contract miss">no contract probe available</span>'
@@ -568,6 +583,7 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono
   <div class="card" style="margin-top:18px">
     <h3>External contracts</h3>
     <p class="contracts">__CONTRACTS__</p>
+    <p class="contracts" style="margin-top:8px">__RENDER__</p>
     <p style="margin:10px 0 0;font-size:12.5px;color:var(--muted)">Probed at build time.
       A boundary that is down is named; it is never silently skipped.</p>
   </div>
@@ -892,6 +908,7 @@ def render(data: dict) -> str:
         "__CHAINROWS__": chain_rows(rows),
         "__ADOPT__": adopt_rows(data["registry"]),
         "__CONTRACTS__": contract_strip(data.get("contracts", [])),
+        "__RENDER__": render_strip(),
         "__EXTRAP__": extrapolation_svg(extra),
         "__INMAX__": f"{100 * (extra['inside_max'] or 0):.4f}%",
         "__OUTMAX__": f"{100 * (extra['outside_max'] or 0):.2f}%",

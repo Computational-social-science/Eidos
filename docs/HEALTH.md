@@ -14,6 +14,7 @@ and re-checked by `--check` in CI; none is typed by hand.
 | Gate S on Eidos itself | **FAIL — 1 open objection** (one adopter: `lean_nhb`) | ⚠️ honest |
 | CI (GitHub Actions) | test job 3.11 + 3.12 green; audit job green | ✅ |
 | adopters | `lean_nhb` (reference consumer: kernel-checked claims) | ⚠️ one |
+| render chain | html 19 KB, pdf 13 KB, docx 11 KB from one Quarto source (`docs/RENDER_CHECK.json`) | ✅ |
 | external contracts | Quarto 1.10.19 (`tools/quarto`, via `QUARTO_BIN`), DVC, MLflow, decision service, BootLoops | ✅ |
 | coupling | 0 import cycles, 0 absolute-path literals | ✅ |
 

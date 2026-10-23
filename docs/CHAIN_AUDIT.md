@@ -14,9 +14,11 @@ to a chain; it takes about 15 s.
 | tracking | start an MLflow run, log a metric, end it | **PASS** — run recorded, `dvc_available=True` |
 | quarto | render the project's actual manuscript through the bridge | **PASS** — 18-file manuscript, HTML render ok |
 | inference | the configured budget must reject what does not fit and admit what does | **PASS** — 4 GB refuses the 5 GB entry, 12 GB admits it |
+| validity (Gate S) | a valid register must PASS; the same register with an overstated objection count must FAIL | **PASS** — fixture PASS, mutated copy FAIL |
 | decision | a known-answer probe through the operator, timed | **PASS** — p(17 prime)=0.963, 0.9 > 0.11; **median 182 ms** for 2 questions (n=3) |
 
-**8 PASS, 0 SKIP, 0 FAIL/ERROR.**
+**9 chains: 7 PASS, 2 SKIP, 0 FAIL/ERROR** on this host (decision and the project
+checker SKIP unless their service / flag is present).
 
 The Quarto row was run twice: once on a minimal probe, and once with
 `--manuscript ../keystroke-observatory/manuscript`, which copies the real 18-file
@@ -255,3 +257,24 @@ asserting `(1 : Nat) = 2` **failed** to compile.
 The first attempt at the `lean-nhb` theorem used the unqualified name and was rejected in
 24.3 s with `error(lean.unknownIdentifier)`. That failure is the evidence that the chain
 bites: it does not report an empty axiom list for a name it could not resolve.
+
+---
+
+## CI incident, 2026-10-21
+
+The first three GitHub Actions runs went red in the `audit` job while both `test` jobs
+(3.11, 3.12) passed. The log named the cause:
+
+```
+ERROR registry  FileNotFoundError: projects/keystroke_observatory/project.yaml:
+root does not exist: /home/runner/work/Eidos/keystroke-observatory
+```
+
+A project is registered as a **pointer**; on a CI runner the pointer resolves to nothing,
+which is expected, and `--ci` already asked for leniency — but `load_projects()` was
+called without `allow_missing`, so the error escaped before the SKIP branch could run.
+
+**Fixed:** `load_projects(allow_missing=not STRICT_REGISTRY)`. Locally a detached
+checkout is still an error (a project that is not there must not look audited); on CI it
+is a SKIP. The behaviour is pinned by
+`test_missing_project_root_raises_locally_but_is_skippable_in_ci`.

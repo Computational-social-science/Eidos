@@ -1,0 +1,72 @@
+# Gate S register -- Eidos (the framework auditing itself)
+#
+# The scope axes are not the scientific ones: a framework has no corpus or writing
+# system. It has a language, platforms, external tools it depends on, projects that
+# consume it, and things it explicitly does not do. Gate S reads `scope_axes` from this
+# file, so the same gate works for a paper and for a piece of software.
+
+scope_axes: [language, platform, external_tools, projects, non_goals]
+
+scope:
+  language: ["Python 3.11", "Python 3.12"]
+  platform: ["Windows 10 (development)", "ubuntu-latest (CI)"]
+  external_tools: ["Quarto", "DVC", "MLflow", "BootLoops", "Lean 4 / lake"]
+  projects: ["keystroke-observatory (registered consumer)"]
+  non_goals:
+    - "training models or solving PDEs"
+    - "replacing a project's own scientific judgement"
+  out_of_scope:
+    - axis: projects
+      value: "a second independent adopter"
+      reason: "only one project is registered; generalisation is unmeasured"
+
+claims:
+  - id: C1
+    text: "The chain audit exercises eleven chains"
+    span: "The chain audit runs eleven chains"
+    strength: tentative
+    design: observational
+    evidence:
+      file: docs/SELF_AUDIT.json
+      pointer: /chains/total
+      value: 11
+    assumptions:
+      - "the record is produced by tools/record_self_audit.py, not typed"
+
+  - id: C2
+    text: "No chain fails; an absent external checkout is a skip"
+    span: "a missing external checkout is a SKIP, not a pass"
+    strength: tentative
+    design: observational
+    evidence:
+      file: docs/SELF_AUDIT.json
+      pointer: /chains/fail
+      value: 0
+    assumptions:
+      - "CI mode is the strict test: a missing checkout must not count as a pass"
+
+  - id: C3
+    text: "Gate S passes a valid register and fails a mutated one"
+    span: "This framework audits itself"
+    strength: tentative
+    design: observational
+    evidence:
+      file: docs/SELF_AUDIT.json
+      pointer: /gate_s/fixture_status
+      value: PASS
+    assumptions:
+      - "the fixture is a complete miniature project, not a mock"
+
+power:
+  not_applicable: "a software deliverable has no sampling error; the framework makes no
+    estimate that could be powered"
+
+multiplicity:
+  not_applicable: "the framework runs no family of hypothesis tests of its own; each
+    project declares its own correction"
+
+journal_fit:
+  # Adversarial self-review, same format as a project's: tagged objections, parsed count.
+  file: docs/REFEREE_SIM.md
+  objections: 8
+  unresolved: 1

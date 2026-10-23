@@ -59,6 +59,17 @@ asserting behaviour outside its data, so no extrapolation claim is made.
   different piece of mathematics.
 - Not a solver. The module computes system-level quantities of a *learned map*; it does
   not integrate a PDE.
-- Not wired into any project yet. It is exercised by the chain audit and by tests; the
-  first intended consumer is the operator-composition fixed-point experiment
-  (`docs/OPERATOR_COMPOSITION_PREREG.md`).
+- **Not wired into any project.** It is exercised by the chain audit and by tests, and
+  it has no production consumer. By the framework's own rule a module without a consumer
+  does not enter a project's path, so the layer stays a utility until one arrives.
+
+## Consumers: what was tried
+
+`experiments/loops` was an attempt to make iterated self-rewrite the consumer. It is
+dormant because the third claim failed: a random-feature operator predicts the next step
+well (held-out cosine error 0.117) but its Newton fixed point walks off the data manifold
+(agreement 0.44-0.94, predicted norm 1.57 vs 1.0). The negative result is recorded there.
+
+The candidate consumer that would be scientifically meaningful remains
+`docs/OPERATOR_COMPOSITION_PREREG.md`, which belongs to the keystroke project, not to the
+framework. If it runs, it justifies the layer; if it does not, the layer stays dormant.

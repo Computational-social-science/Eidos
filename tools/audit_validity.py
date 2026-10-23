@@ -30,6 +30,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--project", default=".", help="project root (default: cwd)")
     ap.add_argument("--register", default=None, help="path to CLAIMS.yaml")
     ap.add_argument("--manuscript", default=None, help="path to the manuscript HTML")
+    ap.add_argument("--document", default=None,
+                    help="the deliverable the claims must appear in (HTML or Markdown)")
     ap.add_argument("--json", action="store_true", help="machine-readable output")
     args = ap.parse_args(argv)
 
@@ -50,8 +52,11 @@ def main(argv: list[str] | None = None) -> int:
             print(f"[FAIL] {message}")
         return 2
 
+    document = Path(args.document) if args.document else None
+    if document is not None and not document.is_absolute():
+        document = project / document
     result = ScientificValidityGate(project, register=register,
-                                    manuscript=manuscript).run()
+                                    manuscript=manuscript, document=document).run()
     if args.json:
         print(json.dumps({"status": result.status, **result.details}, indent=2))
     else:

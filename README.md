@@ -139,7 +139,7 @@ lockfile, and the executable environment (Docker/Binder).
   guard that the registry imports no heavy dependency, and the tool-missing
   vocabulary: an absent external tool returns **SKIP** (nothing was examined),
   not a crash and not a FAIL.
-- **Chains exercised end to end:** `make audit` → **8 PASS, 0 SKIP, 0 FAIL/ERROR**
+- **Chains exercised end to end:** `make audit` → **10 PASS, 1 SKIP, 0 FAIL/ERROR**
   (registry, gates, a project's own checker through `ref-check`, diagnosis naming
   the failed metric, MLflow tracking, a real render of the project's 18-file
   manuscript, inference budget enforcement, and a live decision probe at 182 ms
@@ -223,3 +223,25 @@ and the axiom report is worthless.
 A PASS is not a truth certificate. It means: every claim in the register is in the paper,
 every evidence handle still says what the register says, and no reviewer objection is
 open. That is the strongest statement a mechanical gate can honestly make.
+
+## The framework audits itself
+
+This framework audits itself: `analysis/CLAIMS.yaml` is read by the same Gate S it
+documents, and every number in it comes from `docs/SELF_AUDIT.json`, which is produced by
+`tools/record_self_audit.py` rather than typed.
+
+The chain audit runs eleven chains; a missing external checkout is a SKIP, not a pass. The
+self-register declares power and multiplicity as not applicable, with the reason stated:
+a software deliverable has no sampling error, and pretending otherwise would be the same
+category error as reporting a p-value for a build.
+
+Self-audit is also where the framework's own claims can fail. If the recorded chain count
+and the register disagree, Gate S refuses the register -- the framework has no exemption
+from the rule it applies to projects.
+
+## Interactive lab
+
+`lab/lab.html` is a single self-contained page: drag λ and watch the learned fixed point
+sit on the analytic √λ, with the spectral radius and the Newton iterations updating. It is
+built by `tools/surrogate_lab.py` from the same operator the gate audits, and it embeds its
+data at build time, so it opens from disk with no server and no network.

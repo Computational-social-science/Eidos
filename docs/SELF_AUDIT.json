@@ -1,0 +1,25 @@
+{
+  "chains": {
+    "total": 11,
+    "pass": 10,
+    "skip": 1,
+    "fail": 0
+  },
+  "tests_collected": 101,
+  "coverage_total": 73,
+  "gate_s": {
+    "fixture_status": "PASS"
+  },
+  "self_gate_s": {
+    "status": "FAIL",
+    "findings": [
+      "[S7] 1 referee objection(s) remain unresolved"
+    ],
+    "open_objections": 1
+  },
+  "exit_codes": {
+    "chains": 0,
+    "gate_s": 0,
+    "self_gate_s": 1
+  }
+}

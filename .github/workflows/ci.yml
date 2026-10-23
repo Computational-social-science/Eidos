@@ -51,6 +51,8 @@ jobs:
           pip install -e ".[dev,tracking]"
       - name: Exercise every chain
         run: python tools/audit_chains.py --ci
+      - name: Self-audit record (no drift, no new objection)
+        run: python tools/record_self_audit.py --check
       - name: Local neural operator (planted fixed point + control)
         run: |
           python tools/audit_surrogate.py

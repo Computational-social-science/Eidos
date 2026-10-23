@@ -41,3 +41,6 @@ tmp/
 .memtest/
 .memchroma/
 ci_log.txt
+lab/*.png
+.coverage
+coverage.xml

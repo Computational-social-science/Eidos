@@ -25,7 +25,7 @@ all = [
     "deepeval>=1.0",
     "ragas>=0.2",
 ]
-dev = ["pytest>=7.0"]
+dev = ["pytest>=7.0", "coverage>=7.0"]
 
 [tool.setuptools.packages.find]
 include = ["framework*"]

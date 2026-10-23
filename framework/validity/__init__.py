@@ -119,12 +119,19 @@ class ScientificValidityGate:
     name = "scientific_validity"
 
     def __init__(self, root: Path, register: Optional[Path] = None,
-                 manuscript: Optional[Path] = None, lean_cmd: Optional[object] = None):
+                 manuscript: Optional[Path] = None, document: Optional[Path] = None,
+                 lean_cmd: Optional[object] = None,
+                 scope_axes: Optional[Iterable[str]] = None):
         self.root = Path(root).resolve()
         self.register_path = Path(register) if register else self.root / "analysis" / "CLAIMS.yaml"
-        self.manuscript_path = (Path(manuscript) if manuscript
-                                else self.root / "docs" / "MANUSCRIPT.html")
+        # `document` is the general name: a framework claim lives in a README, a paper
+        # claim in a rendered manuscript. `manuscript` is kept for existing callers.
+        chosen = document or manuscript
+        self.document_path = (Path(chosen) if chosen
+                              else self.root / "docs" / "MANUSCRIPT.html")
+        self.manuscript_path = self.document_path
         self.lean_cmd = lean_cmd
+        self.scope_axes = tuple(scope_axes) if scope_axes else None
 
     # -- helpers ---------------------------------------------------------------
     def _load(self) -> Dict[str, Any]:
@@ -205,10 +212,10 @@ class ScientificValidityGate:
                                                f"identify a claim"))
             elif not text:
                 findings.append(Finding("S2", f"{cid}: no manuscript text to search "
-                                               f"({self.manuscript_path.name} missing)"))
+                                               f"({self.document_path.name} missing)"))
             elif span not in text:
                 findings.append(Finding("S2", f"{cid}: the register's span does not "
-                                               f"appear in {self.manuscript_path.name}"))
+                                               f"appear in {self.document_path.name}"))
 
             # S3 -- evidence resolves and matches
             findings.extend(self._evidence(claim.get("evidence"), cid, "evidence"))
@@ -239,9 +246,10 @@ class ScientificValidityGate:
 
         # S5 -- scope
         scope = data.get("scope") or {}
+        axes = self.scope_axes or tuple(data.get("scope_axes") or REQUIRED_SCOPE)
         oos = scope.get("out_of_scope") or []
         oos_axes = {o.get("axis") for o in oos if isinstance(o, dict)}
-        for axis in REQUIRED_SCOPE:
+        for axis in axes:
             if scope.get(axis):
                 continue
             if axis in oos_axes:
@@ -257,6 +265,13 @@ class ScientificValidityGate:
             block = data.get(key)
             if not isinstance(block, dict):
                 findings.append(Finding("S6", f"{key} is not declared"))
+                continue
+            # A software deliverable has no sampling error; saying so explicitly is a
+            # declaration, not an omission. An empty or unexplained claim is still caught.
+            if block.get("not_applicable"):
+                if not str(block["not_applicable"]).strip():
+                    findings.append(Finding("S6", f"{key} is not applicable but gives no "
+                                                   f"reason"))
                 continue
             findings.extend(self._evidence(block, key.upper(), key))
             if key == "power" and not block.get("statement"):

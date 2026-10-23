@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Local neural operator — fixed points on demand</title>
+<style>
+:root { --ink:#12161c; --muted:#5b6673; --rule:#d9dee5; --true:#1f6feb; --learned:#d1495b; }
+* { box-sizing:border-box; }
+body { margin:0; background:#f6f7f9; color:var(--ink);
+        font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
+.wrap { max-width:1080px; margin:0 auto; padding:28px 22px 48px; }
+h1 { font-size:20px; margin:0 0 4px; letter-spacing:-0.01em; }
+.sub { color:var(--muted); font-size:13px; margin-bottom:20px; }
+.grid { display:grid; grid-template-columns:1.35fr 1fr; gap:18px; }
+@media (max-width:860px) { .grid { grid-template-columns:1fr; } }
+.card { background:#fff; border:1px solid var(--rule); border-radius:10px; padding:14px 16px; }
+.card h2 { font-size:12px; text-transform:uppercase; letter-spacing:.06em;
+            color:var(--muted); margin:0 0 10px; font-weight:700; }
+canvas { width:100%; height:auto; display:block; }
+.controls { display:flex; align-items:center; gap:12px; margin:10px 0 4px; }
+input[type=range] { flex:1; accent-color:var(--learned); }
+.readout { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:10px; }
+.kv { background:#fbfcfd; border:1px solid var(--rule); border-radius:8px; padding:8px 10px; }
+.kv .k { font-size:11px; color:var(--muted); }
+.kv .v { font-size:16px; font-variant-numeric:tabular-nums; margin-top:2px; }
+.badge { display:inline-block; font-size:12px; padding:3px 9px; border-radius:999px;
+          background:#e8f5ee; color:#17663a; border:1px solid #bfe3cc; }
+.badge.bad { background:#fdecee; color:#8c1d2c; border-color:#f3c3ca; }
+.legend { display:flex; gap:16px; font-size:12px; color:var(--muted); margin-top:6px; }
+.dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:5px; }
+button { font:inherit; font-size:13px; padding:6px 12px; border-radius:7px;
+          border:1px solid var(--rule); background:#fff; cursor:pointer; }
+button:hover { border-color:#b6bfca; }
+footer { margin-top:22px; color:var(--muted); font-size:12px; line-height:1.6; }
+code { background:#eef1f5; padding:1px 5px; border-radius:4px; font-size:12px; }
+</style></head>
+<body><div class="wrap">
+  <h1>Local neural operator — fixed points on demand</h1>
+  <div class="sub">A short-time operator is fitted to data from <code>du/dt = lam - u^2</code>, then
+    Newton solves <code>S(u) = u</code>. Drag λ: the red learned curve should sit on the
+    blue analytic one.</div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Fixed point u*(λ)</h2>
+      <canvas id="plot" width="640" height="360"></canvas>
+      <div class="legend">
+        <span><span class="dot" style="background:var(--true)"></span>analytic √λ</span>
+        <span><span class="dot" style="background:var(--learned)"></span>learned operator</span>
+      </div>
+      <div class="controls">
+        <span style="font-size:13px;color:var(--muted)">λ</span>
+        <input id="lam" type="range" min="0.10" max="1.00" step="0.01" value="0.50">
+        <span id="lamval" style="font-size:14px;font-variant-numeric:tabular-nums;width:3.2em"></span>
+      </div>
+      <div class="readout">
+        <div class="kv"><div class="k">learned u*</div><div class="v" id="u_learned">—</div></div>
+        <div class="kv"><div class="k">relative error</div><div class="v" id="err">—</div></div>
+        <div class="kv"><div class="k">spectral radius</div><div class="v" id="rho">—</div></div>
+      </div>
+      <div style="margin-top:10px" id="verdict"></div>
+    </div>
+
+    <div class="card">
+      <h2>Stability ρ(λ) — below 1 is attracting</h2>
+      <canvas id="rho_plot" width="420" height="220"></canvas>
+      <h2 style="margin-top:16px">Newton, step by step</h2>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">
+        start u₀ = 1.0 at λ = <span id="trace_lam">0.50</span></div>
+      <svg id="trace" width="100%" height="110"></svg>
+      <div style="margin-top:8px"><button id="replay">Replay Newton</button></div>
+    </div>
+  </div>
+
+  <footer>
+    Fitted on 1200 short-step pairs, 256 random features, Δt = 0.05.
+    Max relative error over the grid: <b>0.0002%</b>; median <b>0.0000%</b>.
+    Every number is written by <code>tools/surrogate_lab.py</code>; the page embeds its data
+    so it works from <code>file://</code> without a network.
+  </footer>
+</div>
+<script>
+const DATA = {"system":"du/dt = lam - u^2","truth":"u* = sqrt(lam)","dt":0.05,"features":256,"train_rows":1200,"rows":[{"lam":0.1,"learned":0.316228,"truth":0.316228,"rho":0.96887,"rel_error":2e-06},{"lam":0.11,"learned":0.331663,"truth":0.331662,"rho":0.96738,"rel_error":1e-06},{"lam":0.12,"learned":0.34641,"truth":0.34641,"rho":0.96595,"rel_error":0.0},{"lam":0.13,"learned":0.360555,"truth":0.360555,"rho":0.96459,"rel_error":0.0},{"lam":0.14,"learned":0.374166,"truth":0.374166,"rho":0.96327,"rel_error":0.0},{"lam":0.15,"learned":0.387298,"truth":0.387298,"rho":0.96201,"rel_error":0.0},{"lam":0.16,"learned":0.4,"truth":0.4,"rho":0.96079,"rel_error":0.0},{"lam":0.17,"learned":0.41231,"truth":0.412311,"rho":0.95961,"rel_error":0.0},{"lam":0.18,"learned":0.424264,"truth":0.424264,"rho":0.95846,"rel_error":0.0},{"lam":0.19,"learned":0.43589,"truth":0.43589,"rho":0.95735,"rel_error":0.0},{"lam":0.2,"learned":0.447214,"truth":0.447214,"rho":0.95626,"rel_error":0.0},{"lam":0.21,"learned":0.458258,"truth":0.458258,"rho":0.95521,"rel_error":0.0},{"lam":0.22,"learned":0.469042,"truth":0.469042,"rho":0.95418,"rel_error":1e-06},{"lam":0.23,"learned":0.479583,"truth":0.479583,"rho":0.95317,"rel_error":1e-06},{"lam":0.24,"learned":0.489898,"truth":0.489898,"rho":0.95219,"rel_error":1e-06},{"lam":0.25,"learned":0.5,"truth":0.5,"rho":0.95123,"rel_error":1e-06},{"lam":0.26,"learned":0.509902,"truth":0.509902,"rho":0.95029,"rel_error":1e-06},{"lam":0.27,"learned":0.519616,"truth":0.519615,"rho":0.94937,"rel_error":1e-06},{"lam":0.28,"learned":0.529151,"truth":0.52915,"rho":0.94846,"rel_error":1e-06},{"lam":0.29,"learned":0.538517,"truth":0.538516,"rho":0.94757,"rel_error":1e-06},{"lam":0.3,"learned":0.547723,"truth":0.547723,"rho":0.9467,"rel_error":1e-06},{"lam":0.31,"learned":0.556777,"truth":0.556776,"rho":0.94584,"rel_error":1e-06},{"lam":0.32,"learned":0.565686,"truth":0.565685,"rho":0.945,"rel_error":1e-06},{"lam":0.33,"learned":0.574457,"truth":0.574456,"rho":0.94417,"rel_error":1e-06},{"lam":0.34,"learned":0.583095,"truth":0.583095,"rho":0.94336,"rel_error":0.0},{"lam":0.35,"learned":0.591608,"truth":0.591608,"rho":0.94255,"rel_error":0.0},{"lam":0.36,"learned":0.6,"truth":0.6,"rho":0.94176,"rel_error":0.0},{"lam":0.37,"learned":0.608276,"truth":0.608276,"rho":0.94099,"rel_error":0.0},{"lam":0.38,"learned":0.616441,"truth":0.616441,"rho":0.94022,"rel_error":0.0},{"lam":0.39,"learned":0.6245,"truth":0.6245,"rho":0.93946,"rel_error":0.0},{"lam":0.4,"learned":0.632456,"truth":0.632456,"rho":0.93871,"rel_error":0.0},{"lam":0.41,"learned":0.640312,"truth":0.640312,"rho":0.93798,"rel_error":0.0},{"lam":0.42,"learned":0.648074,"truth":0.648074,"rho":0.93725,"rel_error":0.0},{"lam":0.43,"learned":0.655744,"truth":0.655744,"rho":0.93653,"rel_error":0.0},{"lam":0.44,"learned":0.663325,"truth":0.663325,"rho":0.93582,"rel_error":0.0},{"lam":0.45,"learned":0.67082,"truth":0.67082,"rho":0.93512,"rel_error":0.0},{"lam":0.46,"learned":0.678233,"truth":0.678233,"rho":0.93443,"rel_error":0.0},{"lam":0.47,"learned":0.685566,"truth":0.685565,"rho":0.93374,"rel_error":0.0},{"lam":0.48,"learned":0.69282,"truth":0.69282,"rho":0.93306,"rel_error":0.0},{"lam":0.49,"learned":0.7,"truth":0.7,"rho":0.93239,"rel_error":0.0},{"lam":0.5,"learned":0.707107,"truth":0.707107,"rho":0.93173,"rel_error":0.0},{"lam":0.51,"learned":0.714143,"truth":0.714143,"rho":0.93108,"rel_error":0.0},{"lam":0.52,"learned":0.72111,"truth":0.72111,"rho":0.93043,"rel_error":0.0},{"lam":0.53,"learned":0.728011,"truth":0.728011,"rho":0.92979,"rel_error":0.0},{"lam":0.54,"learned":0.734847,"truth":0.734847,"rho":0.92915,"rel_error":0.0},{"lam":0.55,"learned":0.74162,"truth":0.74162,"rho":0.92852,"rel_error":0.0},{"lam":0.56,"learned":0.748332,"truth":0.748331,"rho":0.9279,"rel_error":0.0},{"lam":0.57,"learned":0.754984,"truth":0.754983,"rho":0.92728,"rel_error":0.0},{"lam":0.58,"learned":0.761578,"truth":0.761577,"rho":0.92667,"rel_error":0.0},{"lam":0.59,"learned":0.768115,"truth":0.768115,"rho":0.92606,"rel_error":0.0},{"lam":0.6,"learned":0.774597,"truth":0.774597,"rho":0.92546,"rel_error":0.0},{"lam":0.61,"learned":0.781025,"truth":0.781025,"rho":0.92487,"rel_error":0.0},{"lam":0.62,"learned":0.787401,"truth":0.787401,"rho":0.92428,"rel_error":0.0},{"lam":0.63,"learned":0.793726,"truth":0.793725,"rho":0.9237,"rel_error":0.0},{"lam":0.64,"learned":0.8,"truth":0.8,"rho":0.92312,"rel_error":0.0},{"lam":0.65,"learned":0.806226,"truth":0.806226,"rho":0.92254,"rel_error":0.0},{"lam":0.66,"learned":0.812404,"truth":0.812404,"rho":0.92197,"rel_error":0.0},{"lam":0.67,"learned":0.818535,"truth":0.818535,"rho":0.92141,"rel_error":0.0},{"lam":0.68,"learned":0.824621,"truth":0.824621,"rho":0.92085,"rel_error":0.0},{"lam":0.69,"learned":0.830662,"truth":0.830662,"rho":0.92029,"rel_error":0.0},{"lam":0.7,"learned":0.83666,"truth":0.83666,"rho":0.91974,"rel_error":0.0},{"lam":0.71,"learned":0.842615,"truth":0.842615,"rho":0.91919,"rel_error":0.0},{"lam":0.72,"learned":0.848528,"truth":0.848528,"rho":0.91865,"rel_error":0.0},{"lam":0.73,"learned":0.8544,"truth":0.8544,"rho":0.91811,"rel_error":0.0},{"lam":0.74,"learned":0.860232,"truth":0.860233,"rho":0.91757,"rel_error":0.0},{"lam":0.75,"learned":0.866025,"truth":0.866025,"rho":0.91704,"rel_error":0.0},{"lam":0.76,"learned":0.871779,"truth":0.87178,"rho":0.91651,"rel_error":0.0},{"lam":0.77,"learned":0.877496,"truth":0.877496,"rho":0.91599,"rel_error":0.0},{"lam":0.78,"learned":0.883176,"truth":0.883176,"rho":0.91547,"rel_error":0.0},{"lam":0.79,"learned":0.888819,"truth":0.888819,"rho":0.91495,"rel_error":0.0},{"lam":0.8,"learned":0.894427,"truth":0.894427,"rho":0.91444,"rel_error":0.0},{"lam":0.81,"learned":0.9,"truth":0.9,"rho":0.91393,"rel_error":0.0},{"lam":0.82,"learned":0.905538,"truth":0.905539,"rho":0.91343,"rel_error":0.0},{"lam":0.83,"learned":0.911043,"truth":0.911043,"rho":0.91292,"rel_error":0.0},{"lam":0.84,"learned":0.916515,"truth":0.916515,"rho":0.91242,"rel_error":0.0},{"lam":0.85,"learned":0.921954,"truth":0.921954,"rho":0.91193,"rel_error":0.0},{"lam":0.86,"learned":0.927362,"truth":0.927362,"rho":0.91143,"rel_error":0.0},{"lam":0.87,"learned":0.932738,"truth":0.932738,"rho":0.91094,"rel_error":0.0},{"lam":0.88,"learned":0.938083,"truth":0.938083,"rho":0.91046,"rel_error":0.0},{"lam":0.89,"learned":0.943398,"truth":0.943398,"rho":0.90997,"rel_error":0.0},{"lam":0.9,"learned":0.948683,"truth":0.948683,"rho":0.90949,"rel_error":0.0},{"lam":0.91,"learned":0.953939,"truth":0.953939,"rho":0.90902,"rel_error":0.0},{"lam":0.92,"learned":0.959166,"truth":0.959166,"rho":0.90854,"rel_error":0.0},{"lam":0.93,"learned":0.964365,"truth":0.964365,"rho":0.90807,"rel_error":0.0},{"lam":0.94,"learned":0.969536,"truth":0.969536,"rho":0.9076,"rel_error":0.0},{"lam":0.95,"learned":0.974679,"truth":0.974679,"rho":0.90713,"rel_error":0.0},{"lam":0.96,"learned":0.979796,"truth":0.979796,"rho":0.90667,"rel_error":0.0},{"lam":0.97,"learned":0.984886,"truth":0.984886,"rho":0.90621,"rel_error":0.0},{"lam":0.98,"learned":0.989949,"truth":0.989949,"rho":0.90575,"rel_error":0.0},{"lam":0.99,"learned":0.994987,"truth":0.994987,"rho":0.90529,"rel_error":0.0},{"lam":1.0,"learned":0.999999,"truth":1.0,"rho":0.90484,"rel_error":1e-06}],"max_rel_error":2e-06,"median_rel_error":0.0,"traces":{"0.2":[1.0,0.5922360722956934,0.46417917721720114,0.4475101818614944,0.4472137858800442,0.44721369164329017,0.44721369164329017,0.44721369164329017],"0.5":[1.0,0.7469889116506032,0.7080989051210186,0.7071075996749531,0.7071069516503088,0.7071069516503088,0.7071069516503088],"0.9":[1.0,0.949880983800678,0.9486841397373281,0.9486834526205167,0.9486834526205167,0.9486834526205167]}};
+
+const W = 640, H = 360, PAD = {l: 52, r: 14, t: 14, b: 38};
+const rows = DATA.rows;
+const x = lam => PAD.l + (lam - 0.1) / 0.9 * (W - PAD.l - PAD.r);
+const y = u => H - PAD.b - (u / 1.05) * (H - PAD.t - PAD.b);
+
+function axes(ctx, w, h, pad, ymax, ylabel) {
+  ctx.clearRect(0, 0, w, h);
+  ctx.strokeStyle = "#d9dee5"; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, h - pad.b);
+  ctx.lineTo(w - pad.r, h - pad.b); ctx.stroke();
+  ctx.fillStyle = "#5b6673"; ctx.font = "11px -apple-system,Segoe UI,Arial";
+  ctx.textAlign = "center";
+  for (const t of [0.1, 0.3, 0.5, 0.7, 0.9, 1.0]) {
+    const px = pad.l + (t - 0.1) / 0.9 * (w - pad.l - pad.r);
+    ctx.fillText(t.toFixed(1), px, h - pad.b + 15);
+  }
+  ctx.textAlign = "right";
+  for (let v = 0; v <= ymax + 1e-9; v += ymax / 4) {
+    const py = h - pad.b - (v / ymax) * (h - pad.t - pad.b);
+    ctx.fillText(v.toFixed(1), pad.l - 8, py + 4);
+    ctx.strokeStyle = "#eef1f5"; ctx.beginPath(); ctx.moveTo(pad.l, py);
+    ctx.lineTo(w - pad.r, py); ctx.stroke();
+  }
+  ctx.save(); ctx.translate(14, (h + pad.t - pad.b) / 2); ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = "center"; ctx.fillText(ylabel, 0, 0); ctx.restore();
+}
+
+function draw() {
+  const c = document.getElementById("plot"), ctx = c.getContext("2d");
+  axes(ctx, W, H, PAD, 1.05, "u*");
+  ctx.strokeStyle = "#1f6feb"; ctx.lineWidth = 2; ctx.beginPath();
+  rows.forEach((r, i) => { const px = x(r.lam), py = y(r.truth);
+    i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
+  ctx.stroke();
+  ctx.fillStyle = "#d1495b";
+  rows.forEach(r => { if (r.learned === null) return;
+    ctx.beginPath(); ctx.arc(x(r.lam), y(r.learned), 2.2, 0, 7); ctx.fill(); });
+
+  const sel = +document.getElementById("lam").value;
+  const near = rows.reduce((a, b) => Math.abs(b.lam - sel) < Math.abs(a.lam - sel) ? b : a);
+  document.getElementById("lamval").textContent = sel.toFixed(2);
+  document.getElementById("u_learned").textContent = near.learned === null ? "—" : near.learned.toFixed(3);
+  document.getElementById("err").textContent = near.rel_error === null ? "—" : (100 * near.rel_error).toFixed(2) + "%";
+  document.getElementById("rho").textContent = near.rho === null ? "—" : near.rho.toFixed(3);
+  const ok = near.rel_error !== null && near.rel_error < 0.05;
+  const v = document.getElementById("verdict");
+  v.innerHTML = ok ? '<span class="badge">within 5% of the analytic fixed point</span>'
+                   : '<span class="badge bad">outside the 5% tolerance</span>';
+  ctx.strokeStyle = "#9aa4b1"; ctx.setLineDash([4, 4]);
+  ctx.beginPath(); ctx.moveTo(x(near.lam), PAD.t); ctx.lineTo(x(near.lam), H - PAD.b); ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function drawRho() {
+  const c = document.getElementById("rho_plot"), ctx = c.getContext("2d");
+  const w = 420, h = 220, pad = {l: 42, r: 12, t: 12, b: 30};
+  const max = Math.max(1.2, ...rows.map(r => r.rho || 0));
+  axes(ctx, w, h, pad, max, "ρ");
+  ctx.strokeStyle = "#1f6feb"; ctx.lineWidth = 2; ctx.beginPath();
+  rows.forEach((r, i) => { if (r.rho === null) return;
+    const px = pad.l + (r.lam - 0.1) / 0.9 * (w - pad.l - pad.r);
+    const py = h - pad.b - (r.rho / max) * (h - pad.t - pad.b);
+    i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
+  ctx.stroke();
+  const py = h - pad.b - (1 / max) * (h - pad.t - pad.b);
+  ctx.strokeStyle = "#d1495b"; ctx.setLineDash([5, 4]);
+  ctx.beginPath(); ctx.moveTo(pad.l, py); ctx.lineTo(w - pad.r, py); ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+let timer = null;
+function drawTrace() {
+  const sel = +document.getElementById("lam").value;
+  const key = Object.keys(DATA.traces).reduce((a, b) =>
+    Math.abs(+b - sel) < Math.abs(+a - sel) ? b : a);
+  document.getElementById("trace_lam").textContent = (+key).toFixed(2);
+  const pts = DATA.traces[key];
+  const svg = document.getElementById("trace");
+  const w = svg.clientWidth || 380, h = 110;
+  const ux = i => 18 + (i / Math.max(1, pts.length - 1)) * (w - 36);
+  const uy = v => h - 16 - (v / 1.05) * (h - 28);
+  svg.innerHTML = pts.map((v, i) =>
+    `<circle cx="${ux(i)}" cy="${uy(v)}" r="3.2" fill="#1f6feb" opacity="${0.35 + 0.65 * i / pts.length}"/>`
+  ).join("") + `<polyline fill="none" stroke="#1f6feb" stroke-width="1.2"
+     points="${pts.map((v, i) => `${ux(i)},${uy(v)}`).join(" ")}"/>`;
+}
+
+document.getElementById("lam").addEventListener("input", draw);
+document.getElementById("replay").addEventListener("click", () => {
+  const svg = document.getElementById("trace");
+  const pts = svg.querySelectorAll("circle");
+  if (timer) clearInterval(timer);
+  pts.forEach(p => p.style.opacity = 0.05);
+  let i = 0;
+  timer = setInterval(() => {
+    if (i >= pts.length) { clearInterval(timer); timer = null; return; }
+    pts[i].style.opacity = 1; i++;
+  }, 220);
+});
+draw(); drawRho(); drawTrace();
+window.addEventListener("resize", () => { drawRho(); drawTrace(); });
+</script>
+</body></html>

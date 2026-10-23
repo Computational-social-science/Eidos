@@ -328,6 +328,11 @@ def render_strip() -> str:
         out.append(f'<span class="contract {cls}">{fmt} <b>{size}</b></span>')
     verdict = "ok" if data.get("ok") else "miss"
     out.append(f'<span class="contract {verdict}">chain <b>{"passes" if data.get("ok") else "fails"}</b></span>')
+    stamp = data.get("generated", "")[:16].replace("T", " ")
+    if stamp:
+        # The evidence is from one machine at one time; say so instead of implying it is
+        # continuously verified. CI runs this check without a LaTeX install, so it skips.
+        out.append(f'<span class="contract">checked <b>{stamp}</b> on this host</span>')
     return "".join(out)
 
 

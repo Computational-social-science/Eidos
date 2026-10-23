@@ -11,9 +11,9 @@ and re-checked by `--check` in CI; none is typed by hand.
 | coverage of `framework/` | **73%**, no-regression by >1 point | ✅ |
 | chain audit | **11 chains: 10 PASS, 1 SKIP, 0 FAIL/ERROR** | ✅ |
 | Gate S on the reference fixture | PASS (valid register) and FAIL (mutated copy) | ✅ |
-| Gate S on Eidos itself | **PASS — 8 objections, 0 open** (two adopters) | ✅ |
+| Gate S on Eidos itself | **FAIL — 1 open objection** (one adopter: `lean_nhb`) | ⚠️ honest |
 | CI (GitHub Actions) | test job 3.11 + 3.12 green; audit job green | ✅ |
-| adopters | `keystroke-observatory` (Python, manuscript) and `lean_nhb` (Lean, no pytest) | ✅ |
+| adopters | `lean_nhb` (reference consumer: kernel-checked claims) | ⚠️ one |
 | external contracts | Quarto 1.10.19 (`tools/quarto`, via `QUARTO_BIN`), DVC, MLflow, decision service, BootLoops | ✅ |
 | coupling | 0 import cycles, 0 absolute-path literals | ✅ |
 

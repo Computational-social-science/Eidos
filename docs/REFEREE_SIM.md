@@ -60,14 +60,12 @@ and an error on a developer machine; `test_missing_project_root_raises_locally_b
 pins both directions.
 
 ## O8. One adopter is not evidence of generality
-`[RESOLVED]` **C**
+`[UNRESOLVED]` **C**
 
-A second adopter is registered: `projects/lean_nhb` points at a Lean 4 library with no
-Python, no pytest and no manuscript. `python -m framework.project check lean_nhb` returns
-PASS (exit 0, 1.43 s) by mapping `lake build`'s exit code, with no special-casing for the
-toolchain. The interface held without modification, which is what generality has to mean
-here; a project that needed the framework changed would have falsified it.
+The reference consumer is now `lean_nhb`, a Lean library whose theorems the kernel checks.
+The empirical project that previously counted as a second adopter has been withdrawn as
+evidence by policy: an open, unvalidated study cannot test whether a framework is rigorous.
+That leaves one adopter, so generality is once again unmeasured. The count went up when the
+evidence went away, which is the behaviour the gate is for.
 
----
-
-**Counts**: 8 objections, 8 resolved, 0 unresolved.
+**Counts**: 8 objections, 7 resolved, 1 unresolved (O8).

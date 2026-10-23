@@ -1,6 +1,6 @@
 # Eidos — Global Reusable Research Pipeline Framework
 
-**Gate S self-audit: PASS** — 8 objections, 0 open, two adopters (`keystroke-observatory`, `lean_nhb`). Record: `docs/SELF_AUDIT.json`.
+**Gate S self-audit: FAIL — 1 open objection** (one adopter). The reference consumer is `lean_nhb`; the empirical project is not used as evidence. Record: `docs/SELF_AUDIT.json`.
 
 **Version 4.0** · Quarto + BootLoops + complementary quality gates
 Local-first · model-agnostic · project-agnostic

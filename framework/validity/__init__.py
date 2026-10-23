@@ -148,9 +148,13 @@ class ScientificValidityGate:
             raw = self.manuscript_path.read_text(encoding="utf-8", errors="ignore")
         except OSError:
             return ""
-        # Entities first: a span copied from the rendered page ("a&nbsp;misspelling")
-        # must match the prose a reader sees, not the source encoding.
-        text = _html.unescape(_TAG.sub(" ", raw))
+        # HTML only: in Lean or Markdown a "<" is an operator, and stripping "tags"
+        # from source deleted whole expressions ("h : a <= b" vanished), so a theorem
+        # span could never match its own file.
+        if self.document_path.suffix.lower() in (".html", ".htm"):
+            text = _html.unescape(_TAG.sub(" ", raw))
+        else:
+            text = raw
         return re.sub(r"\s+", " ", text)
 
     def _evidence(self, spec: Any, claim_id: str, label: str) -> List[Finding]:

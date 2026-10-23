@@ -12,6 +12,10 @@ root: ../../../lean-nhb
 gate_command: ["lake", "build"]
 test_command: ["lake", "build"]
 
+# Gate S reads these two: the claim register and the deliverable the claims must appear in.
+validity_register: analysis/CLAIMS.yaml
+validity_document: NHB/PhaseI/Core.lean
+
 notes: |
   A Lean 4 formalisation repository. `lake build` is both the gate and the test: if the
   library does not compile, no theorem in it exists. The framework must map its exit code

@@ -62,11 +62,27 @@ def registry() -> list[dict]:
         name = re.search(r"^name:\s*(\S+)", text, re.M)
         root = re.search(r"^root:\s*(\S+)", text, re.M)
         gate = re.search(r"^gate_command:\s*(\[.*\])", text, re.M)
+        register = re.search(r"^validity_register:\s*(\S+)", text, re.M)
+        document = re.search(r"^validity_document:\s*(\S+)", text, re.M)
         root_path = (spec.parent / (root.group(1) if root else "")).resolve()
-        rows.append({"name": name.group(1) if name else spec.parent.name,
-                     "root": root.group(1) if root else "?",
-                     "gate": gate.group(1) if gate else "?",
-                     "available": root_path.is_dir()})
+        row = {"name": name.group(1) if name else spec.parent.name,
+               "root": root.group(1) if root else "?",
+               "gate": gate.group(1) if gate else "?",
+               "available": root_path.is_dir(),
+               "register": register.group(1) if register else None,
+               "document": document.group(1) if document else None,
+               "gate_s": "—"}
+        if row["available"] and row["register"] and row["document"]:
+            run = subprocess.run([sys.executable, "tools/audit_validity.py",
+                                  "--project", str(root_path),
+                                  "--register", row["register"],
+                                  "--document", row["document"], "--json"],
+                                 cwd=ROOT, capture_output=True, text=True, timeout=600)
+            try:
+                row["gate_s"] = json.loads(run.stdout).get("status", "ERROR")
+            except json.JSONDecodeError:
+                row["gate_s"] = "ERROR"
+        rows.append(row)
     return rows
 
 
@@ -277,10 +293,13 @@ def chain_rows(rows: list[dict]) -> str:
 
 
 def adopt_rows(rows: list[dict]) -> str:
+    def gs(value: str) -> str:
+        return pill(value) if value in PILL else f"<span class='detail'>{value}</span>"
     return "".join(
         f"<tr><td class='mono'>{html.escape(p['name'])}</td><td>{html.escape(p['root'])}</td>"
         f"<td><code>{html.escape(p['gate'])}</code></td>"
-        f"<td>{'present' if p['available'] else 'absent'}</td></tr>" for p in rows)
+        f"<td>{'present' if p['available'] else 'absent'}</td>"
+        f"<td>{gs(p.get('gate_s', '—'))}</td></tr>" for p in rows)
 
 
 def lean_rows(rows: list[dict]) -> str:
@@ -555,7 +574,8 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono
     <table>
       <caption>A pointer, not a copy: the framework discovers, executes and reports one
         verdict; each project keeps its gate logic and tests.</caption>
-      <thead><tr><th>project</th><th>root</th><th>registered gate</th><th>checkout</th></tr></thead>
+      <thead><tr><th>project</th><th>root</th><th>registered gate</th><th>checkout</th>
+        <th>Gate S</th></tr></thead>
       <tbody>__ADOPT__</tbody>
     </table>
   </div>

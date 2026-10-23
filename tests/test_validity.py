@@ -266,3 +266,20 @@ def test_lean_audit_missing_project_fails(tmp_path: Path) -> None:
     ok, messages = LeanAudit(tmp_path / "nope", "Demo.thm", module="Demo",
                              lake_cmd=["x"]).run()
     assert not ok and any("does not exist" in m for m in messages)
+
+
+def test_non_html_document_is_not_tag_stripped(tmp_path: Path):
+    """A Lean or Markdown deliverable contains "<" as an operator; stripping "tags" from
+    it deleted whole expressions and no theorem span could ever match."""
+    write_project(tmp_path)
+    source = tmp_path / "docs" / "Core.lean"
+    source.write_text("theorem mono (h : a <= b) : P := by\n  exact h\n", encoding="utf-8")
+    gate = ScientificValidityGate(tmp_path, document=source,
+                                  register=tmp_path / "analysis" / "CLAIMS.yaml")
+    # the span below lives in the .lean file and would be eaten by tag stripping
+    register = tmp_path / "analysis" / "CLAIMS.yaml"
+    data = yaml.safe_load(register.read_text(encoding="utf-8"))
+    data["claims"][0]["span"] = "theorem mono (h : a <= b) : P := by"
+    register.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+    result = gate.run()
+    assert not any("does not appear" in f for f in result.details["findings"])

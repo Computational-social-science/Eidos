@@ -214,7 +214,7 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.5px var(--mono
       <caption>11 chains: 10 pass, 1 skip, 0 fail. A skip is named,
         never counted as a pass.</caption>
       <thead><tr><th>chain</th><th>verdict</th><th>detail</th></tr></thead>
-      <tbody><tr><td class='mono'>registry</td><td><span class="pill pass">PASS</span></td><td class='detail'>2 project(s): keystroke_observatory, lean_nhb</td></tr><tr><td class='mono'>gates</td><td><span class="pill pass">PASS</span></td><td class='detail'>acceptance PASS+FAIL both correct; missing tool -&gt; SKIP</td></tr><tr><td class='mono'>gates+project checker</td><td><span class="pill skip">SKIP</span></td><td class='detail'>no --project-checker given</td></tr><tr><td class='mono'>diagnosis</td><td><span class="pill pass">PASS</span></td><td class='detail'>1 diagnosis naming the metric: Result metric below acceptance threshold: acc</td></tr><tr><td class='mono'>tracking</td><td><span class="pill pass">PASS</span></td><td class='detail'>mlflow run 095f3302; dvc_available=True</td></tr><tr><td class='mono'>quarto</td><td><span class="pill pass">PASS</span></td><td class='detail'>minimal document; quarto=quarto.exe, render ok=True</td></tr><tr><td class='mono'>validity (Gate S)</td><td><span class="pill pass">PASS</span></td><td class='detail'>valid register PASS; overstated count FAIL</td></tr><tr><td class='mono'>surrogate (local NO)</td><td><span class="pill pass">PASS</span></td><td class='detail'>19/19 fixed points within 5%, 19 stable; shuffled-label control caught</td></tr><tr><td class='mono'>lab (NO demo)</td><td><span class="pill pass">PASS</span></td><td class='detail'>91 λ points, max relative error 0.0002%</td></tr><tr><td class='mono'>decision</td><td><span class="pill pass">PASS</span></td><td class='detail'>known answers correct; median 168 ms for 2 questions (n=3, wall clock)</td></tr><tr><td class='mono'>inference</td><td><span class="pill pass">PASS</span></td><td class='detail'>12 GB budget enforced; 4 judgement stages -&gt; StartLux; generators unchanged; evaluation -&gt; 2 model(s)</td></tr></tbody>
+      <tbody><tr><td class='mono'>registry</td><td><span class="pill pass">PASS</span></td><td class='detail'>2 project(s): keystroke_observatory, lean_nhb</td></tr><tr><td class='mono'>gates</td><td><span class="pill pass">PASS</span></td><td class='detail'>acceptance PASS+FAIL both correct; missing tool -&gt; SKIP</td></tr><tr><td class='mono'>gates+project checker</td><td><span class="pill skip">SKIP</span></td><td class='detail'>no --project-checker given</td></tr><tr><td class='mono'>diagnosis</td><td><span class="pill pass">PASS</span></td><td class='detail'>1 diagnosis naming the metric: Result metric below acceptance threshold: acc</td></tr><tr><td class='mono'>tracking</td><td><span class="pill pass">PASS</span></td><td class='detail'>mlflow run …; dvc_available=True</td></tr><tr><td class='mono'>quarto</td><td><span class="pill pass">PASS</span></td><td class='detail'>minimal document; quarto=quarto.exe, render ok=True</td></tr><tr><td class='mono'>validity (Gate S)</td><td><span class="pill pass">PASS</span></td><td class='detail'>valid register PASS; overstated count FAIL</td></tr><tr><td class='mono'>surrogate (local NO)</td><td><span class="pill pass">PASS</span></td><td class='detail'>19/19 fixed points within 5%, …table; shuffled-label control caught</td></tr><tr><td class='mono'>lab (NO demo)</td><td><span class="pill pass">PASS</span></td><td class='detail'>91 λ points, max relative error 0.0002%</td></tr><tr><td class='mono'>decision</td><td><span class="pill pass">PASS</span></td><td class='detail'>known answers correct; median … for 2 questions (n=3, wall clock)</td></tr><tr><td class='mono'>inference</td><td><span class="pill pass">PASS</span></td><td class='detail'>12 GB budget enforced; 4 judgement stages -&gt; StartLux; generators unchanged; evaluation -&gt; 2 model(s)</td></tr></tbody>
     </table>
   </div>
 </section>
@@ -247,21 +247,25 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.5px var(--mono
     </figure>
     <div>
       <figure class="card" style="margin:0 0 18px">
-        <h3>Where the operator stops working</h3>
+        <h3>Outside its training data</h3>
         <svg viewBox="0 0 660 300" width="100%" class="fig" role="img" aria-label="Fixed points inside and outside the training interval"><rect x="382.9" y="16" width="263.1" height="246" fill="#f7e6e8"/><text x="514.4" y="30" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10.5" fill="#8c1d2c">outside the training interval</text><line x1="54" y1="262" x2="646" y2="262" stroke="#dde2e8"/><line x1="54" y1="16" x2="54" y2="262" stroke="#dde2e8"/><polyline points="54.0,187.9 60.6,184.3 67.2,180.8 73.7,177.5 80.3,174.3 86.9,171.3 93.5,168.3 100.0,165.4 106.6,162.6 113.2,159.9 119.8,157.2 126.4,154.6 132.9,152.1 139.5,149.6 146.1,147.2 152.7,144.9 159.2,142.5 165.8,140.3 172.4,138.0 179.0,135.8 185.6,133.7 192.1,131.6 198.7,129.5 205.3,127.4 211.9,125.4 218.4,123.4 225.0,121.4 231.6,119.5 238.2,117.6 244.8,115.7 251.3,113.8 257.9,112.0 264.5,110.2 271.1,108.4 277.6,106.6 284.2,104.8 290.8,103.1 297.4,101.4 304.0,99.7 310.5,98.0 317.1,96.3 323.7,94.7 330.3,93.1 336.8,91.4 343.4,89.8 350.0,88.2 356.6,86.7 363.2,85.1 369.7,83.6 376.3,82.0 382.9,80.5 389.5,79.0 396.0,77.5 402.6,76.0 409.2,74.6 415.8,73.1 422.4,71.7 428.9,70.2 435.5,68.8 442.1,67.4 448.7,66.0 455.2,64.6 461.8,63.2 468.4,61.8 475.0,60.5 481.6,59.1 488.1,57.8 494.7,56.4 501.3,55.1 507.9,53.8 514.4,52.4 521.0,51.1 527.6,49.8 534.2,48.6 540.8,47.3 547.3,46.0 553.9,44.7 560.5,43.5 567.1,42.2 573.6,41.0 580.2,39.7 586.8,38.5 593.4,37.3 600.0,36.1 606.5,34.9 613.1,33.6 619.7,32.4 626.3,31.3 632.8,30.1 639.4,28.9 646.0,27.7" fill="none" stroke="#1f4e9c" stroke-width="2"/><polyline points="54.0,187.9 60.6,184.3 67.2,180.8 73.7,177.5 80.3,174.3 86.9,171.3 93.5,168.3 100.0,165.4 106.6,162.6 113.2,159.9 119.8,157.2 126.4,154.6 132.9,152.1 139.5,149.6 146.1,147.2 152.7,144.9 159.2,142.5 165.8,140.3 172.4,138.0 179.0,135.8 185.6,133.7 192.1,131.6 198.7,129.5 205.3,127.4 211.9,125.4 218.4,123.4 225.0,121.4 231.6,119.5 238.2,117.6 244.8,115.7 251.3,113.8 257.9,112.0 264.5,110.2 271.1,108.4 277.6,106.6 284.2,104.8 290.8,103.1 297.4,101.4 304.0,99.7 310.5,98.0 317.1,96.3 323.7,94.7 330.3,93.1 336.8,91.4 343.4,89.8 350.0,88.2 356.6,86.7 363.2,85.1 369.7,83.6 376.3,82.0 382.9,80.5 389.5,79.0 396.0,77.5 402.6,76.0 409.2,74.6 415.8,73.1 422.4,71.7 428.9,70.2 435.5,68.8 442.1,67.4 448.7,66.0 455.2,64.6 461.8,63.2 468.4,61.8 475.0,60.5 481.6,59.1 488.1,57.8 494.7,56.4 501.3,55.1 507.9,53.8 514.4,52.5 521.0,51.1 527.6,49.8 534.2,48.6 540.8,47.3 547.3,46.0 553.9,44.7 560.5,43.5 567.1,42.2 573.6,41.0 580.2,39.7 586.8,38.5 593.4,37.3 600.0,36.1 606.5,34.9 613.1,33.7 619.7,32.5 626.3,31.3 632.8,30.1 639.4,28.9 646.0,27.7" fill="none" stroke="#a8323f" stroke-width="1.6"/><text x="119.8" y="278" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">0.2</text><text x="251.3" y="278" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">0.4</text><text x="382.9" y="278" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">0.6</text><text x="514.4" y="278" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">0.8</text><text x="646.0" y="278" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">1.0</text><text x="46" y="266.0" text-anchor="end" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">0.0</text><text x="46" y="148.9" text-anchor="end" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">0.5</text><text x="46" y="31.7" text-anchor="end" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">1.0</text></svg>
-        <figcaption>Same experiment, fit restricted to λ ≤ 0.6. Inside the shaded boundary
-          the operator has seen data; outside it has not. Max relative error
-          <b>0.0002%</b> inside, <b>0.00%</b> outside — the number a demo usually
-          omits.</figcaption>
+        <figcaption>Same experiment with the fit restricted to λ ≤ 0.6 (shaded: outside the
+          data). Max relative error <b>0.0002%</b> inside, <b>0.00%</b> outside. The
+          operator does <i>not</i> fail here: the map is smooth and one-dimensional, and
+          training on λ ≤ 0.2 still holds 0.31%. That is a property of this system, not a
+          licence to extrapolate — near a fold the same procedure is expected to break, and
+          this panel would then show it.</figcaption>
       </figure>
       <div class="card">
         <h3>What this demonstrates — and what it does not</h3>
         <p><b>Does.</b> A short-time operator fitted on data supports system-level
         computation: fixed points, their stability, their parameter dependence — without
         writing the governing equation down.</p>
-        <p class="note"><b>Does not.</b> It is not a PDE solver, it makes no claim outside the
-        training interval, and applying it to token sequences would be a category error:
-        those are not C¹ function spaces.</p>
+        <p class="note"><b>Does not.</b> It is not a PDE solver, and no claim is made outside
+        the training interval merely because extrapolation happened to work: the measured
+        accuracy beyond λ = 0.6 reflects a smooth one-dimensional map, not a general result.
+        Applying the machinery to token sequences would be a category error — those are not
+        C¹ function spaces.</p>
       </div>
     </div>
   </div>
@@ -327,7 +331,7 @@ python tools/audit_validity.py --project ../keystroke-observatory</pre>
 </section>
 
 <footer>
-  Eidos 4.0.0 · MIT · commit <span class="mono">47c937d</span> · built
+  Eidos 4.0.0 · MIT · commit <span class="mono">f072b3b</span> · built
   2026-10-23 by <code>tools/build_site.py</code>.
   Numbers come from <a href="../docs/SELF_AUDIT.json">SELF_AUDIT.json</a>,
   <a href="../docs/CHAIN_AUDIT.md">CHAIN_AUDIT.md</a>, the project registry, and one

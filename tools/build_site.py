@@ -232,10 +232,23 @@ def extrapolation_svg(extra: dict) -> str:
     return "".join(parts)
 
 
+def _stable(detail: str) -> str:
+    """Strip the parts of a chain detail that change on every run.
+
+    MLflow run ids and measured latencies differ between two invocations, and a page that
+    embeds them can never be checked for staleness. The stabilised text keeps the finding
+    and drops the incidentals.
+    """
+    text = re.sub(r"\b[0-9a-f]{6,}\b", "…", str(detail))
+    text = re.sub(r"\d+(?:\.\d+)?\s?(?:ms|s)", "…", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text[:110]
+
+
 def chain_rows(rows: list[dict]) -> str:
     return "".join(
         f"<tr><td class='mono'>{html.escape(r['chain'])}</td><td>{pill(r['status'])}</td>"
-        f"<td class='detail'>{html.escape(str(r['detail'])[:110])}</td></tr>" for r in rows)
+        f"<td class='detail'>{html.escape(_stable(r['detail']))}</td></tr>" for r in rows)
 
 
 def adopt_rows(rows: list[dict]) -> str:
@@ -510,21 +523,25 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.5px var(--mono
     </figure>
     <div>
       <figure class="card" style="margin:0 0 18px">
-        <h3>Where the operator stops working</h3>
+        <h3>Outside its training data</h3>
         __EXTRAP__
-        <figcaption>Same experiment, fit restricted to λ ≤ 0.6. Inside the shaded boundary
-          the operator has seen data; outside it has not. Max relative error
-          <b>__INMAX__</b> inside, <b>__OUTMAX__</b> outside — the number a demo usually
-          omits.</figcaption>
+        <figcaption>Same experiment with the fit restricted to λ ≤ 0.6 (shaded: outside the
+          data). Max relative error <b>__INMAX__</b> inside, <b>__OUTMAX__</b> outside. The
+          operator does <i>not</i> fail here: the map is smooth and one-dimensional, and
+          training on λ ≤ 0.2 still holds 0.31%. That is a property of this system, not a
+          licence to extrapolate — near a fold the same procedure is expected to break, and
+          this panel would then show it.</figcaption>
       </figure>
       <div class="card">
         <h3>What this demonstrates — and what it does not</h3>
         <p><b>Does.</b> A short-time operator fitted on data supports system-level
         computation: fixed points, their stability, their parameter dependence — without
         writing the governing equation down.</p>
-        <p class="note"><b>Does not.</b> It is not a PDE solver, it makes no claim outside the
-        training interval, and applying it to token sequences would be a category error:
-        those are not C¹ function spaces.</p>
+        <p class="note"><b>Does not.</b> It is not a PDE solver, and no claim is made outside
+        the training interval merely because extrapolation happened to work: the measured
+        accuracy beyond λ = 0.6 reflects a smooth one-dimensional map, not a general result.
+        Applying the machinery to token sequences would be a category error — those are not
+        C¹ function spaces.</p>
       </div>
     </div>
   </div>

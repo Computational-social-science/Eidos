@@ -225,17 +225,13 @@ def audit_surrogate():
                     f"{data['stable']} stable; shuffled-label control caught")
 
 
-@chain("lab (NO demo)", "numpy")
+@chain("demo (NO)", "numpy")
 def audit_lab():
     """The interactive lab must be backed by numbers that meet the same tolerance as the
     audit: a demo that drifts from the gate is worse than no demo."""
-    import importlib.util
+    from framework.surrogate.demo import build_demo
 
-    spec = importlib.util.spec_from_file_location("surrogate_lab",
-                                                  ROOT / "tools" / "surrogate_lab.py")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    data = module.build()
+    data = build_demo()
     if data["max_rel_error"] is None or data["max_rel_error"] >= 0.05:
         return "FAIL", f"lab max relative error {data['max_rel_error']}"
     return "PASS", (f"{len(data['rows'])} λ points, max relative error "

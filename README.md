@@ -241,12 +241,12 @@ Self-audit is also where the framework's own claims can fail. If the recorded ch
 and the register disagree, Gate S refuses the register -- the framework has no exemption
 from the rule it applies to projects.
 
-## Interactive lab
+## Demo
 
-`lab/lab.html` is a single self-contained page: drag λ and watch the learned fixed point
-sit on the analytic √λ, with the spectral radius and the Newton iterations updating. It is
-built by `tools/surrogate_lab.py` from the same operator the gate audits, and it embeds its
-data at build time, so it opens from disk with no server and no network.
+`site/index.html` carries the demo inline: three panels (fixed point against parameter,
+stability, Newton replay), a checkpoint table, and an out-of-sample panel. It is built by
+`tools/build_site.py` from `framework/surrogate/demo.py`, the same operator the gate
+audits, and it embeds its data, so it opens from disk with no server and no network.
 
 ## Delivery page
 

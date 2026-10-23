@@ -34,9 +34,11 @@ sys.path.insert(0, str(ROOT / "tools"))
 from framework.surrogate import (RandomFeatureOperator, fixed_point,  # noqa: E402
                                  spectral_radius)
 from audit_surrogate import training_pairs  # noqa: E402
-from surrogate_lab import build as lab_build  # noqa: E402
+from framework.surrogate.demo import build_demo  # noqa: E402
 
 OUT = ROOT / "site" / "index.html"
+VERSIONS = ROOT / "site" / "versions.json"
+MAX_VERSIONS = 50
 
 
 # --------------------------------------------------------------------------- data
@@ -267,7 +269,7 @@ def lean_rows(rows: list[dict]) -> str:
 
 
 def demo_payload() -> str:
-    lab = lab_build()
+    lab = build_demo()
     return json.dumps({"rows": [{"lam": round(r["lam"], 3), "learned": r["learned"],
                                  "truth": r["truth"], "rho": r["rho"]} for r in lab["rows"]],
                        "checkpoints": lab["checkpoints"], "traces": lab["traces"]},
@@ -634,7 +636,8 @@ python tools/audit_validity.py --project ../keystroke-observatory</pre>
 
 <footer>
   Eidos __VERSION__ · __LICENSE__ · commit <span class="mono">__COMMIT__</span> · built
-  __DATE__ by <code>tools/build_site.py</code>.
+  __DATE__ by <code>tools/build_site.py</code> · release history
+  <a href="versions.json">versions.json</a> (__NVERS__).
   Numbers from <a href="../docs/SELF_AUDIT.json">SELF_AUDIT.json</a>,
   <a href="../docs/CHAIN_AUDIT.md">CHAIN_AUDIT.md</a>, the project registry,
   <code>artifacts/decision_calibration_100.json</code>, and one extrapolation experiment
@@ -754,12 +757,47 @@ window.addEventListener("resize", () => { drawRho(); drawTrace(); });
 """
 
 
+
+def versions() -> list[dict]:
+    if not VERSIONS.is_file():
+        return []
+    try:
+        return json.loads(VERSIONS.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return []
+
+
+def record_release(data: dict) -> list[dict]:
+    """Append this build to the release history.
+
+    Only called with --release: a build on every save would make the history noise, and
+    an entry that changes on every run is not a release.
+    """
+    audit = data["audit"]
+    entry = {"version": data["meta"]["version"], "date": data["today"],
+             "commit": data["commit"],
+             "metrics": {"tests": audit.get("tests_collected"),
+                         "coverage": audit.get("coverage_total"),
+                         "chains": len(data["chains"]),
+                         "open_objections": data["referee"]["open"],
+                         "decision_ms": data["decision"]["latency_ms"]}}
+    history = versions()
+    if history and history[-1].get("commit") == entry["commit"]:
+        history[-1] = entry          # same commit rebuilt: replace, do not duplicate
+    else:
+        history.append(entry)
+    history = history[-MAX_VERSIONS:]
+    VERSIONS.parent.mkdir(parents=True, exist_ok=True)
+    VERSIONS.write_text(json.dumps(history, indent=2) + "\n", encoding="utf-8")
+    return history
+
+
 def render(data: dict) -> str:
     audit = data["audit"]
     rows = data["chains"]
     claims = len(yaml.safe_load((ROOT / "analysis" / "CLAIMS.yaml").read_text(encoding="utf-8"))["claims"])
     extra, dec = data["extra"], data["decision"]
-    lab = lab_build()
+    lab = build_demo()
     tokens = {
         "__VERSION__": data["meta"]["version"],
         "__LICENSE__": data["meta"]["license"],
@@ -792,6 +830,7 @@ def render(data: dict) -> str:
         "__NCLAIMS__": str(claims),
         "__DATE__": data["today"],
         "__COMMIT__": data["commit"],
+        "__NVERS__": str(data.get("versions", 0)),
     }
     page = PAGE
     for token, value in tokens.items():
@@ -802,9 +841,15 @@ def render(data: dict) -> str:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--release", action="store_true",
+                    help="append this build to site/versions.json")
     args = ap.parse_args(argv)
 
     data = collect()
+    if args.release:
+        data["versions"] = len(record_release(data))
+    else:
+        data["versions"] = len(versions())
     page = render(data)
     if args.check:
         if not OUT.is_file():

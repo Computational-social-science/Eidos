@@ -42,19 +42,18 @@ def _option(flag: str) -> str:
     return ""
 
 
+CHAINS: list[tuple[str, Callable, str]] = []
+
+
 def chain(name: str, requires: str = "") -> Callable:
+    """Register a chain; main() runs it after argparse has been read.
+
+    Running at import time (the earlier design) meant `--ci` was parsed after every
+    chain had already executed with STRICT_REGISTRY=True, so the flag could not change
+    any verdict -- which is why the CI audit job stayed red while passing locally.
+    """
     def deco(fn):
-        try:
-            status, detail = fn()
-        except ImportError as exc:
-            status, detail = "SKIP", f"optional dependency missing: {exc}"
-        except Exception as exc:  # noqa: BLE001 - a crash is the finding
-            status = "ERROR"
-            detail = f"{type(exc).__name__}: {exc}"
-            if "--verbose" in sys.argv:
-                traceback.print_exc()
-        RESULTS.append({"chain": name, "status": status, "detail": str(detail),
-                        "requires": requires})
+        CHAINS.append((name, fn, requires))
         return fn
     return deco
 
@@ -289,6 +288,19 @@ def main(argv: list[str] | None = None) -> int:
 
     global STRICT_REGISTRY
     STRICT_REGISTRY = not args.ci
+
+    for name, fn, requires in CHAINS:
+        try:
+            status, detail = fn()
+        except ImportError as exc:
+            status, detail = "SKIP", f"optional dependency missing: {exc}"
+        except Exception as exc:  # noqa: BLE001 - a crash is the finding
+            status = "ERROR"
+            detail = f"{type(exc).__name__}: {exc}"
+            if args.verbose:
+                traceback.print_exc()
+        RESULTS.append({"chain": name, "status": status, "detail": str(detail),
+                        "requires": requires})
 
     width = max(len(r["chain"]) for r in RESULTS) if RESULTS else 10
     if args.json:

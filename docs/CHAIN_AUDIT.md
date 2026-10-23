@@ -15,9 +15,10 @@ to a chain; it takes about 15 s.
 | quarto | render the project's actual manuscript through the bridge | **PASS** — 18-file manuscript, HTML render ok |
 | inference | the configured budget must reject what does not fit and admit what does | **PASS** — 4 GB refuses the 5 GB entry, 12 GB admits it |
 | validity (Gate S) | a valid register must PASS; the same register with an overstated objection count must FAIL | **PASS** — fixture PASS, mutated copy FAIL |
+| surrogate (local NO) | a learned short-time stepper must recover a planted fixed point; shuffled labels must break it | **PASS** — 19/19 within 5%, 19 stable; control caught |
 | decision | a known-answer probe through the operator, timed | **PASS** — p(17 prime)=0.963, 0.9 > 0.11; **median 182 ms** for 2 questions (n=3) |
 
-**9 chains: 7 PASS, 2 SKIP, 0 FAIL/ERROR** on this host (decision and the project
+**10 chains: 8 PASS, 2 SKIP, 0 FAIL/ERROR** on this host (decision and the project
 checker SKIP unless their service / flag is present).
 
 The Quarto row was run twice: once on a minimal probe, and once with

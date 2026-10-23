@@ -204,6 +204,27 @@ def audit_validity():
     return "PASS", "valid register PASS; overstated count FAIL"
 
 
+@chain("surrogate (local NO)", "numpy")
+def audit_surrogate():
+    """A learned short-time stepper must recover a planted fixed point, and fail when
+    the training labels are shuffled."""
+    import json as _json
+    import subprocess
+
+    tool = ROOT / "tools" / "audit_surrogate.py"
+    run = subprocess.run([sys.executable, str(tool), "--json"], cwd=ROOT,
+                         capture_output=True, text=True, timeout=300)
+    if run.returncode != 0:
+        return "FAIL", f"planted fixed point not recovered: {run.stderr[-200:]}"
+    data = _json.loads(run.stdout)
+    control = subprocess.run([sys.executable, str(tool), "--negative-test"], cwd=ROOT,
+                             capture_output=True, text=True, timeout=300)
+    if control.returncode != 0:
+        return "FAIL", "shuffled-label control was not caught"
+    return "PASS", (f"{data['within_5pct']}/{data['points']} fixed points within 5%, "
+                    f"{data['stable']} stable; shuffled-label control caught")
+
+
 @chain("decision", "StartLux service")
 def audit_decision():
     """A known-answer probe: typed decisions must be correct AND measured.

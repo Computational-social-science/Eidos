@@ -51,6 +51,10 @@ jobs:
           pip install -e ".[dev,tracking]"
       - name: Exercise every chain
         run: python tools/audit_chains.py --ci
+      - name: Local neural operator (planted fixed point + control)
+        run: |
+          python tools/audit_surrogate.py
+          python tools/audit_surrogate.py --negative-test
       - name: Gate S (scientific validity) on the reference fixture
         run: python tools/audit_validity.py --project tests/fixtures/valid_project
       - name: Coupling gate (no import cycles)

@@ -18,7 +18,10 @@ sys.path.insert(0, str(ROOT))
 import build_site  # noqa: E402
 
 DATA = {
-    "meta": {"version": "0.0.0-test"},
+    "meta": {"version": "0.0.0-test", "license": "MIT"},
+    "decision": {"latency_ms": 182, "accuracy": 1.0, "abstain_answerable": 0.0,
+                 "abstain_unanswerable": 1.0, "fisher_p": 2e-29,
+                 "tau_identified": False, "min_conf": 0.54},
     "audit": {"tests_collected": 1, "coverage_total": 2},
     "chains": [{"chain": "gates", "status": "PASS", "detail": "ok"},
                {"chain": "decision", "status": "SKIP", "detail": "no service"}],
@@ -50,7 +53,22 @@ def test_render_has_eight_sections_and_resolving_nav():
 
 def test_render_carries_captions_math_and_the_demo_data():
     page = build_site.render(DATA)
-    assert page.count("<caption") == page.count("<table") >= 4
+    assert page.count("<caption") == page.count("<table") >= 5
     assert page.count("<math") >= 3
-    assert "const ROWS = [" in page
+    assert "const DATA = {" in page
     assert "demo" in page.lower()
+
+
+def test_demo_is_self_contained():
+    """The page must not depend on another file for its core content."""
+    page = build_site.render(DATA)
+    assert "lab/lab.html" not in page
+    assert "iframe" not in page.lower()
+    assert page.count("<canvas") >= 2
+
+
+def test_page_states_the_whole_framework_not_only_gate_s():
+    page = build_site.render(DATA).lower()
+    for term in ("bootloops", "inspect", "deepeval", "promptfoo", "ragas", "startlux",
+                 "mlflow", "dvc", "quarto", "bootstrap_project.sh", "cc by-nc"):
+        assert term in page, f"missing positioning term: {term}"

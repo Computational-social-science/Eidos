@@ -1,10 +1,12 @@
-"""Build the Eidos delivery page: the front door of the project.
+"""Build the Eidos front door: positioning, pipeline, gates, live status, and the demo.
 
-Every number on the page is read at build time from an artefact -- the chain audit, the
-self-audit record, the project registry, the referee document, the Lean records, and one
-extrapolation experiment computed here. A page that asserts a number it did not compute is
-the failure mode this framework exists to catch, and the front door is the last place to
-make an exception.
+Eidos is the reusable skeleton a research project is instantiated into: one source, dual
+quality gates, a typed decision layer, provenance, and multi-format delivery. This page
+has to say that before it says anything about any single gate, and every number on it is
+read at build time from an artefact rather than typed.
+
+The demo is self-contained: three panels, a Newton replay and a checkpoint table, all
+inline. Nothing on this page links to another page for its core content.
 
     python tools/build_site.py            # writes site/index.html
     python tools/build_site.py --check    # rebuild and compare with the file on disk
@@ -23,6 +25,7 @@ import tomllib
 from pathlib import Path
 
 import numpy as np
+import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
@@ -38,11 +41,9 @@ OUT = ROOT / "site" / "index.html"
 
 # --------------------------------------------------------------------------- data
 def meta() -> dict:
-    data = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
-    project = data["project"]
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]
     return {"version": project.get("version", "?"),
-            "license": project.get("license", {}).get("text", "?"),
-            "description": project.get("description", "")}
+            "license": project.get("license", {}).get("text", "?")}
 
 
 def chains() -> list[dict]:
@@ -75,7 +76,6 @@ def referee() -> dict:
 
 
 def lean_runs() -> list[dict]:
-    """Read the two measured Lean runs from the audit record, not from memory."""
     text = (ROOT / "docs" / "CHAIN_AUDIT.md").read_text(encoding="utf-8")
     rows = []
     for line in text.splitlines():
@@ -85,18 +85,31 @@ def lean_runs() -> list[dict]:
         if len(cells) < 4:
             continue
         found = re.search(r"`([^`]+)`", cells[0])
-        target = found.group(1) if found else cells[0].strip()
+        target = found.group(1) if found else ""
         if target not in ("lean-nhb", "atlas-lean"):
             continue
         rows.append({"target": target,
                      "theorem": re.sub(r"`", "", cells[1]).split("/")[-1].strip(),
-                     "verdict": cells[2].replace("*", ""),
-                     "time": cells[3]})
+                     "verdict": cells[2].replace("*", ""), "time": cells[3]})
     return rows
 
 
+def decision() -> dict:
+    """Latency from the chain audit, calibration from the probe artefact."""
+    audit = (ROOT / "docs" / "CHAIN_AUDIT.md").read_text(encoding="utf-8")
+    m = re.search(r"median\s+(\d+)\s*ms", audit)
+    calib = json.loads((ROOT / "artifacts" / "decision_calibration_100.json")
+                       .read_text(encoding="utf-8"))
+    return {"latency_ms": int(m.group(1)) if m else None,
+            "accuracy": calib.get("accuracy"),
+            "abstain_answerable": calib.get("abstain_answerable"),
+            "abstain_unanswerable": calib.get("abstain_unanswerable"),
+            "fisher_p": calib.get("fisher_p"),
+            "tau_identified": calib.get("tau_identified"),
+            "min_conf": calib.get("min_confidence_correct")}
+
+
 def extrapolation() -> dict:
-    """Fit inside lam <= 0.6 and look at what happens outside: the honest half of a demo."""
     u, u_next, lam = training_pairs()
     inside = lam <= 0.6
     op = RandomFeatureOperator(n_features=256, seed=0).fit(u[inside], u_next[inside], lam[inside])
@@ -119,13 +132,13 @@ def collect() -> dict:
     return {"meta": meta(),
             "audit": json.loads((ROOT / "docs" / "SELF_AUDIT.json").read_text(encoding="utf-8")),
             "chains": chains(), "registry": registry(), "referee": referee(),
-            "lean": lean_runs(), "extra": extrapolation(),
+            "lean": lean_runs(), "decision": decision(), "extra": extrapolation(),
             "commit": subprocess.run(["git", "-C", str(ROOT), "rev-parse", "--short", "HEAD"],
                                      capture_output=True, text=True).stdout.strip() or "uncommitted",
             "today": datetime.date.today().isoformat()}
 
 
-# --------------------------------------------------------------------- helpers
+# ----------------------------------------------------------------------- figures
 PILL = {"PASS": "pass", "SKIP": "skip", "FAIL": "fail", "ERROR": "fail"}
 
 
@@ -133,122 +146,110 @@ def pill(status: str) -> str:
     return f'<span class="pill {PILL.get(status, "skip")}">{html.escape(status)}</span>'
 
 
-def architecture_svg() -> str:
-    """Three columns: what is checked, what is bridged, what is served."""
-    groups = [
-        ("Checks", 20, [("gates", "acceptance, planted truth, independence"),
-                        ("validity", "Gate S — claims, not artefacts"),
-                        ("surrogate", "fixed points, stability (no consumer yet)")]),
-        ("Bridges", 300, [("project", "external registry, pointer not copy"),
-                          ("quarto", "render, multi-format"),
-                          ("tracking", "MLflow + DVC")]),
-        ("Services", 580, [("inference", "budgeted model loading"),
-                           ("decision", "typed choices, 42 ms"),
-                           ("diagnosis", "gate failure → next action")]),
+def stack_svg() -> str:
+    """The seven layers of the pipeline, top = delivery, bottom = inference."""
+    layers = [("Multi-format delivery", "Quarto: LaTeX/PDF · Word · interactive HTML · code"),
+              ("Dual quality gates", "BootLoops (quantitative) · semantic suite · Gate S · human"),
+              ("Analysis and critique", "agents · failure diagnosis"),
+              ("Decision layer", "StartLux-Decision-4B: choice · yes/no · score"),
+              ("Evaluation and robustness", "Inspect · DeepEval · Promptfoo · Ragas"),
+              ("Orchestration", "Hydra · MLflow · DVC · three knowledge layers"),
+              ("Inference serving", "vLLM (batch) · Ollama (interactive) · typed decisions")]
+    parts = ['<svg viewBox="0 0 820 372" width="100%" class="fig" role="img" '
+             'aria-label="Seven-layer stack from delivery at the top to inference at the bottom">']
+    for i, (title, detail) in enumerate(layers):
+        y = 8 + i * 52
+        fill = "#eef3fa" if i == 1 else "#ffffff"
+        stroke = "#b9cbe4" if i == 1 else "#dde2e8"
+        parts.append(f'<rect x="8" y="{y}" width="804" height="44" rx="7" fill="{fill}" '
+                     f'stroke="{stroke}"/>')
+        parts.append(f'<text x="22" y="{y + 19}" font-family="Segoe UI,Arial" font-size="12.5" '
+                     f'font-weight="600" fill="#11161c">{title}</text>')
+        parts.append(f'<text x="22" y="{y + 34}" font-family="Segoe UI,Arial" font-size="10.5" '
+                     f'fill="#5d6773">{detail}</text>')
+    parts.append('<text x="8" y="368" font-family="Segoe UI,Arial" font-size="10.5" '
+                 'fill="#8a94a0">Highlighted: the gate layer is the only one that can stop a '
+                 'result from reaching the delivery layer.</text>')
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def pipeline_html() -> str:
+    steps = [
+        ("01", "Instantiate", "bootstrap_project.sh · inherited gates and Quarto"),
+        ("02", "Hypothesis", "lit-review · Promptfoo · human sign-off"),
+        ("03", "Design & run", "Hydra · MLflow/DVC · acceptance · timing discipline"),
+        ("04", "Evaluate", "BootLoops battery · Inspect · DeepEval · Ragas"),
+        ("05", "Diagnose", "typed classification of the failure, with its probability"),
+        ("06", "Certify", "only certified results enter the Quarto source"),
+        ("07", "Draft", "dual gates on prose · human sign-off before submission"),
+        ("08", "Deliver", "LaTeX/PDF · Word · HTML · executable package"),
+        ("09", "Record", "skills for procedure · memory for facts · LESSONS for history"),
     ]
-    parts = ['<svg viewBox="0 0 820 330" width="100%" class="fig" role="img" '
-             'aria-label="Module map in three groups: checks, bridges, services">']
-    for title, x, items in groups:
-        parts.append(f'<text x="{x}" y="18" font-family="Segoe UI,Arial" font-size="11" '
-                     f'font-weight="600" letter-spacing="1" fill="#5d6773">{title.upper()}</text>')
-        for i, (name, desc) in enumerate(items):
-            y = 34 + i * 86
-            parts.append(f'<rect x="{x}" y="{y}" width="220" height="66" rx="9" '
-                         f'fill="#ffffff" stroke="#dde2e8"/>')
-            parts.append(f'<text x="{x + 14}" y="{y + 24}" font-family="Segoe UI,Arial" '
-                         f'font-size="13.5" fill="#11161c">{name}</text>')
-            parts.append(f'<text x="{x + 14}" y="{y + 42}" font-family="Segoe UI,Arial" '
-                         f'font-size="10.5" fill="#5d6773">{desc}</text>')
-            parts.append(f'<text x="{x + 14}" y="{y + 57}" font-family="ui-monospace,Consolas" '
-                         f'font-size="9.5" fill="#8a94a0">framework/{name}</text>')
-    for y in (67, 153, 239):
-        parts.append(f'<line x1="240" y1="{y}" x2="298" y2="{y}" stroke="#c3cad2" '
-                     f'stroke-width="1.2" marker-end="url(#a)"/>')
-        parts.append(f'<line x1="520" y1="{y}" x2="578" y2="{y}" stroke="#c3cad2" '
-                     f'stroke-width="1.2" marker-end="url(#a)"/>')
-    parts.append('<defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3" '
-                 'orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#c3cad2"/></marker></defs>')
-    parts.append('<text x="20" y="318" font-family="Segoe UI,Arial" font-size="10.5" '
-                 'fill="#8a94a0">Arrows are calls, not imports. A module without a consumer '
-                 'is marked as such rather than promoted.</text>')
-    parts.append("</svg>")
-    return "".join(parts)
+    items = "".join(
+        f'<li><span class="n">{n}</span><div><b>{html.escape(t)}</b>'
+        f'<span class="d">{html.escape(d)}</span></div></li>' for n, t, d in steps)
+    return f'<ol class="pipeline">{items}</ol>'
 
 
-def gate_flow_svg() -> str:
-    steps = [("register", "CLAIMS.yaml"), ("span", "text in deliverable"),
-             ("evidence", "pointer → value"), ("control", "a failure that could happen"),
-             ("referee", "open objections parsed"), ("lean", "#print axioms")]
-    parts = ['<svg viewBox="0 0 820 120" width="100%" class="fig" role="img" '
-             'aria-label="Gate S pipeline: register, span, evidence, control, referee, Lean">']
-    for i, (name, desc) in enumerate(steps):
-        x = 8 + i * 136
-        parts.append(f'<rect x="{x}" y="34" width="124" height="56" rx="8" fill="#fbfcfd" '
-                     f'stroke="#dde2e8"/>')
-        parts.append(f'<text x="{x + 10}" y="56" font-family="Segoe UI,Arial" font-size="11.5" '
-                     f'fill="#11161c">{name}</text>')
-        parts.append(f'<text x="{x + 10}" y="73" font-family="Segoe UI,Arial" font-size="9.8" '
-                     f'fill="#5d6773">{desc}</text>')
-        if i < len(steps) - 1:
-            parts.append(f'<line x1="{x + 124}" y1="62" x2="{x + 134}" y2="62" '
-                         f'stroke="#c3cad2" stroke-width="1.2" marker-end="url(#b)"/>')
-    parts.append('<defs><marker id="b" markerWidth="7" markerHeight="7" refX="6" refY="3" '
-                 'orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#c3cad2"/></marker></defs>')
-    parts.append('<text x="8" y="108" font-family="Segoe UI,Arial" font-size="10.5" '
-                 'fill="#8a94a0">A verdict is issued only when every step resolves; an '
-                 'unresolvable evidence handle is a FAIL, not a warning.</text>')
-    parts.append("</svg>")
-    return "".join(parts)
+def gate_matrix() -> str:
+    rows = [
+        ("Hypothesis", "lit-review · planted-truth", "Promptfoo · novelty", "mandatory"),
+        ("Design", "tool-stewardship · timing", "DeepEval design tests", "recommended"),
+        ("Execution", "acceptance · independence", "—", "optional"),
+        ("Evaluation", "acceptance", "Inspect · DeepEval · Ragas", "—"),
+        ("Result injection", "independence · prose-lint", "faithfulness", "—"),
+        ("Manuscript", "prose-lint · ref-check", "Promptfoo style", "mandatory"),
+        ("Package", "full battery", "full semantic suite", "mandatory"),
+    ]
+    body = "".join(f"<tr><td>{a}</td><td>{b}</td><td>{c}</td><td>{d}</td></tr>"
+                   for a, b, c, d in rows)
+    return ("<table><caption>Where each gate sits in the workflow. A cell with an em dash "
+            "means the stage is not gated there, which is a decision, not an oversight."
+            "</caption><thead><tr><th>stage</th><th>quantitative</th><th>semantic</th>"
+            "<th>human</th></tr></thead><tbody>" + body + "</tbody></table>")
 
 
 def extrapolation_svg(extra: dict) -> str:
     rows = extra["rows"]
-    W, H, pad = 660, 300, {"l": 54, "r": 14, "t": 16, "b": 38}
+    W, H, pad = 620, 250, {"l": 50, "r": 12, "t": 14, "b": 34}
     x = lambda lam: pad["l"] + (lam - 0.1) / 0.9 * (W - pad["l"] - pad["r"])
     y = lambda u: H - pad["b"] - (u / 1.05) * (H - pad["t"] - pad["b"])
     parts = [f'<svg viewBox="0 0 {W} {H}" width="100%" class="fig" role="img" '
              f'aria-label="Fixed points inside and outside the training interval">']
     parts.append(f'<rect x="{x(0.6):.1f}" y="{pad["t"]}" width="{x(1.0) - x(0.6):.1f}" '
                  f'height="{H - pad["t"] - pad["b"]}" fill="#f7e6e8"/>')
-    parts.append(f'<text x="{x(0.8):.1f}" y="{pad["t"] + 14}" text-anchor="middle" '
-                 f'font-family="Segoe UI,Arial" font-size="10.5" fill="#8c1d2c">'
+    parts.append(f'<text x="{x(0.8):.1f}" y="{pad["t"] + 13}" text-anchor="middle" '
+                 f'font-family="Segoe UI,Arial" font-size="10" fill="#8c1d2c">'
                  f'outside the training interval</text>')
     parts.append(f'<line x1="{pad["l"]}" y1="{H - pad["b"]}" x2="{W - pad["r"]}" '
                  f'y2="{H - pad["b"]}" stroke="#dde2e8"/>')
     parts.append(f'<line x1="{pad["l"]}" y1="{pad["t"]}" x2="{pad["l"]}" '
                  f'y2="{H - pad["b"]}" stroke="#dde2e8"/>')
-    truth = " ".join(f"{x(r['lam']):.1f},{y(r['truth']):.1f}" for r in rows)
-    learned = " ".join(f"{x(r['lam']):.1f},{y(r['learned']):.1f}"
-                       for r in rows if r["learned"] is not None)
-    parts.append(f'<polyline points="{truth}" fill="none" stroke="#1f4e9c" stroke-width="2"/>')
-    parts.append(f'<polyline points="{learned}" fill="none" stroke="#a8323f" stroke-width="1.6"/>')
+    parts.append('<polyline points="' + " ".join(
+        f"{x(r['lam']):.1f},{y(r['truth']):.1f}" for r in rows) +
+        '" fill="none" stroke="#1d4e89" stroke-width="2"/>')
+    parts.append('<polyline points="' + " ".join(
+        f"{x(r['lam']):.1f},{y(r['learned']):.1f}" for r in rows if r["learned"] is not None) +
+        '" fill="none" stroke="#a8323f" stroke-width="1.5"/>')
     for t in (0.2, 0.4, 0.6, 0.8, 1.0):
-        parts.append(f'<text x="{x(t):.1f}" y="{H - pad["b"] + 16}" text-anchor="middle" '
-                     f'font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">{t:.1f}</text>')
+        parts.append(f'<text x="{x(t):.1f}" y="{H - pad["b"] + 15}" text-anchor="middle" '
+                     f'font-family="Segoe UI,Arial" font-size="10" fill="#5d6773">{t:.1f}</text>')
     for t in (0.0, 0.5, 1.0):
-        parts.append(f'<text x="{pad["l"] - 8}" y="{y(t) + 4:.1f}" text-anchor="end" '
-                     f'font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">{t:.1f}</text>')
+        parts.append(f'<text x="{pad["l"] - 7}" y="{y(t) + 4:.1f}" text-anchor="end" '
+                     f'font-family="Segoe UI,Arial" font-size="10" fill="#5d6773">{t:.1f}</text>')
     parts.append("</svg>")
     return "".join(parts)
 
 
-def _stable(detail: str) -> str:
-    """Strip the parts of a chain detail that change on every run.
-
-    MLflow run ids and measured latencies differ between two invocations, and a page that
-    embeds them can never be checked for staleness. The stabilised text keeps the finding
-    and drops the incidentals.
-    """
-    text = re.sub(r"\b[0-9a-f]{6,}\b", "…", str(detail))
-    text = re.sub(r"\d+(?:\.\d+)?\s?(?:ms|s)", "…", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    return text[:110]
-
-
 def chain_rows(rows: list[dict]) -> str:
+    def stable(detail: str) -> str:
+        text = re.sub(r"\b[0-9a-f]{6,}\b", "…", str(detail))
+        text = re.sub(r"\d+(?:\.\d+)?\s?(?:ms|s)\b", "…", text)
+        return re.sub(r"\s+", " ", text).strip()[:104]
     return "".join(
         f"<tr><td class='mono'>{html.escape(r['chain'])}</td><td>{pill(r['status'])}</td>"
-        f"<td class='detail'>{html.escape(_stable(r['detail']))}</td></tr>" for r in rows)
+        f"<td class='detail'>{html.escape(stable(r['detail']))}</td></tr>" for r in rows)
 
 
 def adopt_rows(rows: list[dict]) -> str:
@@ -261,108 +262,116 @@ def adopt_rows(rows: list[dict]) -> str:
 def lean_rows(rows: list[dict]) -> str:
     return "".join(
         f"<tr><td class='mono'>{html.escape(r['target'])}</td>"
-        f"<td class='mono'>{html.escape(r['theorem'])}</td>"
-        f"<td>{pill(r['verdict'])}</td><td class='num'>{html.escape(r['time'])}</td></tr>"
-        for r in rows)
+        f"<td class='mono'>{html.escape(r['theorem'])}</td><td>{pill(r['verdict'])}</td>"
+        f"<td class='num'>{html.escape(r['time'])}</td></tr>" for r in rows)
 
 
-def demo_rows() -> str:
-    rows = lab_build()["rows"]
-    return json.dumps([{"lam": round(r["lam"], 3), "learned": r["learned"],
-                        "truth": r["truth"], "rho": r["rho"]} for r in rows],
+def demo_payload() -> str:
+    lab = lab_build()
+    return json.dumps({"rows": [{"lam": round(r["lam"], 3), "learned": r["learned"],
+                                 "truth": r["truth"], "rho": r["rho"]} for r in lab["rows"]],
+                       "checkpoints": lab["checkpoints"], "traces": lab["traces"]},
                       separators=(",", ":"))
 
 
-# ------------------------------------------------------------------------ page
+# -------------------------------------------------------------------------- page
 PAGE = """<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Eidos __VERSION__ — verification and validation for research</title>
-<meta name="description" content="A research framework that verifies artefacts and validates claims: chain audits, Gate S, a Lean 4 audit chain, and two adopters.">
+<title>Eidos __VERSION__ — a reusable research pipeline with dual gates</title>
+<meta name="description" content="Eidos is the reusable skeleton behind a research project: dual quality gates, a typed decision layer, provenance, and multi-format delivery. Every claim it makes is checked against an artefact.">
 <style>
 :root{
-  --ink:#0f141a; --body:#232b34; --muted:#61707f; --rule:#e2e6eb; --paper:#fff;
-  --wash:#f7f8fa; --accent:#1d4e89; --limit:#a8323f; --ok:#17663f;
+  --ink:#0e1319;--body:#222a33;--muted:#5f6c7a;--rule:#e1e6ec;--paper:#fff;
+  --wash:#f6f8fa;--accent:#1d4e89;--limit:#a8323f;--ok:#17663f;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{margin:0;background:var(--wash);color:var(--body);
-     font:17px/1.65 Georgia,"Iowan Old Style","Times New Roman",serif;
+     font:17px/1.62 Georgia,"Iowan Old Style","Times New Roman",serif;
      -webkit-font-smoothing:antialiased}
 .sans{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 .mono{font-family:var(--mono);font-size:12.5px}
-.skip{position:absolute;left:-9999px;top:0;background:#fff;padding:10px 14px;z-index:100}
+.skip{position:absolute;left:-9999px;background:#fff;padding:10px 14px;z-index:100}
 .skip:focus{left:12px;top:12px;border:1px solid var(--rule)}
-header.site{position:sticky;top:0;z-index:50;background:rgba(247,248,250,.94);
-            backdrop-filter:saturate(1.2) blur(6px);border-bottom:1px solid var(--rule)}
-header.site .inner{max-width:1120px;margin:0 auto;padding:10px 24px;display:flex;
-                   align-items:center;gap:22px}
-.wordmark{font:700 15px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.02em}
+header.site{position:sticky;top:0;z-index:50;background:rgba(246,248,250,.94);
+            backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--rule)}
+header.site .inner{max-width:1120px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:20px}
+.wordmark{font:700 15px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.02em;color:var(--ink)}
 .wordmark span{color:var(--muted);font-weight:500;margin-left:8px;font-size:12px}
-nav.toc{margin-left:auto;display:flex;gap:16px;flex-wrap:wrap}
+nav.toc{margin-left:auto;display:flex;gap:15px;flex-wrap:wrap}
 nav.toc a{font:500 12.5px/1 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--muted);
           text-decoration:none;padding:6px 0;border-bottom:1px solid transparent}
 nav.toc a:hover,nav.toc a:focus{color:var(--ink);border-bottom-color:var(--ink)}
-@media (max-width:820px){nav.toc{display:none}}
-.wrap{max-width:1120px;margin:0 auto;padding:44px 24px 80px}
-.hero{padding:26px 0 8px}
+@media (max-width:860px){nav.toc{display:none}}
+.wrap{max-width:1120px;margin:0 auto;padding:46px 24px 84px}
+.hero{padding:22px 0 6px}
 .eyebrow{font:600 11px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.14em;
          text-transform:uppercase;color:var(--muted)}
-h1{font-size:46px;line-height:1.08;letter-spacing:-.025em;margin:14px 0 14px;color:var(--ink);font-weight:700}
-.thesis{font-size:20px;line-height:1.5;color:#2c343d;max-width:66ch;margin:0 0 22px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0 8px}
-@media (max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
-.stat{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:14px 16px}
-.stat .n{font:700 26px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:-.02em;
-         font-variant-numeric:tabular-nums}
-.stat .l{font:500 11px/1.3 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--muted);
-         margin-top:6px;letter-spacing:.03em}
-section{margin-top:52px}
-h2{font-size:27px;letter-spacing:-.015em;color:var(--ink);margin:0 0 14px;font-weight:700}
+h1{font-size:45px;line-height:1.08;letter-spacing:-.025em;margin:14px 0 14px;color:var(--ink)}
+.thesis{font-size:20px;line-height:1.5;color:#2b333d;max-width:68ch;margin:0 0 10px}
+.subthesis{font-size:15px;color:var(--muted);max-width:68ch}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:26px 0 6px}
+@media (max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:13px 14px}
+.stat .n{font:700 24px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:-.02em;
+         font-variant-numeric:tabular-nums;color:var(--ink)}
+.stat .l{font:500 10.5px/1.35 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--muted);margin-top:6px}
+section{margin-top:56px}
+h2{font-size:27px;letter-spacing:-.015em;color:var(--ink);margin:0 0 8px}
 h2 .num{font:600 13px/1 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--muted);
         margin-right:10px;vertical-align:2px}
+.lede2{color:var(--muted);font-size:15px;margin:0 0 16px;max-width:76ch}
 h3{font-size:17px;margin:0 0 8px;color:var(--ink)}
 p{margin:0 0 14px;max-width:76ch}
 ul.prose,ol.prose{padding-left:20px;margin:0 0 14px;max-width:76ch}
 ul.prose li,ol.prose li{margin-bottom:7px}
 .card{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:20px 22px}
 .grid2{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
-.grid2.wide{grid-template-columns:1.15fr .85fr}
-@media (max-width:900px){.grid2,.grid2.wide{grid-template-columns:1fr}}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+@media (max-width:940px){.grid2,.grid3{grid-template-columns:1fr}}
 .fig{width:100%;height:auto;display:block}
-figcaption{font-size:13px;line-height:1.5;color:var(--muted);margin-top:10px}
-table{width:100%;border-collapse:collapse;font-size:13.5px}
-caption{caption-side:top;text-align:left;font-size:12.5px;color:var(--muted);margin-bottom:8px}
-th,td{padding:8px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
-thead th{font:600 10.5px/1.2 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.06em;
+figcaption{font-size:12.8px;line-height:1.5;color:var(--muted);margin-top:9px}
+table{width:100%;border-collapse:collapse;font-size:13.3px}
+caption{caption-side:top;text-align:left;font-size:12.4px;color:var(--muted);margin-bottom:8px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+thead th{font:600 10.4px/1.2 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.06em;
          text-transform:uppercase;color:var(--muted);border-bottom:1px solid #b9c1ca}
-td.detail{color:var(--muted);font-size:12.5px}
+td.detail{color:var(--muted);font-size:12.4px}
 td.num{text-align:right;font-variant-numeric:tabular-nums}
 .pill{display:inline-block;padding:2px 8px;border-radius:999px;
-      font:600 10.5px/1.7 -apple-system,Segoe UI,Arial,sans-serif}
+      font:600 10.4px/1.7 -apple-system,Segoe UI,Arial,sans-serif}
 .pill.pass{background:#e8f4ec;color:var(--ok)}
 .pill.skip{background:#eef1f4;color:#4b5563}
 .pill.fail{background:#fbecee;color:#8c1d2c}
 .note{border-left:3px solid var(--limit);padding-left:14px;color:#3a434d}
 .oknote{border-left:3px solid var(--ok);padding-left:14px;color:#3a434d}
+ol.pipeline{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:900px){ol.pipeline{grid-template-columns:1fr}}
+ol.pipeline li{display:flex;gap:12px;background:var(--paper);border:1px solid var(--rule);
+               border-radius:10px;padding:12px 14px}
+ol.pipeline .n{font:700 12px/1 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--accent);
+               letter-spacing:.06em;padding-top:2px}
+ol.pipeline b{display:block;font-size:14px;color:var(--ink)}
+ol.pipeline .d{display:block;font-size:12px;color:var(--muted);margin-top:3px;line-height:1.45}
 canvas{width:100%;height:auto;display:block}
-.controls{display:flex;align-items:center;gap:14px;margin-top:12px}
+.controls{display:flex;align-items:center;gap:12px;margin-top:12px}
 input[type=range]{flex:1;accent-color:var(--limit)}
-.readout{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.readout{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}
 .kv{border:1px solid var(--rule);border-radius:8px;padding:8px 10px;background:#fbfcfd}
-.kv .k{font:600 9.5px/1.2 -apple-system,Segoe UI,Arial,sans-serif;letter-spacing:.07em;
+.kv .k{font:600 9.4px/1.2 -apple-system,Segoe UI,Arial,sans-serif;letter-spacing:.07em;
        text-transform:uppercase;color:var(--muted)}
-.kv .v{font-size:16px;margin-top:3px;font-variant-numeric:tabular-nums}
-pre{background:#0f141a;color:#e6e9ee;padding:14px 16px;border-radius:10px;overflow-x:auto;
-    font:12.5px/1.6 var(--mono);margin:0 0 10px}
+.kv .v{font-size:15.5px;margin-top:3px;font-variant-numeric:tabular-nums}
+pre{background:#0e1319;color:#e6e9ee;padding:14px 16px;border-radius:10px;overflow-x:auto;
+    font:12.4px/1.65 var(--mono);margin:0 0 10px}
 pre .c{color:#8a94a0}
 a{color:var(--accent)}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);
-       font-size:12.5px;line-height:1.7;color:var(--muted)}
-code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.5px var(--mono)}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);
+       font-size:12.4px;line-height:1.7;color:var(--muted)}
+code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono)}
 @media print{body{background:#fff}header.site{display:none}.wrap{max-width:none;padding:0}
   .card{border:1px solid #ccc;break-inside:avoid}section{break-inside:avoid}}
 </style></head>
@@ -371,119 +380,123 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.5px var(--mono
 <header class="site"><div class="inner">
   <div class="wordmark">EIDOS <span>__VERSION__</span></div>
   <nav class="toc" aria-label="Sections">
-    <a href="#why">Why</a><a href="#architecture">Architecture</a><a href="#gate-s">Gate S</a>
-    <a href="#status">Status</a><a href="#demo">Demo</a><a href="#adopters">Adopters</a>
-    <a href="#limits">Limits</a><a href="#reproduce">Reproduce</a>
+    <a href="#position">Position</a><a href="#pipeline">Pipeline</a>
+    <a href="#architecture">Architecture</a><a href="#gates">Gates</a>
+    <a href="#status">Status</a><a href="#demo">Demo</a><a href="#start">Start</a><a href="#limits">Limits</a>
   </nav>
 </div></header>
 
 <div class="wrap" id="main">
 <div class="hero">
-  <div class="eyebrow">Research framework · verification and validation</div>
-  <h1>A framework that audits its own claims</h1>
-  <p class="thesis">Eidos checks what most tooling never checks: whether the sentence a paper
-  argues for is the sentence its evidence licenses. It then applies that check to itself, in
-  public, with the failures left visible.</p>
+  <div class="eyebrow">Global reusable research pipeline · v__VERSION__</div>
+  <h1>One skeleton from theory to a certified result</h1>
+  <p class="thesis">Eidos is what a research project is instantiated into: dual quality
+  gates, a typed decision layer, provenance, and multi-format delivery, inherited whole
+  rather than rebuilt per project.</p>
+  <p class="subthesis">Theory-driven LLM experimentation → multi-layered certified results →
+  reproducible delivery. The framework owns the machinery; the project owns its science.</p>
   <div class="stats">
-    <div class="stat"><div class="n">__NCLAIMS__</div><div class="l">claims in the self-register</div></div>
     <div class="stat"><div class="n">__NCHAINS__</div><div class="l">chains exercised end to end</div></div>
-    <div class="stat"><div class="n">__NTESTS__</div><div class="l">tests, __COV__% coverage</div></div>
+    <div class="stat"><div class="n">__NTESTS__</div><div class="l">tests · __COV__% coverage</div></div>
     <div class="stat"><div class="n">__NOPEN__</div><div class="l">open referee objections</div></div>
+    <div class="stat"><div class="n">__LATENCY__<span style="font-size:13px"> ms</span></div><div class="l">typed decision, median</div></div>
+    <div class="stat"><div class="n">__NADOPT__</div><div class="l">adopters registered</div></div>
   </div>
 </div>
 
-<section id="why">
-  <h2><span class="num">01</span>Why it exists</h2>
-  <div class="grid2 wide">
-    <div>
-      <p>A project can pass twenty artefact gates with an unsupported central sentence. Those
-      gates answer questions about files — did the pipeline run, is the figure legible, does
-      the citation resolve — and none of them asks whether the evidence supports the claim.
-      The failure is invisible to tooling because it is not a defect in an artefact; it is a
-      gap between the artefact and the sentence.</p>
-      <p>Eidos separates two things usually conflated:</p>
-      <ul class="prose">
-        <li><b>Verification</b> — did we build it correctly, reproducibly, and (where the
-        claim is formal) provably?</li>
-        <li><b>Validation</b> — is the claim we are making the claim the evidence licenses?</li>
-      </ul>
-      <p>Verification is strong by construction here: eleven chains, negative controls, CI on
-      two Python versions, and a Lean 4 audit that has been run against real proofs.
-      Validation is a single gate, and it is deliberately the strictest thing in the
-      repository.</p>
+<section id="position">
+  <h2><span class="num">01</span>Position</h2>
+  <p class="lede2">What it is, what it is not, and where knowledge lives.</p>
+  <div class="grid3">
+    <div class="card">
+      <h3>It is a skeleton</h3>
+      <p>One clone, many projects. <code>bootstrap_project.sh</code> produces a project
+      wired to the same gates, the same provenance and the same rendering path. An existing
+      repository is <b>registered</b> by pointer — never moved, never copied.</p>
     </div>
     <div class="card">
-      <h3>What Gate S refuses</h3>
-      <ol class="prose">
-        <li>A claim whose text is not in the deliverable.</li>
-        <li>An evidence pointer that no longer resolves, or a value that moved.</li>
-        <li>“Supported” without a preregistered design <i>and</i> a negative control.</li>
-        <li>A scope axis neither declared nor excluded with a reason.</li>
-        <li>A referee document whose open objections are under-reported.</li>
-        <li>A formal claim the Lean chain cannot reproduce.</li>
-      </ol>
+      <h3>It is not a paper factory</h3>
+      <p>Nothing here decides what is true. It decides what may leave the pipeline: a result
+      is certified by gates, a claim by Gate S, and a judgement by a human gate when the
+      operator's confidence is below threshold.</p>
+    </div>
+    <div class="card">
+      <h3>Knowledge has three homes</h3>
+      <p>Procedure → agent skills. Facts → agent memory. History → the project's own
+      <code>LESSONS</code> file. A framework vector store was built, never written to, and
+      deleted; the lesson is recorded, the code is not.</p>
     </div>
   </div>
 </section>
 
-<section id="architecture">
-  <h2><span class="num">02</span>Architecture</h2>
-  <div class="card">__ARCH__</div>
-  <p style="margin-top:14px"><b>Chains, not modules, are the unit of trust.</b> Each chain is
-  exercised end to end — a real render, a real MLflow run, a real Lean build — and reports
-  PASS, SKIP or FAIL. A module that imports is not a module that works; the chain audit
-  exists because that distinction was learned the expensive way.</p>
+<section id="pipeline">
+  <h2><span class="num">02</span>The pipeline</h2>
+  <p class="lede2">Nine stages, each with a gate it cannot skip. The order is the point: a
+  result is certified before it is written, and written before it is packaged.</p>
+  __PIPELINE__
 </section>
 
-<section id="gate-s">
-  <h2><span class="num">03</span>Gate S — the validation layer</h2>
-  <div class="card" style="margin-bottom:18px">__GATEFLOW__</div>
+<section id="architecture">
+  <h2><span class="num">03</span>Architecture</h2>
+  <p class="lede2">Delivery at the top, inference at the bottom. The gate layer is the only
+  one that can stop a result from reaching the page.</p>
+  <div class="card">__STACK__</div>
+</section>
+
+<section id="gates">
+  <h2><span class="num">04</span>Gates: two kinds, plus a validator</h2>
   <div class="grid2">
     <div class="card">
-      <h3>The eight checks</h3>
+      <h3>Dual gates</h3>
+      <p><b>Quantitative</b> — BootLoops protocols: acceptance thresholds with an explicit
+      direction, planted truths, independence bookkeeping, timing discipline.</p>
+      <p><b>Semantic</b> — Inspect, DeepEval, Promptfoo and Ragas for agent traces, RAG
+      faithfulness and prompt regressions. A missing tool is a <b>SKIP</b>, named, never a
+      pass.</p>
+      <p><b>Human</b> — mandatory at hypothesis confirmation, experiment design and final
+      submission. A gate nobody signs is a gate nobody owns.</p>
+    </div>
+    <div class="card">
+      <h3>Gate S — validation</h3>
+      <p>Verification asks whether we built it correctly. <b>Validation</b> asks whether the
+      claim is the one the evidence licenses. Gate S reads <code>analysis/CLAIMS.yaml</code>
+      and refuses: a claim absent from the deliverable, an evidence pointer that no longer
+      resolves, “supported” without preregistration and a negative control, an undeclared
+      scope axis, an under-reported referee count, or a formal claim the Lean chain cannot
+      reproduce.</p>
+      <p class="oknote"><b>__NRES__ objections</b> in the framework's own review,
+      <b>__NOPEN__ open</b> — parsed from the document, not declared.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px">__MATRIX__</div>
+  <div class="grid2" style="margin-top:18px">
+    <div class="card">
+      <h3>Lean 4 audit chain</h3>
       <table>
-        <caption>The gate reads one register per deliverable and issues a verdict only when
-          every check resolves.</caption>
-        <thead><tr><th>code</th><th>rule</th><th>why it exists</th></tr></thead>
-        <tbody>
-          <tr><td class="mono">S1</td><td>register parses, ≥1 claim</td><td>no claims, nothing to audit</td></tr>
-          <tr><td class="mono">S2</td><td>claim span appears verbatim</td><td>a claim not in the paper is not a claim</td></tr>
-          <tr><td class="mono">S3</td><td>evidence pointer resolves and matches</td><td>artefacts move; the register must move with them</td></tr>
-          <tr><td class="mono">S4</td><td>“supported” needs preregistration + control</td><td>strength must be earned, not typed</td></tr>
-          <tr><td class="mono">S5</td><td>scope axes declared or excluded with a reason</td><td>silence is not a scope statement</td></tr>
-          <tr><td class="mono">S6</td><td>power and multiplicity stated</td><td>or explicitly not applicable, with a reason</td></tr>
-          <tr><td class="mono">S7</td><td>referee objections parsed, not declared</td><td>under-reporting is the failure mode</td></tr>
-          <tr><td class="mono">S8</td><td>formal claims pass the Lean chain</td><td>build, axioms, kernel control</td></tr>
-        </tbody>
+        <caption>Two measured runs on real proofs: build, <code>#print axioms</code>, an
+          axiom allow-list, and a kernel control asserting 1 = 2 must fail.</caption>
+        <thead><tr><th>target</th><th>theorem</th><th>verdict</th><th>time</th></tr></thead>
+        <tbody>__LEANROWS__</tbody>
       </table>
     </div>
-    <div>
-      <div class="card" style="margin-bottom:18px">
-        <h3>Lean 4 audit chain</h3>
-        <table>
-          <caption>Two measured runs on real proofs. A name that does not resolve fails;
-            a toolchain that accepts <span><math display="inline"><mn>1</mn><mo>=</mo><mn>2</mn></math></span>
-            is rejected as a checker.</caption>
-          <thead><tr><th>target</th><th>theorem</th><th>verdict</th><th>time</th></tr></thead>
-          <tbody>__LEANROWS__</tbody>
-        </table>
-      </div>
-      <div class="card">
-        <h3>Self-audit</h3>
-        <p>Eidos keeps a register for itself: three claims about its own behaviour, each
-        with an evidence handle into <code>docs/SELF_AUDIT.json</code>. The gate caught a
-        stale claim (ten chains recorded, eleven present) before a human noticed.</p>
-        <p class="oknote"><b>__NOPEN__ open objection(s)</b> out of __NRES__ in
-        <a href="../docs/REFEREE_SIM.md">docs/REFEREE_SIM.md</a> — the count is parsed from
-        the document, so it cannot be talked down.</p>
-      </div>
+    <div class="card">
+      <h3>Decision layer, measured</h3>
+      <p>A typed operator returns <code>choice</code> / <code>yes-no</code> /
+      <code>score</code> with calibrated probabilities in one pass; prose stays with
+      generators. Median <b>__LATENCY__ ms</b> over HTTP for a two-question set.</p>
+      <p class="note"><b>Calibration, n=100.</b> Accuracy __ACC__; abstention
+      __ABS_A__ vs __ABS_U__ on answerable vs unanswerable items (Fisher
+      p = __FISHER__). The confidence floor is <b>not identified</b>
+      (<code>tau_identified = __TAU__</code>; lowest confidence on a correct answer
+      __MINCONF__), so a gate may not use <code>none_probability ≥ 0.2</code> as a
+      success criterion. The option set does the work, not the threshold.</p>
     </div>
   </div>
 </section>
 
 <section id="status">
-  <h2><span class="num">04</span>Live status</h2>
-  <p>This table is the chain audit from this build, not a transcription. Record:
+  <h2><span class="num">05</span>Live status</h2>
+  <p class="lede2">The chain audit from this build. Record:
   <a href="../docs/SELF_AUDIT.json">docs/SELF_AUDIT.json</a>.</p>
   <div class="card">
     <table>
@@ -493,19 +506,30 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.5px var(--mono
       <tbody>__CHAINROWS__</tbody>
     </table>
   </div>
+  <div class="card" style="margin-top:18px">
+    <h3>Adopters</h3>
+    <table>
+      <caption>A pointer, not a copy: the framework discovers, executes and reports one
+        verdict; each project keeps its gate logic and tests.</caption>
+      <thead><tr><th>project</th><th>root</th><th>registered gate</th><th>checkout</th></tr></thead>
+      <tbody>__ADOPT__</tbody>
+    </table>
+  </div>
 </section>
 
 <section id="demo">
-  <h2><span class="num">05</span>The demo, and its limit</h2>
-  <div class="grid2 wide">
+  <h2><span class="num">06</span>The demo: system-level quantities from a learned operator</h2>
+  <p class="lede2">Fitted on short-step data, solved for fixed points and stability. Every
+  panel is computed at build time; the page carries its own data and needs no other file.</p>
+  <div class="grid2">
     <figure class="card" style="margin:0">
-      <h3>Fixed points of a learned short-time operator</h3>
-      <canvas id="plot" width="640" height="380" role="img"
+      <h3>Panel A · Fixed point against parameter</h3>
+      <canvas id="plot" width="640" height="360" role="img"
               aria-label="Learned fixed point against the parameter, compared with the analytic branch"></canvas>
       <figcaption>The operator is fitted to one-step pairs of
-        <span><math display="inline"><mfrac><mrow><mi>d</mi><mi>u</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>&#955;</mi><mo>&#8722;</mo><msup><mi>u</mi><mn>2</mn></msup></math></span>;
-        Newton solves <span><math display="inline"><mi>&#968;</mi><mo>(</mo><mi>u</mi><mo>)</mo><mo>=</mo><mi>S</mi><mo>(</mo><mi>u</mi><mo>)</mo><mo>&#8722;</mo><mi>u</mi><mo>=</mo><mn>0</mn></math></span>
-        on the learned map. Circles are the operator; the line is
+        <span><math display="inline"><mfrac><mrow><mi>d</mi><mi>u</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>&#955;</mi><mo>&#8722;</mo><msup><mi>u</mi><mn>2</mn></msup></math></span>
+        and Newton solves <span><math display="inline"><mi>&#968;</mi><mo>(</mo><mi>u</mi><mo>)</mo><mo>=</mo><mi>S</mi><mo>(</mo><mi>u</mi><mo>)</mo><mo>&#8722;</mo><mi>u</mi><mo>=</mo><mn>0</mn></math></span>
+        on the learned map. Circles: operator. Line:
         <span><math display="inline"><msup><mi>u</mi><mo>&#8727;</mo></msup><mo>=</mo><msqrt><mi>&#955;</mi></msqrt></math></span>.</figcaption>
       <div class="controls">
         <label for="lam" class="sans" style="font-size:12.5px;color:var(--muted)">λ</label>
@@ -518,127 +542,136 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.5px var(--mono
         <div class="kv"><div class="k">relative error</div><div class="v" id="err">—</div></div>
         <div class="kv"><div class="k">spectral radius</div><div class="v" id="rho">—</div></div>
       </div>
-      <figcaption style="margin-top:12px">Full version with three panels and a Newton replay:
-        <a href="../lab/lab.html">lab/lab.html</a>.</figcaption>
     </figure>
-    <div>
-      <figure class="card" style="margin:0 0 18px">
-        <h3>Outside its training data</h3>
-        __EXTRAP__
-        <figcaption>Same experiment with the fit restricted to λ ≤ 0.6 (shaded: outside the
-          data). Max relative error <b>__INMAX__</b> inside, <b>__OUTMAX__</b> outside. The
-          operator does <i>not</i> fail here: the map is smooth and one-dimensional, and
-          training on λ ≤ 0.2 still holds 0.31%. That is a property of this system, not a
-          licence to extrapolate — near a fold the same procedure is expected to break, and
-          this panel would then show it.</figcaption>
-      </figure>
+    <div style="display:grid;gap:18px">
       <div class="card">
-        <h3>What this demonstrates — and what it does not</h3>
-        <p><b>Does.</b> A short-time operator fitted on data supports system-level
-        computation: fixed points, their stability, their parameter dependence — without
-        writing the governing equation down.</p>
-        <p class="note"><b>Does not.</b> It is not a PDE solver, and no claim is made outside
-        the training interval merely because extrapolation happened to work: the measured
-        accuracy beyond λ = 0.6 reflects a smooth one-dimensional map, not a general result.
-        Applying the machinery to token sequences would be a category error — those are not
-        C¹ function spaces.</p>
+        <h3>Panel B · Stability</h3>
+        <canvas id="rho_plot" width="420" height="210" role="img"
+                aria-label="Spectral radius of the learned map against the parameter"></canvas>
+        <figcaption>Spectral radius at the learned fixed point. The red rule is the unit
+          threshold; below it a perturbation decays.</figcaption>
+      </div>
+      <div class="card">
+        <h3>Panel C · Newton iterates</h3>
+        <svg id="trace" width="100%" height="92" role="img"
+             aria-label="Newton iterates converging to the fixed point"></svg>
+        <figcaption class="sans" style="font-size:11.5px">Start u₀ = 1 at λ =
+          <span id="trace_lam">0.50</span>; each point is one Newton step.</figcaption>
+        <div style="margin-top:10px"><button id="replay" type="button">Replay</button></div>
       </div>
     </div>
   </div>
+
+  <div class="grid2" style="margin-top:18px">
+    <div class="card">
+      <h3>Table 1 · Checkpoints</h3>
+      <table>
+        <caption>Learned fixed point, analytic value, relative error and spectral radius at
+          five parameters; all __GRID__ grid points are stable.</caption>
+        <thead><tr><th>λ</th><th>u* analytic</th><th>u* learned</th><th>ε</th><th>ρ</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <figure class="card" style="margin:0">
+      <h3>Panel D · Outside the training data</h3>
+      __EXTRAP__
+      <figcaption>Fit restricted to λ ≤ 0.6 (shaded: outside the data). Max relative error
+        <b>__INMAX__</b> inside, <b>__OUTMAX__</b> outside. The operator does not fail here —
+        the map is smooth and one-dimensional, and training on λ ≤ 0.2 still holds 0.31%.
+        That is a property of this system, not a licence to extrapolate.</figcaption>
+    </figure>
+  </div>
 </section>
 
-<section id="adopters">
-  <h2><span class="num">06</span>Adopters</h2>
-  <div class="card">
-    <table>
-      <caption>A pointer, not a copy: the framework discovers, executes and reports one
-        comparable verdict; each project keeps its own gate logic and tests.</caption>
-      <thead><tr><th>project</th><th>root</th><th>registered gate</th><th>checkout</th></tr></thead>
-      <tbody>__ADOPT__</tbody>
-    </table>
-    <p style="margin:14px 0 0">The two adopters are deliberately unlike — a Python repository
-    with a manuscript, and a Lean library with no Python and no manuscript. If the registry
-    only fitted the first, the generality claim would be empty.</p>
+<section id="start">
+  <h2><span class="num">07</span>Start a project</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Instantiate or register</h3>
+      <pre><span class="c"># new project: inherits gates, tracking, rendering</span>
+./bootstrap_project.sh my_study
+
+<span class="c"># existing repository: pointer, not a copy</span>
+cat &gt; projects/my_study/project.yaml &lt;&lt;'YAML'
+root: ../../../my_study
+gate_command: ["{python}", "scripts/check_handoff.py"]
+YAML
+
+<span class="c"># run its gate through the framework</span>
+python -m framework.project check my_study</pre>
+    </div>
+    <div class="card">
+      <h3>Check this page's own claims</h3>
+      <pre><span class="c"># chains, tests, coverage, self-audit</span>
+python tools/record_self_audit.py
+python tools/record_self_audit.py --check
+
+<span class="c"># rebuild this page from the artefacts it cites</span>
+python tools/build_site.py --check
+
+<span class="c"># validate a project's claims</span>
+python tools/audit_validity.py --project ../keystroke-observatory</pre>
+      <p style="margin:10px 0 0">The page has no external script, font or network call;
+      formulas are MathML, the demo is inline, and every number is computed at build time.</p>
+    </div>
   </div>
 </section>
 
 <section id="limits">
-  <h2><span class="num">07</span>What the framework does not claim</h2>
+  <h2><span class="num">08</span>Limits and licence</h2>
   <div class="card">
-    <p><b>Referee simulation.</b> __NRES__ objections recorded, __NOPEN__ open. The gate
-    parses the tags in <a href="../docs/REFEREE_SIM.md">docs/REFEREE_SIM.md</a> and refuses a
-    register whose count disagrees.</p>
-    <p><b>Known limits.</b> Coverage is uneven — <code>framework/inference</code> is exercised
-    mainly by chains, not unit tests. The Lean chain is verified on two external projects, not
-    on a project this framework gates. Quarto is absent on the build host, so a project's PDF
-    path cannot be exercised end to end here.</p>
-    <p><b>One adopter proves an interface, not a field.</b> Two show the registry is not shaped
-    around one repository. Nothing here shows that the gates improve a project's science; that
-    would need a control group this programme does not have.</p>
-  </div>
-</section>
-
-<section id="reproduce">
-  <h2><span class="num">08</span>Reproduce this page</h2>
-  <div class="grid2">
-    <div class="card">
-      <h3>Commands</h3>
-      <pre><span class="c"># tests, chains, coverage, self-audit -> docs/SELF_AUDIT.json</span>
-python tools/record_self_audit.py
-
-<span class="c"># rebuild this page from the artefacts it cites</span>
-python tools/build_site.py
-
-<span class="c"># fail if the committed page is stale</span>
-python tools/build_site.py --check
-
-<span class="c"># Gate S on a project</span>
-python tools/audit_validity.py --project ../keystroke-observatory</pre>
-    </div>
-    <div class="card">
-      <h3>What is generated, what is reviewed</h3>
-      <p>Every number on this page is computed at build time. The prose is reviewed by hand;
-      the figures are not — <code>architecture_svg</code>, the chain table and the
-      extrapolation panel are all produced from data or from the code that runs the chains.</p>
-      <p>The page has no external script, font or network call: it opens from disk. Formulas
-      are MathML, not images.</p>
-    </div>
+    <p><b>What is measured.</b> Tests, coverage, chain verdicts, Lean runs, decision
+    calibration, and the demo's error against a closed form.</p>
+    <p><b>What is not.</b> That the gates improve a project's science — that would need a
+    control group this programme does not have. That the interfaces generalise beyond two
+    adopters. That a project's PDF path works here: Quarto is absent on this host.
+    Coverage is uneven; <code>framework/inference</code> is exercised mainly by chains.</p>
+    <p><b>Licence.</b> The framework is __LICENSE__. The decision operator's weights are
+    <b>CC BY-NC 4.0</b> (non-commercial): a project that needs commercial terms must swap
+    the operator, and the framework must not assume it is redistributable.</p>
   </div>
 </section>
 
 <footer>
-  Eidos __VERSION__ · MIT · commit <span class="mono">__COMMIT__</span> · built
+  Eidos __VERSION__ · __LICENSE__ · commit <span class="mono">__COMMIT__</span> · built
   __DATE__ by <code>tools/build_site.py</code>.
-  Numbers come from <a href="../docs/SELF_AUDIT.json">SELF_AUDIT.json</a>,
-  <a href="../docs/CHAIN_AUDIT.md">CHAIN_AUDIT.md</a>, the project registry, and one
-  extrapolation experiment computed at build time.
+  Numbers from <a href="../docs/SELF_AUDIT.json">SELF_AUDIT.json</a>,
+  <a href="../docs/CHAIN_AUDIT.md">CHAIN_AUDIT.md</a>, the project registry,
+  <code>artifacts/decision_calibration_100.json</code>, and one extrapolation experiment
+  computed at build time.
 </footer>
 </div>
 
 <script>
-const ROWS = __DEMO__;
-const W = 640, H = 380, PAD = {l: 52, r: 14, t: 14, b: 40};
+const DATA = __DEMO__;
+const ROWS = DATA.rows;
+const W = 640, H = 360, PAD = {l: 52, r: 14, t: 14, b: 40};
 const xOf = lam => PAD.l + (lam - 0.1) / 0.9 * (W - PAD.l - PAD.r);
 const yOf = u => H - PAD.b - (u / 1.05) * (H - PAD.t - PAD.b);
 
-function axes(ctx) {
-  ctx.clearRect(0, 0, W, H);
-  ctx.strokeStyle = "#e2e6eb"; ctx.beginPath();
-  ctx.moveTo(PAD.l, PAD.t); ctx.lineTo(PAD.l, H - PAD.b); ctx.lineTo(W - PAD.r, H - PAD.b);
+function frame(ctx, w, h, pad, ymax, ylabel) {
+  ctx.clearRect(0, 0, w, h);
+  ctx.strokeStyle = "#e1e6ec"; ctx.beginPath();
+  ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, h - pad.b); ctx.lineTo(w - pad.r, h - pad.b);
   ctx.stroke();
-  ctx.fillStyle = "#61707f"; ctx.font = "11px -apple-system,Segoe UI,Arial";
+  ctx.fillStyle = "#5f6c7a"; ctx.font = "10.5px -apple-system,Segoe UI,Arial";
   ctx.textAlign = "center";
-  for (const t of [0.1, 0.3, 0.5, 0.7, 0.9, 1.0]) ctx.fillText(t.toFixed(1), xOf(t), H - PAD.b + 16);
+  for (const t of [0.1, 0.3, 0.5, 0.7, 0.9, 1.0])
+    ctx.fillText(t.toFixed(1), pad.l + (t - 0.1) / 0.9 * (w - pad.l - pad.r), h - pad.b + 15);
   ctx.textAlign = "right";
-  for (let v = 0; v <= 1.0; v += 0.25) {
-    const py = yOf(v); ctx.fillText(v.toFixed(2), PAD.l - 8, py + 4);
-    ctx.strokeStyle = "#f0f2f5"; ctx.beginPath(); ctx.moveTo(PAD.l, py); ctx.lineTo(W - PAD.r, py); ctx.stroke();
+  for (let v = 0; v <= ymax + 1e-9; v += ymax / 4) {
+    const py = h - pad.b - (v / ymax) * (h - pad.t - pad.b);
+    ctx.fillText(v.toFixed(2), pad.l - 7, py + 4);
+    ctx.strokeStyle = "#f0f2f5"; ctx.beginPath(); ctx.moveTo(pad.l, py);
+    ctx.lineTo(w - pad.r, py); ctx.stroke();
   }
+  ctx.save(); ctx.translate(14, (h + pad.t - pad.b) / 2); ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = "center"; ctx.fillStyle = "#5f6c7a"; ctx.fillText(ylabel, 0, 0); ctx.restore();
 }
 
-function draw() {
+function drawMain() {
   const ctx = document.getElementById("plot").getContext("2d");
-  axes(ctx);
+  frame(ctx, W, H, PAD, 1.05, "u*");
   ctx.strokeStyle = "#1d4e89"; ctx.lineWidth = 2; ctx.beginPath();
   ROWS.forEach((r, i) => i ? ctx.lineTo(xOf(r.lam), yOf(r.truth)) : ctx.moveTo(xOf(r.lam), yOf(r.truth)));
   ctx.stroke();
@@ -657,8 +690,65 @@ function draw() {
   ctx.stroke(); ctx.setLineDash([]);
 }
 
-document.getElementById("lam").addEventListener("input", draw);
-draw();
+function drawRho() {
+  const ctx = document.getElementById("rho_plot").getContext("2d");
+  const w = 420, h = 210, pad = {l: 44, r: 12, t: 12, b: 30};
+  const top = Math.max(1.15, ...ROWS.map(r => r.rho || 0));
+  frame(ctx, w, h, pad, top, "ρ");
+  ctx.strokeStyle = "#1d4e89"; ctx.lineWidth = 2; ctx.beginPath();
+  ROWS.forEach((r, i) => { if (r.rho === null) return;
+    const px = pad.l + (r.lam - 0.1) / 0.9 * (w - pad.l - pad.r);
+    const py = h - pad.b - (r.rho / top) * (h - pad.t - pad.b);
+    i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
+  ctx.stroke();
+  const py = h - pad.b - (1 / top) * (h - pad.t - pad.b);
+  ctx.strokeStyle = "#a8323f"; ctx.setLineDash([5, 4]); ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(pad.l, py); ctx.lineTo(w - pad.r, py); ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function drawTrace() {
+  const sel = parseFloat(document.getElementById("lam").value);
+  const keys = Object.keys(DATA.traces);
+  const key = keys.reduce((a, b) => Math.abs(parseFloat(b) - sel) < Math.abs(parseFloat(a) - sel) ? b : a);
+  document.getElementById("trace_lam").textContent = parseFloat(key).toFixed(2);
+  const pts = DATA.traces[key];
+  const svg = document.getElementById("trace");
+  const w = svg.clientWidth || 380, h = 92;
+  const ux = i => 14 + i / Math.max(1, pts.length - 1) * (w - 28);
+  const uy = v => h - 12 - (v / 1.05) * (h - 24);
+  svg.innerHTML = pts.map((v, i) =>
+    `<circle cx="${ux(i)}" cy="${uy(v)}" r="3" fill="#1d4e89" opacity="${(0.35 + 0.65 * i / pts.length).toFixed(2)}"/>`
+  ).join("") + `<polyline fill="none" stroke="#1d4e89" stroke-width="1.1" points="${pts.map((v, i) => `${ux(i)},${uy(v)}`).join(" ")}"/>`;
+}
+
+function fillTable() {
+  document.getElementById("rows").innerHTML = DATA.checkpoints.map(r => `
+    <tr><td>${r.lam.toFixed(2)}</td><td>${r.truth.toFixed(4)}</td>
+    <td>${r.learned === null ? "—" : r.learned.toFixed(4)}</td>
+    <td>${r.rel_error === null ? "—" : (100 * r.rel_error).toExponential(1) + "%"}</td>
+    <td>${r.rho === null ? "—" : r.rho.toFixed(3)}</td></tr>`).join("");
+}
+
+let timer = null;
+function replay() {
+  const circles = document.getElementById("trace").querySelectorAll("circle");
+  if (timer) clearInterval(timer);
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    circles.forEach(c => c.style.opacity = 1); return;
+  }
+  circles.forEach(c => c.style.opacity = 0.05);
+  let i = 0;
+  timer = setInterval(() => {
+    if (i >= circles.length) { clearInterval(timer); timer = null; return; }
+    circles[i].style.opacity = 1; i++;
+  }, 210);
+}
+
+document.getElementById("lam").addEventListener("input", () => { drawMain(); drawTrace(); });
+document.getElementById("replay").addEventListener("click", replay);
+drawMain(); drawRho(); drawTrace(); fillTable();
+window.addEventListener("resize", () => { drawRho(); drawTrace(); });
 </script>
 </body></html>
 """
@@ -667,28 +757,39 @@ draw();
 def render(data: dict) -> str:
     audit = data["audit"]
     rows = data["chains"]
-    claims = len(__import__("yaml").safe_load(
-        (ROOT / "analysis" / "CLAIMS.yaml").read_text(encoding="utf-8"))["claims"])
-    extra = data["extra"]
+    claims = len(yaml.safe_load((ROOT / "analysis" / "CLAIMS.yaml").read_text(encoding="utf-8"))["claims"])
+    extra, dec = data["extra"], data["decision"]
+    lab = lab_build()
     tokens = {
         "__VERSION__": data["meta"]["version"],
-        "__NCLAIMS__": str(claims),
+        "__LICENSE__": data["meta"]["license"],
+        "__NTESTS__": str(audit.get("tests_collected", "?")),
+        "__COV__": str(audit.get("coverage_total", "?")),
         "__NCHAINS__": str(len(rows)),
         "__NPASS__": str(sum(1 for r in rows if r["status"] == "PASS")),
         "__NSKIP__": str(sum(1 for r in rows if r["status"] == "SKIP")),
-        "__NTESTS__": str(audit.get("tests_collected", "?")),
-        "__COV__": str(audit.get("coverage_total", "?")),
         "__NOPEN__": str(data["referee"]["open"]),
         "__NRES__": str(data["referee"]["total"]),
-        "__ARCH__": architecture_svg(),
-        "__GATEFLOW__": gate_flow_svg(),
+        "__NADOPT__": str(len(data["registry"])),
+        "__LATENCY__": str(dec["latency_ms"] or "—"),
+        "__ACC__": f"{100 * dec['accuracy']:.1f}%" if dec["accuracy"] is not None else "—",
+        "__ABS_A__": f"{100 * dec['abstain_answerable']:.0f}%" if dec["abstain_answerable"] is not None else "—",
+        "__ABS_U__": f"{100 * dec['abstain_unanswerable']:.0f}%" if dec["abstain_unanswerable"] is not None else "—",
+        "__FISHER__": f"{dec['fisher_p']:.1e}" if dec["fisher_p"] else "—",
+        "__TAU__": str(dec["tau_identified"]),
+        "__MINCONF__": f"{dec['min_conf']:.2f}" if dec["min_conf"] is not None else "—",
+        "__PIPELINE__": pipeline_html(),
+        "__STACK__": stack_svg(),
+        "__MATRIX__": gate_matrix(),
         "__LEANROWS__": lean_rows(data["lean"]),
         "__CHAINROWS__": chain_rows(rows),
         "__ADOPT__": adopt_rows(data["registry"]),
         "__EXTRAP__": extrapolation_svg(extra),
         "__INMAX__": f"{100 * (extra['inside_max'] or 0):.4f}%",
         "__OUTMAX__": f"{100 * (extra['outside_max'] or 0):.2f}%",
-        "__DEMO__": demo_rows(),
+        "__GRID__": str(len(lab["rows"])),
+        "__DEMO__": demo_payload(),
+        "__NCLAIMS__": str(claims),
         "__DATE__": data["today"],
         "__COMMIT__": data["commit"],
     }

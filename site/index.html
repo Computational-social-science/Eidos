@@ -1,92 +1,100 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Eidos 4.0.0 — verification and validation for research</title>
-<meta name="description" content="A research framework that verifies artefacts and validates claims: chain audits, Gate S, a Lean 4 audit chain, and two adopters.">
+<title>Eidos 4.0.0 — a reusable research pipeline with dual gates</title>
+<meta name="description" content="Eidos is the reusable skeleton behind a research project: dual quality gates, a typed decision layer, provenance, and multi-format delivery. Every claim it makes is checked against an artefact.">
 <style>
 :root{
-  --ink:#0f141a; --body:#232b34; --muted:#61707f; --rule:#e2e6eb; --paper:#fff;
-  --wash:#f7f8fa; --accent:#1d4e89; --limit:#a8323f; --ok:#17663f;
+  --ink:#0e1319;--body:#222a33;--muted:#5f6c7a;--rule:#e1e6ec;--paper:#fff;
+  --wash:#f6f8fa;--accent:#1d4e89;--limit:#a8323f;--ok:#17663f;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{margin:0;background:var(--wash);color:var(--body);
-     font:17px/1.65 Georgia,"Iowan Old Style","Times New Roman",serif;
+     font:17px/1.62 Georgia,"Iowan Old Style","Times New Roman",serif;
      -webkit-font-smoothing:antialiased}
 .sans{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 .mono{font-family:var(--mono);font-size:12.5px}
-.skip{position:absolute;left:-9999px;top:0;background:#fff;padding:10px 14px;z-index:100}
+.skip{position:absolute;left:-9999px;background:#fff;padding:10px 14px;z-index:100}
 .skip:focus{left:12px;top:12px;border:1px solid var(--rule)}
-header.site{position:sticky;top:0;z-index:50;background:rgba(247,248,250,.94);
-            backdrop-filter:saturate(1.2) blur(6px);border-bottom:1px solid var(--rule)}
-header.site .inner{max-width:1120px;margin:0 auto;padding:10px 24px;display:flex;
-                   align-items:center;gap:22px}
-.wordmark{font:700 15px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.02em}
+header.site{position:sticky;top:0;z-index:50;background:rgba(246,248,250,.94);
+            backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--rule)}
+header.site .inner{max-width:1120px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:20px}
+.wordmark{font:700 15px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.02em;color:var(--ink)}
 .wordmark span{color:var(--muted);font-weight:500;margin-left:8px;font-size:12px}
-nav.toc{margin-left:auto;display:flex;gap:16px;flex-wrap:wrap}
+nav.toc{margin-left:auto;display:flex;gap:15px;flex-wrap:wrap}
 nav.toc a{font:500 12.5px/1 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--muted);
           text-decoration:none;padding:6px 0;border-bottom:1px solid transparent}
 nav.toc a:hover,nav.toc a:focus{color:var(--ink);border-bottom-color:var(--ink)}
-@media (max-width:820px){nav.toc{display:none}}
-.wrap{max-width:1120px;margin:0 auto;padding:44px 24px 80px}
-.hero{padding:26px 0 8px}
+@media (max-width:860px){nav.toc{display:none}}
+.wrap{max-width:1120px;margin:0 auto;padding:46px 24px 84px}
+.hero{padding:22px 0 6px}
 .eyebrow{font:600 11px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.14em;
          text-transform:uppercase;color:var(--muted)}
-h1{font-size:46px;line-height:1.08;letter-spacing:-.025em;margin:14px 0 14px;color:var(--ink);font-weight:700}
-.thesis{font-size:20px;line-height:1.5;color:#2c343d;max-width:66ch;margin:0 0 22px}
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:26px 0 8px}
-@media (max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
-.stat{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:14px 16px}
-.stat .n{font:700 26px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:-.02em;
-         font-variant-numeric:tabular-nums}
-.stat .l{font:500 11px/1.3 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--muted);
-         margin-top:6px;letter-spacing:.03em}
-section{margin-top:52px}
-h2{font-size:27px;letter-spacing:-.015em;color:var(--ink);margin:0 0 14px;font-weight:700}
+h1{font-size:45px;line-height:1.08;letter-spacing:-.025em;margin:14px 0 14px;color:var(--ink)}
+.thesis{font-size:20px;line-height:1.5;color:#2b333d;max-width:68ch;margin:0 0 10px}
+.subthesis{font-size:15px;color:var(--muted);max-width:68ch}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:26px 0 6px}
+@media (max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:13px 14px}
+.stat .n{font:700 24px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:-.02em;
+         font-variant-numeric:tabular-nums;color:var(--ink)}
+.stat .l{font:500 10.5px/1.35 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--muted);margin-top:6px}
+section{margin-top:56px}
+h2{font-size:27px;letter-spacing:-.015em;color:var(--ink);margin:0 0 8px}
 h2 .num{font:600 13px/1 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--muted);
         margin-right:10px;vertical-align:2px}
+.lede2{color:var(--muted);font-size:15px;margin:0 0 16px;max-width:76ch}
 h3{font-size:17px;margin:0 0 8px;color:var(--ink)}
 p{margin:0 0 14px;max-width:76ch}
 ul.prose,ol.prose{padding-left:20px;margin:0 0 14px;max-width:76ch}
 ul.prose li,ol.prose li{margin-bottom:7px}
 .card{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:20px 22px}
 .grid2{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
-.grid2.wide{grid-template-columns:1.15fr .85fr}
-@media (max-width:900px){.grid2,.grid2.wide{grid-template-columns:1fr}}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+@media (max-width:940px){.grid2,.grid3{grid-template-columns:1fr}}
 .fig{width:100%;height:auto;display:block}
-figcaption{font-size:13px;line-height:1.5;color:var(--muted);margin-top:10px}
-table{width:100%;border-collapse:collapse;font-size:13.5px}
-caption{caption-side:top;text-align:left;font-size:12.5px;color:var(--muted);margin-bottom:8px}
-th,td{padding:8px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
-thead th{font:600 10.5px/1.2 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.06em;
+figcaption{font-size:12.8px;line-height:1.5;color:var(--muted);margin-top:9px}
+table{width:100%;border-collapse:collapse;font-size:13.3px}
+caption{caption-side:top;text-align:left;font-size:12.4px;color:var(--muted);margin-bottom:8px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+thead th{font:600 10.4px/1.2 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.06em;
          text-transform:uppercase;color:var(--muted);border-bottom:1px solid #b9c1ca}
-td.detail{color:var(--muted);font-size:12.5px}
+td.detail{color:var(--muted);font-size:12.4px}
 td.num{text-align:right;font-variant-numeric:tabular-nums}
 .pill{display:inline-block;padding:2px 8px;border-radius:999px;
-      font:600 10.5px/1.7 -apple-system,Segoe UI,Arial,sans-serif}
+      font:600 10.4px/1.7 -apple-system,Segoe UI,Arial,sans-serif}
 .pill.pass{background:#e8f4ec;color:var(--ok)}
 .pill.skip{background:#eef1f4;color:#4b5563}
 .pill.fail{background:#fbecee;color:#8c1d2c}
 .note{border-left:3px solid var(--limit);padding-left:14px;color:#3a434d}
 .oknote{border-left:3px solid var(--ok);padding-left:14px;color:#3a434d}
+ol.pipeline{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:900px){ol.pipeline{grid-template-columns:1fr}}
+ol.pipeline li{display:flex;gap:12px;background:var(--paper);border:1px solid var(--rule);
+               border-radius:10px;padding:12px 14px}
+ol.pipeline .n{font:700 12px/1 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--accent);
+               letter-spacing:.06em;padding-top:2px}
+ol.pipeline b{display:block;font-size:14px;color:var(--ink)}
+ol.pipeline .d{display:block;font-size:12px;color:var(--muted);margin-top:3px;line-height:1.45}
 canvas{width:100%;height:auto;display:block}
-.controls{display:flex;align-items:center;gap:14px;margin-top:12px}
+.controls{display:flex;align-items:center;gap:12px;margin-top:12px}
 input[type=range]{flex:1;accent-color:var(--limit)}
-.readout{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.readout{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}
 .kv{border:1px solid var(--rule);border-radius:8px;padding:8px 10px;background:#fbfcfd}
-.kv .k{font:600 9.5px/1.2 -apple-system,Segoe UI,Arial,sans-serif;letter-spacing:.07em;
+.kv .k{font:600 9.4px/1.2 -apple-system,Segoe UI,Arial,sans-serif;letter-spacing:.07em;
        text-transform:uppercase;color:var(--muted)}
-.kv .v{font-size:16px;margin-top:3px;font-variant-numeric:tabular-nums}
-pre{background:#0f141a;color:#e6e9ee;padding:14px 16px;border-radius:10px;overflow-x:auto;
-    font:12.5px/1.6 var(--mono);margin:0 0 10px}
+.kv .v{font-size:15.5px;margin-top:3px;font-variant-numeric:tabular-nums}
+pre{background:#0e1319;color:#e6e9ee;padding:14px 16px;border-radius:10px;overflow-x:auto;
+    font:12.4px/1.65 var(--mono);margin:0 0 10px}
 pre .c{color:#8a94a0}
 a{color:var(--accent)}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--rule);
-       font-size:12.5px;line-height:1.7;color:var(--muted)}
-code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.5px var(--mono)}
+footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule);
+       font-size:12.4px;line-height:1.7;color:var(--muted)}
+code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono)}
 @media print{body{background:#fff}header.site{display:none}.wrap{max-width:none;padding:0}
   .card{border:1px solid #ccc;break-inside:avoid}section{break-inside:avoid}}
 </style></head>
@@ -95,141 +103,156 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.5px var(--mono
 <header class="site"><div class="inner">
   <div class="wordmark">EIDOS <span>4.0.0</span></div>
   <nav class="toc" aria-label="Sections">
-    <a href="#why">Why</a><a href="#architecture">Architecture</a><a href="#gate-s">Gate S</a>
-    <a href="#status">Status</a><a href="#demo">Demo</a><a href="#adopters">Adopters</a>
-    <a href="#limits">Limits</a><a href="#reproduce">Reproduce</a>
+    <a href="#position">Position</a><a href="#pipeline">Pipeline</a>
+    <a href="#architecture">Architecture</a><a href="#gates">Gates</a>
+    <a href="#status">Status</a><a href="#demo">Demo</a><a href="#start">Start</a><a href="#limits">Limits</a>
   </nav>
 </div></header>
 
 <div class="wrap" id="main">
 <div class="hero">
-  <div class="eyebrow">Research framework · verification and validation</div>
-  <h1>A framework that audits its own claims</h1>
-  <p class="thesis">Eidos checks what most tooling never checks: whether the sentence a paper
-  argues for is the sentence its evidence licenses. It then applies that check to itself, in
-  public, with the failures left visible.</p>
+  <div class="eyebrow">Global reusable research pipeline · v4.0.0</div>
+  <h1>One skeleton from theory to a certified result</h1>
+  <p class="thesis">Eidos is what a research project is instantiated into: dual quality
+  gates, a typed decision layer, provenance, and multi-format delivery, inherited whole
+  rather than rebuilt per project.</p>
+  <p class="subthesis">Theory-driven LLM experimentation → multi-layered certified results →
+  reproducible delivery. The framework owns the machinery; the project owns its science.</p>
   <div class="stats">
-    <div class="stat"><div class="n">3</div><div class="l">claims in the self-register</div></div>
     <div class="stat"><div class="n">11</div><div class="l">chains exercised end to end</div></div>
-    <div class="stat"><div class="n">115</div><div class="l">tests, 73% coverage</div></div>
+    <div class="stat"><div class="n">117</div><div class="l">tests · 73% coverage</div></div>
     <div class="stat"><div class="n">0</div><div class="l">open referee objections</div></div>
+    <div class="stat"><div class="n">182<span style="font-size:13px"> ms</span></div><div class="l">typed decision, median</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">adopters registered</div></div>
   </div>
 </div>
 
-<section id="why">
-  <h2><span class="num">01</span>Why it exists</h2>
-  <div class="grid2 wide">
-    <div>
-      <p>A project can pass twenty artefact gates with an unsupported central sentence. Those
-      gates answer questions about files — did the pipeline run, is the figure legible, does
-      the citation resolve — and none of them asks whether the evidence supports the claim.
-      The failure is invisible to tooling because it is not a defect in an artefact; it is a
-      gap between the artefact and the sentence.</p>
-      <p>Eidos separates two things usually conflated:</p>
-      <ul class="prose">
-        <li><b>Verification</b> — did we build it correctly, reproducibly, and (where the
-        claim is formal) provably?</li>
-        <li><b>Validation</b> — is the claim we are making the claim the evidence licenses?</li>
-      </ul>
-      <p>Verification is strong by construction here: eleven chains, negative controls, CI on
-      two Python versions, and a Lean 4 audit that has been run against real proofs.
-      Validation is a single gate, and it is deliberately the strictest thing in the
-      repository.</p>
+<section id="position">
+  <h2><span class="num">01</span>Position</h2>
+  <p class="lede2">What it is, what it is not, and where knowledge lives.</p>
+  <div class="grid3">
+    <div class="card">
+      <h3>It is a skeleton</h3>
+      <p>One clone, many projects. <code>bootstrap_project.sh</code> produces a project
+      wired to the same gates, the same provenance and the same rendering path. An existing
+      repository is <b>registered</b> by pointer — never moved, never copied.</p>
     </div>
     <div class="card">
-      <h3>What Gate S refuses</h3>
-      <ol class="prose">
-        <li>A claim whose text is not in the deliverable.</li>
-        <li>An evidence pointer that no longer resolves, or a value that moved.</li>
-        <li>“Supported” without a preregistered design <i>and</i> a negative control.</li>
-        <li>A scope axis neither declared nor excluded with a reason.</li>
-        <li>A referee document whose open objections are under-reported.</li>
-        <li>A formal claim the Lean chain cannot reproduce.</li>
-      </ol>
+      <h3>It is not a paper factory</h3>
+      <p>Nothing here decides what is true. It decides what may leave the pipeline: a result
+      is certified by gates, a claim by Gate S, and a judgement by a human gate when the
+      operator's confidence is below threshold.</p>
+    </div>
+    <div class="card">
+      <h3>Knowledge has three homes</h3>
+      <p>Procedure → agent skills. Facts → agent memory. History → the project's own
+      <code>LESSONS</code> file. A framework vector store was built, never written to, and
+      deleted; the lesson is recorded, the code is not.</p>
     </div>
   </div>
 </section>
 
-<section id="architecture">
-  <h2><span class="num">02</span>Architecture</h2>
-  <div class="card"><svg viewBox="0 0 820 330" width="100%" class="fig" role="img" aria-label="Module map in three groups: checks, bridges, services"><text x="20" y="18" font-family="Segoe UI,Arial" font-size="11" font-weight="600" letter-spacing="1" fill="#5d6773">CHECKS</text><rect x="20" y="34" width="220" height="66" rx="9" fill="#ffffff" stroke="#dde2e8"/><text x="34" y="58" font-family="Segoe UI,Arial" font-size="13.5" fill="#11161c">gates</text><text x="34" y="76" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">acceptance, planted truth, independence</text><text x="34" y="91" font-family="ui-monospace,Consolas" font-size="9.5" fill="#8a94a0">framework/gates</text><rect x="20" y="120" width="220" height="66" rx="9" fill="#ffffff" stroke="#dde2e8"/><text x="34" y="144" font-family="Segoe UI,Arial" font-size="13.5" fill="#11161c">validity</text><text x="34" y="162" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">Gate S — claims, not artefacts</text><text x="34" y="177" font-family="ui-monospace,Consolas" font-size="9.5" fill="#8a94a0">framework/validity</text><rect x="20" y="206" width="220" height="66" rx="9" fill="#ffffff" stroke="#dde2e8"/><text x="34" y="230" font-family="Segoe UI,Arial" font-size="13.5" fill="#11161c">surrogate</text><text x="34" y="248" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">fixed points, stability (no consumer yet)</text><text x="34" y="263" font-family="ui-monospace,Consolas" font-size="9.5" fill="#8a94a0">framework/surrogate</text><text x="300" y="18" font-family="Segoe UI,Arial" font-size="11" font-weight="600" letter-spacing="1" fill="#5d6773">BRIDGES</text><rect x="300" y="34" width="220" height="66" rx="9" fill="#ffffff" stroke="#dde2e8"/><text x="314" y="58" font-family="Segoe UI,Arial" font-size="13.5" fill="#11161c">project</text><text x="314" y="76" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">external registry, pointer not copy</text><text x="314" y="91" font-family="ui-monospace,Consolas" font-size="9.5" fill="#8a94a0">framework/project</text><rect x="300" y="120" width="220" height="66" rx="9" fill="#ffffff" stroke="#dde2e8"/><text x="314" y="144" font-family="Segoe UI,Arial" font-size="13.5" fill="#11161c">quarto</text><text x="314" y="162" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">render, multi-format</text><text x="314" y="177" font-family="ui-monospace,Consolas" font-size="9.5" fill="#8a94a0">framework/quarto</text><rect x="300" y="206" width="220" height="66" rx="9" fill="#ffffff" stroke="#dde2e8"/><text x="314" y="230" font-family="Segoe UI,Arial" font-size="13.5" fill="#11161c">tracking</text><text x="314" y="248" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">MLflow + DVC</text><text x="314" y="263" font-family="ui-monospace,Consolas" font-size="9.5" fill="#8a94a0">framework/tracking</text><text x="580" y="18" font-family="Segoe UI,Arial" font-size="11" font-weight="600" letter-spacing="1" fill="#5d6773">SERVICES</text><rect x="580" y="34" width="220" height="66" rx="9" fill="#ffffff" stroke="#dde2e8"/><text x="594" y="58" font-family="Segoe UI,Arial" font-size="13.5" fill="#11161c">inference</text><text x="594" y="76" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">budgeted model loading</text><text x="594" y="91" font-family="ui-monospace,Consolas" font-size="9.5" fill="#8a94a0">framework/inference</text><rect x="580" y="120" width="220" height="66" rx="9" fill="#ffffff" stroke="#dde2e8"/><text x="594" y="144" font-family="Segoe UI,Arial" font-size="13.5" fill="#11161c">decision</text><text x="594" y="162" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">typed choices, 42 ms</text><text x="594" y="177" font-family="ui-monospace,Consolas" font-size="9.5" fill="#8a94a0">framework/decision</text><rect x="580" y="206" width="220" height="66" rx="9" fill="#ffffff" stroke="#dde2e8"/><text x="594" y="230" font-family="Segoe UI,Arial" font-size="13.5" fill="#11161c">diagnosis</text><text x="594" y="248" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">gate failure → next action</text><text x="594" y="263" font-family="ui-monospace,Consolas" font-size="9.5" fill="#8a94a0">framework/diagnosis</text><line x1="240" y1="67" x2="298" y2="67" stroke="#c3cad2" stroke-width="1.2" marker-end="url(#a)"/><line x1="520" y1="67" x2="578" y2="67" stroke="#c3cad2" stroke-width="1.2" marker-end="url(#a)"/><line x1="240" y1="153" x2="298" y2="153" stroke="#c3cad2" stroke-width="1.2" marker-end="url(#a)"/><line x1="520" y1="153" x2="578" y2="153" stroke="#c3cad2" stroke-width="1.2" marker-end="url(#a)"/><line x1="240" y1="239" x2="298" y2="239" stroke="#c3cad2" stroke-width="1.2" marker-end="url(#a)"/><line x1="520" y1="239" x2="578" y2="239" stroke="#c3cad2" stroke-width="1.2" marker-end="url(#a)"/><defs><marker id="a" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#c3cad2"/></marker></defs><text x="20" y="318" font-family="Segoe UI,Arial" font-size="10.5" fill="#8a94a0">Arrows are calls, not imports. A module without a consumer is marked as such rather than promoted.</text></svg></div>
-  <p style="margin-top:14px"><b>Chains, not modules, are the unit of trust.</b> Each chain is
-  exercised end to end — a real render, a real MLflow run, a real Lean build — and reports
-  PASS, SKIP or FAIL. A module that imports is not a module that works; the chain audit
-  exists because that distinction was learned the expensive way.</p>
+<section id="pipeline">
+  <h2><span class="num">02</span>The pipeline</h2>
+  <p class="lede2">Nine stages, each with a gate it cannot skip. The order is the point: a
+  result is certified before it is written, and written before it is packaged.</p>
+  <ol class="pipeline"><li><span class="n">01</span><div><b>Instantiate</b><span class="d">bootstrap_project.sh · inherited gates and Quarto</span></div></li><li><span class="n">02</span><div><b>Hypothesis</b><span class="d">lit-review · Promptfoo · human sign-off</span></div></li><li><span class="n">03</span><div><b>Design &amp; run</b><span class="d">Hydra · MLflow/DVC · acceptance · timing discipline</span></div></li><li><span class="n">04</span><div><b>Evaluate</b><span class="d">BootLoops battery · Inspect · DeepEval · Ragas</span></div></li><li><span class="n">05</span><div><b>Diagnose</b><span class="d">typed classification of the failure, with its probability</span></div></li><li><span class="n">06</span><div><b>Certify</b><span class="d">only certified results enter the Quarto source</span></div></li><li><span class="n">07</span><div><b>Draft</b><span class="d">dual gates on prose · human sign-off before submission</span></div></li><li><span class="n">08</span><div><b>Deliver</b><span class="d">LaTeX/PDF · Word · HTML · executable package</span></div></li><li><span class="n">09</span><div><b>Record</b><span class="d">skills for procedure · memory for facts · LESSONS for history</span></div></li></ol>
 </section>
 
-<section id="gate-s">
-  <h2><span class="num">03</span>Gate S — the validation layer</h2>
-  <div class="card" style="margin-bottom:18px"><svg viewBox="0 0 820 120" width="100%" class="fig" role="img" aria-label="Gate S pipeline: register, span, evidence, control, referee, Lean"><rect x="8" y="34" width="124" height="56" rx="8" fill="#fbfcfd" stroke="#dde2e8"/><text x="18" y="56" font-family="Segoe UI,Arial" font-size="11.5" fill="#11161c">register</text><text x="18" y="73" font-family="Segoe UI,Arial" font-size="9.8" fill="#5d6773">CLAIMS.yaml</text><line x1="132" y1="62" x2="142" y2="62" stroke="#c3cad2" stroke-width="1.2" marker-end="url(#b)"/><rect x="144" y="34" width="124" height="56" rx="8" fill="#fbfcfd" stroke="#dde2e8"/><text x="154" y="56" font-family="Segoe UI,Arial" font-size="11.5" fill="#11161c">span</text><text x="154" y="73" font-family="Segoe UI,Arial" font-size="9.8" fill="#5d6773">text in deliverable</text><line x1="268" y1="62" x2="278" y2="62" stroke="#c3cad2" stroke-width="1.2" marker-end="url(#b)"/><rect x="280" y="34" width="124" height="56" rx="8" fill="#fbfcfd" stroke="#dde2e8"/><text x="290" y="56" font-family="Segoe UI,Arial" font-size="11.5" fill="#11161c">evidence</text><text x="290" y="73" font-family="Segoe UI,Arial" font-size="9.8" fill="#5d6773">pointer → value</text><line x1="404" y1="62" x2="414" y2="62" stroke="#c3cad2" stroke-width="1.2" marker-end="url(#b)"/><rect x="416" y="34" width="124" height="56" rx="8" fill="#fbfcfd" stroke="#dde2e8"/><text x="426" y="56" font-family="Segoe UI,Arial" font-size="11.5" fill="#11161c">control</text><text x="426" y="73" font-family="Segoe UI,Arial" font-size="9.8" fill="#5d6773">a failure that could happen</text><line x1="540" y1="62" x2="550" y2="62" stroke="#c3cad2" stroke-width="1.2" marker-end="url(#b)"/><rect x="552" y="34" width="124" height="56" rx="8" fill="#fbfcfd" stroke="#dde2e8"/><text x="562" y="56" font-family="Segoe UI,Arial" font-size="11.5" fill="#11161c">referee</text><text x="562" y="73" font-family="Segoe UI,Arial" font-size="9.8" fill="#5d6773">open objections parsed</text><line x1="676" y1="62" x2="686" y2="62" stroke="#c3cad2" stroke-width="1.2" marker-end="url(#b)"/><rect x="688" y="34" width="124" height="56" rx="8" fill="#fbfcfd" stroke="#dde2e8"/><text x="698" y="56" font-family="Segoe UI,Arial" font-size="11.5" fill="#11161c">lean</text><text x="698" y="73" font-family="Segoe UI,Arial" font-size="9.8" fill="#5d6773">#print axioms</text><defs><marker id="b" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#c3cad2"/></marker></defs><text x="8" y="108" font-family="Segoe UI,Arial" font-size="10.5" fill="#8a94a0">A verdict is issued only when every step resolves; an unresolvable evidence handle is a FAIL, not a warning.</text></svg></div>
+<section id="architecture">
+  <h2><span class="num">03</span>Architecture</h2>
+  <p class="lede2">Delivery at the top, inference at the bottom. The gate layer is the only
+  one that can stop a result from reaching the page.</p>
+  <div class="card"><svg viewBox="0 0 820 372" width="100%" class="fig" role="img" aria-label="Seven-layer stack from delivery at the top to inference at the bottom"><rect x="8" y="8" width="804" height="44" rx="7" fill="#ffffff" stroke="#dde2e8"/><text x="22" y="27" font-family="Segoe UI,Arial" font-size="12.5" font-weight="600" fill="#11161c">Multi-format delivery</text><text x="22" y="42" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">Quarto: LaTeX/PDF · Word · interactive HTML · code</text><rect x="8" y="60" width="804" height="44" rx="7" fill="#eef3fa" stroke="#b9cbe4"/><text x="22" y="79" font-family="Segoe UI,Arial" font-size="12.5" font-weight="600" fill="#11161c">Dual quality gates</text><text x="22" y="94" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">BootLoops (quantitative) · semantic suite · Gate S · human</text><rect x="8" y="112" width="804" height="44" rx="7" fill="#ffffff" stroke="#dde2e8"/><text x="22" y="131" font-family="Segoe UI,Arial" font-size="12.5" font-weight="600" fill="#11161c">Analysis and critique</text><text x="22" y="146" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">agents · failure diagnosis</text><rect x="8" y="164" width="804" height="44" rx="7" fill="#ffffff" stroke="#dde2e8"/><text x="22" y="183" font-family="Segoe UI,Arial" font-size="12.5" font-weight="600" fill="#11161c">Decision layer</text><text x="22" y="198" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">StartLux-Decision-4B: choice · yes/no · score</text><rect x="8" y="216" width="804" height="44" rx="7" fill="#ffffff" stroke="#dde2e8"/><text x="22" y="235" font-family="Segoe UI,Arial" font-size="12.5" font-weight="600" fill="#11161c">Evaluation and robustness</text><text x="22" y="250" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">Inspect · DeepEval · Promptfoo · Ragas</text><rect x="8" y="268" width="804" height="44" rx="7" fill="#ffffff" stroke="#dde2e8"/><text x="22" y="287" font-family="Segoe UI,Arial" font-size="12.5" font-weight="600" fill="#11161c">Orchestration</text><text x="22" y="302" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">Hydra · MLflow · DVC · three knowledge layers</text><rect x="8" y="320" width="804" height="44" rx="7" fill="#ffffff" stroke="#dde2e8"/><text x="22" y="339" font-family="Segoe UI,Arial" font-size="12.5" font-weight="600" fill="#11161c">Inference serving</text><text x="22" y="354" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">vLLM (batch) · Ollama (interactive) · typed decisions</text><text x="8" y="368" font-family="Segoe UI,Arial" font-size="10.5" fill="#8a94a0">Highlighted: the gate layer is the only one that can stop a result from reaching the delivery layer.</text></svg></div>
+</section>
+
+<section id="gates">
+  <h2><span class="num">04</span>Gates: two kinds, plus a validator</h2>
   <div class="grid2">
     <div class="card">
-      <h3>The eight checks</h3>
+      <h3>Dual gates</h3>
+      <p><b>Quantitative</b> — BootLoops protocols: acceptance thresholds with an explicit
+      direction, planted truths, independence bookkeeping, timing discipline.</p>
+      <p><b>Semantic</b> — Inspect, DeepEval, Promptfoo and Ragas for agent traces, RAG
+      faithfulness and prompt regressions. A missing tool is a <b>SKIP</b>, named, never a
+      pass.</p>
+      <p><b>Human</b> — mandatory at hypothesis confirmation, experiment design and final
+      submission. A gate nobody signs is a gate nobody owns.</p>
+    </div>
+    <div class="card">
+      <h3>Gate S — validation</h3>
+      <p>Verification asks whether we built it correctly. <b>Validation</b> asks whether the
+      claim is the one the evidence licenses. Gate S reads <code>analysis/CLAIMS.yaml</code>
+      and refuses: a claim absent from the deliverable, an evidence pointer that no longer
+      resolves, “supported” without preregistration and a negative control, an undeclared
+      scope axis, an under-reported referee count, or a formal claim the Lean chain cannot
+      reproduce.</p>
+      <p class="oknote"><b>8 objections</b> in the framework's own review,
+      <b>0 open</b> — parsed from the document, not declared.</p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px"><table><caption>Where each gate sits in the workflow. A cell with an em dash means the stage is not gated there, which is a decision, not an oversight.</caption><thead><tr><th>stage</th><th>quantitative</th><th>semantic</th><th>human</th></tr></thead><tbody><tr><td>Hypothesis</td><td>lit-review · planted-truth</td><td>Promptfoo · novelty</td><td>mandatory</td></tr><tr><td>Design</td><td>tool-stewardship · timing</td><td>DeepEval design tests</td><td>recommended</td></tr><tr><td>Execution</td><td>acceptance · independence</td><td>—</td><td>optional</td></tr><tr><td>Evaluation</td><td>acceptance</td><td>Inspect · DeepEval · Ragas</td><td>—</td></tr><tr><td>Result injection</td><td>independence · prose-lint</td><td>faithfulness</td><td>—</td></tr><tr><td>Manuscript</td><td>prose-lint · ref-check</td><td>Promptfoo style</td><td>mandatory</td></tr><tr><td>Package</td><td>full battery</td><td>full semantic suite</td><td>mandatory</td></tr></tbody></table></div>
+  <div class="grid2" style="margin-top:18px">
+    <div class="card">
+      <h3>Lean 4 audit chain</h3>
       <table>
-        <caption>The gate reads one register per deliverable and issues a verdict only when
-          every check resolves.</caption>
-        <thead><tr><th>code</th><th>rule</th><th>why it exists</th></tr></thead>
-        <tbody>
-          <tr><td class="mono">S1</td><td>register parses, ≥1 claim</td><td>no claims, nothing to audit</td></tr>
-          <tr><td class="mono">S2</td><td>claim span appears verbatim</td><td>a claim not in the paper is not a claim</td></tr>
-          <tr><td class="mono">S3</td><td>evidence pointer resolves and matches</td><td>artefacts move; the register must move with them</td></tr>
-          <tr><td class="mono">S4</td><td>“supported” needs preregistration + control</td><td>strength must be earned, not typed</td></tr>
-          <tr><td class="mono">S5</td><td>scope axes declared or excluded with a reason</td><td>silence is not a scope statement</td></tr>
-          <tr><td class="mono">S6</td><td>power and multiplicity stated</td><td>or explicitly not applicable, with a reason</td></tr>
-          <tr><td class="mono">S7</td><td>referee objections parsed, not declared</td><td>under-reporting is the failure mode</td></tr>
-          <tr><td class="mono">S8</td><td>formal claims pass the Lean chain</td><td>build, axioms, kernel control</td></tr>
-        </tbody>
+        <caption>Two measured runs on real proofs: build, <code>#print axioms</code>, an
+          axiom allow-list, and a kernel control asserting 1 = 2 must fail.</caption>
+        <thead><tr><th>target</th><th>theorem</th><th>verdict</th><th>time</th></tr></thead>
+        <tbody><tr><td class='mono'>lean-nhb</td><td class='mono'>PhaseI.Selective.silent_iff_acceptedAndWrong</td><td><span class="pill pass">PASS</span></td><td class='num'>2.7 s</td></tr><tr><td class='mono'>atlas-lean</td><td class='mono'>SpernerProperty.boolean_sperner</td><td><span class="pill pass">PASS</span></td><td class='num'>112.9 s</td></tr></tbody>
       </table>
     </div>
-    <div>
-      <div class="card" style="margin-bottom:18px">
-        <h3>Lean 4 audit chain</h3>
-        <table>
-          <caption>Two measured runs on real proofs. A name that does not resolve fails;
-            a toolchain that accepts <span><math display="inline"><mn>1</mn><mo>=</mo><mn>2</mn></math></span>
-            is rejected as a checker.</caption>
-          <thead><tr><th>target</th><th>theorem</th><th>verdict</th><th>time</th></tr></thead>
-          <tbody><tr><td class='mono'>lean-nhb</td><td class='mono'>PhaseI.Selective.silent_iff_acceptedAndWrong</td><td><span class="pill pass">PASS</span></td><td class='num'>2.7 s</td></tr><tr><td class='mono'>atlas-lean</td><td class='mono'>SpernerProperty.boolean_sperner</td><td><span class="pill pass">PASS</span></td><td class='num'>112.9 s</td></tr></tbody>
-        </table>
-      </div>
-      <div class="card">
-        <h3>Self-audit</h3>
-        <p>Eidos keeps a register for itself: three claims about its own behaviour, each
-        with an evidence handle into <code>docs/SELF_AUDIT.json</code>. The gate caught a
-        stale claim (ten chains recorded, eleven present) before a human noticed.</p>
-        <p class="oknote"><b>0 open objection(s)</b> out of 8 in
-        <a href="../docs/REFEREE_SIM.md">docs/REFEREE_SIM.md</a> — the count is parsed from
-        the document, so it cannot be talked down.</p>
-      </div>
+    <div class="card">
+      <h3>Decision layer, measured</h3>
+      <p>A typed operator returns <code>choice</code> / <code>yes-no</code> /
+      <code>score</code> with calibrated probabilities in one pass; prose stays with
+      generators. Median <b>182 ms</b> over HTTP for a two-question set.</p>
+      <p class="note"><b>Calibration, n=100.</b> Accuracy 100.0%; abstention
+      0% vs 100% on answerable vs unanswerable items (Fisher
+      p = 2.0e-29). The confidence floor is <b>not identified</b>
+      (<code>tau_identified = False</code>; lowest confidence on a correct answer
+      0.54), so a gate may not use <code>none_probability ≥ 0.2</code> as a
+      success criterion. The option set does the work, not the threshold.</p>
     </div>
   </div>
 </section>
 
 <section id="status">
-  <h2><span class="num">04</span>Live status</h2>
-  <p>This table is the chain audit from this build, not a transcription. Record:
+  <h2><span class="num">05</span>Live status</h2>
+  <p class="lede2">The chain audit from this build. Record:
   <a href="../docs/SELF_AUDIT.json">docs/SELF_AUDIT.json</a>.</p>
   <div class="card">
     <table>
       <caption>11 chains: 10 pass, 1 skip, 0 fail. A skip is named,
         never counted as a pass.</caption>
       <thead><tr><th>chain</th><th>verdict</th><th>detail</th></tr></thead>
-      <tbody><tr><td class='mono'>registry</td><td><span class="pill pass">PASS</span></td><td class='detail'>2 project(s): keystroke_observatory, lean_nhb</td></tr><tr><td class='mono'>gates</td><td><span class="pill pass">PASS</span></td><td class='detail'>acceptance PASS+FAIL both correct; missing tool -&gt; SKIP</td></tr><tr><td class='mono'>gates+project checker</td><td><span class="pill skip">SKIP</span></td><td class='detail'>no --project-checker given</td></tr><tr><td class='mono'>diagnosis</td><td><span class="pill pass">PASS</span></td><td class='detail'>1 diagnosis naming the metric: Result metric below acceptance threshold: acc</td></tr><tr><td class='mono'>tracking</td><td><span class="pill pass">PASS</span></td><td class='detail'>mlflow run …; dvc_available=True</td></tr><tr><td class='mono'>quarto</td><td><span class="pill pass">PASS</span></td><td class='detail'>minimal document; quarto=quarto.exe, render ok=True</td></tr><tr><td class='mono'>validity (Gate S)</td><td><span class="pill pass">PASS</span></td><td class='detail'>valid register PASS; overstated count FAIL</td></tr><tr><td class='mono'>surrogate (local NO)</td><td><span class="pill pass">PASS</span></td><td class='detail'>19/19 fixed points within 5%, …table; shuffled-label control caught</td></tr><tr><td class='mono'>lab (NO demo)</td><td><span class="pill pass">PASS</span></td><td class='detail'>91 λ points, max relative error 0.0002%</td></tr><tr><td class='mono'>decision</td><td><span class="pill pass">PASS</span></td><td class='detail'>known answers correct; median … for 2 questions (n=3, wall clock)</td></tr><tr><td class='mono'>inference</td><td><span class="pill pass">PASS</span></td><td class='detail'>12 GB budget enforced; 4 judgement stages -&gt; StartLux; generators unchanged; evaluation -&gt; 2 model(s)</td></tr></tbody>
+      <tbody><tr><td class='mono'>registry</td><td><span class="pill pass">PASS</span></td><td class='detail'>2 project(s): keystroke_observatory, lean_nhb</td></tr><tr><td class='mono'>gates</td><td><span class="pill pass">PASS</span></td><td class='detail'>acceptance PASS+FAIL both correct; missing tool -&gt; SKIP</td></tr><tr><td class='mono'>gates+project checker</td><td><span class="pill skip">SKIP</span></td><td class='detail'>no --project-checker given</td></tr><tr><td class='mono'>diagnosis</td><td><span class="pill pass">PASS</span></td><td class='detail'>1 diagnosis naming the metric: Result metric below acceptance threshold: acc</td></tr><tr><td class='mono'>tracking</td><td><span class="pill pass">PASS</span></td><td class='detail'>mlflow run …; dvc_available=True</td></tr><tr><td class='mono'>quarto</td><td><span class="pill pass">PASS</span></td><td class='detail'>minimal document; quarto=quarto.exe, render ok=True</td></tr><tr><td class='mono'>validity (Gate S)</td><td><span class="pill pass">PASS</span></td><td class='detail'>valid register PASS; overstated count FAIL</td></tr><tr><td class='mono'>surrogate (local NO)</td><td><span class="pill pass">PASS</span></td><td class='detail'>19/19 fixed points within 5%, 19 stable; shuffled-label control caught</td></tr><tr><td class='mono'>lab (NO demo)</td><td><span class="pill pass">PASS</span></td><td class='detail'>91 λ points, max relative error 0.0002%</td></tr><tr><td class='mono'>decision</td><td><span class="pill pass">PASS</span></td><td class='detail'>known answers correct; median … for 2 questions (n=3, wall clock)</td></tr><tr><td class='mono'>inference</td><td><span class="pill pass">PASS</span></td><td class='detail'>12 GB budget enforced; 4 judgement stages -&gt; StartLux; generators unchanged; evaluation -&gt; 2 model(s)</td></tr></tbody>
+    </table>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <h3>Adopters</h3>
+    <table>
+      <caption>A pointer, not a copy: the framework discovers, executes and reports one
+        verdict; each project keeps its gate logic and tests.</caption>
+      <thead><tr><th>project</th><th>root</th><th>registered gate</th><th>checkout</th></tr></thead>
+      <tbody><tr><td class='mono'>keystroke_observatory</td><td>../../../keystroke-observatory</td><td><code>[&quot;{python}&quot;, &quot;scripts/check_handoff.py&quot;]</code></td><td>present</td></tr><tr><td class='mono'>lean_nhb</td><td>../../../lean-nhb</td><td><code>[&quot;lake&quot;, &quot;build&quot;]</code></td><td>present</td></tr></tbody>
     </table>
   </div>
 </section>
 
 <section id="demo">
-  <h2><span class="num">05</span>The demo, and its limit</h2>
-  <div class="grid2 wide">
+  <h2><span class="num">06</span>The demo: system-level quantities from a learned operator</h2>
+  <p class="lede2">Fitted on short-step data, solved for fixed points and stability. Every
+  panel is computed at build time; the page carries its own data and needs no other file.</p>
+  <div class="grid2">
     <figure class="card" style="margin:0">
-      <h3>Fixed points of a learned short-time operator</h3>
-      <canvas id="plot" width="640" height="380" role="img"
+      <h3>Panel A · Fixed point against parameter</h3>
+      <canvas id="plot" width="640" height="360" role="img"
               aria-label="Learned fixed point against the parameter, compared with the analytic branch"></canvas>
       <figcaption>The operator is fitted to one-step pairs of
-        <span><math display="inline"><mfrac><mrow><mi>d</mi><mi>u</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>&#955;</mi><mo>&#8722;</mo><msup><mi>u</mi><mn>2</mn></msup></math></span>;
-        Newton solves <span><math display="inline"><mi>&#968;</mi><mo>(</mo><mi>u</mi><mo>)</mo><mo>=</mo><mi>S</mi><mo>(</mo><mi>u</mi><mo>)</mo><mo>&#8722;</mo><mi>u</mi><mo>=</mo><mn>0</mn></math></span>
-        on the learned map. Circles are the operator; the line is
+        <span><math display="inline"><mfrac><mrow><mi>d</mi><mi>u</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>&#955;</mi><mo>&#8722;</mo><msup><mi>u</mi><mn>2</mn></msup></math></span>
+        and Newton solves <span><math display="inline"><mi>&#968;</mi><mo>(</mo><mi>u</mi><mo>)</mo><mo>=</mo><mi>S</mi><mo>(</mo><mi>u</mi><mo>)</mo><mo>&#8722;</mo><mi>u</mi><mo>=</mo><mn>0</mn></math></span>
+        on the learned map. Circles: operator. Line:
         <span><math display="inline"><msup><mi>u</mi><mo>&#8727;</mo></msup><mo>=</mo><msqrt><mi>&#955;</mi></msqrt></math></span>.</figcaption>
       <div class="controls">
         <label for="lam" class="sans" style="font-size:12.5px;color:var(--muted)">λ</label>
@@ -242,127 +265,136 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.5px var(--mono
         <div class="kv"><div class="k">relative error</div><div class="v" id="err">—</div></div>
         <div class="kv"><div class="k">spectral radius</div><div class="v" id="rho">—</div></div>
       </div>
-      <figcaption style="margin-top:12px">Full version with three panels and a Newton replay:
-        <a href="../lab/lab.html">lab/lab.html</a>.</figcaption>
     </figure>
-    <div>
-      <figure class="card" style="margin:0 0 18px">
-        <h3>Outside its training data</h3>
-        <svg viewBox="0 0 660 300" width="100%" class="fig" role="img" aria-label="Fixed points inside and outside the training interval"><rect x="382.9" y="16" width="263.1" height="246" fill="#f7e6e8"/><text x="514.4" y="30" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10.5" fill="#8c1d2c">outside the training interval</text><line x1="54" y1="262" x2="646" y2="262" stroke="#dde2e8"/><line x1="54" y1="16" x2="54" y2="262" stroke="#dde2e8"/><polyline points="54.0,187.9 60.6,184.3 67.2,180.8 73.7,177.5 80.3,174.3 86.9,171.3 93.5,168.3 100.0,165.4 106.6,162.6 113.2,159.9 119.8,157.2 126.4,154.6 132.9,152.1 139.5,149.6 146.1,147.2 152.7,144.9 159.2,142.5 165.8,140.3 172.4,138.0 179.0,135.8 185.6,133.7 192.1,131.6 198.7,129.5 205.3,127.4 211.9,125.4 218.4,123.4 225.0,121.4 231.6,119.5 238.2,117.6 244.8,115.7 251.3,113.8 257.9,112.0 264.5,110.2 271.1,108.4 277.6,106.6 284.2,104.8 290.8,103.1 297.4,101.4 304.0,99.7 310.5,98.0 317.1,96.3 323.7,94.7 330.3,93.1 336.8,91.4 343.4,89.8 350.0,88.2 356.6,86.7 363.2,85.1 369.7,83.6 376.3,82.0 382.9,80.5 389.5,79.0 396.0,77.5 402.6,76.0 409.2,74.6 415.8,73.1 422.4,71.7 428.9,70.2 435.5,68.8 442.1,67.4 448.7,66.0 455.2,64.6 461.8,63.2 468.4,61.8 475.0,60.5 481.6,59.1 488.1,57.8 494.7,56.4 501.3,55.1 507.9,53.8 514.4,52.4 521.0,51.1 527.6,49.8 534.2,48.6 540.8,47.3 547.3,46.0 553.9,44.7 560.5,43.5 567.1,42.2 573.6,41.0 580.2,39.7 586.8,38.5 593.4,37.3 600.0,36.1 606.5,34.9 613.1,33.6 619.7,32.4 626.3,31.3 632.8,30.1 639.4,28.9 646.0,27.7" fill="none" stroke="#1f4e9c" stroke-width="2"/><polyline points="54.0,187.9 60.6,184.3 67.2,180.8 73.7,177.5 80.3,174.3 86.9,171.3 93.5,168.3 100.0,165.4 106.6,162.6 113.2,159.9 119.8,157.2 126.4,154.6 132.9,152.1 139.5,149.6 146.1,147.2 152.7,144.9 159.2,142.5 165.8,140.3 172.4,138.0 179.0,135.8 185.6,133.7 192.1,131.6 198.7,129.5 205.3,127.4 211.9,125.4 218.4,123.4 225.0,121.4 231.6,119.5 238.2,117.6 244.8,115.7 251.3,113.8 257.9,112.0 264.5,110.2 271.1,108.4 277.6,106.6 284.2,104.8 290.8,103.1 297.4,101.4 304.0,99.7 310.5,98.0 317.1,96.3 323.7,94.7 330.3,93.1 336.8,91.4 343.4,89.8 350.0,88.2 356.6,86.7 363.2,85.1 369.7,83.6 376.3,82.0 382.9,80.5 389.5,79.0 396.0,77.5 402.6,76.0 409.2,74.6 415.8,73.1 422.4,71.7 428.9,70.2 435.5,68.8 442.1,67.4 448.7,66.0 455.2,64.6 461.8,63.2 468.4,61.8 475.0,60.5 481.6,59.1 488.1,57.8 494.7,56.4 501.3,55.1 507.9,53.8 514.4,52.5 521.0,51.1 527.6,49.8 534.2,48.6 540.8,47.3 547.3,46.0 553.9,44.7 560.5,43.5 567.1,42.2 573.6,41.0 580.2,39.7 586.8,38.5 593.4,37.3 600.0,36.1 606.5,34.9 613.1,33.7 619.7,32.5 626.3,31.3 632.8,30.1 639.4,28.9 646.0,27.7" fill="none" stroke="#a8323f" stroke-width="1.6"/><text x="119.8" y="278" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">0.2</text><text x="251.3" y="278" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">0.4</text><text x="382.9" y="278" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">0.6</text><text x="514.4" y="278" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">0.8</text><text x="646.0" y="278" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">1.0</text><text x="46" y="266.0" text-anchor="end" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">0.0</text><text x="46" y="148.9" text-anchor="end" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">0.5</text><text x="46" y="31.7" text-anchor="end" font-family="Segoe UI,Arial" font-size="10.5" fill="#5d6773">1.0</text></svg>
-        <figcaption>Same experiment with the fit restricted to λ ≤ 0.6 (shaded: outside the
-          data). Max relative error <b>0.0002%</b> inside, <b>0.00%</b> outside. The
-          operator does <i>not</i> fail here: the map is smooth and one-dimensional, and
-          training on λ ≤ 0.2 still holds 0.31%. That is a property of this system, not a
-          licence to extrapolate — near a fold the same procedure is expected to break, and
-          this panel would then show it.</figcaption>
-      </figure>
+    <div style="display:grid;gap:18px">
       <div class="card">
-        <h3>What this demonstrates — and what it does not</h3>
-        <p><b>Does.</b> A short-time operator fitted on data supports system-level
-        computation: fixed points, their stability, their parameter dependence — without
-        writing the governing equation down.</p>
-        <p class="note"><b>Does not.</b> It is not a PDE solver, and no claim is made outside
-        the training interval merely because extrapolation happened to work: the measured
-        accuracy beyond λ = 0.6 reflects a smooth one-dimensional map, not a general result.
-        Applying the machinery to token sequences would be a category error — those are not
-        C¹ function spaces.</p>
+        <h3>Panel B · Stability</h3>
+        <canvas id="rho_plot" width="420" height="210" role="img"
+                aria-label="Spectral radius of the learned map against the parameter"></canvas>
+        <figcaption>Spectral radius at the learned fixed point. The red rule is the unit
+          threshold; below it a perturbation decays.</figcaption>
+      </div>
+      <div class="card">
+        <h3>Panel C · Newton iterates</h3>
+        <svg id="trace" width="100%" height="92" role="img"
+             aria-label="Newton iterates converging to the fixed point"></svg>
+        <figcaption class="sans" style="font-size:11.5px">Start u₀ = 1 at λ =
+          <span id="trace_lam">0.50</span>; each point is one Newton step.</figcaption>
+        <div style="margin-top:10px"><button id="replay" type="button">Replay</button></div>
       </div>
     </div>
   </div>
+
+  <div class="grid2" style="margin-top:18px">
+    <div class="card">
+      <h3>Table 1 · Checkpoints</h3>
+      <table>
+        <caption>Learned fixed point, analytic value, relative error and spectral radius at
+          five parameters; all 91 grid points are stable.</caption>
+        <thead><tr><th>λ</th><th>u* analytic</th><th>u* learned</th><th>ε</th><th>ρ</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+    <figure class="card" style="margin:0">
+      <h3>Panel D · Outside the training data</h3>
+      <svg viewBox="0 0 620 250" width="100%" class="fig" role="img" aria-label="Fixed points inside and outside the training interval"><rect x="360.0" y="14" width="248.0" height="202" fill="#f7e6e8"/><text x="484.0" y="27" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#8c1d2c">outside the training interval</text><line x1="50" y1="216" x2="608" y2="216" stroke="#dde2e8"/><line x1="50" y1="14" x2="50" y2="216" stroke="#dde2e8"/><polyline points="50.0,155.2 56.2,152.2 62.4,149.4 68.6,146.6 74.8,144.0 81.0,141.5 87.2,139.0 93.4,136.7 99.6,134.4 105.8,132.1 112.0,130.0 118.2,127.8 124.4,125.8 130.6,123.7 136.8,121.8 143.0,119.8 149.2,117.9 155.4,116.0 161.6,114.2 167.8,112.4 174.0,110.6 180.2,108.9 186.4,107.2 192.6,105.5 198.8,103.8 205.0,102.2 211.2,100.6 217.4,99.0 223.6,97.4 229.8,95.9 236.0,94.3 242.2,92.8 248.4,91.3 254.6,89.8 260.8,88.4 267.0,86.9 273.2,85.5 279.4,84.1 285.6,82.7 291.8,81.3 298.0,80.0 304.2,78.6 310.4,77.3 316.6,75.9 322.8,74.6 329.0,73.3 335.2,72.0 341.4,70.8 347.6,69.5 353.8,68.2 360.0,67.0 366.2,65.7 372.4,64.5 378.6,63.3 384.8,62.1 391.0,60.9 397.2,59.7 403.4,58.5 409.6,57.4 415.8,56.2 422.0,55.0 428.2,53.9 434.4,52.8 440.6,51.6 446.8,50.5 453.0,49.4 459.2,48.3 465.4,47.2 471.6,46.1 477.8,45.0 484.0,43.9 490.2,42.9 496.4,41.8 502.6,40.7 508.8,39.7 515.0,38.6 521.2,37.6 527.4,36.6 533.6,35.5 539.8,34.5 546.0,33.5 552.2,32.5 558.4,31.5 564.6,30.5 570.8,29.5 577.0,28.5 583.2,27.5 589.4,26.5 595.6,25.6 601.8,24.6 608.0,23.6" fill="none" stroke="#1d4e89" stroke-width="2"/><polyline points="50.0,155.2 56.2,152.2 62.4,149.4 68.6,146.6 74.8,144.0 81.0,141.5 87.2,139.0 93.4,136.7 99.6,134.4 105.8,132.1 112.0,130.0 118.2,127.8 124.4,125.8 130.6,123.7 136.8,121.8 143.0,119.8 149.2,117.9 155.4,116.0 161.6,114.2 167.8,112.4 174.0,110.6 180.2,108.9 186.4,107.2 192.6,105.5 198.8,103.8 205.0,102.2 211.2,100.6 217.4,99.0 223.6,97.4 229.8,95.9 236.0,94.3 242.2,92.8 248.4,91.3 254.6,89.8 260.8,88.4 267.0,86.9 273.2,85.5 279.4,84.1 285.6,82.7 291.8,81.3 298.0,80.0 304.2,78.6 310.4,77.3 316.6,75.9 322.8,74.6 329.0,73.3 335.2,72.0 341.4,70.8 347.6,69.5 353.8,68.2 360.0,67.0 366.2,65.7 372.4,64.5 378.6,63.3 384.8,62.1 391.0,60.9 397.2,59.7 403.4,58.5 409.6,57.4 415.8,56.2 422.0,55.0 428.2,53.9 434.4,52.8 440.6,51.6 446.8,50.5 453.0,49.4 459.2,48.3 465.4,47.2 471.6,46.1 477.8,45.0 484.0,43.9 490.2,42.9 496.4,41.8 502.6,40.7 508.8,39.7 515.0,38.6 521.2,37.6 527.4,36.6 533.6,35.5 539.8,34.5 546.0,33.5 552.2,32.5 558.4,31.5 564.6,30.5 570.8,29.5 577.0,28.5 583.2,27.5 589.4,26.5 595.6,25.6 601.8,24.6 608.0,23.6" fill="none" stroke="#a8323f" stroke-width="1.5"/><text x="112.0" y="231" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#5d6773">0.2</text><text x="236.0" y="231" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#5d6773">0.4</text><text x="360.0" y="231" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#5d6773">0.6</text><text x="484.0" y="231" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#5d6773">0.8</text><text x="608.0" y="231" text-anchor="middle" font-family="Segoe UI,Arial" font-size="10" fill="#5d6773">1.0</text><text x="43" y="220.0" text-anchor="end" font-family="Segoe UI,Arial" font-size="10" fill="#5d6773">0.0</text><text x="43" y="123.8" text-anchor="end" font-family="Segoe UI,Arial" font-size="10" fill="#5d6773">0.5</text><text x="43" y="27.6" text-anchor="end" font-family="Segoe UI,Arial" font-size="10" fill="#5d6773">1.0</text></svg>
+      <figcaption>Fit restricted to λ ≤ 0.6 (shaded: outside the data). Max relative error
+        <b>0.0002%</b> inside, <b>0.00%</b> outside. The operator does not fail here —
+        the map is smooth and one-dimensional, and training on λ ≤ 0.2 still holds 0.31%.
+        That is a property of this system, not a licence to extrapolate.</figcaption>
+    </figure>
+  </div>
 </section>
 
-<section id="adopters">
-  <h2><span class="num">06</span>Adopters</h2>
-  <div class="card">
-    <table>
-      <caption>A pointer, not a copy: the framework discovers, executes and reports one
-        comparable verdict; each project keeps its own gate logic and tests.</caption>
-      <thead><tr><th>project</th><th>root</th><th>registered gate</th><th>checkout</th></tr></thead>
-      <tbody><tr><td class='mono'>keystroke_observatory</td><td>../../../keystroke-observatory</td><td><code>[&quot;{python}&quot;, &quot;scripts/check_handoff.py&quot;]</code></td><td>present</td></tr><tr><td class='mono'>lean_nhb</td><td>../../../lean-nhb</td><td><code>[&quot;lake&quot;, &quot;build&quot;]</code></td><td>present</td></tr></tbody>
-    </table>
-    <p style="margin:14px 0 0">The two adopters are deliberately unlike — a Python repository
-    with a manuscript, and a Lean library with no Python and no manuscript. If the registry
-    only fitted the first, the generality claim would be empty.</p>
+<section id="start">
+  <h2><span class="num">07</span>Start a project</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3>Instantiate or register</h3>
+      <pre><span class="c"># new project: inherits gates, tracking, rendering</span>
+./bootstrap_project.sh my_study
+
+<span class="c"># existing repository: pointer, not a copy</span>
+cat &gt; projects/my_study/project.yaml &lt;&lt;'YAML'
+root: ../../../my_study
+gate_command: ["{python}", "scripts/check_handoff.py"]
+YAML
+
+<span class="c"># run its gate through the framework</span>
+python -m framework.project check my_study</pre>
+    </div>
+    <div class="card">
+      <h3>Check this page's own claims</h3>
+      <pre><span class="c"># chains, tests, coverage, self-audit</span>
+python tools/record_self_audit.py
+python tools/record_self_audit.py --check
+
+<span class="c"># rebuild this page from the artefacts it cites</span>
+python tools/build_site.py --check
+
+<span class="c"># validate a project's claims</span>
+python tools/audit_validity.py --project ../keystroke-observatory</pre>
+      <p style="margin:10px 0 0">The page has no external script, font or network call;
+      formulas are MathML, the demo is inline, and every number is computed at build time.</p>
+    </div>
   </div>
 </section>
 
 <section id="limits">
-  <h2><span class="num">07</span>What the framework does not claim</h2>
+  <h2><span class="num">08</span>Limits and licence</h2>
   <div class="card">
-    <p><b>Referee simulation.</b> 8 objections recorded, 0 open. The gate
-    parses the tags in <a href="../docs/REFEREE_SIM.md">docs/REFEREE_SIM.md</a> and refuses a
-    register whose count disagrees.</p>
-    <p><b>Known limits.</b> Coverage is uneven — <code>framework/inference</code> is exercised
-    mainly by chains, not unit tests. The Lean chain is verified on two external projects, not
-    on a project this framework gates. Quarto is absent on the build host, so a project's PDF
-    path cannot be exercised end to end here.</p>
-    <p><b>One adopter proves an interface, not a field.</b> Two show the registry is not shaped
-    around one repository. Nothing here shows that the gates improve a project's science; that
-    would need a control group this programme does not have.</p>
-  </div>
-</section>
-
-<section id="reproduce">
-  <h2><span class="num">08</span>Reproduce this page</h2>
-  <div class="grid2">
-    <div class="card">
-      <h3>Commands</h3>
-      <pre><span class="c"># tests, chains, coverage, self-audit -> docs/SELF_AUDIT.json</span>
-python tools/record_self_audit.py
-
-<span class="c"># rebuild this page from the artefacts it cites</span>
-python tools/build_site.py
-
-<span class="c"># fail if the committed page is stale</span>
-python tools/build_site.py --check
-
-<span class="c"># Gate S on a project</span>
-python tools/audit_validity.py --project ../keystroke-observatory</pre>
-    </div>
-    <div class="card">
-      <h3>What is generated, what is reviewed</h3>
-      <p>Every number on this page is computed at build time. The prose is reviewed by hand;
-      the figures are not — <code>architecture_svg</code>, the chain table and the
-      extrapolation panel are all produced from data or from the code that runs the chains.</p>
-      <p>The page has no external script, font or network call: it opens from disk. Formulas
-      are MathML, not images.</p>
-    </div>
+    <p><b>What is measured.</b> Tests, coverage, chain verdicts, Lean runs, decision
+    calibration, and the demo's error against a closed form.</p>
+    <p><b>What is not.</b> That the gates improve a project's science — that would need a
+    control group this programme does not have. That the interfaces generalise beyond two
+    adopters. That a project's PDF path works here: Quarto is absent on this host.
+    Coverage is uneven; <code>framework/inference</code> is exercised mainly by chains.</p>
+    <p><b>Licence.</b> The framework is MIT. The decision operator's weights are
+    <b>CC BY-NC 4.0</b> (non-commercial): a project that needs commercial terms must swap
+    the operator, and the framework must not assume it is redistributable.</p>
   </div>
 </section>
 
 <footer>
-  Eidos 4.0.0 · MIT · commit <span class="mono">f072b3b</span> · built
+  Eidos 4.0.0 · MIT · commit <span class="mono">47573a7</span> · built
   2026-10-23 by <code>tools/build_site.py</code>.
-  Numbers come from <a href="../docs/SELF_AUDIT.json">SELF_AUDIT.json</a>,
-  <a href="../docs/CHAIN_AUDIT.md">CHAIN_AUDIT.md</a>, the project registry, and one
-  extrapolation experiment computed at build time.
+  Numbers from <a href="../docs/SELF_AUDIT.json">SELF_AUDIT.json</a>,
+  <a href="../docs/CHAIN_AUDIT.md">CHAIN_AUDIT.md</a>, the project registry,
+  <code>artifacts/decision_calibration_100.json</code>, and one extrapolation experiment
+  computed at build time.
 </footer>
 </div>
 
 <script>
-const ROWS = [{"lam":0.1,"learned":0.316228,"truth":0.316228,"rho":0.96887},{"lam":0.11,"learned":0.331663,"truth":0.331662,"rho":0.96738},{"lam":0.12,"learned":0.34641,"truth":0.34641,"rho":0.96595},{"lam":0.13,"learned":0.360555,"truth":0.360555,"rho":0.96459},{"lam":0.14,"learned":0.374166,"truth":0.374166,"rho":0.96327},{"lam":0.15,"learned":0.387298,"truth":0.387298,"rho":0.96201},{"lam":0.16,"learned":0.4,"truth":0.4,"rho":0.96079},{"lam":0.17,"learned":0.41231,"truth":0.412311,"rho":0.95961},{"lam":0.18,"learned":0.424264,"truth":0.424264,"rho":0.95846},{"lam":0.19,"learned":0.43589,"truth":0.43589,"rho":0.95735},{"lam":0.2,"learned":0.447214,"truth":0.447214,"rho":0.95626},{"lam":0.21,"learned":0.458258,"truth":0.458258,"rho":0.95521},{"lam":0.22,"learned":0.469042,"truth":0.469042,"rho":0.95418},{"lam":0.23,"learned":0.479583,"truth":0.479583,"rho":0.95317},{"lam":0.24,"learned":0.489898,"truth":0.489898,"rho":0.95219},{"lam":0.25,"learned":0.5,"truth":0.5,"rho":0.95123},{"lam":0.26,"learned":0.509902,"truth":0.509902,"rho":0.95029},{"lam":0.27,"learned":0.519616,"truth":0.519615,"rho":0.94937},{"lam":0.28,"learned":0.529151,"truth":0.52915,"rho":0.94846},{"lam":0.29,"learned":0.538517,"truth":0.538516,"rho":0.94757},{"lam":0.3,"learned":0.547723,"truth":0.547723,"rho":0.9467},{"lam":0.31,"learned":0.556777,"truth":0.556776,"rho":0.94584},{"lam":0.32,"learned":0.565686,"truth":0.565685,"rho":0.945},{"lam":0.33,"learned":0.574457,"truth":0.574456,"rho":0.94417},{"lam":0.34,"learned":0.583095,"truth":0.583095,"rho":0.94336},{"lam":0.35,"learned":0.591608,"truth":0.591608,"rho":0.94255},{"lam":0.36,"learned":0.6,"truth":0.6,"rho":0.94176},{"lam":0.37,"learned":0.608276,"truth":0.608276,"rho":0.94099},{"lam":0.38,"learned":0.616441,"truth":0.616441,"rho":0.94022},{"lam":0.39,"learned":0.6245,"truth":0.6245,"rho":0.93946},{"lam":0.4,"learned":0.632456,"truth":0.632456,"rho":0.93871},{"lam":0.41,"learned":0.640312,"truth":0.640312,"rho":0.93798},{"lam":0.42,"learned":0.648074,"truth":0.648074,"rho":0.93725},{"lam":0.43,"learned":0.655744,"truth":0.655744,"rho":0.93653},{"lam":0.44,"learned":0.663325,"truth":0.663325,"rho":0.93582},{"lam":0.45,"learned":0.67082,"truth":0.67082,"rho":0.93512},{"lam":0.46,"learned":0.678233,"truth":0.678233,"rho":0.93443},{"lam":0.47,"learned":0.685566,"truth":0.685565,"rho":0.93374},{"lam":0.48,"learned":0.69282,"truth":0.69282,"rho":0.93306},{"lam":0.49,"learned":0.7,"truth":0.7,"rho":0.93239},{"lam":0.5,"learned":0.707107,"truth":0.707107,"rho":0.93173},{"lam":0.51,"learned":0.714143,"truth":0.714143,"rho":0.93108},{"lam":0.52,"learned":0.72111,"truth":0.72111,"rho":0.93043},{"lam":0.53,"learned":0.728011,"truth":0.728011,"rho":0.92979},{"lam":0.54,"learned":0.734847,"truth":0.734847,"rho":0.92915},{"lam":0.55,"learned":0.74162,"truth":0.74162,"rho":0.92852},{"lam":0.56,"learned":0.748332,"truth":0.748331,"rho":0.9279},{"lam":0.57,"learned":0.754984,"truth":0.754983,"rho":0.92728},{"lam":0.58,"learned":0.761578,"truth":0.761577,"rho":0.92667},{"lam":0.59,"learned":0.768115,"truth":0.768115,"rho":0.92606},{"lam":0.6,"learned":0.774597,"truth":0.774597,"rho":0.92546},{"lam":0.61,"learned":0.781025,"truth":0.781025,"rho":0.92487},{"lam":0.62,"learned":0.787401,"truth":0.787401,"rho":0.92428},{"lam":0.63,"learned":0.793726,"truth":0.793725,"rho":0.9237},{"lam":0.64,"learned":0.8,"truth":0.8,"rho":0.92312},{"lam":0.65,"learned":0.806226,"truth":0.806226,"rho":0.92254},{"lam":0.66,"learned":0.812404,"truth":0.812404,"rho":0.92197},{"lam":0.67,"learned":0.818535,"truth":0.818535,"rho":0.92141},{"lam":0.68,"learned":0.824621,"truth":0.824621,"rho":0.92085},{"lam":0.69,"learned":0.830662,"truth":0.830662,"rho":0.92029},{"lam":0.7,"learned":0.83666,"truth":0.83666,"rho":0.91974},{"lam":0.71,"learned":0.842615,"truth":0.842615,"rho":0.91919},{"lam":0.72,"learned":0.848528,"truth":0.848528,"rho":0.91865},{"lam":0.73,"learned":0.8544,"truth":0.8544,"rho":0.91811},{"lam":0.74,"learned":0.860232,"truth":0.860233,"rho":0.91757},{"lam":0.75,"learned":0.866025,"truth":0.866025,"rho":0.91704},{"lam":0.76,"learned":0.871779,"truth":0.87178,"rho":0.91651},{"lam":0.77,"learned":0.877496,"truth":0.877496,"rho":0.91599},{"lam":0.78,"learned":0.883176,"truth":0.883176,"rho":0.91547},{"lam":0.79,"learned":0.888819,"truth":0.888819,"rho":0.91495},{"lam":0.8,"learned":0.894427,"truth":0.894427,"rho":0.91444},{"lam":0.81,"learned":0.9,"truth":0.9,"rho":0.91393},{"lam":0.82,"learned":0.905538,"truth":0.905539,"rho":0.91343},{"lam":0.83,"learned":0.911043,"truth":0.911043,"rho":0.91292},{"lam":0.84,"learned":0.916515,"truth":0.916515,"rho":0.91242},{"lam":0.85,"learned":0.921954,"truth":0.921954,"rho":0.91193},{"lam":0.86,"learned":0.927362,"truth":0.927362,"rho":0.91143},{"lam":0.87,"learned":0.932738,"truth":0.932738,"rho":0.91094},{"lam":0.88,"learned":0.938083,"truth":0.938083,"rho":0.91046},{"lam":0.89,"learned":0.943398,"truth":0.943398,"rho":0.90997},{"lam":0.9,"learned":0.948683,"truth":0.948683,"rho":0.90949},{"lam":0.91,"learned":0.953939,"truth":0.953939,"rho":0.90902},{"lam":0.92,"learned":0.959166,"truth":0.959166,"rho":0.90854},{"lam":0.93,"learned":0.964365,"truth":0.964365,"rho":0.90807},{"lam":0.94,"learned":0.969536,"truth":0.969536,"rho":0.9076},{"lam":0.95,"learned":0.974679,"truth":0.974679,"rho":0.90713},{"lam":0.96,"learned":0.979796,"truth":0.979796,"rho":0.90667},{"lam":0.97,"learned":0.984886,"truth":0.984886,"rho":0.90621},{"lam":0.98,"learned":0.989949,"truth":0.989949,"rho":0.90575},{"lam":0.99,"learned":0.994987,"truth":0.994987,"rho":0.90529},{"lam":1.0,"learned":0.999999,"truth":1.0,"rho":0.90484}];
-const W = 640, H = 380, PAD = {l: 52, r: 14, t: 14, b: 40};
+const DATA = {"rows":[{"lam":0.1,"learned":0.316228,"truth":0.316228,"rho":0.96887},{"lam":0.11,"learned":0.331663,"truth":0.331662,"rho":0.96738},{"lam":0.12,"learned":0.34641,"truth":0.34641,"rho":0.96595},{"lam":0.13,"learned":0.360555,"truth":0.360555,"rho":0.96459},{"lam":0.14,"learned":0.374166,"truth":0.374166,"rho":0.96327},{"lam":0.15,"learned":0.387298,"truth":0.387298,"rho":0.96201},{"lam":0.16,"learned":0.4,"truth":0.4,"rho":0.96079},{"lam":0.17,"learned":0.41231,"truth":0.412311,"rho":0.95961},{"lam":0.18,"learned":0.424264,"truth":0.424264,"rho":0.95846},{"lam":0.19,"learned":0.43589,"truth":0.43589,"rho":0.95735},{"lam":0.2,"learned":0.447214,"truth":0.447214,"rho":0.95626},{"lam":0.21,"learned":0.458258,"truth":0.458258,"rho":0.95521},{"lam":0.22,"learned":0.469042,"truth":0.469042,"rho":0.95418},{"lam":0.23,"learned":0.479583,"truth":0.479583,"rho":0.95317},{"lam":0.24,"learned":0.489898,"truth":0.489898,"rho":0.95219},{"lam":0.25,"learned":0.5,"truth":0.5,"rho":0.95123},{"lam":0.26,"learned":0.509902,"truth":0.509902,"rho":0.95029},{"lam":0.27,"learned":0.519616,"truth":0.519615,"rho":0.94937},{"lam":0.28,"learned":0.529151,"truth":0.52915,"rho":0.94846},{"lam":0.29,"learned":0.538517,"truth":0.538516,"rho":0.94757},{"lam":0.3,"learned":0.547723,"truth":0.547723,"rho":0.9467},{"lam":0.31,"learned":0.556777,"truth":0.556776,"rho":0.94584},{"lam":0.32,"learned":0.565686,"truth":0.565685,"rho":0.945},{"lam":0.33,"learned":0.574457,"truth":0.574456,"rho":0.94417},{"lam":0.34,"learned":0.583095,"truth":0.583095,"rho":0.94336},{"lam":0.35,"learned":0.591608,"truth":0.591608,"rho":0.94255},{"lam":0.36,"learned":0.6,"truth":0.6,"rho":0.94176},{"lam":0.37,"learned":0.608276,"truth":0.608276,"rho":0.94099},{"lam":0.38,"learned":0.616441,"truth":0.616441,"rho":0.94022},{"lam":0.39,"learned":0.6245,"truth":0.6245,"rho":0.93946},{"lam":0.4,"learned":0.632456,"truth":0.632456,"rho":0.93871},{"lam":0.41,"learned":0.640312,"truth":0.640312,"rho":0.93798},{"lam":0.42,"learned":0.648074,"truth":0.648074,"rho":0.93725},{"lam":0.43,"learned":0.655744,"truth":0.655744,"rho":0.93653},{"lam":0.44,"learned":0.663325,"truth":0.663325,"rho":0.93582},{"lam":0.45,"learned":0.67082,"truth":0.67082,"rho":0.93512},{"lam":0.46,"learned":0.678233,"truth":0.678233,"rho":0.93443},{"lam":0.47,"learned":0.685566,"truth":0.685565,"rho":0.93374},{"lam":0.48,"learned":0.69282,"truth":0.69282,"rho":0.93306},{"lam":0.49,"learned":0.7,"truth":0.7,"rho":0.93239},{"lam":0.5,"learned":0.707107,"truth":0.707107,"rho":0.93173},{"lam":0.51,"learned":0.714143,"truth":0.714143,"rho":0.93108},{"lam":0.52,"learned":0.72111,"truth":0.72111,"rho":0.93043},{"lam":0.53,"learned":0.728011,"truth":0.728011,"rho":0.92979},{"lam":0.54,"learned":0.734847,"truth":0.734847,"rho":0.92915},{"lam":0.55,"learned":0.74162,"truth":0.74162,"rho":0.92852},{"lam":0.56,"learned":0.748332,"truth":0.748331,"rho":0.9279},{"lam":0.57,"learned":0.754984,"truth":0.754983,"rho":0.92728},{"lam":0.58,"learned":0.761578,"truth":0.761577,"rho":0.92667},{"lam":0.59,"learned":0.768115,"truth":0.768115,"rho":0.92606},{"lam":0.6,"learned":0.774597,"truth":0.774597,"rho":0.92546},{"lam":0.61,"learned":0.781025,"truth":0.781025,"rho":0.92487},{"lam":0.62,"learned":0.787401,"truth":0.787401,"rho":0.92428},{"lam":0.63,"learned":0.793726,"truth":0.793725,"rho":0.9237},{"lam":0.64,"learned":0.8,"truth":0.8,"rho":0.92312},{"lam":0.65,"learned":0.806226,"truth":0.806226,"rho":0.92254},{"lam":0.66,"learned":0.812404,"truth":0.812404,"rho":0.92197},{"lam":0.67,"learned":0.818535,"truth":0.818535,"rho":0.92141},{"lam":0.68,"learned":0.824621,"truth":0.824621,"rho":0.92085},{"lam":0.69,"learned":0.830662,"truth":0.830662,"rho":0.92029},{"lam":0.7,"learned":0.83666,"truth":0.83666,"rho":0.91974},{"lam":0.71,"learned":0.842615,"truth":0.842615,"rho":0.91919},{"lam":0.72,"learned":0.848528,"truth":0.848528,"rho":0.91865},{"lam":0.73,"learned":0.8544,"truth":0.8544,"rho":0.91811},{"lam":0.74,"learned":0.860232,"truth":0.860233,"rho":0.91757},{"lam":0.75,"learned":0.866025,"truth":0.866025,"rho":0.91704},{"lam":0.76,"learned":0.871779,"truth":0.87178,"rho":0.91651},{"lam":0.77,"learned":0.877496,"truth":0.877496,"rho":0.91599},{"lam":0.78,"learned":0.883176,"truth":0.883176,"rho":0.91547},{"lam":0.79,"learned":0.888819,"truth":0.888819,"rho":0.91495},{"lam":0.8,"learned":0.894427,"truth":0.894427,"rho":0.91444},{"lam":0.81,"learned":0.9,"truth":0.9,"rho":0.91393},{"lam":0.82,"learned":0.905538,"truth":0.905539,"rho":0.91343},{"lam":0.83,"learned":0.911043,"truth":0.911043,"rho":0.91292},{"lam":0.84,"learned":0.916515,"truth":0.916515,"rho":0.91242},{"lam":0.85,"learned":0.921954,"truth":0.921954,"rho":0.91193},{"lam":0.86,"learned":0.927362,"truth":0.927362,"rho":0.91143},{"lam":0.87,"learned":0.932738,"truth":0.932738,"rho":0.91094},{"lam":0.88,"learned":0.938083,"truth":0.938083,"rho":0.91046},{"lam":0.89,"learned":0.943398,"truth":0.943398,"rho":0.90997},{"lam":0.9,"learned":0.948683,"truth":0.948683,"rho":0.90949},{"lam":0.91,"learned":0.953939,"truth":0.953939,"rho":0.90902},{"lam":0.92,"learned":0.959166,"truth":0.959166,"rho":0.90854},{"lam":0.93,"learned":0.964365,"truth":0.964365,"rho":0.90807},{"lam":0.94,"learned":0.969536,"truth":0.969536,"rho":0.9076},{"lam":0.95,"learned":0.974679,"truth":0.974679,"rho":0.90713},{"lam":0.96,"learned":0.979796,"truth":0.979796,"rho":0.90667},{"lam":0.97,"learned":0.984886,"truth":0.984886,"rho":0.90621},{"lam":0.98,"learned":0.989949,"truth":0.989949,"rho":0.90575},{"lam":0.99,"learned":0.994987,"truth":0.994987,"rho":0.90529},{"lam":1.0,"learned":0.999999,"truth":1.0,"rho":0.90484}],"checkpoints":[{"lam":0.2,"learned":0.447214,"truth":0.447214,"rho":0.95626,"rel_error":0.0},{"lam":0.4,"learned":0.632456,"truth":0.632456,"rho":0.93871,"rel_error":0.0},{"lam":0.6,"learned":0.774597,"truth":0.774597,"rho":0.92546,"rel_error":0.0},{"lam":0.8,"learned":0.894427,"truth":0.894427,"rho":0.91444,"rel_error":0.0},{"lam":1.0,"learned":0.999999,"truth":1.0,"rho":0.90484,"rel_error":1e-06}],"traces":{"0.20":[1.0,0.5922360722956934,0.46417917721720114,0.4475101818614944,0.4472137858800442,0.44721369164329017,0.44721369164329017,0.44721369164329017],"0.50":[1.0,0.7469889116506032,0.7080989051210186,0.7071075996749531,0.7071069516503088,0.7071069516503088,0.7071069516503088],"0.90":[1.0,0.949880983800678,0.9486841397373281,0.9486834526205167,0.9486834526205167,0.9486834526205167]}};
+const ROWS = DATA.rows;
+const W = 640, H = 360, PAD = {l: 52, r: 14, t: 14, b: 40};
 const xOf = lam => PAD.l + (lam - 0.1) / 0.9 * (W - PAD.l - PAD.r);
 const yOf = u => H - PAD.b - (u / 1.05) * (H - PAD.t - PAD.b);
 
-function axes(ctx) {
-  ctx.clearRect(0, 0, W, H);
-  ctx.strokeStyle = "#e2e6eb"; ctx.beginPath();
-  ctx.moveTo(PAD.l, PAD.t); ctx.lineTo(PAD.l, H - PAD.b); ctx.lineTo(W - PAD.r, H - PAD.b);
+function frame(ctx, w, h, pad, ymax, ylabel) {
+  ctx.clearRect(0, 0, w, h);
+  ctx.strokeStyle = "#e1e6ec"; ctx.beginPath();
+  ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, h - pad.b); ctx.lineTo(w - pad.r, h - pad.b);
   ctx.stroke();
-  ctx.fillStyle = "#61707f"; ctx.font = "11px -apple-system,Segoe UI,Arial";
+  ctx.fillStyle = "#5f6c7a"; ctx.font = "10.5px -apple-system,Segoe UI,Arial";
   ctx.textAlign = "center";
-  for (const t of [0.1, 0.3, 0.5, 0.7, 0.9, 1.0]) ctx.fillText(t.toFixed(1), xOf(t), H - PAD.b + 16);
+  for (const t of [0.1, 0.3, 0.5, 0.7, 0.9, 1.0])
+    ctx.fillText(t.toFixed(1), pad.l + (t - 0.1) / 0.9 * (w - pad.l - pad.r), h - pad.b + 15);
   ctx.textAlign = "right";
-  for (let v = 0; v <= 1.0; v += 0.25) {
-    const py = yOf(v); ctx.fillText(v.toFixed(2), PAD.l - 8, py + 4);
-    ctx.strokeStyle = "#f0f2f5"; ctx.beginPath(); ctx.moveTo(PAD.l, py); ctx.lineTo(W - PAD.r, py); ctx.stroke();
+  for (let v = 0; v <= ymax + 1e-9; v += ymax / 4) {
+    const py = h - pad.b - (v / ymax) * (h - pad.t - pad.b);
+    ctx.fillText(v.toFixed(2), pad.l - 7, py + 4);
+    ctx.strokeStyle = "#f0f2f5"; ctx.beginPath(); ctx.moveTo(pad.l, py);
+    ctx.lineTo(w - pad.r, py); ctx.stroke();
   }
+  ctx.save(); ctx.translate(14, (h + pad.t - pad.b) / 2); ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = "center"; ctx.fillStyle = "#5f6c7a"; ctx.fillText(ylabel, 0, 0); ctx.restore();
 }
 
-function draw() {
+function drawMain() {
   const ctx = document.getElementById("plot").getContext("2d");
-  axes(ctx);
+  frame(ctx, W, H, PAD, 1.05, "u*");
   ctx.strokeStyle = "#1d4e89"; ctx.lineWidth = 2; ctx.beginPath();
   ROWS.forEach((r, i) => i ? ctx.lineTo(xOf(r.lam), yOf(r.truth)) : ctx.moveTo(xOf(r.lam), yOf(r.truth)));
   ctx.stroke();
@@ -381,7 +413,64 @@ function draw() {
   ctx.stroke(); ctx.setLineDash([]);
 }
 
-document.getElementById("lam").addEventListener("input", draw);
-draw();
+function drawRho() {
+  const ctx = document.getElementById("rho_plot").getContext("2d");
+  const w = 420, h = 210, pad = {l: 44, r: 12, t: 12, b: 30};
+  const top = Math.max(1.15, ...ROWS.map(r => r.rho || 0));
+  frame(ctx, w, h, pad, top, "ρ");
+  ctx.strokeStyle = "#1d4e89"; ctx.lineWidth = 2; ctx.beginPath();
+  ROWS.forEach((r, i) => { if (r.rho === null) return;
+    const px = pad.l + (r.lam - 0.1) / 0.9 * (w - pad.l - pad.r);
+    const py = h - pad.b - (r.rho / top) * (h - pad.t - pad.b);
+    i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); });
+  ctx.stroke();
+  const py = h - pad.b - (1 / top) * (h - pad.t - pad.b);
+  ctx.strokeStyle = "#a8323f"; ctx.setLineDash([5, 4]); ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(pad.l, py); ctx.lineTo(w - pad.r, py); ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function drawTrace() {
+  const sel = parseFloat(document.getElementById("lam").value);
+  const keys = Object.keys(DATA.traces);
+  const key = keys.reduce((a, b) => Math.abs(parseFloat(b) - sel) < Math.abs(parseFloat(a) - sel) ? b : a);
+  document.getElementById("trace_lam").textContent = parseFloat(key).toFixed(2);
+  const pts = DATA.traces[key];
+  const svg = document.getElementById("trace");
+  const w = svg.clientWidth || 380, h = 92;
+  const ux = i => 14 + i / Math.max(1, pts.length - 1) * (w - 28);
+  const uy = v => h - 12 - (v / 1.05) * (h - 24);
+  svg.innerHTML = pts.map((v, i) =>
+    `<circle cx="${ux(i)}" cy="${uy(v)}" r="3" fill="#1d4e89" opacity="${(0.35 + 0.65 * i / pts.length).toFixed(2)}"/>`
+  ).join("") + `<polyline fill="none" stroke="#1d4e89" stroke-width="1.1" points="${pts.map((v, i) => `${ux(i)},${uy(v)}`).join(" ")}"/>`;
+}
+
+function fillTable() {
+  document.getElementById("rows").innerHTML = DATA.checkpoints.map(r => `
+    <tr><td>${r.lam.toFixed(2)}</td><td>${r.truth.toFixed(4)}</td>
+    <td>${r.learned === null ? "—" : r.learned.toFixed(4)}</td>
+    <td>${r.rel_error === null ? "—" : (100 * r.rel_error).toExponential(1) + "%"}</td>
+    <td>${r.rho === null ? "—" : r.rho.toFixed(3)}</td></tr>`).join("");
+}
+
+let timer = null;
+function replay() {
+  const circles = document.getElementById("trace").querySelectorAll("circle");
+  if (timer) clearInterval(timer);
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    circles.forEach(c => c.style.opacity = 1); return;
+  }
+  circles.forEach(c => c.style.opacity = 0.05);
+  let i = 0;
+  timer = setInterval(() => {
+    if (i >= circles.length) { clearInterval(timer); timer = null; return; }
+    circles[i].style.opacity = 1; i++;
+  }, 210);
+}
+
+document.getElementById("lam").addEventListener("input", () => { drawMain(); drawTrace(); });
+document.getElementById("replay").addEventListener("click", replay);
+drawMain(); drawRho(); drawTrace(); fillTable();
+window.addEventListener("resize", () => { drawRho(); drawTrace(); });
 </script>
 </body></html>

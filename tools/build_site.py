@@ -64,6 +64,7 @@ def registry() -> list[dict]:
         gate = re.search(r"^gate_command:\s*(\[.*\])", text, re.M)
         register = re.search(r"^validity_register:\s*(\S+)", text, re.M)
         document = re.search(r'^validity_document:\s*"?([^"]+)"?', text, re.M)
+        expected = re.search(r'^expected_gate_s:\s*(\w+)', text, re.M)
         root_path = (spec.parent / (root.group(1) if root else "")).resolve()
         row = {"name": name.group(1) if name else spec.parent.name,
                "root": root.group(1) if root else "?",
@@ -71,7 +72,8 @@ def registry() -> list[dict]:
                "available": root_path.is_dir(),
                "register": register.group(1) if register else None,
                "document": document.group(1) if document else None,
-               "gate_s": "—"}
+               "gate_s": "—",
+               "expected": expected.group(1).upper() if expected else None}
         if row["available"] and row["register"] and row["document"]:
             docs = [d.strip() for d in str(row["document"]).split(",") if d.strip()]
             args = [sys.executable, "tools/audit_validity.py", "--project", str(root_path),
@@ -301,7 +303,10 @@ def adopt_rows(rows: list[dict]) -> str:
         f"<tr><td class='mono'>{html.escape(p['name'])}</td><td>{html.escape(p['root'])}</td>"
         f"<td><code>{html.escape(p['gate'])}</code></td>"
         f"<td>{'present' if p['available'] else 'absent'}</td>"
-        f"<td>{gs(p.get('gate_s', '—'))}</td></tr>" for p in rows)
+        f"<td>{gs(p.get('gate_s', '—'))}"
+        + (" <span class='detail'>(expected)</span>"
+           if p.get('expected') and p.get('expected') == p.get('gate_s') else "")
+        + "</td></tr>" for p in rows)
 
 
 def lean_rows(rows: list[dict]) -> str:
@@ -596,6 +601,11 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono
         <th>Gate S</th></tr></thead>
       <tbody>__ADOPT__</tbody>
     </table>
+    <p style="margin:14px 0 0;font-size:13px;color:#3a434d">Three entries, deliberately
+    different: an external Lean library whose claims the kernel checks (one objection stays
+    open), a closed-form fixture that should pass, and a <b>negative control that must be
+    rejected</b>. The last row is the instrument's own check — a gate that cannot fail on a
+    false claim is not measuring anything.</p>
   </div>
 </section>
 

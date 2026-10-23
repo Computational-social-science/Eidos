@@ -1,0 +1,11 @@
+name: null_study
+root: ../../reference/null_study
+
+# Negative control: the register asserts a number the evidence contradicts, so Gate S must
+# FAIL. A gate that cannot reject a false claim is not an instrument.
+role: negative control (expected rejection)
+expected_gate_s: FAIL
+
+gate_command: ["python", "-c", "import sys; sys.exit(1)"]
+validity_register: analysis/CLAIMS.yaml
+validity_document: "docs/REPORT.md"

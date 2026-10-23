@@ -1,0 +1,45 @@
+# Gate S register -- negative control (this claim is false on purpose)
+#
+# The other two consumers prove the gate can pass and can fail for a reason that no
+# evidence could remove. Neither proves it rejects a *false* claim. This fixture states
+# one: the number in the evidence file is 1, the register asserts 19. Gate S must FAIL,
+# and tests/test_negative_fixture.py asserts that it does.
+
+scope_axes: [lambda_range, operator, seed, data_source, non_goals]
+
+scope:
+  lambda_range: ["0.1 <= lam <= 1.0, as in the source study"]
+  operator: ["random-feature short-time stepper, shuffled training labels"]
+  seed: ["0"]
+  data_source: ["synthetic: RK4 integration of du/dt = lam - u^2, labels shuffled"]
+  non_goals:
+    - "anything true; this register exists to be rejected"
+
+claims:
+  - id: N1
+    text: "The shuffled-label control recovers the fixed point at every held-out branch"
+    span: "the shuffled-label control recovers the analytic fixed point at every held-out branch"
+    strength: supported
+    design: preregistered
+    evidence:
+      file: ../surrogate_study/docs/evidence.json
+      pointer: /control/within_5pct
+      value: 19
+    control:
+      file: ../surrogate_study/docs/evidence.json
+      pointer: /forward/within_5pct
+      value: 19
+    assumptions:
+      - "none: the asserted number is wrong by construction (1, not 19)"
+    formal: false
+
+power:
+  not_applicable: "the register is a control, not an estimate"
+
+multiplicity:
+  not_applicable: "one claim"
+
+journal_fit:
+  file: docs/REFEREE_SIM.md
+  objections: 1
+  unresolved: 0

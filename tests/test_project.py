@@ -179,3 +179,24 @@ def test_exec_runs_the_declared_test_command(tmp_path):
     run = run_command(load_project(cfg), "test")
     assert run.status == "PASS"
     assert (repo / "ran.txt").read_text(encoding="utf-8") == "yes"
+
+
+def test_missing_project_root_raises_locally_but_is_skippable_in_ci(tmp_path):
+    """A detached checkout must not pass as audited locally, yet CI has no checkouts.
+
+    The chain audit passes allow_missing=not STRICT_REGISTRY for exactly this reason; a
+    FileNotFoundError escaping load_projects turned the CI audit job red on 2026-10-21.
+    """
+    import pytest
+    from framework.project import load_projects
+
+    proj = tmp_path / "ghost"
+    proj.mkdir()
+    (proj / "project.yaml").write_text(
+        "name: ghost\nroot: ../../../nowhere\ngate_command: ['true']\n", encoding="utf-8")
+
+    with pytest.raises(FileNotFoundError):
+        load_projects(tmp_path)
+
+    specs = load_projects(tmp_path, allow_missing=True)
+    assert specs["ghost"].available is False

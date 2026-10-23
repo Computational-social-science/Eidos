@@ -65,7 +65,10 @@ STRICT_REGISTRY = True
 @chain("registry", "nothing")
 def audit_registry():
     from framework.project import load_projects
-    specs = load_projects()
+    # In CI the external checkouts are absent by design: a pointer that resolves to
+    # nothing is "not exercised", not "broken". Locally it is still an error, because a
+    # detached checkout must not pass as if the project had been audited.
+    specs = load_projects(allow_missing=not STRICT_REGISTRY)
     if not specs:
         return "FAIL", "no project registered"
     missing = [s.name for s in specs.values() if not s.available]

@@ -65,11 +65,24 @@ def _tcp(port: int, host: str = "127.0.0.1") -> bool:
 
 
 def probe_quarto() -> dict:
+    """Resolve Quarto without compiling a machine path into the tool.
+
+    A hardcoded Program Files path made this snapshot report a different contract on every
+    machine and tripped the coupling audit's absolute-path rule. Candidates now come from
+    the environment, PATH and the platform's install roots.
+    """
     env = os.environ.get("QUARTO_BIN")
     candidates = [env] if env else []
-    candidates += [shutil.which("quarto"),
-                   str(Path.home() / ".workbuddy-ai" / "binaries" / "quarto" / "bin" / "quarto.exe"),
-                   r"C:\Program Files\Quarto\bin\quarto.exe"]
+    candidates += [shutil.which("quarto")]
+    # Standard install locations, expressed relative to the environment rather than to
+    # this host: %ProgramFiles% on Windows, /usr/local/bin elsewhere.
+    program_files = os.environ.get("ProgramFiles")
+    if program_files:
+        candidates.append(str(Path(program_files) / "Quarto" / "bin" / "quarto.exe"))
+    if os.environ.get("LOCALAPPDATA"):
+        candidates.append(str(Path(os.environ["LOCALAPPDATA"]) / "Programs" / "Quarto"
+                                  / "bin" / "quarto.exe"))
+    candidates += ["/usr/local/bin/quarto", "/opt/quarto/bin/quarto"]
     for path in candidates:
         if path and Path(path).is_file():
             rc, out = _run([path, "--version"])
@@ -189,8 +202,13 @@ def main() -> int:
             state = "OK     " if entry.get("ok") else "MISSING"
             detail = entry.get("version") or entry.get("model") or entry.get("root") or entry.get("reason") or ""
             if name == "runtimes":
-                detail = ", ".join(f"{k}={'up' if v.get('ok') else 'down'}"
-                                   for k, v in entry.items() if k not in ("kind", "ok"))
+                # A runtime entry is normally {"ok": bool, "kind": str, ...}; a probe that
+                # found nothing used to be reported as a bare string, which crashed this
+                # formatter on `.get`. Both shapes are accepted.
+                detail = ", ".join(
+                    f"{k}={'up' if v.get('ok') else 'down'}"
+                    for k, v in entry.items()
+                    if k not in ("kind", "ok") and isinstance(v, dict))
             print(f"{state} {name:<10} {detail}")
         for f in findings:
             print(f"DRIFT  {f}")

@@ -40,3 +40,4 @@ tmp/
 # Local test artifacts
 .memtest/
 .memchroma/
+ci_log.txt

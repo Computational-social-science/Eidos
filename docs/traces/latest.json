@@ -1,0 +1,147 @@
+{
+  "trace": {
+    "id": "5fb94ae0c94d4980a544335f7eff102f",
+    "name": "eidos.chains",
+    "start_ts": 1792767098.2155576,
+    "end_ts": 1792767115.472961,
+    "duration_ms": 17257.4,
+    "status": "OK",
+    "attributes": {
+      "chains": 11
+    }
+  },
+  "spans": [
+    {
+      "id": "403ca3b060fa4b00878f1b317bc57ab5",
+      "name": "registry",
+      "start_ts": 1792767098.2155576,
+      "end_ts": 1792767098.2558177,
+      "duration_ms": 40.3,
+      "status": "PASS",
+      "attributes": {
+        "detail": "2 project(s): null_study, operator_calibration",
+        "requires": "nothing"
+      }
+    },
+    {
+      "id": "5e8884ad330e45f9af71a33a9707e706",
+      "name": "gates",
+      "start_ts": 1792767098.255829,
+      "end_ts": 1792767098.261769,
+      "duration_ms": 5.9,
+      "status": "PASS",
+      "attributes": {
+        "detail": "acceptance PASS+FAIL both correct; missing tool -> SKIP",
+        "requires": "pyyaml"
+      }
+    },
+    {
+      "id": "a1138ba99942487b94d9c3c83a96c680",
+      "name": "gates+project checker",
+      "start_ts": 1792767098.2617834,
+      "end_ts": 1792767098.2617867,
+      "duration_ms": 0.0,
+      "status": "SKIP",
+      "attributes": {
+        "detail": "no --project-checker given",
+        "requires": "a project ref checker"
+      }
+    },
+    {
+      "id": "ce17874fd78e4abcafc96960ca8dc4e9",
+      "name": "diagnosis",
+      "start_ts": 1792767098.2617898,
+      "end_ts": 1792767098.264935,
+      "duration_ms": 3.1,
+      "status": "PASS",
+      "attributes": {
+        "detail": "1 diagnosis naming the metric: Result metric below acceptance threshold: acc",
+        "requires": "nothing"
+      }
+    },
+    {
+      "id": "057b2c5da0d343e4b93a574034e6c426",
+      "name": "tracking",
+      "start_ts": 1792767098.2649398,
+      "end_ts": 1792767110.0189955,
+      "duration_ms": 11754.1,
+      "status": "PASS",
+      "attributes": {
+        "detail": "mlflow run 89b3195b; dvc_available=True",
+        "requires": "mlflow + dvc"
+      }
+    },
+    {
+      "id": "c4a9ea173cb04bab800d1be6562c6b43",
+      "name": "quarto",
+      "start_ts": 1792767110.019008,
+      "end_ts": 1792767113.2639737,
+      "duration_ms": 3245.0,
+      "status": "PASS",
+      "attributes": {
+        "detail": "minimal document; quarto=quarto.exe, render ok=True",
+        "requires": "quarto binary"
+      }
+    },
+    {
+      "id": "5330a9dfe5ca476ebb19cb57446c311f",
+      "name": "validity (Gate S)",
+      "start_ts": 1792767113.2639859,
+      "end_ts": 1792767113.2855806,
+      "duration_ms": 21.6,
+      "status": "PASS",
+      "attributes": {
+        "detail": "valid register PASS; overstated count FAIL",
+        "requires": "pyyaml"
+      }
+    },
+    {
+      "id": "4555731946d74f71b860607f9ae25881",
+      "name": "surrogate (local NO)",
+      "start_ts": 1792767113.2855904,
+      "end_ts": 1792767113.9237504,
+      "duration_ms": 638.2,
+      "status": "PASS",
+      "attributes": {
+        "detail": "19/19 fixed points within 5%, 19 stable; shuffled-label control caught",
+        "requires": "numpy"
+      }
+    },
+    {
+      "id": "27225f0cabda404bad7403cc35338c30",
+      "name": "demo (NO)",
+      "start_ts": 1792767113.9237628,
+      "end_ts": 1792767114.0129106,
+      "duration_ms": 89.1,
+      "status": "PASS",
+      "attributes": {
+        "detail": "91 \u03bb points, max relative error 0.0002%",
+        "requires": "numpy"
+      }
+    },
+    {
+      "id": "05f9c207604d4a1d8fa2e1e77b15dc56",
+      "name": "decision",
+      "start_ts": 1792767114.0129154,
+      "end_ts": 1792767114.8061066,
+      "duration_ms": 793.2,
+      "status": "PASS",
+      "attributes": {
+        "detail": "known answers correct; median 171 ms for 2 questions (n=3, wall clock)",
+        "requires": "StartLux service"
+      }
+    },
+    {
+      "id": "0f79e9c76a4b48ab909c9f9a927447c7",
+      "name": "inference",
+      "start_ts": 1792767114.8061087,
+      "end_ts": 1792767115.472961,
+      "duration_ms": 666.9,
+      "status": "PASS",
+      "attributes": {
+        "detail": "12 GB budget enforced; 4 judgement stages -> StartLux; generators unchanged; evaluation -> 2 model(s)",
+        "requires": "nothing"
+      }
+    }
+  ]
+}

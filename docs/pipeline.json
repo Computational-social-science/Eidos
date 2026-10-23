@@ -1,0 +1,535 @@
+{
+  "generated": "2026-10-23T14:53:34+00:00",
+  "coupling": {
+    "nodes": [
+      "framework.decision",
+      "framework.diagnosis",
+      "framework.gates",
+      "framework.inference",
+      "framework.project",
+      "framework.quarto_bridge",
+      "framework.surrogate",
+      "framework.surrogate.demo",
+      "framework.tracking",
+      "framework.validity",
+      "framework.validity.lean_audit",
+      "tools.audit_chains",
+      "tools.audit_coupling",
+      "tools.audit_lean_project",
+      "tools.audit_surrogate",
+      "tools.audit_validity",
+      "tools.build_site",
+      "tools.check_render",
+      "tools.contract_snapshot",
+      "tools.decision_probe",
+      "tools.record_self_audit"
+    ],
+    "edges": [
+      {
+        "source": "framework.surrogate.demo",
+        "target": "framework.surrogate",
+        "kind": "hard"
+      },
+      {
+        "source": "framework.validity",
+        "target": "framework.gates",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.audit_lean_project",
+        "target": "framework.validity.lean_audit",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.audit_surrogate",
+        "target": "framework.surrogate",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.audit_validity",
+        "target": "framework.validity",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.build_site",
+        "target": "framework.surrogate",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.build_site",
+        "target": "framework.surrogate.demo",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.check_render",
+        "target": "framework.quarto_bridge",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.decision_probe",
+        "target": "framework.decision",
+        "kind": "hard"
+      },
+      {
+        "source": "framework.diagnosis",
+        "target": "framework.decision",
+        "kind": "soft"
+      },
+      {
+        "source": "framework.validity",
+        "target": "framework.validity.lean_audit",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.audit_chains",
+        "target": "framework.decision",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.audit_chains",
+        "target": "framework.diagnosis",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.audit_chains",
+        "target": "framework.gates",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.audit_chains",
+        "target": "framework.inference",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.audit_chains",
+        "target": "framework.project",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.audit_chains",
+        "target": "framework.quarto_bridge",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.audit_chains",
+        "target": "framework.surrogate.demo",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.audit_chains",
+        "target": "framework.tracking",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.audit_chains",
+        "target": "framework.validity",
+        "kind": "soft"
+      }
+    ],
+    "attrs": {
+      "framework.decision": {
+        "process": 0,
+        "network": 2,
+        "fan_in": 3
+      },
+      "framework.diagnosis": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 1
+      },
+      "framework.gates": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 2
+      },
+      "framework.inference": {
+        "process": 1,
+        "network": 5,
+        "fan_in": 1
+      },
+      "framework.project": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 1
+      },
+      "framework.quarto_bridge": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 2
+      },
+      "framework.surrogate": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 3
+      },
+      "framework.surrogate.demo": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 2
+      },
+      "framework.tracking": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 1
+      },
+      "framework.validity": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 2
+      },
+      "framework.validity.lean_audit": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 2
+      },
+      "tools.audit_chains": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.audit_coupling": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.audit_lean_project": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.audit_surrogate": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.audit_validity": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.build_site": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.check_render": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.contract_snapshot": {
+        "process": 1,
+        "network": 2,
+        "fan_in": 0
+      },
+      "tools.decision_probe": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.record_self_audit": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 0
+      }
+    },
+    "cycles": [],
+    "fan_in": {
+      "framework.decision": 3,
+      "framework.surrogate": 3,
+      "framework.validity.lean_audit": 2,
+      "framework.gates": 2,
+      "framework.validity": 2,
+      "framework.diagnosis": 1,
+      "framework.surrogate.demo": 2,
+      "framework.inference": 1,
+      "framework.quarto_bridge": 2,
+      "framework.project": 1,
+      "framework.tracking": 1
+    },
+    "absolute_paths": 2,
+    "levels": {
+      "framework.decision": 0,
+      "framework.diagnosis": 1,
+      "framework.gates": 0,
+      "framework.inference": 0,
+      "framework.project": 0,
+      "framework.quarto_bridge": 0,
+      "framework.surrogate": 0,
+      "framework.surrogate.demo": 1,
+      "framework.tracking": 0,
+      "framework.validity.lean_audit": 0,
+      "framework.validity": 1,
+      "tools.audit_chains": 2,
+      "tools.audit_coupling": 0,
+      "tools.audit_lean_project": 1,
+      "tools.audit_surrogate": 1,
+      "tools.audit_validity": 2,
+      "tools.build_site": 2,
+      "tools.check_render": 1,
+      "tools.contract_snapshot": 0,
+      "tools.decision_probe": 1,
+      "tools.record_self_audit": 0
+    }
+  },
+  "trace": {
+    "id": "5fb94ae0c94d4980a544335f7eff102f",
+    "name": "eidos.chains",
+    "start_ts": 1792767098.2155576,
+    "end_ts": 1792767115.472961,
+    "duration_ms": 17257.4,
+    "status": "OK",
+    "attributes": {
+      "chains": 11
+    }
+  },
+  "spans": [
+    {
+      "id": "403ca3b060fa4b00878f1b317bc57ab5",
+      "name": "registry",
+      "start_ts": 1792767098.2155576,
+      "end_ts": 1792767098.2558177,
+      "duration_ms": 40.3,
+      "status": "PASS",
+      "attributes": {
+        "detail": "2 project(s): null_study, operator_calibration",
+        "requires": "nothing"
+      }
+    },
+    {
+      "id": "5e8884ad330e45f9af71a33a9707e706",
+      "name": "gates",
+      "start_ts": 1792767098.255829,
+      "end_ts": 1792767098.261769,
+      "duration_ms": 5.9,
+      "status": "PASS",
+      "attributes": {
+        "detail": "acceptance PASS+FAIL both correct; missing tool -> SKIP",
+        "requires": "pyyaml"
+      }
+    },
+    {
+      "id": "a1138ba99942487b94d9c3c83a96c680",
+      "name": "gates+project checker",
+      "start_ts": 1792767098.2617834,
+      "end_ts": 1792767098.2617867,
+      "duration_ms": 0.0,
+      "status": "SKIP",
+      "attributes": {
+        "detail": "no --project-checker given",
+        "requires": "a project ref checker"
+      }
+    },
+    {
+      "id": "ce17874fd78e4abcafc96960ca8dc4e9",
+      "name": "diagnosis",
+      "start_ts": 1792767098.2617898,
+      "end_ts": 1792767098.264935,
+      "duration_ms": 3.1,
+      "status": "PASS",
+      "attributes": {
+        "detail": "1 diagnosis naming the metric: Result metric below acceptance threshold: acc",
+        "requires": "nothing"
+      }
+    },
+    {
+      "id": "057b2c5da0d343e4b93a574034e6c426",
+      "name": "tracking",
+      "start_ts": 1792767098.2649398,
+      "end_ts": 1792767110.0189955,
+      "duration_ms": 11754.1,
+      "status": "PASS",
+      "attributes": {
+        "detail": "mlflow run 89b3195b; dvc_available=True",
+        "requires": "mlflow + dvc"
+      }
+    },
+    {
+      "id": "c4a9ea173cb04bab800d1be6562c6b43",
+      "name": "quarto",
+      "start_ts": 1792767110.019008,
+      "end_ts": 1792767113.2639737,
+      "duration_ms": 3245.0,
+      "status": "PASS",
+      "attributes": {
+        "detail": "minimal document; quarto=quarto.exe, render ok=True",
+        "requires": "quarto binary"
+      }
+    },
+    {
+      "id": "5330a9dfe5ca476ebb19cb57446c311f",
+      "name": "validity (Gate S)",
+      "start_ts": 1792767113.2639859,
+      "end_ts": 1792767113.2855806,
+      "duration_ms": 21.6,
+      "status": "PASS",
+      "attributes": {
+        "detail": "valid register PASS; overstated count FAIL",
+        "requires": "pyyaml"
+      }
+    },
+    {
+      "id": "4555731946d74f71b860607f9ae25881",
+      "name": "surrogate (local NO)",
+      "start_ts": 1792767113.2855904,
+      "end_ts": 1792767113.9237504,
+      "duration_ms": 638.2,
+      "status": "PASS",
+      "attributes": {
+        "detail": "19/19 fixed points within 5%, 19 stable; shuffled-label control caught",
+        "requires": "numpy"
+      }
+    },
+    {
+      "id": "27225f0cabda404bad7403cc35338c30",
+      "name": "demo (NO)",
+      "start_ts": 1792767113.9237628,
+      "end_ts": 1792767114.0129106,
+      "duration_ms": 89.1,
+      "status": "PASS",
+      "attributes": {
+        "detail": "91 \u03bb points, max relative error 0.0002%",
+        "requires": "numpy"
+      }
+    },
+    {
+      "id": "05f9c207604d4a1d8fa2e1e77b15dc56",
+      "name": "decision",
+      "start_ts": 1792767114.0129154,
+      "end_ts": 1792767114.8061066,
+      "duration_ms": 793.2,
+      "status": "PASS",
+      "attributes": {
+        "detail": "known answers correct; median 171 ms for 2 questions (n=3, wall clock)",
+        "requires": "StartLux service"
+      }
+    },
+    {
+      "id": "0f79e9c76a4b48ab909c9f9a927447c7",
+      "name": "inference",
+      "start_ts": 1792767114.8061087,
+      "end_ts": 1792767115.472961,
+      "duration_ms": 666.9,
+      "status": "PASS",
+      "attributes": {
+        "detail": "12 GB budget enforced; 4 judgement stages -> StartLux; generators unchanged; evaluation -> 2 model(s)",
+        "requires": "nothing"
+      }
+    }
+  ],
+  "chains": [
+    {
+      "name": "registry",
+      "status": "PASS",
+      "ms": 40.3,
+      "detail": "2 project(s): null_study, operator_calibration"
+    },
+    {
+      "name": "gates",
+      "status": "PASS",
+      "ms": 5.9,
+      "detail": "acceptance PASS+FAIL both correct; missing tool -> SKIP"
+    },
+    {
+      "name": "gates+project checker",
+      "status": "SKIP",
+      "ms": 0.0,
+      "detail": "no --project-checker given"
+    },
+    {
+      "name": "diagnosis",
+      "status": "PASS",
+      "ms": 3.1,
+      "detail": "1 diagnosis naming the metric: Result metric below acceptance threshold: acc"
+    },
+    {
+      "name": "tracking",
+      "status": "PASS",
+      "ms": 11754.1,
+      "detail": "mlflow run 89b3195b; dvc_available=True"
+    },
+    {
+      "name": "quarto",
+      "status": "PASS",
+      "ms": 3245.0,
+      "detail": "minimal document; quarto=quarto.exe, render ok=True"
+    },
+    {
+      "name": "validity (Gate S)",
+      "status": "PASS",
+      "ms": 21.6,
+      "detail": "valid register PASS; overstated count FAIL"
+    },
+    {
+      "name": "surrogate (local NO)",
+      "status": "PASS",
+      "ms": 638.2,
+      "detail": "19/19 fixed points within 5%, 19 stable; shuffled-label control caught"
+    },
+    {
+      "name": "demo (NO)",
+      "status": "PASS",
+      "ms": 89.1,
+      "detail": "91 \u03bb points, max relative error 0.0002%"
+    },
+    {
+      "name": "decision",
+      "status": "PASS",
+      "ms": 793.2,
+      "detail": "known answers correct; median 171 ms for 2 questions (n=3, wall clock)"
+    },
+    {
+      "name": "inference",
+      "status": "PASS",
+      "ms": 666.9,
+      "detail": "12 GB budget enforced; 4 judgement stages -> StartLux; generators unchanged; evaluation -> 2 model(s)"
+    }
+  ],
+  "render": {
+    "ok": true,
+    "quarto": "ok",
+    "pdflatex": null,
+    "formats": {
+      "html": {
+        "ok": true,
+        "bytes": 19425,
+        "reported": true
+      },
+      "pdf": {
+        "ok": true,
+        "bytes": 13467,
+        "reported": true
+      },
+      "docx": {
+        "ok": true,
+        "bytes": 11115,
+        "reported": true
+      }
+    },
+    "generated": "2026-10-23T14:08:47+00:00"
+  },
+  "self_audit": {
+    "gate_s": null,
+    "chains": 11,
+    "tests": null
+  },
+  "consumers": [
+    {
+      "name": "null_study",
+      "root": "E:\\2026-AI4S\\Eidos\\reference\\null_study",
+      "available": true,
+      "gate_s": "FAIL",
+      "expected": "FAIL",
+      "generated": null
+    },
+    {
+      "name": "operator_calibration",
+      "root": "E:\\2026-AI4S\\Eidos\\reference\\operator_calibration",
+      "available": true,
+      "gate_s": "PASS",
+      "expected": "PASS",
+      "generated": "2026-10-23T14:37:39+00:00"
+    }
+  ],
+  "health": {}
+}

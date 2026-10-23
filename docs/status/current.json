@@ -1,0 +1,660 @@
+{
+  "ts": "2026-10-23T15:06:42+00:00",
+  "overall": "ALARM",
+  "signals": {
+    "decision_service": {
+      "value": 1,
+      "reference": 1,
+      "direction": "min",
+      "unit": "up",
+      "source": "127.0.0.1:8090/health",
+      "note": "StartLux-Decision-v1.1-4B-AutoThink-GGUF",
+      "state": "OK",
+      "error": 0.0
+    },
+    "runtime_18434": {
+      "value": 0,
+      "reference": 1,
+      "direction": "min",
+      "unit": "up",
+      "source": "127.0.0.1:18434/v1/models",
+      "note": "",
+      "state": "ALARM",
+      "error": 1.0
+    },
+    "chains_failed": {
+      "value": 0,
+      "reference": 0,
+      "direction": "max",
+      "unit": "chains",
+      "source": "docs/traces/latest.json",
+      "note": "0 failed, 1 skipped",
+      "state": "OK",
+      "error": 0.0
+    },
+    "chains_duration": {
+      "value": 17.3,
+      "reference": 180.0,
+      "direction": "max",
+      "unit": "s",
+      "source": "docs/traces/latest.json",
+      "note": "",
+      "state": "OK",
+      "error": -162.7
+    },
+    "chains_age": {
+      "value": 0.25,
+      "reference": 24.0,
+      "direction": "max",
+      "unit": "h",
+      "source": "docs/traces/latest.json",
+      "note": "last audit",
+      "state": "OK",
+      "error": -23.75
+    },
+    "self_audit": {
+      "value": 1,
+      "reference": 1,
+      "direction": "min",
+      "unit": "gate S",
+      "source": "docs/SELF_AUDIT.json",
+      "note": "PASS",
+      "state": "OK",
+      "error": 0.0
+    },
+    "render_chain": {
+      "value": 1,
+      "reference": 1,
+      "direction": "min",
+      "unit": "up",
+      "source": "docs/RENDER_CHECK.json",
+      "note": "2026-10-23T14:08",
+      "state": "OK",
+      "error": 0.0
+    },
+    "render_age": {
+      "value": 0.97,
+      "reference": 168,
+      "direction": "max",
+      "unit": "h",
+      "source": "docs/RENDER_CHECK.json",
+      "note": "one host",
+      "state": "OK",
+      "error": -167.03
+    },
+    "consumer_evidence_age": {
+      "value": 0.48,
+      "reference": 168,
+      "direction": "max",
+      "unit": "h",
+      "source": "reference/operator_calibration/docs/evidence.json",
+      "note": "calibration measurement",
+      "state": "OK",
+      "error": -167.52
+    }
+  },
+  "alarms": [],
+  "samples": 96,
+  "history": [
+    {
+      "ts": "2026-10-23T15:02:07+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.17,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.89,
+        "consumer_evidence_age": 0.41
+      }
+    },
+    {
+      "ts": "2026-10-23T15:02:14+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.18,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.89,
+        "consumer_evidence_age": 0.41
+      }
+    },
+    {
+      "ts": "2026-10-23T15:02:21+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.18,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.89,
+        "consumer_evidence_age": 0.41
+      }
+    },
+    {
+      "ts": "2026-10-23T15:02:28+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.18,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.89,
+        "consumer_evidence_age": 0.41
+      }
+    },
+    {
+      "ts": "2026-10-23T15:02:35+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.18,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.9,
+        "consumer_evidence_age": 0.42
+      }
+    },
+    {
+      "ts": "2026-10-23T15:02:42+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.18,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.9,
+        "consumer_evidence_age": 0.42
+      }
+    },
+    {
+      "ts": "2026-10-23T15:02:49+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.19,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.9,
+        "consumer_evidence_age": 0.42
+      }
+    },
+    {
+      "ts": "2026-10-23T15:02:56+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.19,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.9,
+        "consumer_evidence_age": 0.42
+      }
+    },
+    {
+      "ts": "2026-10-23T15:03:03+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.19,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.9,
+        "consumer_evidence_age": 0.42
+      }
+    },
+    {
+      "ts": "2026-10-23T15:03:10+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.19,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.91,
+        "consumer_evidence_age": 0.43
+      }
+    },
+    {
+      "ts": "2026-10-23T15:03:17+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.19,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.91,
+        "consumer_evidence_age": 0.43
+      }
+    },
+    {
+      "ts": "2026-10-23T15:03:24+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.2,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.91,
+        "consumer_evidence_age": 0.43
+      }
+    },
+    {
+      "ts": "2026-10-23T15:03:31+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.2,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.91,
+        "consumer_evidence_age": 0.43
+      }
+    },
+    {
+      "ts": "2026-10-23T15:03:38+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.2,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.91,
+        "consumer_evidence_age": 0.43
+      }
+    },
+    {
+      "ts": "2026-10-23T15:03:45+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.2,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.92,
+        "consumer_evidence_age": 0.44
+      }
+    },
+    {
+      "ts": "2026-10-23T15:03:52+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.2,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.92,
+        "consumer_evidence_age": 0.44
+      }
+    },
+    {
+      "ts": "2026-10-23T15:03:59+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.21,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.92,
+        "consumer_evidence_age": 0.44
+      }
+    },
+    {
+      "ts": "2026-10-23T15:04:06+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.21,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.92,
+        "consumer_evidence_age": 0.44
+      }
+    },
+    {
+      "ts": "2026-10-23T15:04:13+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.21,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.92,
+        "consumer_evidence_age": 0.44
+      }
+    },
+    {
+      "ts": "2026-10-23T15:04:21+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.21,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.93,
+        "consumer_evidence_age": 0.44
+      }
+    },
+    {
+      "ts": "2026-10-23T15:04:28+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.21,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.93,
+        "consumer_evidence_age": 0.45
+      }
+    },
+    {
+      "ts": "2026-10-23T15:04:35+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.22,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.93,
+        "consumer_evidence_age": 0.45
+      }
+    },
+    {
+      "ts": "2026-10-23T15:04:42+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.22,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.93,
+        "consumer_evidence_age": 0.45
+      }
+    },
+    {
+      "ts": "2026-10-23T15:04:49+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.22,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.93,
+        "consumer_evidence_age": 0.45
+      }
+    },
+    {
+      "ts": "2026-10-23T15:04:56+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.22,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.94,
+        "consumer_evidence_age": 0.45
+      }
+    },
+    {
+      "ts": "2026-10-23T15:05:03+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.22,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.94,
+        "consumer_evidence_age": 0.46
+      }
+    },
+    {
+      "ts": "2026-10-23T15:05:10+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.23,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.94,
+        "consumer_evidence_age": 0.46
+      }
+    },
+    {
+      "ts": "2026-10-23T15:05:18+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.23,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.94,
+        "consumer_evidence_age": 0.46
+      }
+    },
+    {
+      "ts": "2026-10-23T15:05:25+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.23,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.94,
+        "consumer_evidence_age": 0.46
+      }
+    },
+    {
+      "ts": "2026-10-23T15:05:32+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.23,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.95,
+        "consumer_evidence_age": 0.46
+      }
+    },
+    {
+      "ts": "2026-10-23T15:05:39+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.23,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.95,
+        "consumer_evidence_age": 0.47
+      }
+    },
+    {
+      "ts": "2026-10-23T15:05:46+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.24,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.95,
+        "consumer_evidence_age": 0.47
+      }
+    },
+    {
+      "ts": "2026-10-23T15:05:53+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.24,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.95,
+        "consumer_evidence_age": 0.47
+      }
+    },
+    {
+      "ts": "2026-10-23T15:06:00+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.24,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.95,
+        "consumer_evidence_age": 0.47
+      }
+    },
+    {
+      "ts": "2026-10-23T15:06:07+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.24,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.96,
+        "consumer_evidence_age": 0.47
+      }
+    },
+    {
+      "ts": "2026-10-23T15:06:14+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.24,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.96,
+        "consumer_evidence_age": 0.48
+      }
+    },
+    {
+      "ts": "2026-10-23T15:06:21+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.25,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.96,
+        "consumer_evidence_age": 0.48
+      }
+    },
+    {
+      "ts": "2026-10-23T15:06:28+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.25,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.96,
+        "consumer_evidence_age": 0.48
+      }
+    },
+    {
+      "ts": "2026-10-23T15:06:35+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.25,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.96,
+        "consumer_evidence_age": 0.48
+      }
+    },
+    {
+      "ts": "2026-10-23T15:06:42+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.3,
+        "chains_age": 0.25,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 0.97,
+        "consumer_evidence_age": 0.48
+      }
+    }
+  ]
+}

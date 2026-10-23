@@ -60,6 +60,11 @@ class ProjectSpec:
     render_command: list[str] = dataclasses.field(default_factory=list)
     reports: list[str] = dataclasses.field(default_factory=list)
     notes: str = ""
+    #: Gate S registration: the claim register, the deliverable(s) the claims live in,
+    #: and the verdict the consumer is expected to produce (a negative control FAILs).
+    validity_register: str = ""
+    validity_document: str = ""
+    expected_gate_s: str = ""
     #: False when the checkout is absent. Loading a missing project is allowed only
     #: for enumeration (``list``); running it always raises.
     available: bool = True
@@ -135,6 +140,9 @@ def load_project(project_file: Path, allow_missing: bool = False) -> ProjectSpec
         render_command=_as_argv(data.get("render_command"), "render_command", project_file),
         reports=[str(r) for r in (data.get("reports") or [])],
         notes=str(data.get("notes") or ""),
+        validity_register=str(data.get("validity_register") or ""),
+        validity_document=str(data.get("validity_document") or ""),
+        expected_gate_s=str(data.get("expected_gate_s") or ""),
         available=available,
         missing_reason="" if available else f"checkout not found: {root}",
     )

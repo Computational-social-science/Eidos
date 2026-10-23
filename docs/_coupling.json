@@ -1,0 +1,126 @@
+{
+  "modules": 21,
+  "hard": {
+    "framework.surrogate.demo": [
+      "framework.surrogate"
+    ],
+    "framework.validity": [
+      "framework.gates"
+    ],
+    "tools.audit_lean_project": [
+      "framework.validity.lean_audit"
+    ],
+    "tools.audit_surrogate": [
+      "framework.surrogate"
+    ],
+    "tools.audit_validity": [
+      "framework.validity"
+    ],
+    "tools.build_site": [
+      "framework.surrogate",
+      "framework.surrogate.demo"
+    ],
+    "tools.check_render": [
+      "framework.quarto_bridge"
+    ],
+    "tools.decision_probe": [
+      "framework.decision"
+    ],
+    "framework.decision": [],
+    "framework.diagnosis": [],
+    "framework.gates": [],
+    "framework.inference": [],
+    "framework.project": [],
+    "framework.quarto_bridge": [],
+    "framework.surrogate": [],
+    "framework.tracking": [],
+    "framework.validity.lean_audit": [],
+    "tools.audit_chains": [],
+    "tools.audit_coupling": [],
+    "tools.contract_snapshot": [],
+    "tools.record_self_audit": []
+  },
+  "soft": {
+    "framework.diagnosis": [
+      "framework.decision"
+    ],
+    "framework.validity": [
+      "framework.validity.lean_audit"
+    ],
+    "tools.audit_chains": [
+      "framework.decision",
+      "framework.diagnosis",
+      "framework.gates",
+      "framework.inference",
+      "framework.project",
+      "framework.quarto_bridge",
+      "framework.surrogate.demo",
+      "framework.tracking",
+      "framework.validity"
+    ],
+    "framework.decision": [],
+    "framework.gates": [],
+    "framework.inference": [],
+    "framework.project": [],
+    "framework.quarto_bridge": [],
+    "framework.surrogate": [],
+    "framework.surrogate.demo": [],
+    "framework.tracking": [],
+    "framework.validity.lean_audit": [],
+    "tools.audit_coupling": [],
+    "tools.audit_lean_project": [],
+    "tools.audit_surrogate": [],
+    "tools.audit_validity": [],
+    "tools.build_site": [],
+    "tools.check_render": [],
+    "tools.contract_snapshot": [],
+    "tools.decision_probe": [],
+    "tools.record_self_audit": []
+  },
+  "fan_in": {
+    "framework.decision": 3,
+    "framework.surrogate": 3,
+    "framework.validity.lean_audit": 2,
+    "framework.gates": 2,
+    "framework.validity": 2,
+    "framework.diagnosis": 1,
+    "framework.surrogate.demo": 2,
+    "framework.inference": 1,
+    "framework.quarto_bridge": 2,
+    "framework.project": 1,
+    "framework.tracking": 1
+  },
+  "cycles": [],
+  "process": {
+    "framework.gates": 1,
+    "framework.inference": 1,
+    "framework.project": 1,
+    "framework.quarto_bridge": 1,
+    "framework.tracking": 1,
+    "framework.validity.lean_audit": 1,
+    "tools.audit_chains": 1,
+    "tools.build_site": 1,
+    "tools.check_render": 1,
+    "tools.contract_snapshot": 1,
+    "tools.record_self_audit": 1
+  },
+  "network": {
+    "framework.decision": 2,
+    "framework.inference": 5,
+    "tools.contract_snapshot": 2
+  },
+  "absolute_paths": {
+    "tools.audit_coupling": 1,
+    "tools.build_site": 1
+  },
+  "env_reads": {
+    "framework.decision": 2,
+    "framework.gates": 1,
+    "framework.inference": 1,
+    "framework.quarto_bridge": 2,
+    "tools.build_site": 1,
+    "tools.check_render": 1,
+    "tools.contract_snapshot": 4
+  },
+  "symbols": {}
+}

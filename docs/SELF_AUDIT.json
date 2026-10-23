@@ -5,8 +5,8 @@
     "skip": 1,
     "fail": 0
   },
-  "tests_collected": 122,
-  "coverage_total": 73,
+  "tests_collected": 126,
+  "coverage_total": 70,
   "gate_s": {
     "fixture_status": "PASS"
   },

@@ -23,6 +23,8 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
+import uuid
 import tempfile
 import traceback
 from pathlib import Path
@@ -318,12 +320,15 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--ci", action="store_true",
                     help="treat absent external checkouts as SKIP (no project roots in CI)")
     ap.add_argument("--verbose", action="store_true")
+    ap.add_argument("--spans", default="",
+                    help="write a Langfuse-shaped trace (spans with start/end/status) here")
     args = ap.parse_args(argv)
 
     global STRICT_REGISTRY
     STRICT_REGISTRY = not args.ci
 
     for name, fn, requires in CHAINS:
+        started = time.time()
         try:
             status, detail = fn()
         except ImportError as exc:
@@ -333,10 +338,32 @@ def main(argv: list[str] | None = None) -> int:
             detail = f"{type(exc).__name__}: {exc}"
             if args.verbose:
                 traceback.print_exc()
+        ended = time.time()
         RESULTS.append({"chain": name, "status": status, "detail": str(detail),
-                        "requires": requires})
+                        "requires": requires,
+                        "start_ts": started, "end_ts": ended,
+                        "ms": round((ended - started) * 1000, 1)})
 
     width = max(len(r["chain"]) for r in RESULTS) if RESULTS else 10
+    if args.spans:
+        started = min(r["start_ts"] for r in RESULTS)
+        ended = max(r["end_ts"] for r in RESULTS)
+        doc = {
+            "trace": {"id": uuid.uuid4().hex, "name": "eidos.chains",
+                      "start_ts": started, "end_ts": ended,
+                      "duration_ms": round((ended - started) * 1000, 1),
+                      "status": "OK" if not any(
+                          r["status"] in ("FAIL", "ERROR") for r in RESULTS) else "ERROR",
+                      "attributes": {"chains": len(RESULTS)}},
+            "spans": [{"id": uuid.uuid4().hex, "name": r["chain"],
+                       "start_ts": r["start_ts"], "end_ts": r["end_ts"],
+                       "duration_ms": r["ms"], "status": r["status"],
+                       "attributes": {"detail": r["detail"], "requires": r["requires"]}}
+                      for r in RESULTS],
+        }
+        Path(args.spans).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.spans).write_text(json.dumps(doc, indent=2) + chr(10), encoding="utf-8")
+
     if args.json:
         print(json.dumps(RESULTS, indent=2))
     else:

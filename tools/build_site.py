@@ -35,7 +35,10 @@ sys.path.insert(0, str(ROOT / "tools"))
 from framework.surrogate import (RandomFeatureOperator, fixed_point,  # noqa: E402
                                  spectral_radius)
 from audit_surrogate import training_pairs  # noqa: E402
-from framework.surrogate.demo import build_demo  # noqa: E402
+from framework.surrogate.demo import build_demo
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import pipeline_view  # noqa: E402  # noqa: E402
 
 OUT = ROOT / "site" / "index.html"
 VERSIONS = ROOT / "site" / "versions.json"
@@ -465,6 +468,16 @@ td.num{text-align:right;font-variant-numeric:tabular-nums}
 .pill.fail{background:#fbecee;color:#8c1d2c}
 .note{border-left:3px solid var(--limit);padding-left:14px;color:#3a434d}
 .contracts{display:flex;flex-wrap:wrap;gap:8px;margin:0}
+table.ctl{width:100%;border-collapse:collapse;font-size:12.5px}
+table.ctl th{text-align:left;font-weight:600;color:var(--muted);font-size:11px;
+  text-transform:uppercase;letter-spacing:.06em;padding:6px 8px;border-bottom:1px solid var(--rule)}
+table.ctl td{padding:6px 8px;border-bottom:1px solid var(--rule);vertical-align:middle}
+.wf-row{display:flex;align-items:center;gap:10px;margin:3px 0;font-size:12px}
+.wf-name{width:150px;flex:none;font-family:ui-monospace,Menlo,monospace;font-size:11.5px}
+.wf-track{position:relative;flex:1;height:12px;background:#f1f3f6;border-radius:3px}
+.wf-bar{position:absolute;top:0;height:12px;border-radius:3px;background:var(--accent);opacity:.75}
+.wf-bar.pass{background:#2f855a}.wf-bar.skip{background:#9aa3b2}.wf-bar.fail{background:#b4232f}
+.wf-ms{width:64px;text-align:right;color:var(--muted);font-size:11.5px}
 .contract{font:600 11.4px/1 -apple-system,"Segoe UI",Arial,sans-serif;padding:7px 9px;
           border-radius:999px;border:1px solid var(--rule);background:#fff;color:#2b333d}
 .contract.ok{border-color:#c3e0cf;background:#f3faf6;color:#17663f}
@@ -504,7 +517,8 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono
   <nav class="toc" aria-label="Sections">
     <a href="#position">Position</a><a href="#pipeline">Pipeline</a>
     <a href="#architecture">Architecture</a><a href="#gates">Gates</a>
-    <a href="#status">Status</a><a href="#demo">Demo</a><a href="#start">Start</a><a href="#limits">Limits</a>
+    <a href="#status">Status</a><a href="#control">Control</a><a href="#demo">Demo</a>
+    <a href="#start">Start</a><a href="#limits">Limits</a>
   </nav>
 </div></header>
 
@@ -653,8 +667,17 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono
   </div>
 </section>
 
+<section id="control">
+  <h2><span class="num">06</span>Control loop: structure, execution, live signals</h2>
+  <p class="lede2">Structure, execution and control are three views of one system. The
+  control panel is a closed loop — reference, measurement, error — not a pass/fail list;
+  the trace is the last audit, span by span; the graph is the import structure the coupling
+  gate measures.</p>
+  <!--control:start-->__CONTROL__<!--control:end-->
+</section>
+
 <section id="demo">
-  <h2><span class="num">06</span>The demo: system-level quantities from a learned operator</h2>
+  <h2><span class="num">07</span>The demo: system-level quantities from a learned operator</h2>
   <p class="lede2">Fitted on short-step data, solved for fixed points and stability. Every
   panel is computed at build time; the page carries its own data and needs no other file.</p>
   <div class="grid2">
@@ -720,7 +743,7 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono
 </section>
 
 <section id="start">
-  <h2><span class="num">07</span>Start a project</h2>
+  <h2><span class="num">08</span>Start a project</h2>
   <div class="grid2">
     <div class="card">
       <h3>Instantiate or register</h3>
@@ -757,7 +780,7 @@ python tools/audit_validity.py --project ../keystroke-observatory</pre>
 </section>
 
 <section id="limits">
-  <h2><span class="num">08</span>Limits and licence</h2>
+  <h2><span class="num">09</span>Limits and licence</h2>
   <div class="card">
     <p><b>What is measured.</b> Tests, coverage, chain verdicts, Lean runs, decision
     calibration, and the demo's error against a closed form.</p>
@@ -964,6 +987,11 @@ def render(data: dict) -> str:
         "__CONTRACTS__": contract_strip(data.get("contracts", [])),
         "__RENDER__": render_strip(),
         "__OP_DEMO__": operator_demo(),
+        "__CONTROL__": pipeline_view.render(
+            json.loads((ROOT / "docs" / "pipeline.json").read_text(encoding="utf-8"))
+            if (ROOT / "docs" / "pipeline.json").exists() else {},
+            json.loads((ROOT / "docs" / "status" / "current.json").read_text(encoding="utf-8"))
+            if (ROOT / "docs" / "status" / "current.json").exists() else {}),
         "__EXTRAP__": extrapolation_svg(extra),
         "__INMAX__": f"{100 * (extra['inside_max'] or 0):.4f}%",
         "__OUTMAX__": f"{100 * (extra['outside_max'] or 0):.2f}%",
@@ -997,7 +1025,11 @@ def main(argv: list[str] | None = None) -> int:
         if not OUT.is_file():
             print(f"[FAIL] {OUT} has not been built")
             return 1
-        if OUT.read_text(encoding="utf-8") != page:
+        volatile = re.compile(r"<!--control:start-->.*?<!--control:end-->", re.S)
+        # The control block carries a sampling timestamp and run counts; comparing it byte
+        # for byte would report "stale" on every rebuild. Structure is compared, the live
+        # numbers are not.
+        if volatile.sub("", OUT.read_text(encoding="utf-8")) != volatile.sub("", page):
             print("[FAIL] site/index.html is stale; rebuild with tools/build_site.py")
             return 1
         print("site is current")

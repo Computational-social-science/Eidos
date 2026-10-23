@@ -1,0 +1,352 @@
+{
+  "batch": [
+    {
+      "id": "trace-5fb94ae0c94d4980a544335f7eff102f",
+      "type": "trace-create",
+      "timestamp": "2026-10-23T14:51:38.215+00:00",
+      "body": {
+        "id": "5fb94ae0c94d4980a544335f7eff102f",
+        "name": "eidos.chains",
+        "timestamp": "2026-10-23T14:51:38.215+00:00",
+        "metadata": {
+          "duration_ms": 17257.4,
+          "chains": 11
+        },
+        "tags": [
+          "eidos",
+          "chain-audit"
+        ]
+      }
+    },
+    {
+      "id": "span-403ca3b060fa4b00878f1b317bc57ab5",
+      "type": "span-create",
+      "timestamp": "2026-10-23T14:51:38.215+00:00",
+      "body": {
+        "id": "403ca3b060fa4b00878f1b317bc57ab5",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "name": "registry",
+        "startTime": "2026-10-23T14:51:38.215+00:00",
+        "endTime": "2026-10-23T14:51:38.255+00:00",
+        "metadata": {
+          "duration_ms": 40.3,
+          "detail": "2 project(s): null_study, operator_calibration",
+          "requires": "nothing"
+        }
+      }
+    },
+    {
+      "id": "score-403ca3b060fa4b00878f1b317bc57ab5",
+      "type": "score-create",
+      "timestamp": "2026-10-23T14:51:38.255+00:00",
+      "body": {
+        "id": "score-403ca3b060fa4b00878f1b317bc57ab5",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "observationId": "403ca3b060fa4b00878f1b317bc57ab5",
+        "name": "chain_verdict",
+        "value": "PASS",
+        "dataType": "CATEGORICAL"
+      }
+    },
+    {
+      "id": "span-5e8884ad330e45f9af71a33a9707e706",
+      "type": "span-create",
+      "timestamp": "2026-10-23T14:51:38.255+00:00",
+      "body": {
+        "id": "5e8884ad330e45f9af71a33a9707e706",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "name": "gates",
+        "startTime": "2026-10-23T14:51:38.255+00:00",
+        "endTime": "2026-10-23T14:51:38.261+00:00",
+        "metadata": {
+          "duration_ms": 5.9,
+          "detail": "acceptance PASS+FAIL both correct; missing tool -> SKIP",
+          "requires": "pyyaml"
+        }
+      }
+    },
+    {
+      "id": "score-5e8884ad330e45f9af71a33a9707e706",
+      "type": "score-create",
+      "timestamp": "2026-10-23T14:51:38.261+00:00",
+      "body": {
+        "id": "score-5e8884ad330e45f9af71a33a9707e706",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "observationId": "5e8884ad330e45f9af71a33a9707e706",
+        "name": "chain_verdict",
+        "value": "PASS",
+        "dataType": "CATEGORICAL"
+      }
+    },
+    {
+      "id": "span-a1138ba99942487b94d9c3c83a96c680",
+      "type": "span-create",
+      "timestamp": "2026-10-23T14:51:38.261+00:00",
+      "body": {
+        "id": "a1138ba99942487b94d9c3c83a96c680",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "name": "gates+project checker",
+        "startTime": "2026-10-23T14:51:38.261+00:00",
+        "endTime": "2026-10-23T14:51:38.261+00:00",
+        "metadata": {
+          "duration_ms": 0.0,
+          "detail": "no --project-checker given",
+          "requires": "a project ref checker"
+        }
+      }
+    },
+    {
+      "id": "score-a1138ba99942487b94d9c3c83a96c680",
+      "type": "score-create",
+      "timestamp": "2026-10-23T14:51:38.261+00:00",
+      "body": {
+        "id": "score-a1138ba99942487b94d9c3c83a96c680",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "observationId": "a1138ba99942487b94d9c3c83a96c680",
+        "name": "chain_verdict",
+        "value": "SKIP",
+        "dataType": "CATEGORICAL"
+      }
+    },
+    {
+      "id": "span-ce17874fd78e4abcafc96960ca8dc4e9",
+      "type": "span-create",
+      "timestamp": "2026-10-23T14:51:38.261+00:00",
+      "body": {
+        "id": "ce17874fd78e4abcafc96960ca8dc4e9",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "name": "diagnosis",
+        "startTime": "2026-10-23T14:51:38.261+00:00",
+        "endTime": "2026-10-23T14:51:38.264+00:00",
+        "metadata": {
+          "duration_ms": 3.1,
+          "detail": "1 diagnosis naming the metric: Result metric below acceptance threshold: acc",
+          "requires": "nothing"
+        }
+      }
+    },
+    {
+      "id": "score-ce17874fd78e4abcafc96960ca8dc4e9",
+      "type": "score-create",
+      "timestamp": "2026-10-23T14:51:38.264+00:00",
+      "body": {
+        "id": "score-ce17874fd78e4abcafc96960ca8dc4e9",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "observationId": "ce17874fd78e4abcafc96960ca8dc4e9",
+        "name": "chain_verdict",
+        "value": "PASS",
+        "dataType": "CATEGORICAL"
+      }
+    },
+    {
+      "id": "span-057b2c5da0d343e4b93a574034e6c426",
+      "type": "span-create",
+      "timestamp": "2026-10-23T14:51:38.264+00:00",
+      "body": {
+        "id": "057b2c5da0d343e4b93a574034e6c426",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "name": "tracking",
+        "startTime": "2026-10-23T14:51:38.264+00:00",
+        "endTime": "2026-10-23T14:51:50.018+00:00",
+        "metadata": {
+          "duration_ms": 11754.1,
+          "detail": "mlflow run 89b3195b; dvc_available=True",
+          "requires": "mlflow + dvc"
+        }
+      }
+    },
+    {
+      "id": "score-057b2c5da0d343e4b93a574034e6c426",
+      "type": "score-create",
+      "timestamp": "2026-10-23T14:51:50.018+00:00",
+      "body": {
+        "id": "score-057b2c5da0d343e4b93a574034e6c426",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "observationId": "057b2c5da0d343e4b93a574034e6c426",
+        "name": "chain_verdict",
+        "value": "PASS",
+        "dataType": "CATEGORICAL"
+      }
+    },
+    {
+      "id": "span-c4a9ea173cb04bab800d1be6562c6b43",
+      "type": "span-create",
+      "timestamp": "2026-10-23T14:51:50.019+00:00",
+      "body": {
+        "id": "c4a9ea173cb04bab800d1be6562c6b43",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "name": "quarto",
+        "startTime": "2026-10-23T14:51:50.019+00:00",
+        "endTime": "2026-10-23T14:51:53.263+00:00",
+        "metadata": {
+          "duration_ms": 3245.0,
+          "detail": "minimal document; quarto=quarto.exe, render ok=True",
+          "requires": "quarto binary"
+        }
+      }
+    },
+    {
+      "id": "score-c4a9ea173cb04bab800d1be6562c6b43",
+      "type": "score-create",
+      "timestamp": "2026-10-23T14:51:53.263+00:00",
+      "body": {
+        "id": "score-c4a9ea173cb04bab800d1be6562c6b43",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "observationId": "c4a9ea173cb04bab800d1be6562c6b43",
+        "name": "chain_verdict",
+        "value": "PASS",
+        "dataType": "CATEGORICAL"
+      }
+    },
+    {
+      "id": "span-5330a9dfe5ca476ebb19cb57446c311f",
+      "type": "span-create",
+      "timestamp": "2026-10-23T14:51:53.263+00:00",
+      "body": {
+        "id": "5330a9dfe5ca476ebb19cb57446c311f",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "name": "validity (Gate S)",
+        "startTime": "2026-10-23T14:51:53.263+00:00",
+        "endTime": "2026-10-23T14:51:53.285+00:00",
+        "metadata": {
+          "duration_ms": 21.6,
+          "detail": "valid register PASS; overstated count FAIL",
+          "requires": "pyyaml"
+        }
+      }
+    },
+    {
+      "id": "score-5330a9dfe5ca476ebb19cb57446c311f",
+      "type": "score-create",
+      "timestamp": "2026-10-23T14:51:53.285+00:00",
+      "body": {
+        "id": "score-5330a9dfe5ca476ebb19cb57446c311f",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "observationId": "5330a9dfe5ca476ebb19cb57446c311f",
+        "name": "chain_verdict",
+        "value": "PASS",
+        "dataType": "CATEGORICAL"
+      }
+    },
+    {
+      "id": "span-4555731946d74f71b860607f9ae25881",
+      "type": "span-create",
+      "timestamp": "2026-10-23T14:51:53.285+00:00",
+      "body": {
+        "id": "4555731946d74f71b860607f9ae25881",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "name": "surrogate (local NO)",
+        "startTime": "2026-10-23T14:51:53.285+00:00",
+        "endTime": "2026-10-23T14:51:53.923+00:00",
+        "metadata": {
+          "duration_ms": 638.2,
+          "detail": "19/19 fixed points within 5%, 19 stable; shuffled-label control caught",
+          "requires": "numpy"
+        }
+      }
+    },
+    {
+      "id": "score-4555731946d74f71b860607f9ae25881",
+      "type": "score-create",
+      "timestamp": "2026-10-23T14:51:53.923+00:00",
+      "body": {
+        "id": "score-4555731946d74f71b860607f9ae25881",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "observationId": "4555731946d74f71b860607f9ae25881",
+        "name": "chain_verdict",
+        "value": "PASS",
+        "dataType": "CATEGORICAL"
+      }
+    },
+    {
+      "id": "span-27225f0cabda404bad7403cc35338c30",
+      "type": "span-create",
+      "timestamp": "2026-10-23T14:51:53.923+00:00",
+      "body": {
+        "id": "27225f0cabda404bad7403cc35338c30",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "name": "demo (NO)",
+        "startTime": "2026-10-23T14:51:53.923+00:00",
+        "endTime": "2026-10-23T14:51:54.012+00:00",
+        "metadata": {
+          "duration_ms": 89.1,
+          "detail": "91 \u03bb points, max relative error 0.0002%",
+          "requires": "numpy"
+        }
+      }
+    },
+    {
+      "id": "score-27225f0cabda404bad7403cc35338c30",
+      "type": "score-create",
+      "timestamp": "2026-10-23T14:51:54.012+00:00",
+      "body": {
+        "id": "score-27225f0cabda404bad7403cc35338c30",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "observationId": "27225f0cabda404bad7403cc35338c30",
+        "name": "chain_verdict",
+        "value": "PASS",
+        "dataType": "CATEGORICAL"
+      }
+    },
+    {
+      "id": "span-05f9c207604d4a1d8fa2e1e77b15dc56",
+      "type": "span-create",
+      "timestamp": "2026-10-23T14:51:54.012+00:00",
+      "body": {
+        "id": "05f9c207604d4a1d8fa2e1e77b15dc56",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "name": "decision",
+        "startTime": "2026-10-23T14:51:54.012+00:00",
+        "endTime": "2026-10-23T14:51:54.806+00:00",
+        "metadata": {
+          "duration_ms": 793.2,
+          "detail": "known answers correct; median 171 ms for 2 questions (n=3, wall clock)",
+          "requires": "StartLux service"
+        }
+      }
+    },
+    {
+      "id": "score-05f9c207604d4a1d8fa2e1e77b15dc56",
+      "type": "score-create",
+      "timestamp": "2026-10-23T14:51:54.806+00:00",
+      "body": {
+        "id": "score-05f9c207604d4a1d8fa2e1e77b15dc56",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "observationId": "05f9c207604d4a1d8fa2e1e77b15dc56",
+        "name": "chain_verdict",
+        "value": "PASS",
+        "dataType": "CATEGORICAL"
+      }
+    },
+    {
+      "id": "span-0f79e9c76a4b48ab909c9f9a927447c7",
+      "type": "span-create",
+      "timestamp": "2026-10-23T14:51:54.806+00:00",
+      "body": {
+        "id": "0f79e9c76a4b48ab909c9f9a927447c7",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "name": "inference",
+        "startTime": "2026-10-23T14:51:54.806+00:00",
+        "endTime": "2026-10-23T14:51:55.472+00:00",
+        "metadata": {
+          "duration_ms": 666.9,
+          "detail": "12 GB budget enforced; 4 judgement stages -> StartLux; generators unchanged; evaluation -> 2 model(s)",
+          "requires": "nothing"
+        }
+      }
+    },
+    {
+      "id": "score-0f79e9c76a4b48ab909c9f9a927447c7",
+      "type": "score-create",
+      "timestamp": "2026-10-23T14:51:55.472+00:00",
+      "body": {
+        "id": "score-0f79e9c76a4b48ab909c9f9a927447c7",
+        "traceId": "5fb94ae0c94d4980a544335f7eff102f",
+        "observationId": "0f79e9c76a4b48ab909c9f9a927447c7",
+        "name": "chain_verdict",
+        "value": "PASS",
+        "dataType": "CATEGORICAL"
+      }
+    }
+  ]
+}

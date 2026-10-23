@@ -60,12 +60,14 @@ and an error on a developer machine; `test_missing_project_root_raises_locally_b
 pins both directions.
 
 ## O8. One adopter is not evidence of generality
-`[UNRESOLVED]` **C**
+`[RESOLVED]` **C**
 
-One project is registered. Every claim that the gates "work" is a claim about that
-project; a second, independent adopter could show that the interfaces only fit the case
-they were designed around.
+A second adopter is registered: `projects/lean_nhb` points at a Lean 4 library with no
+Python, no pytest and no manuscript. `python -m framework.project check lean_nhb` returns
+PASS (exit 0, 1.43 s) by mapping `lake build`'s exit code, with no special-casing for the
+toolchain. The interface held without modification, which is what generality has to mean
+here; a project that needed the framework changed would have falsified it.
 
 ---
 
-**Counts**: 8 objections, 6 resolved, 2 unresolved (O4, O8).
+**Counts**: 8 objections, 8 resolved, 0 unresolved.

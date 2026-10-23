@@ -69,4 +69,4 @@ journal_fit:
   # Adversarial self-review, same format as a project's: tagged objections, parsed count.
   file: docs/REFEREE_SIM.md
   objections: 8
-  unresolved: 1
+  unresolved: 0

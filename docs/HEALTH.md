@@ -11,13 +11,15 @@ and re-checked by `--check` in CI; none is typed by hand.
 | coverage of `framework/` | **73%**, no-regression by >1 point | ✅ |
 | chain audit | **11 chains: 10 PASS, 1 SKIP, 0 FAIL/ERROR** | ✅ |
 | Gate S on the reference fixture | PASS (valid register) and FAIL (mutated copy) | ✅ |
-| Gate S on Eidos itself | **FAIL — 1 open objection** (single adopter) | ⚠️ honest |
+| Gate S on Eidos itself | **PASS — 8 objections, 0 open** (two adopters) | ✅ |
 | CI (GitHub Actions) | test job 3.11 + 3.12 green; audit job green | ✅ |
+| adopters | `keystroke-observatory` (Python, manuscript) and `lean_nhb` (Lean, no pytest) | ✅ |
 | external contracts | Quarto missing; DVC, MLflow, decision service, BootLoops present | ⚠️ |
 | coupling | 0 import cycles, 0 absolute-path literals | ✅ |
 
-The SKIP is the project checker: it needs a project path to run. The one open objection is
-O8 in `docs/REFEREE_SIM.md` — one adopter is not evidence of generality.
+The SKIP is the project checker: it needs a project path to run. The two adopters are
+deliberately unlike each other — one Python repository with a manuscript, one Lean library
+with neither — which is what closed O8.
 
 ## What is measured, and what is only asserted
 

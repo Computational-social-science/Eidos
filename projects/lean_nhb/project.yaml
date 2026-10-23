@@ -1,0 +1,22 @@
+# Second adopter -- deliberately not a Python project.
+#
+# keystroke-observatory exercises the Python path end to end. If the registry only works
+# for a repository that has pytest, a manuscript and a {python} placeholder, then the
+# framework's interfaces are shaped around its first user and the generality claim is
+# empty. lean-nhb is a Lean 4 library: no pytest, no manuscript, no Python entry point.
+# Registering it is the cheapest possible test of that claim.
+
+name: lean_nhb
+root: ../../../lean-nhb
+
+gate_command: ["lake", "build"]
+test_command: ["lake", "build"]
+
+notes: |
+  A Lean 4 formalisation repository. `lake build` is both the gate and the test: if the
+  library does not compile, no theorem in it exists. The framework must map its exit code
+  without assuming a Python toolchain, and the chain audit must report it without running
+  pytest.
+
+  Registered as an adopter, not as a consumer of framework modules: nothing here imports
+  Eidos. That is the point -- an adopter tests the interface; a consumer tests a module.

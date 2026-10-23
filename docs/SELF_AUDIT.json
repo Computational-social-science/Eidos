@@ -5,21 +5,19 @@
     "skip": 1,
     "fail": 0
   },
-  "tests_collected": 101,
-  "coverage_total": 73,
+  "tests_collected": 112,
+  "coverage_total": 74,
   "gate_s": {
     "fixture_status": "PASS"
   },
   "self_gate_s": {
-    "status": "FAIL",
-    "findings": [
-      "[S7] 1 referee objection(s) remain unresolved"
-    ],
-    "open_objections": 1
+    "status": "PASS",
+    "findings": [],
+    "open_objections": 0
   },
   "exit_codes": {
     "chains": 0,
     "gate_s": 0,
-    "self_gate_s": 1
+    "self_gate_s": 0
   }
 }

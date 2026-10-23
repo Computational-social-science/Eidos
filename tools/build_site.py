@@ -305,7 +305,7 @@ def adopt_rows(rows: list[dict]) -> str:
         f"<td>{'present' if p['available'] else 'absent'}</td>"
         f"<td>{gs(p.get('gate_s', '—'))}"
         + (" <span class='detail'>(expected)</span>"
-           if p.get('expected') and p.get('expected') == p.get('gate_s') else "")
+           if p.get('expected') == 'FAIL' and p.get('gate_s') == 'FAIL' else "")
         + "</td></tr>" for p in rows)
 
 

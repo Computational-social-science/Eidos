@@ -2,7 +2,7 @@
 
 **Method:** `python tools/audit_chains.py` (the table below was produced with
 `--project-checker ../keystroke-observatory/scripts/check_references.py`; that project is
-no longer registered — the reference consumer is `lean_nhb`).
+no longer used; the registered consumers are sealed fixtures).
 runs one real operation per chain and reports PASS / FAIL / SKIP / ERROR. The table
 below is its output on this host, not a design description. Run it after any change
 to a chain; it takes about 15 s.

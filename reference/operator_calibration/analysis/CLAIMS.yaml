@@ -1,0 +1,82 @@
+# Gate S register -- operator calibration (LLM consumer, sealed evidence)
+#
+# One instrument, one constructed item set, 100 forward passes. The claims are about the
+# instrument's observable behaviour, not about language models in general.
+
+scope_axes: [model, prompt_shape, items, threshold, non_goals]
+
+scope:
+  model: ["StartLux-Decision-v1.1-4B-AutoThink-GGUF (local, llama.cpp)"]
+  prompt_shape: ["three-way choice yes/no/not_stated with the state in the prompt"]
+  items: ["100 constructed items: 50 answerable from the state, 50 not"]
+  threshold: ["confidence floor swept on a tuning half, evaluated on a held-out half"]
+  non_goals:
+    - "other models or other prompt shapes"
+    - "behaviour on harder items; this set produces no errors to calibrate against"
+    - "human agreement; truth is constructed, so kappa would restate accuracy"
+
+claims:
+  - id: O1
+    text: "Abstention separates answerable from unanswerable items on this set"
+    span: "50 of 50 unanswerable items were abstained on and 0 of 50 answerable items were abstained on"
+    strength: supported
+    design: preregistered
+    evidence:
+      file: docs/evidence.json
+      pointer: /abstain_unanswerable
+      value: 1.0
+    control:
+      file: docs/evidence.json
+      pointer: /abstain_answerable
+      value: 0.0
+    assumptions:
+      - "the state string is the only source of truth available to the model"
+      - "not_stated is observable; it is a choice, not a missing field"
+    formal: false
+
+  - id: O2
+    text: "No confidence threshold can be identified on this set, because nothing is wrong"
+    span: "no threshold can be identified because the operator made no errors on answerable items"
+    strength: supported
+    design: preregistered
+    evidence:
+      file: docs/evidence.json
+      pointer: /tau_identified
+      value: false
+    control:
+      file: docs/evidence.json
+      pointer: /accuracy
+      value: 1.0
+    assumptions:
+      - "a floor is identifiable only if some answered item is wrong below it"
+    formal: false
+
+  - id: O3
+    text: "Held-out precision is at least 0.95 at the chosen floor"
+    span: "the held-out half acts on 23 of 50 items at precision 1.000"
+    strength: supported
+    design: preregistered
+    evidence:
+      file: docs/evidence.json
+      pointer: /held_out/precision
+      value: 1.0
+    control:
+      file: docs/evidence.json
+      pointer: /held_out/n
+      value: 50
+    assumptions:
+      - "the split is fixed before the sweep; the held-out half is never used to choose tau"
+    formal: false
+
+power:
+  not_applicable: >-
+    the item set is fixed and the outcome is deterministic given the service; the reported
+    interval is a Wilson interval on the held-out half, not a power calculation
+
+multiplicity:
+  not_applicable: "three claims, each reported with its own number; no family of tests"
+
+journal_fit:
+  file: docs/REFEREE_SIM.md
+  objections: 2
+  unresolved: 0

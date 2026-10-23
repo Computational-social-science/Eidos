@@ -1,9 +1,10 @@
 # Project integration
 
 **Decision:** a working repository is **registered**, never copied into this tree.
-The reference registration is `lean_nhb`: a Lean library whose claims the kernel
-checks, so the framework is tested against proofs rather than against an in-progress
-empirical study.
+Registered consumers are lightweight and sealed: `operator_calibration` (100 forward passes
+against the local operator, must pass) and `null_study` (a false claim on the same evidence,
+must be rejected). An external project is
+registered only once it is validated enough to serve as evidence.
 
 Why the move was rejected is documented where it was decided —
 `keystroke-observatory/MIGRATION.md` §7.3 (bare-module imports, a gate that
@@ -39,8 +40,8 @@ reports: [docs/MANUSCRIPT.html, outputs/rendered/index.pdf]
 
 ```bash
 python -m framework.project list
-python -m framework.project check lean_nhb
-python -m framework.project exec  lean_nhb gate
+python -m framework.project check operator_calibration
+python -m framework.project exec  operator_calibration gate
 ```
 
 ---

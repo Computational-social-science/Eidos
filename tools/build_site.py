@@ -316,6 +316,44 @@ def lean_rows(rows: list[dict]) -> str:
         f"<td class='num'>{html.escape(r['time'])}</td></tr>" for r in rows)
 
 
+def operator_demo() -> str:
+    """Interactive panel over the consumer's evidence: the sweep is the deliverable."""
+    path = ROOT / "reference" / "operator_calibration" / "docs" / "evidence.json"
+    if not path.exists():
+        return '<p class="detail">operator evidence not built</p>'
+    ev = json.loads(path.read_text(encoding="utf-8"))
+    sweep = ev["sweep"]
+    middle = len(sweep) // 2
+    rows = json.dumps(sweep)
+    return f"""<div class="card" style="margin-top:18px">
+  <h3>Demo — the evidence, draggable</h3>
+  <p class="detail" style="margin:0 0 10px">The confidence floor, swept over the tuning
+  half of the same 100 items. Move it and read what the operator would have acted on.
+  Nothing is recomputed here; the numbers are the measured sweep.</p>
+  <input id="tau" type="range" min="0" max="{len(sweep) - 1}" value="{middle}" step="1"
+         style="width:100%;accent-color:var(--accent)" aria-label="confidence floor">
+  <p style="margin:10px 0 0;font:600 13px/1.5 -apple-system,'Segoe UI',Arial,sans-serif">
+    floor <b id="tau-v">-</b> &nbsp;·&nbsp; acted <b id="acted">-</b> &nbsp;·&nbsp;
+    precision <b id="prec">-</b> &nbsp;·&nbsp; coverage <b id="cov">-</b></p>
+  <script>
+  (() => {{
+    const S = {rows};
+    const el = document.getElementById('tau');
+    const v = document.getElementById('tau-v'), a = document.getElementById('acted');
+    const p = document.getElementById('prec'), c = document.getElementById('cov');
+    const draw = () => {{
+      const r = S[Number(el.value)];
+      v.textContent = r.tau.toFixed(2);
+      a.textContent = r.n_acted + '/50';
+      p.textContent = (r.precision * 100).toFixed(0) + '%';
+      c.textContent = (r.coverage * 100).toFixed(0) + '%';
+    }};
+    el.addEventListener('input', draw); draw();
+  }})();
+  </script>
+</div>"""
+
+
 def render_strip() -> str:
     path = ROOT / "docs" / "RENDER_CHECK.json"
     if not path.exists():
@@ -598,19 +636,20 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono
       A boundary that is down is named; it is never silently skipped.</p>
   </div>
   <div class="card" style="margin-top:18px">
-    <h3>Adopters</h3>
+    <h3>Consumers</h3>
     <table>
-      <caption>A pointer, not a copy: the framework discovers, executes and reports one
-        verdict; each project keeps its gate logic and tests.</caption>
+      <caption>A pointer, not a copy: the framework discovers each consumer, runs its gate
+        and reports one verdict; every fixture keeps its own logic and evidence.</caption>
       <thead><tr><th>project</th><th>root</th><th>registered gate</th><th>checkout</th>
         <th>Gate S</th></tr></thead>
       <tbody>__ADOPT__</tbody>
     </table>
-    <p style="margin:14px 0 0;font-size:13px;color:#3a434d">Three entries, deliberately
-    different: an external Lean library whose claims the kernel checks (one objection stays
-    open), a closed-form fixture that should pass, and a <b>negative control that must be
-    rejected</b>. The last row is the instrument's own check — a gate that cannot fail on a
-    false claim is not measuring anything.</p>
+    __OP_DEMO__
+    <p style="margin:14px 0 0;font-size:13px;color:#3a434d">Two entries: an LLM consumer
+    whose claim is a measured interval (must pass), and a negative control on the same
+    evidence whose claim is false (must be rejected). No external project is used as
+    evidence — an instrument has to be validated before it measures, and an open study is
+    not.</p>
   </div>
 </section>
 
@@ -924,6 +963,7 @@ def render(data: dict) -> str:
         "__ADOPT__": adopt_rows(data["registry"]),
         "__CONTRACTS__": contract_strip(data.get("contracts", [])),
         "__RENDER__": render_strip(),
+        "__OP_DEMO__": operator_demo(),
         "__EXTRAP__": extrapolation_svg(extra),
         "__INMAX__": f"{100 * (extra['inside_max'] or 0):.4f}%",
         "__OUTMAX__": f"{100 * (extra['outside_max'] or 0):.2f}%",

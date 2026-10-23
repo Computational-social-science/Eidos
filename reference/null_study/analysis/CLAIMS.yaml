@@ -1,36 +1,36 @@
 # Gate S register -- negative control (this claim is false on purpose)
 #
-# The other two consumers prove the gate can pass and can fail for a reason that no
-# evidence could remove. Neither proves it rejects a *false* claim. This fixture states
-# one: the number in the evidence file is 1, the register asserts 19. Gate S must FAIL,
-# and tests/test_negative_fixture.py asserts that it does.
+# The operator consumer proves the gate can pass. It does not prove the gate rejects a
+# *false* claim. This fixture states one about the same evidence file: the operator never
+# abstains on unanswerable items -- the file says it abstains on all of them. Gate S must
+# FAIL, and tests/test_negative_fixture.py asserts that it does.
 
-scope_axes: [lambda_range, operator, seed, data_source, non_goals]
+scope_axes: [model, prompt_shape, items, threshold, non_goals]
 
 scope:
-  lambda_range: ["0.1 <= lam <= 1.0, as in the source study"]
-  operator: ["random-feature short-time stepper, shuffled training labels"]
-  seed: ["0"]
-  data_source: ["synthetic: RK4 integration of du/dt = lam - u^2, labels shuffled"]
+  model: ["StartLux-Decision-v1.1-4B-AutoThink-GGUF, same item set as the operator study"]
+  prompt_shape: ["three-way choice, same prompt as the operator study"]
+  items: ["100 constructed items, same set"]
+  threshold: ["none: the false claim is about abstention, not about a floor"]
   non_goals:
     - "anything true; this register exists to be rejected"
 
 claims:
   - id: N1
-    text: "The shuffled-label control recovers the fixed point at every held-out branch"
-    span: "the shuffled-label control recovers the analytic fixed point at every held-out branch"
+    text: "The operator never abstains on items the state cannot answer"
+    span: "the operator abstains on none of the unanswerable items"
     strength: supported
     design: preregistered
     evidence:
-      file: ../surrogate_study/docs/evidence.json
-      pointer: /control/within_5pct
-      value: 19
+      file: ../operator_calibration/docs/evidence.json
+      pointer: /abstain_unanswerable
+      value: 0
     control:
-      file: ../surrogate_study/docs/evidence.json
-      pointer: /forward/within_5pct
-      value: 19
+      file: ../operator_calibration/docs/evidence.json
+      pointer: /abstain_answerable
+      value: 0.0
     assumptions:
-      - "none: the asserted number is wrong by construction (1, not 19)"
+      - "none: the asserted number is wrong by construction (1.0, not 0)"
     formal: false
 
 power:

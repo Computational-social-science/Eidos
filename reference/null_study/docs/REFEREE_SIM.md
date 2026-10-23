@@ -1,12 +1,12 @@
 # Referee simulation — negative control
 
-## O1. The claim may be about the wrong arm
+## O1. The claim may be about the wrong quantity
 `[RESOLVED]` **scope**
 
-It is explicitly about the control arm, and the pointer names `/control/within_5pct`. The
-error is not a mix-up of arms; it is a false number for the arm it names. That is the point:
-a gate can be fooled by a mislabelled pointer, and this fixture checks the other case — a
-correct pointer with a wrong asserted value.
+It is explicitly about `abstain_unanswerable`, and the pointer names that field. The error
+is not a mislabel; it is a false number for the field it names. A gate can be fooled by a
+mislabelled pointer, and this fixture checks the other case — a correct pointer with a
+wrong asserted value.
 
 ---
 

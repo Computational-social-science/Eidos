@@ -126,9 +126,9 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono
   <div class="stats">
     <div class="stat"><div class="n">11</div><div class="l">chains exercised end to end</div></div>
     <div class="stat"><div class="n">122</div><div class="l">tests · 73% coverage</div></div>
-    <div class="stat"><div class="n">1</div><div class="l">open referee objections</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">open referee objections</div></div>
     <div class="stat"><div class="n">182<span style="font-size:13px"> ms</span></div><div class="l">typed decision, median</div></div>
-    <div class="stat"><div class="n">3</div><div class="l">adopters registered</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">adopters registered</div></div>
   </div>
 </div>
 
@@ -193,7 +193,7 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono
       scope axis, an under-reported referee count, or a formal claim the Lean chain cannot
       reproduce.</p>
       <p class="oknote"><b>8 objections</b> in the framework's own review,
-      <b>1 open</b> — parsed from the document, not declared.</p>
+      <b>0 open</b> — parsed from the document, not declared.</p>
     </div>
   </div>
   <div class="card" style="margin-top:18px"><table><caption>Where each gate sits in the workflow. A cell with an em dash means the stage is not gated there, which is a decision, not an oversight.</caption><thead><tr><th>stage</th><th>quantitative</th><th>semantic</th><th>human</th></tr></thead><tbody><tr><td>Hypothesis</td><td>lit-review · planted-truth</td><td>Promptfoo · novelty</td><td>mandatory</td></tr><tr><td>Design</td><td>tool-stewardship · timing</td><td>DeepEval design tests</td><td>recommended</td></tr><tr><td>Execution</td><td>acceptance · independence</td><td>—</td><td>optional</td></tr><tr><td>Evaluation</td><td>acceptance</td><td>Inspect · DeepEval · Ragas</td><td>—</td></tr><tr><td>Result injection</td><td>independence · prose-lint</td><td>faithfulness</td><td>—</td></tr><tr><td>Manuscript</td><td>prose-lint · ref-check</td><td>Promptfoo style</td><td>mandatory</td></tr><tr><td>Package</td><td>full battery</td><td>full semantic suite</td><td>mandatory</td></tr></tbody></table></div>
@@ -231,7 +231,7 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono
       <caption>11 chains: 10 pass, 1 skip, 0 fail. A skip is named,
         never counted as a pass.</caption>
       <thead><tr><th>chain</th><th>verdict</th><th>detail</th></tr></thead>
-      <tbody><tr><td class='mono'>registry</td><td><span class="pill pass">PASS</span></td><td class='detail'>3 project(s): lean_nhb, null_study, surrogate_study</td></tr><tr><td class='mono'>gates</td><td><span class="pill pass">PASS</span></td><td class='detail'>acceptance PASS+FAIL both correct; missing tool -&gt; SKIP</td></tr><tr><td class='mono'>gates+project checker</td><td><span class="pill skip">SKIP</span></td><td class='detail'>no --project-checker given</td></tr><tr><td class='mono'>diagnosis</td><td><span class="pill pass">PASS</span></td><td class='detail'>1 diagnosis naming the metric: Result metric below acceptance threshold: acc</td></tr><tr><td class='mono'>tracking</td><td><span class="pill pass">PASS</span></td><td class='detail'>mlflow run …; dvc_available=True</td></tr><tr><td class='mono'>quarto</td><td><span class="pill pass">PASS</span></td><td class='detail'>minimal document; quarto=quarto.exe, render ok=True</td></tr><tr><td class='mono'>validity (Gate S)</td><td><span class="pill pass">PASS</span></td><td class='detail'>valid register PASS; overstated count FAIL</td></tr><tr><td class='mono'>surrogate (local NO)</td><td><span class="pill pass">PASS</span></td><td class='detail'>19/19 fixed points within 5%, 19 stable; shuffled-label control caught</td></tr><tr><td class='mono'>demo (NO)</td><td><span class="pill pass">PASS</span></td><td class='detail'>91 λ points, max relative error 0.0002%</td></tr><tr><td class='mono'>decision</td><td><span class="pill pass">PASS</span></td><td class='detail'>known answers correct; median … for 2 questions (n=3, wall clock)</td></tr><tr><td class='mono'>inference</td><td><span class="pill pass">PASS</span></td><td class='detail'>12 GB budget enforced; 4 judgement stages -&gt; StartLux; generators unchanged; evaluation -&gt; 2 model(s)</td></tr></tbody>
+      <tbody><tr><td class='mono'>registry</td><td><span class="pill pass">PASS</span></td><td class='detail'>2 project(s): null_study, operator_calibration</td></tr><tr><td class='mono'>gates</td><td><span class="pill pass">PASS</span></td><td class='detail'>acceptance PASS+FAIL both correct; missing tool -&gt; SKIP</td></tr><tr><td class='mono'>gates+project checker</td><td><span class="pill skip">SKIP</span></td><td class='detail'>no --project-checker given</td></tr><tr><td class='mono'>diagnosis</td><td><span class="pill pass">PASS</span></td><td class='detail'>1 diagnosis naming the metric: Result metric below acceptance threshold: acc</td></tr><tr><td class='mono'>tracking</td><td><span class="pill pass">PASS</span></td><td class='detail'>mlflow run …; dvc_available=True</td></tr><tr><td class='mono'>quarto</td><td><span class="pill pass">PASS</span></td><td class='detail'>minimal document; quarto=quarto.exe, render ok=True</td></tr><tr><td class='mono'>validity (Gate S)</td><td><span class="pill pass">PASS</span></td><td class='detail'>valid register PASS; overstated count FAIL</td></tr><tr><td class='mono'>surrogate (local NO)</td><td><span class="pill pass">PASS</span></td><td class='detail'>19/19 fixed points within 5%, 19 stable; shuffled-label control caught</td></tr><tr><td class='mono'>demo (NO)</td><td><span class="pill pass">PASS</span></td><td class='detail'>91 λ points, max relative error 0.0002%</td></tr><tr><td class='mono'>decision</td><td><span class="pill pass">PASS</span></td><td class='detail'>known answers correct; median … for 2 questions (n=3, wall clock)</td></tr><tr><td class='mono'>inference</td><td><span class="pill pass">PASS</span></td><td class='detail'>12 GB budget enforced; 4 judgement stages -&gt; StartLux; generators unchanged; evaluation -&gt; 2 model(s)</td></tr></tbody>
     </table>
   </div>
   <div class="card" style="margin-top:18px">
@@ -242,19 +242,46 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono
       A boundary that is down is named; it is never silently skipped.</p>
   </div>
   <div class="card" style="margin-top:18px">
-    <h3>Adopters</h3>
+    <h3>Consumers</h3>
     <table>
-      <caption>A pointer, not a copy: the framework discovers, executes and reports one
-        verdict; each project keeps its gate logic and tests.</caption>
+      <caption>A pointer, not a copy: the framework discovers each consumer, runs its gate
+        and reports one verdict; every fixture keeps its own logic and evidence.</caption>
       <thead><tr><th>project</th><th>root</th><th>registered gate</th><th>checkout</th>
         <th>Gate S</th></tr></thead>
-      <tbody><tr><td class='mono'>lean_nhb</td><td>../../../lean-nhb</td><td><code>[&quot;lake&quot;, &quot;build&quot;]</code></td><td>present</td><td><span class="pill fail">FAIL</span></td></tr><tr><td class='mono'>null_study</td><td>../../reference/null_study</td><td><code>[&quot;python&quot;, &quot;-c&quot;, &quot;import sys; sys.exit(1)&quot;]</code></td><td>present</td><td><span class="pill fail">FAIL</span> <span class='detail'>(expected)</span></td></tr><tr><td class='mono'>surrogate_study</td><td>../../reference/surrogate_study</td><td><code>[&quot;python&quot;, &quot;build_evidence.py&quot;]</code></td><td>present</td><td><span class="pill pass">PASS</span></td></tr></tbody>
+      <tbody><tr><td class='mono'>null_study</td><td>../../reference/null_study</td><td><code>[&quot;python&quot;, &quot;-c&quot;, &quot;import sys; sys.exit(1)&quot;]</code></td><td>present</td><td><span class="pill fail">FAIL</span> <span class='detail'>(expected)</span></td></tr><tr><td class='mono'>operator_calibration</td><td>../../reference/operator_calibration</td><td><code>[&quot;python&quot;, &quot;build_evidence.py&quot;]</code></td><td>present</td><td><span class="pill pass">PASS</span> <span class='detail'>(expected)</span></td></tr></tbody>
     </table>
-    <p style="margin:14px 0 0;font-size:13px;color:#3a434d">Three entries, deliberately
-    different: an external Lean library whose claims the kernel checks (one objection stays
-    open), a closed-form fixture that should pass, and a <b>negative control that must be
-    rejected</b>. The last row is the instrument's own check — a gate that cannot fail on a
-    false claim is not measuring anything.</p>
+    <div class="card" style="margin-top:18px">
+  <h3>Demo — the evidence, draggable</h3>
+  <p class="detail" style="margin:0 0 10px">The confidence floor, swept over the tuning
+  half of the same 100 items. Move it and read what the operator would have acted on.
+  Nothing is recomputed here; the numbers are the measured sweep.</p>
+  <input id="tau" type="range" min="0" max="49" value="25" step="1"
+         style="width:100%;accent-color:var(--accent)" aria-label="confidence floor">
+  <p style="margin:10px 0 0;font:600 13px/1.5 -apple-system,'Segoe UI',Arial,sans-serif">
+    floor <b id="tau-v">-</b> &nbsp;·&nbsp; acted <b id="acted">-</b> &nbsp;·&nbsp;
+    precision <b id="prec">-</b> &nbsp;·&nbsp; coverage <b id="cov">-</b></p>
+  <script>
+  (() => {
+    const S = [{"tau": 0.5, "coverage": 0.54, "precision": 1.0, "n_acted": 27, "correct": 27}, {"tau": 0.51, "coverage": 0.54, "precision": 1.0, "n_acted": 27, "correct": 27}, {"tau": 0.52, "coverage": 0.54, "precision": 1.0, "n_acted": 27, "correct": 27}, {"tau": 0.53, "coverage": 0.54, "precision": 1.0, "n_acted": 27, "correct": 27}, {"tau": 0.54, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.55, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.56, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.57, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.58, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.59, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.6, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.61, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.62, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.63, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.64, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.65, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.66, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.67, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.68, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.69, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.7, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.71, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.72, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.73, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.74, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.75, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.76, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.77, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.78, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.79, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.8, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.81, "coverage": 0.52, "precision": 1.0, "n_acted": 26, "correct": 26}, {"tau": 0.82, "coverage": 0.5, "precision": 1.0, "n_acted": 25, "correct": 25}, {"tau": 0.83, "coverage": 0.46, "precision": 1.0, "n_acted": 23, "correct": 23}, {"tau": 0.84, "coverage": 0.46, "precision": 1.0, "n_acted": 23, "correct": 23}, {"tau": 0.85, "coverage": 0.46, "precision": 1.0, "n_acted": 23, "correct": 23}, {"tau": 0.86, "coverage": 0.46, "precision": 1.0, "n_acted": 23, "correct": 23}, {"tau": 0.87, "coverage": 0.46, "precision": 1.0, "n_acted": 23, "correct": 23}, {"tau": 0.88, "coverage": 0.46, "precision": 1.0, "n_acted": 23, "correct": 23}, {"tau": 0.89, "coverage": 0.46, "precision": 1.0, "n_acted": 23, "correct": 23}, {"tau": 0.9, "coverage": 0.44, "precision": 1.0, "n_acted": 22, "correct": 22}, {"tau": 0.91, "coverage": 0.36, "precision": 1.0, "n_acted": 18, "correct": 18}, {"tau": 0.92, "coverage": 0.36, "precision": 1.0, "n_acted": 18, "correct": 18}, {"tau": 0.93, "coverage": 0.34, "precision": 1.0, "n_acted": 17, "correct": 17}, {"tau": 0.94, "coverage": 0.34, "precision": 1.0, "n_acted": 17, "correct": 17}, {"tau": 0.95, "coverage": 0.32, "precision": 1.0, "n_acted": 16, "correct": 16}, {"tau": 0.96, "coverage": 0.3, "precision": 1.0, "n_acted": 15, "correct": 15}, {"tau": 0.97, "coverage": 0.3, "precision": 1.0, "n_acted": 15, "correct": 15}, {"tau": 0.98, "coverage": 0.28, "precision": 1.0, "n_acted": 14, "correct": 14}, {"tau": 0.99, "coverage": 0.2, "precision": 1.0, "n_acted": 10, "correct": 10}];
+    const el = document.getElementById('tau');
+    const v = document.getElementById('tau-v'), a = document.getElementById('acted');
+    const p = document.getElementById('prec'), c = document.getElementById('cov');
+    const draw = () => {
+      const r = S[Number(el.value)];
+      v.textContent = r.tau.toFixed(2);
+      a.textContent = r.n_acted + '/50';
+      p.textContent = (r.precision * 100).toFixed(0) + '%';
+      c.textContent = (r.coverage * 100).toFixed(0) + '%';
+    };
+    el.addEventListener('input', draw); draw();
+  })();
+  </script>
+</div>
+    <p style="margin:14px 0 0;font-size:13px;color:#3a434d">Two entries: an LLM consumer
+    whose claim is a measured interval (must pass), and a negative control on the same
+    evidence whose claim is false (must be rejected). No external project is used as
+    evidence — an instrument has to be validated before it measures, and an open study is
+    not.</p>
   </div>
 </section>
 
@@ -379,9 +406,9 @@ python tools/audit_validity.py --project ../keystroke-observatory</pre>
 </section>
 
 <footer>
-  Eidos 4.0.0 · MIT · commit <span class="mono">ad42c50</span> · built
+  Eidos 4.0.0 · MIT · commit <span class="mono">b424a89</span> · built
   2026-10-23 by <code>tools/build_site.py</code> · release history
-  <a href="versions.json">versions.json</a> (7).
+  <a href="versions.json">versions.json</a> (8).
   Numbers from <a href="../docs/SELF_AUDIT.json">SELF_AUDIT.json</a>,
   <a href="../docs/CHAIN_AUDIT.md">CHAIN_AUDIT.md</a>, the project registry,
   <code>artifacts/decision_calibration_100.json</code>, and one extrapolation experiment

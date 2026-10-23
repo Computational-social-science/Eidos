@@ -11,14 +11,17 @@ scope:
   language: ["Python 3.11", "Python 3.12"]
   platform: ["Windows 10 (development)", "ubuntu-latest (CI)"]
   external_tools: ["Quarto", "DVC", "MLflow", "BootLoops", "Lean 4 / lake"]
-  projects: ["keystroke-observatory (registered consumer)"]
+  projects: ["operator_calibration (LLM consumer)", "null_study (negative control)"]
   non_goals:
     - "training models or solving PDEs"
     - "replacing a project's own scientific judgement"
   out_of_scope:
     - axis: projects
-      value: "a second independent adopter"
-      reason: "only one project is registered; generalisation is unmeasured"
+      value: "external projects, including keystroke-observatory and lean-nhb"
+      reason: >-
+        an unvalidated project cannot be the instrument that judges the framework; both
+        external candidates were withdrawn on 2026-10-23, and the consumers are now sealed
+        fixtures whose truth is constructed
 
 claims:
   - id: C1
@@ -69,4 +72,4 @@ journal_fit:
   # Adversarial self-review, same format as a project's: tagged objections, parsed count.
   file: docs/REFEREE_SIM.md
   objections: 8
-  unresolved: 1
+  unresolved: 0

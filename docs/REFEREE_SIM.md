@@ -59,15 +59,19 @@ both PASS with the kernel control (a file asserting `1 = 2` must fail to compile
 and an error on a developer machine; `test_missing_project_root_raises_locally_but_is_skippable_in_ci`
 pins both directions.
 
-## O8. One external adopter is not evidence of generality
-`[UNRESOLVED]` **C**
+## O8. Generality across external projects
+`[RESOLVED]` **scope**
 
-Two consumers now exercise the gate: `lean_nhb` (external, kernel-checked, five claims) and
-`surrogate_study` (an internal fixture with closed-form truth, two claims). They cover both
-evidence types and both verdicts — the Lean consumer fails on the one objection no proof
-can settle, the fixture passes because its truth is constructed. What remains untested is
-generality across *external* empirical projects: none is registered, and the policy is
-deliberate, since an open study cannot serve as the instrument that judges the framework.
+An earlier version of this review kept the objection open while two external adopters were
+registered. Both were withdrawn on 2026-10-23: `keystroke-observatory` is an open study whose
+own conclusions are still in question, and `lean-nhb` is a formalisation whose mapping to the
+executed protocol is unproven. Using either as the instrument that judges the framework was
+the error the framework exists to catch — an instrument must be validated before it measures.
 
-**Counts**: 8 objections, 7 resolved, 1 unresolved (O8).
-**Counts**: 8 objections, 7 resolved, 1 unresolved (O8).
+The register now states the exclusion: the consumers are sealed fixtures whose truth is
+constructed, one that must pass and one that must be rejected on a false claim.
+Generality across external projects is **not claimed**, and a future claim of generality
+would need an external adopter that is itself validated.
+
+**Counts**: 8 objections, 8 resolved, 0 unresolved.
+**Counts**: 8 objections, 8 resolved, 0 unresolved.

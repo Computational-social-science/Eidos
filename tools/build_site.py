@@ -478,6 +478,27 @@ table.ctl td{padding:6px 8px;border-bottom:1px solid var(--rule);vertical-align:
 .wf-bar{position:absolute;top:0;height:12px;border-radius:3px;background:var(--accent);opacity:.75}
 .wf-bar.pass{background:#2f855a}.wf-bar.skip{background:#9aa3b2}.wf-bar.fail{background:#b4232f}
 .wf-ms{width:64px;text-align:right;color:var(--muted);font-size:11.5px}
+.tl-row{display:flex;align-items:center;gap:8px;margin:1px 0}
+.tl-name{width:148px;flex:none;font:11.5px ui-monospace,Menlo,monospace;color:#2b333d}
+.tl-cells{flex:1;display:flex;gap:1px;min-width:0}
+.tl-cell{flex:1;height:14px;border-radius:2px;background:#eceff3;display:inline-block}
+.tl-cell.idle{background:#eceff3}.tl-cell.run{background:#4c72b0}
+.tl-cell.pass{background:#2f855a}.tl-cell.skip{background:#9aa3b2}
+.tl-cell.fail{background:#b4232f}.tl-cell.stale{background:#d9a441}
+.tl-now{width:58px;flex:none;text-align:right;font:600 10px/1 -apple-system,'Segoe UI',sans-serif;
+  letter-spacing:.05em;color:var(--muted)}
+.tl-now.pass{color:#2f855a}.tl-now.fail{color:#b4232f}.tl-now.run{color:#4c72b0}
+.tl-now.skip{color:#6b7683}.tl-now.stale{color:#a8761f}
+.tl-axis{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);flex:1}
+.tl-legend{display:flex;gap:14px;font-size:11px;color:var(--muted);margin:10px 0 0}
+.tl-key{display:flex;align-items:center;gap:5px}
+.tl-key .tl-cell{width:10px;flex:none}
+table.cm{width:100%;border-collapse:collapse;font-size:11.5px}
+table.cm th{font-weight:600;color:var(--muted);padding:4px 6px;font-size:10.5px;
+  text-align:center;border-bottom:1px solid var(--rule)}
+table.cm th.cm-row{text-align:left;font-family:ui-monospace,Menlo,monospace;color:#2b333d}
+table.cm td.cm-cell{text-align:center;padding:3px 6px;border-bottom:1px solid var(--rule)}
+.cm-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#2f855a}
 .contract{font:600 11.4px/1 -apple-system,"Segoe UI",Arial,sans-serif;padding:7px 9px;
           border-radius:999px;border:1px solid var(--rule);background:#fff;color:#2b333d}
 .contract.ok{border-color:#c3e0cf;background:#f3faf6;color:#17663f}

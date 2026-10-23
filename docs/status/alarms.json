@@ -1,1 +1,1058 @@
-[]
+[
+  {
+    "ts": "2026-10-23T15:35:35+00:00",
+    "signal": "chain:decision",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:35+00:00",
+    "signal": "chain:demo (NO)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:35+00:00",
+    "signal": "chain:diagnosis",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:35+00:00",
+    "signal": "chain:gates",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:35+00:00",
+    "signal": "chain:gates+project checker",
+    "from": "RUNNING",
+    "to": "SKIP",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:35+00:00",
+    "signal": "chain:inference",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:35+00:00",
+    "signal": "chain:quarto",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:35+00:00",
+    "signal": "chain:registry",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:35+00:00",
+    "signal": "chain:surrogate (local NO)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:35+00:00",
+    "signal": "chain:tracking",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:35+00:00",
+    "signal": "chain:validity (Gate S)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:46+00:00",
+    "signal": "chain:decision",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:46+00:00",
+    "signal": "chain:demo (NO)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:46+00:00",
+    "signal": "chain:diagnosis",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:46+00:00",
+    "signal": "chain:gates",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:46+00:00",
+    "signal": "chain:gates+project checker",
+    "from": "SKIP",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:46+00:00",
+    "signal": "chain:inference",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:46+00:00",
+    "signal": "chain:quarto",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:46+00:00",
+    "signal": "chain:registry",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:46+00:00",
+    "signal": "chain:surrogate (local NO)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:46+00:00",
+    "signal": "chain:tracking",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:35:46+00:00",
+    "signal": "chain:validity (Gate S)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:05+00:00",
+    "signal": "chain:decision",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:05+00:00",
+    "signal": "chain:demo (NO)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:05+00:00",
+    "signal": "chain:diagnosis",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:05+00:00",
+    "signal": "chain:gates",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:05+00:00",
+    "signal": "chain:gates+project checker",
+    "from": "SKIP",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:05+00:00",
+    "signal": "chain:inference",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:05+00:00",
+    "signal": "chain:quarto",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:05+00:00",
+    "signal": "chain:registry",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:05+00:00",
+    "signal": "chain:surrogate (local NO)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:05+00:00",
+    "signal": "chain:tracking",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:05+00:00",
+    "signal": "chain:validity (Gate S)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:11+00:00",
+    "signal": "chain:decision",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:11+00:00",
+    "signal": "chain:demo (NO)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:11+00:00",
+    "signal": "chain:diagnosis",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:11+00:00",
+    "signal": "chain:gates",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:11+00:00",
+    "signal": "chain:gates+project checker",
+    "from": "RUNNING",
+    "to": "SKIP",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:11+00:00",
+    "signal": "chain:inference",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:11+00:00",
+    "signal": "chain:quarto",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:11+00:00",
+    "signal": "chain:registry",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:11+00:00",
+    "signal": "chain:surrogate (local NO)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:11+00:00",
+    "signal": "chain:tracking",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:11+00:00",
+    "signal": "chain:validity (Gate S)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:17+00:00",
+    "signal": "chain:decision",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:17+00:00",
+    "signal": "chain:demo (NO)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:17+00:00",
+    "signal": "chain:diagnosis",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:17+00:00",
+    "signal": "chain:gates",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:17+00:00",
+    "signal": "chain:gates+project checker",
+    "from": "SKIP",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:17+00:00",
+    "signal": "chain:inference",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:17+00:00",
+    "signal": "chain:quarto",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:17+00:00",
+    "signal": "chain:registry",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:17+00:00",
+    "signal": "chain:surrogate (local NO)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:17+00:00",
+    "signal": "chain:tracking",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:17+00:00",
+    "signal": "chain:validity (Gate S)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:23+00:00",
+    "signal": "chain:decision",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:23+00:00",
+    "signal": "chain:demo (NO)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:23+00:00",
+    "signal": "chain:diagnosis",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:23+00:00",
+    "signal": "chain:gates",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:23+00:00",
+    "signal": "chain:gates+project checker",
+    "from": "RUNNING",
+    "to": "SKIP",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:23+00:00",
+    "signal": "chain:inference",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:23+00:00",
+    "signal": "chain:quarto",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:23+00:00",
+    "signal": "chain:registry",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:23+00:00",
+    "signal": "chain:surrogate (local NO)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:23+00:00",
+    "signal": "chain:tracking",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:23+00:00",
+    "signal": "chain:validity (Gate S)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:53+00:00",
+    "signal": "chain:decision",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:53+00:00",
+    "signal": "chain:demo (NO)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:53+00:00",
+    "signal": "chain:diagnosis",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:53+00:00",
+    "signal": "chain:gates",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:53+00:00",
+    "signal": "chain:gates+project checker",
+    "from": "SKIP",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:53+00:00",
+    "signal": "chain:inference",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:53+00:00",
+    "signal": "chain:quarto",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:53+00:00",
+    "signal": "chain:registry",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:53+00:00",
+    "signal": "chain:surrogate (local NO)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:53+00:00",
+    "signal": "chain:tracking",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:53+00:00",
+    "signal": "chain:validity (Gate S)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:59+00:00",
+    "signal": "chain:decision",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:59+00:00",
+    "signal": "chain:demo (NO)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:59+00:00",
+    "signal": "chain:diagnosis",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:59+00:00",
+    "signal": "chain:gates",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:59+00:00",
+    "signal": "chain:gates+project checker",
+    "from": "RUNNING",
+    "to": "SKIP",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:59+00:00",
+    "signal": "chain:inference",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:59+00:00",
+    "signal": "chain:quarto",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:59+00:00",
+    "signal": "chain:registry",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:59+00:00",
+    "signal": "chain:surrogate (local NO)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:59+00:00",
+    "signal": "chain:tracking",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:36:59+00:00",
+    "signal": "chain:validity (Gate S)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:26+00:00",
+    "signal": "chain:decision",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:26+00:00",
+    "signal": "chain:demo (NO)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:26+00:00",
+    "signal": "chain:diagnosis",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:26+00:00",
+    "signal": "chain:gates",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:26+00:00",
+    "signal": "chain:gates+project checker",
+    "from": "SKIP",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:26+00:00",
+    "signal": "chain:inference",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:26+00:00",
+    "signal": "chain:quarto",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:26+00:00",
+    "signal": "chain:registry",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:26+00:00",
+    "signal": "chain:surrogate (local NO)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:26+00:00",
+    "signal": "chain:tracking",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:26+00:00",
+    "signal": "chain:validity (Gate S)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:32+00:00",
+    "signal": "chain:decision",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:32+00:00",
+    "signal": "chain:demo (NO)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:32+00:00",
+    "signal": "chain:diagnosis",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:32+00:00",
+    "signal": "chain:gates",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:32+00:00",
+    "signal": "chain:gates+project checker",
+    "from": "RUNNING",
+    "to": "SKIP",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:32+00:00",
+    "signal": "chain:inference",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:32+00:00",
+    "signal": "chain:quarto",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:32+00:00",
+    "signal": "chain:registry",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:32+00:00",
+    "signal": "chain:surrogate (local NO)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:32+00:00",
+    "signal": "chain:tracking",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:32+00:00",
+    "signal": "chain:validity (Gate S)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:38+00:00",
+    "signal": "chain:decision",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:38+00:00",
+    "signal": "chain:demo (NO)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:38+00:00",
+    "signal": "chain:diagnosis",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:38+00:00",
+    "signal": "chain:gates",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:38+00:00",
+    "signal": "chain:gates+project checker",
+    "from": "SKIP",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:38+00:00",
+    "signal": "chain:inference",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:38+00:00",
+    "signal": "chain:quarto",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:38+00:00",
+    "signal": "chain:registry",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:38+00:00",
+    "signal": "chain:surrogate (local NO)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:38+00:00",
+    "signal": "chain:tracking",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:38+00:00",
+    "signal": "chain:validity (Gate S)",
+    "from": "PASS",
+    "to": "RUNNING",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:44+00:00",
+    "signal": "chain:decision",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:44+00:00",
+    "signal": "chain:demo (NO)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:44+00:00",
+    "signal": "chain:diagnosis",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:44+00:00",
+    "signal": "chain:gates",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:44+00:00",
+    "signal": "chain:gates+project checker",
+    "from": "RUNNING",
+    "to": "SKIP",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:44+00:00",
+    "signal": "chain:inference",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:44+00:00",
+    "signal": "chain:quarto",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:44+00:00",
+    "signal": "chain:registry",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:44+00:00",
+    "signal": "chain:surrogate (local NO)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:44+00:00",
+    "signal": "chain:tracking",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  },
+  {
+    "ts": "2026-10-23T15:44:44+00:00",
+    "signal": "chain:validity (Gate S)",
+    "from": "RUNNING",
+    "to": "PASS",
+    "value": null,
+    "source": "docs/traces/latest.json"
+  }
+]

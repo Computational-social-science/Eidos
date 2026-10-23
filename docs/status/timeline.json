@@ -1,0 +1,1199 @@
+[
+{
+"ts": "2026-10-23T15:29:55+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+}
+},
+{
+"ts": "2026-10-23T15:31:24+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:31:31+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:31:38+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:31:45+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:31:52+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:31:59+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:32:06+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:32:13+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:32:20+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:32:27+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:32:34+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:32:41+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:32:48+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:32:55+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:33:02+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:33:09+00:00",
+"states": {
+"decision": "RUNNING",
+"demo (NO)": "RUNNING",
+"diagnosis": "RUNNING",
+"gates": "RUNNING",
+"gates+project checker": "RUNNING",
+"inference": "RUNNING",
+"quarto": "RUNNING",
+"registry": "RUNNING",
+"surrogate (local NO)": "RUNNING",
+"tracking": "RUNNING",
+"validity (Gate S)": "RUNNING"
+}
+},
+{
+"ts": "2026-10-23T15:33:16+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+}
+},
+{
+"ts": "2026-10-23T15:33:23+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:33:30+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:33:37+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:33:44+00:00",
+"states": {
+"decision": "RUNNING",
+"demo (NO)": "RUNNING",
+"diagnosis": "RUNNING",
+"gates": "RUNNING",
+"gates+project checker": "RUNNING",
+"inference": "RUNNING",
+"quarto": "RUNNING",
+"registry": "RUNNING",
+"surrogate (local NO)": "RUNNING",
+"tracking": "RUNNING",
+"validity (Gate S)": "RUNNING"
+}
+},
+{
+"ts": "2026-10-23T15:33:45+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+}
+},
+{
+"ts": "2026-10-23T15:33:52+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:34:01+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:34:07+00:00",
+"states": {
+"decision": "RUNNING",
+"demo (NO)": "RUNNING",
+"diagnosis": "RUNNING",
+"gates": "RUNNING",
+"gates+project checker": "RUNNING",
+"inference": "RUNNING",
+"quarto": "RUNNING",
+"registry": "RUNNING",
+"surrogate (local NO)": "RUNNING",
+"tracking": "RUNNING",
+"validity (Gate S)": "RUNNING"
+}
+},
+{
+"ts": "2026-10-23T15:34:13+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+}
+},
+{
+"ts": "2026-10-23T15:34:19+00:00",
+"states": {
+"decision": "RUNNING",
+"demo (NO)": "RUNNING",
+"diagnosis": "RUNNING",
+"gates": "RUNNING",
+"gates+project checker": "RUNNING",
+"inference": "RUNNING",
+"quarto": "RUNNING",
+"registry": "RUNNING",
+"surrogate (local NO)": "RUNNING",
+"tracking": "RUNNING",
+"validity (Gate S)": "RUNNING"
+}
+},
+{
+"ts": "2026-10-23T15:34:25+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+}
+},
+{
+"ts": "2026-10-23T15:34:31+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:34:37+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:34:43+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:34:59+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:35:05+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:35:11+00:00",
+"states": {
+"decision": "RUNNING",
+"demo (NO)": "RUNNING",
+"diagnosis": "RUNNING",
+"gates": "RUNNING",
+"gates+project checker": "RUNNING",
+"inference": "RUNNING",
+"quarto": "RUNNING",
+"registry": "RUNNING",
+"surrogate (local NO)": "RUNNING",
+"tracking": "RUNNING",
+"validity (Gate S)": "RUNNING"
+}
+},
+{
+"ts": "2026-10-23T15:35:17+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+}
+},
+{
+"ts": "2026-10-23T15:35:23+00:00",
+"states": {
+"decision": "RUNNING",
+"demo (NO)": "RUNNING",
+"diagnosis": "RUNNING",
+"gates": "RUNNING",
+"gates+project checker": "RUNNING",
+"inference": "RUNNING",
+"quarto": "RUNNING",
+"registry": "RUNNING",
+"surrogate (local NO)": "RUNNING",
+"tracking": "RUNNING",
+"validity (Gate S)": "RUNNING"
+}
+},
+{
+"ts": "2026-10-23T15:35:29+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+}
+},
+{
+"ts": "2026-10-23T15:35:35+00:00",
+"states": {
+"decision": "RUNNING",
+"demo (NO)": "RUNNING",
+"diagnosis": "RUNNING",
+"gates": "RUNNING",
+"gates+project checker": "RUNNING",
+"inference": "RUNNING",
+"quarto": "RUNNING",
+"registry": "RUNNING",
+"surrogate (local NO)": "RUNNING",
+"tracking": "RUNNING",
+"validity (Gate S)": "RUNNING"
+}
+},
+{
+"ts": "2026-10-23T15:35:35+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+}
+},
+{
+"ts": "2026-10-23T15:35:41+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:35:46+00:00",
+"states": {
+"decision": "RUNNING",
+"demo (NO)": "RUNNING",
+"diagnosis": "RUNNING",
+"gates": "RUNNING",
+"gates+project checker": "RUNNING",
+"inference": "RUNNING",
+"quarto": "RUNNING",
+"registry": "RUNNING",
+"surrogate (local NO)": "RUNNING",
+"tracking": "RUNNING",
+"validity (Gate S)": "RUNNING"
+}
+},
+{
+"ts": "2026-10-23T15:35:47+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+}
+},
+{
+"ts": "2026-10-23T15:35:59+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:36:05+00:00",
+"states": {
+"decision": "RUNNING",
+"demo (NO)": "RUNNING",
+"diagnosis": "RUNNING",
+"gates": "RUNNING",
+"gates+project checker": "RUNNING",
+"inference": "RUNNING",
+"quarto": "RUNNING",
+"registry": "RUNNING",
+"surrogate (local NO)": "RUNNING",
+"tracking": "RUNNING",
+"validity (Gate S)": "RUNNING"
+}
+},
+{
+"ts": "2026-10-23T15:36:11+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+}
+},
+{
+"ts": "2026-10-23T15:36:17+00:00",
+"states": {
+"decision": "RUNNING",
+"demo (NO)": "RUNNING",
+"diagnosis": "RUNNING",
+"gates": "RUNNING",
+"gates+project checker": "RUNNING",
+"inference": "RUNNING",
+"quarto": "RUNNING",
+"registry": "RUNNING",
+"surrogate (local NO)": "RUNNING",
+"tracking": "RUNNING",
+"validity (Gate S)": "RUNNING"
+}
+},
+{
+"ts": "2026-10-23T15:36:23+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+}
+},
+{
+"ts": "2026-10-23T15:36:29+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:36:35+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:36:41+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:36:47+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:36:53+00:00",
+"states": {
+"decision": "RUNNING",
+"demo (NO)": "RUNNING",
+"diagnosis": "RUNNING",
+"gates": "RUNNING",
+"gates+project checker": "RUNNING",
+"inference": "RUNNING",
+"quarto": "RUNNING",
+"registry": "RUNNING",
+"surrogate (local NO)": "RUNNING",
+"tracking": "RUNNING",
+"validity (Gate S)": "RUNNING"
+}
+},
+{
+"ts": "2026-10-23T15:36:59+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+}
+},
+{
+"ts": "2026-10-23T15:44:26+00:00",
+"states": {
+"decision": "RUNNING",
+"demo (NO)": "RUNNING",
+"diagnosis": "RUNNING",
+"gates": "RUNNING",
+"gates+project checker": "RUNNING",
+"inference": "RUNNING",
+"quarto": "RUNNING",
+"registry": "RUNNING",
+"surrogate (local NO)": "RUNNING",
+"tracking": "RUNNING",
+"validity (Gate S)": "RUNNING"
+}
+},
+{
+"ts": "2026-10-23T15:44:32+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+}
+},
+{
+"ts": "2026-10-23T15:44:38+00:00",
+"states": {
+"decision": "RUNNING",
+"demo (NO)": "RUNNING",
+"diagnosis": "RUNNING",
+"gates": "RUNNING",
+"gates+project checker": "RUNNING",
+"inference": "RUNNING",
+"quarto": "RUNNING",
+"registry": "RUNNING",
+"surrogate (local NO)": "RUNNING",
+"tracking": "RUNNING",
+"validity (Gate S)": "RUNNING"
+}
+},
+{
+"ts": "2026-10-23T15:44:44+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+}
+},
+{
+"ts": "2026-10-23T15:44:50+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:44:56+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:45:02+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:45:08+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:45:14+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:45:20+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:45:26+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:45:32+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:45:38+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:45:44+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:45:50+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:45:56+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:46:02+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+},
+{
+"ts": "2026-10-23T15:46:08+00:00",
+"states": {
+"decision": "PASS",
+"demo (NO)": "PASS",
+"diagnosis": "PASS",
+"gates": "PASS",
+"gates+project checker": "SKIP",
+"inference": "PASS",
+"quarto": "PASS",
+"registry": "PASS",
+"surrogate (local NO)": "PASS",
+"tracking": "PASS",
+"validity (Gate S)": "PASS"
+},
+"repeat": true
+}
+]

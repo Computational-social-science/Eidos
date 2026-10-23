@@ -26,11 +26,15 @@ from __future__ import annotations
 import argparse
 import datetime
 import json
+import sys
 import time
 import urllib.request
 from pathlib import Path
 
+import chain_states
+
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 STATUS = ROOT / "docs" / "status"
 CURRENT = STATUS / "current.json"
 HISTORY = STATUS / "history.jsonl"
@@ -165,6 +169,15 @@ def sample(append: bool = True) -> dict:
         elif state == "UNOBSERVABLE" and worst == "OK":
             worst = "UNOBSERVABLE"
 
+    live = chain_states.running_age() is not None         and chain_states.running_age() < chain_states.RUNNING_TTL
+    previous_chains = {}
+    try:
+        previous_rows = json.loads(chain_states.TIMELINE.read_text(encoding="utf-8"))
+        if previous_rows:
+            previous_chains = previous_rows[-1].get("states", {}) or {}
+    except (OSError, json.JSONDecodeError):
+        previous_chains = {}
+    chain_state = chain_states.advance(previous_chains, chain_states.observed(), live)
     previous = read_json(CURRENT, {}) or {}
     previous_states = (previous.get("signals") or {}) if isinstance(previous, dict) else {}
     alarms = read_json(ALARMS, []) or []
@@ -176,6 +189,11 @@ def sample(append: bool = True) -> dict:
             alarms.append({"ts": now_iso(), "signal": name, "from": before,
                            "to": row["state"], "value": row["value"],
                            "source": row["source"]})
+    for name, state in chain_state.items():
+        before = previous_chains.get(name, "IDLE")
+        if before != state:
+            alarms.append({"ts": now_iso(), "signal": "chain:" + name, "from": before,
+                           "to": state, "value": None, "source": "docs/traces/latest.json"})
     alarms = alarms[-ALARM_CAP:]
 
     history = []
@@ -193,7 +211,10 @@ def sample(append: bool = True) -> dict:
         HISTORY.write_text("".join(json.dumps(row) + chr(10) for row in history),
                            encoding="utf-8")
 
+    timeline = chain_states.append(now_iso(), chain_state)
+
     payload = {"ts": now_iso(), "overall": worst, "signals": states,
+               "chains": chain_state, "timeline": timeline[-60:], "live_run": live,
                "alarms": alarms[-20:], "samples": len(history),
                "history": [{k: row.get(k) for k in ("ts", "values")} for row in history[-40:]]}
     CURRENT.parent.mkdir(parents=True, exist_ok=True)

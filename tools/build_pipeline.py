@@ -87,6 +87,44 @@ def levels(nodes: list[str], edges: list[dict]) -> dict[str, int]:
     return level
 
 
+def chain_modules() -> dict[str, list[str]]:
+    """Which framework modules each chain exercises, read from the audit's own source.
+
+    The mapping is structural, not declared: it walks the AST of audit_chains.py, finds
+    each `@chain(...)` function, and collects the imports inside its body. A module shared
+    by several chains is where a change to one chain can break another.
+    """
+    import ast
+
+    source = (ROOT / "tools" / "audit_chains.py").read_text(encoding="utf-8")
+    tree = ast.parse(source)
+    mapping: dict[str, list[str]] = {}
+    for node in ast.walk(tree):
+        if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            continue
+        names = []
+        for decorator in node.decorator_list:
+            target = decorator.func if isinstance(decorator, ast.Call) else decorator
+            if isinstance(target, ast.Name) and target.id == "chain":
+                args = getattr(decorator, "args", [])
+                if args and isinstance(args[0], ast.Constant):
+                    names.append(str(args[0].value))
+        if not names:
+            continue
+        modules = set()
+        for child in ast.walk(node):
+            if isinstance(child, ast.ImportFrom) and child.module:
+                if child.module.startswith(("framework", "tools")):
+                    modules.add(child.module)
+            elif isinstance(child, ast.Import):
+                for alias in child.names:
+                    if alias.name.startswith(("framework", "tools")):
+                        modules.add(alias.name)
+        for name in names:
+            mapping[name] = sorted(modules)
+    return mapping
+
+
 def consumers() -> list[dict]:
     from framework.project import load_projects
 
@@ -160,6 +198,7 @@ def main(argv: list[str] | None = None) -> int:
                        "chains": (audit.get("chains") or {}).get("total"),
                        "tests": (audit.get("tests") or {}).get("count")},
         "consumers": consumers(),
+        "chain_modules": chain_modules(),
         "health": probe() if args.probe else {},
     }
     out = Path(args.out)

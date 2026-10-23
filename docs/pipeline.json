@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-23T14:53:34+00:00",
+  "generated": "2026-10-23T15:30:07+00:00",
   "coupling": {
     "nodes": [
       "framework.decision",
@@ -531,5 +531,39 @@
       "generated": "2026-10-23T14:37:39+00:00"
     }
   ],
+  "chain_modules": {
+    "registry": [
+      "framework.project"
+    ],
+    "gates": [
+      "framework.gates"
+    ],
+    "gates+project checker": [
+      "framework.gates"
+    ],
+    "diagnosis": [
+      "framework.diagnosis",
+      "framework.gates"
+    ],
+    "tracking": [
+      "framework.tracking"
+    ],
+    "quarto": [
+      "framework.quarto_bridge"
+    ],
+    "validity (Gate S)": [
+      "framework.validity"
+    ],
+    "surrogate (local NO)": [],
+    "demo (NO)": [
+      "framework.surrogate.demo"
+    ],
+    "decision": [
+      "framework.decision"
+    ],
+    "inference": [
+      "framework.inference"
+    ]
+  },
   "health": {}
 }

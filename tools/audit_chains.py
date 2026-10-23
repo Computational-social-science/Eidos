@@ -36,6 +36,13 @@ sys.path.insert(0, str(ROOT))
 RESULTS: list[dict] = []
 
 
+def _marker(name: str):
+    """The state machine needs to know a run is in flight, not just that one finished."""
+    sys.path.insert(0, str(ROOT / "tools"))
+    import chain_states
+    getattr(chain_states, name)()
+
+
 def _option(flag: str) -> str:
     if flag in sys.argv:
         index = sys.argv.index(flag)
@@ -326,6 +333,7 @@ def main(argv: list[str] | None = None) -> int:
 
     global STRICT_REGISTRY
     STRICT_REGISTRY = not args.ci
+    _marker("mark_running")
 
     for name, fn, requires in CHAINS:
         started = time.time()
@@ -345,6 +353,8 @@ def main(argv: list[str] | None = None) -> int:
                         "ms": round((ended - started) * 1000, 1)})
 
     width = max(len(r["chain"]) for r in RESULTS) if RESULTS else 10
+    _marker("clear_running")
+
     if args.spans:
         started = min(r["start_ts"] for r in RESULTS)
         ended = max(r["end_ts"] for r in RESULTS)

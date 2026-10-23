@@ -14,6 +14,8 @@ from __future__ import annotations
 
 import html
 
+import pipeline_extras
+
 PASS, SKIP, FAIL = "pass", "skip", "fail"
 PILL = {"PASS": PASS, "SKIP": SKIP, "FAIL": FAIL, "ERROR": FAIL}
 
@@ -193,7 +195,9 @@ SCRIPT = """
     try {
       const r = await fetch('/api/status', {cache: 'no-store'});
       if (!r.ok) throw new Error('http ' + r.status);
-      paint(await r.json());
+      const d = await r.json();
+      paint(d);
+      if (window.__paintTimeline && d.timeline) window.__paintTimeline(d.timeline);
     } catch (e) {
       if (badge) { badge.textContent = 'snapshot'; badge.className = 'pill skip'; }
     }
@@ -226,6 +230,16 @@ def render(pipeline: dict, status: dict) -> str:
 </div>
 
 <div class="card" style="margin-top:18px">
+  <h3>State timeline — discrete states per chain</h3>
+  {pipeline_extras.timeline_panel(status)}
+</div>
+
+<div class="card" style="margin-top:18px">
+  <h3>Coupling — which chain exercises which module</h3>
+  {pipeline_extras.coupling_matrix(pipeline.get('chain_modules') or {})}
+</div>
+
+<div class="card" style="margin-top:18px">
   <h3>Structure — what depends on what</h3>
   <p class="detail" style="margin:0 0 6px">{len(coupling.get('nodes') or [])} modules,
   {len(coupling.get('edges') or [])} import edges, {coupling.get('cycles', 0)} cycles.
@@ -244,5 +258,5 @@ def render(pipeline: dict, status: dict) -> str:
   {chain_table(pipeline.get('chains') or [])}
   <div style="margin-top:12px">{waterfall(pipeline.get('spans') or [])}</div>
 </div>
-{SCRIPT}"""
+{pipeline_extras.SCRIPT}{SCRIPT}"""
     return html_out

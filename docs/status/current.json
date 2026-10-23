@@ -1,5 +1,5 @@
 {
-  "ts": "2026-10-23T15:06:42+00:00",
+  "ts": "2026-10-23T15:46:08+00:00",
   "overall": "ALARM",
   "signals": {
     "decision_service": {
@@ -33,24 +33,24 @@
       "error": 0.0
     },
     "chains_duration": {
-      "value": 17.3,
+      "value": 17.7,
       "reference": 180.0,
       "direction": "max",
       "unit": "s",
       "source": "docs/traces/latest.json",
       "note": "",
       "state": "OK",
-      "error": -162.7
+      "error": -162.3
     },
     "chains_age": {
-      "value": 0.25,
+      "value": 0.17,
       "reference": 24.0,
       "direction": "max",
       "unit": "h",
       "source": "docs/traces/latest.json",
       "note": "last audit",
       "state": "OK",
-      "error": -23.75
+      "error": -23.83
     },
     "self_audit": {
       "value": 1,
@@ -73,587 +73,1758 @@
       "error": 0.0
     },
     "render_age": {
-      "value": 0.97,
+      "value": 1.62,
       "reference": 168,
       "direction": "max",
       "unit": "h",
       "source": "docs/RENDER_CHECK.json",
       "note": "one host",
       "state": "OK",
-      "error": -167.03
+      "error": -166.38
     },
     "consumer_evidence_age": {
-      "value": 0.48,
+      "value": 1.14,
       "reference": 168,
       "direction": "max",
       "unit": "h",
       "source": "reference/operator_calibration/docs/evidence.json",
       "note": "calibration measurement",
       "state": "OK",
-      "error": -167.52
+      "error": -166.86
     }
   },
-  "alarms": [],
-  "samples": 96,
+  "chains": {
+    "decision": "PASS",
+    "demo (NO)": "PASS",
+    "diagnosis": "PASS",
+    "gates": "PASS",
+    "gates+project checker": "SKIP",
+    "inference": "PASS",
+    "quarto": "PASS",
+    "registry": "PASS",
+    "surrogate (local NO)": "PASS",
+    "tracking": "PASS",
+    "validity (Gate S)": "PASS"
+  },
+  "timeline": [
+    {
+      "ts": "2026-10-23T15:32:41+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:32:48+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:32:55+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:33:02+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:33:09+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:33:16+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:33:23+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:33:30+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:33:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:33:44+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:33:45+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:33:52+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:34:01+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:34:07+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:34:13+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:34:19+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:34:25+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:34:31+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:34:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:34:43+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:34:59+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:35:05+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:35:11+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:17+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:23+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:29+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:35+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:35+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:41+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:35:46+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:47+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:59+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:36:05+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:36:11+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:36:17+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:36:23+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:36:29+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:36:35+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:36:41+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:36:47+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:36:53+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:36:59+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:44:26+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:44:32+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:44:38+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:44:44+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-23T15:44:50+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:44:56+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:45:02+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:45:08+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:45:14+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:45:20+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:45:26+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:45:32+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:45:38+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:45:44+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:45:50+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:45:56+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:46:02+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-23T15:46:08+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    }
+  ],
+  "live_run": false,
+  "alarms": [
+    {
+      "ts": "2026-10-23T15:44:38+00:00",
+      "signal": "chain:diagnosis",
+      "from": "PASS",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:38+00:00",
+      "signal": "chain:gates",
+      "from": "PASS",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:38+00:00",
+      "signal": "chain:gates+project checker",
+      "from": "SKIP",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:38+00:00",
+      "signal": "chain:inference",
+      "from": "PASS",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:38+00:00",
+      "signal": "chain:quarto",
+      "from": "PASS",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:38+00:00",
+      "signal": "chain:registry",
+      "from": "PASS",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:38+00:00",
+      "signal": "chain:surrogate (local NO)",
+      "from": "PASS",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:38+00:00",
+      "signal": "chain:tracking",
+      "from": "PASS",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:38+00:00",
+      "signal": "chain:validity (Gate S)",
+      "from": "PASS",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:44+00:00",
+      "signal": "chain:decision",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:44+00:00",
+      "signal": "chain:demo (NO)",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:44+00:00",
+      "signal": "chain:diagnosis",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:44+00:00",
+      "signal": "chain:gates",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:44+00:00",
+      "signal": "chain:gates+project checker",
+      "from": "RUNNING",
+      "to": "SKIP",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:44+00:00",
+      "signal": "chain:inference",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:44+00:00",
+      "signal": "chain:quarto",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:44+00:00",
+      "signal": "chain:registry",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:44+00:00",
+      "signal": "chain:surrogate (local NO)",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:44+00:00",
+      "signal": "chain:tracking",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-10-23T15:44:44+00:00",
+      "signal": "chain:validity (Gate S)",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    }
+  ],
+  "samples": 374,
   "history": [
     {
-      "ts": "2026-10-23T15:02:07+00:00",
+      "ts": "2026-10-23T15:34:37+00:00",
       "values": {
         "decision_service": 1,
         "runtime_18434": 0,
         "chains_failed": 0,
-        "chains_duration": 17.3,
+        "chains_duration": 14.4,
+        "chains_age": 0.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.43,
+        "consumer_evidence_age": 0.95
+      }
+    },
+    {
+      "ts": "2026-10-23T15:34:43+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 14.4,
+        "chains_age": 0.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.43,
+        "consumer_evidence_age": 0.95
+      }
+    },
+    {
+      "ts": "2026-10-23T15:34:59+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 14.4,
+        "chains_age": 0.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.44,
+        "consumer_evidence_age": 0.96
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:05+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 14.4,
+        "chains_age": 0.02,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.44,
+        "consumer_evidence_age": 0.96
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:11+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 14.4,
+        "chains_age": 0.02,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.44,
+        "consumer_evidence_age": 0.96
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:17+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 14.4,
+        "chains_age": 0.02,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.44,
+        "consumer_evidence_age": 0.96
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:23+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 14.4,
+        "chains_age": 0.02,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.44,
+        "consumer_evidence_age": 0.96
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:29+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 15.6,
+        "chains_age": 0.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.45,
+        "consumer_evidence_age": 0.96
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:35+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 15.6,
+        "chains_age": 0.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.45,
+        "consumer_evidence_age": 0.97
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:41+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 15.6,
+        "chains_age": 0.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.45,
+        "consumer_evidence_age": 0.97
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:47+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 15.6,
+        "chains_age": 0.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.45,
+        "consumer_evidence_age": 0.97
+      }
+    },
+    {
+      "ts": "2026-10-23T15:35:59+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 15.6,
+        "chains_age": 0.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.45,
+        "consumer_evidence_age": 0.97
+      }
+    },
+    {
+      "ts": "2026-10-23T15:36:05+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 15.6,
+        "chains_age": 0.02,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.46,
+        "consumer_evidence_age": 0.97
+      }
+    },
+    {
+      "ts": "2026-10-23T15:36:11+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 15.6,
+        "chains_age": 0.02,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.46,
+        "consumer_evidence_age": 0.98
+      }
+    },
+    {
+      "ts": "2026-10-23T15:36:17+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 15.6,
+        "chains_age": 0.02,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.46,
+        "consumer_evidence_age": 0.98
+      }
+    },
+    {
+      "ts": "2026-10-23T15:36:23+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.46,
+        "consumer_evidence_age": 0.98
+      }
+    },
+    {
+      "ts": "2026-10-23T15:36:29+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.46,
+        "consumer_evidence_age": 0.98
+      }
+    },
+    {
+      "ts": "2026-10-23T15:36:35+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.46,
+        "consumer_evidence_age": 0.98
+      }
+    },
+    {
+      "ts": "2026-10-23T15:36:41+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.47,
+        "consumer_evidence_age": 0.98
+      }
+    },
+    {
+      "ts": "2026-10-23T15:36:47+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.47,
+        "consumer_evidence_age": 0.99
+      }
+    },
+    {
+      "ts": "2026-10-23T15:36:53+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.47,
+        "consumer_evidence_age": 0.99
+      }
+    },
+    {
+      "ts": "2026-10-23T15:36:59+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.02,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.47,
+        "consumer_evidence_age": 0.99
+      }
+    },
+    {
+      "ts": "2026-10-23T15:44:26+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.14,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.59,
+        "consumer_evidence_age": 1.11
+      }
+    },
+    {
+      "ts": "2026-10-23T15:44:32+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.14,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.6,
+        "consumer_evidence_age": 1.11
+      }
+    },
+    {
+      "ts": "2026-10-23T15:44:38+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.14,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.6,
+        "consumer_evidence_age": 1.12
+      }
+    },
+    {
+      "ts": "2026-10-23T15:44:44+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.15,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.6,
+        "consumer_evidence_age": 1.12
+      }
+    },
+    {
+      "ts": "2026-10-23T15:44:50+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.15,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.6,
+        "consumer_evidence_age": 1.12
+      }
+    },
+    {
+      "ts": "2026-10-23T15:44:56+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.15,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.6,
+        "consumer_evidence_age": 1.12
+      }
+    },
+    {
+      "ts": "2026-10-23T15:45:02+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.15,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.6,
+        "consumer_evidence_age": 1.12
+      }
+    },
+    {
+      "ts": "2026-10-23T15:45:08+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.15,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.61,
+        "consumer_evidence_age": 1.12
+      }
+    },
+    {
+      "ts": "2026-10-23T15:45:14+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.15,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.61,
+        "consumer_evidence_age": 1.13
+      }
+    },
+    {
+      "ts": "2026-10-23T15:45:20+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.16,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.61,
+        "consumer_evidence_age": 1.13
+      }
+    },
+    {
+      "ts": "2026-10-23T15:45:26+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.16,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.61,
+        "consumer_evidence_age": 1.13
+      }
+    },
+    {
+      "ts": "2026-10-23T15:45:32+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.16,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.61,
+        "consumer_evidence_age": 1.13
+      }
+    },
+    {
+      "ts": "2026-10-23T15:45:38+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.16,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.61,
+        "consumer_evidence_age": 1.13
+      }
+    },
+    {
+      "ts": "2026-10-23T15:45:44+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.16,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.62,
+        "consumer_evidence_age": 1.13
+      }
+    },
+    {
+      "ts": "2026-10-23T15:45:50+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
+        "chains_age": 0.16,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 1.62,
+        "consumer_evidence_age": 1.14
+      }
+    },
+    {
+      "ts": "2026-10-23T15:45:56+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 0,
+        "chains_failed": 0,
+        "chains_duration": 17.7,
         "chains_age": 0.17,
         "self_audit": 1,
         "render_chain": 1,
-        "render_age": 0.89,
-        "consumer_evidence_age": 0.41
+        "render_age": 1.62,
+        "consumer_evidence_age": 1.14
       }
     },
     {
-      "ts": "2026-10-23T15:02:14+00:00",
+      "ts": "2026-10-23T15:46:02+00:00",
       "values": {
         "decision_service": 1,
         "runtime_18434": 0,
         "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.18,
+        "chains_duration": 17.7,
+        "chains_age": 0.17,
         "self_audit": 1,
         "render_chain": 1,
-        "render_age": 0.89,
-        "consumer_evidence_age": 0.41
+        "render_age": 1.62,
+        "consumer_evidence_age": 1.14
       }
     },
     {
-      "ts": "2026-10-23T15:02:21+00:00",
+      "ts": "2026-10-23T15:46:08+00:00",
       "values": {
         "decision_service": 1,
         "runtime_18434": 0,
         "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.18,
+        "chains_duration": 17.7,
+        "chains_age": 0.17,
         "self_audit": 1,
         "render_chain": 1,
-        "render_age": 0.89,
-        "consumer_evidence_age": 0.41
-      }
-    },
-    {
-      "ts": "2026-10-23T15:02:28+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.18,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.89,
-        "consumer_evidence_age": 0.41
-      }
-    },
-    {
-      "ts": "2026-10-23T15:02:35+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.18,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.9,
-        "consumer_evidence_age": 0.42
-      }
-    },
-    {
-      "ts": "2026-10-23T15:02:42+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.18,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.9,
-        "consumer_evidence_age": 0.42
-      }
-    },
-    {
-      "ts": "2026-10-23T15:02:49+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.19,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.9,
-        "consumer_evidence_age": 0.42
-      }
-    },
-    {
-      "ts": "2026-10-23T15:02:56+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.19,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.9,
-        "consumer_evidence_age": 0.42
-      }
-    },
-    {
-      "ts": "2026-10-23T15:03:03+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.19,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.9,
-        "consumer_evidence_age": 0.42
-      }
-    },
-    {
-      "ts": "2026-10-23T15:03:10+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.19,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.91,
-        "consumer_evidence_age": 0.43
-      }
-    },
-    {
-      "ts": "2026-10-23T15:03:17+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.19,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.91,
-        "consumer_evidence_age": 0.43
-      }
-    },
-    {
-      "ts": "2026-10-23T15:03:24+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.2,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.91,
-        "consumer_evidence_age": 0.43
-      }
-    },
-    {
-      "ts": "2026-10-23T15:03:31+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.2,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.91,
-        "consumer_evidence_age": 0.43
-      }
-    },
-    {
-      "ts": "2026-10-23T15:03:38+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.2,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.91,
-        "consumer_evidence_age": 0.43
-      }
-    },
-    {
-      "ts": "2026-10-23T15:03:45+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.2,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.92,
-        "consumer_evidence_age": 0.44
-      }
-    },
-    {
-      "ts": "2026-10-23T15:03:52+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.2,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.92,
-        "consumer_evidence_age": 0.44
-      }
-    },
-    {
-      "ts": "2026-10-23T15:03:59+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.21,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.92,
-        "consumer_evidence_age": 0.44
-      }
-    },
-    {
-      "ts": "2026-10-23T15:04:06+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.21,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.92,
-        "consumer_evidence_age": 0.44
-      }
-    },
-    {
-      "ts": "2026-10-23T15:04:13+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.21,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.92,
-        "consumer_evidence_age": 0.44
-      }
-    },
-    {
-      "ts": "2026-10-23T15:04:21+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.21,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.93,
-        "consumer_evidence_age": 0.44
-      }
-    },
-    {
-      "ts": "2026-10-23T15:04:28+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.21,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.93,
-        "consumer_evidence_age": 0.45
-      }
-    },
-    {
-      "ts": "2026-10-23T15:04:35+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.22,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.93,
-        "consumer_evidence_age": 0.45
-      }
-    },
-    {
-      "ts": "2026-10-23T15:04:42+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.22,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.93,
-        "consumer_evidence_age": 0.45
-      }
-    },
-    {
-      "ts": "2026-10-23T15:04:49+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.22,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.93,
-        "consumer_evidence_age": 0.45
-      }
-    },
-    {
-      "ts": "2026-10-23T15:04:56+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.22,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.94,
-        "consumer_evidence_age": 0.45
-      }
-    },
-    {
-      "ts": "2026-10-23T15:05:03+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.22,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.94,
-        "consumer_evidence_age": 0.46
-      }
-    },
-    {
-      "ts": "2026-10-23T15:05:10+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.23,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.94,
-        "consumer_evidence_age": 0.46
-      }
-    },
-    {
-      "ts": "2026-10-23T15:05:18+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.23,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.94,
-        "consumer_evidence_age": 0.46
-      }
-    },
-    {
-      "ts": "2026-10-23T15:05:25+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.23,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.94,
-        "consumer_evidence_age": 0.46
-      }
-    },
-    {
-      "ts": "2026-10-23T15:05:32+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.23,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.95,
-        "consumer_evidence_age": 0.46
-      }
-    },
-    {
-      "ts": "2026-10-23T15:05:39+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.23,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.95,
-        "consumer_evidence_age": 0.47
-      }
-    },
-    {
-      "ts": "2026-10-23T15:05:46+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.24,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.95,
-        "consumer_evidence_age": 0.47
-      }
-    },
-    {
-      "ts": "2026-10-23T15:05:53+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.24,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.95,
-        "consumer_evidence_age": 0.47
-      }
-    },
-    {
-      "ts": "2026-10-23T15:06:00+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.24,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.95,
-        "consumer_evidence_age": 0.47
-      }
-    },
-    {
-      "ts": "2026-10-23T15:06:07+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.24,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.96,
-        "consumer_evidence_age": 0.47
-      }
-    },
-    {
-      "ts": "2026-10-23T15:06:14+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.24,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.96,
-        "consumer_evidence_age": 0.48
-      }
-    },
-    {
-      "ts": "2026-10-23T15:06:21+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.25,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.96,
-        "consumer_evidence_age": 0.48
-      }
-    },
-    {
-      "ts": "2026-10-23T15:06:28+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.25,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.96,
-        "consumer_evidence_age": 0.48
-      }
-    },
-    {
-      "ts": "2026-10-23T15:06:35+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.25,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.96,
-        "consumer_evidence_age": 0.48
-      }
-    },
-    {
-      "ts": "2026-10-23T15:06:42+00:00",
-      "values": {
-        "decision_service": 1,
-        "runtime_18434": 0,
-        "chains_failed": 0,
-        "chains_duration": 17.3,
-        "chains_age": 0.25,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 0.97,
-        "consumer_evidence_age": 0.48
+        "render_age": 1.62,
+        "consumer_evidence_age": 1.14
       }
     }
   ]

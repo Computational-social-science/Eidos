@@ -283,3 +283,23 @@ def test_non_html_document_is_not_tag_stripped(tmp_path: Path):
     register.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
     result = gate.run()
     assert not any("does not appear" in f for f in result.details["findings"])
+
+
+def test_claims_may_live_in_more_than_one_document(tmp_path: Path):
+    """A Lean library has one file per module; a single-document gate would reject the
+    second module's claims even though they are in the deliverable."""
+    write_project(tmp_path)
+    second = tmp_path / "docs" / "Second.lean"
+    second.write_text("theorem second_claim : True := trivial\n", encoding="utf-8")
+    first = tmp_path / "docs" / "MANUSCRIPT.html"
+    register = tmp_path / "analysis" / "CLAIMS.yaml"
+    data = yaml.safe_load(register.read_text(encoding="utf-8"))
+    data["claims"].append({
+        "id": "C2", "text": "second", "span": "theorem second_claim : True := trivial",
+        "strength": "tentative", "design": "exploratory",
+        "evidence": {"file": ARTPATH, "pointer": "/cross_arm/separated"},
+    })
+    register.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+    result = ScientificValidityGate(tmp_path, document=[first, second],
+                                    register=register).run()
+    assert not any("does not appear" in f for f in result.details["findings"])

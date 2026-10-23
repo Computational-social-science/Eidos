@@ -127,8 +127,15 @@ class ScientificValidityGate:
         # `document` is the general name: a framework claim lives in a README, a paper
         # claim in a rendered manuscript. `manuscript` is kept for existing callers.
         chosen = document or manuscript
-        self.document_path = (Path(chosen) if chosen
-                              else self.root / "docs" / "MANUSCRIPT.html")
+        # A project's claims need not live in one file: a Lean library has one file per
+        # module, so the deliverable is a set. `document` accepts a path or a sequence.
+        if chosen is None:
+            self.document_paths = [self.root / "docs" / "MANUSCRIPT.html"]
+        elif isinstance(chosen, (list, tuple)):
+            self.document_paths = [Path(p) for p in chosen]
+        else:
+            self.document_paths = [Path(chosen)]
+        self.document_path = self.document_paths[0]
         self.manuscript_path = self.document_path
         self.lean_cmd = lean_cmd
         self.scope_axes = tuple(scope_axes) if scope_axes else None
@@ -144,14 +151,17 @@ class ScientificValidityGate:
         return data
 
     def _manuscript_text(self) -> str:
-        try:
-            raw = self.manuscript_path.read_text(encoding="utf-8", errors="ignore")
-        except OSError:
-            return ""
+        parts = []
+        for path in self.document_paths:
+            try:
+                parts.append(path.read_text(encoding="utf-8", errors="ignore"))
+            except OSError:
+                continue
+        raw = "\n".join(parts)
         # HTML only: in Lean or Markdown a "<" is an operator, and stripping "tags"
         # from source deleted whole expressions ("h : a <= b" vanished), so a theorem
         # span could never match its own file.
-        if self.document_path.suffix.lower() in (".html", ".htm"):
+        if all(p.suffix.lower() in (".html", ".htm") for p in self.document_paths):
             text = _html.unescape(_TAG.sub(" ", raw))
         else:
             text = raw
@@ -216,10 +226,10 @@ class ScientificValidityGate:
                                                f"identify a claim"))
             elif not text:
                 findings.append(Finding("S2", f"{cid}: no manuscript text to search "
-                                               f"({self.document_path.name} missing)"))
+                                               f"({', '.join(p.name for p in self.document_paths)} missing)"))
             elif span not in text:
                 findings.append(Finding("S2", f"{cid}: the register's span does not "
-                                               f"appear in {self.document_path.name}"))
+                                               f"appear in {', '.join(p.name for p in self.document_paths)}"))
 
             # S3 -- evidence resolves and matches
             findings.extend(self._evidence(claim.get("evidence"), cid, "evidence"))

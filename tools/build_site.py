@@ -63,7 +63,7 @@ def registry() -> list[dict]:
         root = re.search(r"^root:\s*(\S+)", text, re.M)
         gate = re.search(r"^gate_command:\s*(\[.*\])", text, re.M)
         register = re.search(r"^validity_register:\s*(\S+)", text, re.M)
-        document = re.search(r"^validity_document:\s*(\S+)", text, re.M)
+        document = re.search(r'^validity_document:\s*"?([^"]+)"?', text, re.M)
         root_path = (spec.parent / (root.group(1) if root else "")).resolve()
         row = {"name": name.group(1) if name else spec.parent.name,
                "root": root.group(1) if root else "?",
@@ -73,11 +73,13 @@ def registry() -> list[dict]:
                "document": document.group(1) if document else None,
                "gate_s": "—"}
         if row["available"] and row["register"] and row["document"]:
-            run = subprocess.run([sys.executable, "tools/audit_validity.py",
-                                  "--project", str(root_path),
-                                  "--register", row["register"],
-                                  "--document", row["document"], "--json"],
-                                 cwd=ROOT, capture_output=True, text=True, timeout=600)
+            docs = [d.strip() for d in str(row["document"]).split(",") if d.strip()]
+            args = [sys.executable, "tools/audit_validity.py", "--project", str(root_path),
+                    "--register", row["register"]]
+            for doc in docs:
+                args += ["--document", doc]
+            run = subprocess.run(args + ["--json"], cwd=ROOT, capture_output=True,
+                                 text=True, timeout=900)
             try:
                 row["gate_s"] = json.loads(run.stdout).get("status", "ERROR")
             except json.JSONDecodeError:

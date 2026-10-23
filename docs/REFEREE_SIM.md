@@ -59,13 +59,15 @@ both PASS with the kernel control (a file asserting `1 = 2` must fail to compile
 and an error on a developer machine; `test_missing_project_root_raises_locally_but_is_skippable_in_ci`
 pins both directions.
 
-## O8. One adopter is not evidence of generality
+## O8. One external adopter is not evidence of generality
 `[UNRESOLVED]` **C**
 
-The reference consumer is now `lean_nhb`, a Lean library whose theorems the kernel checks.
-The empirical project that previously counted as a second adopter has been withdrawn as
-evidence by policy: an open, unvalidated study cannot test whether a framework is rigorous.
-That leaves one adopter, so generality is once again unmeasured. The count went up when the
-evidence went away, which is the behaviour the gate is for.
+Two consumers now exercise the gate: `lean_nhb` (external, kernel-checked, five claims) and
+`surrogate_study` (an internal fixture with closed-form truth, two claims). They cover both
+evidence types and both verdicts — the Lean consumer fails on the one objection no proof
+can settle, the fixture passes because its truth is constructed. What remains untested is
+generality across *external* empirical projects: none is registered, and the policy is
+deliberate, since an open study cannot serve as the instrument that judges the framework.
 
+**Counts**: 8 objections, 7 resolved, 1 unresolved (O8).
 **Counts**: 8 objections, 7 resolved, 1 unresolved (O8).

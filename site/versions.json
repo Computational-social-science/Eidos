@@ -58,5 +58,17 @@
       "open_objections": 1,
       "decision_ms": 182
     }
+  },
+  {
+    "version": "4.0.0",
+    "date": "2026-10-23",
+    "commit": "9feacab",
+    "metrics": {
+      "tests": 120,
+      "coverage": 72,
+      "chains": 11,
+      "open_objections": 1,
+      "decision_ms": 182
+    }
   }
 ]

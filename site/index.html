@@ -125,10 +125,10 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono
   reproducible delivery. The framework owns the machinery; the project owns its science.</p>
   <div class="stats">
     <div class="stat"><div class="n">11</div><div class="l">chains exercised end to end</div></div>
-    <div class="stat"><div class="n">119</div><div class="l">tests · 72% coverage</div></div>
+    <div class="stat"><div class="n">120</div><div class="l">tests · 72% coverage</div></div>
     <div class="stat"><div class="n">1</div><div class="l">open referee objections</div></div>
     <div class="stat"><div class="n">182<span style="font-size:13px"> ms</span></div><div class="l">typed decision, median</div></div>
-    <div class="stat"><div class="n">1</div><div class="l">adopters registered</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">adopters registered</div></div>
   </div>
 </div>
 
@@ -231,7 +231,7 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono
       <caption>11 chains: 10 pass, 1 skip, 0 fail. A skip is named,
         never counted as a pass.</caption>
       <thead><tr><th>chain</th><th>verdict</th><th>detail</th></tr></thead>
-      <tbody><tr><td class='mono'>registry</td><td><span class="pill pass">PASS</span></td><td class='detail'>1 project(s): lean_nhb</td></tr><tr><td class='mono'>gates</td><td><span class="pill pass">PASS</span></td><td class='detail'>acceptance PASS+FAIL both correct; missing tool -&gt; SKIP</td></tr><tr><td class='mono'>gates+project checker</td><td><span class="pill skip">SKIP</span></td><td class='detail'>no --project-checker given</td></tr><tr><td class='mono'>diagnosis</td><td><span class="pill pass">PASS</span></td><td class='detail'>1 diagnosis naming the metric: Result metric below acceptance threshold: acc</td></tr><tr><td class='mono'>tracking</td><td><span class="pill pass">PASS</span></td><td class='detail'>mlflow run …; dvc_available=True</td></tr><tr><td class='mono'>quarto</td><td><span class="pill pass">PASS</span></td><td class='detail'>minimal document; quarto=quarto.exe, render ok=True</td></tr><tr><td class='mono'>validity (Gate S)</td><td><span class="pill pass">PASS</span></td><td class='detail'>valid register PASS; overstated count FAIL</td></tr><tr><td class='mono'>surrogate (local NO)</td><td><span class="pill pass">PASS</span></td><td class='detail'>19/19 fixed points within 5%, 19 stable; shuffled-label control caught</td></tr><tr><td class='mono'>demo (NO)</td><td><span class="pill pass">PASS</span></td><td class='detail'>91 λ points, max relative error 0.0002%</td></tr><tr><td class='mono'>decision</td><td><span class="pill pass">PASS</span></td><td class='detail'>known answers correct; median … for 2 questions (n=3, wall clock)</td></tr><tr><td class='mono'>inference</td><td><span class="pill pass">PASS</span></td><td class='detail'>12 GB budget enforced; 4 judgement stages -&gt; StartLux; generators unchanged; evaluation -&gt; 2 model(s)</td></tr></tbody>
+      <tbody><tr><td class='mono'>registry</td><td><span class="pill pass">PASS</span></td><td class='detail'>2 project(s): lean_nhb, surrogate_study</td></tr><tr><td class='mono'>gates</td><td><span class="pill pass">PASS</span></td><td class='detail'>acceptance PASS+FAIL both correct; missing tool -&gt; SKIP</td></tr><tr><td class='mono'>gates+project checker</td><td><span class="pill skip">SKIP</span></td><td class='detail'>no --project-checker given</td></tr><tr><td class='mono'>diagnosis</td><td><span class="pill pass">PASS</span></td><td class='detail'>1 diagnosis naming the metric: Result metric below acceptance threshold: acc</td></tr><tr><td class='mono'>tracking</td><td><span class="pill pass">PASS</span></td><td class='detail'>mlflow run …; dvc_available=True</td></tr><tr><td class='mono'>quarto</td><td><span class="pill pass">PASS</span></td><td class='detail'>minimal document; quarto=quarto.exe, render ok=True</td></tr><tr><td class='mono'>validity (Gate S)</td><td><span class="pill pass">PASS</span></td><td class='detail'>valid register PASS; overstated count FAIL</td></tr><tr><td class='mono'>surrogate (local NO)</td><td><span class="pill pass">PASS</span></td><td class='detail'>19/19 fixed points within 5%, 19 stable; shuffled-label control caught</td></tr><tr><td class='mono'>demo (NO)</td><td><span class="pill pass">PASS</span></td><td class='detail'>91 λ points, max relative error 0.0002%</td></tr><tr><td class='mono'>decision</td><td><span class="pill pass">PASS</span></td><td class='detail'>known answers correct; median … for 2 questions (n=3, wall clock)</td></tr><tr><td class='mono'>inference</td><td><span class="pill pass">PASS</span></td><td class='detail'>12 GB budget enforced; 4 judgement stages -&gt; StartLux; generators unchanged; evaluation -&gt; 2 model(s)</td></tr></tbody>
     </table>
   </div>
   <div class="card" style="margin-top:18px">
@@ -248,7 +248,7 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono
         verdict; each project keeps its gate logic and tests.</caption>
       <thead><tr><th>project</th><th>root</th><th>registered gate</th><th>checkout</th>
         <th>Gate S</th></tr></thead>
-      <tbody><tr><td class='mono'>lean_nhb</td><td>../../../lean-nhb</td><td><code>[&quot;lake&quot;, &quot;build&quot;]</code></td><td>present</td><td><span class="pill fail">FAIL</span></td></tr></tbody>
+      <tbody><tr><td class='mono'>lean_nhb</td><td>../../../lean-nhb</td><td><code>[&quot;lake&quot;, &quot;build&quot;]</code></td><td>present</td><td><span class="pill fail">FAIL</span></td></tr><tr><td class='mono'>surrogate_study</td><td>../../reference/surrogate_study</td><td><code>[&quot;python&quot;, &quot;build_evidence.py&quot;]</code></td><td>present</td><td><span class="pill pass">PASS</span></td></tr></tbody>
     </table>
   </div>
 </section>
@@ -374,9 +374,9 @@ python tools/audit_validity.py --project ../keystroke-observatory</pre>
 </section>
 
 <footer>
-  Eidos 4.0.0 · MIT · commit <span class="mono">edc5693</span> · built
+  Eidos 4.0.0 · MIT · commit <span class="mono">9feacab</span> · built
   2026-10-23 by <code>tools/build_site.py</code> · release history
-  <a href="versions.json">versions.json</a> (5).
+  <a href="versions.json">versions.json</a> (6).
   Numbers from <a href="../docs/SELF_AUDIT.json">SELF_AUDIT.json</a>,
   <a href="../docs/CHAIN_AUDIT.md">CHAIN_AUDIT.md</a>, the project registry,
   <code>artifacts/decision_calibration_100.json</code>, and one extrapolation experiment

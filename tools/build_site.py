@@ -18,6 +18,7 @@ import argparse
 import datetime
 import html
 import json
+import os
 import re
 import subprocess
 import sys
@@ -130,11 +131,32 @@ def extrapolation() -> dict:
             "outside_max": max(outside_err) if outside_err else None}
 
 
+
+def contracts() -> list[dict]:
+    """Probe the six external boundaries, with the sibling Quarto install if present."""
+    env = os.environ.copy()
+    if not env.get("QUARTO_BIN"):
+        candidate = ROOT.parent / "tools" / "quarto" / "bin" / "quarto.exe"
+        if candidate.is_file():
+            env["QUARTO_BIN"] = str(candidate)
+    run = subprocess.run([sys.executable, "tools/contract_snapshot.py", "--check",
+                          "--allow-missing", "--json"], cwd=ROOT, env=env,
+                         capture_output=True, text=True, timeout=300)
+    try:
+        boundaries = json.loads(run.stdout)["boundaries"]
+    except (json.JSONDecodeError, KeyError):
+        return []
+    return [{"name": k, "ok": bool(v.get("ok")),
+             "version": str(v.get("version") or v.get("model") or v.get("reason") or "")[:38]}
+            for k, v in boundaries.items()]
+
+
 def collect() -> dict:
     return {"meta": meta(),
             "audit": json.loads((ROOT / "docs" / "SELF_AUDIT.json").read_text(encoding="utf-8")),
             "chains": chains(), "registry": registry(), "referee": referee(),
             "lean": lean_runs(), "decision": decision(), "extra": extrapolation(),
+            "contracts": contracts(),
             "commit": subprocess.run(["git", "-C", str(ROOT), "rev-parse", "--short", "HEAD"],
                                      capture_output=True, text=True).stdout.strip() or "uncommitted",
             "today": datetime.date.today().isoformat()}
@@ -268,6 +290,15 @@ def lean_rows(rows: list[dict]) -> str:
         f"<td class='num'>{html.escape(r['time'])}</td></tr>" for r in rows)
 
 
+def contract_strip(rows: list[dict]) -> str:
+    if not rows:
+        return '<span class="contract miss">no contract probe available</span>'
+    return "".join(
+        f'<span class="contract {"ok" if r["ok"] else "miss"}">'
+        f'{html.escape(r["name"])} <b>{html.escape(r["version"] or ("up" if r["ok"] else "down"))}</b></span>'
+        for r in rows)
+
+
 def demo_payload() -> str:
     lab = build_demo()
     return json.dumps({"rows": [{"lam": round(r["lam"], 3), "learned": r["learned"],
@@ -349,6 +380,11 @@ td.num{text-align:right;font-variant-numeric:tabular-nums}
 .pill.skip{background:#eef1f4;color:#4b5563}
 .pill.fail{background:#fbecee;color:#8c1d2c}
 .note{border-left:3px solid var(--limit);padding-left:14px;color:#3a434d}
+.contracts{display:flex;flex-wrap:wrap;gap:8px;margin:0}
+.contract{font:600 11.4px/1 -apple-system,"Segoe UI",Arial,sans-serif;padding:7px 9px;
+          border-radius:999px;border:1px solid var(--rule);background:#fff;color:#2b333d}
+.contract.ok{border-color:#c3e0cf;background:#f3faf6;color:#17663f}
+.contract.miss{border-color:#f0c4cb;background:#fdf1f3;color:#8c1d2c}
 .oknote{border-left:3px solid var(--ok);padding-left:14px;color:#3a434d}
 ol.pipeline{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 @media (max-width:900px){ol.pipeline{grid-template-columns:1fr}}
@@ -509,6 +545,12 @@ code{background:#eef1f5;padding:1px 5px;border-radius:4px;font:12.4px var(--mono
     </table>
   </div>
   <div class="card" style="margin-top:18px">
+    <h3>External contracts</h3>
+    <p class="contracts">__CONTRACTS__</p>
+    <p style="margin:10px 0 0;font-size:12.5px;color:var(--muted)">Probed at build time.
+      A boundary that is down is named; it is never silently skipped.</p>
+  </div>
+  <div class="card" style="margin-top:18px">
     <h3>Adopters</h3>
     <table>
       <caption>A pointer, not a copy: the framework discovers, executes and reports one
@@ -611,6 +653,9 @@ python tools/record_self_audit.py --check
 <span class="c"># rebuild this page from the artefacts it cites</span>
 python tools/build_site.py --check
 
+<span class="c"># append this build to site/versions.json</span>
+python tools/build_site.py --release
+
 <span class="c"># validate a project's claims</span>
 python tools/audit_validity.py --project ../keystroke-observatory</pre>
       <p style="margin:10px 0 0">The page has no external script, font or network call;
@@ -626,7 +671,9 @@ python tools/audit_validity.py --project ../keystroke-observatory</pre>
     calibration, and the demo's error against a closed form.</p>
     <p><b>What is not.</b> That the gates improve a project's science — that would need a
     control group this programme does not have. That the interfaces generalise beyond two
-    adopters. That a project's PDF path works here: Quarto is absent on this host.
+    adopters. That a project's PDF path works everywhere: Quarto 1.10.19 is installed outside the
+    repository and reached through <code>QUARTO_BIN</code>, so a clone without that variable
+    reports SKIP; TinyTeX is a separate install and its absence limits PDF rendering.
     Coverage is uneven; <code>framework/inference</code> is exercised mainly by chains.</p>
     <p><b>Licence.</b> The framework is __LICENSE__. The decision operator's weights are
     <b>CC BY-NC 4.0</b> (non-commercial): a project that needs commercial terms must swap
@@ -822,6 +869,7 @@ def render(data: dict) -> str:
         "__LEANROWS__": lean_rows(data["lean"]),
         "__CHAINROWS__": chain_rows(rows),
         "__ADOPT__": adopt_rows(data["registry"]),
+        "__CONTRACTS__": contract_strip(data.get("contracts", [])),
         "__EXTRAP__": extrapolation_svg(extra),
         "__INMAX__": f"{100 * (extra['inside_max'] or 0):.4f}%",
         "__OUTMAX__": f"{100 * (extra['outside_max'] or 0):.2f}%",

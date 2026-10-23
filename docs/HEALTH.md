@@ -14,7 +14,7 @@ and re-checked by `--check` in CI; none is typed by hand.
 | Gate S on Eidos itself | **PASS — 8 objections, 0 open** (two adopters) | ✅ |
 | CI (GitHub Actions) | test job 3.11 + 3.12 green; audit job green | ✅ |
 | adopters | `keystroke-observatory` (Python, manuscript) and `lean_nhb` (Lean, no pytest) | ✅ |
-| external contracts | Quarto missing; DVC, MLflow, decision service, BootLoops present | ⚠️ |
+| external contracts | Quarto 1.10.19 (`tools/quarto`, via `QUARTO_BIN`), DVC, MLflow, decision service, BootLoops | ✅ |
 | coupling | 0 import cycles, 0 absolute-path literals | ✅ |
 
 The SKIP is the project checker: it needs a project path to run. The two adopters are
@@ -39,5 +39,5 @@ layer is useful (no production consumer; the one exploration failed and is in
    chains, not by unit tests.
 3. **The Lean chain is verified on two projects** (lean-nhb, atlas-lean), not on a project
    this framework gates.
-4. **Quarto is absent on this host**, so the PDF/DOCX path of any project cannot be
-   exercised end to end.
+4. **Quarto is installed outside the repository** (`E:/2026-AI4S/tools/quarto`), reached
+   through `QUARTO_BIN`; a fresh clone without that variable will report SKIP.

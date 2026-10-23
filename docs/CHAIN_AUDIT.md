@@ -18,8 +18,8 @@ to a chain; it takes about 15 s.
 | surrogate (local NO) | a learned short-time stepper must recover a planted fixed point; shuffled labels must break it | **PASS** — 19/19 within 5%, 19 stable; control caught |
 | decision | a known-answer probe through the operator, timed | **PASS** — p(17 prime)=0.963, 0.9 > 0.11; **median 182 ms** for 2 questions (n=3) |
 
-**10 chains: 8 PASS, 2 SKIP, 0 FAIL/ERROR** on this host (decision and the project
-checker SKIP unless their service / flag is present).
+**11 chains: 10 PASS, 1 SKIP, 0 FAIL/ERROR** on this host (the project checker SKIPs
+unless `--project-checker` is given).
 
 The Quarto row was run twice: once on a minimal probe, and once with
 `--manuscript ../keystroke-observatory/manuscript`, which copies the real 18-file

@@ -1,5 +1,5 @@
 {
-  "ts": "2026-10-24T15:17:51+00:00",
+  "ts": "2026-10-24T15:21:36+00:00",
   "overall": "ALARM",
   "derived": {
     "overall": "ALARM",
@@ -100,14 +100,14 @@
       "error": -163.4
     },
     "chains_age": {
-      "value": 23.0,
+      "value": 23.06,
       "reference": 24.0,
       "direction": "max",
       "unit": "h",
       "source": "docs/traces/latest.json",
       "note": "last audit",
       "state": "OK",
-      "error": -1.0
+      "error": -0.94
     },
     "self_audit": {
       "value": 1,
@@ -130,24 +130,24 @@
       "error": 0.0
     },
     "render_age": {
-      "value": 25.15,
+      "value": 25.21,
       "reference": 168,
       "direction": "max",
       "unit": "h",
       "source": "docs/RENDER_CHECK.json",
       "note": "one host",
       "state": "OK",
-      "error": -142.85
+      "error": -142.79
     },
     "consumer_evidence_age": {
-      "value": 24.67,
+      "value": 24.73,
       "reference": 168,
       "direction": "max",
       "unit": "h",
       "source": "reference/operator_calibration/docs/evidence.json",
       "note": "calibration measurement",
       "state": "OK",
-      "error": -143.33
+      "error": -143.27
     }
   },
   "chains": {
@@ -164,533 +164,6 @@
     "validity (Gate S)": "PASS"
   },
   "timeline": [
-    {
-      "ts": "2026-10-24T15:02:51+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:03:06+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:03:21+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:03:36+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:03:51+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:04:06+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:04:21+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:04:36+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:04:51+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:05:06+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:05:21+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:05:36+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:06:59+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:07:06+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:07:13+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:07:21+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:07:28+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:07:35+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:07:42+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:07:49+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:07:56+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:08:03+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:08:10+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:08:17+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:13:29+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:13:36+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:13:44+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:13:51+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:13:58+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:14:05+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
-    {
-      "ts": "2026-10-24T15:14:13+00:00",
-      "states": {
-        "decision": "PASS",
-        "demo (NO)": "PASS",
-        "diagnosis": "PASS",
-        "gates": "PASS",
-        "gates+project checker": "SKIP",
-        "inference": "PASS",
-        "quarto": "PASS",
-        "registry": "PASS",
-        "surrogate (local NO)": "PASS",
-        "tracking": "PASS",
-        "validity (Gate S)": "PASS"
-      },
-      "repeat": true
-    },
     {
       "ts": "2026-10-24T15:14:20+00:00",
       "states": {
@@ -1183,12 +656,527 @@
         "validity (Gate S)": "PASS"
       },
       "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:17:58+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:18:06+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:18:13+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:18:20+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:18:27+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:18:34+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:18:42+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:18:49+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:18:56+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:19:03+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:19:11+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:19:18+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:19:25+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-24T15:19:32+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-24T15:19:40+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-24T15:19:47+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-24T15:19:54+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:20:01+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:20:09+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-24T15:20:16+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-24T15:20:23+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-24T15:20:30+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-24T15:20:38+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:20:45+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:20:52+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-24T15:21:00+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-24T15:21:07+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-10-24T15:21:14+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-10-24T15:21:21+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:21:29+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-10-24T15:21:36+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
     }
   ],
   "live_run": false,
   "alarms": [
     {
-      "ts": "2026-10-24T14:51:22+00:00",
+      "ts": "2026-10-24T15:21:07+00:00",
       "signal": "chain:diagnosis",
       "from": "PASS",
       "to": "RUNNING",
@@ -1196,7 +1184,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:22+00:00",
+      "ts": "2026-10-24T15:21:07+00:00",
       "signal": "chain:gates",
       "from": "PASS",
       "to": "RUNNING",
@@ -1204,7 +1192,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:22+00:00",
+      "ts": "2026-10-24T15:21:07+00:00",
       "signal": "chain:gates+project checker",
       "from": "SKIP",
       "to": "RUNNING",
@@ -1212,7 +1200,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:22+00:00",
+      "ts": "2026-10-24T15:21:07+00:00",
       "signal": "chain:inference",
       "from": "PASS",
       "to": "RUNNING",
@@ -1220,7 +1208,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:22+00:00",
+      "ts": "2026-10-24T15:21:07+00:00",
       "signal": "chain:quarto",
       "from": "PASS",
       "to": "RUNNING",
@@ -1228,7 +1216,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:22+00:00",
+      "ts": "2026-10-24T15:21:07+00:00",
       "signal": "chain:registry",
       "from": "PASS",
       "to": "RUNNING",
@@ -1236,7 +1224,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:22+00:00",
+      "ts": "2026-10-24T15:21:07+00:00",
       "signal": "chain:surrogate (local NO)",
       "from": "PASS",
       "to": "RUNNING",
@@ -1244,7 +1232,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:22+00:00",
+      "ts": "2026-10-24T15:21:07+00:00",
       "signal": "chain:tracking",
       "from": "PASS",
       "to": "RUNNING",
@@ -1252,7 +1240,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:22+00:00",
+      "ts": "2026-10-24T15:21:07+00:00",
       "signal": "chain:validity (Gate S)",
       "from": "PASS",
       "to": "RUNNING",
@@ -1260,7 +1248,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:37+00:00",
+      "ts": "2026-10-24T15:21:14+00:00",
       "signal": "chain:decision",
       "from": "RUNNING",
       "to": "PASS",
@@ -1268,7 +1256,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:37+00:00",
+      "ts": "2026-10-24T15:21:14+00:00",
       "signal": "chain:demo (NO)",
       "from": "RUNNING",
       "to": "PASS",
@@ -1276,7 +1264,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:37+00:00",
+      "ts": "2026-10-24T15:21:14+00:00",
       "signal": "chain:diagnosis",
       "from": "RUNNING",
       "to": "PASS",
@@ -1284,7 +1272,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:37+00:00",
+      "ts": "2026-10-24T15:21:14+00:00",
       "signal": "chain:gates",
       "from": "RUNNING",
       "to": "PASS",
@@ -1292,7 +1280,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:37+00:00",
+      "ts": "2026-10-24T15:21:14+00:00",
       "signal": "chain:gates+project checker",
       "from": "RUNNING",
       "to": "SKIP",
@@ -1300,7 +1288,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:37+00:00",
+      "ts": "2026-10-24T15:21:14+00:00",
       "signal": "chain:inference",
       "from": "RUNNING",
       "to": "PASS",
@@ -1308,7 +1296,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:37+00:00",
+      "ts": "2026-10-24T15:21:14+00:00",
       "signal": "chain:quarto",
       "from": "RUNNING",
       "to": "PASS",
@@ -1316,7 +1304,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:37+00:00",
+      "ts": "2026-10-24T15:21:14+00:00",
       "signal": "chain:registry",
       "from": "RUNNING",
       "to": "PASS",
@@ -1324,7 +1312,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:37+00:00",
+      "ts": "2026-10-24T15:21:14+00:00",
       "signal": "chain:surrogate (local NO)",
       "from": "RUNNING",
       "to": "PASS",
@@ -1332,7 +1320,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:37+00:00",
+      "ts": "2026-10-24T15:21:14+00:00",
       "signal": "chain:tracking",
       "from": "RUNNING",
       "to": "PASS",
@@ -1340,7 +1328,7 @@
       "source": "docs/traces/latest.json"
     },
     {
-      "ts": "2026-10-24T14:51:37+00:00",
+      "ts": "2026-10-24T15:21:14+00:00",
       "signal": "chain:validity (Gate S)",
       "from": "RUNNING",
       "to": "PASS",
@@ -1350,533 +1338,6 @@
   ],
   "samples": 2000,
   "history": [
-    {
-      "ts": "2026-10-24T15:07:56+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.83,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 24.99,
-        "consumer_evidence_age": 24.5
-      }
-    },
-    {
-      "ts": "2026-10-24T15:08:03+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.83,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 24.99,
-        "consumer_evidence_age": 24.51
-      }
-    },
-    {
-      "ts": "2026-10-24T15:08:10+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.84,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 24.99,
-        "consumer_evidence_age": 24.51
-      }
-    },
-    {
-      "ts": "2026-10-24T15:08:17+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.84,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 24.99,
-        "consumer_evidence_age": 24.51
-      }
-    },
-    {
-      "ts": "2026-10-24T15:13:29+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.92,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.08,
-        "consumer_evidence_age": 24.6
-      }
-    },
-    {
-      "ts": "2026-10-24T15:13:36+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.93,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.08,
-        "consumer_evidence_age": 24.6
-      }
-    },
-    {
-      "ts": "2026-10-24T15:13:44+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.93,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.08,
-        "consumer_evidence_age": 24.6
-      }
-    },
-    {
-      "ts": "2026-10-24T15:13:51+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.93,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.08,
-        "consumer_evidence_age": 24.6
-      }
-    },
-    {
-      "ts": "2026-10-24T15:13:58+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.93,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.09,
-        "consumer_evidence_age": 24.61
-      }
-    },
-    {
-      "ts": "2026-10-24T15:14:05+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.93,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.09,
-        "consumer_evidence_age": 24.61
-      }
-    },
-    {
-      "ts": "2026-10-24T15:14:13+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.94,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.09,
-        "consumer_evidence_age": 24.61
-      }
-    },
-    {
-      "ts": "2026-10-24T15:14:20+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.94,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.09,
-        "consumer_evidence_age": 24.61
-      }
-    },
-    {
-      "ts": "2026-10-24T15:14:27+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.94,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.09,
-        "consumer_evidence_age": 24.61
-      }
-    },
-    {
-      "ts": "2026-10-24T15:14:34+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.94,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.1,
-        "consumer_evidence_age": 24.62
-      }
-    },
-    {
-      "ts": "2026-10-24T15:14:42+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.94,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.1,
-        "consumer_evidence_age": 24.62
-      }
-    },
-    {
-      "ts": "2026-10-24T15:14:49+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.95,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.1,
-        "consumer_evidence_age": 24.62
-      }
-    },
-    {
-      "ts": "2026-10-24T15:14:56+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.95,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.1,
-        "consumer_evidence_age": 24.62
-      }
-    },
-    {
-      "ts": "2026-10-24T15:15:03+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.95,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.1,
-        "consumer_evidence_age": 24.62
-      }
-    },
-    {
-      "ts": "2026-10-24T15:15:11+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.95,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.11,
-        "consumer_evidence_age": 24.63
-      }
-    },
-    {
-      "ts": "2026-10-24T15:15:18+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.95,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.11,
-        "consumer_evidence_age": 24.63
-      }
-    },
-    {
-      "ts": "2026-10-24T15:15:25+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.96,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.11,
-        "consumer_evidence_age": 24.63
-      }
-    },
-    {
-      "ts": "2026-10-24T15:15:32+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.96,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.11,
-        "consumer_evidence_age": 24.63
-      }
-    },
-    {
-      "ts": "2026-10-24T15:15:39+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.96,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.11,
-        "consumer_evidence_age": 24.63
-      }
-    },
-    {
-      "ts": "2026-10-24T15:15:56+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.97,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.12,
-        "consumer_evidence_age": 24.64
-      }
-    },
-    {
-      "ts": "2026-10-24T15:16:03+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.97,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.12,
-        "consumer_evidence_age": 24.64
-      }
-    },
-    {
-      "ts": "2026-10-24T15:16:10+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.97,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.12,
-        "consumer_evidence_age": 24.64
-      }
-    },
-    {
-      "ts": "2026-10-24T15:16:17+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.97,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.13,
-        "consumer_evidence_age": 24.64
-      }
-    },
-    {
-      "ts": "2026-10-24T15:16:24+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.97,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.13,
-        "consumer_evidence_age": 24.65
-      }
-    },
-    {
-      "ts": "2026-10-24T15:16:32+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.98,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.13,
-        "consumer_evidence_age": 24.65
-      }
-    },
-    {
-      "ts": "2026-10-24T15:16:39+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.98,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.13,
-        "consumer_evidence_age": 24.65
-      }
-    },
-    {
-      "ts": "2026-10-24T15:16:46+00:00",
-      "values": {
-        "decision_service": 0,
-        "runtime_18434": 1,
-        "quarto": 1,
-        "dvc": 1,
-        "mlflow": 1,
-        "chains_failed": 0,
-        "chains_duration": 16.6,
-        "chains_age": 22.98,
-        "self_audit": 1,
-        "render_chain": 1,
-        "render_age": 25.13,
-        "consumer_evidence_age": 24.65
-      }
-    },
     {
       "ts": "2026-10-24T15:16:53+00:00",
       "values": {
@@ -2028,6 +1489,533 @@
         "render_chain": 1,
         "render_age": 25.15,
         "consumer_evidence_age": 24.67
+      }
+    },
+    {
+      "ts": "2026-10-24T15:17:58+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.15,
+        "consumer_evidence_age": 24.67
+      }
+    },
+    {
+      "ts": "2026-10-24T15:18:06+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.16,
+        "consumer_evidence_age": 24.67
+      }
+    },
+    {
+      "ts": "2026-10-24T15:18:13+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.16,
+        "consumer_evidence_age": 24.68
+      }
+    },
+    {
+      "ts": "2026-10-24T15:18:20+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.16,
+        "consumer_evidence_age": 24.68
+      }
+    },
+    {
+      "ts": "2026-10-24T15:18:27+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.16,
+        "consumer_evidence_age": 24.68
+      }
+    },
+    {
+      "ts": "2026-10-24T15:18:34+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.16,
+        "consumer_evidence_age": 24.68
+      }
+    },
+    {
+      "ts": "2026-10-24T15:18:42+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.17,
+        "consumer_evidence_age": 24.68
+      }
+    },
+    {
+      "ts": "2026-10-24T15:18:49+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.01,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.17,
+        "consumer_evidence_age": 24.69
+      }
+    },
+    {
+      "ts": "2026-10-24T15:18:56+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.02,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.17,
+        "consumer_evidence_age": 24.69
+      }
+    },
+    {
+      "ts": "2026-10-24T15:19:03+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.02,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.17,
+        "consumer_evidence_age": 24.69
+      }
+    },
+    {
+      "ts": "2026-10-24T15:19:11+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.02,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.17,
+        "consumer_evidence_age": 24.69
+      }
+    },
+    {
+      "ts": "2026-10-24T15:19:18+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.02,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.18,
+        "consumer_evidence_age": 24.69
+      }
+    },
+    {
+      "ts": "2026-10-24T15:19:25+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.02,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.18,
+        "consumer_evidence_age": 24.7
+      }
+    },
+    {
+      "ts": "2026-10-24T15:19:32+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.03,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.18,
+        "consumer_evidence_age": 24.7
+      }
+    },
+    {
+      "ts": "2026-10-24T15:19:40+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.03,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.18,
+        "consumer_evidence_age": 24.7
+      }
+    },
+    {
+      "ts": "2026-10-24T15:19:47+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.03,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.18,
+        "consumer_evidence_age": 24.7
+      }
+    },
+    {
+      "ts": "2026-10-24T15:19:54+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.03,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.19,
+        "consumer_evidence_age": 24.7
+      }
+    },
+    {
+      "ts": "2026-10-24T15:20:01+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.03,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.19,
+        "consumer_evidence_age": 24.71
+      }
+    },
+    {
+      "ts": "2026-10-24T15:20:09+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.04,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.19,
+        "consumer_evidence_age": 24.71
+      }
+    },
+    {
+      "ts": "2026-10-24T15:20:16+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.04,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.19,
+        "consumer_evidence_age": 24.71
+      }
+    },
+    {
+      "ts": "2026-10-24T15:20:23+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.04,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.19,
+        "consumer_evidence_age": 24.71
+      }
+    },
+    {
+      "ts": "2026-10-24T15:20:30+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.04,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.2,
+        "consumer_evidence_age": 24.71
+      }
+    },
+    {
+      "ts": "2026-10-24T15:20:38+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.04,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.2,
+        "consumer_evidence_age": 24.72
+      }
+    },
+    {
+      "ts": "2026-10-24T15:20:45+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.05,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.2,
+        "consumer_evidence_age": 24.72
+      }
+    },
+    {
+      "ts": "2026-10-24T15:20:52+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.05,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.2,
+        "consumer_evidence_age": 24.72
+      }
+    },
+    {
+      "ts": "2026-10-24T15:21:00+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.05,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.2,
+        "consumer_evidence_age": 24.72
+      }
+    },
+    {
+      "ts": "2026-10-24T15:21:07+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.05,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.21,
+        "consumer_evidence_age": 24.72
+      }
+    },
+    {
+      "ts": "2026-10-24T15:21:14+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.05,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.21,
+        "consumer_evidence_age": 24.73
+      }
+    },
+    {
+      "ts": "2026-10-24T15:21:21+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.06,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.21,
+        "consumer_evidence_age": 24.73
+      }
+    },
+    {
+      "ts": "2026-10-24T15:21:28+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.06,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.21,
+        "consumer_evidence_age": 24.73
+      }
+    },
+    {
+      "ts": "2026-10-24T15:21:36+00:00",
+      "values": {
+        "decision_service": 0,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 16.6,
+        "chains_age": 23.06,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 25.21,
+        "consumer_evidence_age": 24.73
       }
     }
   ]

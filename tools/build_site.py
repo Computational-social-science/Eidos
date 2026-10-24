@@ -571,7 +571,10 @@ def main(argv: list[str] | None = None) -> int:
         if not OUT.is_file():
             print(f"[FAIL] {OUT} has not been built")
             return 1
-        volatile = re.compile(r"<!--control:start-->.*?<!--control:end-->", re.S)
+        # The page names the commit it was built from; committing the rebuilt page changes
+        # that name, so a byte comparison would report "stale" every time. Normalise the two
+        # fields that depend on HEAD itself, and compare the rest.
+        volatile = re.compile(r"build [0-9a-f]{7,40}|\d+ recorded builds?|from <code>[0-9a-f]{7,40}</code>")
         # The control block carries a sampling timestamp and run counts; comparing it byte
         # for byte would report "stale" on every rebuild. Structure is compared, the live
         # numbers are not.

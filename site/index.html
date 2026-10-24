@@ -7,10 +7,7 @@
 <meta name="description" content="Eidos is the reusable skeleton behind a research project: dual
 quality gates, a typed decision layer, provenance, and multi-format delivery. Every claim it
 makes is checked against an artefact.">
-<style>
-:root{--bg:#0e1013;--panel:#15181d;--panel2:#101318;--line:#232830;--fg:#e6e8eb;
-  --body:#c3cad4;--mut:#98a2b3;--dim:#7d8899;--accent:#5b8def;--ok:#57ab5a;--warn:#d29922;
-  --bad:#e5534b;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+<style>:root{--bg:#0e1013;--panel:#15181d;--panel2:#101318;--line:#232830;--fg:#e6e8eb;--body:#c3cad4;--mut:#98a2b3;--dim:#7d8899;--accent:#5b8def;--ok:#57ab5a;--ok-text:#6cbf6e;--warn:#d29922;--bad:#e5534b;--bad-text:#ef6b62}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:66px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -149,7 +146,7 @@ footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:v
   <span class="hchip">11 chains · 144 tests</span>
   <a class="cta" href="/dashboard.html">Monitor →</a>
 </div></header>
-<div class="shell"><nav class="rail" aria-label="Sections"><ol><li><a href="#position"><span>01</span>Position</a></li><li><a href="#pipeline"><span>02</span>The pipeline</a></li><li><a href="#architecture"><span>03</span>Architecture</a></li><li><a href="#gates"><span>04</span>Gates</a></li><li><a href="#state"><span>05</span>State</a></li><li><a href="#demo"><span>06</span>The demo</a></li><li><a href="#start"><span>07</span>Start</a></li><li><a href="#limits"><span>08</span>Limits</a></li></ol><div class="rail-meta">build f139538 · 2026-10-24<br>v4.0.0 · 9 releases<br>MIT · operator CC BY-NC 4.0</div></nav><main id="main">
+<div class="shell"><nav class="rail" aria-label="Sections"><ol><li><a href="#position"><span>01</span>Position</a></li><li><a href="#pipeline"><span>02</span>The pipeline</a></li><li><a href="#architecture"><span>03</span>Architecture</a></li><li><a href="#gates"><span>04</span>Gates</a></li><li><a href="#state"><span>05</span>State</a></li><li><a href="#demo"><span>06</span>The demo</a></li><li><a href="#start"><span>07</span>Start</a></li><li><a href="#limits"><span>08</span>Limits</a></li></ol><div class="rail-meta">build 3df5193 · 2026-10-24<br>v4.0.0 · 9 releases<br>MIT · operator CC BY-NC 4.0</div></nav><main id="main">
 <div class="hero">
   <p class="eyebrow">Global reusable research pipeline</p>
   <h1>A skeleton, not a paper factory.</h1>
@@ -158,7 +155,7 @@ footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:v
   <p class="subthesis">Every number below is computed at build time from an artefact this page
     names; the page refuses to state a claim it cannot point at.</p>
   <div class="stats">
-    <div class="stat"><div class="n">11</div><div class="l">chains</div><div class="s">9 pass · 1 skip</div></div>
+    <div class="stat"><div class="n">11</div><div class="l">chains</div><div class="s">9 pass · 2 skip</div></div>
     <div class="stat"><div class="n">144</div><div class="l">tests</div><div class="s">coverage 72%</div></div>
     <div class="stat"><div class="n">3</div><div class="l">consumers</div><div class="s">2 must fail, on purpose</div></div>
     <div class="stat"><div class="n">6</div><div class="l">contracts</div><div class="s">probed at build time</div></div>
@@ -218,7 +215,7 @@ footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:v
 </div></section>
 <section class="sec" id="state"><div class="sec-h"><span class="num">05</span><h2>State, at this build<a class="anchor" href="#state" aria-label="permalink">¶</a></h2></div><p class="lede">Chain-by-chain and module-by-module state is live in the <a href="/dashboard.html">monitor</a>, which is the only place that draws it. This page records what the framework <em>is</em>; the monitor records what it is <em>doing</em>. Machine record: <a href="../docs/SELF_AUDIT.json">docs/SELF_AUDIT.json</a>.</p><div class="card">
   <h3>External contracts</h3>
-  <p class="contracts"><span class="contract ok">quarto <b>1.10.19</b></span><span class="contract ok">dvc <b>DVC version: 3.67.1 (pip)</b></span><span class="contract ok">mlflow <b>3.17.1</b></span><span class="contract ok">decision <b>StartLux-Decision-v1.1-4B-AutoThink-GG</b></span><span class="contract ok">bootloops <b>up</b></span><span class="contract miss">runtimes <b>llamacpp_8081</b></span></p>
+  <p class="contracts"><span class="contract ok">quarto <b>1.10.19</b></span><span class="contract ok">dvc <b>DVC version: 3.67.1 (pip)</b></span><span class="contract ok">mlflow <b>3.17.1</b></span><span class="contract miss">decision <b>no /health at http://127.0.0.1:8090</b></span><span class="contract ok">bootloops <b>up</b></span><span class="contract miss">runtimes <b>llamacpp_8081</b></span></p>
   <p class="mono" style="margin:9px 0 0;color:var(--dim)"><span class="contract ok">html <b>19 KB</b></span><span class="contract ok">pdf <b>13 KB</b></span><span class="contract ok">docx <b>11 KB</b></span><span class="contract ok">chain <b>passes</b></span><span class="contract">checked <b>2026-10-23 14:08</b> on this host</span></p>
   <p style="margin:8px 0 0;font-size:11.6px;color:var(--dim)">Probed at build time. A boundary
   that is down is named; it is never silently skipped.</p>
@@ -334,7 +331,7 @@ MathML, the demo is inline, and every number is computed at build time.</p></sec
   <p><b>Licence.</b> The framework is MIT. The decision operator's weights are CC BY-NC 4.0
   (non-commercial): a project that needs commercial terms must swap the operator, and the
   framework must not assume it is redistributable.</p></div></section>
-<footer>Generated by <code>tools/build_site.py</code> from <code>f139538</code> on
+<footer>Generated by <code>tools/build_site.py</code> from <code>3df5193</code> on
 2026-10-24 · v4.0.0 · 9 recorded builds · MIT.
 <br>Machine record: <a href="../docs/SELF_AUDIT.json">docs/SELF_AUDIT.json</a> ·
 <a href="../docs/HEALTH.md">docs/HEALTH.md</a> · <a href="../README.md">README</a></footer>

@@ -43,7 +43,7 @@ def test_render_has_no_unsubstituted_tokens():
 
 def test_render_has_eight_sections_and_resolving_nav():
     page = build_site.render(DATA)
-    assert page.count("<section") == 8
+    assert page.count("<section") == 9
     ids = set(re.findall(r'<section[^>]*id="([^"]+)"', page))
     nav = re.findall(r'<nav class="rail"[^>]*>(.*?)</nav>', page, re.S)[0]
     hrefs = set(re.findall(r'href="#([^"]+)"', nav))

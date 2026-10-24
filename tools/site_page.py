@@ -117,6 +117,27 @@ pre code{background:none;padding:0;font-size:inherit}
 .gchip.rec{border:1px solid rgba(91,141,239,.55);color:var(--accent)}
 .gchip.opt{color:var(--mut)}
 .gchip.none{color:var(--dim)}
+.mrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.mpill{font:600 10.5px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.08em;
+  padding:5px 10px;border-radius:20px;text-transform:uppercase}
+.mpill.ok{color:#6cbf6e;background:rgba(87,171,90,.12);border:1px solid rgba(87,171,90,.4)}
+.mpill.alarm{color:#ef6b62;background:rgba(229,83,75,.12);border:1px solid rgba(229,83,75,.4)}
+.mmeta{color:var(--mut);font-size:11.5px}
+.mmeta b{color:var(--fg)}
+.mlink{margin-left:auto;font-size:11.5px}
+.mgrid{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+@media (max-width:900px){.mgrid{grid-template-columns:1fr}}
+.mlabel{font:600 9.5px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.mchips{display:flex;flex-wrap:wrap;gap:4px}
+.mchip{display:inline-flex;gap:6px;align-items:center;font:11px/1 ui-monospace,Menlo,monospace;
+  padding:4px 7px;border-radius:5px;border:1px solid var(--line);color:var(--body);
+  background:#191d23}
+.mchip b{font:600 9px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.06em}
+.mchip.pass b{color:#6cbf6e}.mchip.skip b{color:var(--mut)}.mchip.fail b{color:#ef6b62}
+.mchip.running b{color:var(--accent)}.mchip.stale b{color:var(--warn)}.mchip.idle b{color:var(--dim)}
+.mchip.ok b{color:#6cbf6e}.mchip.bad b{color:#ef6b62}
+.mnote{margin:10px 0 0;font-size:11px;color:var(--dim)}
 .gm-sum{margin:9px 0 0;font-size:11.8px;color:var(--mut)}
 .gm-sum b{color:var(--fg)}
 .gm-key{display:flex;gap:9px;align-items:center;margin:7px 0 0;flex-wrap:wrap}
@@ -180,7 +201,8 @@ def sec(num: str, ident: str, title: str, lede: str, body: str) -> str:
 
 RAIL = [("position", "Position"), ("pipeline", "The pipeline"),
         ("architecture", "Architecture"), ("gates", "Gates"),
-        ("state", "State"), ("demo", "The demo"), ("start", "Start"), ("limits", "Limits")]
+        ("state", "State"), ("monitor", "Monitor"), ("demo", "The demo"),
+        ("start", "Start"), ("limits", "Limits")]
 
 
 def rail(commit: str, date: str, version: str, nvers: int) -> str:
@@ -316,6 +338,43 @@ def sec_state(ctx: dict) -> str:
                'docs/SELF_AUDIT.json</a>.', body)
 
 
+
+
+def sec_monitor(ctx: dict) -> str:
+    """A still frame of the monitor, taken at build time.
+
+    The document states what the framework *is*; this section shows what it was *doing* when
+    the page was built, so a reader does not have to open a second tab to find out whether the
+    thing they are reading about is alive.
+    """
+    m = ctx["monitor"]
+    chips = "".join(
+        f'<span class="mchip {row["state"].lower()}">{html.escape(row["name"])}'
+        f'<b>{html.escape(row["state"])}</b></span>' for row in m["chains"])
+    down = [s for s in m["services"] if not s["ok"]]
+    services = "".join(
+        f'<span class="mchip {"ok" if s["ok"] else "bad"}">{html.escape(s["name"])}'
+        f'<b>{"up" if s["ok"] else "down"}</b></span>' for s in m["services"])
+    verdict = "OK" if not down else "ALARM"
+    body = f'''<!--snapshot:start--><div class="card">
+  <div class="mrow">
+    <span class="mpill {verdict.lower()}">{verdict}</span>
+    <span class="mmeta">snapshot at <b>{m["asof"]}</b> HKT · <b>{m["samples"]}</b> samples ·
+    <b>{m["ok_chains"]}/{m["n_chains"]}</b> chains healthy</span>
+    <a class="mlink" href="/dashboard.html">open the live monitor →</a>
+  </div>
+  <div class="mgrid">
+    <div><div class="mlabel">chains</div><div class="mchips">{chips}</div></div>
+    <div><div class="mlabel">services</div><div class="mchips">{services}</div></div>
+  </div>
+  <p class="mnote">Collected from <code>docs/status/current.json</code> when this page was
+  built. The live page polls the same payload every ten seconds; this frame does not.</p>
+</div><!--snapshot:end-->'''
+    return sec("06", "monitor", "Monitor — the pipeline at build time",
+               "A still frame, so the document cannot claim a state the monitor contradicts.",
+               body)
+
+
 def sec_demo(ctx: dict) -> str:
     body = f'''<p>The operator is fitted to one-step pairs of {M_DUDT} and Newton solves
   {M_PSI} on the learned map. Circles are the operator; the line is the analytic {M_USTAR}.</p>
@@ -349,7 +408,7 @@ def sec_demo(ctx: dict) -> str:
     {ctx["inmax"]} inside, {ctx["outmax"]} outside. The operator does not fail here — the map is
     smooth and one-dimensional, and training on λ ≤ 0.2 still holds 0.31%. That is a property of
     this system, not a licence to extrapolate.</figcaption></div>'''
-    return sec("06", "demo", "The demo: system-level quantities from a learned operator",
+    return sec("07", "demo", "The demo: system-level quantities from a learned operator",
                "Fitted on short-step data, solved for fixed points and stability. Every panel is "
                "computed at build time; the page carries its own data and needs no other file.",
                body)
@@ -385,7 +444,7 @@ python tools/audit_validity.py --project ../my_study</code></pre></div>
 </div>
 <p style="margin-top:10px">The page has no external script, font or network call; formulas are
 MathML, the demo is inline, and every number is computed at build time.</p>'''
-    return sec("07", "start", "Start a project", "Two commands to instantiate, one to audit.",
+    return sec("08", "start", "Start a project", "Two commands to instantiate, one to audit.",
                body)
 
 
@@ -402,7 +461,7 @@ def sec_limits() -> str:
   <p><b>Licence.</b> The framework is MIT. The decision operator's weights are CC BY-NC 4.0
   (non-commercial): a project that needs commercial terms must swap the operator, and the
   framework must not assume it is redistributable.</p></div>'''
-    return sec("08", "limits", "Limits and licence", "What this page will not claim.", body)
+    return sec("09", "limits", "Limits and licence", "What this page will not claim.", body)
 
 
 JS = r"""
@@ -479,6 +538,7 @@ makes is checked against an artefact.">
 {sec_architecture(ctx["stack"])}
 {sec_gates(ctx)}
 {sec_state(ctx)}
+{sec_monitor(ctx)}
 {sec_demo(ctx)}
 {sec_start()}
 {sec_limits()}

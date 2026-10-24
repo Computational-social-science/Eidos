@@ -1,8 +1,0 @@
-{"ts": "2026-10-23T16:11:29+00:00", "signal": "quarto", "from": "OK", "to": "ALARM", "value": 0, "source": "PATH"}
-{"ts": "2026-10-23T16:13:24+00:00", "signal": "quarto", "from": "OK", "to": "ALARM", "value": 0, "source": "PATH"}
-{"ts": "2026-10-23T16:13:26+00:00", "signal": "runtime_18434", "from": "OK", "to": "ALARM", "value": 0, "source": "127.0.0.1:18434/v1/models"}
-{"ts": "2026-10-23T16:16:21+00:00", "signal": "quarto", "from": "OK", "to": "ALARM", "value": 0, "source": "PATH"}
-{"ts": "2026-10-23T16:22:02+00:00", "signal": "runtime_18434", "from": "OK", "to": "ALARM", "value": 0, "source": "127.0.0.1:18434/v1/models"}
-{"ts": "2026-10-23T16:25:49+00:00", "signal": "runtime_18434", "from": "OK", "to": "ALARM", "value": 0, "source": "127.0.0.1:18434/v1/models"}
-{"ts": "2026-10-24T00:18:26+00:00", "signal": "runtime_18434", "from": "OK", "to": "ALARM", "value": 0, "source": "127.0.0.1:18434/v1/models"}
-{"ts": "2026-10-24T14:49:26+00:00", "signal": "decision_service", "from": "OK", "to": "ALARM", "value": 0, "source": "127.0.0.1:8090/health"}

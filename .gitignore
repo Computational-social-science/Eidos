@@ -44,3 +44,14 @@ ci_log.txt
 lab/*.png
 .coverage
 coverage.xml
+
+# Runtime state: the watcher rewrites these every 15 s. Tracked once, now ignored — a dirty
+# tree should mean "code changed", not "the sampler ticked".
+docs/status/current.json
+docs/status/timeline.json
+docs/status/alarms.json
+docs/status/history.jsonl
+docs/status/faults.jsonl
+docs/status/durations.jsonl
+docs/status/recoveries.jsonl
+docs/status/recovery_state.json

@@ -243,6 +243,8 @@ def topology(pipeline, chain_now, durations, signals, trace_ts):
            "fill='context-stroke'/></marker></defs>"]
 
     drawn = 0
+    flowing = [True]          # one moving marker, chosen below
+    flow_point = None
     for chain in chains:
         state = chain_now.get(chain, "IDLE")
         y = chain_y[chain]
@@ -264,7 +266,8 @@ def topology(pipeline, chain_now, durations, signals, trace_ts):
             x2, y2 = m_x, mod_y[module] + m_h / 2
             dx = max(36, (x2 - x1) * 0.42)
             drawn += 1
-            svg.append(f"<path class='edge' data-from='{html.escape(chain)}' "
+            flow = ""
+            svg.append(f"<path class='edge{flow}' data-from='{html.escape(chain)}' "
                        f"d='M{x1} {y1} C{x1 + dx} {y1}, {x2 - dx} {y2}, {x2} {y2}' "
                        f"style='stroke-dashoffset:{(drawn * 2.7) % 7:.1f}' fill='none' "
                        f"stroke='{PALETTE.get(state, PALETTE['IDLE'])}' stroke-width='1.1' "
@@ -293,7 +296,12 @@ def topology(pipeline, chain_now, durations, signals, trace_ts):
             dx = max(36, (x2 - x1) * 0.42)
             up = (signals.get(service) or {}).get("state") not in ("ALARM", "UNOBSERVABLE")
             drawn += 1
-            svg.append(f"<path class='edge svc' d='M{x1} {y1} C{x1 + dx} {y1}, "
+            flow = ""
+            if up and flowing[0]:
+                flowing[0] = False
+                flow_point = {"x": (x1 + x2) / 2, "y": (y1 + y2) / 2,
+                              "w": width, "h": height}
+            svg.append(f"<path class='edge svc{flow}' d='M{x1} {y1} C{x1 + dx} {y1}, "
                        f"{x2 - dx} {y2}, {x2} {y2}' "
                        f"style='stroke-dashoffset:{(drawn * 2.7) % 7:.1f}' fill='none' "
                        f"stroke='{PALETTE['PASS' if up else 'FAIL']}' stroke-width='1.1' "
@@ -326,6 +334,8 @@ def topology(pipeline, chain_now, durations, signals, trace_ts):
     for service in services:
         if (signals.get(service) or {}).get("state") in ("ALARM", "UNOBSERVABLE"):
             faults.append(f"{service} = DOWN")
+    if flow_point:
+        module_users["__flow__"] = [flow_point]
     return "".join(svg), faults, module_users
 
 
@@ -374,6 +384,21 @@ svg .node rect{transition:fill .4s ease,stroke .4s ease}
 svg .node:hover rect{stroke:#fff;stroke-opacity:.45}
 svg .node:focus{outline:none}
 svg .edge{transition:stroke .4s ease}
+/* A dash that drifts, on the few edges that carry a live signal. Stepped rather than smooth:
+   the browser paints on the step, not on every frame, which keeps this under a couple of
+   percent of one core instead of the thirty a per-frame SVG animation cost. */
+@keyframes drift{from{stroke-dashoffset:0}to{stroke-dashoffset:-14}}
+svg .edge.flow{animation:drift 3.2s steps(7,end) infinite}
+@media (prefers-reduced-motion:reduce){svg .edge.flow{animation:none}}
+/* Motion lives in the HTML layer, not inside the SVG: one animated path repaints the whole
+   SVG layer (~5% of a core), while an opacity keyframe on a positioned dot is composited. */
+.stage{position:relative}
+.flowdot{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 9px var(--accent);transform:translate(-50%,-50%);pointer-events:none;
+  animation:glide 3.2s ease-in-out infinite}
+@keyframes glide{0%,100%{opacity:.25;transform:translate(-50%,-50%) scale(.85)}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}}
+@media (prefers-reduced-motion:reduce){.flowdot{animation:none;opacity:.8}}
 .key{display:flex;gap:11px;font-size:9.5px;color:var(--dim);margin:0 0 7px;flex-wrap:wrap;
   letter-spacing:.04em;text-transform:uppercase}
 .key i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
@@ -549,7 +574,8 @@ def build() -> str:
     except ValueError:
         trace_ts = 0.0
 
-    svg, faults, _ = topology(pipeline, chain_now, {}, signals, trace_ts)
+    svg, faults, layout = topology(pipeline, chain_now, {}, signals, trace_ts)
+    flow = (layout.get("__flow__") or [None])[0]
     faults = derived.get("faults") or faults
     ranking = fault_ranking()
     stamp = hkt(status.get("ts", "")) if status.get("ts") else "—"
@@ -568,6 +594,12 @@ def build() -> str:
     else:
         grid_class, fault_card = "grid one", ""
 
+    flow_dot = ""
+    if flow and flow.get("w") and flow.get("h"):
+        left = 100 * flow["x"] / flow["w"]
+        top = 100 * flow["y"] / flow["h"]
+        flow_dot = (f"<i class='flowdot' style='left:{left:.2f}%;top:{top:.2f}%' "
+                    f"title='the first live edge in the assembly'></i>")
     script = JS.replace("__PALETTE__", json.dumps(PALETTE))
     ok = overall == "OK"
 
@@ -592,7 +624,7 @@ def build() -> str:
   <section class="card">
     <h2>Assembly — chains (run order) → modules → services</h2>
     <div class="key">{key}</div>
-    {svg}
+    <div class="stage">{svg}{flow_dot}</div>
     {fault_line}
   </section>
   <div class="{grid_class}">

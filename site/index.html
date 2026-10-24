@@ -108,6 +108,27 @@ pre code{background:none;padding:0;font-size:inherit}
 .gchip.rec{border:1px solid rgba(91,141,239,.55);color:var(--accent)}
 .gchip.opt{color:var(--mut)}
 .gchip.none{color:var(--dim)}
+.mrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.mpill{font:600 10.5px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.08em;
+  padding:5px 10px;border-radius:20px;text-transform:uppercase}
+.mpill.ok{color:#6cbf6e;background:rgba(87,171,90,.12);border:1px solid rgba(87,171,90,.4)}
+.mpill.alarm{color:#ef6b62;background:rgba(229,83,75,.12);border:1px solid rgba(229,83,75,.4)}
+.mmeta{color:var(--mut);font-size:11.5px}
+.mmeta b{color:var(--fg)}
+.mlink{margin-left:auto;font-size:11.5px}
+.mgrid{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+@media (max-width:900px){.mgrid{grid-template-columns:1fr}}
+.mlabel{font:600 9.5px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.mchips{display:flex;flex-wrap:wrap;gap:4px}
+.mchip{display:inline-flex;gap:6px;align-items:center;font:11px/1 ui-monospace,Menlo,monospace;
+  padding:4px 7px;border-radius:5px;border:1px solid var(--line);color:var(--body);
+  background:#191d23}
+.mchip b{font:600 9px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.06em}
+.mchip.pass b{color:#6cbf6e}.mchip.skip b{color:var(--mut)}.mchip.fail b{color:#ef6b62}
+.mchip.running b{color:var(--accent)}.mchip.stale b{color:var(--warn)}.mchip.idle b{color:var(--dim)}
+.mchip.ok b{color:#6cbf6e}.mchip.bad b{color:#ef6b62}
+.mnote{margin:10px 0 0;font-size:11px;color:var(--dim)}
 .gm-sum{margin:9px 0 0;font-size:11.8px;color:var(--mut)}
 .gm-sum b{color:var(--fg)}
 .gm-key{display:flex;gap:9px;align-items:center;margin:7px 0 0;flex-wrap:wrap}
@@ -146,7 +167,7 @@ footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:v
   <span class="hchip">11 chains · 144 tests</span>
   <a class="cta" href="/dashboard.html">Monitor →</a>
 </div></header>
-<div class="shell"><nav class="rail" aria-label="Sections"><ol><li><a href="#position"><span>01</span>Position</a></li><li><a href="#pipeline"><span>02</span>The pipeline</a></li><li><a href="#architecture"><span>03</span>Architecture</a></li><li><a href="#gates"><span>04</span>Gates</a></li><li><a href="#state"><span>05</span>State</a></li><li><a href="#demo"><span>06</span>The demo</a></li><li><a href="#start"><span>07</span>Start</a></li><li><a href="#limits"><span>08</span>Limits</a></li></ol><div class="rail-meta">build 3df5193 · 2026-10-24<br>v4.0.0 · 9 releases<br>MIT · operator CC BY-NC 4.0</div></nav><main id="main">
+<div class="shell"><nav class="rail" aria-label="Sections"><ol><li><a href="#position"><span>01</span>Position</a></li><li><a href="#pipeline"><span>02</span>The pipeline</a></li><li><a href="#architecture"><span>03</span>Architecture</a></li><li><a href="#gates"><span>04</span>Gates</a></li><li><a href="#state"><span>05</span>State</a></li><li><a href="#monitor"><span>06</span>Monitor</a></li><li><a href="#demo"><span>07</span>The demo</a></li><li><a href="#start"><span>08</span>Start</a></li><li><a href="#limits"><span>09</span>Limits</a></li></ol><div class="rail-meta">build ac0510e · 2026-10-25<br>v4.0.0 · 9 releases<br>MIT · operator CC BY-NC 4.0</div></nav><main id="main">
 <div class="hero">
   <p class="eyebrow">Global reusable research pipeline</p>
   <h1>A skeleton, not a paper factory.</h1>
@@ -155,7 +176,7 @@ footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:v
   <p class="subthesis">Every number below is computed at build time from an artefact this page
     names; the page refuses to state a claim it cannot point at.</p>
   <div class="stats">
-    <div class="stat"><div class="n">11</div><div class="l">chains</div><div class="s">9 pass · 2 skip</div></div>
+    <div class="stat"><div class="n">11</div><div class="l">chains</div><div class="s">10 pass · 1 skip</div></div>
     <div class="stat"><div class="n">144</div><div class="l">tests</div><div class="s">coverage 72%</div></div>
     <div class="stat"><div class="n">3</div><div class="l">consumers</div><div class="s">2 must fail, on purpose</div></div>
     <div class="stat"><div class="n">6</div><div class="l">contracts</div><div class="s">probed at build time</div></div>
@@ -215,7 +236,7 @@ footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:v
 </div></section>
 <section class="sec" id="state"><div class="sec-h"><span class="num">05</span><h2>State, at this build<a class="anchor" href="#state" aria-label="permalink">¶</a></h2></div><p class="lede">Chain-by-chain and module-by-module state is live in the <a href="/dashboard.html">monitor</a>, which is the only place that draws it. This page records what the framework <em>is</em>; the monitor records what it is <em>doing</em>. Machine record: <a href="../docs/SELF_AUDIT.json">docs/SELF_AUDIT.json</a>.</p><div class="card">
   <h3>External contracts</h3>
-  <p class="contracts"><span class="contract ok">quarto <b>1.10.19</b></span><span class="contract ok">dvc <b>DVC version: 3.67.1 (pip)</b></span><span class="contract ok">mlflow <b>3.17.1</b></span><span class="contract miss">decision <b>no /health at http://127.0.0.1:8090</b></span><span class="contract ok">bootloops <b>up</b></span><span class="contract miss">runtimes <b>llamacpp_8081</b></span></p>
+  <p class="contracts"><span class="contract ok">quarto <b>1.10.19</b></span><span class="contract ok">dvc <b>DVC version: 3.67.1 (pip)</b></span><span class="contract ok">mlflow <b>3.17.1</b></span><span class="contract ok">decision <b>StartLux-Decision-v1.1-4B-AutoThink-GG</b></span><span class="contract ok">bootloops <b>up</b></span><span class="contract ok">runtimes <b>up</b></span></p>
   <p class="mono" style="margin:9px 0 0;color:var(--dim)"><span class="contract ok">html <b>19 KB</b></span><span class="contract ok">pdf <b>13 KB</b></span><span class="contract ok">docx <b>11 KB</b></span><span class="contract ok">chain <b>passes</b></span><span class="contract">checked <b>2026-10-23 14:08</b> on this host</span></p>
   <p style="margin:8px 0 0;font-size:11.6px;color:var(--dim)">Probed at build time. A boundary
   that is down is named; it is never silently skipped.</p>
@@ -258,7 +279,21 @@ footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:v
   })();
   </script>
 </div></section>
-<section class="sec" id="demo"><div class="sec-h"><span class="num">06</span><h2>The demo: system-level quantities from a learned operator<a class="anchor" href="#demo" aria-label="permalink">¶</a></h2></div><p class="lede">Fitted on short-step data, solved for fixed points and stability. Every panel is computed at build time; the page carries its own data and needs no other file.</p><p>The operator is fitted to one-step pairs of <math display="inline"><mfrac><mrow><mi>d</mi><mi>u</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>λ</mi><mo>−</mo><msup><mi>u</mi><mn>2</mn></msup></math> and Newton solves
+<section class="sec" id="monitor"><div class="sec-h"><span class="num">06</span><h2>Monitor — the pipeline at build time<a class="anchor" href="#monitor" aria-label="permalink">¶</a></h2></div><p class="lede">A still frame, so the document cannot claim a state the monitor contradicts.</p><!--snapshot:start--><div class="card">
+  <div class="mrow">
+    <span class="mpill ok">OK</span>
+    <span class="mmeta">snapshot at <b>2026-10-25 00:04:55</b> HKT · <b>2000</b> samples ·
+    <b>11/11</b> chains healthy</span>
+    <a class="mlink" href="/dashboard.html">open the live monitor →</a>
+  </div>
+  <div class="mgrid">
+    <div><div class="mlabel">chains</div><div class="mchips"><span class="mchip pass">registry<b>PASS</b></span><span class="mchip pass">gates<b>PASS</b></span><span class="mchip skip">gates+project checker<b>SKIP</b></span><span class="mchip pass">diagnosis<b>PASS</b></span><span class="mchip pass">tracking<b>PASS</b></span><span class="mchip pass">quarto<b>PASS</b></span><span class="mchip pass">validity (Gate S)<b>PASS</b></span><span class="mchip pass">surrogate (local NO)<b>PASS</b></span><span class="mchip pass">demo (NO)<b>PASS</b></span><span class="mchip pass">decision<b>PASS</b></span><span class="mchip pass">inference<b>PASS</b></span></div></div>
+    <div><div class="mlabel">services</div><div class="mchips"><span class="mchip ok">decision_service<b>up</b></span><span class="mchip ok">runtime_18434<b>up</b></span><span class="mchip ok">quarto<b>up</b></span><span class="mchip ok">dvc<b>up</b></span><span class="mchip ok">mlflow<b>up</b></span></div></div>
+  </div>
+  <p class="mnote">Collected from <code>docs/status/current.json</code> when this page was
+  built. The live page polls the same payload every ten seconds; this frame does not.</p>
+</div><!--snapshot:end--></section>
+<section class="sec" id="demo"><div class="sec-h"><span class="num">07</span><h2>The demo: system-level quantities from a learned operator<a class="anchor" href="#demo" aria-label="permalink">¶</a></h2></div><p class="lede">Fitted on short-step data, solved for fixed points and stability. Every panel is computed at build time; the page carries its own data and needs no other file.</p><p>The operator is fitted to one-step pairs of <math display="inline"><mfrac><mrow><mi>d</mi><mi>u</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>λ</mi><mo>−</mo><msup><mi>u</mi><mn>2</mn></msup></math> and Newton solves
   <math display="inline"><mi>ψ</mi><mo>(</mo><mi>u</mi><mo>)</mo><mo>=</mo><mi>S</mi><mo>(</mo><mi>u</mi><mo>)</mo><mo>−</mo><mi>u</mi><mo>=</mo><mn>0</mn></math> on the learned map. Circles are the operator; the line is the analytic <math display="inline"><msup><mi>u</mi><mo>*</mo></msup><mo>=</mo><msqrt><mi>λ</mi></msqrt></math>.</p>
   <div class="grid2">
     <div class="card"><h3>Panel A · Fixed point against parameter</h3>
@@ -290,7 +325,7 @@ footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:v
     0.0002% inside, 0.00% outside. The operator does not fail here — the map is
     smooth and one-dimensional, and training on λ ≤ 0.2 still holds 0.31%. That is a property of
     this system, not a licence to extrapolate.</figcaption></div></section>
-<section class="sec" id="start"><div class="sec-h"><span class="num">07</span><h2>Start a project<a class="anchor" href="#start" aria-label="permalink">¶</a></h2></div><p class="lede">Two commands to instantiate, one to audit.</p><div class="grid2">
+<section class="sec" id="start"><div class="sec-h"><span class="num">08</span><h2>Start a project<a class="anchor" href="#start" aria-label="permalink">¶</a></h2></div><p class="lede">Two commands to instantiate, one to audit.</p><div class="grid2">
   <div class="card"><h3>Instantiate or register</h3>
 <pre><code># new project: inherits gates, tracking, rendering
 ./bootstrap_project.sh my_study
@@ -319,7 +354,7 @@ python tools/audit_validity.py --project ../my_study</code></pre></div>
 </div>
 <p style="margin-top:10px">The page has no external script, font or network call; formulas are
 MathML, the demo is inline, and every number is computed at build time.</p></section>
-<section class="sec" id="limits"><div class="sec-h"><span class="num">08</span><h2>Limits and licence<a class="anchor" href="#limits" aria-label="permalink">¶</a></h2></div><p class="lede">What this page will not claim.</p><div class="stack">
+<section class="sec" id="limits"><div class="sec-h"><span class="num">09</span><h2>Limits and licence<a class="anchor" href="#limits" aria-label="permalink">¶</a></h2></div><p class="lede">What this page will not claim.</p><div class="stack">
   <p><b>What is measured.</b> Tests, coverage, chain verdicts, Lean runs, decision calibration,
   and the demo's error against a closed form.</p>
   <p><b>What is not.</b> That the gates improve a project's science — that would need a control
@@ -331,8 +366,8 @@ MathML, the demo is inline, and every number is computed at build time.</p></sec
   <p><b>Licence.</b> The framework is MIT. The decision operator's weights are CC BY-NC 4.0
   (non-commercial): a project that needs commercial terms must swap the operator, and the
   framework must not assume it is redistributable.</p></div></section>
-<footer>Generated by <code>tools/build_site.py</code> from <code>3df5193</code> on
-2026-10-24 · v4.0.0 · 9 recorded builds · MIT.
+<footer>Generated by <code>tools/build_site.py</code> from <code>ac0510e</code> on
+2026-10-25 · v4.0.0 · 9 recorded builds · MIT.
 <br>Machine record: <a href="../docs/SELF_AUDIT.json">docs/SELF_AUDIT.json</a> ·
 <a href="../docs/HEALTH.md">docs/HEALTH.md</a> · <a href="../README.md">README</a></footer>
 </main></div>

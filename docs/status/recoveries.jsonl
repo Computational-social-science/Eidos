@@ -1,4 +1,0 @@
-{"ts": "2026-10-23T16:25:49+00:00", "service": "runtime_18434", "phase": "attempt", "action": "start the managed llama.cpp runtime on 127.0.0.1:18434", "ok": true, "pid": 57032, "error": null}
-{"ts": "2026-10-23T16:25:55+00:00", "service": "runtime_18434", "phase": "verified", "outcome": "recovered"}
-{"ts": "2026-10-24T00:18:56+00:00", "service": "runtime_18434", "phase": "attempt", "action": "start the managed llama.cpp runtime on 127.0.0.1:18434", "ok": true, "pid": 2792, "error": null}
-{"ts": "2026-10-24T00:19:09+00:00", "service": "runtime_18434", "phase": "verified", "outcome": "recovered"}

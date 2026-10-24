@@ -465,6 +465,37 @@ def demo_payload() -> str:
 
 
 # -------------------------------------------------------------------------- page
+def monitor_snapshot(data: dict) -> dict:
+    """The monitor's state at build time, for the document's still frame."""
+    try:
+        status = json.loads((ROOT / "docs" / "status" / "current.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        status = {}
+    try:
+        pipeline = json.loads((ROOT / "docs" / "pipeline.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        pipeline = {}
+    chains_now = status.get("chains") or {}
+    signals = status.get("signals") or {}
+
+    def stamp(ts: str) -> str:
+        try:
+            return (datetime.datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
+                    .astimezone(datetime.timezone(datetime.timedelta(hours=8)))
+                    .strftime("%Y-%m-%d %H:%M:%S"))
+        except (ValueError, AttributeError):
+            return "—"
+
+    order = list(pipeline.get("chain_modules") or {})
+    rows = [{"name": c, "state": chains_now.get(c, "IDLE")} for c in order]
+    services = [{"name": name, "ok": (row or {}).get("state") == "OK"}
+                for name, row in signals.items()
+                if name in ("decision_service", "runtime_18434", "quarto", "dvc", "mlflow")]
+    return {"asof": stamp(status.get("ts", "")), "samples": status.get("samples", 0),
+            "chains": rows, "services": services, "n_chains": len(rows),
+            "ok_chains": sum(1 for r in rows if r["state"] in ("PASS", "SKIP"))}
+
+
 def render(data: dict) -> str:
     """Assemble the page. Measurement stays here; layout lives in site_page."""
     import site_page
@@ -516,6 +547,7 @@ def render(data: dict) -> str:
         "grid": len(lab["rows"]),
         "demo": demo_payload(),
         "rail": site_page.rail(data["commit"], data["today"], version, nvers),
+        "monitor": monitor_snapshot(data),
     }
     return site_page.render(ctx)
 
@@ -574,7 +606,12 @@ def main(argv: list[str] | None = None) -> int:
         # The page names the commit it was built from; committing the rebuilt page changes
         # that name, so a byte comparison would report "stale" every time. Normalise the two
         # fields that depend on HEAD itself, and compare the rest.
-        volatile = re.compile(r"build [0-9a-f]{7,40}|\d+ recorded builds?|from <code>[0-9a-f]{7,40}</code>")
+        # Two kinds of volatile text: the commit the page names (changes when this page is
+        # committed) and the monitor snapshot (a still frame of a live system). Comparing
+        # either byte-for-byte would report "stale" for reasons that are not staleness.
+        volatile = re.compile(
+            r"<!--snapshot:start-->.*?<!--snapshot:end-->|build [0-9a-f]{7,40}"
+            r"|\d+ recorded builds?|from <code>[0-9a-f]{7,40}</code>", re.S)
         # The control block carries a sampling timestamp and run counts; comparing it byte
         # for byte would report "stale" on every rebuild. Structure is compared, the live
         # numbers are not.

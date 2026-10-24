@@ -43,17 +43,16 @@ def test_render_has_no_unsubstituted_tokens():
 
 def test_render_has_eight_sections_and_resolving_nav():
     page = build_site.render(DATA)
-    assert page.count("<section") == 9
-    ids = set(re.findall(r'<section id="([^"]+)"', page))
-    hrefs = set(re.findall(r'<nav class="toc"[^>]*>(.*?)</nav>', page, re.S)[0]
-                and re.findall(r'href="#([^"]+)"', re.findall(
-                    r'<nav class="toc"[^>]*>(.*?)</nav>', page, re.S)[0]))
+    assert page.count("<section") == 8
+    ids = set(re.findall(r'<section[^>]*id="([^"]+)"', page))
+    nav = re.findall(r'<nav class="rail"[^>]*>(.*?)</nav>', page, re.S)[0]
+    hrefs = set(re.findall(r'href="#([^"]+)"', nav))
     assert hrefs == ids, f"nav/href mismatch: {hrefs ^ ids}"
 
 
 def test_render_carries_captions_math_and_the_demo_data():
     page = build_site.render(DATA)
-    assert page.count("<caption") == page.count("<table") >= 5
+    assert page.count("<caption") == page.count("<table") >= 4
     assert page.count("<math") >= 3
     assert "const DATA = {" in page
     assert "demo" in page.lower()

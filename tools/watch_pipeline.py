@@ -26,19 +26,29 @@ from __future__ import annotations
 import argparse
 import datetime
 import json
+import os
 import sys
 import time
 import urllib.request
 from pathlib import Path
 
 import chain_states
+import status_view
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(ROOT))
 STATUS = ROOT / "docs" / "status"
 CURRENT = STATUS / "current.json"
+RECOVERY_STATE = STATUS / "recovery_state.json"
+RECOVERIES = STATUS / "recoveries.jsonl"
+STREAK_NEEDED = 3          # consecutive samples in ALARM before acting (~12 s at 4 s)
+COOLDOWN_S = 600           # never retry the same service sooner than this
+MAX_ATTEMPTS = 3           # then stop and leave it to a human
 HISTORY = STATUS / "history.jsonl"
 ALARMS = STATUS / "alarms.json"
+FAULTS = STATUS / "faults.jsonl"
+DURATIONS = STATUS / "durations.jsonl"
 HISTORY_CAP = 2000
 ALARM_CAP = 200
 
@@ -63,6 +73,23 @@ def http_json(url: str, timeout: float = 2.0) -> tuple[int, dict]:
         return 0, {"error": type(exc).__name__}
 
 
+def http_status(url: str, headers: dict | None = None, timeout: float = 2.0) -> int:
+    """Return the HTTP status, or 0 when nothing answers.
+
+    401 is not absence: it proves the server is alive and enforcing auth. Treating it as
+    "down" made an authenticated runtime look dead on the dashboard.
+    """
+    import urllib.error
+    request = urllib.request.Request(url, headers=headers or {})
+    try:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
+            return response.status
+    except urllib.error.HTTPError as exc:
+        return exc.code
+    except Exception:  # noqa: BLE001 - absence is the measurement
+        return 0
+
+
 def age_hours(iso: str | None) -> float | None:
     if not iso:
         return None
@@ -84,12 +111,55 @@ def measure() -> dict:
         "reference": 1, "direction": "min", "unit": "up",
         "source": "127.0.0.1:8090/health", "note": body.get("model") or body.get("error")}
 
-    code, _ = http_json("http://127.0.0.1:18434/v1/models")
-    signals["runtime_18434"] = {"value": 1 if code == 200 else 0, "reference": 1,
-                                "direction": "min", "unit": "up",
-                                "source": "127.0.0.1:18434/v1/models", "note": ""}
+    key = os.environ.get("HERMES_LOCAL_LLAMACPP_KEY", "")
+    headers = {"Authorization": f"Bearer {key}"} if key else {}
+    code = http_status("http://127.0.0.1:18434/v1/models", headers)
+    signals["runtime_18434"] = {
+        "value": 1 if code in (200, 401) else 0, "reference": 1,
+        "direction": "min", "unit": "up", "source": "127.0.0.1:18434/v1/models",
+        "note": "auth required" if code == 401 else ("key unset" if code == 200 and not key else "")}
+
+    # Services the chains call out to. Existence is enough for a binary or an installed
+    # package; a wrong answer here would show green for something that cannot run.
+    import importlib.util
+    import shutil
+
+    env_quarto = os.environ.get("QUARTO_BIN", "")
+    # Reuse the bridge's own locator: it knows the local install even when PATH does not.
+    try:
+        from framework.quarto_bridge import QuartoBridge
+        has_quarto = QuartoBridge({}).quarto_available
+        quarto_where = "framework.quarto_bridge"
+    except Exception:  # noqa: BLE001 - absence is the datum
+        has_quarto = (bool(env_quarto) and Path(env_quarto).is_file()) or bool(shutil.which("quarto"))
+        quarto_where = env_quarto or "PATH"
+    signals["quarto"] = {"value": 1 if has_quarto else 0, "reference": 1,
+                         "direction": "min", "unit": "up", "source": quarto_where,
+                         "note": env_quarto or "on PATH"}
+    for package in ("dvc", "mlflow"):
+        signals[package] = {"value": 1 if importlib.util.find_spec(package) else 0,
+                            "reference": 1, "direction": "min", "unit": "up",
+                            "source": f"python -m {package}", "note": ""}
 
     traces = read_json(ROOT / "docs" / "traces" / "latest.json", {}) or {}
+    trace_meta = traces.get("trace") or {}
+    trace_id = trace_meta.get("id")
+    if trace_id:
+        last_id = None
+        try:
+            lines = DURATIONS.read_text(encoding="utf-8").splitlines()
+            if lines:
+                last_id = json.loads(lines[-1]).get("trace")
+        except (OSError, json.JSONDecodeError):
+            last_id = None
+        if trace_id != last_id:
+            # One row per audit, not per sample: the series is of runs, not of polls.
+            STATUS.mkdir(parents=True, exist_ok=True)
+            with DURATIONS.open("a", encoding="utf-8") as handle:
+                handle.write(json.dumps({
+                    "ts": now_iso(), "trace": trace_id,
+                    "durations": {s["name"]: s.get("duration_ms")
+                                  for s in traces.get("spans", [])}}) + chr(10))
     spans = traces.get("spans", []) if isinstance(traces, dict) else []
     if spans:
         failed = sum(1 for s in spans if s.get("status") in ("FAIL", "ERROR"))
@@ -157,6 +227,67 @@ def classify(signal: dict) -> tuple[str, float | None]:
     return ("OK" if ok else "ALARM"), round(error, 2)
 
 
+def maybe_auto_recover(states: dict) -> dict:
+    """Closed loop: sustain a fault long enough, then act once and verify the effect.
+
+    The guard rails are the point. A single bad sample is noise; a service that stays down
+    for three samples gets one attempt, no more than once per ten minutes and three times
+    in total. Every attempt and its verification is appended to recoveries.jsonl, so the
+    automatic action is as auditable as a manual one.
+    """
+    if os.environ.get("EIDOS_AUTO_RECOVER", "1") == "0":
+        return states
+    state = read_json(RECOVERY_STATE, {}) or {}
+    now = time.time()
+    changed = False
+    for name, row in states.items():
+        entry = state.setdefault(name, {"streak": 0, "last_attempt": 0.0,
+                                        "attempts": 0, "pending": False})
+        ok = row.get("state") == "OK"
+        if entry.get("pending"):
+            if ok:
+                _append_recovery({"ts": now_iso(), "service": name, "phase": "verified",
+                                  "outcome": "recovered"})
+                entry.update(pending=False, attempts=0, streak=0)
+                changed = True
+            elif now - entry.get("last_attempt", 0) > 60:
+                _append_recovery({"ts": now_iso(), "service": name, "phase": "verified",
+                                  "outcome": "no effect"})
+                entry.update(pending=False)
+                changed = True
+            continue
+        if ok:
+            if entry.get("streak"):
+                entry["streak"] = 0
+                changed = True
+            continue
+        entry["streak"] = int(entry.get("streak", 0)) + 1
+        changed = True
+        plan_row = row.get("recovery") or {}
+        if (entry["streak"] >= STREAK_NEEDED and plan_row.get("available")
+                and now - entry.get("last_attempt", 0) > COOLDOWN_S
+                and entry.get("attempts", 0) < MAX_ATTEMPTS):
+            from framework import recovery as recovery_mod
+            plan = recovery_mod.plan(name)
+            result = recovery_mod.execute(plan)
+            entry.update(last_attempt=now, pending=True, streak=0,
+                         attempts=int(entry.get("attempts", 0)) + 1)
+            _append_recovery({"ts": now_iso(), "service": name, "phase": "attempt",
+                              "action": plan.description, "ok": result.get("ok"),
+                              "pid": result.get("pid"), "error": result.get("error")})
+            row["recovery_auto"] = {"attempted": True, "result": result}
+    if changed:
+        STATUS.mkdir(parents=True, exist_ok=True)
+        RECOVERY_STATE.write_text(json.dumps(state, indent=1) + chr(10), encoding="utf-8")
+    return states
+
+
+def _append_recovery(row: dict) -> None:
+    STATUS.mkdir(parents=True, exist_ok=True)
+    with RECOVERIES.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(row) + chr(10))
+
+
 def sample(append: bool = True) -> dict:
     signals = measure()
     states = {}
@@ -178,6 +309,10 @@ def sample(append: bool = True) -> dict:
     except (OSError, json.JSONDecodeError):
         previous_chains = {}
     chain_state = chain_states.advance(previous_chains, chain_states.observed(), live)
+    # A green node that has not been exercised for a day is not green: it is unobserved.
+    age_h = (signals.get("chains_age") or {}).get("value")
+    if age_h is not None and float(age_h) > 24.0:
+        chain_state = {name: "STALE" for name in chain_state}
     previous = read_json(CURRENT, {}) or {}
     previous_states = (previous.get("signals") or {}) if isinstance(previous, dict) else {}
     alarms = read_json(ALARMS, []) or []
@@ -189,11 +324,27 @@ def sample(append: bool = True) -> dict:
             alarms.append({"ts": now_iso(), "signal": name, "from": before,
                            "to": row["state"], "value": row["value"],
                            "source": row["source"]})
+    new_faults = []
     for name, state in chain_state.items():
         before = previous_chains.get(name, "IDLE")
         if before != state:
-            alarms.append({"ts": now_iso(), "signal": "chain:" + name, "from": before,
-                           "to": state, "value": None, "source": "docs/traces/latest.json"})
+            row = {"ts": now_iso(), "signal": "chain:" + name, "from": before,
+                   "to": state, "value": None, "source": "docs/traces/latest.json"}
+            alarms.append(row)
+            if state in ("FAIL", "STALE"):
+                new_faults.append(row)
+    for name, row in states.items():
+        if row["state"] == "ALARM":
+            delta = (previous_states.get(name) or {}).get("state")
+            if delta != "ALARM":
+                new_faults.append({"ts": now_iso(), "signal": name, "from": delta or "UNKNOWN",
+                                   "to": "ALARM", "value": row["value"],
+                                   "source": row["source"]})
+    if new_faults:
+        STATUS.mkdir(parents=True, exist_ok=True)
+        with FAULTS.open("a", encoding="utf-8") as handle:
+            for row in new_faults:
+                handle.write(json.dumps(row) + chr(10))
     alarms = alarms[-ALARM_CAP:]
 
     history = []
@@ -213,7 +364,34 @@ def sample(append: bool = True) -> dict:
 
     timeline = chain_states.append(now_iso(), chain_state)
 
-    payload = {"ts": now_iso(), "overall": worst, "signals": states,
+    # Diagnosis and recovery are the framework's own modules: the watcher measures, the
+    # engine names the failure, the recovery module says whether an action exists.
+    try:
+        from framework.diagnosis import FailureDiagnosisEngine
+        from framework import recovery as recovery_mod
+        engine = FailureDiagnosisEngine()
+        for name, row in states.items():
+            if row["state"] == "OK":
+                continue
+            evidence = {"error": str(row.get("note") or "").lower() or "no answer"}
+            diag = engine.diagnose("service:" + name, {"evidence": evidence})
+            row["diagnosis"] = {"severity": diag.severity.value,
+                                "category": diag.category.value,
+                                "root_cause": diag.root_cause,
+                                "actions": diag.suggested_actions}
+            plan_row = recovery_mod.plan(name)
+            row["recovery"] = {"available": plan_row.available,
+                               "description": plan_row.description,
+                               "reason": plan_row.reason}
+    except Exception as exc:  # noqa: BLE001 - a broken diagnosis must not blind the monitor
+        for row in states.values():
+            row.setdefault("diagnosis", {"error": f"{type(exc).__name__}: {exc}"})
+
+    states = maybe_auto_recover(states)
+
+    derived = status_view.derive(states, chain_state)
+    payload = {"ts": now_iso(), "overall": derived["overall"], "derived": derived,
+               "signals": states,
                "chains": chain_state, "timeline": timeline[-60:], "live_run": live,
                "alarms": alarms[-20:], "samples": len(history),
                "history": [{k: row.get(k) for k in ("ts", "values")} for row in history[-40:]]}

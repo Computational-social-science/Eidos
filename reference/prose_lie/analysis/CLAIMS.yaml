@@ -1,0 +1,26 @@
+# Negative control for S9: the text claims 19 of 19, the evidence holds 1.
+scope_axes: [items, non_goals]
+scope:
+  items: ["19 held-out branches"]
+  non_goals: ["nothing: this fixture exists to be rejected"]
+claims:
+  - id: P1
+    text: "The operator recovers every held-out branch"
+    span: "the operator recovers 19 of 19 branches"
+    strength: tentative
+    design: exploratory
+    evidence:
+      file: docs/evidence.json
+      pointer: /within_5pct
+      value: 1
+    assumptions:
+      - "none: the prose number is wrong by construction"
+    formal: false
+power:
+  not_applicable: "fixture"
+multiplicity:
+  not_applicable: "fixture"
+journal_fit:
+  file: docs/REFEREE_SIM.md
+  objections: 0
+  unresolved: 0

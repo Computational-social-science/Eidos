@@ -10,6 +10,20 @@ with quantitative and semantic quality gates enforced throughout.
 
 ---
 
+## What it looks like
+
+The documentation page and the live monitor share one palette and one type scale: a
+delivery artefact and the instrument that watches it should not look like two projects.
+
+| Documentation — `site/index.html` | Monitor — `site/dashboard.html` (served at `:8765`) |
+|---|---|
+| ![The framework document](docs/screens/index-top.png) | ![The pipeline monitor](docs/screens/dashboard-top.png) |
+
+Both are generated from the same artefacts by `tools/build_site.py` and
+`tools/dashboard.py`; neither is hand-written.
+
+---
+
 ## What this is
 
 Eidos is the **global skeleton** every research project inherits. It provides:

@@ -19,6 +19,7 @@ claims:
   - id: O1
     text: "Abstention separates answerable from unanswerable items on this set"
     span: "50 of 50 unanswerable items were abstained on and 0 of 50 answerable items were abstained on"
+    units: rate
     strength: supported
     design: preregistered
     evidence:

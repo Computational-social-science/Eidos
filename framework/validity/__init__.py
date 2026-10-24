@@ -113,6 +113,25 @@ class Finding:
         return f"[{self.code}] {self.message}"
 
 
+_NUMBER = re.compile(r"-?\d+(?:\.\d+)?")
+_OF_PAIR = re.compile(r"(\d+(?:\.\d+)?)\s+of\s+(\d+(?:\.\d+)?)")
+_PERCENT = re.compile(r"(\d+(?:\.\d+)?)\s*%")
+_WORD_NUMBER = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
+                "seven": 7, "eight": 8, "nine": 9, "ten": 10, "eleven": 11, "twelve": 12,
+                "thirteen": 13, "fourteen": 14, "fifteen": 15, "sixteen": 16,
+                "seventeen": 17, "eighteen": 18, "nineteen": 19, "twenty": 20}
+
+
+def _numbers_in(text: str) -> list[float]:
+    """Every way a claim can state a number: digits, 'a of b' ratios, percentages, words."""
+    values = [float(m) for m in _NUMBER.findall(text)]
+    values += [float(a) / float(b) for a, b in _OF_PAIR.findall(text) if float(b)]
+    values += [float(p) / 100.0 for p in _PERCENT.findall(text)]
+    values += [float(v) for word, v in _WORD_NUMBER.items()
+               if re.search(r"" + word + r"", text, re.IGNORECASE)]
+    return values
+
+
 class ScientificValidityGate:
     """Gate S. Construct with the project root; call ``run()``."""
 
@@ -149,6 +168,40 @@ class ScientificValidityGate:
         if not isinstance(data, dict):
             raise RegisterError("the register must be a mapping")
         return data
+
+    def _numeric_agreement(self, claim: dict, cid: str) -> list[Finding]:
+        """S9: a claim may cite evidence, yet say a different number than the evidence holds.
+
+        S3 compares the register's `value` with the file; it never reads the prose. So a
+        register that points at the right file and then writes a better number in the paper
+        passes S2 and S3. This closes that: every number the span states must include the
+        evidence value, or the claim fails.
+        """
+        evidence = claim.get("evidence") or {}
+        if not isinstance(evidence, dict) or "value" not in evidence:
+            return []
+        value = evidence["value"]
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            return []
+        span = str(claim.get("span") or "")
+        # Units matter: "19 of 19" is a count statement whose ratio happens to be 1.0, and
+        # a count of 1 must not be satisfied by that ratio. A register that means a rate
+        # says `units: rate`; otherwise a value >= 1 is read as a count.
+        units = str(claim.get("units") or ("rate" if 0 < float(value) < 1 else "count"))
+        if units == "count":
+            candidates = [float(m) for m in _NUMBER.findall(span)]
+            candidates += [float(v) for word, v in _WORD_NUMBER.items()
+                           if re.search(r"" + word + r"", span, re.IGNORECASE)]
+        else:
+            candidates = _numbers_in(span)
+        if not candidates:
+            return []          # nothing numeric in the text: this check does not apply
+        tolerance = max(1e-9, abs(float(value)) * 1e-6)
+        if any(abs(candidate - float(value)) <= tolerance for candidate in candidates):
+            return []
+        shown = sorted({round(c, 4) for c in candidates})
+        return [Finding("S9", f"{cid}: the text states {shown[:6]} but the evidence holds "
+                               f"{value!r}")]
 
     def _manuscript_text(self) -> str:
         parts = []
@@ -233,6 +286,9 @@ class ScientificValidityGate:
 
             # S3 -- evidence resolves and matches
             findings.extend(self._evidence(claim.get("evidence"), cid, "evidence"))
+
+            # S9 -- the number in the prose must be the number in the evidence
+            findings.extend(self._numeric_agreement(claim, cid))
 
             # S4 -- strength is earned
             strength = claim.get("strength")

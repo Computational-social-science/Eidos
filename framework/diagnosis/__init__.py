@@ -26,6 +26,49 @@ class FailureCategory(Enum):
     ENVIRONMENT = "environment"
     GATE_LOGIC = "gate_logic"
 
+#: Rules for the monitor's own signals. They live here, not in the watcher, so a failing
+#: service is diagnosed by the same engine that diagnoses a failing gate.
+MONITOR_RULES = {
+    "service:runtime_18434": {
+        "category": FailureCategory.ENVIRONMENT,
+        "common_causes": {
+            "no_answer": "the managed llama.cpp runtime is not answering on 18434",
+            "auth": "the runtime answers but rejects the API key",
+        },
+        "actions": ["start the managed runtime", "if it is already up, check the API key"],
+    },
+    "service:decision_service": {
+        "category": FailureCategory.ENVIRONMENT,
+        "common_causes": {"no_answer": "the decision service is not answering on 8090"},
+        "actions": ["start the decision service", "check its llama.cpp backend"],
+    },
+    "service:quarto": {
+        "category": FailureCategory.CONFIGURATION,
+        "common_causes": {"missing": "Quarto is not locatable from this process"},
+        "actions": ["set QUARTO_BIN", "install Quarto"],
+    },
+    "service:dvc": {
+        "category": FailureCategory.CONFIGURATION,
+        "common_causes": {"missing": "the dvc package is not importable"},
+        "actions": ["install dvc into the running interpreter"],
+    },
+    "chain": {
+        "category": FailureCategory.ENVIRONMENT,
+        "common_causes": {
+            "assertion": "the chain ran and its assertion did not hold",
+            "absent": "a tool or checkout the chain needs is absent",
+            "timeout": "the chain did not finish inside its budget",
+        },
+        "actions": ["read the span detail", "rerun that chain alone with --verbose"],
+    },
+    "service:mlflow": {
+        "category": FailureCategory.CONFIGURATION,
+        "common_causes": {"missing": "the mlflow package is not importable"},
+        "actions": ["install mlflow into the running interpreter"],
+    },
+}
+
+
 @dataclass
 class FailureDiagnosis:
     """Structured failure diagnosis report"""
@@ -208,7 +251,9 @@ class FailureDiagnosisEngine:
     
     def diagnose(self, failed_gate: str, context: Dict[str, Any]) -> FailureDiagnosis:
         """Diagnose a single failed gate"""
-        rules = self.DIAGNOSIS_RULES.get(failed_gate, {})
+        rules = self.DIAGNOSIS_RULES.get(failed_gate) or MONITOR_RULES.get(failed_gate, {})
+        if not rules and str(failed_gate).startswith("chain:"):
+            rules = MONITOR_RULES.get("chain", {})
         category = rules.get("category", FailureCategory.METHODOLOGY)
         common_causes = rules.get("common_causes", {})
         actions = rules.get("actions", ["Investigate gate failure manually"])

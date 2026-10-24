@@ -87,6 +87,20 @@ def levels(nodes: list[str], edges: list[dict]) -> dict[str, int]:
     return level
 
 
+# The seven delivery layers and the chains that report into each. Kept beside the chain list so
+# a page cannot invent its own grouping: the document and the monitor read the same structure.
+LAYERS = [
+    {"name": "Multi-format delivery", "chains": ["quarto"]},
+    {"name": "Dual quality gates",
+     "chains": ["gates", "gates+project checker", "validity (Gate S)"]},
+    {"name": "Analysis and critique", "chains": ["diagnosis"]},
+    {"name": "Decision layer", "chains": ["decision"]},
+    {"name": "Evaluation and robustness", "chains": ["demo (NO)", "surrogate (local NO)"]},
+    {"name": "Orchestration", "chains": ["registry", "tracking"]},
+    {"name": "Inference serving", "chains": ["inference"]},
+]
+
+
 def chain_modules() -> dict[str, list[str]]:
     """Which framework modules each chain exercises, read from the audit's own source.
 
@@ -199,6 +213,7 @@ def main(argv: list[str] | None = None) -> int:
                        "tests": (audit.get("tests") or {}).get("count")},
         "consumers": consumers(),
         "chain_modules": chain_modules(),
+        "layers": LAYERS,
         "health": probe() if args.probe else {},
     }
     out = Path(args.out)

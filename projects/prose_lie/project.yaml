@@ -1,0 +1,7 @@
+name: prose_lie
+root: ../../reference/prose_lie
+role: negative control for S9 (prose contradicts its own evidence)
+expected_gate_s: FAIL
+gate_command: ["python", "-c", "import sys; sys.exit(1)"]
+validity_register: analysis/CLAIMS.yaml
+validity_document: "docs/REPORT.md"

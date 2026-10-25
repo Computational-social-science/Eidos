@@ -904,6 +904,11 @@ def build() -> str:
         recoveries = []
     operator = operator_strip(status, recoveries)
     consumers = consumer_strip(pipeline)
+    try:
+        cov = json.loads((ROOT / "docs" / "DEMO_COVERAGE.json").read_text(encoding="utf-8"))
+        cov = f"{cov.get('demo', 0)}/{cov.get('total', 0)}"
+    except (OSError, json.JSONDecodeError):
+        cov = "—"
     evoloop = evolution_loop(evolution)
     faults = derived.get("faults") or faults
     ranking = fault_ranking()
@@ -954,7 +959,8 @@ def build() -> str:
     <p class="mono" style="margin:0 0 6px;color:var(--mut)">The band below is that pipeline's
     output: each registered project, its verdict, and how old the evidence behind it is.</p></div>
     <div class="opwrap"><h3>Consumers — what the framework does for a project
-      <span class="hint">green = verdict equals expectation, not “the project passed”</span></h3>
+      <span class="hint">green = verdict equals expectation, not “the project passed”
+      · capability coverage {cov}</span></h3>
     {consumers}</div>
     <div class="opwrap"><h3>Operators — self-check, then self-heal</h3>{operator}</div>
     <div class="opwrap"><h3>Feedback → evolution — how a defect becomes a guard</h3>{evoloop}</div>

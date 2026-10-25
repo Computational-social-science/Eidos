@@ -1,9 +1,11 @@
-"""Mutate a valid register and require the gate to reject every mutant.
+"""Three directions of mutation testing, because one direction is easy to fool.
 
-Hand-written fixtures test the failure modes someone thought of. Mutation testing asks the
-complementary question: is there a wrong register the gate *accepts*? Each mutant below is the
-clean fixture with exactly one field changed; a mutant that passes is a blind spot, and this
-audit fails on it.
+1. **Wrong mutants must be rejected.**
+2. **Equivalent mutants must pass.** The same rate written as 92%, as 92 of 100, or with a
+   trailing zero is not a different claim. A gate that rejects everything scores perfectly on
+   direction 1 and is useless; direction 2 is what makes direction 1 mean something.
+3. **Combinations must be rejected.** Two independent errors at once is the realistic case:
+   a value that drifted and a control that was removed.
 
     python tools/fuzz_register.py
     python tools/fuzz_register.py --verbose
@@ -13,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import itertools
 import json
 import shutil
 import sys
@@ -33,16 +36,19 @@ def _claim(register: dict) -> dict:
     return register["claims"][0]
 
 
+def _report(root: Path, text: str) -> None:
+    (root / "docs/REPORT.md").write_text(f"# Fixture study\n\n{text}\n", encoding="utf-8")
+
+
 #: name -> function(register, root) that makes the register wrong in one way.
-MUTATIONS = {
+WRONG = {
     "no_claims": lambda reg, root: reg.update(claims=[]),
     "value_drift": lambda reg, root: _claim(reg)["evidence"].update(value=0.85),
     "pointer_gone": lambda reg, root: _claim(reg)["evidence"].update(pointer="/nope"),
     "evidence_file_gone": lambda reg, root: _claim(reg)["evidence"].update(file="docs/none.json"),
-    "prose_number_drift": lambda reg, root: (root / "docs/REPORT.md").write_text(
-        "# Fixture study\n\nThe operator answers 0.85 of the items.\n", encoding="utf-8"),
-    "span_removed": lambda reg, root: (root / "docs/REPORT.md").write_text(
-        "# Fixture study\n\nSomething else entirely.\n", encoding="utf-8"),
+    "prose_number_drift": lambda reg, root: _report(root,
+                                                    "The operator answers 0.85 of the items."),
+    "span_removed": lambda reg, root: _report(root, "Something else entirely."),
     "unearned_supported": lambda reg, root: _claim(reg).update(design="exploratory"),
     "no_control": lambda reg, root: _claim(reg).pop("control", None),
     "bad_strength": lambda reg, root: _claim(reg).update(strength="proven"),
@@ -64,14 +70,46 @@ MUTATIONS = {
 }
 
 
-def run_one(mutation: str, fn) -> tuple[str, list[str], str]:
+def _as_percent(reg: dict, root: Path) -> None:
+    _claim(reg)["span"] = "operator answers 92% of the items"
+    _report(root, "The operator answers 92% of the items on the constructed set.")
+
+
+def _as_ratio(reg: dict, root: Path) -> None:
+    _claim(reg)["span"] = "operator answers 92 of 100 items"
+    _report(root, "The operator answers 92 of 100 items on the constructed set.")
+
+
+def _trailing_zero(reg: dict, root: Path) -> None:
+    _claim(reg)["span"] = "operator answers 0.920 of the items"
+    _report(root, "The operator answers 0.920 of the items on the constructed set.")
+
+
+#: name -> function(register, root). Each is the *same claim*, written differently.
+EQUIVALENT = {
+    "same_rate_as_percent": _as_percent,
+    "same_rate_as_ratio": _as_ratio,
+    "same_rate_trailing_zero": _trailing_zero,
+    "extra_assumption": lambda reg, root: _claim(reg)["assumptions"].append("one machine"),
+    "scope_wording": lambda reg, root: reg["scope"].update(
+        items=["one hundred constructed items, worded differently"]),
+    "key_order": lambda reg, root: reg.update({k: reg[k] for k in reversed(list(reg))}),
+}
+
+#: Pairs of independent errors. Real registers are wrong in more than one way.
+PAIR_POOL = ("value_drift", "pointer_gone", "unearned_supported", "no_control",
+             "scope_axis_gone", "power_gone", "referee_file_gone", "formal_without_proof")
+
+
+def run(mutators: list) -> tuple[str, list[str], str]:
     tmp = Path(tempfile.mkdtemp(prefix="eidos-fuzz-"))
     try:
         root = tmp / "clean"
         shutil.copytree(CLEAN, root)
         register_path = root / "analysis" / "CLAIMS.yaml"
         register = yaml.safe_load(register_path.read_text(encoding="utf-8"))
-        fn(register, root)
+        for fn in mutators:
+            fn(register, root)
         register_path.write_text(yaml.safe_dump(register, sort_keys=False), encoding="utf-8")
 
         gate = ScientificValidityGate(root, register=register_path,
@@ -90,27 +128,66 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args(argv)
 
-    rows, blind = [], []
-    for name, fn in MUTATIONS.items():
-        verdict, checks, first = run_one(name, fn)
+    wrong_rows, blind = [], []
+    print("wrong mutants (must FAIL)")
+    for name, fn in WRONG.items():
+        verdict, checks, first = run([fn])
         ok = verdict == "FAIL"
-        rows.append({"mutation": name, "verdict": verdict, "checks": checks, "caught": ok})
-        print(f"{name:<26} {verdict:<5} {','.join(checks) or '—':<10} "
+        wrong_rows.append({"mutation": name, "verdict": verdict, "checks": checks, "ok": ok})
+        print(f"  {name:<26} {verdict:<5} {','.join(checks) or '—':<10} "
               f"{'caught' if ok else 'BLIND SPOT'}")
         if not ok:
             blind.append(name)
         elif args.verbose:
-            print(f"    {first[:120]}")
+            print(f"      {first[:110]}")
+
+    equiv_rows, over = [], []
+    print("\nequivalent mutants (must PASS)")
+    for name, fn in EQUIVALENT.items():
+        verdict, checks, first = run([fn])
+        ok = verdict == "PASS"
+        equiv_rows.append({"mutation": name, "verdict": verdict, "checks": checks, "ok": ok})
+        print(f"  {name:<26} {verdict:<5} {','.join(checks) or '—':<10} "
+              f"{'accepted' if ok else 'OVER-REJECTED'}")
+        if not ok:
+            over.append(name)
+            if args.verbose:
+                print(f"      {first[:110]}")
+
+    pairs = list(itertools.combinations(PAIR_POOL, 2))
+    pair_rows, pair_blind = [], []
+    print(f"\ncombinations ({len(pairs)} pairs, must FAIL)")
+    for a, b in pairs:
+        verdict, checks, _ = run([WRONG[a], WRONG[b]])
+        ok = verdict == "FAIL"
+        pair_rows.append({"pair": [a, b], "verdict": verdict, "checks": checks, "ok": ok})
+        if not ok:
+            pair_blind.append(f"{a}+{b}")
+            print(f"  {a + '+' + b:<42} PASS  BLIND SPOT")
+    if not pair_blind:
+        print(f"  all {len(pairs)} pairs rejected")
 
     (ROOT / "docs" / "FUZZ.json").write_text(
-        json.dumps({"mutations": rows, "blind_spots": blind, "ok": not blind}, indent=2),
+        json.dumps({"wrong": wrong_rows, "equivalent": equiv_rows, "pairs": pair_rows,
+                    "blind_spots": blind + pair_blind, "over_rejections": over,
+                    "ok": not blind and not pair_blind and not over}, indent=2),
         encoding="utf-8")
 
     print()
+    failed = False
     if blind:
         print(f"[FAIL] the gate accepts {len(blind)} wrong register(s): {', '.join(blind)}")
+        failed = True
+    if pair_blind:
+        print(f"[FAIL] the gate accepts {len(pair_blind)} wrong pair(s): {', '.join(pair_blind)}")
+        failed = True
+    if over:
+        print(f"[FAIL] the gate rejects {len(over)} equivalent register(s): {', '.join(over)}")
+        failed = True
+    if failed:
         return 1
-    print(f"[OK] all {len(MUTATIONS)} mutations rejected; no wrong register passes")
+    print(f"[OK] {len(WRONG)} wrong mutants and {len(pairs)} pairs rejected; "
+          f"{len(EQUIVALENT)} equivalent mutants accepted")
     return 0
 
 

@@ -299,14 +299,20 @@ def fixture_table(fx: dict, rb: dict | None = None) -> str:
     fuzz = rb.get("fuzz") or {}
     chain = rb.get("chain") or {}
     extra = ""
-    if fuzz.get("mutations") or chain.get("fixtures"):
-        n_mut = len(fuzz.get("mutations") or [])
+    if fuzz.get("wrong") or chain.get("fixtures"):
+        n_wrong = len(fuzz.get("wrong") or [])
+        n_pairs = len(fuzz.get("pairs") or [])
+        n_equiv = len(fuzz.get("equivalent") or [])
         n_blind = len(fuzz.get("blind_spots") or [])
+        n_over = len(fuzz.get("over_rejections") or [])
         n_chain = len(chain.get("fixtures") or [])
-        extra = (f'<p class="gm-sum">Robustness beyond the register: <b>{n_mut}</b> mutations of the '
-                 f'clean fixture, <b>{n_blind}</b> accepted &middot; <b>{n_chain}</b> chain consumers '
-                 f'(a gate that exits 0 without its artefact is refused, a missing binary is SKIP)'
-                 f' &middot; <code>python tools/fuzz_register.py</code></p>')
+        extra = (f'<p class="gm-sum">Beyond the register: <b>{n_wrong}</b> wrong mutants and '
+                 f'<b>{n_pairs}</b> combined faults rejected, <b>{n_equiv}</b> equivalent rewrites '
+                 f'accepted (<b>{n_blind}</b> blind spots, <b>{n_over}</b> over-rejections) &middot; '
+                 f'<b>{n_chain}</b> chain consumers, where a gate that exits 0 without its artefact '
+                 f'is refused and a missing binary is SKIP</p>'
+                 f'<p class="mono">python tools/fuzz_register.py &middot; '
+                 f'python tools/audit_chain_fixtures.py</p>')
     return f'''<div class="card" style="margin-top:10px"><h3>Every check has a fixture that trips it</h3>
     <p>A checklist that has never rejected anything is a claim about the checklist. Each fixture
     below is a finished project that is wrong in exactly one way; the gate must reject it, and

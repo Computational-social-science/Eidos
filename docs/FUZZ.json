@@ -1,12 +1,12 @@
 {
-  "mutations": [
+  "wrong": [
     {
       "mutation": "no_claims",
       "verdict": "FAIL",
       "checks": [
         "S1"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "value_drift",
@@ -15,7 +15,7 @@
         "S3",
         "S9"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "pointer_gone",
@@ -23,7 +23,7 @@
       "checks": [
         "S3"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "evidence_file_gone",
@@ -31,7 +31,7 @@
       "checks": [
         "S3"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "prose_number_drift",
@@ -39,7 +39,7 @@
       "checks": [
         "S2"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "span_removed",
@@ -47,7 +47,7 @@
       "checks": [
         "S2"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "unearned_supported",
@@ -55,7 +55,7 @@
       "checks": [
         "S4"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "no_control",
@@ -63,7 +63,7 @@
       "checks": [
         "S4"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "bad_strength",
@@ -71,7 +71,7 @@
       "checks": [
         "S4"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "scope_axis_gone",
@@ -79,7 +79,7 @@
       "checks": [
         "S5"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "scope_oos_without_reason",
@@ -87,7 +87,7 @@
       "checks": [
         "S5"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "power_gone",
@@ -95,7 +95,7 @@
       "checks": [
         "S6"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "multiplicity_gone",
@@ -103,7 +103,7 @@
       "checks": [
         "S6"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "referee_file_gone",
@@ -111,7 +111,7 @@
       "checks": [
         "S7"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "referee_under_reported",
@@ -119,7 +119,7 @@
       "checks": [
         "S7"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "formal_without_proof",
@@ -127,7 +127,7 @@
       "checks": [
         "S8"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "duplicate_id",
@@ -135,7 +135,7 @@
       "checks": [
         "S1"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "value_as_string",
@@ -143,7 +143,7 @@
       "checks": [
         "S3"
       ],
-      "caught": true
+      "ok": true
     },
     {
       "mutation": "second_claim_wrong",
@@ -152,9 +152,391 @@
         "S3",
         "S9"
       ],
-      "caught": true
+      "ok": true
+    }
+  ],
+  "equivalent": [
+    {
+      "mutation": "same_rate_as_percent",
+      "verdict": "PASS",
+      "checks": [],
+      "ok": true
+    },
+    {
+      "mutation": "same_rate_as_ratio",
+      "verdict": "PASS",
+      "checks": [],
+      "ok": true
+    },
+    {
+      "mutation": "same_rate_trailing_zero",
+      "verdict": "PASS",
+      "checks": [],
+      "ok": true
+    },
+    {
+      "mutation": "extra_assumption",
+      "verdict": "PASS",
+      "checks": [],
+      "ok": true
+    },
+    {
+      "mutation": "scope_wording",
+      "verdict": "PASS",
+      "checks": [],
+      "ok": true
+    },
+    {
+      "mutation": "key_order",
+      "verdict": "PASS",
+      "checks": [],
+      "ok": true
+    }
+  ],
+  "pairs": [
+    {
+      "pair": [
+        "value_drift",
+        "pointer_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S9"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "value_drift",
+        "unearned_supported"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S4",
+        "S9"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "value_drift",
+        "no_control"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S4",
+        "S9"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "value_drift",
+        "scope_axis_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S5",
+        "S9"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "value_drift",
+        "power_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S6",
+        "S9"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "value_drift",
+        "referee_file_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S7",
+        "S9"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "value_drift",
+        "formal_without_proof"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S8",
+        "S9"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "pointer_gone",
+        "unearned_supported"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S4"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "pointer_gone",
+        "no_control"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S4"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "pointer_gone",
+        "scope_axis_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S5"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "pointer_gone",
+        "power_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S6"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "pointer_gone",
+        "referee_file_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S7"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "pointer_gone",
+        "formal_without_proof"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S8"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "unearned_supported",
+        "no_control"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S4"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "unearned_supported",
+        "scope_axis_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S4",
+        "S5"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "unearned_supported",
+        "power_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S4",
+        "S6"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "unearned_supported",
+        "referee_file_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S4",
+        "S7"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "unearned_supported",
+        "formal_without_proof"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S4",
+        "S8"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "no_control",
+        "scope_axis_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S4",
+        "S5"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "no_control",
+        "power_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S4",
+        "S6"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "no_control",
+        "referee_file_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S4",
+        "S7"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "no_control",
+        "formal_without_proof"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S4",
+        "S8"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "scope_axis_gone",
+        "power_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S5",
+        "S6"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "scope_axis_gone",
+        "referee_file_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S5",
+        "S7"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "scope_axis_gone",
+        "formal_without_proof"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S5",
+        "S8"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "power_gone",
+        "referee_file_gone"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S6",
+        "S7"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "power_gone",
+        "formal_without_proof"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S6",
+        "S8"
+      ],
+      "ok": true
+    },
+    {
+      "pair": [
+        "referee_file_gone",
+        "formal_without_proof"
+      ],
+      "verdict": "FAIL",
+      "checks": [
+        "S7",
+        "S8"
+      ],
+      "ok": true
     }
   ],
   "blind_spots": [],
+  "over_rejections": [],
   "ok": true
 }

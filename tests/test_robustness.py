@@ -22,7 +22,7 @@ def _run(script: str) -> subprocess.CompletedProcess:
 def test_no_wrong_register_passes():
     run = _run("tools/fuzz_register.py")
     assert run.returncode == 0, run.stdout + run.stderr
-    assert "no wrong register passes" in run.stdout
+    assert "equivalent mutants accepted" in run.stdout
 
 
 def test_chain_consumers_behave_as_declared():

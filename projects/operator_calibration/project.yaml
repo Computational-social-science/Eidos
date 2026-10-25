@@ -1,14 +1,14 @@
 name: operator_calibration
 root: ../../reference/operator_calibration
-
-# Lightweight LLM consumer: 100 forward passes against the local operator, no training,
-# no corpus; the conclusion is a measurement with an interval, and the evidence file
-# carries every row so the demo can be rebuilt client-side.
 role: LLM consumer (calibration of a typed decision operator)
-
-gate_command: ["python", "build_evidence.py"]
-test_command: ["python", "build_evidence.py"]
-
+gate_command:
+- python
+- build_evidence.py
+test_command:
+- python
+- build_evidence.py
 validity_register: analysis/CLAIMS.yaml
-validity_document: "docs/REPORT.md"
+validity_document: docs/REPORT.md
 expected_gate_s: PASS
+expects:
+- docs/evidence.json

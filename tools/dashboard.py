@@ -736,6 +736,74 @@ def chains_meta() -> dict:
     return out
 
 
+
+def evolution_loop(evo: dict) -> str:
+    """FEEDBACK -> evolution, drawn as the cycle it is: find, encode, enforce, record, iterate.
+
+    The assembly can show findings returning to the chains; only this can show what happens to
+    them on the way. A defect is not closed by being noticed — it is closed when a fixture, a
+    mutation or a transition rule makes it impossible to repeat, and the next run proves that.
+    """
+    if not evo:
+        return ""
+    state = evo.get("state") or {}
+    hist = evo.get("evolution") or {}
+    instruments = len(state.get("instruments") or [])
+    try:
+        fixtures = len((json.loads((ROOT / "docs" / "FIXTURES.json").read_text(encoding="utf-8"))
+                        or {}).get("fixtures") or [])
+    except (OSError, json.JSONDecodeError):
+        fixtures = 0
+    try:
+        fuzz = json.loads((ROOT / "docs" / "FUZZ.json").read_text(encoding="utf-8")) or {}
+    except (OSError, json.JSONDecodeError):
+        fuzz = {}
+    cases = sum(len(fuzz.get(k) or []) for k in ("wrong", "equivalent", "wrong_evidence",
+                                                 "equivalent_evidence", "pairs"))
+    stages = [
+        ("1 FIND", f"{instruments} instruments", "a mutation, a render, a dead endpoint", "PASS"),
+        ("2 ENCODE", f"{fixtures} fixtures · {cases} cases", "fixture · mutation · transition rule",
+         "PASS"),
+        ("3 ENFORCE", "6 checks before commit", "tests, fixtures, fuzz, chains, state, page",
+         "PASS"),
+        ("4 RECORD", f"{instruments} capabilities", "each with the artefact that would refute it",
+         "PASS"),
+        ("5 ITERATE", f"{hist.get('blind_spots_found', 0)} found · "
+                      f"{hist.get('blind_spots_open', 0)} open", "the next run re-measures", "PASS"),
+    ]
+    n = len(stages)
+    box_w, gap, height = 214, 30, 58
+    width = n * box_w + (n - 1) * gap + 8
+    parts = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
+             f"aria-label='feedback to evolution cycle'>"]
+    for k, (title, count, note, st) in enumerate(stages):
+        x = 4 + k * (box_w + gap)
+        parts.append(
+            f"<g class='node stage' data-stage='{html.escape(title)}' tabindex='0' role='button'>"
+            f"<title>{html.escape(title)} · {html.escape(count)} · {html.escape(note)}</title>"
+            # Stages are not health: a green box would say "passing", and a stage cannot pass.
+            f"<rect x='{x}' y='4' width='{box_w}' height='36' rx='4' fill='#1b2027' "
+            f"stroke='#2a3038'/>"
+            f"<rect x='{x}' y='4' width='3' height='36' fill='#5b8def'/>"
+            f"<text x='{x + 11}' y='17' font-size='8.5' letter-spacing='0.08em' "
+            f"fill='#8b95a5'>{html.escape(title)}</text>"
+            f"<text x='{x + 11}' y='30' font-size='10' fill='#c9d1d9'>"
+            f"{html.escape(count)}</text></g>")
+        if k < n - 1:
+            ax = x + box_w
+            parts.append(f"<path d='M{ax + 4} 22 L{ax + gap - 4} 22' stroke='#96a3b5' "
+                         f"stroke-width='1.1' marker-end='url(#ah3)'/>")
+    # the cycle: stage 5 feeds stage 1 with the next instrument run
+    parts.append(f"<path d='M{width - box_w / 2 - 4} 40 C{width - 30} 54, 30 54, "
+                 f"{box_w / 2 + 4} 40' fill='none' stroke='#a9b6c8' stroke-width='1.2' "
+                 f"opacity='0.85' stroke-dasharray='4 3' marker-end='url(#ah3)'/>")
+    parts.append("<defs><marker id='ah3' viewBox='0 0 10 10' refX='8.5' refY='5' markerWidth='4' "
+                 "markerHeight='4' orient='auto'><path d='M0 1 L9 5 L0 9 z' "
+                 "fill='context-stroke'/></marker></defs>")
+    parts.append("</svg>")
+    return "".join(parts)
+
+
 def build() -> str:
     pipeline = load(PIPELINE, {}) or {}
     status = load(STATUS / "current.json", {}) or {}
@@ -771,6 +839,7 @@ def build() -> str:
     except (OSError, json.JSONDecodeError):
         recoveries = []
     operator = operator_strip(status, recoveries)
+    evoloop = evolution_loop(evolution)
     faults = derived.get("faults") or faults
     ranking = fault_ranking()
     stamp = hkt(status.get("ts", "")) if status.get("ts") else "—"
@@ -817,6 +886,7 @@ def build() -> str:
     <p class="mono fbcaption">feedback: a defect an instrument finds becomes a guard before
     the next commit — the arc carries it back to the chains.</p>
     <div class="opwrap"><h3>Operators — self-check, then self-heal</h3>{operator}</div>
+    <div class="opwrap"><h3>Feedback → evolution — how a defect becomes a guard</h3>{evoloop}</div>
     {fault_line}
   </section>
   <div class="{grid_class}">

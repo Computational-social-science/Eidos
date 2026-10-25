@@ -1,80 +1,80 @@
 {
-  "ts": 1792912866.6966963,
+  "ts": 1792913211.9621522,
   "chains": {
     "gates": {
       "status": "PASS",
-      "ts": 1792912849.9340937,
-      "ms": 5.6,
+      "ts": 1792913196.8240075,
+      "ms": 3.5,
       "requires": "pyyaml",
       "detail": "acceptance PASS+FAIL both correct; missing tool -> SKIP"
     },
     "gates+project checker": {
       "status": "SKIP",
-      "ts": 1792912849.9341063,
+      "ts": 1792913196.8240156,
       "ms": 0.0,
       "requires": "a project ref checker",
       "detail": "no --project-checker given"
     },
     "registry": {
       "status": "PASS",
-      "ts": 1792912849.9284346,
-      "ms": 43.5,
+      "ts": 1792913196.8204548,
+      "ms": 37.2,
       "requires": "nothing",
       "detail": "7 project(s): chain_cmd_fails, chain_no_output, chain_ok, chain_tool_missing, null_study, operator_calibration, prose_lie"
     },
     "diagnosis": {
       "status": "PASS",
-      "ts": 1792912849.937133,
-      "ms": 3.0,
+      "ts": 1792913196.8259902,
+      "ms": 2.0,
       "requires": "nothing",
       "detail": "1 diagnosis naming the metric: Result metric below acceptance threshold: acc"
     },
     "tracking": {
       "status": "PASS",
-      "ts": 1792912859.0642323,
-      "ms": 9127.1,
+      "ts": 1792913206.251758,
+      "ms": 9425.8,
       "requires": "mlflow + dvc",
-      "detail": "mlflow run 3b774d1d; dvc_available=True"
+      "detail": "mlflow run 0ea2dc5b; dvc_available=True"
     },
     "quarto": {
       "status": "PASS",
-      "ts": 1792912864.4239957,
-      "ms": 5359.8,
+      "ts": 1792913209.9700913,
+      "ms": 3718.3,
       "requires": "quarto binary",
       "detail": "minimal document; quarto=quarto.exe, render ok=True"
     },
     "validity (Gate S)": {
       "status": "PASS",
-      "ts": 1792912864.4446507,
-      "ms": 20.6,
+      "ts": 1792913209.993043,
+      "ms": 22.9,
       "requires": "pyyaml",
       "detail": "valid register PASS; overstated count FAIL"
     },
     "surrogate (local NO)": {
       "status": "PASS",
-      "ts": 1792912865.2023976,
-      "ms": 757.7,
+      "ts": 1792913210.6194718,
+      "ms": 626.4,
       "requires": "numpy",
       "detail": "19/19 fixed points within 5%, 19 stable; shuffled-label control caught"
     },
     "demo (NO)": {
       "status": "PASS",
-      "ts": 1792912865.369178,
-      "ms": 166.8,
+      "ts": 1792913210.7085128,
+      "ms": 89.0,
       "requires": "numpy",
       "detail": "91 \u03bb points, max relative error 0.0002%"
     },
     "decision": {
       "status": "PASS",
-      "ts": 1792912866.0512974,
-      "ms": 682.1,
+      "ts": 1792913211.3638897,
+      "ms": 655.4,
       "requires": "StartLux service",
-      "detail": "known answers correct; median 188 ms for 2 questions (n=3, wall clock)"
+      "detail": "known answers correct; median 149 ms for 2 questions (n=3, wall clock)"
     },
     "inference": {
       "status": "PASS",
-      "ts": 1792912866.6966963,
-      "ms": 645.4,
+      "ts": 1792913211.9621522,
+      "ms": 598.3,
       "requires": "nothing",
       "detail": "12 GB budget enforced; 4 judgement stages -> StartLux; generators unchanged; evaluation -> 2 model(s)"
     }

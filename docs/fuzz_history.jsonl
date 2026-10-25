@@ -25,3 +25,5 @@
 {"ts": "2026-10-25T15:04:44+08:00", "wrong": 21, "equivalent": 8, "wrong_evidence": 7, "pairs": 28, "blind_spots": 0, "over_rejections": 0, "ok": true}
 {"ts": "2026-10-25T15:18:20+08:00", "wrong": 21, "equivalent": 8, "wrong_evidence": 7, "pairs": 28, "blind_spots": 0, "over_rejections": 0, "ok": true}
 {"ts": "2026-10-25T15:22:49+08:00", "wrong": 21, "equivalent": 8, "wrong_evidence": 7, "pairs": 28, "blind_spots": 0, "over_rejections": 0, "ok": true}
+{"ts": "2026-10-25T15:23:39+08:00", "wrong": 21, "equivalent": 8, "wrong_evidence": 7, "pairs": 28, "blind_spots": 0, "over_rejections": 0, "ok": true}
+{"ts": "2026-10-25T15:23:45+08:00", "wrong": 21, "equivalent": 8, "wrong_evidence": 7, "pairs": 28, "blind_spots": 0, "over_rejections": 0, "ok": true}

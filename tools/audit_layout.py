@@ -57,7 +57,40 @@ PROBE = """() => {
   cardEls.forEach((a, i) => cardEls.forEach((b, j) => {
     if (i !== j && a.contains(b)) nested.push(i + ':' + j);   // a card inside a card is not a collision
   }));
-  return {texts, over, cards, nested, body: document.body.scrollWidth, win: window.innerWidth};
+  // Paint order matters: an opaque rect drawn after a label hides it, and a bounding-box
+  // intersection test cannot see that. Same for text that falls outside its own viewBox and is
+  // clipped by the svg.
+  const svgKids = [...document.querySelectorAll('svg *')];
+  const order = new Map(svgKids.map((el, i) => [el, i]));
+  const covered = [];
+  document.querySelectorAll('svg text').forEach(t => {
+    const txt = (t.textContent || '').trim();
+    if (!txt || !visible(t)) return;
+    const r = t.getBoundingClientRect();
+    const cx = r.x + r.width / 2, cy = r.y + r.height / 2;
+    const ti = order.get(t);
+    for (const [el, i] of order) {
+      if (i <= ti || el.tagName !== 'rect') continue;
+      const st = getComputedStyle(el);
+      if (!st.fill || st.fill === 'none' || st.fill === 'transparent') continue;
+      if (+st.opacity < 0.9) continue;
+      const b = el.getBoundingClientRect();
+      if (cx > b.x && cx < b.x + b.width && cy > b.y && cy < b.y + b.height) {
+        covered.push({t: txt.slice(0, 26), by: (el.getAttribute('fill') || '').slice(0, 12)});
+        break;
+      }
+    }
+  });
+  const clipped = [];
+  document.querySelectorAll('svg text').forEach(t => {
+    const txt = (t.textContent || '').trim();
+    if (!txt || !t.ownerSVGElement) return;
+    const r = t.getBoundingClientRect(), s = t.ownerSVGElement.getBoundingClientRect();
+    if (r.left < s.left - 1 || r.right > s.right + 1 || r.top < s.top - 1 || r.bottom > s.bottom + 1)
+      clipped.push({t: txt.slice(0, 26)});
+  });
+  return {texts, over, cards, nested, covered, clipped,
+          body: document.body.scrollWidth, win: window.innerWidth};
 }"""
 
 
@@ -92,6 +125,11 @@ def audit(width: int) -> list[str]:
             if (a["x"] < b["x"] + b["w"] and b["x"] < a["x"] + a["w"]
                     and a["y"] < b["y"] + b["h"] and b["y"] < a["y"] + a["h"]):
                 findings.append(f"{width}px: two cards overlap")
+    for item in data.get("covered") or []:
+        findings.append(f"{width}px: text {item['t']!r} is painted over by a rect "
+                        f"({item['by']})")
+    for item in data.get("clipped") or []:
+        findings.append(f"{width}px: svg text {item['t']!r} falls outside its viewBox")
     for item in data["over"]:
         findings.append(f"{width}px: {item['el']} overflows "
                         f"({item['scroll']} > {item['client']} px)")

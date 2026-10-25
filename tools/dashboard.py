@@ -283,6 +283,15 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
     svg.append("<defs><marker id='ah' viewBox='0 0 10 10' refX='8.5' refY='5' markerWidth='4.6' "
                "markerHeight='4.6' orient='auto'><path d='M0 1 L9 5 L0 9 z' "
                "fill='context-stroke'/></marker></defs>")
+    # A real header band: two lines (group, then column), a tinted strip and a closing rule.
+    # Without it the column names read as the first row of the table.
+    svg.append(f"<rect x='0' y='0' width='{width}' height='{top - 6}' fill='#12151a'/>")
+    svg.append(f"<text x='{m_x}' y='12' font-size='10' letter-spacing='0.12em' fill='#7d8899' "
+               f"font-family='ui-monospace,Consolas,monospace'>MODULES</text>")
+    svg.append(f"<text x='{s_x}' y='12' font-size='10' letter-spacing='0.12em' fill='#7d8899' "
+               f"font-family='ui-monospace,Consolas,monospace'>SERVICES</text>")
+    svg.append(f"<line x1='0' y1='{top - 6}' x2='{width}' y2='{top - 6}' "
+               f"stroke='rgba(255,255,255,0.14)'/>")
     svg.append(f"<g transform='translate({gut},0)'>")
 
     for k, module in enumerate(modules):
@@ -314,15 +323,6 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
     # vertical structure: a rule under the column names, one between the labels and the
     # matrix, one between modules and services, and a faint guide at every column boundary.
     # Horizontal separators alone leave a wide matrix unreadable across its width.
-    # A real header band: two lines (group, then column), a tinted strip and a closing rule.
-    # Without it the column names read as the first row of the table.
-    svg.append(f"<rect x='0' y='0' width='{width}' height='{top - 6}' fill='#12151a'/>")
-    svg.append(f"<text x='{m_x}' y='12' font-size='10' letter-spacing='0.12em' fill='#7d8899' "
-               f"font-family='ui-monospace,Consolas,monospace'>MODULES</text>")
-    svg.append(f"<text x='{s_x}' y='12' font-size='10' letter-spacing='0.12em' fill='#7d8899' "
-               f"font-family='ui-monospace,Consolas,monospace'>SERVICES</text>")
-    svg.append(f"<line x1='0' y1='{top - 6}' x2='{width}' y2='{top - 6}' "
-               f"stroke='rgba(255,255,255,0.14)'/>")
     svg.append(f"<line x1='{m_x - 10}' y1='{top - 4}' x2='{m_x - 10}' y2='{matrix_bottom}' "
                f"stroke='rgba(255,255,255,0.10)'/>")
     svg.append(f"<line x1='{s_x - gap / 2}' y1='{top - 4}' x2='{s_x - gap / 2}' "

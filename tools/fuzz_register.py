@@ -194,6 +194,31 @@ def _section(title: str, cases: dict, want: str, verbose: bool, rows: list) -> l
     return misses
 
 
+KEYS = ("wrong", "equivalent", "wrong_evidence", "pairs", "blind_spots",
+        "over_rejections", "ok")
+
+
+def _compact_history() -> None:
+    """Collapse consecutive identical outcomes.
+
+    Two runs of this tool — the hook's and a manual one — can append the same state within a
+    minute of each other, and a log of states that repeats itself is a log of keystrokes.
+    """
+    try:
+        rows = [json.loads(line) for line in HISTORY.read_text(encoding="utf-8").splitlines()
+                if line.strip()]
+    except (OSError, json.JSONDecodeError):
+        return
+    kept, previous = [], None
+    for row in rows:
+        signature = tuple(row.get(k) for k in KEYS)
+        if signature != previous:
+            kept.append(row)
+            previous = signature
+    if len(kept) != len(rows):
+        HISTORY.write_text("".join(json.dumps(r) + chr(10) for r in kept), encoding="utf-8")
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--verbose", action="store_true")

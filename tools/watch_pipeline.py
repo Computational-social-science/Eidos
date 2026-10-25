@@ -305,13 +305,11 @@ def maybe_auto_recover(states: dict) -> dict:
         ok = row.get("state") == "OK"
         if entry.get("pending"):
             if ok:
-                _append_recovery({"ts": now_iso(), "service": name, "phase": "verified",
-                                  "outcome": "recovered"})
+                recovery.log_terminal(name, "recovered")
                 entry.update(pending=False, attempts=0, streak=0)
                 changed = True
             elif now - entry.get("last_attempt", 0) > 60:
-                _append_recovery({"ts": now_iso(), "service": name, "phase": "verified",
-                                  "outcome": "no effect"})
+                recovery.log_terminal(name, "no effect", ok=False)
                 entry.update(pending=False)
                 changed = True
             continue
@@ -497,7 +495,23 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     try:
+        import framework.updates as updates
+        sense_every = 6 * 3600
         while True:
+            # Sensing is a timer, not a loop: ask upstream every six hours, never on every tick.
+            try:
+                last = json.loads(updates.SENSE.read_text(encoding="utf-8")).get("ts") or ""
+                age = time.time() - datetime.datetime.fromisoformat(last).timestamp()
+            except (OSError, ValueError, TypeError):
+                age = sense_every + 1
+            if age > sense_every:
+                try:
+                    report = updates.sense()
+                    behind = [n for n, i in report["items"].items() if i["state"] == "behind"]
+                    if behind:
+                        print(f"updates: behind on {', '.join(behind)}", flush=True)
+                except Exception as exc:                            # noqa: BLE001
+                    print(f"updates: sense failed ({type(exc).__name__})", flush=True)
             payload = sample()
             stamp = payload["ts"][11:19]
             print(f"{stamp} {payload['overall']:<12} "

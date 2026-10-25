@@ -75,6 +75,11 @@ jobs:
           python tools/audit_surrogate.py --negative-test
       - name: Gate S (scientific validity) on the reference fixture
         run: python tools/audit_validity.py --project tests/fixtures/valid_project
+
+      - name: Dependency pins match this host
+        run: |
+          python tools/update_operator.py sense --offline
+          python tools/update_operator.py status
       - name: Coupling gate (no import cycles)
         run: python tools/audit_coupling.py
       - name: External contracts (recorded, not gated)

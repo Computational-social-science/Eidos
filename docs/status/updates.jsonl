@@ -1,0 +1,7 @@
+{"ts": "2026-10-25T14:28:54+00:00", "kind": "sense", "behind": ["llama.cpp"], "detail": {"llama.cpp": "0.7.0"}}
+{"ts": "2026-10-25T14:31:16+00:00", "kind": "sense", "behind": ["llama.cpp"], "detail": {"llama.cpp": "b11876"}}
+{"ts": "2026-10-25T14:32:20+00:00", "kind": "sense", "behind": ["mlflow", "llama.cpp"], "detail": {"mlflow": "3.17.2", "llama.cpp": "b11876"}}
+{"ts": "2026-10-25T14:32:34+00:00", "kind": "try", "name": "dvc", "version": "3.67.0", "ok": false, "detail": {"ok": false, "reason": "KeyError: 'package'"}}
+{"ts": "2026-10-25T14:35:06+00:00", "kind": "try", "name": "dvc", "version": "3.67.0", "ok": true, "detail": {"ok": true, "version": "DVC version: 3.67.0 (pip)", "isolated_at": "E:\\2026-AI4S\\Eidos\\docs\\status\\update_tries\\dvc-3.67.0\\venv"}}
+{"ts": "2026-10-25T14:35:21+00:00", "kind": "promote", "name": "dvc", "from": "3.67.1", "to": "3.67.0"}
+{"ts": "2026-10-25T14:35:21+00:00", "kind": "rollback", "name": "dvc", "to": "3.67.1"}

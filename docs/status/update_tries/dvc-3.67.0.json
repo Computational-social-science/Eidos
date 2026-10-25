@@ -1,0 +1,12 @@
+{
+  "ts": "2026-10-25T14:35:06+00:00",
+  "name": "dvc",
+  "version": "3.67.0",
+  "kind": "pypi",
+  "ok": true,
+  "detail": {
+    "ok": true,
+    "version": "DVC version: 3.67.0 (pip)",
+    "isolated_at": "E:\\2026-AI4S\\Eidos\\docs\\status\\update_tries\\dvc-3.67.0\\venv"
+  }
+}

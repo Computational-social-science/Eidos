@@ -23,6 +23,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
+sys.path.insert(0, str(ROOT))
 
 import status_view  # noqa: E402  (the single verdict function, shared with the watcher)
 
@@ -452,7 +453,11 @@ def operator_strip(status: dict, recoveries: list) -> str:
                      if r.get("phase") in ("verified", "failed", "gave_up")), None)
     attempt = next((r for r in reversed(recoveries) if r.get("phase") == "attempt"), None)
     if terminal:
-        outcome = terminal.get("outcome") or ("recovered" if terminal.get("ok") else "failed")
+        # Rows written before the schema was enforced carry `outcome` but no `ok`.
+        ok = terminal.get("ok")
+        if ok is None:
+            ok = terminal.get("outcome") == "recovered"
+        outcome = terminal.get("outcome") or ("recovered" if ok else "failed")
         exec_state = "PASS" if attempt is None or attempt.get("ok") else "FAIL"
         verify_state = "PASS" if outcome == "recovered" else "FAIL"
         plan_state = "PASS"
@@ -502,6 +507,55 @@ def operator_strip(status: dict, recoveries: list) -> str:
                  "fill='context-stroke'/></marker></defs>")
     parts.append("</svg>")
     return "".join(parts)
+
+
+def dependencies() -> str:
+    """What each external dependency is pinned to, and whether upstream has moved.
+
+    The pin is what production runs; the arrow is what sensing found. Nothing here changes a
+    version — promotion requires a passing try, see tools/update_operator.py.
+    """
+    try:
+        from framework import updates
+        data = updates.report()
+    except Exception as exc:                                        # noqa: BLE001
+        return f"<p class='mono prov'>dependencies unavailable — {type(exc).__name__}</p>"
+    colour = {"current": "#57ab5a", "behind": "#d29922", "ahead": "#58a6ff", "unknown": "#6e7681"}
+    chips = []
+    for name, item in (data.get("items") or {}).items():
+        state = item.get("state") or "unknown"
+        pinned_v = item.get("pinned") or "—"
+        offer = item.get("available")
+        arrow = ""
+        if state == "behind" and offer:
+            arrow = f" <span class='arw'>→ {html.escape(str(offer))}</span>"
+        chips.append(
+            f"<span class='dep' title='{html.escape(name)} · {html.escape(state)}'>"
+            f"<i style='background:{colour.get(state, colour['unknown'])}'></i>"
+            f"{html.escape(name)} <b>{html.escape(str(pinned_v)[:18])}</b>{arrow}</span>")
+    age = data.get("ts") or "never"
+    return ("<div class='deps'>" + "".join(chips) +
+            f"<span class='depage'>sensed {html.escape(str(age))}</span></div>")
+
+
+def provenance() -> str:
+    """Where each state on this page comes from, and how old it is.
+
+    A colour is a claim; this line is the evidence behind the claim.
+    """
+    sources = [("current.json", STATUS / "current.json"),
+               ("chains.json", STATUS / "chains.json"),
+               ("recoveries", STATUS / "recoveries.jsonl"),
+               ("pipeline.json", PIPELINE)]
+    parts = []
+    for name, path in sources:
+        try:
+            age = time.time() - path.stat().st_mtime
+        except OSError:
+            parts.append(f"{name} missing")
+            continue
+        parts.append(f"{name} {fmt_age(age)}")
+    return "<p class='mono prov'>sources — " + " · ".join(parts) + "</p>"
 
 
 def chains_meta() -> dict:
@@ -986,9 +1040,11 @@ def build() -> str:
       <span class="hint">green = verdict equals expectation, not “the project passed”
       · capability coverage {cov}</span></h3>
     {consumers}</div>
+    <div class="opwrap"><h3>Dependencies — pinned, and what upstream offers</h3>{dependencies()}</div>
     <div class="opwrap"><h3>Operators — self-check, then self-heal</h3>{operator}</div>
     <div class="opwrap"><h3>Feedback → evolution — how a defect becomes a guard</h3>{evoloop}</div>
     {fault_line}
+    {provenance()}
   </section>
   <div class="{grid_class}">
     <section class="card">

@@ -61,3 +61,6 @@ docs/status/scheduler.log
 docs/status/serve.log
 reference/*/docs/results_files/
 reference/*/docs/*_files/
+
+# throwaway environments created by tools/update_operator.py try (the JSON verdicts stay)
+docs/status/update_tries/*/

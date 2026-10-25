@@ -265,3 +265,9 @@ def test_a_failed_verification_is_red():
 def test_no_recovery_history_is_idle():
     states = _operator_states([])
     assert states["execute"] == "IDLE" and states["verify"] == "IDLE"
+
+
+def test_a_legacy_terminal_row_without_ok_is_read_as_success():
+    # Rows written before the schema existed: {'phase': 'verified', 'outcome': 'recovered'}.
+    states = _operator_states([{"phase": "verified", "outcome": "recovered"}])
+    assert states["verify"] == "PASS"

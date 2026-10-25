@@ -85,6 +85,12 @@ def _log(service: str, action: str, phase: str, ok: bool, **fields) -> None:
     Same file, same keys (`phase`, `ok`, `error`), so an automatic repair and a manual one are
     read by the same script instead of two dialects living side by side.
     """
+    # One schema, checked at the point of writing. A reader can then trust that an attempt row
+    # says whether a process started and a terminal row says whether the repair held.
+    if phase == "attempt" and "pid" not in fields:
+        raise ValueError("an attempt row must record the pid it started")
+    if phase in ("verified", "failed", "gave_up") and "outcome" not in fields:
+        raise ValueError(f"a {phase} row must record its outcome")
     row = {"ts": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
            "service": service, "phase": phase, "action": action, "ok": bool(ok), "error": None}
     row.update({k: v for k, v in fields.items() if v is not None})
@@ -94,6 +100,12 @@ def _log(service: str, action: str, phase: str, ok: bool, **fields) -> None:
             fh.write(json.dumps(row, ensure_ascii=False) + "\n")
     except OSError:
         pass
+
+
+def log_terminal(service: str, outcome: str, ok: bool | None = None) -> None:
+    """Close an incident. `outcome` is the verdict; `ok` is derived so every row has one."""
+    _log(service, "verify", "verified", (outcome == "recovered") if ok is None else ok,
+         outcome=outcome)
 
 
 def _note(service: str, **fields) -> None:

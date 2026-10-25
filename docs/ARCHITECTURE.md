@@ -181,3 +181,13 @@ line says whether a process started, a terminal line says whether the repair was
 Reading only the last line made `verified / recovered` red — that row carries `outcome`, not `ok`
 — and made a bare attempt green before anything had been verified. Four tests pin the cases
 (verified, attempt-only, failed, empty).
+
+## 11. Dependency versions move only on evidence
+
+`framework/updates.py` separates sensing from promotion. Sensing asks PyPI and GitHub what exists
+and writes a report; it cannot change a pin. Promotion requires a passing try for exactly that
+version, recorded within a week, and refuses to move a pin backwards. `rollback` restores the
+previous pin from the lock's own history.
+
+The pin is single-sourced in `lock/versions.lock.json`; `docs/UPDATES.md` explains the rules and
+what the operator deliberately does not do (it does not install binaries or weights).

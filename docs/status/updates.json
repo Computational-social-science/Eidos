@@ -1,0 +1,46 @@
+{
+  "ts": "2026-10-25T14:31:48+00:00",
+  "offline": false,
+  "items": {
+    "quarto": {
+      "pinned": "1.10.19",
+      "installed": "1.10.19",
+      "available": "1.10.19",
+      "state": "current",
+      "source": "github",
+      "note": "E:\\2026-AI4S\\Eidos\\..\\tools\\quarto\\bin\\quarto.exe"
+    },
+    "dvc": {
+      "pinned": "3.67.1",
+      "installed": "3.67.1",
+      "available": "3.67.1",
+      "state": "current",
+      "source": "pypi",
+      "note": "metadata:dvc"
+    },
+    "mlflow": {
+      "pinned": "3.17.1",
+      "installed": "3.17.1",
+      "available": "3.17.2",
+      "state": "behind",
+      "source": "pypi",
+      "note": "metadata:mlflow-skinny"
+    },
+    "llama.cpp": {
+      "pinned": "b11671",
+      "installed": "b11671",
+      "available": "b11876",
+      "state": "behind",
+      "source": "github",
+      "note": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\tools\\llamacpp-cuda-11671-win32-x64\\llama-server.exe"
+    },
+    "decision_model": {
+      "pinned": "StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+      "installed": "StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+      "available": null,
+      "state": "unknown",
+      "source": "no upstream configured",
+      "note": "E:\\2026-AI4S\\decision-service\\models"
+    }
+  }
+}

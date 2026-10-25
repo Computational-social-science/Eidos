@@ -1,0 +1,57 @@
+{
+  "pins": {
+    "dvc": {
+      "version": "3.67.1",
+      "sha256": null,
+      "pinned_at": "2026-10-25T14:24:56+00:00",
+      "evidence": "seeded from this host"
+    },
+    "decision_model": {
+      "version": "StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+      "sha256": "31e0d4e3ceb02cc5ea2db4168a97fe8cd94e70759595154d0a1ebe910ee78213",
+      "pinned_at": "2026-10-25T14:25:01+00:00",
+      "evidence": "seeded from this host"
+    },
+    "quarto": {
+      "version": "1.10.19",
+      "sha256": null,
+      "pinned_at": "2026-10-25T14:28:16+00:00",
+      "evidence": "seeded from this host"
+    },
+    "mlflow": {
+      "version": "3.17.1",
+      "sha256": null,
+      "pinned_at": "2026-10-25T14:28:16+00:00",
+      "evidence": "seeded from this host"
+    },
+    "llama.cpp": {
+      "version": "b11671",
+      "sha256": null,
+      "pinned_at": "2026-10-25T14:28:16+00:00",
+      "evidence": "seeded from this host"
+    }
+  },
+  "history": [
+    {
+      "ts": "2026-10-25T14:35:21+00:00",
+      "name": "dvc",
+      "from": {
+        "version": "3.67.1",
+        "sha256": null,
+        "pinned_at": "2026-10-25T14:24:56+00:00",
+        "evidence": "seeded from this host"
+      },
+      "to": "3.67.0",
+      "why": "mechanism demonstration: isolated try -> promote -> rollback"
+    },
+    {
+      "ts": "2026-10-25T14:35:21+00:00",
+      "name": "dvc",
+      "from": {
+        "version": "3.67.0"
+      },
+      "to": "3.67.1",
+      "why": "rollback"
+    }
+  ]
+}

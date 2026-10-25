@@ -80,6 +80,13 @@ def invariants() -> list[str]:
         if token not in d:
             problems.append(f"dashboard is missing {token}")
 
+    # The figure is a matrix: no forward arrows, so a legend promising one describes a drawing
+    # that no longer exists. This caught exactly that after the rewrite.
+    if "direction the signal flows" in d:
+        problems.append("the legend still claims a forward arrow the matrix does not draw")
+    if "feedback" not in d:
+        problems.append("the legend does not name the one arrow the figure has")
+
     if "MONITOR" not in i.upper():
         problems.append("index carries no monitor snapshot")
     # The document is also opened from disk, where /dashboard.html resolves to the filesystem
@@ -141,6 +148,8 @@ def main(argv: list[str] | None = None) -> int:
             ok, _ = run([PY, "tools/audit_contrast.py"], "both pages, WCAG AA")
             checks.append(ok)
             ok, _ = run([PY, "tools/audit_runtime.py"], "both pages execute")
+            checks.append(ok)
+            ok, _ = run([PY, "tools/audit_visual.py"], "visual language")
             checks.append(ok)
         else:
             # Name what was not run. "PASS (5 checks)" against a local "(9 checks)" reads as

@@ -36,7 +36,7 @@ PALETTE = {
     "IDLE": "#2a2f36", "RUNNING": "#5b8def", "PASS": "#57ab5a",
     "SKIP": "#7d8590", "FAIL": "#e5534b", "STALE": "#d29922",
 }
-INK = {"IDLE": "#c9d1d9", "RUNNING": "#0b0e12", "PASS": "#0b0e12",
+INK = {"IDLE": "#e6e8eb", "RUNNING": "#0b0e12", "PASS": "#0b0e12",
        "SKIP": "#0b0e12", "FAIL": "#ffffff", "STALE": "#141414"}
 SEVERITY = {"FAIL": 5, "STALE": 4, "RUNNING": 3, "SKIP": 2, "PASS": 1, "IDLE": 0}
 
@@ -292,7 +292,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
         svg.append(f"<g class='node module' data-module='{html.escape(module)}' tabindex='0' "
                    f"role='button'><title>{html.escape(module)} · used by "
                    f"{len(module_users[module])} chains</title>"
-                   f"<text x='{m_x + k * col_w}' y='12' font-size='9.5' fill='#98a2b3' "
+                   f"<text x='{m_x + k * col_w}' y='12' font-size='10' fill='#98a2b3' "
                    f"font-family='ui-monospace,Consolas,monospace'>"
                    f"{html.escape(name[:9])}</text></g>")
     for k, service in enumerate(services):
@@ -303,7 +303,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
         svg.append(f"<g class='node service' data-service='{html.escape(service)}' tabindex='0' "
                    f"role='button'><title>{html.escape(name)} · "
                    f"{(signals.get(service) or {}).get('source', '')}</title>"
-                   f"<text x='{s_x + k * col_w}' y='12' font-size='9.5' fill='#98a2b3' "
+                   f"<text x='{s_x + k * col_w}' y='12' font-size='10' fill='#98a2b3' "
                    f"font-family='ui-monospace,Consolas,monospace'>"
                    f"{html.escape(short[:10])}</text></g>")
 
@@ -328,8 +328,8 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
     stripe = 0
     for row in rows:
         if row["kind"] == "layer":
-            svg.append(f"<text x='0' y='{row['y'] + 11}' font-size='9.5' letter-spacing='0.1em' "
-                       f"fill='#7d8797' font-family='ui-monospace,Consolas,monospace'>"
+            svg.append(f"<text x='0' y='{row['y'] + 11}' font-size='10' letter-spacing='0.1em' "
+                       f"fill='#7d8899' font-family='ui-monospace,Consolas,monospace'>"
                        f"{html.escape(row['title'].upper())}</text>")
             svg.append(f"<line x1='0' y1='{row['y'] + 14}' x2='{width}' y2='{row['y'] + 14}' "
                        f"stroke='rgba(255,255,255,0.06)'/>")
@@ -355,7 +355,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
             f"fill='{PALETTE.get(state, PALETTE['IDLE'])}'/>"
             f"<text x='12' y='{y + row_h / 2 + 3.5}' font-size='11' fill='#e6e8eb'>"
             f"{html.escape(chain)}</text>"
-            f"<text x='{label_w - 16}' y='{y + row_h / 2 + 3.5}' text-anchor='end' font-size='9.5' "
+            f"<text x='{label_w - 16}' y='{y + row_h / 2 + 3.5}' text-anchor='end' font-size='10' "
             f"fill='#7d8899' font-family='ui-monospace,Consolas,monospace'>"
             f"{html.escape(fmt_age(age) if age is not None else '—')}</text></g>")
 
@@ -384,11 +384,11 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
         f"<rect x='0' y='{obs_y}' width='{width - 10}' height='{obs_h}' rx='4' fill='#15181d' "
         f"stroke='#2a3038'/>"
         f"<rect x='0' y='{obs_y}' width='3' height='{obs_h}' fill='{PALETTE[state]}'/>"
-        f"<text x='12' y='{obs_y + 18}' font-size='9.5' letter-spacing='0.1em' fill='#8b95a5' "
+        f"<text x='12' y='{obs_y + 18}' font-size='10' letter-spacing='0.1em' fill='#98a2b3' "
         f"font-family='ui-monospace,Consolas,monospace'>INSTRUMENTS 4 · "
         f"{'no open defects' if not open_defects else str(open_defects) + ' open defect(s)'}</text>"
-        f"<text x='{width - 22}' y='{obs_y + 18}' text-anchor='end' font-size='9.5' "
-        f"fill='#8b95a5'>fixtures · mutations · runtime · probes — they observe every row</text>"
+        f"<text x='{width - 22}' y='{obs_y + 18}' text-anchor='end' font-size='10' "
+        f"fill='#98a2b3'>fixtures · mutations · runtime · probes — they observe every row</text>"
         f"</g>")
     svg.append("</g>")
     # Orthogonal return: out of the observer, down into the gutter, up it, and back into the
@@ -401,7 +401,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
                f"stroke='#a9b6c8' stroke-width='1.3' opacity='0.9' "
                f"marker-end='url(#ah)'/>"
                f"<text x='{gut / 2 - 4}' y='{(y_mid + y_end) / 2}' text-anchor='middle' "
-               f"font-size='9.5' fill='#8b95a5' transform='rotate(-90 {gut / 2 - 4} {(y_mid + y_end) / 2})' "
+               f"font-size='10' fill='#98a2b3' transform='rotate(-90 {gut / 2 - 4} {(y_mid + y_end) / 2})' "
                f"font-family='ui-monospace,Consolas,monospace'>feedback → guards</text>"
                f"</g>")
     svg.append("</svg>")
@@ -451,10 +451,10 @@ def operator_strip(status: dict, recoveries: list) -> str:
             f"<title>{html.escape(name)} · {state} · {html.escape(note)}</title>"
             f"<rect x='{x}' y='6' width='{box_w}' height='26' rx='4' "
             f"fill='{PALETTE.get(state, PALETTE['IDLE'])}' stroke='#0a0c0f'/>"
-            f"<text x='{x + 9}' y='23' font-size='9.5' fill='{INK.get(state, '#c9d1d9')}'>"
+            f"<text x='{x + 9}' y='23' font-size='10' fill='{INK.get(state, '#e6e8eb')}'>"
             f"{html.escape(name)}</text>"
-            f"<text x='{x + box_w - 8}' y='23' text-anchor='end' font-size='9.5' "
-            f"fill='{INK.get(state, '#c9d1d9')}' opacity='0.85'>{html.escape(note)}</text></g>")
+            f"<text x='{x + box_w - 8}' y='23' text-anchor='end' font-size='10' "
+            f"fill='{INK.get(state, '#e6e8eb')}' opacity='0.85'>{html.escape(note)}</text></g>")
         if k < n - 1:
             ax = x + box_w
             parts.append(f"<path d='M{ax + 3} 19 L{ax + gap - 3} 19' stroke='#96a3b5' "
@@ -520,7 +520,7 @@ def evolution_loop(evo: dict) -> str:
                       f"{hist.get('blind_spots_open', 0)} open", "the next run re-measures", "PASS"),
     ]
     n = len(stages)
-    box_w, gap, height = 214, 30, 58
+    box_w, gap, height = 214, 30, 66
     width = n * box_w + (n - 1) * gap + 8
     parts = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
              f"aria-label='feedback to evolution cycle'>"]
@@ -530,20 +530,20 @@ def evolution_loop(evo: dict) -> str:
             f"<g class='node stage' data-stage='{html.escape(title)}' tabindex='0' role='button'>"
             f"<title>{html.escape(title)} · {html.escape(count)} · {html.escape(note)}</title>"
             # Stages are not health: a green box would say "passing", and a stage cannot pass.
-            f"<rect x='{x}' y='4' width='{box_w}' height='36' rx='4' fill='#1b2027' "
+            f"<rect x='{x}' y='4' width='{box_w}' height='44' rx='4' fill='#1b2027' "
             f"stroke='#2a3038'/>"
-            f"<rect x='{x}' y='4' width='3' height='36' fill='#5b8def'/>"
-            f"<text x='{x + 11}' y='17' font-size='9.5' letter-spacing='0.08em' "
-            f"fill='#8b95a5'>{html.escape(title)}</text>"
-            f"<text x='{x + 11}' y='30' font-size='10' fill='#c9d1d9'>"
+            f"<rect x='{x}' y='4' width='3' height='44' fill='#5b8def'/>"
+            f"<text x='{x + 11}' y='17' font-size='10' letter-spacing='0.08em' "
+            f"fill='#98a2b3'>{html.escape(title)}</text>"
+            f"<text x='{x + 11}' y='35' font-size='11' fill='#e6e8eb'>"
             f"{html.escape(count)}</text></g>")
         if k < n - 1:
             ax = x + box_w
-            parts.append(f"<path d='M{ax + 4} 22 L{ax + gap - 4} 22' stroke='#96a3b5' "
+            parts.append(f"<path d='M{ax + 4} 26 L{ax + gap - 4} 26' stroke='#96a3b5' "
                          f"stroke-width='1.1' marker-end='url(#ah3)'/>")
     # the cycle: stage 5 feeds stage 1 with the next instrument run
-    parts.append(f"<path d='M{width - box_w / 2 - 4} 40 C{width - 30} 54, 30 54, "
-                 f"{box_w / 2 + 4} 40' fill='none' stroke='#a9b6c8' stroke-width='1.2' "
+    parts.append(f"<path d='M{width - box_w / 2 - 4} 48 C{width - 30} 62, 30 62, "
+                 f"{box_w / 2 + 4} 48' fill='none' stroke='#a9b6c8' stroke-width='1.2' "
                  f"opacity='0.85' stroke-dasharray='4 3' marker-end='url(#ah3)'/>")
     parts.append("<defs><marker id='ah3' viewBox='0 0 10 10' refX='8.5' refY='5' markerWidth='4' "
                  "markerHeight='4' orient='auto'><path d='M0 1 L9 5 L0 9 z' "
@@ -604,9 +604,9 @@ def consumer_strip(pipeline: dict) -> str:
             f"<title>{html.escape(name)} · {html.escape(note)}</title>"
             f"<rect x='{x}' y='3' width='{box_w}' height='38' rx='4' fill='#1b2027' stroke='#2a3038'/>"
             f"<rect x='{x}' y='3' width='3' height='38' fill='{PALETTE[st]}'/>"
-            f"<text x='{x + 11}' y='17' font-size='10' fill='#c9d1d9'>"
+            f"<text x='{x + 11}' y='17' font-size='10' fill='#e6e8eb'>"
             f"{html.escape(name[:26])}</text>"
-            f"<text x='{x + 11}' y='31' font-size='9' fill='#8b95a5'>"
+            f"<text x='{x + 11}' y='31' font-size='10' fill='#98a2b3'>"
             f"{html.escape(note[:46])}</text></g>")
     parts.append("</svg>")
     return "".join(parts)
@@ -622,22 +622,22 @@ body{margin:0;font:12.5px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sa
 header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:7px 18px;
   border-bottom:1px solid var(--line);background:#15181d;position:sticky;top:0;
   box-shadow:0 6px 14px -10px #000;z-index:5}
-.brand{font-weight:650;font-size:12.5px;letter-spacing:.02em}
+.brand{font-weight:600;font-size:12.5px;letter-spacing:.02em}
 .brand i{color:var(--accent);font-style:normal;margin-right:6px}
 .brand .ver{margin-left:7px;padding:1px 5px;border:1px solid var(--line);border-radius:4px;
-  font:600 9.5px/1.5 ui-monospace,Consolas,monospace;color:var(--mut);letter-spacing:0}
+  font:600 10px/1.5 ui-monospace,Consolas,monospace;color:var(--mut);letter-spacing:0}
 .pill{font:600 10.5px/1 inherit;letter-spacing:.08em;padding:5px 10px;border-radius:20px;
   border:1px solid var(--line);text-transform:uppercase}
 .pill.OK{color:#57ab5a;background:rgba(87,171,90,.1);border-color:rgba(87,171,90,.35)}
 .pill.ALARM{color:#ef6b62;background:rgba(229,83,75,.1);border-color:rgba(229,83,75,.35)}
 .spacer{flex:1}
-.act{font:600 10.5px/1 inherit;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);
+.act{font-size:11px;font-weight:600;line-height:1;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);
   background:transparent;border:1px solid var(--line);border-radius:6px;padding:5px 9px;
   cursor:pointer;transition:color .2s,border-color .2s}
 .act:hover{color:var(--fg);border-color:#3a4048}
 .meta{color:var(--dim);font-size:11px;letter-spacing:.02em}
 .meta b{color:var(--mut);font-weight:600}
-#live{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#7d8899;
+#live{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#7d8899;
   display:inline-flex;align-items:center}
 #live.on{color:#57ab5a}#live.off{color:#d29922}
 .live{width:7px;height:7px;border-radius:50%;background:#3fb950;display:inline-block;
@@ -651,8 +651,8 @@ main{max-width:1320px;margin:0 auto;padding:12px 18px 24px}
 .grid{display:grid;grid-template-columns:1.9fr 1fr;gap:9px;align-items:start}
 .grid.one{grid-template-columns:1fr}
 @media (max-width:1000px){.grid{grid-template-columns:1fr}}
-.faults{font-size:11.5px;color:#d29922;margin-top:8px}
-.faults b{color:#e5534b;letter-spacing:.1em;font-size:10.5px;margin-right:6px}
+.faults{font-size:12px;color:#d29922;margin-top:8px}
+.faults b{color:#e5534b;letter-spacing:.1em;font-size:11px;margin-right:6px}
 svg text{font-variant-numeric:tabular-nums}
 svg .node{cursor:pointer}
 svg .node rect{transition:fill .4s ease,stroke .4s ease}
@@ -661,13 +661,14 @@ svg .node:focus{outline:none}
 svg .edge{transition:stroke .4s ease}
 /* The operator band sits under the assembly, separated by a hairline: same figure, second
    question — not a new card competing with it. */
-.fbcaption{margin:2px 0 0;font-size:9.5px;color:var(--mut)}
+.fbcaption{margin:2px 0 0;font-size:10px;color:var(--mut)}
+.card code,.card pre{font-size:11px}
 .opwrap .hint{text-transform:none;letter-spacing:0;font-weight:400;color:var(--mut);
-  margin-left:8px;font-size:9.5px}
+  margin-left:8px;font-size:10px}
 .opwrap{margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
-.opwrap h3{margin:0 0 6px;font:600 9.5px/1.4 -apple-system,"Segoe UI",Arial,sans-serif;
+.opwrap h3{margin:0 0 6px;font:600 10px/1.4 -apple-system,"Segoe UI",Arial,sans-serif;
   letter-spacing:.11em;text-transform:uppercase;color:var(--dim);font-weight:600}
-.keynote{color:var(--mut)}
+.keynote{color:var(--mut);text-transform:none;letter-spacing:0;font-family:inherit}
 .key{display:flex;gap:11px;font-size:10px;color:var(--dim);margin:0 0 7px;flex-wrap:wrap;
   letter-spacing:.04em;text-transform:uppercase}
 .key i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
@@ -675,18 +676,18 @@ svg .edge{transition:stroke .4s ease}
   border-bottom:4px solid transparent;background:none;border-radius:0;margin:0 6px 0 8px}
 .srow{display:flex;align-items:center;gap:14px;margin:1px 0}
 .sname{width:122px;flex:none;text-align:right;padding-right:8px;
-  font:9px/1.35 ui-monospace,Menlo,monospace;color:var(--dim);white-space:nowrap;
+  font:10px/1.35 ui-monospace,Menlo,monospace;color:var(--dim);white-space:nowrap;
   overflow:hidden;text-overflow:ellipsis}
 .scells{flex:1;display:flex;gap:0;min-width:0;overflow:hidden}
 .sc{height:7px;display:inline-block;flex:0 0 auto;box-shadow:inset -1px 0 0 rgba(14,16,19,.85)}
 .sc.gap{background:repeating-linear-gradient(45deg,#15181d,#15181d 2px,#20242b 2px,#20242b 4px)}
-.sax{display:flex;justify-content:space-between;font:9px ui-monospace;color:#7d8899;
+.sax{display:flex;justify-content:space-between;font:10px ui-monospace;color:#7d8899;
   margin:4px 0 0 136px}
-.gapsum{margin-top:4px;font:9.5px/1.4 ui-monospace,Menlo,monospace;color:#7d8899}
-.fresh{margin-top:5px;font:9.5px/1.4 ui-monospace,Menlo,monospace;color:var(--dim)}
-.empty{color:#7d8899;font-style:italic;font-size:11.5px}
-table.rank{width:100%;border-collapse:collapse;font-size:10.5px}
-table.rank th{text-align:left;font:9.5px/1 -apple-system,sans-serif;letter-spacing:.06em;
+.gapsum{margin-top:4px;font:10px/1.4 ui-monospace,Menlo,monospace;color:#7d8899}
+.fresh{margin-top:5px;font:10px/1.4 ui-monospace,Menlo,monospace;color:var(--dim)}
+.empty{color:#7d8899;font-style:italic;font-size:12px}
+table.rank{width:100%;border-collapse:collapse;font-size:11px}
+table.rank th{text-align:left;font:10px/1 -apple-system,sans-serif;letter-spacing:.06em;
   text-transform:uppercase;color:#7d8899;padding:0 0 5px;font-weight:600}
 table.rank td{padding:3px 0;border-bottom:1px solid var(--line)}
 table.rank td.num{text-align:right;font-variant-numeric:tabular-nums}
@@ -694,9 +695,9 @@ table.rank td.num{text-align:right;font-variant-numeric:tabular-nums}
   background:#191d23;border:1px solid var(--line);border-radius:8px;padding:12px 14px;
   box-shadow:0 18px 40px -18px #000}
 #pop.on{display:block}
-#pop .t{font-weight:650;font-size:12.5px;margin-bottom:4px}
+#pop .t{font-weight:600;font-size:12.5px;margin-bottom:4px}
 #pop .d{color:var(--mut);font-size:11px;line-height:1.5}
-#pop .m{color:var(--dim);font-size:10.5px;margin-top:5px;font-family:ui-monospace,Menlo,monospace}
+#pop .m{color:var(--dim);font-size:11px;margin-top:5px;font-family:ui-monospace,Menlo,monospace}
 #pop .x{float:right;cursor:pointer;color:var(--dim);font-size:15px;line-height:1}
 @media (prefers-reduced-motion:reduce){
   .live{animation:none}
@@ -895,9 +896,14 @@ def build() -> str:
 
     key = "".join(f"<span><i style='background:{PALETTE[s]}'></i>{s}</span>"
                   for s in ("PASS", "SKIP", "RUNNING", "STALE", "FAIL", "IDLE"))
-    key += ("<span><i class='dotkey'></i>arrowhead = the direction the signal flows</span>"
-            "<span class='keynote'>a dot is a state: on a row it is the chain, on a cell the "
-            "dependency's endpoint</span>")
+    # These sentences are checked against the drawing: there are no forward arrows in a matrix,
+    # so a legend claiming "the direction the signal flows" would be describing a figure that
+    # no longer exists.
+    key += ("<span class='keynote'>● on a row = that chain's state; in a module cell = the "
+            "chain uses that module (colour = the chain's state); in a service cell = it reaches "
+            "that service (colour = the service's health)</span>"
+            "<span><i class='dotkey'></i>the single arrow is feedback: findings return to the "
+            "first row</span>")
 
     fault_line = ("<div class='faults' id='faults' style='display:none'></div>" if not faults else
                   "<div class='faults' id='faults'><b>FAULT</b>" + " · ".join(faults) + "</div>")
@@ -931,11 +937,11 @@ def build() -> str:
 </header>
 <main>
   <section class="card">
-    <h2>Framework self-audit — chains (run order) → modules → services → instruments, and back</h2>
+    <h2>Framework self-audit — chains (run order) × modules × services, observed by four instruments</h2>
     <div class="key">{key}</div>
     {svg}
     <p class="mono fbcaption">feedback: a defect an instrument finds becomes a guard before
-    the next commit — the arc carries it back to the chains.</p>
+    the next commit — the square loop carries it back to the first row.</p>
     <div class="opwrap"><h3>Project pipeline — bootstrap → measure → gates → Gate S → render → handoff</h3>
     <p class="mono" style="margin:0 0 6px;color:var(--mut)">The band below is that pipeline's
     output: each registered project, its verdict, and how old the evidence behind it is.</p></div>

@@ -31,56 +31,56 @@ a:hover{text-decoration:underline}
 .top{position:sticky;top:0;z-index:20;background:#15181d;border-bottom:1px solid var(--line);
   box-shadow:0 6px 14px -10px #000}
 .top-in{max-width:1320px;margin:0 auto;padding:7px 20px;display:flex;align-items:center;gap:12px}
-.brand{font:650 13px/1 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--fg)}
+.brand{font:650 12.5px/1 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--fg)}
 .brand i{color:var(--accent);font-style:normal;margin-right:6px}
-.brand .ver{color:var(--dim);font-weight:500;margin-left:8px;font-size:11px}
+.brand .ver{color:var(--dim);font-weight:400;margin-left:8px;font-size:11px}
 .spacer{flex:1}
 .hchip{font:600 10px/1.7 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.06em;
   text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid var(--line);
   color:var(--mut);white-space:nowrap}
 .hchip.ok{color:#6cbf6e;border-color:rgba(87,171,90,.4);background:rgba(87,171,90,.08)}
-.cta{font:600 10.5px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.06em;
+.cta{font:600 10px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.06em;
   text-transform:uppercase;border:1px solid var(--line);border-radius:7px;padding:6px 10px;
   color:var(--fg);white-space:nowrap}
 .cta:hover{border-color:var(--accent);text-decoration:none}
 .shell{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:196px minmax(0,1fr);
   gap:18px;padding:12px 16px 28px}
 @media (max-width:1000px){.shell{grid-template-columns:1fr;gap:0}.rail{display:none}}
-.rail{position:sticky;top:52px;align-self:start;font-size:11.5px}
+.rail{position:sticky;top:52px;align-self:start;font-size:11px}
 .rail ol{list-style:none;margin:0;padding:0}
 .rail a{display:flex;gap:8px;padding:2px 7px;border-radius:5px;color:var(--mut);
   border-left:2px solid transparent}
-.rail a span{color:var(--dim);font:600 9.5px/1.6 var(--mono)}
+.rail a span{color:var(--dim);font:600 10px/1.6 var(--mono)}
 .rail a:hover{color:var(--fg);background:rgba(255,255,255,.03);text-decoration:none}
 .rail a.cur{color:var(--fg);border-left-color:var(--accent);background:rgba(91,141,239,.07)}
 .rail-meta{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);
   color:var(--dim);font:10.5px/1.75 var(--mono)}
 main{min-width:0}
 .hero{padding:2px 0 12px;border-bottom:1px solid var(--line);margin-bottom:14px}
-.eyebrow{font:600 10.5px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.16em;
+.eyebrow{font:600 10px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.16em;
   text-transform:uppercase;color:var(--dim);margin:0 0 10px}
 h1{font-size:19px;line-height:1.2;letter-spacing:-.01em;margin:0 0 6px;color:var(--fg);
   max-width:52ch}
-.thesis{font-size:13px;line-height:1.5;color:var(--body);max-width:92ch;margin:0 0 4px}
-.subthesis{color:var(--mut);max-width:92ch;margin:0 0 10px;font-size:11.8px}
+.thesis{font-size:12.5px;line-height:1.5;color:var(--body);max-width:92ch;margin:0 0 4px}
+.subthesis{color:var(--mut);max-width:92ch;margin:0 0 10px;font-size:12px}
 .stats{display:flex;flex-wrap:wrap;gap:6px}
 @media (max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
 .stat{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:5px 9px;
   display:flex;align-items:baseline;gap:6px}
-.stat .n{font:700 14px/1.2 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--fg);
+.stat .n{font:700 15px/1.2 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--fg);
   font-variant-numeric:tabular-nums}
-.stat .l{font:600 9px/1.3 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.09em;
+.stat .l{font:600 10px/1.3 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.09em;
   text-transform:uppercase;color:var(--mut)}
-.stat .s{font-size:9.6px;color:var(--dim)}
+.stat .s{font-size:10px;color:var(--dim)}
 .sec{margin:0 0 20px;scroll-margin-top:56px}
 .sec-h{display:flex;align-items:baseline;gap:11px;margin:0 0 5px}
-.sec-h .num{font:600 9.5px/1 var(--mono);color:var(--dim)}
+.sec-h .num{font:600 10px/1 var(--mono);color:var(--dim)}
 .sec-h h2{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:600;
   margin:0;color:var(--dim)}
 .sec-h .anchor{opacity:0;font-size:.72em;margin-left:5px}
 .sec-h:hover .anchor,.sec-h:focus-within .anchor{opacity:.9}
-.lede{color:var(--mut);max-width:104ch;margin:0 0 9px;font-size:11.8px}
-h3{font-size:11.5px;margin:0 0 4px;color:var(--fg)}
+.lede{color:var(--mut);max-width:104ch;margin:0 0 9px;font-size:12px}
+h3{font-size:11px;margin:0 0 4px;color:var(--fg)}
 p{margin:0 0 8px;max-width:104ch}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:11px 13px;min-width:0}
 /* The nine pipeline stages: a card each, number / title / detail on three lines. Without
@@ -91,9 +91,9 @@ ol.pipeline{list-style:none;margin:0;padding:0;display:grid;
 @media (max-width:620px){ol.pipeline{grid-template-columns:1fr}}
 ol.pipeline li{display:flex;gap:10px;background:var(--panel);border:1px solid var(--line);
   border-radius:8px;padding:10px 12px;min-width:0}
-ol.pipeline .n{font:600 10.5px/1.7 var(--mono);color:var(--accent);flex:none}
-ol.pipeline b{display:block;font-size:13px;color:var(--fg);line-height:1.35}
-ol.pipeline .d{display:block;font-size:11.4px;color:var(--mut);margin-top:3px;line-height:1.45}
+ol.pipeline .n{font:600 10px/1.7 var(--mono);color:var(--accent);flex:none}
+ol.pipeline b{display:block;font-size:12.5px;color:var(--fg);line-height:1.35}
+ol.pipeline .d{display:block;font-size:11px;color:var(--mut);margin-top:3px;line-height:1.45}
 .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
 .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 @media (max-width:1180px){.grid2{grid-template-columns:1fr}}
@@ -102,82 +102,82 @@ ol.pipeline .d{display:block;font-size:11.4px;color:var(--mut);margin-top:3px;li
 .stack{display:grid;gap:10px}
 ul.prose,ol.prose{padding-left:16px;margin:0 0 8px;max-width:104ch}
 ul.prose li,ol.prose li{margin-bottom:5px}
-figcaption{font-size:11.4px;color:var(--dim);margin-top:7px;line-height:1.5;max-width:80ch}
-table{width:100%;border-collapse:collapse;font-size:12.3px}
-caption{caption-side:top;text-align:left;font-size:11.4px;color:var(--dim);margin-bottom:6px}
+figcaption{font-size:11px;color:var(--dim);margin-top:7px;line-height:1.5;max-width:80ch}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+caption{caption-side:top;text-align:left;font-size:11px;color:var(--dim);margin-bottom:6px}
 th,td{padding:5px 7px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
-thead th{font:600 9.8px/1.2 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.07em;
+thead th{font:600 10px/1.2 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.07em;
   text-transform:uppercase;color:var(--mut)}
 td.num{text-align:right;font-variant-numeric:tabular-nums}
-td.mono,.mono{font-family:var(--mono);font-size:11.4px}
+td.mono,.mono{font-family:var(--mono);font-size:11px}
 .pill{display:inline-block;padding:1px 7px;border-radius:999px;
-  font:600 9.8px/1.7 -apple-system,"Segoe UI",Arial,sans-serif}
+  font:600 10px/1.7 -apple-system,"Segoe UI",Arial,sans-serif}
 .pill.pass{background:rgba(87,171,90,.12);color:#6cbf6e}
 .pill.skip{background:rgba(152,162,179,.12);color:var(--mut)}
 .pill.fail{background:rgba(229,83,75,.12);color:#ef6b62}
-pre{background:var(--panel2);color:#dfe5ec;border:1px solid var(--line);padding:11px 13px;
+pre{background:var(--panel2);color:#e6e8eb;border:1px solid var(--line);padding:11px 13px;
   border-radius:8px;overflow-x:auto;font:11.8px/1.62 var(--mono);margin:0 0 10px}
-code{background:#1b2027;padding:1px 5px;border-radius:4px;font:11.6px var(--mono);color:#dfe5ec}
+code{background:#1b2027;padding:1px 5px;border-radius:4px;font:12px var(--mono);color:#e6e8eb}
 pre code{background:none;padding:0;font-size:inherit}
 .contracts{display:flex;flex-wrap:wrap;gap:6px;margin:0}
-.contract{font:600 10.6px/1 -apple-system,"Segoe UI",Arial,sans-serif;padding:6px 9px;
+.contract{font:600 11px/1 -apple-system,"Segoe UI",Arial,sans-serif;padding:6px 9px;
   border-radius:999px;border:1px solid var(--line);background:#191d23;color:var(--body)}
 .contract.ok{border-color:rgba(87,171,90,.35);background:rgba(87,171,90,.07);color:#6cbf6e}
 .contract.miss{border-color:rgba(229,83,75,.4);background:rgba(229,83,75,.07);color:#ef6b62}
 .gchip{display:inline-block;padding:1px 7px;border-radius:999px;
-  font:600 9.9px/1.65 -apple-system,"Segoe UI",Arial,sans-serif}
+  font:600 10px/1.65 -apple-system,"Segoe UI",Arial,sans-serif}
 .gchip.must{background:rgba(91,141,239,.16);color:var(--accent)}
 .gchip.rec{border:1px solid rgba(91,141,239,.55);color:var(--accent)}
 .gchip.opt{color:var(--mut)}
 .gchip.none{color:var(--dim)}
 .mrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
-.mpill{font:600 10.5px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.08em;
+.mpill{font:600 10px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.08em;
   padding:5px 10px;border-radius:20px;text-transform:uppercase}
 .mpill.ok{color:#6cbf6e;background:rgba(87,171,90,.12);border:1px solid rgba(87,171,90,.4)}
 .mpill.alarm{color:#ef6b62;background:rgba(229,83,75,.12);border:1px solid rgba(229,83,75,.4)}
-.mmeta{color:var(--mut);font-size:11.5px}
+.mmeta{color:var(--mut);font-size:11px}
 .mmeta b{color:var(--fg)}
-.mlink{margin-left:auto;font-size:11.5px}
+.mlink{margin-left:auto;font-size:11px}
 .mgrid{display:grid;grid-template-columns:2fr 1fr;gap:12px}
 @media (max-width:900px){.mgrid{grid-template-columns:1fr}}
-.mlabel{font:600 9.5px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.1em;
+.mlabel{font:600 10px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.1em;
   text-transform:uppercase;color:var(--dim);margin-bottom:6px}
 .mchips{display:flex;flex-wrap:wrap;gap:4px}
 .mchip{display:inline-flex;gap:6px;align-items:center;font:11px/1 ui-monospace,Menlo,monospace;
   padding:4px 7px;border-radius:5px;border:1px solid var(--line);color:var(--body);
   background:#191d23}
-.mchip b{font:600 9px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.06em}
+.mchip b{font:600 10px/1 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.06em}
 .mchip.pass b{color:#6cbf6e}.mchip.skip b{color:var(--mut)}.mchip.fail b{color:#ef6b62}
 .mchip.running b{color:var(--accent)}.mchip.stale b{color:var(--warn)}.mchip.idle b{color:var(--dim)}
 .mchip.ok b{color:#6cbf6e}.mchip.bad b{color:#ef6b62}
 .mnote{margin:10px 0 0;font-size:11px;color:var(--dim)}
 /* The gate matrix: a scannable object, not a wall of cells. Absent after the rewrite, which
    the component/style check caught before a reader had to. */
-table.gm{width:100%;border-collapse:collapse;font-size:12.2px}
+table.gm{width:100%;border-collapse:collapse;font-size:12px}
 table.gm td,table.gm th{padding:5px 7px;border-bottom:1px solid var(--line);vertical-align:middle}
 table.gm td.st{font-weight:600;color:var(--fg);white-space:nowrap}
 table.gm td.has{background:rgba(91,141,239,.06)}
 table.gm td.none{color:var(--dim)}
-.gm-sum{margin:9px 0 0;font-size:11.8px;color:var(--mut)}
+.gm-sum{margin:9px 0 0;font-size:12px;color:var(--mut)}
 .gm-sum b{color:var(--fg)}
 .gm-key{display:flex;gap:9px;align-items:center;margin:7px 0 0;flex-wrap:wrap}
 .fig{width:100%;height:auto;display:block}
 canvas{width:100%;height:auto;display:block;max-width:100%}
 .readout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:9px}
 .kv{border:1px solid var(--line);border-radius:7px;padding:7px 9px;background:#191d23}
-.kv .k{font:600 9px/1.2 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.07em;
+.kv .k{font:600 10px/1.2 -apple-system,"Segoe UI",Arial,sans-serif;letter-spacing:.07em;
   text-transform:uppercase;color:var(--dim)}
-.kv .v{font:650 14px/1.3 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--fg);
+.kv .v{font:650 15px/1.3 -apple-system,"Segoe UI",Arial,sans-serif;color:var(--fg);
   font-variant-numeric:tabular-nums;margin-top:3px}
 .controls{display:flex;align-items:center;gap:10px;margin-top:10px}
 .controls input[type=range]{flex:1;accent-color:var(--accent)}
-.controls button{font:600 10.5px/1 -apple-system,"Segoe UI",Arial,sans-serif;
+.controls button{font:600 10px/1 -apple-system,"Segoe UI",Arial,sans-serif;
   letter-spacing:.05em;text-transform:uppercase;background:transparent;color:var(--mut);
   border:1px solid var(--line);border-radius:6px;padding:6px 10px;cursor:pointer}
 .controls button:hover{color:var(--fg);border-color:var(--accent)}
-.controls span{font:11.4px var(--mono);color:var(--mut)}
+.controls span{font:11px var(--mono);color:var(--mut)}
 footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:var(--dim);
-  font-size:11.4px;line-height:1.7}
+  font-size:11px;line-height:1.7}
 @media print{
   body{background:#fff;color:#111}
   .top,.rail{display:none}
@@ -423,7 +423,7 @@ def evolution_cards(evo: dict) -> str:
     <p>{len(tests)} releases on record; the last is {tests[-1].get("tests") if tests else "—"} tests
     at v{tests[-1].get("version") if tests else "—"}.</p>
     <p class="mono" style="margin:9px 0 0">{sparks}</p>
-    <p style="font-size:11.6px;color:var(--dim);margin:8px 0 0">Release history:
+    <p style="font-size:12px;color:var(--dim);margin:8px 0 0">Release history:
     <a href="../site/versions.json">site/versions.json</a>. Written by the build, not by hand.</p></div>
 </div>'''
 
@@ -433,7 +433,7 @@ def sec_state(ctx: dict) -> str:
   <h3>External contracts</h3>
   <p class="contracts">{ctx["contracts"]}</p>
   <p class="mono" style="margin:9px 0 0;color:var(--dim)">{ctx["render"]}</p>
-  <p style="margin:8px 0 0;font-size:11.6px;color:var(--dim)">Probed at build time. A boundary
+  <p style="margin:8px 0 0;font-size:12px;color:var(--dim)">Probed at build time. A boundary
   that is down is named; it is never silently skipped.</p>
 </div>
 <div class="card" style="margin-top:10px">

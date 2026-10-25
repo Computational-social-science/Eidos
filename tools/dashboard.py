@@ -292,7 +292,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
         svg.append(f"<g class='node module' data-module='{html.escape(module)}' tabindex='0' "
                    f"role='button'><title>{html.escape(module)} · used by "
                    f"{len(module_users[module])} chains</title>"
-                   f"<text x='{m_x + k * col_w}' y='12' font-size='8.5' fill='#8b95a5' "
+                   f"<text x='{m_x + k * col_w}' y='12' font-size='9.5' fill='#98a2b3' "
                    f"font-family='ui-monospace,Consolas,monospace'>"
                    f"{html.escape(name[:9])}</text></g>")
     for k, service in enumerate(services):
@@ -303,7 +303,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
         svg.append(f"<g class='node service' data-service='{html.escape(service)}' tabindex='0' "
                    f"role='button'><title>{html.escape(name)} · "
                    f"{(signals.get(service) or {}).get('source', '')}</title>"
-                   f"<text x='{s_x + k * col_w}' y='12' font-size='8.5' fill='#8b95a5' "
+                   f"<text x='{s_x + k * col_w}' y='12' font-size='9.5' fill='#98a2b3' "
                    f"font-family='ui-monospace,Consolas,monospace'>"
                    f"{html.escape(short[:10])}</text></g>")
 
@@ -328,7 +328,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
     stripe = 0
     for row in rows:
         if row["kind"] == "layer":
-            svg.append(f"<text x='0' y='{row['y'] + 11}' font-size='8.5' letter-spacing='0.1em' "
+            svg.append(f"<text x='0' y='{row['y'] + 11}' font-size='9.5' letter-spacing='0.1em' "
                        f"fill='#7d8797' font-family='ui-monospace,Consolas,monospace'>"
                        f"{html.escape(row['title'].upper())}</text>")
             svg.append(f"<line x1='0' y1='{row['y'] + 14}' x2='{width}' y2='{row['y'] + 14}' "
@@ -349,14 +349,13 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
         svg.append(
             f"<g class='node chain' data-chain='{html.escape(chain)}' tabindex='0' role='button'>"
             f"<title>{html.escape(title)}</title>"
-            # A line, not a rect: the contrast probe composites a label over the first rect
-            # in its group, and a 2.5 px state bar is not the background of the age text.
-            f"<line x1='1' y1='{y + 4}' x2='1' y2='{y + row_h - 4}' "
-            f"stroke='{PALETTE.get(state, PALETTE['IDLE'])}' stroke-width='2.5' "
-            f"stroke-linecap='round'/>"
+            # A dot, the same mark the legend shows and the cells use. A bar and a dot for
+            # the same idea is two languages in one figure.
+            f"<circle cx='7' cy='{y + row_h / 2:.1f}' r='3.4' "
+            f"fill='{PALETTE.get(state, PALETTE['IDLE'])}'/>"
             f"<text x='12' y='{y + row_h / 2 + 3.5}' font-size='11' fill='#e6e8eb'>"
             f"{html.escape(chain)}</text>"
-            f"<text x='{label_w - 16}' y='{y + row_h / 2 + 3.5}' text-anchor='end' font-size='9' "
+            f"<text x='{label_w - 16}' y='{y + row_h / 2 + 3.5}' text-anchor='end' font-size='9.5' "
             f"fill='#7d8899' font-family='ui-monospace,Consolas,monospace'>"
             f"{html.escape(fmt_age(age) if age is not None else '—')}</text></g>")
 
@@ -385,10 +384,10 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
         f"<rect x='0' y='{obs_y}' width='{width - 10}' height='{obs_h}' rx='4' fill='#15181d' "
         f"stroke='#2a3038'/>"
         f"<rect x='0' y='{obs_y}' width='3' height='{obs_h}' fill='{PALETTE[state]}'/>"
-        f"<text x='12' y='{obs_y + 18}' font-size='9' letter-spacing='0.1em' fill='#7d8797' "
+        f"<text x='12' y='{obs_y + 18}' font-size='9.5' letter-spacing='0.1em' fill='#8b95a5' "
         f"font-family='ui-monospace,Consolas,monospace'>INSTRUMENTS 4 · "
         f"{'no open defects' if not open_defects else str(open_defects) + ' open defect(s)'}</text>"
-        f"<text x='{width - 22}' y='{obs_y + 18}' text-anchor='end' font-size='8.5' "
+        f"<text x='{width - 22}' y='{obs_y + 18}' text-anchor='end' font-size='9.5' "
         f"fill='#8b95a5'>fixtures · mutations · runtime · probes — they observe every row</text>"
         f"</g>")
     svg.append("</g>")
@@ -402,7 +401,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
                f"stroke='#a9b6c8' stroke-width='1.3' opacity='0.9' "
                f"marker-end='url(#ah)'/>"
                f"<text x='{gut / 2 - 4}' y='{(y_mid + y_end) / 2}' text-anchor='middle' "
-               f"font-size='8.5' fill='#8b95a5' transform='rotate(-90 {gut / 2 - 4} {(y_mid + y_end) / 2})' "
+               f"font-size='9.5' fill='#8b95a5' transform='rotate(-90 {gut / 2 - 4} {(y_mid + y_end) / 2})' "
                f"font-family='ui-monospace,Consolas,monospace'>feedback → guards</text>"
                f"</g>")
     svg.append("</svg>")
@@ -454,7 +453,7 @@ def operator_strip(status: dict, recoveries: list) -> str:
             f"fill='{PALETTE.get(state, PALETTE['IDLE'])}' stroke='#0a0c0f'/>"
             f"<text x='{x + 9}' y='23' font-size='9.5' fill='{INK.get(state, '#c9d1d9')}'>"
             f"{html.escape(name)}</text>"
-            f"<text x='{x + box_w - 8}' y='23' text-anchor='end' font-size='8.5' "
+            f"<text x='{x + box_w - 8}' y='23' text-anchor='end' font-size='9.5' "
             f"fill='{INK.get(state, '#c9d1d9')}' opacity='0.85'>{html.escape(note)}</text></g>")
         if k < n - 1:
             ax = x + box_w
@@ -534,7 +533,7 @@ def evolution_loop(evo: dict) -> str:
             f"<rect x='{x}' y='4' width='{box_w}' height='36' rx='4' fill='#1b2027' "
             f"stroke='#2a3038'/>"
             f"<rect x='{x}' y='4' width='3' height='36' fill='#5b8def'/>"
-            f"<text x='{x + 11}' y='17' font-size='8.5' letter-spacing='0.08em' "
+            f"<text x='{x + 11}' y='17' font-size='9.5' letter-spacing='0.08em' "
             f"fill='#8b95a5'>{html.escape(title)}</text>"
             f"<text x='{x + 11}' y='30' font-size='10' fill='#c9d1d9'>"
             f"{html.escape(count)}</text></g>")
@@ -668,9 +667,10 @@ svg .edge{transition:stroke .4s ease}
 .opwrap{margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
 .opwrap h3{margin:0 0 6px;font:600 9.5px/1.4 -apple-system,"Segoe UI",Arial,sans-serif;
   letter-spacing:.11em;text-transform:uppercase;color:var(--dim);font-weight:600}
-.key{display:flex;gap:11px;font-size:9.5px;color:var(--dim);margin:0 0 7px;flex-wrap:wrap;
+.keynote{color:var(--mut)}
+.key{display:flex;gap:11px;font-size:10px;color:var(--dim);margin:0 0 7px;flex-wrap:wrap;
   letter-spacing:.04em;text-transform:uppercase}
-.key i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
+.key i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
 .key i.dotkey{width:0;height:0;border-left:7px solid #5b8def;border-top:4px solid transparent;
   border-bottom:4px solid transparent;background:none;border-radius:0;margin:0 6px 0 8px}
 .srow{display:flex;align-items:center;gap:14px;margin:1px 0}
@@ -810,8 +810,8 @@ async function poll() {
     const chains = d.chains || {};
     document.querySelectorAll('g.node.chain').forEach(g => {
       const st = chains[g.dataset.chain] || 'IDLE';
-      const bar = g.querySelector('line');        // the state rule, not a rect
-      if (bar) bar.setAttribute('stroke', PALETTE[st] || PALETTE.IDLE);
+      const dot = g.querySelector('circle');
+      if (dot) dot.setAttribute('fill', PALETTE[st] || PALETTE.IDLE);
     });
     document.querySelectorAll('.edge').forEach(p => {
       const st = chains[p.dataset.from];
@@ -895,7 +895,9 @@ def build() -> str:
 
     key = "".join(f"<span><i style='background:{PALETTE[s]}'></i>{s}</span>"
                   for s in ("PASS", "SKIP", "RUNNING", "STALE", "FAIL", "IDLE"))
-    key += "<span><i class='dotkey'></i>arrowhead = the direction the signal flows</span>"
+    key += ("<span><i class='dotkey'></i>arrowhead = the direction the signal flows</span>"
+            "<span class='keynote'>a dot is a state: on a row it is the chain, on a cell the "
+            "dependency's endpoint</span>")
 
     fault_line = ("<div class='faults' id='faults' style='display:none'></div>" if not faults else
                   "<div class='faults' id='faults'><b>FAULT</b>" + " · ".join(faults) + "</div>")

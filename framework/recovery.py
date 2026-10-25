@@ -163,13 +163,10 @@ def preflight(service: str) -> dict:
     hints = OWNER_HINTS.get(service, ())
     report = {"service": service, "healthy": False, "ports": {}, "conflict": False,
               "owned_by_self": False, "owners": []}
-    probe = HEALTH.get(service)
-    if probe:
-        try:
-            with urllib.request.urlopen(probe, timeout=3) as resp:
-                report["healthy"] = 200 <= resp.status < 500
-        except (urllib.error.URLError, OSError):
-            report["healthy"] = False
+    urls = ENDPOINTS.get(service) or ((HEALTH.get(service),) if HEALTH.get(service) else ())
+    if urls:
+        report["healthy"] = all(_answers(u) for u in urls)
+        report["answered"] = {u: _answers(u) for u in urls}
     for port in PORTS.get(service, ()):
         pid = port_owner(port)
         name = process_name(pid) if pid else ""
@@ -203,6 +200,21 @@ HEALTH = {
     "decision_service": "http://127.0.0.1:8090/health",
     "runtime_18434": "http://127.0.0.1:18434/health",
 }
+
+#: A service can be a pair. /health on the front door answers even when the engine behind it is
+#: gone, so "up" means every endpoint in this list answers.
+ENDPOINTS = {
+    "decision_service": ("http://127.0.0.1:8090/health", "http://127.0.0.1:8081/health"),
+    "runtime_18434": ("http://127.0.0.1:18434/health",),
+}
+
+
+def _answers(url: str, timeout: float = 3.0) -> bool:
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as resp:
+            return 200 <= resp.status < 500
+    except (urllib.error.URLError, OSError):
+        return False
 
 #: Actions are declared by the *service* they repair, not by the symptom. One entry per
 #: thing this machine can actually start; everything else is "not restartable" and says so.
@@ -275,10 +287,15 @@ def execute(plan_: RecoveryPlan) -> dict:
                     f"{p} pid={v['pid']} {v['name']}" for p, v in look["ports"].items() if v["pid"]),
                 "preflight": look}
     if look["owned_by_self"]:
-        _log(plan_.service, plan_.action, "skipped", True, reason="process already exists")
-        return {"ok": True, "skipped": True, "service": plan_.service,
-                "reason": "the service process already exists (still starting); not loading it twice",
-                "preflight": look}
+        # Half a pair is not a start in progress. If the front door answers but the engine does
+        # not, the launcher must run: it is idempotent and starts only what is missing.
+        row = (_read_state().get(plan_.service) or {})
+        since = time.time() - float(row.get("last_attempt") or 0)
+        if row.get("in_flight") and since < STARTUP_WINDOW_S:
+            _log(plan_.service, plan_.action, "skipped", True,
+                 reason=f"a start is in flight ({since:.0f}s ago)")
+            return {"ok": True, "skipped": True, "service": plan_.service,
+                    "reason": "a start is in flight; waiting it out", "preflight": look}
 
     allowed, why = guard(plan_.service)
     if not allowed:
@@ -324,15 +341,18 @@ def execute(plan_: RecoveryPlan) -> dict:
 
 def verify(service: str, timeout: float = 90.0, interval: float = 3.0) -> dict:
     """Wait for the boundary to answer. A restart is only a repair if the probe agrees."""
-    url = HEALTH.get(service)
-    if not url:
+    urls = ENDPOINTS.get(service) or ((HEALTH.get(service),) if HEALTH.get(service) else ())
+    if not urls:
         return {"verified": False, "error": f"no health endpoint declared for {service}"}
+    url = urls[0]
     deadline = time.time() + timeout
     last = "no attempt"
     while time.time() < deadline:
         try:
-            with urllib.request.urlopen(url, timeout=3) as resp:
-                if 200 <= resp.status < 500:      # 401 also proves the server is alive
+            missing = [u for u in urls if not _answers(u)]
+            if missing:
+                last = "silent: " + ", ".join(missing)
+            else:                                   # every endpoint, not just the front door
                     _note(service, in_flight=False, ok=True, failures=0, verified_at=time.time())
                     _log(service, "verify", "verified", True,
                          seconds=round(timeout - (deadline - time.time()), 1), url=url)

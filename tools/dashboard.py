@@ -376,7 +376,6 @@ svg .node rect{transition:fill .4s ease,stroke .4s ease}
 svg .node:hover rect{stroke:#fff;stroke-opacity:.45}
 svg .node:focus{outline:none}
 svg .edge{transition:stroke .4s ease}
-  50%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}}
 .key{display:flex;gap:11px;font-size:9.5px;color:var(--dim);margin:0 0 7px;flex-wrap:wrap;
   letter-spacing:.04em;text-transform:uppercase}
 .key i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}

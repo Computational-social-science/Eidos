@@ -1,10 +1,10 @@
 {
   "trace": {
-    "id": "d13351df5a75463ea20d56c569eda77d",
+    "id": "34dd3dc2f1404857b9097adb070b2dd7",
     "name": "eidos.chains",
-    "start_ts": 1792772281.1382275,
-    "end_ts": 1792772297.744776,
-    "duration_ms": 16606.5,
+    "start_ts": 1792903816.455331,
+    "end_ts": 1792903830.7738283,
+    "duration_ms": 14318.5,
     "status": "OK",
     "attributes": {
       "chains": 11
@@ -12,23 +12,23 @@
   },
   "spans": [
     {
-      "id": "cb318263be184356a4edd20e57bc05b5",
+      "id": "45caac8804c04c9f823c5a47dbc097c4",
       "name": "registry",
-      "start_ts": 1792772281.1382275,
-      "end_ts": 1792772281.1811848,
-      "duration_ms": 43.0,
+      "start_ts": 1792903816.455331,
+      "end_ts": 1792903816.4956114,
+      "duration_ms": 40.3,
       "status": "PASS",
       "attributes": {
-        "detail": "2 project(s): null_study, operator_calibration",
+        "detail": "3 project(s): null_study, operator_calibration, prose_lie",
         "requires": "nothing"
       }
     },
     {
-      "id": "520887fa75564727b56508a4192f773c",
+      "id": "e1f22c1f979a458cad42c4bdf31163e4",
       "name": "gates",
-      "start_ts": 1792772281.1811938,
-      "end_ts": 1792772281.1846428,
-      "duration_ms": 3.4,
+      "start_ts": 1792903816.4956224,
+      "end_ts": 1792903816.5007973,
+      "duration_ms": 5.2,
       "status": "PASS",
       "attributes": {
         "detail": "acceptance PASS+FAIL both correct; missing tool -> SKIP",
@@ -36,10 +36,10 @@
       }
     },
     {
-      "id": "7c6d28c5a66844f8ae14a7d226d28d39",
+      "id": "617e6f547d9f42749b64c0df4d1cf91e",
       "name": "gates+project checker",
-      "start_ts": 1792772281.1846514,
-      "end_ts": 1792772281.1846533,
+      "start_ts": 1792903816.500809,
+      "end_ts": 1792903816.5008118,
       "duration_ms": 0.0,
       "status": "SKIP",
       "attributes": {
@@ -48,11 +48,11 @@
       }
     },
     {
-      "id": "2ec5588f0f4a4f37b4bdd067eb6a03c1",
+      "id": "f87ba25095a4416f97b6dc115e6d6b4a",
       "name": "diagnosis",
-      "start_ts": 1792772281.1846554,
-      "end_ts": 1792772281.1867166,
-      "duration_ms": 2.1,
+      "start_ts": 1792903816.5008154,
+      "end_ts": 1792903816.503846,
+      "duration_ms": 3.0,
       "status": "PASS",
       "attributes": {
         "detail": "1 diagnosis naming the metric: Result metric below acceptance threshold: acc",
@@ -60,23 +60,23 @@
       }
     },
     {
-      "id": "0da8eeaf642f4697ac8a7f8a24106153",
+      "id": "3e2364019c9d425197efb7b0601e4b5e",
       "name": "tracking",
-      "start_ts": 1792772281.1867213,
-      "end_ts": 1792772291.022985,
-      "duration_ms": 9836.3,
+      "start_ts": 1792903816.5038505,
+      "end_ts": 1792903825.750117,
+      "duration_ms": 9246.3,
       "status": "PASS",
       "attributes": {
-        "detail": "mlflow run 16485080; dvc_available=True",
+        "detail": "mlflow run d70e4a5e; dvc_available=True",
         "requires": "mlflow + dvc"
       }
     },
     {
-      "id": "1ab19ce1a99b43f38cf548da599f21ef",
+      "id": "6c105168018743d5b0762b048554c5f5",
       "name": "quarto",
-      "start_ts": 1792772291.022998,
-      "end_ts": 1792772294.8437924,
-      "duration_ms": 3820.8,
+      "start_ts": 1792903825.7501268,
+      "end_ts": 1792903828.7322505,
+      "duration_ms": 2982.1,
       "status": "PASS",
       "attributes": {
         "detail": "minimal document; quarto=quarto.exe, render ok=True",
@@ -84,11 +84,11 @@
       }
     },
     {
-      "id": "81902c92dabd41bfa44259e114ed93f0",
+      "id": "ac1a8dd5550a4803985d892d1fc565ae",
       "name": "validity (Gate S)",
-      "start_ts": 1792772294.843806,
-      "end_ts": 1792772294.8918257,
-      "duration_ms": 48.0,
+      "start_ts": 1792903828.7322626,
+      "end_ts": 1792903828.762032,
+      "duration_ms": 29.8,
       "status": "PASS",
       "attributes": {
         "detail": "valid register PASS; overstated count FAIL",
@@ -96,11 +96,11 @@
       }
     },
     {
-      "id": "7c3c9b575b4246fe84581b704ea6d024",
+      "id": "44784551a12747b295cf895600f6e5e7",
       "name": "surrogate (local NO)",
-      "start_ts": 1792772294.8918388,
-      "end_ts": 1792772295.5097044,
-      "duration_ms": 617.9,
+      "start_ts": 1792903828.7620456,
+      "end_ts": 1792903829.4092386,
+      "duration_ms": 647.2,
       "status": "PASS",
       "attributes": {
         "detail": "19/19 fixed points within 5%, 19 stable; shuffled-label control caught",
@@ -108,11 +108,11 @@
       }
     },
     {
-      "id": "0f1dab842f3d4236912d365e3b58c062",
+      "id": "ddb5a6cce9a34a4c9c150e4b5ed0f97c",
       "name": "demo (NO)",
-      "start_ts": 1792772295.5097175,
-      "end_ts": 1792772295.599519,
-      "duration_ms": 89.8,
+      "start_ts": 1792903829.4092507,
+      "end_ts": 1792903829.4941692,
+      "duration_ms": 84.9,
       "status": "PASS",
       "attributes": {
         "detail": "91 \u03bb points, max relative error 0.0002%",
@@ -120,23 +120,23 @@
       }
     },
     {
-      "id": "84e68613bb0744228d4f317537393162",
+      "id": "7f27bd1712a04597953a97df5d3fb4cc",
       "name": "decision",
-      "start_ts": 1792772295.599526,
-      "end_ts": 1792772297.0461495,
-      "duration_ms": 1446.6,
+      "start_ts": 1792903829.4941788,
+      "end_ts": 1792903830.1743379,
+      "duration_ms": 680.2,
       "status": "PASS",
       "attributes": {
-        "detail": "known answers correct; median 236 ms for 2 questions (n=3, wall clock)",
+        "detail": "known answers correct; median 155 ms for 2 questions (n=3, wall clock)",
         "requires": "StartLux service"
       }
     },
     {
-      "id": "460add7094344580bf2509f4d35c2a68",
+      "id": "850e514bfe13459386799c2ac8ca4082",
       "name": "inference",
-      "start_ts": 1792772297.0461514,
-      "end_ts": 1792772297.744776,
-      "duration_ms": 698.6,
+      "start_ts": 1792903830.1743398,
+      "end_ts": 1792903830.7738283,
+      "duration_ms": 599.5,
       "status": "PASS",
       "attributes": {
         "detail": "12 GB budget enforced; 4 judgement stages -> StartLux; generators unchanged; evaluation -> 2 model(s)",

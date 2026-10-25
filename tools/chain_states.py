@@ -14,6 +14,7 @@ TRANSITIONS (enforced, not decorative)
     PASS|SKIP|FAIL -> RUNNING              a new audit started
     PASS|SKIP|FAIL -> PASS|SKIP|FAIL       re-observation after a new run
     PASS|SKIP|FAIL|IDLE -> STALE           the window elapsed with no new run
+    STALE -> PASS|SKIP|FAIL|RUNNING        new evidence after a void verdict
 
     Every other edge is rejected: a chain cannot jump from FAIL to PASS without passing
     through RUNNING, because that would mean it was declared fixed without being executed.
@@ -47,7 +48,10 @@ TRANSITIONS = {
     "PASS": {"RUNNING", "PASS", "STALE"},
     "SKIP": {"RUNNING", "SKIP", "STALE"},
     "FAIL": {"RUNNING", "FAIL", "STALE"},
-    "STALE": {"RUNNING", "STALE"},
+    # STALE means the previous verdict is void, not that it was bad. A fresh observation after
+    # a stale window is new evidence and may set any verdict; keeping STALE terminal is how a
+    # monitor stays red for a day after the audit it was waiting for has run.
+    "STALE": {"RUNNING", "PASS", "SKIP", "FAIL", "STALE"},
 }
 
 

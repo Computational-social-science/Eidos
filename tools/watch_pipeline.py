@@ -105,11 +105,20 @@ def measure() -> dict:
     """One sample. Each entry: value, reference, direction, and where it came from."""
     signals: dict[str, dict] = {}
 
+    # The decision service is a pair: the HTTP layer on 8090 and the engine it calls on 8081.
+    # /health on 8090 answers even when the engine is gone, so a probe that stops there reports
+    # "up" for a service whose every request returns 502 — the monitor would contradict the
+    # chain audit. Both must answer.
     code, body = http_json("http://127.0.0.1:8090/health")
+    engine = http_status("http://127.0.0.1:8081/health")
+    up = code == 200 and body.get("status") == "ok" and engine in (200, 401)
+    note = body.get("model") or body.get("error")
+    if not up and code == 200 and engine not in (200, 401):
+        note = "engine :8081 down"
     signals["decision_service"] = {
-        "value": 1 if code == 200 and body.get("status") == "ok" else 0,
+        "value": 1 if up else 0,
         "reference": 1, "direction": "min", "unit": "up",
-        "source": "127.0.0.1:8090/health", "note": body.get("model") or body.get("error")}
+        "source": "127.0.0.1:8090/health + :8081/health", "note": note}
 
     key = os.environ.get("HERMES_LOCAL_LLAMACPP_KEY", "")
     headers = {"Authorization": f"Bearer {key}"} if key else {}

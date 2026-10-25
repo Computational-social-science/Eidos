@@ -361,36 +361,38 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
                        f"opacity='{st['opacity']}' stroke-dasharray='{st['dash']}' "
                        f"marker-end='url(#ah)'/>")
 
-    # services -> instruments: what is watching this boundary
-    if services:
-        first_ins = ins_y[instruments[0][0]]
-        for service in services:
-            if service not in svc_y:
-                continue
-            x1, y1 = s_x + s_w, svc_y[service] + s_h / 2
-            x2, y2 = i_x, first_ins + i_h / 2
-            dx = max(26, (x2 - x1) * 0.5)
-            st = coupling("PASS")
-            svg.append(f"<path class='edge' d='M{x1} {y1} C{x1 + dx} {y1}, {x2 - dx} {y2}, "
-                       f"{x2} {y2}' fill='none' stroke='{st['colour']}' "
-                       f"stroke-width='{st['width']}' opacity='{st['opacity']}' "
-                       f"stroke-dasharray='{st['dash']}' marker-end='url(#ah)'/>")
-
-    for name, note, witness in instruments:
-        y = ins_y[name]
-        ok = not (evo.get("state") or {}).get("open_defects")
-        state = "PASS" if ok else "FAIL"
+    # One observer, not four stages. An instrument does not sit downstream of a service: it
+    # watches the whole pipeline, so four boxes in a column with a single edge into the first of
+    # them said nothing true. The bracket below is the honest shape.
+    if instruments:
+        mid = (min(chain_y.values()) + max(chain_y.values()) + c_h) / 2
+        y = mid - i_h * 1.5
+        observer_bottom = y + i_h * 3
+        open_defects = (evo.get("state") or {}).get("open_defects")
+        state = "PASS" if not open_defects else "FAIL"
+        listing = " · ".join(f"{n}: {note}" for n, note, _ in instruments)
         svg.append(
-            f"<g class='node instrument' data-instrument='{html.escape(name)}' tabindex='0' "
-            f"role='button'><title>{html.escape(name)} · {html.escape(note)} · "
-            f"{html.escape(witness)}</title>"
-            f"<rect x='{i_x}' y='{y}' width='{i_w}' height='{i_h}' rx='4' "
-            f"fill='{PALETTE.get(state, PALETTE['IDLE'])}' stroke='#0a0c0f'/>"
-            f"<text x='{i_x + 10}' y='{y + i_h / 2 + 3.4}' font-size='10' "
-            f"fill='{INK.get(state, '#c9d1d9')}'>{html.escape(name)}</text>"
-            f"<text x='{i_x + i_w - 8}' y='{y + i_h / 2 + 3.4}' text-anchor='end' "
-            f"font-size='9' fill='{INK.get(state, '#c9d1d9')}' opacity='0.9'>"
-            f"{html.escape(str(note)[:24])}</text></g>")
+            f"<g class='node instrument' data-instrument='instruments' tabindex='0' role='button'>"
+            f"<title>instruments · {len(instruments)} · {html.escape(listing)}</title>"
+            f"<rect x='{i_x}' y='{y:.1f}' width='{i_w}' height='{i_h * 3:.1f}' rx='5' "
+            f"fill='#15181d' stroke='#2a3038'/>"
+            f"<rect x='{i_x}' y='{y:.1f}' width='3' height='{i_h * 3:.1f}' "
+            f"fill='{PALETTE.get(state, PALETTE['IDLE'])}'/>"
+            f"<text x='{i_x + 11}' y='{y + 16:.1f}' font-size='9' letter-spacing='0.10em' "
+            f"fill='#7d8797'>INSTRUMENTS {len(instruments)}</text>"
+            f"<text x='{i_x + 11}' y='{y + 32:.1f}' font-size='10' fill='#c9d1d9'>"
+            f"{html.escape(open_defects and f'{open_defects} open defect(s)' or 'no open defects')}"
+            f"</text>"
+            f"<text x='{i_x + 11}' y='{y + 48:.1f}' font-size='9' fill='#8b95a5'>"
+            f"fixtures · mutations · runtime · probes</text></g>")
+
+        # every lane is watched: three edges converging on the observer
+        st = coupling("PASS")
+        for x_src, y_src in ((c_x + c_w, mid), (m_x + m_w, mid), (s_x + s_w, mid)):
+            svg.append(f"<path class='edge observe' d='M{x_src} {y_src:.1f} "
+                       f"C{x_src + 40} {y_src:.1f}, {i_x - 30} {y:.1f}, {i_x} {y + i_h * 1.5:.1f}' "
+                       f"fill='none' stroke='{st['colour']}' stroke-width='{st['width']}' "
+                       f"opacity='0.6' stroke-dasharray='2 4' marker-end='url(#ah)'/>")
 
     # the loop: findings travel from the instruments back to the chains as guards
     if ins_y and chains:
@@ -399,7 +401,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
         x_l = c_x + c_w / 2
         y_chain = max(chain_y.values()) + c_h
         svg.append(
-            f"<path class='edge feedback' d='M{x_r} {max(ins_y.values()) + i_h} "
+            f"<path class='edge feedback' d='M{x_r} {observer_bottom:.1f} "
             f"C{x_r} {y_bottom}, {x_l} {y_bottom}, {x_l} {y_chain}' fill='none' "
             f"stroke='#a9b6c8' stroke-width='1.4' opacity='0.9' "
             f"marker-end='url(#ah)'/>"

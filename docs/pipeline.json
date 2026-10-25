@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-24T00:39:53+00:00",
+  "generated": "2026-10-25T08:18:03+00:00",
   "coupling": {
     "nodes": [
       "framework.decision",
@@ -273,11 +273,11 @@
     }
   },
   "trace": {
-    "id": "d13351df5a75463ea20d56c569eda77d",
+    "id": "93f94e39d80f4f0f9db7d0a61c2220b9",
     "name": "eidos.chains",
-    "start_ts": 1792772281.1382275,
-    "end_ts": 1792772297.744776,
-    "duration_ms": 16606.5,
+    "start_ts": 1792912761.4739132,
+    "end_ts": 1792912776.117273,
+    "duration_ms": 14643.4,
     "status": "OK",
     "attributes": {
       "chains": 11
@@ -285,23 +285,23 @@
   },
   "spans": [
     {
-      "id": "cb318263be184356a4edd20e57bc05b5",
+      "id": "34dae4ab67214c738e7662a4e1787368",
       "name": "registry",
-      "start_ts": 1792772281.1382275,
-      "end_ts": 1792772281.1811848,
-      "duration_ms": 43.0,
+      "start_ts": 1792912761.4739132,
+      "end_ts": 1792912761.5446002,
+      "duration_ms": 70.7,
       "status": "PASS",
       "attributes": {
-        "detail": "2 project(s): null_study, operator_calibration",
+        "detail": "7 project(s): chain_cmd_fails, chain_no_output, chain_ok, chain_tool_missing, null_study, operator_calibration, prose_lie",
         "requires": "nothing"
       }
     },
     {
-      "id": "520887fa75564727b56508a4192f773c",
+      "id": "cfb37be0a1974caa8b1cc39faa6028a7",
       "name": "gates",
-      "start_ts": 1792772281.1811938,
-      "end_ts": 1792772281.1846428,
-      "duration_ms": 3.4,
+      "start_ts": 1792912761.5446124,
+      "end_ts": 1792912761.549802,
+      "duration_ms": 5.2,
       "status": "PASS",
       "attributes": {
         "detail": "acceptance PASS+FAIL both correct; missing tool -> SKIP",
@@ -309,10 +309,10 @@
       }
     },
     {
-      "id": "7c6d28c5a66844f8ae14a7d226d28d39",
+      "id": "1ecf58da087e43f79db12690b1eabd76",
       "name": "gates+project checker",
-      "start_ts": 1792772281.1846514,
-      "end_ts": 1792772281.1846533,
+      "start_ts": 1792912761.5498116,
+      "end_ts": 1792912761.549814,
       "duration_ms": 0.0,
       "status": "SKIP",
       "attributes": {
@@ -321,11 +321,11 @@
       }
     },
     {
-      "id": "2ec5588f0f4a4f37b4bdd067eb6a03c1",
+      "id": "18e6d8cec5a842748be308b2ede4a3ff",
       "name": "diagnosis",
-      "start_ts": 1792772281.1846554,
-      "end_ts": 1792772281.1867166,
-      "duration_ms": 2.1,
+      "start_ts": 1792912761.5498166,
+      "end_ts": 1792912761.5529299,
+      "duration_ms": 3.1,
       "status": "PASS",
       "attributes": {
         "detail": "1 diagnosis naming the metric: Result metric below acceptance threshold: acc",
@@ -333,23 +333,23 @@
       }
     },
     {
-      "id": "0da8eeaf642f4697ac8a7f8a24106153",
+      "id": "b2cc6771eba5453da59be61d016c51e5",
       "name": "tracking",
-      "start_ts": 1792772281.1867213,
-      "end_ts": 1792772291.022985,
-      "duration_ms": 9836.3,
+      "start_ts": 1792912761.5529342,
+      "end_ts": 1792912771.1621985,
+      "duration_ms": 9609.3,
       "status": "PASS",
       "attributes": {
-        "detail": "mlflow run 16485080; dvc_available=True",
+        "detail": "mlflow run bb530fc5; dvc_available=True",
         "requires": "mlflow + dvc"
       }
     },
     {
-      "id": "1ab19ce1a99b43f38cf548da599f21ef",
+      "id": "d8d076beeed14bbaa70c8ba5a9e7e334",
       "name": "quarto",
-      "start_ts": 1792772291.022998,
-      "end_ts": 1792772294.8437924,
-      "duration_ms": 3820.8,
+      "start_ts": 1792912771.1622064,
+      "end_ts": 1792912773.9892733,
+      "duration_ms": 2827.1,
       "status": "PASS",
       "attributes": {
         "detail": "minimal document; quarto=quarto.exe, render ok=True",
@@ -357,11 +357,11 @@
       }
     },
     {
-      "id": "81902c92dabd41bfa44259e114ed93f0",
+      "id": "df18657bcb8a43e7afbcedf9a5e93af2",
       "name": "validity (Gate S)",
-      "start_ts": 1792772294.843806,
-      "end_ts": 1792772294.8918257,
-      "duration_ms": 48.0,
+      "start_ts": 1792912773.9892855,
+      "end_ts": 1792912774.0123436,
+      "duration_ms": 23.1,
       "status": "PASS",
       "attributes": {
         "detail": "valid register PASS; overstated count FAIL",
@@ -369,11 +369,11 @@
       }
     },
     {
-      "id": "7c3c9b575b4246fe84581b704ea6d024",
+      "id": "19667f525c9b4a7f9ea6089b71a03a76",
       "name": "surrogate (local NO)",
-      "start_ts": 1792772294.8918388,
-      "end_ts": 1792772295.5097044,
-      "duration_ms": 617.9,
+      "start_ts": 1792912774.0123525,
+      "end_ts": 1792912774.7594686,
+      "duration_ms": 747.1,
       "status": "PASS",
       "attributes": {
         "detail": "19/19 fixed points within 5%, 19 stable; shuffled-label control caught",
@@ -381,11 +381,11 @@
       }
     },
     {
-      "id": "0f1dab842f3d4236912d365e3b58c062",
+      "id": "48ca836893ed440ab4e682879ade3563",
       "name": "demo (NO)",
-      "start_ts": 1792772295.5097175,
-      "end_ts": 1792772295.599519,
-      "duration_ms": 89.8,
+      "start_ts": 1792912774.7594821,
+      "end_ts": 1792912774.8487616,
+      "duration_ms": 89.3,
       "status": "PASS",
       "attributes": {
         "detail": "91 \u03bb points, max relative error 0.0002%",
@@ -393,23 +393,23 @@
       }
     },
     {
-      "id": "84e68613bb0744228d4f317537393162",
+      "id": "4ca5f8bab6b0402c857dc671e95033f2",
       "name": "decision",
-      "start_ts": 1792772295.599526,
-      "end_ts": 1792772297.0461495,
-      "duration_ms": 1446.6,
+      "start_ts": 1792912774.8487704,
+      "end_ts": 1792912775.521791,
+      "duration_ms": 673.0,
       "status": "PASS",
       "attributes": {
-        "detail": "known answers correct; median 236 ms for 2 questions (n=3, wall clock)",
+        "detail": "known answers correct; median 138 ms for 2 questions (n=3, wall clock)",
         "requires": "StartLux service"
       }
     },
     {
-      "id": "460add7094344580bf2509f4d35c2a68",
+      "id": "5efade03ba1644b784681097d8aca0cb",
       "name": "inference",
-      "start_ts": 1792772297.0461514,
-      "end_ts": 1792772297.744776,
-      "duration_ms": 698.6,
+      "start_ts": 1792912775.5217934,
+      "end_ts": 1792912776.117273,
+      "duration_ms": 595.5,
       "status": "PASS",
       "attributes": {
         "detail": "12 GB budget enforced; 4 judgement stages -> StartLux; generators unchanged; evaluation -> 2 model(s)",
@@ -421,13 +421,13 @@
     {
       "name": "registry",
       "status": "PASS",
-      "ms": 43.0,
-      "detail": "2 project(s): null_study, operator_calibration"
+      "ms": 70.7,
+      "detail": "7 project(s): chain_cmd_fails, chain_no_output, chain_ok, chain_tool_missing, null_study, operator_calibration, prose_lie"
     },
     {
       "name": "gates",
       "status": "PASS",
-      "ms": 3.4,
+      "ms": 5.2,
       "detail": "acceptance PASS+FAIL both correct; missing tool -> SKIP"
     },
     {
@@ -439,49 +439,49 @@
     {
       "name": "diagnosis",
       "status": "PASS",
-      "ms": 2.1,
+      "ms": 3.1,
       "detail": "1 diagnosis naming the metric: Result metric below acceptance threshold: acc"
     },
     {
       "name": "tracking",
       "status": "PASS",
-      "ms": 9836.3,
-      "detail": "mlflow run 16485080; dvc_available=True"
+      "ms": 9609.3,
+      "detail": "mlflow run bb530fc5; dvc_available=True"
     },
     {
       "name": "quarto",
       "status": "PASS",
-      "ms": 3820.8,
+      "ms": 2827.1,
       "detail": "minimal document; quarto=quarto.exe, render ok=True"
     },
     {
       "name": "validity (Gate S)",
       "status": "PASS",
-      "ms": 48.0,
+      "ms": 23.1,
       "detail": "valid register PASS; overstated count FAIL"
     },
     {
       "name": "surrogate (local NO)",
       "status": "PASS",
-      "ms": 617.9,
+      "ms": 747.1,
       "detail": "19/19 fixed points within 5%, 19 stable; shuffled-label control caught"
     },
     {
       "name": "demo (NO)",
       "status": "PASS",
-      "ms": 89.8,
+      "ms": 89.3,
       "detail": "91 \u03bb points, max relative error 0.0002%"
     },
     {
       "name": "decision",
       "status": "PASS",
-      "ms": 1446.6,
-      "detail": "known answers correct; median 236 ms for 2 questions (n=3, wall clock)"
+      "ms": 673.0,
+      "detail": "known answers correct; median 138 ms for 2 questions (n=3, wall clock)"
     },
     {
       "name": "inference",
       "status": "PASS",
-      "ms": 698.6,
+      "ms": 595.5,
       "detail": "12 GB budget enforced; 4 judgement stages -> StartLux; generators unchanged; evaluation -> 2 model(s)"
     }
   ],
@@ -515,6 +515,46 @@
   },
   "consumers": [
     {
+      "name": "chain_cmd_fails",
+      "root": "E:\\2026-AI4S\\Eidos\\reference\\chain\\cmd_fails",
+      "available": true,
+      "gate_s": "\u2014",
+      "expected": "",
+      "generated": null
+    },
+    {
+      "name": "chain_no_output",
+      "root": "E:\\2026-AI4S\\Eidos\\reference\\chain\\no_output",
+      "available": true,
+      "gate_s": "\u2014",
+      "expected": "",
+      "generated": null
+    },
+    {
+      "name": "chain_ok",
+      "root": "E:\\2026-AI4S\\Eidos\\reference\\chain\\ok",
+      "available": true,
+      "gate_s": "\u2014",
+      "expected": "",
+      "generated": null
+    },
+    {
+      "name": "chain_tool_missing",
+      "root": "E:\\2026-AI4S\\Eidos\\reference\\chain\\tool_missing",
+      "available": true,
+      "gate_s": "\u2014",
+      "expected": "",
+      "generated": null
+    },
+    {
+      "name": "demo_onboarding",
+      "root": "E:\\2026-AI4S\\Eidos\\reference\\demo_onboarding",
+      "available": true,
+      "gate_s": "PASS",
+      "expected": "PASS",
+      "generated": "2026-10-25T08:11:54+00:00"
+    },
+    {
       "name": "null_study",
       "root": "E:\\2026-AI4S\\Eidos\\reference\\null_study",
       "available": true,
@@ -528,7 +568,7 @@
       "available": true,
       "gate_s": "PASS",
       "expected": "PASS",
-      "generated": "2026-10-23T14:37:39+00:00"
+      "generated": "2026-10-25T08:16:19+00:00"
     },
     {
       "name": "prose_lie",

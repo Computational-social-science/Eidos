@@ -824,7 +824,10 @@ def consumer_strip(pipeline: dict) -> str:
     A consumer is only healthy when its verdict equals its *expectation* — a negative control
     that fails is doing its job, and colouring it red would invert the meaning of the test.
     """
-    rows = pipeline.get("consumers") or []
+    # Only projects Gate S actually judged belong here. The chain fixtures have no claims and
+    # no verdict; listing them as consumers would pad the band with entries that prove nothing.
+    rows = [r for r in (pipeline.get("consumers") or [])
+            if str(r.get("gate_s") or "—") not in ("—", "", "None")]
     if not rows:
         return ("<p class='mono' style='color:var(--mut)'>no consumer registered: the framework "
                 "is checking itself and serving no project</p>")
@@ -938,11 +941,14 @@ def build() -> str:
 </header>
 <main>
   <section class="card">
-    <h2>Assembly — chains (run order) → modules → services → instruments, and back</h2>
+    <h2>Framework self-audit — chains (run order) → modules → services → instruments, and back</h2>
     <div class="key">{key}</div>
     {svg}
     <p class="mono fbcaption">feedback: a defect an instrument finds becomes a guard before
     the next commit — the arc carries it back to the chains.</p>
+    <div class="opwrap"><h3>Project pipeline — bootstrap → measure → gates → Gate S → render → handoff</h3>
+    <p class="mono" style="margin:0 0 6px;color:var(--mut)">The band below is that pipeline's
+    output: each registered project, its verdict, and how old the evidence behind it is.</p></div>
     <div class="opwrap"><h3>Consumers — what the framework does for a project
       <span class="hint">green = verdict equals expectation, not “the project passed”</span></h3>
     {consumers}</div>

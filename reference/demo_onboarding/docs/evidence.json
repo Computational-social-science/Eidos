@@ -1,0 +1,157 @@
+{
+  "generated": "2026-10-25T08:11:54+00:00",
+  "n_items": 12,
+  "n_calls": 48,
+  "agreement": 1.0,
+  "repeat_agreement": 1.0,
+  "chance": 0.333,
+  "agree_count": 12,
+  "ci_low": 0.758,
+  "ci_high": 1.0,
+  "items": [
+    {
+      "state": "Trial 7 recorded 412 crates in the east wing.",
+      "canonical": "Did trial 7 record more than 400 crates?",
+      "answers": [
+        "yes",
+        "yes",
+        "yes"
+      ],
+      "repeat": "yes",
+      "all_agree": true,
+      "repeat_agrees": true
+    },
+    {
+      "state": "The sample was stored at 4 degrees Celsius.",
+      "canonical": "Was the sample stored below 0 degrees Celsius?",
+      "answers": [
+        "no",
+        "no",
+        "no"
+      ],
+      "repeat": "no",
+      "all_agree": true,
+      "repeat_agrees": true
+    },
+    {
+      "state": "Nine of the eleven participants completed the second session.",
+      "canonical": "Did all eleven participants complete the second session?",
+      "answers": [
+        "no",
+        "no",
+        "no"
+      ],
+      "repeat": "no",
+      "all_agree": true,
+      "repeat_agrees": true
+    },
+    {
+      "state": "The instrument was recalibrated on 3 March 2025.",
+      "canonical": "Was the instrument recalibrated in 2024?",
+      "answers": [
+        "no",
+        "no",
+        "no"
+      ],
+      "repeat": "no",
+      "all_agree": true,
+      "repeat_agrees": true
+    },
+    {
+      "state": "The east wing reported 412 crates; the west wing reported 380.",
+      "canonical": "Did the west wing report more crates than the east wing?",
+      "answers": [
+        "no",
+        "no",
+        "no"
+      ],
+      "repeat": "no",
+      "all_agree": true,
+      "repeat_agrees": true
+    },
+    {
+      "state": "Batch B failed the purity threshold on the first pass.",
+      "canonical": "Did batch B pass the purity threshold on the first pass?",
+      "answers": [
+        "no",
+        "no",
+        "no"
+      ],
+      "repeat": "no",
+      "all_agree": true,
+      "repeat_agrees": true
+    },
+    {
+      "state": "The protocol specifies a 12-hour fasting window.",
+      "canonical": "Does the protocol specify a fasting window longer than 24 hours?",
+      "answers": [
+        "no",
+        "no",
+        "no"
+      ],
+      "repeat": "no",
+      "all_agree": true,
+      "repeat_agrees": true
+    },
+    {
+      "state": "The survey ran from June to August 2023.",
+      "canonical": "Did the survey run into September 2023?",
+      "answers": [
+        "no",
+        "no",
+        "no"
+      ],
+      "repeat": "no",
+      "all_agree": true,
+      "repeat_agrees": true
+    },
+    {
+      "state": "Two of the four reactors were offline.",
+      "canonical": "Were all four reactors online?",
+      "answers": [
+        "no",
+        "no",
+        "no"
+      ],
+      "repeat": "no",
+      "all_agree": true,
+      "repeat_agrees": true
+    },
+    {
+      "state": "The dataset contains 1,204 labelled frames.",
+      "canonical": "Does the dataset contain more than 2,000 labelled frames?",
+      "answers": [
+        "no",
+        "no",
+        "no"
+      ],
+      "repeat": "no",
+      "all_agree": true,
+      "repeat_agrees": true
+    },
+    {
+      "state": "The second assay gave the same result as the first.",
+      "canonical": "Did the two assays disagree?",
+      "answers": [
+        "no",
+        "no",
+        "no"
+      ],
+      "repeat": "no",
+      "all_agree": true,
+      "repeat_agrees": true
+    },
+    {
+      "state": "The control group received a placebo.",
+      "canonical": "Did the control group receive the treatment?",
+      "answers": [
+        "no",
+        "no",
+        "no"
+      ],
+      "repeat": "no",
+      "all_agree": true,
+      "repeat_agrees": true
+    }
+  ]
+}

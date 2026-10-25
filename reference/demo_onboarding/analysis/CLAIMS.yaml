@@ -1,0 +1,64 @@
+# DEMO · the claim register a new project starts from.
+#
+# Every field here is checked by Gate S. Delete nothing until you know what it does:
+#   scope_axes  the five axes a reader needs to judge where the claim applies
+#   claims[]    one measurable statement, the span that states it, and the evidence file
+#   power       why the sample is what it is; "not_applicable" needs a reason
+#   journal_fit the referee simulation and how many objections it still carries
+
+scope_axes: [model, prompt_shape, items, threshold, non_goals]
+
+scope:
+  model: ["StartLux-Decision-v1.1-4B-AutoThink-GGUF via the local service"]
+  prompt_shape: ["three-way choice: yes / no / not_stated"]
+  items: ["12 constructed states, three wordings each, one verbatim repeat"]
+  threshold: ["agreement is reported, not gated: no pass/fail line is claimed"]
+  non_goals:
+    - "agreement with human judgement: there are no human labels here"
+    - "any model other than the one named above"
+
+claims:
+  - id: D1
+    text: "Three wordings of the same question receive the same answer in every item"
+    span: "agreement across the three wordings is 1.000"
+    strength: supported
+    design: preregistered
+    evidence:
+      file: docs/evidence.json
+      pointer: /agreement
+      value: 1.0
+    control:
+      file: docs/evidence.json
+      pointer: /repeat_agreement
+      value: 1.0
+    assumptions:
+      - "the three wordings ask the same thing; this is an authoring judgement, not a check"
+    formal: false
+
+  - id: D2
+    text: "The lower bound of the 95% Wilson interval for agreement is 0.758"
+    span: "lower bound of the 95% Wilson interval is 0.758"
+    strength: supported
+    design: preregistered
+    evidence:
+      file: docs/evidence.json
+      pointer: /ci_low
+      value: 0.758
+    control:
+      file: docs/evidence.json
+      pointer: /chance
+      value: 0.333
+    assumptions:
+      - "items are independent; they share a template, so this is optimistic"
+    formal: false
+
+power:
+  not_applicable: "a determinism check on 12 items, not an estimate of a population rate; the interval is reported so the ceiling is visible"
+
+multiplicity:
+  not_applicable: "two descriptive claims from one measurement; no correction applied and none claimed"
+
+journal_fit:
+  file: docs/REFEREE_SIM.md
+  objections: 2
+  unresolved: 0

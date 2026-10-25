@@ -21,7 +21,9 @@ USAGE
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
+import shutil
 import sys
 import time
 import uuid
@@ -54,7 +56,7 @@ def _option(flag: str) -> str:
 CHAINS: list[tuple[str, Callable, str]] = []
 
 
-def chain(name: str, requires: str = "") -> Callable:
+def chain(name: str, requires: str = "", deps: tuple = ()) -> Callable:
     """Register a chain; main() runs it after argparse has been read.
 
     Running at import time (the earlier design) meant `--ci` was parsed after every
@@ -62,7 +64,7 @@ def chain(name: str, requires: str = "") -> Callable:
     any verdict -- which is why the CI audit job stayed red while passing locally.
     """
     def deco(fn):
-        CHAINS.append((name, fn, requires))
+        CHAINS.append((name, fn, requires, tuple(deps)))
         return fn
     return deco
 
@@ -89,7 +91,7 @@ def audit_registry():
     return ("FAIL" if missing else "PASS"), detail
 
 
-@chain("gates", "pyyaml")
+@chain("gates", "pyyaml", deps=("yaml",))
 def audit_gates():
     from framework.gates import GateRegistry
     ok = GateRegistry.run_gate("acceptance-gate", {},
@@ -136,7 +138,7 @@ def audit_diagnosis():
     return "PASS", f"{len(diagnoses)} diagnosis naming the metric: {first.root_cause}"
 
 
-@chain("tracking", "mlflow + dvc")
+@chain("tracking", "mlflow + dvc", deps=("mlflow", "dvc"))
 def audit_tracking():
     from framework.tracking import ExperimentTracker
     # ignore_cleanup_errors: mlflow keeps the sqlite handle open on Windows, so a
@@ -149,7 +151,7 @@ def audit_tracking():
         return "PASS", f"mlflow run {run.run_id[:8]}; dvc_available={tracker.dvc_available}"
 
 
-@chain("quarto", "quarto binary")
+@chain("quarto", "quarto binary", deps=("bin:quarto",))
 def audit_quarto():
     from framework.quarto_bridge import QuartoBridge
     import shutil
@@ -183,7 +185,7 @@ def audit_quarto():
         return ("PASS" if ok else "FAIL"), detail
 
 
-@chain("validity (Gate S)", "pyyaml")
+@chain("validity (Gate S)", "pyyaml", deps=("yaml",))
 def audit_validity():
     """Gate S must pass a valid register and refuse an under-reported one.
 
@@ -213,7 +215,7 @@ def audit_validity():
     return "PASS", "valid register PASS; overstated count FAIL"
 
 
-@chain("surrogate (local NO)", "numpy")
+@chain("surrogate (local NO)", "numpy", deps=("numpy",))
 def audit_surrogate():
     """A learned short-time stepper must recover a planted fixed point, and fail when
     the training labels are shuffled."""
@@ -234,7 +236,7 @@ def audit_surrogate():
                     f"{data['stable']} stable; shuffled-label control caught")
 
 
-@chain("demo (NO)", "numpy")
+@chain("demo (NO)", "numpy", deps=("numpy",))
 def audit_lab():
     """The interactive lab must be backed by numbers that meet the same tolerance as the
     audit: a demo that drifts from the gate is worse than no demo."""
@@ -337,14 +339,14 @@ def main(argv: list[str] | None = None) -> int:
     STRICT_REGISTRY = not args.ci
     _marker("mark_running")
 
-    selected = [(n, f, r) for n, f, r in CHAINS
-                if not args.only or n == args.only or n.startswith(args.only)]
+    selected = [row for row in CHAINS
+                if not args.only or row[0] == args.only or row[0].startswith(args.only)]
     if args.only and not selected:
-        print(f"no chain matches {args.only!r}; known: {[n for n, _, _ in CHAINS]}",
+        print(f"no chain matches {args.only!r}; known: {[row[0] for row in CHAINS]}",
               file=sys.stderr)
         return 2
 
-    for name, fn, requires in selected:
+    for name, fn, requires, deps in selected:
         started = time.time()
         try:
             status, detail = fn()
@@ -356,8 +358,15 @@ def main(argv: list[str] | None = None) -> int:
             if args.verbose:
                 traceback.print_exc()
         ended = time.time()
+        # A dependency counts as missing only when it explains a non-pass: quarto is found
+        # through QUARTO_BIN rather than PATH, and calling that "missing" while the chain
+        # passes would be a false accusation.
+        absent = [dep for dep in deps
+                  if (shutil.which(dep[4:]) is None if dep.startswith("bin:")
+                      else importlib.util.find_spec(dep) is None)]
+        missing = absent if status != "PASS" else []
         RESULTS.append({"chain": name, "status": status, "detail": str(detail),
-                        "requires": requires,
+                        "requires": requires, "deps": list(deps), "missing": missing,
                         "start_ts": started, "end_ts": ended,
                         "ms": round((ended - started) * 1000, 1)})
 
@@ -372,6 +381,8 @@ def main(argv: list[str] | None = None) -> int:
     for row in RESULTS:
         merged[row["chain"]] = {"status": row["status"], "ts": row["end_ts"],
                                 "ms": row["ms"], "requires": row["requires"],
+                                "deps": row.get("deps") or [],
+                                "missing": row.get("missing") or [],
                                 "detail": row["detail"][:240]}
     state_path.parent.mkdir(parents=True, exist_ok=True)
     state_path.write_text(json.dumps({"ts": max(r["end_ts"] for r in RESULTS),

@@ -36,6 +36,25 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     project = Path(args.project).resolve()
+    spec = None
+    if not project.is_dir():
+        # A registered name is a better argument than a path: the registry already knows
+        # where the project lives, and a path that does not exist silently becomes a bare
+        # directory name under the repository root.
+        try:
+            sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+            from framework.project import load_projects
+            spec = load_projects().get(args.project)
+        except Exception:  # noqa: BLE001 - registry problems surface below
+            spec = None
+        if spec is not None:
+            project = spec.root
+    if spec is not None:
+        # The registry already declares where the claims and the deliverable live; asking the
+        # caller to repeat them is how a project gets judged against the wrong document.
+        args.register = args.register or (spec.validity_register or "")
+        args.manuscript = args.manuscript or (spec.validity_document or "")
+
     register = Path(args.register) if args.register else None
     if register is not None and not register.is_absolute():
         register = project / register

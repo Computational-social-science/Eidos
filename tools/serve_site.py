@@ -23,7 +23,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import socket
+import subprocess
 import sys
 import threading
 import time
@@ -40,12 +42,45 @@ STATE: dict = {"payload": None, "sampled": 0.0, "error": None, "strip": "", "str
 PAGES = {"/": "dashboard.html", "/dashboard.html": "dashboard.html", "/index.html": "index.html"}
 
 
+
+def ensure_scheduler(interval_min: int = 10) -> str:
+    """Keep the chain scheduler alive from the process that is always running.
+
+    A heartbeat catches a dead scheduler after the fact; something has to restart it. The server
+    is the only long-lived process on this host, so it supervises: if the heartbeat is older than
+    two intervals, spawn the loop detached. A live loop keeps the heartbeat fresh, so this
+    cannot start a second one.
+    """
+    beat_path = ROOT / "docs" / "status" / "scheduler.json"
+    stale_after = interval_min * 60 * 2
+    try:
+        beat = json.loads(beat_path.read_text(encoding="utf-8"))
+        age = time.time() - float(beat.get("epoch") or 0)
+    except (OSError, json.JSONDecodeError, ValueError):
+        age = float("inf")
+    if age < stale_after:
+        return f"scheduler alive ({age / 60:.0f} min since last tick)"
+
+    log = (ROOT / "docs" / "status" / "scheduler.log").open("a", encoding="utf-8")
+    flags = 0
+    if os.name == "nt":
+        flags = subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS
+    subprocess.Popen([sys.executable, "tools/refresh_chains.py", "--loop",
+                      "--interval", str(interval_min)],
+                     cwd=ROOT, stdout=log, stderr=log, stdin=subprocess.DEVNULL,
+                     creationflags=flags, start_new_session=(os.name != "nt"))
+    return f"scheduler was stale ({age / 60:.0f} min); started it"
+
+
 def sampler(interval: float, page_interval: float) -> None:
     import dashboard
 
     while True:
         started = time.time()
         try:
+            note = ensure_scheduler()
+            if "started" in note:
+                print(note, flush=True)
             payload = watch_pipeline.sample(append=True)
             STATE["payload"] = payload
             STATE["sampled"] = time.time()

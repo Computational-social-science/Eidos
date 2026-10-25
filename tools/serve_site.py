@@ -22,6 +22,7 @@ returns the last good sample with `stale: true` rather than pretending.
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
 import os
 import socket
@@ -97,6 +98,10 @@ def sampler(interval: float, page_interval: float) -> None:
                 # Render into memory. Writing the file here made a tracked build artefact
                 # change every minute, so git status was never clean, and an edit to the
                 # builder was silently overwritten by the module this process imported.
+                # Reload the builder before rendering: this process imported it at start, so
+                # without the reload an edit to dashboard.py is invisible until a restart and
+                # the monitor keeps serving the old page.
+                globals()["dashboard"] = importlib.reload(dashboard)
                 STATE["page"] = dashboard.build()
                 STATE["written"] = time.time()
                 STATE["page_sig"] = page_sig

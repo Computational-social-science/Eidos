@@ -169,8 +169,10 @@ def contracts() -> list[dict]:
         boundaries = json.loads(run.stdout)["boundaries"]
     except (json.JSONDecodeError, KeyError):
         return []
+    # Identity strings are data: truncating one to 38 characters is how the decision service
+    # appeared as "...AutoThink-GG" on the page. Keep the value whole; the chip wraps.
     return [{"name": k, "ok": bool(v.get("ok")),
-             "version": str(v.get("version") or v.get("model") or v.get("reason") or "")[:38]}
+             "version": str(v.get("version") or v.get("model") or v.get("reason") or "")}
             for k, v in boundaries.items()]
 
 

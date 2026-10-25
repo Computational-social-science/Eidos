@@ -512,28 +512,27 @@ def operator_strip(status: dict, recoveries: list) -> str:
 def dependencies() -> str:
     """What each external dependency is pinned to, and whether upstream has moved.
 
-    The pin is what production runs; the arrow is what sensing found. Nothing here changes a
-    version — promotion requires a passing try, see tools/update_operator.py.
+    Read straight from the two files the operator writes, so the page never imports the update
+    code — a monitor that fails because a module moved is worse than one that says "not sensed".
     """
     try:
-        from framework import updates
-        data = updates.report()
-    except Exception as exc:                                        # noqa: BLE001
-        return f"<p class='mono prov'>dependencies unavailable — {type(exc).__name__}</p>"
+        sense = json.loads((STATUS / "updates.json").read_text(encoding="utf-8"))
+        lock = json.loads((ROOT / "lock" / "versions.lock.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return "<p class='mono prov'>dependencies — not sensed yet</p>"
     colour = {"current": "#57ab5a", "behind": "#d29922", "ahead": "#58a6ff", "unknown": "#6e7681"}
+    items = sense.get("items") or {}
     chips = []
-    for name, item in (data.get("items") or {}).items():
+    for name, item in items.items():
         state = item.get("state") or "unknown"
-        pinned_v = item.get("pinned") or "—"
+        pinned_v = ((lock.get("pins") or {}).get(name) or {}).get("version") or item.get("pinned") or "—"
         offer = item.get("available")
-        arrow = ""
-        if state == "behind" and offer:
-            arrow = f" <span class='arw'>→ {html.escape(str(offer))}</span>"
+        arrow = f" <span class='arw'>→ {html.escape(str(offer))}</span>" if state == "behind" and offer else ""
         chips.append(
             f"<span class='dep' title='{html.escape(name)} · {html.escape(state)}'>"
             f"<i style='background:{colour.get(state, colour['unknown'])}'></i>"
             f"{html.escape(name)} <b>{html.escape(str(pinned_v)[:18])}</b>{arrow}</span>")
-    age = data.get("ts") or "never"
+    age = sense.get("ts") or "never"
     return ("<div class='deps'>" + "".join(chips) +
             f"<span class='depage'>sensed {html.escape(str(age))}</span></div>")
 

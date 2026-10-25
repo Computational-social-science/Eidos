@@ -406,6 +406,7 @@ def promote(name: str, version: str, note: str = "", allow_downgrade: bool = Fal
                           "pinned_at": _now(),
                           "evidence": str(TRIES / f"{name}-{version}.json")}
     save_lock(lock)
+    _refresh_pinned(name, version)
     _event({"kind": "promote", "name": name, "from": (previous or {}).get("version"),
             "to": version})
     return lock["pins"][name]
@@ -422,8 +423,21 @@ def rollback(name: str) -> dict:
     lock["history"].append({"ts": _now(), "name": name, "from": {"version": last["to"]},
                             "to": (last["from"] or {}).get("version"), "why": "rollback"})
     save_lock(lock)
+    _refresh_pinned(name, (last["from"] or {}).get("version"))
     _event({"kind": "rollback", "name": name, "to": (last["from"] or {}).get("version")})
     return lock["pins"][name]
+
+
+def _refresh_pinned(name: str, version: str | None) -> None:
+    """Keep the sense report consistent with the lock, so the page cannot show a stale pin."""
+    if not SENSE.is_file() or version is None:
+        return
+    try:
+        data = json.loads(SENSE.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return
+    (data.setdefault("items", {}).setdefault(name, {}))["pinned"] = version
+    SENSE.write_text(json.dumps(data, indent=2, ensure_ascii=False) + chr(10), encoding="utf-8")
 
 
 def report() -> dict:

@@ -258,7 +258,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
     if rest:
         grouped.append(("Ungrouped", rest))
 
-    row_h, head_h, top = 20, 15, 36
+    row_h, head_h, top = 20, 15, 48
     label_w, col_w, gap = 300, 66, 18
     rows: list[dict] = []
     y = top
@@ -289,10 +289,13 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
         name = module.replace("framework.", "").replace("tools.", "")
         # A module is a column, but it is still a node: the drill-down and the hover handler
         # bind to it, and the structure check counts it.
-        svg.append(f"<g class='node module' data-module='{html.escape(module)}' tabindex='0' "
-                   f"role='button'><title>{html.escape(module)} · used by "
+        mod_state = worst([chain_now.get(c, "IDLE") for c in module_users[module]])
+        svg.append(f"<g class='node module' data-module='{html.escape(module)}' "
+                   f"data-users='{html.escape(','.join(module_users[module]))}' tabindex='0' "
+                   f"role='button'><title>{html.escape(module)} · {mod_state} · used by "
                    f"{len(module_users[module])} chains</title>"
-                   f"<text x='{m_x + k * col_w}' y='12' font-size='10' fill='#98a2b3' "
+                   f"<text x='{m_x + k * col_w}' y='30' font-size='10' "
+                   f"fill='{PALETTE.get(mod_state, '#98a2b3') if mod_state != 'PASS' else PALETTE['PASS']}' "
                    f"font-family='ui-monospace,Consolas,monospace'>"
                    f"{html.escape(name[:9])}</text></g>")
     for k, service in enumerate(services):
@@ -303,15 +306,23 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
         svg.append(f"<g class='node service' data-service='{html.escape(service)}' tabindex='0' "
                    f"role='button'><title>{html.escape(name)} · "
                    f"{(signals.get(service) or {}).get('source', '')}</title>"
-                   f"<text x='{s_x + k * col_w}' y='12' font-size='10' fill='#98a2b3' "
+                   f"<text x='{s_x + k * col_w}' y='30' font-size='10' "
+                   f"fill='{PALETTE['FAIL' if (signals.get(service) or {}).get('state') in ('ALARM', 'UNOBSERVABLE') else 'PASS']}' "
                    f"font-family='ui-monospace,Consolas,monospace'>"
                    f"{html.escape(short[:10])}</text></g>")
 
     # vertical structure: a rule under the column names, one between the labels and the
     # matrix, one between modules and services, and a faint guide at every column boundary.
     # Horizontal separators alone leave a wide matrix unreadable across its width.
-    svg.append(f"<line x1='0' y1='{top - 4}' x2='{width}' y2='{top - 4}' "
-               f"stroke='rgba(255,255,255,0.10)'/>")
+    # A real header band: two lines (group, then column), a tinted strip and a closing rule.
+    # Without it the column names read as the first row of the table.
+    svg.append(f"<rect x='0' y='0' width='{width}' height='{top - 6}' fill='#12151a'/>")
+    svg.append(f"<text x='{m_x}' y='12' font-size='10' letter-spacing='0.12em' fill='#7d8899' "
+               f"font-family='ui-monospace,Consolas,monospace'>MODULES</text>")
+    svg.append(f"<text x='{s_x}' y='12' font-size='10' letter-spacing='0.12em' fill='#7d8899' "
+               f"font-family='ui-monospace,Consolas,monospace'>SERVICES</text>")
+    svg.append(f"<line x1='0' y1='{top - 6}' x2='{width}' y2='{top - 6}' "
+               f"stroke='rgba(255,255,255,0.14)'/>")
     svg.append(f"<line x1='{m_x - 10}' y1='{top - 4}' x2='{m_x - 10}' y2='{matrix_bottom}' "
                f"stroke='rgba(255,255,255,0.10)'/>")
     svg.append(f"<line x1='{s_x - gap / 2}' y1='{top - 4}' x2='{s_x - gap / 2}' "
@@ -811,6 +822,17 @@ async function poll() {
       const st = chains[g.dataset.chain] || 'IDLE';
       const dot = g.querySelector('circle');
       if (dot) dot.setAttribute('fill', PALETTE[st] || PALETTE.IDLE);
+    });
+    // A column header carries its own state: the worst of the chains that use it. Without this
+    // the header would keep whatever colour it had at build time while the rows moved.
+    const rank = {FAIL: 0, STALE: 1, RUNNING: 2, SKIP: 3, PASS: 4, IDLE: 5};
+    document.querySelectorAll('g.node.module').forEach(g => {
+      const users = (g.dataset.users || '').split(',').filter(Boolean);
+      let worst = 'IDLE';
+      users.forEach(u => { const st = chains[u] || 'IDLE';
+        if ((rank[st] ?? 9) < (rank[worst] ?? 9)) worst = st; });
+      const t = g.querySelector('text');
+      if (t) t.setAttribute('fill', PALETTE[worst] || PALETTE.IDLE);
     });
     document.querySelectorAll('.edge').forEach(p => {
       const st = chains[p.dataset.from];

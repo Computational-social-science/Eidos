@@ -175,3 +175,9 @@ Column headers carry their own state — a module takes the worst verdict among 
 it, a service takes its own health — and the poll recomputes both. A chain that was skipped is not
 a fault in the module it uses: SKIP is excluded from the worst-of calculation, and a module whose
 users were all skipped reports SKIP rather than borrowing a colour it did not earn.
+
+The operator strip reads the recovery log as a small state machine, not as a boolean: an attempt
+line says whether a process started, a terminal line says whether the repair was verified.
+Reading only the last line made `verified / recovered` red — that row carries `outcome`, not `ok`
+— and made a bare attempt green before anything had been verified. Four tests pin the cases
+(verified, attempt-only, failed, empty).

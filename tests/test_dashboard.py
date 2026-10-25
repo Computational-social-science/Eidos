@@ -229,3 +229,39 @@ def test_dashboard_check_rejects_a_missing_page(monkeypatch, tmp_path):
 
     monkeypatch.setattr(dash, "OUT", tmp_path / "nope.html")
     assert dash.main(["--check"]) == 1
+
+
+def _operator_states(recoveries):
+    """Read the operator strip's own titles, so the test asserts what the page says."""
+    svg = dash.operator_strip({"ts": ""}, recoveries)
+    out = {}
+    for chunk in svg.split("<g class='node operator'")[1:]:
+        title = chunk.split("<title>")[1].split("</title>")[0]
+        name, state = title.split(" · ")[0], title.split(" · ")[1]
+        out[name] = state
+    return out
+
+
+def test_a_verified_recovery_is_not_painted_red():
+    # A terminal line carries `outcome`, not `ok`; reading only `ok` made every success red.
+    states = _operator_states([{"phase": "attempt", "ok": True, "pid": 1},
+                               {"phase": "verified", "outcome": "recovered"}])
+    assert states["execute"] == "PASS"
+    assert states["verify"] == "PASS"
+
+
+def test_an_attempt_alone_does_not_claim_verification():
+    states = _operator_states([{"phase": "attempt", "ok": True, "pid": 1}])
+    assert states["execute"] == "PASS"
+    assert states["verify"] == "RUNNING"
+
+
+def test_a_failed_verification_is_red():
+    states = _operator_states([{"phase": "attempt", "ok": True, "pid": 1},
+                               {"phase": "verified", "outcome": "gave_up"}])
+    assert states["verify"] == "FAIL"
+
+
+def test_no_recovery_history_is_idle():
+    states = _operator_states([])
+    assert states["execute"] == "IDLE" and states["verify"] == "IDLE"

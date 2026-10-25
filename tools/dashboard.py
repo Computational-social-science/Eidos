@@ -445,16 +445,32 @@ def operator_strip(status: dict, recoveries: list) -> str:
     except (ValueError, TypeError):
         age = None
     sampled = "PASS" if age is not None and age < 90 else ("STALE" if age is not None else "IDLE")
-    last = recoveries[-1] if recoveries else {}
-    healed = last.get("phase", "")
-    healed_ok = bool(last.get("ok"))
+    # The log has two kinds of line: an attempt (ok, pid) and a terminal verdict (outcome).
+    # Reading only the last line made "verified / recovered" — which carries no `ok` — paint the
+    # repair red, and made a bare attempt paint it green before anything was verified.
+    terminal = next((r for r in reversed(recoveries)
+                     if r.get("phase") in ("verified", "failed", "gave_up")), None)
+    attempt = next((r for r in reversed(recoveries) if r.get("phase") == "attempt"), None)
+    if terminal:
+        outcome = terminal.get("outcome") or ("recovered" if terminal.get("ok") else "failed")
+        exec_state = "PASS" if attempt is None or attempt.get("ok") else "FAIL"
+        verify_state = "PASS" if outcome == "recovered" else "FAIL"
+        plan_state = "PASS"
+        verify_note = outcome
+    elif attempt:
+        exec_state = "PASS" if attempt.get("ok") else "FAIL"
+        verify_state, plan_state, verify_note = "RUNNING", "PASS", "not verified yet"
+    else:
+        exec_state = verify_state = plan_state = "IDLE"
+        verify_note = "recovery.verify"
+    healed = len([r for r in recoveries if r.get("phase") == "verified"])
     steps = [
         ("self-check · sample", sampled, "15 s"),
         ("derive verdict", "PASS", "status_view"),
-        ("plan repair", "PASS" if healed else "IDLE", "recovery.plan"),
-        ("execute", ("PASS" if healed_ok else "FAIL") if healed else "IDLE", "recovery.execute"),
-        ("verify", ("PASS" if healed_ok else "FAIL") if healed else "IDLE", "recovery.verify"),
-        ("record", "PASS", f"{len(recoveries)} logged"),
+        ("plan repair", plan_state, "recovery.plan"),
+        ("execute", exec_state, "recovery.execute"),
+        ("verify", verify_state, verify_note),
+        ("record", "PASS", f"{healed} healed"),
     ]
     n = len(steps)
     box_w, gap = 168, 26

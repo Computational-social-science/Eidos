@@ -105,3 +105,23 @@ operators with names, files and failure modes of their own.
 The assembly view draws this as a fourth column (instruments) and an arc back to the chains;
 the operator band beneath it draws steps 1–7 as the loop they form. If the arc is missing, the
 picture is a pipeline pretending to be a system.
+
+## 8. Releases re-earn the onboarding claim
+
+A release is a claim that this framework can take a new project from nothing to a checked verdict.
+`build_site.py --release` therefore runs `tools/release_gate.py` first and refuses to write
+`site/versions.json` if it fails:
+
+1. scaffold a project from `reference/demo_onboarding` into `docs/status/_release_rehearsal`
+2. run its measurement (48 operator calls, ~27 s)
+3. run Gate S on the scaffold and require PASS
+4. run the template's `show_rejection.py` and require a rejection by S3 **and** S9
+
+The rehearsal runs inside the repository because a directory on another drive cannot be described
+relative to the registry, and leaves no registration behind — a registry entry pointing at a
+deleted directory makes every later `load_projects()` fail.
+
+Consumers are their own signal: the sampler reads each project's `docs/evidence.json`, not the
+page's cached copy, and a project nobody has re-measured in 24 hours raises the fault line. The
+same applies to the scheduler: `docs/status/scheduler.json` is checked every tick, and the server
+restarts the loop when the heartbeat is older than two intervals.

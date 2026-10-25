@@ -850,7 +850,11 @@ def consumer_strip(pipeline: dict) -> str:
             except ValueError:
                 age = ""
         x = 4 + k * (box_w + gap)
-        note = f"gate {got} / expected {want}" + (f" · {age}" if age else "")
+        role = str(row.get("role") or "")
+        tag = ("demo" if role.upper().startswith("DEMO")
+               else "control" if "control" in role.lower()
+               else "consumer" if "consumer" in role.lower() else "")
+        note = (f"{tag} · " if tag else "") + f"gate {got} / expected {want}" +                (f" · {age}" if age else "")
         parts.append(
             f"<g class='node consumer' data-consumer='{html.escape(name)}' tabindex='0' role='button'>"
             f"<title>{html.escape(name)} · {html.escape(note)}</title>"
@@ -859,7 +863,7 @@ def consumer_strip(pipeline: dict) -> str:
             f"<text x='{x + 11}' y='17' font-size='10' fill='#c9d1d9'>"
             f"{html.escape(name[:26])}</text>"
             f"<text x='{x + 11}' y='31' font-size='9' fill='#8b95a5'>"
-            f"{html.escape(note[:38])}</text></g>")
+            f"{html.escape(note[:46])}</text></g>")
     parts.append("</svg>")
     return "".join(parts)
 

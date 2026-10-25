@@ -19,10 +19,24 @@ ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE = ROOT / "reference" / "demo_onboarding"
 
 
+def _root_field(dest: Path, registry: Path) -> str:
+    """A relative root, unless the destination is on another drive.
+
+    A project outside the repository cannot be described relatively; the honest fallback is an
+    absolute path, which the loader accepts. Everything inside the repository stays relative.
+    """
+    try:
+        return Path(os.path.relpath(dest, registry)).as_posix()
+    except ValueError:
+        return dest.as_posix()
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--name", required=True, help="project name (lowercase, underscores)")
     ap.add_argument("--dest", required=True, help="destination directory for the project root")
+    ap.add_argument("--no-register", action="store_true",
+                    help="scaffold only; do not add a registry entry (used by the release rehearsal)")
     args = ap.parse_args(argv)
 
     if not TEMPLATE.is_dir():
@@ -38,6 +52,10 @@ def main(argv: list[str] | None = None) -> int:
     shutil.copytree(TEMPLATE, dest)
     for rel in ("docs/evidence.json",):
         (dest / rel).unlink(missing_ok=True)
+
+    if args.no_register:
+        print(f"created {dest} (not registered)")
+        return 0
 
     registry = ROOT / "projects" / args.name
     registry.mkdir(parents=True, exist_ok=True)

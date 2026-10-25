@@ -647,6 +647,13 @@ def record_release(data: dict) -> list[dict]:
                                               ).get("blind_spots_open"),
                          "instruments": len(((data.get("evolution") or {}).get("state") or {}
                                              ).get("instruments") or [])}}
+    rehearsal = subprocess.run([sys.executable, "tools/release_gate.py"], cwd=ROOT,
+                               capture_output=True, text=True, timeout=1800)
+    print(rehearsal.stdout.strip()[-1200:])
+    if rehearsal.returncode != 0:
+        print("[FAIL] release refused: the framework could not onboard a new project", file=sys.stderr)
+        raise SystemExit(1)
+
     history = versions()
     if history and history[-1].get("commit") == entry["commit"]:
         history[-1] = entry          # same commit rebuilt: replace, do not duplicate

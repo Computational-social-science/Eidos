@@ -63,6 +63,8 @@ class ProjectSpec:
     #: not judged anything, and calling that PASS is the vacuous pass this field prevents.
     expects: list[str] = dataclasses.field(default_factory=list)
     notes: str = ""
+    #: What kind of consumer this is: measured LLM consumer, negative control, chain fixture.
+    role: str = ""
     #: Gate S registration: the claim register, the deliverable(s) the claims live in,
     #: and the verdict the consumer is expected to produce (a negative control FAILs).
     validity_register: str = ""
@@ -144,6 +146,7 @@ def load_project(project_file: Path, allow_missing: bool = False) -> ProjectSpec
         reports=[str(r) for r in (data.get("reports") or [])],
         expects=[str(r) for r in (data.get("expects") or [])],
         notes=str(data.get("notes") or ""),
+        role=str(data.get("role") or ""),
         validity_register=str(data.get("validity_register") or ""),
         validity_document=str(data.get("validity_document") or ""),
         expected_gate_s=str(data.get("expected_gate_s") or ""),

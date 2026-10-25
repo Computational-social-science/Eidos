@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-25T08:18:03+00:00",
+  "generated": "2026-10-25T08:26:53+00:00",
   "coupling": {
     "nodes": [
       "framework.decision",
@@ -520,7 +520,8 @@
       "available": true,
       "gate_s": "\u2014",
       "expected": "",
-      "generated": null
+      "generated": null,
+      "role": ""
     },
     {
       "name": "chain_no_output",
@@ -528,7 +529,8 @@
       "available": true,
       "gate_s": "\u2014",
       "expected": "",
-      "generated": null
+      "generated": null,
+      "role": ""
     },
     {
       "name": "chain_ok",
@@ -536,7 +538,8 @@
       "available": true,
       "gate_s": "\u2014",
       "expected": "",
-      "generated": null
+      "generated": null,
+      "role": ""
     },
     {
       "name": "chain_tool_missing",
@@ -544,7 +547,8 @@
       "available": true,
       "gate_s": "\u2014",
       "expected": "",
-      "generated": null
+      "generated": null,
+      "role": ""
     },
     {
       "name": "demo_onboarding",
@@ -552,7 +556,8 @@
       "available": true,
       "gate_s": "PASS",
       "expected": "PASS",
-      "generated": "2026-10-25T08:11:54+00:00"
+      "generated": "2026-10-25T08:11:54+00:00",
+      "role": "DEMO (onboarding template, LLM consumer)"
     },
     {
       "name": "null_study",
@@ -560,7 +565,8 @@
       "available": true,
       "gate_s": "FAIL",
       "expected": "FAIL",
-      "generated": null
+      "generated": null,
+      "role": "negative control (expected rejection)"
     },
     {
       "name": "operator_calibration",
@@ -568,7 +574,8 @@
       "available": true,
       "gate_s": "PASS",
       "expected": "PASS",
-      "generated": "2026-10-25T08:16:19+00:00"
+      "generated": "2026-10-25T08:16:19+00:00",
+      "role": "LLM consumer (calibration of a typed decision operator)"
     },
     {
       "name": "prose_lie",
@@ -576,7 +583,8 @@
       "available": true,
       "gate_s": "FAIL",
       "expected": "FAIL",
-      "generated": null
+      "generated": null,
+      "role": "negative control for S9 (prose contradicts its own evidence)"
     }
   ],
   "chain_modules": {

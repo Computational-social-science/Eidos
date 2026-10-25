@@ -145,7 +145,10 @@ def consumers() -> list[dict]:
     rows = []
     for name, spec in sorted(load_projects().items()):
         row = {"name": name, "root": str(spec.root), "available": spec.available,
-               "gate_s": "—", "expected": None, "generated": None}
+               "gate_s": "—", "expected": None, "generated": None,
+               # The role says what kind of evidence this project is: a measured LLM consumer,
+               # a negative control, or a chain fixture. Without it four entries look identical.
+               "role": (spec.role or "").strip()}
         register = getattr(spec, "validity_register", None)
         document = getattr(spec, "validity_document", None)
         row["expected"] = getattr(spec, "expected_gate_s", None)

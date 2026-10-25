@@ -37,6 +37,37 @@ reports: [docs/MANUSCRIPT.html, outputs/rendered/index.pdf]
   instead, so a fresh clone can enumerate what it lacks without failing.
 * **No state is written into the YAML.** A recorded verdict goes stale and then
   contradicts the project; the status lives in the project's own artefacts.
+* `expected_gate_s` declares what the project should produce (`PASS`, or `FAIL` for a negative
+  control). A consumer is healthy when the verdict *equals the expectation* — a control that
+  fails is doing its job.
+* `expects` lists the files the gate must leave behind. A gate that exits 0 without them is a
+  FAIL: judging nothing is not approving something.
+* `role` says what kind of evidence the project is (LLM consumer, negative control, demo). It is
+  shown on the monitor, because four identical boxes are not information.
+
+---
+
+## Onboarding a new project
+
+`reference/demo_onboarding` is the template, and it is a working consumer, not a sketch:
+
+```bash
+python tools/bootstrap_project.py --name my_study --dest ../../my_study
+cd ../../my_study && python build_evidence.py
+cd - && python -m framework.project check my_study
+python tools/audit_validity.py --project my_study      # accepts the registered name
+```
+
+Measured on 2026-10-25: twelve items, 48 calls, **27 s** to evidence, Gate S PASS. The template
+finds the framework by walking up to `framework/decision.py`, so it survives being copied
+anywhere; `EIDOS_ROOT` overrides the search.
+
+`python show_rejection.py` inside the template edits one number in the register and runs Gate S on
+the copy: it must be rejected by S3 **and** S9, and the script exits 0 only when both fire. A demo
+that shows only success teaches that the gate is a formality.
+
+`tools/release_gate.py` performs the whole thing unattended before a release is recorded:
+scaffold, measure, Gate S, rejection demo. A release whose onboarding rehearsal fails is refused.
 
 ```bash
 python -m framework.project list

@@ -134,3 +134,15 @@ the failure looks like a contrast or layout bug rather than a stale process.
 Rule: after changing any builder (`dashboard.py`, `site_page.py`, `theme.py`), stop the server,
 rebuild, then start it again. `audit_site.py` cannot see this: it audits the file, and the file
 is what the old process wrote.
+
+## A rehearsal that registers its scaffold breaks every later load
+
+`bootstrap_project.py` registers the project it creates. When the release rehearsal used it on a
+temporary directory and then deleted the directory, `projects/<name>/project.yaml` stayed behind
+pointing at a path that no longer existed — and `load_projects()` is strict, so *every* later
+command that enumerates projects failed, not just the rehearsal.
+
+Rule: anything that scaffolds into a temporary directory passes `--no-register`, and removes any
+registration it created in a `finally` block. The rehearsal now runs inside
+`docs/status/_release_rehearsal` for the same reason: a path on another drive cannot be written
+relative to the registry.

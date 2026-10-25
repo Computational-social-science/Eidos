@@ -22,6 +22,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 import tomllib
 from pathlib import Path
 
@@ -557,6 +558,19 @@ def monitor_snapshot(data: dict) -> dict:
             "ok_chains": sum(1 for r in rows if r["state"] in ("PASS", "SKIP"))}
 
 
+def _stamp_hkt(iso: str | None) -> str:
+    """A document records when it was checked, as a date — not "9 minutes ago", which is only
+    true for the minute it was rendered and makes the page look stale on every rebuild."""
+    if not iso:
+        return "never"
+    try:
+        when = datetime.datetime.fromisoformat(str(iso).replace("Z", "+00:00"))
+    except ValueError:
+        return str(iso)
+    return when.astimezone(datetime.timezone(datetime.timedelta(hours=8))).strftime(
+        "%Y-%m-%d %H:%M HKT")
+
+
 def deps_table() -> str:
     """Dependency pins, on the page that documents the framework rather than the one that runs it."""
     try:
@@ -565,28 +579,41 @@ def deps_table() -> str:
     except (OSError, json.JSONDecodeError):
         return "<p class='mono'>not sensed yet</p>"
     labels = {"decision_model": "decision model"}
+    sys.path.insert(0, str(ROOT))
+    from framework import updates as upd
+
     rows = []
     for name, item in (sense.get("items") or {}).items():
-        state = item.get("state") or "unknown"
         pin = ((lock.get("pins") or {}).get(name) or {}).get("version") or item.get("pinned") or "—"
-        installed = item.get("installed") or "—"
+        # Measured now, not remembered from the last sense: a snapshot's `installed` goes stale the
+        # moment anything is installed, and a table that repeats it will claim a divergence exists
+        # or hide one that does.
+        measured = upd.installed(name)
+        installed = measured.get("version") or "—"
+        upstream_state = item.get("state") or "unknown"
         offer = item.get("available")
-        upstream = (f"<b>{offer}</b>" if state == "behind" and offer
-                    else {"unmonitored": "no upstream", "unknown": "unreachable"}.get(state, "—"))
-        cls = {"behind": "warn", "unknown": "warn", "unmonitored": "dim"}.get(state, "")
+        if pin and installed and str(installed) != str(pin):
+            # The pin says what should run; the host says what does.
+            state, cls = "diverged", "warn"
+        else:
+            state = upstream_state
+            cls = {"behind": "warn", "unknown": "warn", "unmonitored": "dim"}.get(state, "")
+        upstream = (f"<b>{offer}</b>" if upstream_state == "behind" and offer
+                    else {"unmonitored": "no upstream", "unknown": "unreachable"}.get(
+                        upstream_state, "—"))
         rows.append(f"<tr><td class='mono'>{html.escape(labels.get(name, name))}</td>"
                     f"<td class='mono'>{html.escape(str(pin))}</td>"
                     f"<td class='mono'>{html.escape(str(installed))}</td>"
                     f"<td class='{cls}'>{upstream}</td>"
-                    f"<td class='mono dim'>{html.escape(state)}</td></tr>")
-    checked = sense.get("ts") or "never"
+                    f"<td class='mono {cls}'>{html.escape(state)}</td></tr>")
+    checked = _stamp_hkt(sense.get("ts"))
     return ("<div class='tw'><table><caption>Pins are the contract; the upstream column is what "
             "sensing found. A promotion needs a passing try, and <code>apply</code> is the only "
             "command that installs.</caption><thead><tr><th>dependency</th><th>pinned</th>"
             "<th>installed</th><th>upstream</th><th>state</th></tr></thead><tbody>"
             + "".join(rows) +
             f"</tbody></table></div><p class='mono' style='margin:6px 0 0;color:var(--dim)'>"
-            f"sensed {html.escape(str(checked))}</p>")
+            f"sensed {html.escape(checked)}</p>")
 
 
 def render(data: dict) -> str:

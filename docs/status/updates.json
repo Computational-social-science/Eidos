@@ -1,5 +1,5 @@
 {
-  "ts": "2026-10-25T14:59:52+00:00",
+  "ts": "2026-10-25T15:25:18+00:00",
   "offline": false,
   "items": {
     "quarto": {
@@ -20,7 +20,7 @@
     },
     "mlflow": {
       "pinned": "3.17.2",
-      "installed": "3.17.1",
+      "installed": "3.17.2",
       "available": "3.17.2",
       "state": "current",
       "source": "pypi",
@@ -29,7 +29,7 @@
     "llama.cpp": {
       "pinned": "b11671",
       "installed": "b11671",
-      "available": "b11877",
+      "available": "b11878",
       "state": "behind",
       "source": "github",
       "note": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\tools\\llamacpp-cuda-11671-win32-x64\\llama-server.exe"

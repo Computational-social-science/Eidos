@@ -108,6 +108,14 @@ def invariants() -> list[str]:
             if f"v{version}" not in html:
                 problems.append(f"{name} does not state the project version v{version}")
 
+    # Declared pins belong to the document; live state belongs to the monitor. The band that
+    # carried the table on the dashboard was removed for that reason, and this check keeps it
+    # removed: a monitor that lists what upstream offers is answering the wrong question.
+    if "Dependency versions" in d:
+        problems.append("dashboard carries the dependency table; pins are documented, not monitored")
+    if "Dependency versions" not in i:
+        problems.append("index does not carry the dependency table")
+
     for name, html in (("index.html", i), ("dashboard.html", d)):
         for sel in unstyled(html, COMPONENTS[name]):
             problems.append(f"{name}: {sel} is used but has no style rule")

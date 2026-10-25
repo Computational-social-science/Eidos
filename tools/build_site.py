@@ -46,6 +46,25 @@ MAX_VERSIONS = 50
 
 
 # --------------------------------------------------------------------------- data
+def bump(kind: str) -> str:
+    """Raise the one version number that matters, in the one place it lives."""
+    path = ROOT / "pyproject.toml"
+    text = path.read_text(encoding="utf-8")
+    current = re.search(r'(?m)^version\s*=\s*"([^"]+)"', text)
+    if not current:
+        raise SystemExit("pyproject.toml has no [project] version")
+    major, minor, patch = (int(x) for x in current.group(1).split(".")[:3])
+    if kind == "major":
+        major, minor, patch = major + 1, 0, 0
+    elif kind == "minor":
+        minor, patch = minor + 1, 0
+    else:
+        patch += 1
+    new = f"{major}.{minor}.{patch}"
+    path.write_text(text.replace(current.group(0), f'version = "{new}"', 1), encoding="utf-8")
+    return new
+
+
 def meta() -> dict:
     project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]
     return {"version": project.get("version", "?"),
@@ -642,9 +661,13 @@ def record_release(data: dict) -> list[dict]:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--bump", choices=("major", "minor", "patch"), default="",
+                    help="raise the version in pyproject.toml before building")
     ap.add_argument("--release", action="store_true",
                     help="append this build to site/versions.json")
     args = ap.parse_args(argv)
+    if args.bump:
+        print(f"version -> {bump(args.bump)}")
 
     data = collect()
     if args.release:

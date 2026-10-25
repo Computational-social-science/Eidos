@@ -22,6 +22,7 @@ import datetime as dt
 import json
 import subprocess
 import sys
+import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -33,6 +34,15 @@ def _load(name: str, default):
         return json.loads((DOCS / name).read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return default
+
+
+def _version() -> str:
+    """The version the framework says it is, from the one file that declares it."""
+    try:
+        return str(tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+                   ["project"]["version"])
+    except (OSError, KeyError, tomllib.TOMLDecodeError):
+        return ""
 
 
 def _history() -> list[dict]:
@@ -106,6 +116,7 @@ def collect() -> dict:
 
     return {
         "asof": dt.datetime.now().astimezone().isoformat(timespec="seconds"),
+        "version": _version(),
         "state": {
             "chains": chains,
             "tests": tests or audit.get("tests_collected"),
@@ -149,7 +160,7 @@ def main(argv: list[str] | None = None) -> int:
         except (OSError, json.JSONDecodeError):
             print("[FAIL] docs/EVOLUTION.json has never been written")
             return 1
-        for key in ("chains", "tests", "instruments", "open_defects"):
+        for key in ("version", "chains", "tests", "instruments", "open_defects"):
             if old.get("state", {}).get(key) != record["state"].get(key):
                 if key == "instruments":      # results carry counts; compare the shape only
                     continue

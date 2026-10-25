@@ -89,6 +89,18 @@ def invariants() -> list[str]:
     if "--bg:#0e1013" not in i or "--bg:#0e1013" not in d:
         problems.append("the two pages do not share the same background token")
 
+    # One version, two pages. A document that says v4.0.0 while the release record says 4.1.0
+    # is a page that will be cited with the wrong number.
+    try:
+        import tomllib
+        version = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+    except (OSError, KeyError, tomllib.TOMLDecodeError):
+        version = ""
+    if version:
+        for name, html in (("index.html", i), ("dashboard.html", d)):
+            if f"v{version}" not in html:
+                problems.append(f"{name} does not state the project version v{version}")
+
     for name, html in (("index.html", i), ("dashboard.html", d)):
         for sel in unstyled(html, COMPONENTS[name]):
             problems.append(f"{name}: {sel} is used but has no style rule")

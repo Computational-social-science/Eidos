@@ -486,6 +486,8 @@ svg .edge{transition:stroke .4s ease}
 /* The operator band sits under the assembly, separated by a hairline: same figure, second
    question — not a new card competing with it. */
 .fbcaption{margin:2px 0 0;font-size:9.5px;color:var(--mut)}
+.opwrap .hint{text-transform:none;letter-spacing:0;font-weight:400;color:var(--mut);
+  margin-left:8px;font-size:9.5px}
 .opwrap{margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
 .opwrap h3{margin:0 0 6px;font:600 9.5px/1.4 -apple-system,"Segoe UI",Arial,sans-serif;
   letter-spacing:.11em;text-transform:uppercase;color:var(--dim);font-weight:600}
@@ -815,6 +817,50 @@ def version_label() -> str:
         return ""
 
 
+
+def consumer_strip(pipeline: dict) -> str:
+    """The outward face: what the framework does for a project.
+
+    A consumer is only healthy when its verdict equals its *expectation* — a negative control
+    that fails is doing its job, and colouring it red would invert the meaning of the test.
+    """
+    rows = pipeline.get("consumers") or []
+    if not rows:
+        return ("<p class='mono' style='color:var(--mut)'>no consumer registered: the framework "
+                "is checking itself and serving no project</p>")
+    box_w, gap, height = 226, 12, 54
+    width = max(600, len(rows) * (box_w + gap) + 8)
+    parts = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
+             f"aria-label='consumers: what the framework does for a project'>"]
+    now = time.time()
+    for k, row in enumerate(rows):
+        name = str(row.get("name") or "?")
+        got, want = str(row.get("gate_s") or "—"), str(row.get("expected") or "—")
+        as_expected = want != "—" and got == want
+        st = "PASS" if as_expected else "FAIL"
+        gen = row.get("generated")
+        age = ""
+        if gen:
+            try:
+                age = fmt_age(max(0.0, now - datetime.datetime.fromisoformat(
+                    str(gen).replace("Z", "+00:00")).timestamp()))
+            except ValueError:
+                age = ""
+        x = 4 + k * (box_w + gap)
+        note = f"gate {got} / expected {want}" + (f" · {age}" if age else "")
+        parts.append(
+            f"<g class='node consumer' data-consumer='{html.escape(name)}' tabindex='0' role='button'>"
+            f"<title>{html.escape(name)} · {html.escape(note)}</title>"
+            f"<rect x='{x}' y='3' width='{box_w}' height='38' rx='4' fill='#1b2027' stroke='#2a3038'/>"
+            f"<rect x='{x}' y='3' width='3' height='38' fill='{PALETTE[st]}'/>"
+            f"<text x='{x + 11}' y='17' font-size='10' fill='#c9d1d9'>"
+            f"{html.escape(name[:26])}</text>"
+            f"<text x='{x + 11}' y='31' font-size='9' fill='#8b95a5'>"
+            f"{html.escape(note[:38])}</text></g>")
+    parts.append("</svg>")
+    return "".join(parts)
+
+
 def build() -> str:
     pipeline = load(PIPELINE, {}) or {}
     status = load(STATUS / "current.json", {}) or {}
@@ -850,6 +896,7 @@ def build() -> str:
     except (OSError, json.JSONDecodeError):
         recoveries = []
     operator = operator_strip(status, recoveries)
+    consumers = consumer_strip(pipeline)
     evoloop = evolution_loop(evolution)
     faults = derived.get("faults") or faults
     ranking = fault_ranking()
@@ -896,6 +943,9 @@ def build() -> str:
     {svg}
     <p class="mono fbcaption">feedback: a defect an instrument finds becomes a guard before
     the next commit — the arc carries it back to the chains.</p>
+    <div class="opwrap"><h3>Consumers — what the framework does for a project
+      <span class="hint">green = verdict equals expectation, not “the project passed”</span></h3>
+    {consumers}</div>
     <div class="opwrap"><h3>Operators — self-check, then self-heal</h3>{operator}</div>
     <div class="opwrap"><h3>Feedback → evolution — how a defect becomes a guard</h3>{evoloop}</div>
     {fault_line}

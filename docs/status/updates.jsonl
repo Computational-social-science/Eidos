@@ -6,3 +6,9 @@
 {"ts": "2026-10-25T14:35:21+00:00", "kind": "promote", "name": "dvc", "from": "3.67.1", "to": "3.67.0"}
 {"ts": "2026-10-25T14:35:21+00:00", "kind": "rollback", "name": "dvc", "to": "3.67.1"}
 {"ts": "2026-10-25T14:48:22+00:00", "kind": "sense", "behind": ["mlflow", "llama.cpp"], "detail": {"mlflow": "3.17.2", "llama.cpp": "b11876"}}
+{"ts": "2026-10-25T15:00:24+00:00", "kind": "try", "name": "mlflow", "version": "3.17.2", "ok": true, "detail": {"ok": true, "version": "3.17.2", "isolated_at": "E:\\2026-AI4S\\Eidos\\docs\\status\\update_tries\\mlflow-3.17.2\\venv"}}
+{"ts": "2026-10-25T15:00:35+00:00", "kind": "sense", "behind": ["mlflow", "llama.cpp"], "detail": {"mlflow": "3.17.2", "llama.cpp": "b11877"}}
+{"ts": "2026-10-25T15:05:39+00:00", "kind": "promote", "name": "mlflow", "from": "3.17.1", "to": "3.17.2"}
+{"ts": "2026-10-25T15:05:39+00:00", "kind": "version", "ok": true, "to": "4.2.0", "why": "mlflow 3.17.2"}
+{"ts": "2026-10-25T15:06:15+00:00", "kind": "apply", "name": "mlflow", "ok": false, "from": "3.17.1", "to": "3.17.2"}
+{"ts": "2026-10-25T15:07:39+00:00", "kind": "apply", "name": "mlflow", "ok": true, "from": "3.17.1", "to": "3.17.2"}

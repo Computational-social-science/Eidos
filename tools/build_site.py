@@ -557,6 +557,38 @@ def monitor_snapshot(data: dict) -> dict:
             "ok_chains": sum(1 for r in rows if r["state"] in ("PASS", "SKIP"))}
 
 
+def deps_table() -> str:
+    """Dependency pins, on the page that documents the framework rather than the one that runs it."""
+    try:
+        sense = json.loads((ROOT / "docs" / "status" / "updates.json").read_text(encoding="utf-8"))
+        lock = json.loads((ROOT / "lock" / "versions.lock.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return "<p class='mono'>not sensed yet</p>"
+    labels = {"decision_model": "decision model"}
+    rows = []
+    for name, item in (sense.get("items") or {}).items():
+        state = item.get("state") or "unknown"
+        pin = ((lock.get("pins") or {}).get(name) or {}).get("version") or item.get("pinned") or "—"
+        installed = item.get("installed") or "—"
+        offer = item.get("available")
+        upstream = (f"<b>{offer}</b>" if state == "behind" and offer
+                    else {"unmonitored": "no upstream", "unknown": "unreachable"}.get(state, "—"))
+        cls = {"behind": "warn", "unknown": "warn", "unmonitored": "dim"}.get(state, "")
+        rows.append(f"<tr><td class='mono'>{html.escape(labels.get(name, name))}</td>"
+                    f"<td class='mono'>{html.escape(str(pin))}</td>"
+                    f"<td class='mono'>{html.escape(str(installed))}</td>"
+                    f"<td class='{cls}'>{upstream}</td>"
+                    f"<td class='mono dim'>{html.escape(state)}</td></tr>")
+    checked = sense.get("ts") or "never"
+    return ("<div class='tw'><table><caption>Pins are the contract; the upstream column is what "
+            "sensing found. A promotion needs a passing try, and <code>apply</code> is the only "
+            "command that installs.</caption><thead><tr><th>dependency</th><th>pinned</th>"
+            "<th>installed</th><th>upstream</th><th>state</th></tr></thead><tbody>"
+            + "".join(rows) +
+            f"</tbody></table></div><p class='mono' style='margin:6px 0 0;color:var(--dim)'>"
+            f"sensed {html.escape(str(checked))}</p>")
+
+
 def render(data: dict) -> str:
     """Assemble the page. Measurement stays here; layout lives in site_page."""
     import site_page
@@ -611,6 +643,7 @@ def render(data: dict) -> str:
         "grid": len(lab["rows"]),
         "demo": demo_payload(),
         "rail": site_page.rail(data["commit"], data["today"], version, nvers),
+        "deps": deps_table(),
         "monitor": monitor_snapshot(data),
     }
     return site_page.render(ctx)

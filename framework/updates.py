@@ -35,6 +35,7 @@ EVENTS = ROOT / "docs" / "status" / "updates.jsonl"
 TRIES = ROOT / "docs" / "status" / "update_tries"
 
 TRY_TTL = 7 * 24 * 3600          # a passing try is evidence for a week, not forever
+SENSE_EVERY = 7 * 24 * 3600      # upstream releases do not need to be polled more than weekly
 HTTP_TIMEOUT = 8
 
 #: What each dependency is and where its truth lives. ``kind`` decides how a candidate is tried.
@@ -207,11 +208,18 @@ def sense(fetch=None, offline: bool = False) -> dict:
         else:
             offer = latest(name, fetch=fetch)
         state = "current"
-        if offer.get("version") and pin and _different(offer["version"], pin):
+        if not (spec_has_upstream(name)):
+            # Nothing to compare against. That is not a failed probe, and it must not be
+            # counted with one: an unmonitored dependency is a known blind spot, not an alarm.
+            state = "unmonitored"
+        elif offer.get("version") and pin and _different(offer["version"], pin):
             order = _compare(offer["version"], pin)
             state = "behind" if order > 0 else "ahead" if order < 0 else "behind"
         elif offer.get("version") is None:
             state = "unknown"
+            report_error = offer.get("error") or "no answer"
+            if report_error:
+                have["note"] = f"sense failed: {report_error}"
         report["items"][name] = {"pinned": pin, "installed": have.get("version"),
                                  "available": offer.get("version"), "state": state,
                                  "source": offer.get("source"),
@@ -231,6 +239,11 @@ def _compare(a: str, b: str) -> int:
     na = [int(x) for x in re.findall(r"\d+", str(a))]
     nb = [int(x) for x in re.findall(r"\d+", str(b))]
     return (na > nb) - (na < nb)
+
+
+def spec_has_upstream(name: str) -> bool:
+    spec = SOURCES.get(name) or {}
+    return bool(spec.get("repo") or spec.get("packages") or spec.get("package"))
 
 
 def _different(a: str, b: str) -> bool:
@@ -311,8 +324,17 @@ def try_candidate(name: str, version: str, artifact: Path | None = None,
 
 
 def _distribution(name: str) -> str:
+    """Which distribution name is actually installed here (mlflow vs mlflow-skinny)."""
+    from importlib.metadata import version
     spec = SOURCES[name]
-    return spec.get("package") or (spec.get("packages") or [name])[0]
+    candidates = spec.get("packages") or ([spec["package"]] if spec.get("package") else [name])
+    for package in candidates:
+        try:
+            version(package)
+            return package
+        except Exception:                                          # noqa: BLE001
+            continue
+    return candidates[0]
 
 
 def _try_pypi(name: str, version: str, work: Path, python: str, timeout: int) -> dict:
@@ -380,6 +402,19 @@ def passing_try(name: str, version: str, ttl: int = TRY_TTL) -> dict | None:
     return record if age <= ttl else None
 
 
+def _require_model_ab(name: str) -> None:
+    """A weights upgrade is not a file: require the pre-registered A/B to have passed."""
+    path = ROOT / "docs" / "status" / "model_ab.json"
+    if not path.is_file():
+        raise PermissionError(
+            f"{name} is an artifact: run `python tools/model_ab.py --base <current> "
+            f"--candidate <candidate endpoint>` before promoting")
+    record = json.loads(path.read_text(encoding="utf-8"))
+    if not (record.get("verdict") or {}).get("ok"):
+        raise PermissionError("the recorded model A/B did not pass: " +
+                              "; ".join((record.get("verdict") or {}).get("reasons") or []))
+
+
 def promote(name: str, version: str, note: str = "", allow_downgrade: bool = False) -> dict:
     """Move a pin forward. Refuses without a passing try, and refuses to move backwards.
 
@@ -394,6 +429,8 @@ def promote(name: str, version: str, note: str = "", allow_downgrade: bool = Fal
         raise PermissionError(
             f"{name} {version} is older than the pinned {current}; "
             "pass allow_downgrade=True (CLI: --allow-downgrade --note <why>) if that is intended")
+    if (SOURCES.get(name) or {}).get("kind") == "artifact":
+        _require_model_ab(name)
     evidence = passing_try(name, version)
     if evidence is None:
         raise PermissionError(
@@ -409,6 +446,9 @@ def promote(name: str, version: str, note: str = "", allow_downgrade: bool = Fal
     _refresh_pinned(name, version)
     _event({"kind": "promote", "name": name, "from": (previous or {}).get("version"),
             "to": version})
+    lock["framework_version"] = {"version": _bump_framework("minor", f"{name} {version}"),
+                                 "at": _now()}
+    save_lock(lock)
     return lock["pins"][name]
 
 
@@ -425,7 +465,71 @@ def rollback(name: str) -> dict:
     save_lock(lock)
     _refresh_pinned(name, (last["from"] or {}).get("version"))
     _event({"kind": "rollback", "name": name, "to": (last["from"] or {}).get("version")})
+    lock["framework_version"] = {"version": _bump_framework("patch", f"rollback of {name}"),
+                                 "at": _now()}
+    save_lock(lock)
     return lock["pins"][name]
+
+
+def _bump_framework(kind: str, why: str) -> str | None:
+    """The framework's own version moves when its dependency contract does.
+
+    It is one number in one place (pyproject.toml), raised through the same function the release
+    tool uses, so a bump here and a bump there cannot disagree.
+    """
+    if LOCK.resolve() != (ROOT / "lock" / "versions.lock.json").resolve():
+        # A test or a rehearsal redirected the lock: it must not rewrite the real version file.
+        _event({"kind": "version", "ok": False, "reason": "not the repository lock"})
+        return None
+    try:
+        sys.path.insert(0, str(ROOT / "tools"))
+        from build_site import bump as bump_version
+        new = bump_version(kind)
+    except Exception as exc:                                      # noqa: BLE001
+        _event({"kind": "version", "ok": False, "reason": f"{type(exc).__name__}: {exc}"})
+        return None
+    _event({"kind": "version", "ok": True, "to": new, "why": why})
+    return new
+
+
+def apply(name: str, python: str | None = None, dry_run: bool = False) -> dict:
+    """Install the pinned version, then measure the host again.
+
+    Promotion decides *what* should run; this is the only command that changes what does. It
+    refuses for binaries and artifacts, which are installed by the tools that own them.
+    """
+    if name not in SOURCES:
+        raise KeyError(f"unknown dependency: {name}")
+    spec = SOURCES[name]
+    if spec.get("kind") != "pypi":
+        return {"ok": False, "skipped": True,
+                "reason": f"{spec.get('kind')} is installed by its own toolchain; the pin records intent"}
+    pin = (pinned(name) or {}).get("version")
+    if not pin:
+        return {"ok": False, "reason": "no pin to apply"}
+    before = installed(name).get("version")
+    if before == pin:
+        return {"ok": True, "noop": True, "installed": before}
+    interpreter = python or sys.executable
+    target = f"{_distribution(name)}=={pin}"
+    attempts = [["uv", "pip", "install", "--python", interpreter, target],
+                # A system interpreter under Program Files is not writable; the user site is.
+                [interpreter, "-m", "pip", "install", "--user", target]]
+    if dry_run:
+        return {"ok": True, "dry_run": True, "command": attempts[0], "from": before, "to": pin}
+    log = []
+    for command in attempts:
+        done = subprocess.run(command, capture_output=True, text=True, timeout=1800)
+        log.append({"command": command, "code": done.returncode,
+                    "tail": (done.stderr or done.stdout or "")[-300:]})
+        if done.returncode == 0 and installed(name).get("version") == pin:
+            break
+    after = installed(name).get("version")
+    ok = after == pin
+    result = {"ok": ok, "from": before, "to": pin, "installed": after,
+              "command": log[-1]["command"], "attempts": log, "stderr": None if ok else "failed"}
+    _event({"kind": "apply", "name": name, "ok": ok, "from": before, "to": pin})
+    return result
 
 
 def _refresh_pinned(name: str, version: str | None) -> None:
@@ -436,7 +540,14 @@ def _refresh_pinned(name: str, version: str | None) -> None:
         data = json.loads(SENSE.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         return
-    (data.setdefault("items", {}).setdefault(name, {}))["pinned"] = version
+    item = data.setdefault("items", {}).setdefault(name, {})
+    item["pinned"] = version
+    available = item.get("available")
+    if available:
+        if not _different(available, version):
+            item["state"] = "current"
+        else:
+            item["state"] = "behind" if _compare(available, version) > 0 else "ahead"
     SENSE.write_text(json.dumps(data, indent=2, ensure_ascii=False) + chr(10), encoding="utf-8")
 
 

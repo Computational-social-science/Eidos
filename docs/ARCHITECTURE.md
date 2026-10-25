@@ -189,5 +189,9 @@ and writes a report; it cannot change a pin. Promotion requires a passing try fo
 version, recorded within a week, and refuses to move a pin backwards. `rollback` restores the
 previous pin from the lock's own history.
 
+`apply` installs the pinned version and measures the host again; a promotion bumps the framework's
+own minor version, a rollback bumps its patch. A weights pin additionally requires a passing A/B
+over twelve fixed questions (agreement ≥ 0.90, mean |Δp| ≤ 0.05).
+
 The pin is single-sourced in `lock/versions.lock.json`; `docs/UPDATES.md` explains the rules and
 what the operator deliberately does not do (it does not install binaries or weights).

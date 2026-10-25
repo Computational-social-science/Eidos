@@ -31,8 +31,13 @@ project tags builds rather than versions) and writes `docs/status/updates.json`.
 a pin, so it is safe on a timer:
 
 ```
-*/6 * * * *  python tools/update_operator.py sense
+0 6 * * 1  python tools/update_operator.py sense        # Mondays, weekly
 ```
+
+Weekly is deliberate: upstream does not release fast enough to justify hourly polling, and a
+dependency band that changes every few hours trains the reader to ignore it. The sampler asks on
+the same cadence (`SENSE_EVERY` in `framework/updates.py`), so the band refreshes without a
+separate scheduler.
 
 Three details this host forced:
 
@@ -71,11 +76,44 @@ loop was demonstrated by promoting an older DVC and rolling it back; the pin was
 end, but the mechanism allowed a downgrade on the strength of a passing try alone. It no longer
 does — `--allow-downgrade --note <why>` is required, and the reason is recorded.
 
+## Apply
+
+`promote` decides what *should* run; `apply` is the only command that changes what does. It
+installs the pinned version with `uv pip install`, falls back to `pip install --user` when the
+interpreter's site-packages is not writable, then measures the host again. A successful apply is
+the only moment the upgrade is real, and the status table shows the divergence until then.
+
+On this host the first attempt fails with `Access denied` under `C:\Python314\Lib\site-packages`
+and the second installs into `%APPDATA%\Python\Python314\site-packages`, which is writable and
+earlier on `sys.path`.
+
+## The framework's own version
+
+A pin that moves forward bumps Eidos **minor**; a rollback bumps **patch**. The number is raised
+through `tools/build_site.py::bump`, the same function a release uses, so the two cannot disagree.
+`_bump_framework` refuses to touch `pyproject.toml` unless the lock is the repository's own lock —
+a test run once bumped it 4.1.0 → 4.4.0 because the tests had redirected only the lock.
+
 ## Rollback
 
 `rollback` restores the pin that preceded the last promotion. It is a lock operation, not an
 install: rolling back the pin while the installed version stays put is a *divergence*, which the
 status table shows as `pinned ≠ installed`. Reinstalling is a separate, deliberate step.
+
+## Model weights
+
+A hash proves the file is the one named; it does not prove the model behaves the same. Promotion
+of `decision_model` therefore requires a passing A/B record:
+
+```
+python tools/model_ab.py --base http://127.0.0.1:8090 --candidate http://127.0.0.1:8091
+```
+
+Twelve fixed questions with closed option sets go to both endpoints. The pre-registered rule:
+both endpoints answer at least 10, agreement ≥ 0.90, mean |Δp| ≤ 0.05. A run that is short is a
+FAIL, not an inconclusive pass. `--candidate` omitted compares the endpoint with itself, which is
+the harness control (agreement 1.000, Δ 0.0) — if the control does not come out clean, the harness
+is broken, not the model.
 
 ## What is not covered
 
@@ -95,6 +133,7 @@ python tools/update_operator.py status
 python tools/update_operator.py sense [--offline]
 python tools/update_operator.py try dvc 3.68.0
 python tools/update_operator.py promote dvc 3.68.0
+python tools/update_operator.py apply dvc
 python tools/update_operator.py rollback dvc
 ```
 

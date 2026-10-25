@@ -78,7 +78,8 @@ def test_promote_refuses_stale_evidence(store):
         updates.promote("dvc", "3.68.0")
 
 
-def test_promote_moves_the_pin_and_records_history(store):
+def test_promote_moves_the_pin_and_records_history(store, monkeypatch):
+    monkeypatch.setattr(updates, "_bump_framework", lambda kind, why: None)
     updates.TRIES.mkdir(parents=True, exist_ok=True)
     (updates.TRIES / "dvc-3.68.0.json").write_text(json.dumps(
         {"ts": updates._now(), "name": "dvc", "version": "3.68.0", "ok": True}), encoding="utf-8")
@@ -91,7 +92,8 @@ def test_promote_moves_the_pin_and_records_history(store):
     assert events[-1]["kind"] == "promote"
 
 
-def test_rollback_restores_the_previous_pin(store):
+def test_rollback_restores_the_previous_pin(store, monkeypatch):
+    monkeypatch.setattr(updates, "_bump_framework", lambda kind, why: None)
     updates.TRIES.mkdir(parents=True, exist_ok=True)
     (updates.TRIES / "dvc-3.68.0.json").write_text(json.dumps(
         {"ts": updates._now(), "name": "dvc", "version": "3.68.0", "ok": True}), encoding="utf-8")
@@ -128,3 +130,28 @@ def test_a_downgrade_can_be_intended(store):
     pin = updates.promote("dvc", "3.67.0", note="3.67.1 breaks the render stage",
                           allow_downgrade=True)
     assert pin["version"] == "3.67.0"
+
+
+def test_a_promotion_bumps_the_framework_minor(store, monkeypatch):
+    monkeypatch.setattr(updates, "_bump_framework", lambda kind, why: f"minor:{kind}:{why}")
+    updates.TRIES.mkdir(parents=True, exist_ok=True)
+    (updates.TRIES / "dvc-3.68.0.json").write_text(json.dumps(
+        {"ts": updates._now(), "name": "dvc", "version": "3.68.0", "ok": True}), encoding="utf-8")
+    updates.promote("dvc", "3.68.0")
+    assert updates.load_lock()["framework_version"]["version"].startswith("minor:minor")
+
+
+def test_a_rollback_bumps_the_framework_patch(store, monkeypatch):
+    calls = []
+    monkeypatch.setattr(updates, "_bump_framework", lambda kind, why: calls.append(kind) or "x")
+    updates.TRIES.mkdir(parents=True, exist_ok=True)
+    (updates.TRIES / "dvc-3.68.0.json").write_text(json.dumps(
+        {"ts": updates._now(), "name": "dvc", "version": "3.68.0", "ok": True}), encoding="utf-8")
+    updates.promote("dvc", "3.68.0")
+    updates.rollback("dvc")
+    assert calls == ["minor", "patch"]
+
+
+def test_a_redirected_lock_cannot_touch_the_real_version(store):
+    # The guard that stopped a test run from bumping pyproject three times.
+    assert updates._bump_framework("minor", "test") is None

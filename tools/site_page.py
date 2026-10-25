@@ -437,6 +437,10 @@ def sec_state(ctx: dict) -> str:
   that is down is named; it is never silently skipped.</p>
 </div>
 <div class="card" style="margin-top:10px">
+  <h3>Dependency versions</h3>
+  {ctx["deps"]}
+</div>
+<div class="card" style="margin-top:10px">
   <h3>Consumers</h3>
   <p>A pointer, not a copy: the framework discovers each consumer, runs its gate and reports one
   verdict; every fixture keeps its own logic and evidence.</p>

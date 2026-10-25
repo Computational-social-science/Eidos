@@ -1,0 +1,22 @@
+{
+  "ts": "2026-10-25T15:05:20+00:00",
+  "base_url": "http://127.0.0.1:8090",
+  "candidate_url": "http://127.0.0.1:8090",
+  "control": true,
+  "n_prompts": 12,
+  "result": {
+    "n": 12,
+    "agreement": 1.0,
+    "mean_abs_delta": 0.0,
+    "disagreements": []
+  },
+  "verdict": {
+    "ok": true,
+    "reasons": [],
+    "thresholds": {
+      "min_agreement": 0.9,
+      "max_delta": 0.05,
+      "min_n": 10
+    }
+  }
+}

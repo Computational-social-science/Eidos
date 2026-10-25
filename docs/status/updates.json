@@ -1,5 +1,5 @@
 {
-  "ts": "2026-10-25T14:47:54+00:00",
+  "ts": "2026-10-25T14:59:52+00:00",
   "offline": false,
   "items": {
     "quarto": {
@@ -19,17 +19,17 @@
       "note": "metadata:dvc"
     },
     "mlflow": {
-      "pinned": "3.17.1",
+      "pinned": "3.17.2",
       "installed": "3.17.1",
       "available": "3.17.2",
-      "state": "behind",
+      "state": "current",
       "source": "pypi",
       "note": "metadata:mlflow-skinny"
     },
     "llama.cpp": {
       "pinned": "b11671",
       "installed": "b11671",
-      "available": "b11876",
+      "available": "b11877",
       "state": "behind",
       "source": "github",
       "note": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\tools\\llamacpp-cuda-11671-win32-x64\\llama-server.exe"
@@ -38,7 +38,7 @@
       "pinned": "StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
       "installed": "StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
       "available": null,
-      "state": "unknown",
+      "state": "unmonitored",
       "source": "no upstream configured",
       "note": "E:\\2026-AI4S\\decision-service\\models"
     }

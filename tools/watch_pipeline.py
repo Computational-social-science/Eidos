@@ -496,9 +496,9 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         import framework.updates as updates
-        sense_every = 6 * 3600
+        sense_every = updates.SENSE_EVERY
         while True:
-            # Sensing is a timer, not a loop: ask upstream every six hours, never on every tick.
+            # Sensing is a timer, not a loop: weekly is enough for upstream releases.
             try:
                 last = json.loads(updates.SENSE.read_text(encoding="utf-8")).get("ts") or ""
                 age = time.time() - datetime.datetime.fromisoformat(last).timestamp()

@@ -17,6 +17,7 @@ from __future__ import annotations
 import datetime
 import html
 import json
+import re
 import sys
 import time
 from pathlib import Path
@@ -509,34 +510,6 @@ def operator_strip(status: dict, recoveries: list) -> str:
     return "".join(parts)
 
 
-def dependencies() -> str:
-    """What each external dependency is pinned to, and whether upstream has moved.
-
-    Read straight from the two files the operator writes, so the page never imports the update
-    code — a monitor that fails because a module moved is worse than one that says "not sensed".
-    """
-    try:
-        sense = json.loads((STATUS / "updates.json").read_text(encoding="utf-8"))
-        lock = json.loads((ROOT / "lock" / "versions.lock.json").read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return "<p class='mono prov'>dependencies — not sensed yet</p>"
-    colour = {"current": "#57ab5a", "behind": "#d29922", "ahead": "#58a6ff", "unknown": "#6e7681"}
-    items = sense.get("items") or {}
-    chips = []
-    for name, item in items.items():
-        state = item.get("state") or "unknown"
-        pinned_v = ((lock.get("pins") or {}).get(name) or {}).get("version") or item.get("pinned") or "—"
-        offer = item.get("available")
-        arrow = f" <span class='arw'>→ {html.escape(str(offer))}</span>" if state == "behind" and offer else ""
-        chips.append(
-            f"<span class='dep' title='{html.escape(name)} · {html.escape(state)}'>"
-            f"<i style='background:{colour.get(state, colour['unknown'])}'></i>"
-            f"{html.escape(name)} <b>{html.escape(str(pinned_v)[:18])}</b>{arrow}</span>")
-    age = sense.get("ts") or "never"
-    return ("<div class='deps'>" + "".join(chips) +
-            f"<span class='depage'>sensed {html.escape(str(age))}</span></div>")
-
-
 def provenance() -> str:
     """Where each state on this page comes from, and how old it is.
 
@@ -640,7 +613,18 @@ def evolution_loop(evo: dict) -> str:
 
 
 def version_label() -> str:
-    """The release this page was built from, or the last one on record."""
+    """The version this tree declares, or the last release on record.
+
+    pyproject.toml is the single source: a version bump that has not been released yet must still
+    be the number the page states, or the page and the tree disagree by construction.
+    """
+    try:
+        text = (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+        match = re.search(r'(?m)^version\s*=\s*"([^"]+)"', text)
+        if match:
+            return match.group(1)
+    except OSError:
+        pass
     try:
         rows = json.loads((ROOT / "site" / "versions.json").read_text(encoding="utf-8"))
         return str((rows[-1] or {}).get("version") or "")
@@ -1039,7 +1023,6 @@ def build() -> str:
       <span class="hint">green = verdict equals expectation, not “the project passed”
       · capability coverage {cov}</span></h3>
     {consumers}</div>
-    <div class="opwrap"><h3>Dependencies — pinned, and what upstream offers</h3>{dependencies()}</div>
     <div class="opwrap"><h3>Operators — self-check, then self-heal</h3>{operator}</div>
     <div class="opwrap"><h3>Feedback → evolution — how a defect becomes a guard</h3>{evoloop}</div>
     {fault_line}

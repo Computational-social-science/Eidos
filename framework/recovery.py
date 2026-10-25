@@ -196,25 +196,13 @@ def _shell() -> str:
     return found
 
 
-HEALTH = {
-    "decision_service": "http://127.0.0.1:8090/health",
-    "runtime_18434": "http://127.0.0.1:18434/health",
-}
+#: Which endpoints must answer is declared once, in framework.services: the monitor and the
+#: repair path cannot disagree about "up" if they read the same table.
+import services as _services  # noqa: E402  (framework/ is on the path at import time)
 
-#: A service can be a pair. /health on the front door answers even when the engine behind it is
-#: gone, so "up" means every endpoint in this list answers.
-ENDPOINTS = {
-    "decision_service": ("http://127.0.0.1:8090/health", "http://127.0.0.1:8081/health"),
-    "runtime_18434": ("http://127.0.0.1:18434/health",),
-}
-
-
-def _answers(url: str, timeout: float = 3.0) -> bool:
-    try:
-        with urllib.request.urlopen(url, timeout=timeout) as resp:
-            return 200 <= resp.status < 500
-    except (urllib.error.URLError, OSError):
-        return False
+HEALTH = {name: urls[0] for name, urls in _services.ENDPOINTS.items()}
+ENDPOINTS = _services.ENDPOINTS
+_answers = _services.answers
 
 #: Actions are declared by the *service* they repair, not by the symptom. One entry per
 #: thing this machine can actually start; everything else is "not restartable" and says so.

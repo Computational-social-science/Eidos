@@ -35,6 +35,28 @@ def run(cmd: list[str], label: str) -> tuple[bool, str]:
     return ok, out
 
 
+#: Components that must carry a rule of their own. The document once shipped with `ol.pipeline`
+#: unstyled — the nine stage cards collapsed into one line of text — while every layout check
+#: passed, because layout only sees boxes, not whether they were styled as intended.
+COMPONENTS = {
+    "index.html": ("ol.pipeline", "table.gm", ".mchip", ".contract", ".tw", ".sec-h", ".rail"),
+    "dashboard.html": (".srow", ".scells", ".key", ".card", ".edge", ".node"),
+}
+
+
+def unstyled(page_html: str, selectors: tuple[str, ...]) -> list[str]:
+    styles = "".join(re.findall(r"<style>(.*?)</style>", page_html, re.S))
+    body = re.sub(r"<style>.*?</style>", "", page_html, flags=re.S)
+    missing = []
+    for sel in selectors:
+        token = sel.split(".")[-1]
+        if token not in body:
+            continue                                   # not used on this page
+        if not re.search(re.escape(sel) + r"[\s,{:]", styles):
+            missing.append(sel)
+    return missing
+
+
 def invariants() -> list[str]:
     """Facts the pages must state, independent of style."""
     problems = []
@@ -64,6 +86,10 @@ def invariants() -> list[str]:
         problems.append("index does not link to the monitor")
     if "--bg:#0e1013" not in i or "--bg:#0e1013" not in d:
         problems.append("the two pages do not share the same background token")
+
+    for name, html in (("index.html", i), ("dashboard.html", d)):
+        for sel in unstyled(html, COMPONENTS[name]):
+            problems.append(f"{name}: {sel} is used but has no style rule")
     return problems
 
 
@@ -100,8 +126,10 @@ def main(argv: list[str] | None = None) -> int:
             checks.append(ok)
             ok, _ = run([PY, "tools/audit_contrast.py"], "both pages, WCAG AA")
             checks.append(ok)
+            ok, _ = run([PY, "tools/audit_runtime.py"], "both pages execute")
+            checks.append(ok)
         else:
-            print("  SKIP  layout and contrast (no browser in this runner)")
+            print("  SKIP  layout, contrast and runtime (no browser in this runner)")
 
         gaps = invariants()
         print(f"  {'PASS' if not gaps else 'FAIL'}  content invariants")

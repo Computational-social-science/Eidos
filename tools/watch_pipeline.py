@@ -106,15 +106,16 @@ def measure() -> dict:
     signals: dict[str, dict] = {}
 
     # The decision service is a pair: the HTTP layer on 8090 and the engine it calls on 8081.
-    # /health on 8090 answers even when the engine is gone, so a probe that stops there reports
-    # "up" for a service whose every request returns 502 — the monitor would contradict the
-    # chain audit. Both must answer.
+    # Which endpoints count is declared once in framework.services, so the monitor and the
+    # repair path cannot disagree about "up".
+    sys.path.insert(0, str(ROOT))
+    from framework import services as _services
     code, body = http_json("http://127.0.0.1:8090/health")
-    engine = http_status("http://127.0.0.1:8081/health")
-    up = code == 200 and body.get("status") == "ok" and engine in (200, 401)
+    look = _services.check("decision_service")
+    up = code == 200 and body.get("status") == "ok" and look["healthy"]
     note = body.get("model") or body.get("error")
-    if not up and code == 200 and engine not in (200, 401):
-        note = "engine :8081 down"
+    if not up and look["silent"]:
+        note = "silent: " + ", ".join(u.split("//")[-1] for u in look["silent"])
     signals["decision_service"] = {
         "value": 1 if up else 0,
         "reference": 1, "direction": "min", "unit": "up",

@@ -151,6 +151,13 @@ pre code{background:none;padding:0;font-size:inherit}
 .mchip.running b{color:var(--accent)}.mchip.stale b{color:var(--warn)}.mchip.idle b{color:var(--dim)}
 .mchip.ok b{color:#6cbf6e}.mchip.bad b{color:#ef6b62}
 .mnote{margin:10px 0 0;font-size:11px;color:var(--dim)}
+/* The gate matrix: a scannable object, not a wall of cells. Absent after the rewrite, which
+   the component/style check caught before a reader had to. */
+table.gm{width:100%;border-collapse:collapse;font-size:12.2px}
+table.gm td,table.gm th{padding:5px 7px;border-bottom:1px solid var(--line);vertical-align:middle}
+table.gm td.st{font-weight:600;color:var(--fg);white-space:nowrap}
+table.gm td.has{background:rgba(91,141,239,.06)}
+table.gm td.none{color:var(--dim)}
 .gm-sum{margin:9px 0 0;font-size:11.8px;color:var(--mut)}
 .gm-sum b{color:var(--fg)}
 .gm-key{display:flex;gap:9px;align-items:center;margin:7px 0 0;flex-wrap:wrap}
@@ -345,7 +352,7 @@ def sec_state(ctx: dict) -> str:
 </div>'''
     return sec("05", "state", "State, at this build",
                'Chain-by-chain and module-by-module state is live in the '
-               '<a href="/dashboard.html">monitor</a>, which is the only place that draws it. '
+               '<a href="http://127.0.0.1:8765/">monitor</a>, which is the only place that draws it. '
                'This page records what the framework <em>is</em>; the monitor records what it is '
                '<em>doing</em>. Machine record: <a href="../docs/SELF_AUDIT.json">'
                'docs/SELF_AUDIT.json</a>.', body)
@@ -374,7 +381,7 @@ def sec_monitor(ctx: dict) -> str:
     <span class="mpill {verdict.lower()}">{verdict}</span>
     <span class="mmeta">snapshot at <b>{m["asof"]}</b> HKT · <b>{m["samples"]}</b> samples ·
     <b>{m["ok_chains"]}/{m["n_chains"]}</b> chains healthy</span>
-    <a class="mlink" href="/dashboard.html">open the live monitor →</a>
+    <a class="mlink" href="http://127.0.0.1:8765/">open the live monitor →</a>
   </div>
   <div class="mgrid">
     <div><div class="mlabel">chains</div><div class="mchips">{chips}</div></div>
@@ -389,32 +396,39 @@ def sec_monitor(ctx: dict) -> str:
 
 
 def sec_demo(ctx: dict) -> str:
+    """The demo: three panels and a table, all drawn by tools/demo_js.js.
+
+    The ids here are the script's contract (`plot`, `rho_plot`, `trace`, `lam`, `lamval`,
+    `u_learned`, `err`, `rho`, `trace_lam`, `replay`, `rows`). A rewrite that renamed them
+    silently broke the demo: canvases existed, the section rendered, and every number stayed
+    at an em dash because the script threw on the first missing id.
+    """
     body = f'''<p>The operator is fitted to one-step pairs of {M_DUDT} and Newton solves
   {M_PSI} on the learned map. Circles are the operator; the line is the analytic {M_USTAR}.</p>
   <div class="grid2">
     <div class="card"><h3>Panel A · Fixed point against parameter</h3>
-      <canvas id="c1" width="640" height="360" aria-label="Learned fixed point against lambda"></canvas>
+      <canvas id="plot" width="640" height="360" aria-label="Learned fixed point against lambda"></canvas>
       <div class="controls"><input id="lam" type="range" min="0.2" max="1" step="0.02" value="0.5"
-        aria-label="lambda"><span id="lamv">λ = 0.50</span></div>
+        aria-label="lambda"><span>λ = <b id="lamval">0.50</b></span></div>
       <div class="readout">
-        <div class="kv"><div class="k">learned u*</div><div class="v" id="r-u">—</div></div>
-        <div class="kv"><div class="k">relative error</div><div class="v" id="r-e">—</div></div>
-        <div class="kv"><div class="k">spectral radius</div><div class="v" id="r-r">—</div></div>
+        <div class="kv"><div class="k">learned u*</div><div class="v" id="u_learned">—</div></div>
+        <div class="kv"><div class="k">relative error</div><div class="v" id="err">—</div></div>
+        <div class="kv"><div class="k">spectral radius</div><div class="v" id="rho">—</div></div>
       </div></div>
     <div class="card"><h3>Panel B · Stability</h3>
-      <canvas id="c2" width="640" height="360" aria-label="Spectral radius at the learned fixed point"></canvas>
-      <figcaption>The red rule is the unit threshold; below {M_RHO} a perturbation
-      decays.</figcaption>
+      <canvas id="rho_plot" width="640" height="360" aria-label="Spectral radius at the learned fixed point"></canvas>
+      <figcaption>The red rule is the unit threshold; below {M_RHO} a perturbation decays.</figcaption>
       <h3 style="margin-top:12px">Panel C · Newton iterates</h3>
-      <canvas id="c3" width="640" height="360" aria-label="Newton iterates from u=1"></canvas>
+      <svg id="trace" viewBox="0 0 640 240" width="100%" role="img"
+        aria-label="Newton iterates from u=1" style="display:block"></svg>
       <div class="controls"><button id="replay" type="button">Replay</button>
-        <span>start u₀ = 1 at λ = 0.50; each point is one Newton step</span></div></div>
+        <span>λ = <b id="trace_lam">0.50</b> · each point is one Newton step</span></div></div>
   </div>
   <div class="card" style="margin-top:10px"><h3>Table 1 · Checkpoints</h3>
-    <div class="tw"><table><caption>Learned fixed point, analytic value, relative error and spectral radius at
-    five parameters; all {ctx["grid"]} grid points are stable.</caption>
+    <div class="tw"><table><caption>Learned fixed point, analytic value, relative error and
+    spectral radius at five parameters; all {ctx["grid"]} grid points are stable.</caption>
     <thead><tr><th class="num">λ</th><th class="num">u* analytic</th><th class="num">u* learned</th>
-    <th class="num">ε</th><th class="num">ρ</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
+    <th class="num">ε</th><th class="num">ρ</th></tr></thead><tbody id="rows"></tbody></table></div></div>
   <div class="card" style="margin-top:10px"><h3>Panel D · Outside the training data</h3>
     {ctx["extrap"]}
     <figcaption>Fit restricted to λ ≤ 0.6 (shaded: outside the data). Max relative error
@@ -542,7 +556,7 @@ makes is checked against an artefact.">
   <span class="spacer"></span>
   <span class="hchip ok">Gate S pass</span>
   <span class="hchip">{ctx["nchains"]} chains · {ctx["ntests"]} tests</span>
-  <a class="cta" href="/dashboard.html">Monitor →</a>
+  <a class="cta" href="http://127.0.0.1:8765/">Monitor →</a>
 </div></header>
 <div class="shell">{ctx["rail"]}<main id="main">
 {hero(ctx)}

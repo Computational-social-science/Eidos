@@ -123,3 +123,14 @@ luck, not a guarantee.
 own dependency set; keep the shared interpreter for tools that must be global.
 Record the versions a project was validated against.
 
+
+## The serving process holds the old builder in memory
+
+`tools/serve_site.py` redraws `site/dashboard.html` on a timer using the modules it imported at
+startup. Edit `tools/dashboard.py` while the server is running and the next tick overwrites the
+file with the *old* markup — the audit then reads a page that no longer matches the source, and
+the failure looks like a contrast or layout bug rather than a stale process.
+
+Rule: after changing any builder (`dashboard.py`, `site_page.py`, `theme.py`), stop the server,
+rebuild, then start it again. `audit_site.py` cannot see this: it audits the file, and the file
+is what the old process wrote.

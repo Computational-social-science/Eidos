@@ -319,6 +319,24 @@ def sample(append: bool = True) -> dict:
     except (OSError, json.JSONDecodeError):
         previous_chains = {}
     chain_state = chain_states.advance(previous_chains, chain_states.observed(), live)
+
+    # Each chain carries its own record: when it last ran, what it returned, what it needs.
+    # Without this the whole column shares one timestamp and a chain that has not been
+    # exercised for a day still looks alive.
+    chain_meta = {}
+    try:
+        record = json.loads((STATUS / "chains.json").read_text(encoding="utf-8"))
+        for name, row in (record.get("chains") or {}).items():
+            ran = float(row.get("ts") or 0)
+            age_s = max(0.0, time.time() - ran) if ran else None
+            status = str(row.get("status") or "")
+            if status in ("FAIL", "ERROR"):
+                chain_state[name] = "FAIL"
+            elif age_s is not None and age_s > 24 * 3600:
+                chain_state[name] = "STALE"
+            chain_meta[name] = {**row, "age_s": round(age_s, 1) if age_s is not None else None}
+    except (OSError, json.JSONDecodeError):
+        chain_meta = {}
     # A green node that has not been exercised for a day is not green: it is unobserved.
     age_h = (signals.get("chains_age") or {}).get("value")
     if age_h is not None and float(age_h) > 24.0:
@@ -402,7 +420,8 @@ def sample(append: bool = True) -> dict:
     derived = status_view.derive(states, chain_state)
     payload = {"ts": now_iso(), "overall": derived["overall"], "derived": derived,
                "signals": states,
-               "chains": chain_state, "timeline": timeline[-60:], "live_run": live,
+               "chains": chain_state, "chain_meta": chain_meta,
+               "timeline": timeline[-60:], "live_run": live,
                "alarms": alarms[-20:], "samples": len(history),
                "history": [{k: row.get(k) for k in ("ts", "values")} for row in history[-40:]]}
     CURRENT.parent.mkdir(parents=True, exist_ok=True)

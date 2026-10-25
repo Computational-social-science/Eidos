@@ -68,16 +68,34 @@ PROBE = r"""() => {
   document.querySelectorAll('svg text').forEach(t => {
     const s = getComputedStyle(t);
     const fg = parse(s.fill); if (!fg || s.fill === 'none') return;
-    // A label sits on a node, not on the page: composite it over that node's fill.
+    // A label sits on the node it belongs to: composite over a rect in the *same* <g>.
+    // Taking the first rect in the svg instead made a column header inherit a chain node's
+    // green and report 1.12:1 against a background it never touches.
     let bg = {r: 14, g: 16, b: 19, a: 1};
-    const shape = t.parentElement && t.parentElement.querySelector('rect');
+    const parent = t.parentElement;
+    const shape = parent && parent.tagName.toLowerCase() === 'g' ? parent.querySelector('rect') : null;
     if (shape) { const f = parse(getComputedStyle(shape).fill); if (f) bg = over(f, bg); }
     const alpha = (parseFloat(s.opacity) || 1) * fg.a;
     const shown = over({r: fg.r, g: fg.g, b: fg.b, a: alpha}, bg);
     const cr = ratio(shown, bg);
     if (cr < 3) svg.push({text: t.textContent.slice(0, 30), cr: +cr.toFixed(2)});
   });
-  return {checked: n, violations: out, svg};
+  // Lines are information too. WCAG asks 3:1 for graphical objects, and a coupling edge at
+  // 2.4:1 is a line the reader cannot follow — which is how "the diagram looks empty" happens.
+  const lines = [];
+  const panel = {r: 21, g: 24, b: 29, a: 1};
+  document.querySelectorAll('svg path').forEach(p => {
+    const s = getComputedStyle(p);
+    const stroke = parse(s.stroke);
+    if (!stroke || s.stroke === 'none' || s.display === 'none') return;
+    const alpha = (parseFloat(s.opacity) || 1) * stroke.a;
+    if (alpha < 0.05) return;                    // intentionally hidden (hover mode)
+    const shown = over({r: stroke.r, g: stroke.g, b: stroke.b, a: alpha}, panel);
+    const cr = ratio(shown, panel);
+    if (cr < 3) lines.push({cls: (p.getAttribute('class') || 'path').slice(0, 20),
+                            cr: +cr.toFixed(2)});
+  });
+  return {checked: n, violations: out, svg, lines};
 }"""
 
 
@@ -92,7 +110,9 @@ def audit(page: pathlib.Path, width: int) -> list[str]:
         data = tab.evaluate(PROBE)
         browser.close()
 
-    findings = [f"{page.name} {width}px: text {v['cr']}:1 < {v['floor']} "
+    findings = [f"{page.name} {width}px: line {v['cr']}:1 < 3 ({v['cls']})"
+                for v in data.get("lines") or []]
+    findings += [f"{page.name} {width}px: text {v['cr']}:1 < {v['floor']} "
                 f"({v['size']}px {v['cls']}) {v['text']!r}"
                 for v in data["violations"]]
     findings += [f"{page.name} {width}px: svg text {v['cr']}:1 {v['text']!r}"
@@ -119,7 +139,7 @@ def main(argv: list[str] | None = None) -> int:
         for line in findings:
             print(f"[FAIL] {line}")
         return 1
-    print("contrast clean: every text node meets WCAG AA on its composited background")
+    print("contrast clean: every text node meets WCAG AA and every drawn line meets 3:1")
     return 0
 
 

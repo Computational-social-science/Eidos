@@ -59,7 +59,10 @@ def sampler(interval: float, page_interval: float) -> None:
 
             page_sig = json.dumps(payload.get("chains") or {}, sort_keys=True)
             if page_sig != STATE["page_sig"] or time.time() - STATE["written"] > page_interval:
-                dashboard.OUT.write_text(dashboard.build(), encoding="utf-8")
+                # Render into memory. Writing the file here made a tracked build artefact
+                # change every minute, so git status was never clean, and an edit to the
+                # builder was silently overwritten by the module this process imported.
+                STATE["page"] = dashboard.build()
                 STATE["written"] = time.time()
                 STATE["page_sig"] = page_sig
         except Exception as exc:  # noqa: BLE001 - keep serving, report the failure
@@ -75,6 +78,15 @@ class Handler(SimpleHTTPRequestHandler):
         pass
 
     def _html(self, name: str) -> None:
+        if name == "dashboard.html" and STATE.get("page"):
+            blob = STATE["page"].encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(blob)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(blob)
+            return
         path = ROOT / "site" / name
         if not path.is_file():
             self.send_error(404, f"{name} has not been built")

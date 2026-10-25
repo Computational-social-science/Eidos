@@ -329,13 +329,22 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--verbose", action="store_true")
     ap.add_argument("--spans", default="",
                     help="write a Langfuse-shaped trace (spans with start/end/status) here")
+    ap.add_argument("--only", default="",
+                    help="run one chain by name (the monitor refreshes a single node)")
     args = ap.parse_args(argv)
 
     global STRICT_REGISTRY
     STRICT_REGISTRY = not args.ci
     _marker("mark_running")
 
-    for name, fn, requires in CHAINS:
+    selected = [(n, f, r) for n, f, r in CHAINS
+                if not args.only or n == args.only or n.startswith(args.only)]
+    if args.only and not selected:
+        print(f"no chain matches {args.only!r}; known: {[n for n, _, _ in CHAINS]}",
+              file=sys.stderr)
+        return 2
+
+    for name, fn, requires in selected:
         started = time.time()
         try:
             status, detail = fn()
@@ -351,6 +360,22 @@ def main(argv: list[str] | None = None) -> int:
                         "requires": requires,
                         "start_ts": started, "end_ts": ended,
                         "ms": round((ended - started) * 1000, 1)})
+
+    # Per-chain state with its own timestamp: the monitor needs to know when THIS chain
+    # last ran, not when the trace file was last touched.
+    state_path = ROOT / "docs" / "status" / "chains.json"
+    try:
+        previous = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
+    except (OSError, json.JSONDecodeError):
+        previous = {}
+    merged = dict(previous.get("chains") or {})
+    for row in RESULTS:
+        merged[row["chain"]] = {"status": row["status"], "ts": row["end_ts"],
+                                "ms": row["ms"], "requires": row["requires"],
+                                "detail": row["detail"][:240]}
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    state_path.write_text(json.dumps({"ts": max(r["end_ts"] for r in RESULTS),
+                                      "chains": merged}, indent=2), encoding="utf-8")
 
     width = max(len(r["chain"]) for r in RESULTS) if RESULTS else 10
     _marker("clear_running")

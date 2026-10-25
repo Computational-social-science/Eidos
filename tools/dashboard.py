@@ -205,10 +205,32 @@ def ranking_table(rows) -> str:
             "</tr></thead><tbody>" + body + "</tbody></table>")
 
 
-def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None):
+#: Every dashed line means the same thing — logical coupling: A uses, calls or is observed by B.
+#: One dash pattern, one width, one opacity; only a failing endpoint changes the colour.
+#: #4a5361 at 0.45 was invisible on the panel; a line the eye cannot follow is a line that
+#: carries no information. Same style everywhere, but light enough to read.
+COUPLING = {"dash": "4 3", "width": 1.1, "opacity": 0.62, "colour": "#96a3b5"}
+HEALTHY = ("PASS", "SKIP", "IDLE")
+
+
+def coupling(state: str) -> dict:
+    """The shared style for a coupling edge, coloured only when the source is unhealthy."""
+    style = dict(COUPLING)
+    if state not in HEALTHY:
+        style["colour"] = PALETTE.get(state, COUPLING["colour"])
+        style["opacity"] = 0.95
+        style["width"] = 1.5
+    return style
+
+
+def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
+             chain_meta=None):
     """The assembly. `signals` is passed in so a caller can hand it a fixture."""
     chain_modules = pipeline.get("chain_modules") or {}
-    chains = list(chain_modules)
+    # Run order: the order the audit executed them in, which is what the figure claims.
+    spans = pipeline.get("spans") or []
+    executed = [sp.get("name") for sp in spans if sp.get("name") in chain_modules]
+    chains = executed + [c for c in chain_modules if c not in executed]
     if not chains:
         return "<div class='empty'>no chains recorded</div>", [], {}
 
@@ -226,7 +248,8 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None):
     # A fourth column: the instruments that judge the chain, and the arc that carries their
     # findings back to it. Without that arc the picture is a pipeline, not a loop.
     i_x, i_w, i_h = 1132, 236, 24
-    top = 8
+    head = 16
+    top = 8 + head
     chain_y = {c: top + i * (c_h + c_gap) for i, c in enumerate(chains)}
     rows = len(chains) * (c_h + c_gap)
     mod_gap = max(5, rows // max(len(modules), 1) - m_h)
@@ -243,12 +266,12 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None):
     ]
     i_gap = max(18, rows // max(len(instruments), 1) - i_h)
     ins_y = {n: top + k * (i_h + i_gap) for k, (n, _, _) in enumerate(instruments)}
-    height = max(max(chain_y.values()) + c_h,
+    height = head + max(max(chain_y.values()) + c_h - head,
                  max(mod_y.values(), default=0) + m_h,
                  (max(svc_y.values()) + s_h) if svc_y else 0,
                  (max(ins_y.values()) + i_h) if ins_y else 0) + 46
     width = i_x + i_w + 12
-    age = max(0.0, time.time() - trace_ts) if trace_ts else None
+    trace_age = max(0.0, time.time() - trace_ts) if trace_ts else None
 
     svg = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
            f"aria-label='pipeline assembly with status'>",
@@ -256,18 +279,37 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None):
            "markerHeight='4.6' orient='auto'><path d='M0 1 L9 5 L0 9 z' "
            "fill='context-stroke'/></marker></defs>"]
 
+    # column headers: the figure should say what each lane is without a legend lookup
+    for x, w, label, count in ((c_x, c_w, "CHAINS · RUN ORDER", len(chains)),
+                               (m_x, m_w, "MODULES", len(modules)),
+                               (s_x, s_w, "SERVICES", len(services)),
+                               (i_x, i_w, "INSTRUMENTS", len(instruments))):
+        svg.append(f"<text x='{x}' y='11' font-size='9' letter-spacing='0.12em' "
+                   f"fill='#7d8797' font-family='ui-monospace,Consolas,monospace'>"
+                   f"{label} {count}</text>")
+
     drawn = 0
-    for chain in chains:
+    for index, chain in enumerate(chains, start=1):
         state = chain_now.get(chain, "IDLE")
+        meta = (chain_meta or {}).get(chain) or {}
+        # This chain's own age, not the trace file's: a chain nobody has exercised for a day
+        # must not borrow freshness from a chain that ran a minute ago.
+        age = meta.get("age_s")
+        if age is None:
+            age = trace_age
+        title = (f"{chain} · {state} · last {fmt_age(age) if age is not None else 'never'}"
+                 f" · needs {meta.get('requires', '—')} · {meta.get('detail', 'no record')}")
         y = chain_y[chain]
         svg.append(
-            f"<g class='node chain' data-chain='{html.escape(chain)}' tabindex='0' role='button'>"
-            f"<title>{html.escape(chain)} · {state} · click for detail</title>"
+            f"<g class='node chain' data-chain='{html.escape(chain)}' "
+            f"data-modules='{html.escape(','.join(chain_modules.get(chain) or []))}' "
+            f"tabindex='0' role='button'>"
+            f"<title>{html.escape(title)}</title>"
             f"<rect x='{c_x}' y='{y}' width='{c_w}' height='{c_h}' rx='5' "
             f"fill='{PALETTE.get(state, PALETTE['IDLE'])}' stroke='#0a0c0f'/>"
             f"<text x='{c_x + 10}' y='{y + c_h / 2 + 3.7}' font-size='10.5' font-weight='600' "
             f"fill='{INK.get(state, '#c9d1d9')}'>"
-            f"{html.escape(chain[:34] + ('…' if len(chain) > 34 else ''))}</text>"
+            f"{index:02d}  {html.escape(chain[:31] + ('…' if len(chain) > 31 else ''))}</text>"
             f"<text class='age' x='{c_x + c_w - 10}' y='{y + c_h / 2 + 3.4}' text-anchor='end' "
             f"font-size='9' fill='{INK.get(state, '#c9d1d9')}' opacity='0.92'>"
             f"{fmt_age(age) if age is not None else '—'}</text></g>")
@@ -279,11 +321,13 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None):
             dx = max(36, (x2 - x1) * 0.42)
             drawn += 1
             flow = ""
+            st = coupling(state)
             svg.append(f"<path class='edge' data-from='{html.escape(chain)}' "
                        f"d='M{x1} {y1} C{x1 + dx} {y1}, {x2 - dx} {y2}, {x2} {y2}' "
                        f"style='stroke-dashoffset:{(drawn * 2.7) % 7:.1f}' fill='none' "
-                       f"stroke='{PALETTE.get(state, PALETTE['IDLE'])}' stroke-width='1.1' "
-                       f"opacity='0.55' stroke-dasharray='4 3' marker-end='url(#ah)'/>")
+                       f"stroke='{st['colour']}' stroke-width='{st['width']}' "
+                       f"opacity='{st['opacity']}' stroke-dasharray='{st['dash']}' "
+                       f"marker-end='url(#ah)'/>")
 
     for module in modules:
         users = module_users[module]
@@ -309,11 +353,13 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None):
             up = (signals.get(service) or {}).get("state") not in ("ALARM", "UNOBSERVABLE")
             drawn += 1
 
+            st = coupling("PASS" if up else "FAIL")
             svg.append(f"<path class='edge svc{flow}' d='M{x1} {y1} C{x1 + dx} {y1}, "
                        f"{x2 - dx} {y2}, {x2} {y2}' "
                        f"style='stroke-dashoffset:{(drawn * 2.7) % 7:.1f}' fill='none' "
-                       f"stroke='{PALETTE['PASS' if up else 'FAIL']}' stroke-width='1.1' "
-                       f"opacity='0.55' stroke-dasharray='4 3' marker-end='url(#ah)'/>")
+                       f"stroke='{st['colour']}' stroke-width='{st['width']}' "
+                       f"opacity='{st['opacity']}' stroke-dasharray='{st['dash']}' "
+                       f"marker-end='url(#ah)'/>")
 
     # services -> instruments: what is watching this boundary
     if services:
@@ -324,9 +370,11 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None):
             x1, y1 = s_x + s_w, svc_y[service] + s_h / 2
             x2, y2 = i_x, first_ins + i_h / 2
             dx = max(26, (x2 - x1) * 0.5)
+            st = coupling("PASS")
             svg.append(f"<path class='edge' d='M{x1} {y1} C{x1 + dx} {y1}, {x2 - dx} {y2}, "
-                       f"{x2} {y2}' fill='none' stroke='#4a5361' stroke-width='1' "
-                       f"opacity='0.5' stroke-dasharray='4 3' marker-end='url(#ah)'/>")
+                       f"{x2} {y2}' fill='none' stroke='{st['colour']}' "
+                       f"stroke-width='{st['width']}' opacity='{st['opacity']}' "
+                       f"stroke-dasharray='{st['dash']}' marker-end='url(#ah)'/>")
 
     for name, note, witness in instruments:
         y = ins_y[name]
@@ -353,7 +401,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None):
         svg.append(
             f"<path class='edge feedback' d='M{x_r} {max(ins_y.values()) + i_h} "
             f"C{x_r} {y_bottom}, {x_l} {y_bottom}, {x_l} {y_chain}' fill='none' "
-            f"stroke='#7c8aa0' stroke-width='1.2' opacity='0.75' stroke-dasharray='5 4' "
+            f"stroke='#a9b6c8' stroke-width='1.4' opacity='0.9' "
             f"marker-end='url(#ah)'/>"
 )
 
@@ -493,6 +541,30 @@ function openPop(html, ev) {
   if (close) close.onclick = () => { box.className = ''; };
 }
 function dismiss() { const b = popEl(); if (b) b.className = ''; }
+// Hover isolates one chain: its edges stay, the rest recedes. A hairball of eleven chains is
+// readable when the reader can ask "what does this one touch".
+function focusChain(name) {
+  const mods = new Set();
+  document.querySelectorAll('g.node.chain').forEach(g => {
+    if (g.dataset.chain === name) (g.dataset.modules || '').split(',').filter(Boolean).forEach(m => mods.add(m));
+  });
+  document.querySelectorAll('.edge').forEach(p => {
+    const mine = p.dataset.from === name;
+    p.setAttribute('opacity', name ? (mine ? '1' : '0.08') : '0.62');
+  });
+  document.querySelectorAll('g.node.module').forEach(g => {
+    g.style.opacity = name && !mods.has(g.dataset.module) ? '0.35' : '1';
+  });
+  document.querySelectorAll('g.node.chain').forEach(g => {
+    g.style.opacity = name && g.dataset.chain !== name ? '0.5' : '1';
+  });
+}
+document.querySelectorAll('g.node.chain').forEach(g => {
+  g.addEventListener('mouseenter', () => focusChain(g.dataset.chain));
+  g.addEventListener('mouseleave', () => focusChain(null));
+  g.addEventListener('focus', () => focusChain(g.dataset.chain));
+  g.addEventListener('blur', () => focusChain(null));
+});
 document.addEventListener('keydown', e => { if (e.key === 'Escape') dismiss(); });
 document.addEventListener('click', e => {
   const btn = e.target.closest('[data-restart]');
@@ -637,17 +709,31 @@ def operator_strip(status: dict, recoveries: list) -> str:
             f"fill='{INK.get(state, '#c9d1d9')}' opacity='0.85'>{html.escape(note)}</text></g>")
         if k < n - 1:
             ax = x + box_w
-            parts.append(f"<path d='M{ax + 3} 19 L{ax + gap - 3} 19' stroke='#4a5361' "
+            parts.append(f"<path d='M{ax + 3} 19 L{ax + gap - 3} 19' stroke='#96a3b5' "
                          f"stroke-width='1.1' marker-end='url(#ah2)'/>")
     # the loop closes: a repair that verifies re-enters the sampler
     parts.append(f"<path d='M{width - box_w / 2 - 4} 32 C{width - 40} 44, 40 44, "
-                 f"{box_w / 2 + 4} 32' fill='none' stroke='#7c8aa0' stroke-width='1.1' "
-                 f"opacity='0.7' stroke-dasharray='4 3' marker-end='url(#ah2)'/>")
+                 f"{box_w / 2 + 4} 32' fill='none' stroke='#a9b6c8' stroke-width='1.2' "
+                 f"opacity='0.85' stroke-dasharray='4 3' marker-end='url(#ah2)'/>")
     parts.append("<defs><marker id='ah2' viewBox='0 0 10 10' refX='8.5' refY='5' markerWidth='4' "
                  "markerHeight='4' orient='auto'><path d='M0 1 L9 5 L0 9 z' "
                  "fill='context-stroke'/></marker></defs>")
     parts.append("</svg>")
     return "".join(parts)
+
+
+def chains_meta() -> dict:
+    """Per-chain record straight from the audit's own file, when the sample is older than it."""
+    try:
+        record = json.loads((ROOT / "docs" / "status" / "chains.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    out = {}
+    now = time.time()
+    for name, row in (record.get("chains") or {}).items():
+        ran = float(row.get("ts") or 0)
+        out[name] = {**row, "age_s": round(max(0.0, now - ran), 1) if ran else None}
+    return out
 
 
 def build() -> str:
@@ -676,7 +762,8 @@ def build() -> str:
         evolution = json.loads((ROOT / "docs" / "EVOLUTION.json").read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         evolution = {}
-    svg, faults, _ = topology(pipeline, chain_now, {}, signals, trace_ts, evolution)
+    svg, faults, _ = topology(pipeline, chain_now, {}, signals, trace_ts, evolution,
+                              status.get("chain_meta") or chains_meta())
     try:
         recoveries = [json.loads(l) for l in
                       (STATUS / "recoveries.jsonl").read_text(encoding="utf-8").splitlines()
@@ -724,7 +811,7 @@ def build() -> str:
 </header>
 <main>
   <section class="card">
-    <h2>Assembly — chains (run order) → modules → services</h2>
+    <h2>Assembly — chains (run order) → modules → services → instruments, and back</h2>
     <div class="key">{key}</div>
     {svg}
     <p class="mono fbcaption">feedback: a defect an instrument finds becomes a guard before

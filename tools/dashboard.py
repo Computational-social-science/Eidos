@@ -661,18 +661,16 @@ svg .node:focus{outline:none}
 svg .edge{transition:stroke .4s ease}
 /* The operator band sits under the assembly, separated by a hairline: same figure, second
    question — not a new card competing with it. */
-.fbcaption{margin:2px 0 0;font-size:10px;color:var(--mut)}
 .card code,.card pre{font-size:11px}
 .opwrap .hint{text-transform:none;letter-spacing:0;font-weight:400;color:var(--mut);
   margin-left:8px;font-size:10px}
 .opwrap{margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
 .opwrap h3{margin:0 0 6px;font:600 10px/1.4 -apple-system,"Segoe UI",Arial,sans-serif;
   letter-spacing:.11em;text-transform:uppercase;color:var(--dim);font-weight:600}
-.keynote{color:var(--mut);text-transform:none;letter-spacing:0;font-family:inherit}
 .key{display:flex;gap:11px;font-size:10px;color:var(--dim);margin:0 0 7px;flex-wrap:wrap;
   letter-spacing:.04em;text-transform:uppercase}
 .key i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
-.key i.dotkey{width:0;height:0;border-left:7px solid #5b8def;border-top:4px solid transparent;
+.key i.dotkey{display:none;border-left:7px solid #5b8def;border-top:4px solid transparent;
   border-bottom:4px solid transparent;background:none;border-radius:0;margin:0 6px 0 8px}
 .srow{display:flex;align-items:center;gap:14px;margin:1px 0}
 .sname{width:122px;flex:none;text-align:right;padding-right:8px;
@@ -899,11 +897,7 @@ def build() -> str:
     # These sentences are checked against the drawing: there are no forward arrows in a matrix,
     # so a legend claiming "the direction the signal flows" would be describing a figure that
     # no longer exists.
-    key += ("<span class='keynote'>● on a row = that chain's state; in a module cell = the "
-            "chain uses that module (colour = the chain's state); in a service cell = it reaches "
-            "that service (colour = the service's health)</span>"
-            "<span><i class='dotkey'></i>the single arrow is feedback: findings return to the "
-            "first row</span>")
+
 
     fault_line = ("<div class='faults' id='faults' style='display:none'></div>" if not faults else
                   "<div class='faults' id='faults'><b>FAULT</b>" + " · ".join(faults) + "</div>")
@@ -940,8 +934,6 @@ def build() -> str:
     <h2>Framework self-audit — chains (run order) × modules × services, observed by four instruments</h2>
     <div class="key">{key}</div>
     {svg}
-    <p class="mono fbcaption">feedback: a defect an instrument finds becomes a guard before
-    the next commit — the square loop carries it back to the first row.</p>
     <div class="opwrap"><h3>Project pipeline — bootstrap → measure → gates → Gate S → render → handoff</h3>
     <p class="mono" style="margin:0 0 6px;color:var(--mut)">The band below is that pipeline's
     output: each registered project, its verdict, and how old the evidence behind it is.</p></div>

@@ -64,3 +64,5 @@
 {"ts": "2026-10-25T17:27:41+08:00", "wrong": 21, "equivalent": 8, "wrong_evidence": 7, "pairs": 28, "blind_spots": 0, "over_rejections": 0, "ok": true}
 {"ts": "2026-10-25T17:32:06+08:00", "wrong": 21, "equivalent": 8, "wrong_evidence": 7, "pairs": 28, "blind_spots": 0, "over_rejections": 0, "ok": true}
 {"ts": "2026-10-25T17:32:11+08:00", "wrong": 21, "equivalent": 8, "wrong_evidence": 7, "pairs": 28, "blind_spots": 0, "over_rejections": 0, "ok": true}
+{"ts": "2026-10-25T17:43:57+08:00", "wrong": 21, "equivalent": 8, "wrong_evidence": 7, "pairs": 28, "blind_spots": 0, "over_rejections": 0, "ok": true}
+{"ts": "2026-10-25T17:44:04+08:00", "wrong": 21, "equivalent": 8, "wrong_evidence": 7, "pairs": 28, "blind_spots": 0, "over_rejections": 0, "ok": true}

@@ -53,6 +53,10 @@ Three details this host forced:
 `try` builds a throwaway environment (`uv venv`, then `uv pip install <dist>==<ver>`) and runs a
 probe there. Nothing in the production environment is touched.
 
+The environment is created under the system temp directory and deleted after the probe: the
+verdict is the artefact, not the installation. Two environments created under `docs/status` left
+15 GB of site-packages in the working tree — the sort of thing that gets committed by accident.
+
 | dependency | probe |
 |---|---|
 | dvc | `python -m dvc version` returns 0 and names its version |
@@ -75,6 +79,26 @@ The second rule exists because a try answers "does it work", not "is it newer". 
 loop was demonstrated by promoting an older DVC and rolling it back; the pin was correct at the
 end, but the mechanism allowed a downgrade on the strength of a passing try alone. It no longer
 does — `--allow-downgrade --note <why>` is required, and the reason is recorded.
+
+## What the report holds, and what it does not
+
+`docs/status/updates.json` records `pinned`, `available`, `state`, `source`, `manager`. It does
+**not** record `installed`: a file cannot hold a live measurement, and the one it held went stale
+after an install, so the document repeated `mlflow 3.17.1` while the host ran `3.17.2` and the
+state column still said `current`. Installed versions are measured where they are read — in
+`status`, in the document build — and never remembered.
+
+`status` therefore has a `next` column, because a state a reader cannot act on is a decoration:
+
+```
+dependency   pinned    installed  available  state        next
+mlflow       3.17.2    3.17.2     3.17.2     current      —
+llama.cpp    b11671    b11671     b11878     behind       upgrade via the Hermes desktop runtime
+```
+
+A binary's `manager` names who owns the install. Eidos records the pin and the probe, but it does
+not overwrite a binary another tool manages; saying so is more useful than an amber row nobody
+can clear.
 
 ## Apply
 
@@ -99,6 +123,12 @@ a test run once bumped it 4.1.0 → 4.4.0 because the tests had redirected only 
 `rollback` restores the pin that preceded the last promotion. It is a lock operation, not an
 install: rolling back the pin while the installed version stays put is a *divergence*, which the
 status table shows as `pinned ≠ installed`. Reinstalling is a separate, deliberate step.
+
+## Placement
+
+Pins are documentation, not live state. The table lives in `site/index.html`; the monitor shows
+only what is running now. `audit_site` enforces both halves — a dependency table on the dashboard
+fails the gate, and its absence from the document fails it too.
 
 ## Model weights
 

@@ -155,3 +155,11 @@ def test_a_rollback_bumps_the_framework_patch(store, monkeypatch):
 def test_a_redirected_lock_cannot_touch_the_real_version(store):
     # The guard that stopped a test run from bumping pyproject three times.
     assert updates._bump_framework("minor", "test") is None
+
+
+def test_the_snapshot_holds_no_measurement(store):
+    # `installed` was in the snapshot once and went stale; the file must not carry it.
+    updates.sense(fetch=lambda url: {"info": {"version": "3.68.0"}}, offline=False)
+    import json as _json
+    report = _json.loads(updates.SENSE.read_text(encoding="utf-8"))
+    assert all("installed" not in item for item in report["items"].values())

@@ -41,13 +41,15 @@ HTTP_TIMEOUT = 8
 #: What each dependency is and where its truth lives. ``kind`` decides how a candidate is tried.
 SOURCES: dict[str, dict] = {
     "quarto": {"kind": "binary", "repo": "quarto-dev/quarto-cli", "cmd": ["quarto", "--version"],
-               "env": ["QUARTO_BIN"], "paths": ["../tools/quarto/bin/quarto.exe"]},
+               "env": ["QUARTO_BIN"], "paths": ["../tools/quarto/bin/quarto.exe"],
+               "manager": "tools/quarto (this repository)"},
     "dvc": {"kind": "pypi", "packages": ["dvc"]},
     # The distribution is mlflow-skinny on this host, the import name is mlflow.
     "mlflow": {"kind": "pypi", "packages": ["mlflow", "mlflow-skinny"]},
     "llama.cpp": {"kind": "binary", "repo": "ggml-org/llama.cpp", "tag_pattern": r"^b(\d+)$",
                   "cmd": ["llama-server", "--version"],
-                  "globs": ["$LOCALAPPDATA/hermes/tools/llamacpp-cuda-*/llama-server.exe"]},
+                  "globs": ["$LOCALAPPDATA/hermes/tools/llamacpp-cuda-*/llama-server.exe"],
+                  "manager": "the Hermes desktop runtime"},
     "decision_model": {"kind": "artifact", "repo": None,
                        "path": "../decision-service/models"},
 }
@@ -183,7 +185,8 @@ def latest(name: str, fetch=None) -> dict:
             import re
             pattern = re.compile(spec["tag_pattern"])
             data = fetch(f"https://api.github.com/repos/{spec['repo']}/releases?per_page=30")
-            tags = [str(row.get("tag_name") or "") for row in data]
+            rows = data if isinstance(data, list) else [data]
+            tags = [str(row.get("tag_name") or "") for row in rows if isinstance(row, dict)]
             builds = [(int(m.group(1)), tag) for tag in tags
                       if (m := pattern.match(tag))]
             best = max(builds) if builds else None
@@ -201,6 +204,7 @@ def sense(fetch=None, offline: bool = False) -> dict:
     """Ask every source; write the answer. Never changes a pin."""
     report = {"ts": _now(), "offline": offline, "items": {}}
     for name in SOURCES:
+        spec = SOURCES.get(name) or {}
         have = installed(name)
         pin = pinned(name).get("version")
         if offline:
@@ -220,9 +224,11 @@ def sense(fetch=None, offline: bool = False) -> dict:
             report_error = offer.get("error") or "no answer"
             if report_error:
                 have["note"] = f"sense failed: {report_error}"
-        report["items"][name] = {"pinned": pin, "installed": have.get("version"),
+        # No `installed` here: a file cannot hold a live measurement. It went stale once and the
+        # document repeated it; the host is measured where it is read.
+        report["items"][name] = {"pinned": pin,
                                  "available": offer.get("version"), "state": state,
-                                 "source": offer.get("source"),
+                                 "source": offer.get("source"), "manager": spec.get("manager"),
                                  "note": offer.get("error") or have.get("how")}
     SENSE.parent.mkdir(parents=True, exist_ok=True)
     SENSE.write_text(json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -338,7 +344,11 @@ def _distribution(name: str) -> str:
 
 
 def _try_pypi(name: str, version: str, work: Path, python: str, timeout: int) -> dict:
-    env = work / "venv"
+    # A throwaway environment belongs in the system temp, not in the repository: two of them
+    # left 15 GB of site-packages under docs/status and would have been pushed had they been
+    # tracked. The verdict is kept; the environment is deleted after the probe.
+    import tempfile
+    env = Path(tempfile.mkdtemp(prefix=f"eidos-try-{name}-", dir=os.environ.get("TEMP")))
     steps = [["uv", "venv", "--python", python, str(env)],
              ["uv", "pip", "install", "--python", str(env / "Scripts" / "python.exe"),
               f"{_distribution(name)}=={version}"]]
@@ -349,15 +359,18 @@ def _try_pypi(name: str, version: str, work: Path, python: str, timeout: int) ->
                     "stderr": (done.stderr or done.stdout)[-400:]}
     probe = work / "probe.py"
     probe.write_text(PROBES[name], encoding="utf-8")
-    run = subprocess.run([str(env / "Scripts" / "python.exe"), str(probe)],
-                         capture_output=True, text=True, timeout=timeout)
     try:
-        result = json.loads(run.stdout.strip().splitlines()[-1])
-    except (IndexError, json.JSONDecodeError):
-        return {"ok": False, "reason": "probe produced no verdict",
-                "stdout": run.stdout[-300:], "stderr": run.stderr[-300:]}
-    result["isolated_at"] = str(env)
-    return result
+        run = subprocess.run([str(env / "Scripts" / "python.exe"), str(probe)],
+                             capture_output=True, text=True, timeout=timeout)
+        try:
+            result = json.loads(run.stdout.strip().splitlines()[-1])
+        except (IndexError, json.JSONDecodeError):
+            return {"ok": False, "reason": "probe produced no verdict",
+                    "stdout": run.stdout[-300:], "stderr": run.stderr[-300:]}
+        result["isolated_in"] = "a temporary environment, removed after the probe"
+        return result
+    finally:
+        shutil.rmtree(env, ignore_errors=True)
 
 
 def _try_quarto(version: str, artifact: Path | None, work: Path, timeout: int) -> dict:

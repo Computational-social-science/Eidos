@@ -1,8 +1,8 @@
 # Eidos — Global Reusable Research Pipeline Framework
 
-**Gate S self-audit: PASS** — 8 objections, 0 open. The consumers are lightweight and sealed: `operator_calibration` (100 forward passes, must pass) and `null_study` (a false claim, must be rejected). Record: `docs/SELF_AUDIT.json`.
+**Gate S self-audit: PASS** — 8 objections, 0 open. Five project consumers: three that must pass (`operator_calibration`, `demo_onboarding`, `demo_quantitative`) and two controls that must be rejected (`null_study`, `prose_lie`), plus four chain fixtures. Record: `docs/SELF_AUDIT.json`.
 
-**Version 4.0** · Quarto + BootLoops + complementary quality gates
+**Version 4.2.0** · Quarto + BootLoops + complementary quality gates, with dependency governance
 Local-first · model-agnostic · project-agnostic
 
 One source → journal LaTeX/PDF + Word + interactive HTML + executable code,
@@ -12,15 +12,39 @@ with quantitative and semantic quality gates enforced throughout.
 
 ## What it looks like
 
-The documentation page and the live monitor share one palette and one type scale: a
-delivery artefact and the instrument that watches it should not look like two projects.
+Two surfaces, one palette and one type scale: the document that states what the framework *is*,
+and the monitor that watches it *run*. Both are generated from artefacts — `tools/build_site.py`
+and `tools/dashboard.py` — so neither can drift into a hand-edited page.
 
-| Documentation — `site/index.html` | Monitor — `site/dashboard.html` (served at `:8765`) |
-|---|---|
-| ![The framework document](docs/screens/index-top.png) | ![The pipeline monitor](docs/screens/dashboard-top.png) |
+The monitor is the framework auditing itself: eleven chains in run order, the nine modules they
+use, the five services those modules reach (Quarto, DVC, MLflow, llama.cpp, the decision
+operator), and the instruments that judge the result. Every dot is a verdict, not a decoration.
 
-Both are generated from the same artefacts by `tools/build_site.py` and
-`tools/dashboard.py`; neither is hand-written.
+![The monitor — assembly, live state, and the instruments](docs/screens/dashboard-top.png)
+
+Under the assembly sit the two loops that make the picture mean something. **Operators** show the
+framework checking itself and repairing what it can, with the last attempt coloured by outcome —
+an attempt that started is not a repair that held:
+
+![Operators — sample, verdict, plan, execute, verify, record](docs/screens/dashboard-operator.png)
+
+**Consumers** are the projects the framework serves, with capability coverage measured rather than
+asserted (6 of 11 demonstrated by a consumer, the rest by the framework's own tests). Green means
+the verdict matched the expectation, so a negative control doing its job — failing — is green too.
+The colour reports the instrument, not the project:
+
+![Consumers — verdicts against expectation, including the controls](docs/screens/dashboard-consumers.png)
+
+The lower row is history rather than state: the same nodes over the last 80 samples, and the node
+incidents that recurred in the last 24 hours — a service that flapped twice is a different fault
+from one that died once:
+
+![History and fault ranking](docs/screens/dashboard-history.png)
+
+The document carries the declared side of the same picture — the dependency contract, which is
+documentation, not live state:
+
+![Dependency versions — pinned, installed, upstream, state](docs/screens/index-deps.png)
 
 ---
 
@@ -42,6 +66,18 @@ Eidos is the **global skeleton** every research project inherits. It provides:
 
 A new project inherits all of it with one command; only its overrides live in
 `projects/<name>/configs/project.yaml`.
+
+### What makes it different from a template repository
+
+| Claim | Mechanism | Evidence you can open |
+|---|---|---|
+| Gates that can fail | Gate S reads a claim register and checks each claim against an evidence artefact, including the number in the prose | `docs/SELF_AUDIT.json`, `docs/FIXTURES.json` |
+| Gate checks that are themselves tested | every check has a fixture that must trip it; mutants that should be rejected are rejected, equivalents that should pass do pass | `tools/fuzz_register.py`, `docs/FUZZ.json` |
+| Controls that must fail | two negative consumers ship with the framework and are expected to be rejected | `reference/prose_lie`, `projects/null_study` |
+| State that cannot flatter itself | a colour is derived by one function from filed evidence; a stale sample is `STALE`, not the last known PASS | `tools/status_view.py`, `docs/status/current.json` |
+| Repairs that report honestly | attempt (process started) and terminal (repair verified) are separate records with a schema | `framework/recovery.py` |
+| Pages that are audited like results | paint order, clipping, hit-testing, contrast, type scale, runtime errors — each with a test that builds the defect | `tests/test_layout_guards.py` |
+| Dependencies that move on evidence | sense weekly, try in a throwaway environment, promote only on a passing try, roll back from lock history | `lock/versions.lock.json`, `docs/UPDATES.md` |
 
 ---
 
@@ -92,7 +128,10 @@ Eidos/
 │   ├── diagnosis/       # failure diagnosis engine
 │   ├── tracking/        # MLflow + DVC
 │   ├── quarto_bridge/   # multi-format render + executable package
-│   └── inference/       # stage-aware model scheduling (12 GB budget)
+│   ├── inference/       # stage-aware model scheduling (12 GB budget)
+│   ├── updates.py       # sense / try / promote / roll back dependency pins
+│   └── model_ab.py      # twelve fixed questions to two decision-model endpoints
+├── lock/                # versions.lock.json — the pinned dependency contract
 ├── configs/global/      # framework.yaml — the inherited defaults
 ├── templates/           # project skeleton, Quarto manuscript, executable package
 ├── protocols/           # BootLoops protocols (submodule)
@@ -119,6 +158,36 @@ design, final manuscript submission.
 A gate failure is never silent: `framework/diagnosis` produces a structured
 report (severity, category, root cause, evidence, suggested actions, estimated
 effort) and the pipeline stops unless the failure is auto-retryable.
+
+---
+
+## Dependency governance
+
+Eidos depends on Quarto, DVC, MLflow, the llama.cpp build behind the decision operator, and the
+GGUF weights. Their versions move through four separate powers, because the failure mode of a
+self-updating system is not that it updates — it is that it updates and cannot say why:
+
+```
+sense    python tools/update_operator.py sense      # writes a report; cannot change a pin
+try      python tools/update_operator.py try dvc 3.68.0
+promote  python tools/update_operator.py promote dvc 3.68.0
+apply    python tools/update_operator.py apply dvc   # the only command that installs
+```
+
+* **The lock is the contract.** `lock/versions.lock.json` holds one pin per dependency and the
+  history of every move; rollback restores from that history rather than from guesswork.
+* **A try is evidence, not an opinion.** The candidate is installed into a throwaway `uv`
+  environment and probed there: dvc reports its version, mlflow logs a metric to a temporary
+  sqlite store and reads it back, Quarto renders a fixture.
+* **Promotion needs evidence for that exact version**, recorded within a week, and it refuses to
+  move a pin backwards: a try answers *does it work*, not *is it newer*.
+* **Weights need behaviour, not a hash.** `framework/model_ab.py` asks twelve fixed questions of
+  two endpoints; promotion of the decision model requires agreement ≥ 0.90 and mean |Δp| ≤ 0.05,
+  with the endpoint compared against itself as a harness control.
+* **A successful promotion bumps Eidos itself** — minor for a forward pin, patch for a rollback.
+
+Sensing runs weekly. It never runs on the pipeline's critical path, and the monitor never shows
+pins: declared versions are documentation (`site/index.html`), live state is the dashboard.
 
 ---
 

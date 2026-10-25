@@ -23,18 +23,43 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from framework import updates  # noqa: E402
 
 
+def _next_step(name: str, item: dict) -> str:
+    """What a reader can do about this row, or who to ask when it is not ours to change."""
+    pin, have = item.get("pinned"), item.get("installed")
+    state = item.get("state") or "unknown"
+    if pin and have and str(pin) != str(have):
+        return f"apply {name}"
+    if state == "behind":
+        manager = item.get("manager")
+        return (f"upgrade via {manager}" if manager
+                else f"try {name} {item.get('available')} then promote")
+    if state == "unknown":
+        return "sense again (upstream unreachable)"
+    if state == "unmonitored":
+        return "no upstream; the pin moves with the artifact"
+    return "—"
+
+
 def cmd_status(args) -> int:
     data = updates.report()
     rows = []
     for name, item in data["items"].items():
-        rows.append((name, item.get("pinned") or "—", item.get("installed") or "—",
-                     item.get("available") or "—", item.get("state") or "unknown"))
+        pin = item.get("pinned") or "—"
+        have = item.get("installed") or "—"
+        state = item.get("state") or "unknown"
+        if pin != "—" and have != "—" and str(pin) != str(have):
+            state = "diverged"
+        rows.append((name, pin, have, item.get("available") or "—", state,
+                     _next_step(name, {**item, "state": state})))
     width = max(len(r[0]) for r in rows)
-    print(f"{'dependency':{width}}  {'pinned':14s} {'installed':14s} {'available':14s} state")
-    for name, pin, have, offer, state in rows:
-        print(f"{name:{width}}  {str(pin)[:14]:14s} {str(have)[:14]:14s} {str(offer)[:14]:14s} {state}")
+    print(f"{'dependency':{width}}  {'pinned':12s} {'installed':12s} {'available':12s} "
+          f"{'state':10s} next")
+    for name, pin, have, offer, state, nxt in rows:
+        print(f"{name:{width}}  {str(pin)[:12]:12s} {str(have)[:12]:12s} {str(offer)[:12]:12s} "
+              f"{state:10s} {nxt}")
     if data.get("ts"):
-        print(f"\nlast sense: {data['ts']}")
+        print("")
+        print(f"last sense: {data['ts']} — sensing never changes a pin")
     return 0
 
 

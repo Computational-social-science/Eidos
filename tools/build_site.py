@@ -176,9 +176,29 @@ def contracts() -> list[dict]:
             for k, v in boundaries.items()]
 
 
+def evolution_record() -> dict:
+    """What the framework can prove about itself, and how that has changed."""
+    try:
+        return json.loads((ROOT / "docs" / "EVOLUTION.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+
+def fuzz_history() -> dict:
+    """How many mutation runs are on record, and when the last one was."""
+    path = ROOT / "docs" / "fuzz_history.jsonl"
+    try:
+        lines = [l for l in path.read_text(encoding="utf-8").splitlines() if l.strip()]
+        last = json.loads(lines[-1]) if lines else {}
+    except (OSError, json.JSONDecodeError):
+        return {"runs": 0, "last": "", "clean_runs": 0}
+    clean = sum(1 for l in lines if json.loads(l).get("ok"))
+    return {"runs": len(lines), "clean_runs": clean, "last": last.get("ts", "")}
+
+
 def robustness() -> dict:
     """Counts from the three audits that ask whether the chain can say no."""
-    out = {}
+    out = {"history": fuzz_history()}
     for key in ("fuzz", "chain"):
         try:
             out[key] = json.loads((ROOT / "docs" / f"{key.upper()}.json").read_text(encoding="utf-8"))
@@ -199,7 +219,7 @@ def collect() -> dict:
     return {"meta": meta(),
             "audit": json.loads((ROOT / "docs" / "SELF_AUDIT.json").read_text(encoding="utf-8")),
             "chains": chains(), "registry": registry(), "referee": referee(), "fixtures": fixtures(),
-            "robustness": robustness(),
+            "robustness": robustness(), "evolution": evolution_record(),
             "lean": lean_runs(), "decision": decision(), "extra": extrapolation(),
             "contracts": contracts(),
             "commit": subprocess.run(["git", "-C", str(ROOT), "rev-parse", "--short", "HEAD"],
@@ -548,6 +568,7 @@ def render(data: dict) -> str:
         "ncontracts": len(contracts),
         "fixtures": data.get("fixtures") or {"fixtures": [], "covered": [], "ok": False},
         "robustness": data.get("robustness") or {},
+        "evolution": data.get("evolution") or {},
         "latency": dec["latency_ms"] or "—",
         "acc": f"{100 * dec['accuracy']:.1f}%" if dec["accuracy"] is not None else "—",
         "abs_a": (f"{100 * dec['abstain_answerable']:.0f}%"

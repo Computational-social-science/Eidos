@@ -297,18 +297,21 @@ def fixture_table(fx: dict, rb: dict | None = None) -> str:
     covered = " ".join(fx.get("covered") or [])
     rb = rb or {}
     fuzz = rb.get("fuzz") or {}
+    hist = rb.get("history") or {}
     chain = rb.get("chain") or {}
     extra = ""
     if fuzz.get("wrong") or chain.get("fixtures"):
         n_wrong = len(fuzz.get("wrong") or [])
+        n_ev = len(fuzz.get("wrong_evidence") or [])
         n_pairs = len(fuzz.get("pairs") or [])
-        n_equiv = len(fuzz.get("equivalent") or [])
+        n_equiv = len(fuzz.get("equivalent") or []) + len(fuzz.get("equivalent_evidence") or [])
         n_blind = len(fuzz.get("blind_spots") or [])
         n_over = len(fuzz.get("over_rejections") or [])
         n_chain = len(chain.get("fixtures") or [])
-        extra = (f'<p class="gm-sum">Beyond the register: <b>{n_wrong}</b> wrong mutants and '
-                 f'<b>{n_pairs}</b> combined faults rejected, <b>{n_equiv}</b> equivalent rewrites '
-                 f'accepted (<b>{n_blind}</b> blind spots, <b>{n_over}</b> over-rejections) &middot; '
+        extra = (f'<p class="gm-sum">Beyond the register: <b>{n_wrong}</b> wrong registers and '
+                 f'<b>{n_ev}</b> wrong evidence files rejected, <b>{n_pairs}</b> combined faults '
+                 f'rejected, <b>{n_equiv}</b> equivalent rewrites accepted &mdash; '
+                 f'<b>{n_blind}</b> blind spots, <b>{n_over}</b> over-rejections &middot; '
                  f'<b>{n_chain}</b> chain consumers, where a gate that exits 0 without its artefact '
                  f'is refused and a missing binary is SKIP</p>'
                  f'<p class="mono">python tools/fuzz_register.py &middot; '
@@ -364,8 +367,69 @@ def sec_gates(ctx: dict) -> str:
                body)
 
 
+def spark(values, width=190, height=34, colour="var(--accent)"):
+    """A sparkline drawn from a list of numbers; flat data still draws a line."""
+    vals = [v for v in values if isinstance(v, (int, float))]
+    if len(vals) < 2:
+        return ""
+    lo, hi = min(vals), max(vals)
+    span = (hi - lo) or 1
+    step = width / (len(vals) - 1)
+    pts = " ".join(f"{i * step:.1f},{height - 4 - (v - lo) / span * (height - 8):.1f}"
+                   for i, v in enumerate(vals))
+    last = vals[-1]
+    return (f'<svg viewBox="0 0 {width} {height}" width="{width}" height="{height}" '
+            f'role="img" aria-label="trend, last value {last}">'
+            f'<polyline fill="none" stroke="{colour}" stroke-width="1.3" points="{pts}"/></svg>')
+
+
+def evolution_cards(evo: dict) -> str:
+    """State as things the framework can prove, and evolution as the defects it caught."""
+    state = evo.get("state") or {}
+    hist = evo.get("evolution") or {}
+    instruments = state.get("instruments") or []
+    if not instruments:
+        return ""
+    rows = "".join(
+        f'<tr><td class="st">{html.escape(i["capability"])}</td>'
+        f'<td>{html.escape(i["contradicted_by"])}</td>'
+        f'<td class="num">{html.escape(i["result"])}</td>'
+        f'<td class="mono">{html.escape(i["witness"])}</td></tr>' for i in instruments)
+    tests = (hist.get("tests_by_release") or [])
+    sparks = spark([t.get("tests") or 0 for t in tests])
+    blind = spark(hist.get("blind_spots_by_run") or [], colour="var(--bad, #e5534b)")
+    return f'''<div class="card">
+  <h3>What it can prove, and what would contradict it</h3>
+  <p>Every capability names the artefact that would falsify it. A line with no witness is a
+  slogan, and this table has none.</p>
+  <div class="tw"><table class="gm"><thead><tr><th>capability</th><th>would be contradicted by</th>
+  <th>last result</th><th>witness</th></tr></thead><tbody>{rows}</tbody></table></div>
+  <p class="gm-sum">{state.get("chains", {}).get("pass", 0)} chains pass,
+  {state.get("tests") or "?"} tests collected, {state.get("open_defects", 0)} open defect(s)
+  &middot; recorded {html.escape(str(evo.get("asof", ""))[:16])}</p>
+</div>
+<div class="grid2" style="margin-top:10px">
+  <div class="card"><h3>Evolution: the defects its instruments caught</h3>
+    <p>Feature counts grow on their own. What matters is whether the framework can find its own
+    regressions: a mutation the gate accepts, a component with no style rule, a page that renders
+    without running, a service whose front door answers while its engine is dead.</p>
+    <div class="readout">
+      <div class="kv"><div class="k">mutation runs</div><div class="v">{hist.get("mutation_runs", 0)}</div></div>
+      <div class="kv"><div class="k">blind spots found</div><div class="v">{hist.get("blind_spots_found", 0)}</div></div>
+      <div class="kv"><div class="k">still open</div><div class="v">{hist.get("blind_spots_open", 0)}</div></div>
+    </div>
+    <p class="mono" style="margin:9px 0 0">blind spots per run {blind}</p></div>
+  <div class="card"><h3>Tests per release</h3>
+    <p>{len(tests)} releases on record; the last is {tests[-1].get("tests") if tests else "—"} tests
+    at v{tests[-1].get("version") if tests else "—"}.</p>
+    <p class="mono" style="margin:9px 0 0">{sparks}</p>
+    <p style="font-size:11.6px;color:var(--dim);margin:8px 0 0">Release history:
+    <a href="../site/versions.json">site/versions.json</a>. Written by the build, not by hand.</p></div>
+</div>'''
+
+
 def sec_state(ctx: dict) -> str:
-    body = f'''<div class="card">
+    body = f'''{evolution_cards(ctx.get("evolution") or {})}<div class="card" style="margin-top:10px">
   <h3>External contracts</h3>
   <p class="contracts">{ctx["contracts"]}</p>
   <p class="mono" style="margin:9px 0 0;color:var(--dim)">{ctx["render"]}</p>
@@ -444,10 +508,11 @@ def sec_demo(ctx: dict) -> str:
     at an em dash because the script threw on the first missing id.
     """
     body = f'''<p>The operator is fitted to one-step pairs of {M_DUDT} and Newton solves
-  {M_PSI} on the learned map. Circles are the operator; the line is the analytic {M_USTAR}.</p>
+  {M_PSI} on the learned map. Circles are the operator; the line is the analytic {M_USTAR}.
+  Drag the parameter: the point, the reading and the Newton trace follow together.</p>
   <div class="grid2">
-    <div class="card"><h3>Panel A · Fixed point against parameter</h3>
-      <canvas id="plot" width="640" height="360" aria-label="Learned fixed point against lambda"></canvas>
+    <div class="card"><h3>Fixed point against parameter</h3>
+      <canvas id="plot" width="640" height="330" aria-label="Learned fixed point against lambda"></canvas>
       <div class="controls"><input id="lam" type="range" min="0.2" max="1" step="0.02" value="0.5"
         aria-label="lambda"><span>λ = <b id="lamval">0.50</b></span></div>
       <div class="readout">
@@ -455,21 +520,22 @@ def sec_demo(ctx: dict) -> str:
         <div class="kv"><div class="k">relative error</div><div class="v" id="err">—</div></div>
         <div class="kv"><div class="k">spectral radius</div><div class="v" id="rho">—</div></div>
       </div></div>
-    <div class="card"><h3>Panel B · Stability</h3>
-      <canvas id="rho_plot" width="640" height="360" aria-label="Spectral radius at the learned fixed point"></canvas>
-      <figcaption>The red rule is the unit threshold; below {M_RHO} a perturbation decays.</figcaption>
-      <h3 style="margin-top:12px">Panel C · Newton iterates</h3>
-      <svg id="trace" viewBox="0 0 640 240" width="100%" role="img"
+    <div class="card"><h3>Stability</h3>
+      <canvas id="rho_plot" width="640" height="330" aria-label="Spectral radius at the learned fixed point"></canvas>
+      <figcaption>Below {M_RHO} a perturbation decays; the red rule is the unit threshold.</figcaption></div>
+  </div>
+  <div class="grid2" style="margin-top:10px">
+    <div class="card"><h3>Newton iterates</h3>
+      <svg id="trace" viewBox="0 0 640 96" width="100%" role="img"
         aria-label="Newton iterates from u=1" style="display:block"></svg>
       <div class="controls"><button id="replay" type="button">Replay</button>
-        <span>λ = <b id="trace_lam">0.50</b> · each point is one Newton step</span></div></div>
+        <span>λ = <b id="trace_lam">0.50</b> · one point per step</span></div></div>
+    <div class="card"><h3>Checkpoints</h3>
+      <div class="tw"><table><caption>All {ctx["grid"]} grid points are stable.</caption>
+      <thead><tr><th class="num">λ</th><th class="num">u* analytic</th><th class="num">u* learned</th>
+      <th class="num">ε</th><th class="num">ρ</th></tr></thead><tbody id="rows"></tbody></table></div></div>
   </div>
-  <div class="card" style="margin-top:10px"><h3>Table 1 · Checkpoints</h3>
-    <div class="tw"><table><caption>Learned fixed point, analytic value, relative error and
-    spectral radius at five parameters; all {ctx["grid"]} grid points are stable.</caption>
-    <thead><tr><th class="num">λ</th><th class="num">u* analytic</th><th class="num">u* learned</th>
-    <th class="num">ε</th><th class="num">ρ</th></tr></thead><tbody id="rows"></tbody></table></div></div>
-  <div class="card" style="margin-top:10px"><h3>Panel D · Outside the training data</h3>
+  <div class="card" style="margin-top:10px"><h3>Outside the training data</h3>
     {ctx["extrap"]}
     <figcaption>Fit restricted to λ ≤ 0.6 (shaded: outside the data). Max relative error
     {ctx["inmax"]} inside, {ctx["outmax"]} outside. The operator does not fail here — the map is

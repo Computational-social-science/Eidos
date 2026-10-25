@@ -1,0 +1,99 @@
+{
+  "asof": "2026-10-25T15:02:18+08:00",
+  "state": {
+    "chains": {
+      "total": 11,
+      "pass": 10,
+      "skip": 1,
+      "fail": 0
+    },
+    "tests": 157,
+    "coverage": 69,
+    "instruments": [
+      {
+        "capability": "every Gate S check fires on a case built to trip it",
+        "contradicted_by": "a check with no fixture, or a fixture rejected for the wrong reason",
+        "result": "10 fixtures, 9/9 checks covered",
+        "witness": "docs/FIXTURES.json"
+      },
+      {
+        "capability": "the gate rejects wrong claims and accepts equivalent ones",
+        "contradicted_by": "a wrong register accepted, or an equivalent one rejected",
+        "result": "21 wrong + 28 pairs rejected, 8 equivalent accepted",
+        "witness": "docs/FUZZ.json"
+      },
+      {
+        "capability": "a gate that exits 0 without its artefact is not a pass",
+        "contradicted_by": "a consumer that finishes with no evidence and is reported PASS",
+        "result": "4 chain consumers as declared",
+        "witness": "docs/CHAIN.json"
+      },
+      {
+        "capability": "a service is up only if every endpoint answers",
+        "contradicted_by": "a front door answering while its engine is dead",
+        "result": "decision service 2/2, runtime 1/1",
+        "witness": "tools/audit_services.py"
+      },
+      {
+        "capability": "the delivered pages render, execute and do not collide",
+        "contradicted_by": "a page error, a canvas never drawn, text overlap, contrast below AA",
+        "result": "9 checks: build, currency, structure, layout, contrast, runtime, invariants",
+        "witness": "tools/audit_site.py"
+      },
+      {
+        "capability": "chains run end to end against live boundaries",
+        "contradicted_by": "a chain that passes while its boundary is detached",
+        "result": "10 pass, 1 skip, 0 fail",
+        "witness": "docs/SELF_AUDIT.json"
+      }
+    ],
+    "open_defects": 0
+  },
+  "evolution": {
+    "mutation_runs": 21,
+    "runs_with_a_blind_spot": 1,
+    "blind_spots_found": 1,
+    "blind_spots_open": 0,
+    "releases": 9,
+    "tests_by_release": [
+      {
+        "version": "4.0.0",
+        "tests": 119
+      },
+      {
+        "version": "4.0.0",
+        "tests": 119
+      },
+      {
+        "version": "4.0.0",
+        "tests": 120
+      },
+      {
+        "version": "4.0.0",
+        "tests": 122
+      },
+      {
+        "version": "4.0.0",
+        "tests": 122
+      },
+      {
+        "version": "4.0.0",
+        "tests": 126
+      }
+    ],
+    "blind_spots_by_run": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  }
+}

@@ -67,3 +67,41 @@ stages to models. The mapping is data, not code: override
 - It cannot verify a claim whose reference does not exist in the data; it can
   only report the absence (as the keystroke project does with `AVG_KEYPRESS`).
 - It cannot replace a human gate. A green dashboard is not a peer review.
+
+## 7. The closed loop: self-check and self-heal
+
+The pipeline above is a forward path. What keeps it honest is the return path, and it has
+operators with names, files and failure modes of their own.
+
+**Self-check** (`tools/watch_pipeline.py`, every 15 s)
+
+1. *sample* — probe every chain's boundary and every service's endpoints
+   (`framework/services.py` is the one table that says which endpoints count).
+2. *derive* — `tools/status_view.py::derive()` is the only verdict function; the payload, the
+   page and the poller all consume its output, so they cannot disagree.
+3. *decay* — `tools/chain_states.py` holds the transitions. `FAIL → PASS` must pass through
+   `RUNNING`; an unrefreshed chain decays to `STALE`; `STALE` is not terminal, because fresh
+   evidence after a void verdict is new evidence.
+
+**Self-heal** (`framework/recovery.py`)
+
+4. *plan* — a service with a known repair gets an ordered plan; anything else is refused, and
+   the refusal is recorded.
+5. *execute* — the launcher is idempotent and starts only the half that is missing. A start in
+   flight blocks a second one; a process that exists is not by itself a reason to skip.
+6. *verify* — the same endpoint table decides whether the repair worked. A `502` behind a
+   healthy front door is still a failure.
+7. *record* — `docs/status/recoveries.jsonl` carries phase, outcome and reason. An unlogged
+   repair is indistinguishable from no repair.
+
+**Feedback → evolution** (`tools/evolution.py`, `tools/fuzz_register.py`, `tools/audit_*.py`)
+
+8. An instrument that finds a defect (a mutation the gate accepts, a component with no style
+   rule, a page that renders without running, a vacuous pass) becomes a *guard* before the next
+   commit: a fixture, a check, or a transition rule. `docs/EVOLUTION.json` holds the ledger —
+   capabilities with their witnesses, and the counter that matters: blind spots found, and how
+   many are still open.
+
+The assembly view draws this as a fourth column (instruments) and an arc back to the chains;
+the operator band beneath it draws steps 1–7 as the loop they form. If the arc is missing, the
+picture is a pipeline pretending to be a system.

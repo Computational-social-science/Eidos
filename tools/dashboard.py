@@ -205,7 +205,7 @@ def ranking_table(rows) -> str:
             "</tr></thead><tbody>" + body + "</tbody></table>")
 
 
-def topology(pipeline, chain_now, durations, signals, trace_ts):
+def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None):
     """The assembly. `signals` is passed in so a caller can hand it a fixture."""
     chain_modules = pipeline.get("chain_modules") or {}
     chains = list(chain_modules)
@@ -223,6 +223,9 @@ def topology(pipeline, chain_now, durations, signals, trace_ts):
     c_x, c_w, c_h, c_gap = 18, 330, 24, 8
     m_x, m_w, m_h = 408, 300, 22
     s_x, s_w, s_h = 768, 300, 24
+    # A fourth column: the instruments that judge the chain, and the arc that carries their
+    # findings back to it. Without that arc the picture is a pipeline, not a loop.
+    i_x, i_w, i_h = 1132, 236, 24
     top = 8
     chain_y = {c: top + i * (c_h + c_gap) for i, c in enumerate(chains)}
     rows = len(chains) * (c_h + c_gap)
@@ -230,10 +233,21 @@ def topology(pipeline, chain_now, durations, signals, trace_ts):
     mod_y = {m: top + i * (m_h + mod_gap) for i, m in enumerate(modules)}
     s_gap = max(14, rows // max(len(services), 1) - s_h)
     svc_y = {s: top + i * (s_h + s_gap) for i, s in enumerate(services)}
+    evo = evolution or {}
+    blind = (evo.get("evolution") or {})
+    instruments = [
+        ("fixtures", "every gate check trips", "docs/FIXTURES.json"),
+        ("mutations", f'{blind.get("blind_spots_found", 0)} blind spots found', "docs/FUZZ.json"),
+        ("runtime + layout", "pages execute, nothing collides", "tools/audit_site.py"),
+        ("probes", "a dead half is named", "tools/audit_services.py"),
+    ]
+    i_gap = max(18, rows // max(len(instruments), 1) - i_h)
+    ins_y = {n: top + k * (i_h + i_gap) for k, (n, _, _) in enumerate(instruments)}
     height = max(max(chain_y.values()) + c_h,
                  max(mod_y.values(), default=0) + m_h,
-                 (max(svc_y.values()) + s_h) if svc_y else 0) + 12
-    width = s_x + s_w + 10
+                 (max(svc_y.values()) + s_h) if svc_y else 0,
+                 (max(ins_y.values()) + i_h) if ins_y else 0) + 46
+    width = i_x + i_w + 12
     age = max(0.0, time.time() - trace_ts) if trace_ts else None
 
     svg = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
@@ -300,6 +314,49 @@ def topology(pipeline, chain_now, durations, signals, trace_ts):
                        f"style='stroke-dashoffset:{(drawn * 2.7) % 7:.1f}' fill='none' "
                        f"stroke='{PALETTE['PASS' if up else 'FAIL']}' stroke-width='1.1' "
                        f"opacity='0.55' stroke-dasharray='4 3' marker-end='url(#ah)'/>")
+
+    # services -> instruments: what is watching this boundary
+    if services:
+        first_ins = ins_y[instruments[0][0]]
+        for service in services:
+            if service not in svc_y:
+                continue
+            x1, y1 = s_x + s_w, svc_y[service] + s_h / 2
+            x2, y2 = i_x, first_ins + i_h / 2
+            dx = max(26, (x2 - x1) * 0.5)
+            svg.append(f"<path class='edge' d='M{x1} {y1} C{x1 + dx} {y1}, {x2 - dx} {y2}, "
+                       f"{x2} {y2}' fill='none' stroke='#4a5361' stroke-width='1' "
+                       f"opacity='0.5' stroke-dasharray='4 3' marker-end='url(#ah)'/>")
+
+    for name, note, witness in instruments:
+        y = ins_y[name]
+        ok = not (evo.get("state") or {}).get("open_defects")
+        state = "PASS" if ok else "FAIL"
+        svg.append(
+            f"<g class='node instrument' data-instrument='{html.escape(name)}' tabindex='0' "
+            f"role='button'><title>{html.escape(name)} · {html.escape(note)} · "
+            f"{html.escape(witness)}</title>"
+            f"<rect x='{i_x}' y='{y}' width='{i_w}' height='{i_h}' rx='4' "
+            f"fill='{PALETTE.get(state, PALETTE['IDLE'])}' stroke='#0a0c0f'/>"
+            f"<text x='{i_x + 10}' y='{y + i_h / 2 + 3.4}' font-size='10' "
+            f"fill='{INK.get(state, '#c9d1d9')}'>{html.escape(name)}</text>"
+            f"<text x='{i_x + i_w - 8}' y='{y + i_h / 2 + 3.4}' text-anchor='end' "
+            f"font-size='9' fill='{INK.get(state, '#c9d1d9')}' opacity='0.9'>"
+            f"{html.escape(str(note)[:24])}</text></g>")
+
+    # the loop: findings travel from the instruments back to the chains as guards
+    if ins_y and chains:
+        x_r = i_x + i_w / 2
+        y_bottom = height - 20
+        x_l = c_x + c_w / 2
+        y_chain = max(chain_y.values()) + c_h
+        svg.append(
+            f"<path class='edge feedback' d='M{x_r} {max(ins_y.values()) + i_h} "
+            f"C{x_r} {y_bottom}, {x_l} {y_bottom}, {x_l} {y_chain}' fill='none' "
+            f"stroke='#7c8aa0' stroke-width='1.2' opacity='0.75' stroke-dasharray='5 4' "
+            f"marker-end='url(#ah)'/>"
+)
+
 
     for service in services:
         sig = signals.get(service) or {}
@@ -376,6 +433,12 @@ svg .node rect{transition:fill .4s ease,stroke .4s ease}
 svg .node:hover rect{stroke:#fff;stroke-opacity:.45}
 svg .node:focus{outline:none}
 svg .edge{transition:stroke .4s ease}
+/* The operator band sits under the assembly, separated by a hairline: same figure, second
+   question — not a new card competing with it. */
+.fbcaption{margin:2px 0 0;font-size:9.5px;color:var(--mut)}
+.opwrap{margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
+.opwrap h3{margin:0 0 6px;font:600 9.5px/1.4 -apple-system,"Segoe UI",Arial,sans-serif;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--dim);font-weight:600}
 .key{display:flex;gap:11px;font-size:9.5px;color:var(--dim);margin:0 0 7px;flex-wrap:wrap;
   letter-spacing:.04em;text-transform:uppercase}
 .key i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
@@ -529,6 +592,64 @@ if (location.protocol.startsWith('http')) {
 """
 
 
+
+def operator_strip(status: dict, recoveries: list) -> str:
+    """The system's own operators: self-check, then self-heal, drawn as the loop they form.
+
+    The assembly shows what the pipeline *is*. This shows what keeps it alive: a sample, a
+    verdict, a plan, a repair, a verification, a record — and a second pass that proves the
+    repair worked. State comes from the sampler's own files, not from optimism.
+    """
+    ts = status.get("ts") or ""
+    try:
+        age = max(0.0, time.time() - datetime.datetime.fromisoformat(
+            str(ts).replace("Z", "+00:00")).timestamp())
+    except (ValueError, TypeError):
+        age = None
+    sampled = "PASS" if age is not None and age < 90 else ("STALE" if age is not None else "IDLE")
+    last = recoveries[-1] if recoveries else {}
+    healed = last.get("phase", "")
+    healed_ok = bool(last.get("ok"))
+    steps = [
+        ("self-check · sample", sampled, "15 s"),
+        ("derive verdict", "PASS", "status_view"),
+        ("plan repair", "PASS" if healed else "IDLE", "recovery.plan"),
+        ("execute", ("PASS" if healed_ok else "FAIL") if healed else "IDLE", "recovery.execute"),
+        ("verify", ("PASS" if healed_ok else "FAIL") if healed else "IDLE", "recovery.verify"),
+        ("record", "PASS", f"{len(recoveries)} logged"),
+    ]
+    n = len(steps)
+    box_w, gap = 168, 26
+    width = n * box_w + (n - 1) * gap + 8
+    height = 46
+    parts = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
+             f"aria-label='self-check and self-heal loop'>"]
+    for k, (name, state, note) in enumerate(steps):
+        x = 4 + k * (box_w + gap)
+        parts.append(
+            f"<g class='node operator' data-operator='{html.escape(name)}' tabindex='0' role='button'>"
+            f"<title>{html.escape(name)} · {state} · {html.escape(note)}</title>"
+            f"<rect x='{x}' y='6' width='{box_w}' height='26' rx='4' "
+            f"fill='{PALETTE.get(state, PALETTE['IDLE'])}' stroke='#0a0c0f'/>"
+            f"<text x='{x + 9}' y='23' font-size='9.5' fill='{INK.get(state, '#c9d1d9')}'>"
+            f"{html.escape(name)}</text>"
+            f"<text x='{x + box_w - 8}' y='23' text-anchor='end' font-size='8.5' "
+            f"fill='{INK.get(state, '#c9d1d9')}' opacity='0.85'>{html.escape(note)}</text></g>")
+        if k < n - 1:
+            ax = x + box_w
+            parts.append(f"<path d='M{ax + 3} 19 L{ax + gap - 3} 19' stroke='#4a5361' "
+                         f"stroke-width='1.1' marker-end='url(#ah2)'/>")
+    # the loop closes: a repair that verifies re-enters the sampler
+    parts.append(f"<path d='M{width - box_w / 2 - 4} 32 C{width - 40} 44, 40 44, "
+                 f"{box_w / 2 + 4} 32' fill='none' stroke='#7c8aa0' stroke-width='1.1' "
+                 f"opacity='0.7' stroke-dasharray='4 3' marker-end='url(#ah2)'/>")
+    parts.append("<defs><marker id='ah2' viewBox='0 0 10 10' refX='8.5' refY='5' markerWidth='4' "
+                 "markerHeight='4' orient='auto'><path d='M0 1 L9 5 L0 9 z' "
+                 "fill='context-stroke'/></marker></defs>")
+    parts.append("</svg>")
+    return "".join(parts)
+
+
 def build() -> str:
     pipeline = load(PIPELINE, {}) or {}
     status = load(STATUS / "current.json", {}) or {}
@@ -551,7 +672,18 @@ def build() -> str:
     except ValueError:
         trace_ts = 0.0
 
-    svg, faults, _ = topology(pipeline, chain_now, {}, signals, trace_ts)
+    try:
+        evolution = json.loads((ROOT / "docs" / "EVOLUTION.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        evolution = {}
+    svg, faults, _ = topology(pipeline, chain_now, {}, signals, trace_ts, evolution)
+    try:
+        recoveries = [json.loads(l) for l in
+                      (STATUS / "recoveries.jsonl").read_text(encoding="utf-8").splitlines()
+                      if l.strip()][-20:]
+    except (OSError, json.JSONDecodeError):
+        recoveries = []
+    operator = operator_strip(status, recoveries)
     faults = derived.get("faults") or faults
     ranking = fault_ranking()
     stamp = hkt(status.get("ts", "")) if status.get("ts") else "—"
@@ -595,6 +727,9 @@ def build() -> str:
     <h2>Assembly — chains (run order) → modules → services</h2>
     <div class="key">{key}</div>
     {svg}
+    <p class="mono fbcaption">feedback: a defect an instrument finds becomes a guard before
+    the next commit — the arc carries it back to the chains.</p>
+    <div class="opwrap"><h3>Operators — self-check, then self-heal</h3>{operator}</div>
     {fault_line}
   </section>
   <div class="{grid_class}">

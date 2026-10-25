@@ -2,6 +2,7 @@
   "wrong": [
     {
       "mutation": "no_claims",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S1"
@@ -10,6 +11,7 @@
     },
     {
       "mutation": "value_drift",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S3",
@@ -19,6 +21,7 @@
     },
     {
       "mutation": "pointer_gone",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S3"
@@ -27,6 +30,7 @@
     },
     {
       "mutation": "evidence_file_gone",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S3"
@@ -35,6 +39,7 @@
     },
     {
       "mutation": "prose_number_drift",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S2"
@@ -43,6 +48,7 @@
     },
     {
       "mutation": "span_removed",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S2"
@@ -51,6 +57,7 @@
     },
     {
       "mutation": "unearned_supported",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S4"
@@ -59,6 +66,7 @@
     },
     {
       "mutation": "no_control",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S4"
@@ -67,6 +75,7 @@
     },
     {
       "mutation": "bad_strength",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S4"
@@ -75,6 +84,7 @@
     },
     {
       "mutation": "scope_axis_gone",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S5"
@@ -83,6 +93,7 @@
     },
     {
       "mutation": "scope_oos_without_reason",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S5"
@@ -91,6 +102,7 @@
     },
     {
       "mutation": "power_gone",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S6"
@@ -99,6 +111,7 @@
     },
     {
       "mutation": "multiplicity_gone",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S6"
@@ -107,6 +120,7 @@
     },
     {
       "mutation": "referee_file_gone",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S7"
@@ -115,6 +129,7 @@
     },
     {
       "mutation": "referee_under_reported",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S7"
@@ -123,6 +138,7 @@
     },
     {
       "mutation": "formal_without_proof",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S8"
@@ -131,6 +147,7 @@
     },
     {
       "mutation": "duplicate_id",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S1"
@@ -139,6 +156,7 @@
     },
     {
       "mutation": "value_as_string",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S3"
@@ -147,10 +165,30 @@
     },
     {
       "mutation": "second_claim_wrong",
+      "expected": "FAIL",
       "verdict": "FAIL",
       "checks": [
         "S3",
         "S9"
+      ],
+      "ok": true
+    },
+    {
+      "mutation": "rate_stored_as_percent",
+      "expected": "FAIL",
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S9"
+      ],
+      "ok": true
+    },
+    {
+      "mutation": "rate_without_a_rate",
+      "expected": "FAIL",
+      "verdict": "FAIL",
+      "checks": [
+        "S2"
       ],
       "ok": true
     }
@@ -158,36 +196,130 @@
   "equivalent": [
     {
       "mutation": "same_rate_as_percent",
+      "expected": "PASS",
       "verdict": "PASS",
       "checks": [],
       "ok": true
     },
     {
       "mutation": "same_rate_as_ratio",
+      "expected": "PASS",
       "verdict": "PASS",
       "checks": [],
       "ok": true
     },
     {
       "mutation": "same_rate_trailing_zero",
+      "expected": "PASS",
+      "verdict": "PASS",
+      "checks": [],
+      "ok": true
+    },
+    {
+      "mutation": "rate_with_sample_size",
+      "expected": "PASS",
+      "verdict": "PASS",
+      "checks": [],
+      "ok": true
+    },
+    {
+      "mutation": "rate_percent_with_trials",
+      "expected": "PASS",
       "verdict": "PASS",
       "checks": [],
       "ok": true
     },
     {
       "mutation": "extra_assumption",
+      "expected": "PASS",
       "verdict": "PASS",
       "checks": [],
       "ok": true
     },
     {
       "mutation": "scope_wording",
+      "expected": "PASS",
       "verdict": "PASS",
       "checks": [],
       "ok": true
     },
     {
       "mutation": "key_order",
+      "expected": "PASS",
+      "verdict": "PASS",
+      "checks": [],
+      "ok": true
+    }
+  ],
+  "wrong_evidence": [
+    {
+      "mutation": "evidence_key_missing",
+      "expected": "FAIL",
+      "verdict": "FAIL",
+      "checks": [
+        "S3"
+      ],
+      "ok": true
+    },
+    {
+      "mutation": "evidence_null",
+      "expected": "FAIL",
+      "verdict": "FAIL",
+      "checks": [
+        "S3"
+      ],
+      "ok": true
+    },
+    {
+      "mutation": "evidence_string",
+      "expected": "FAIL",
+      "verdict": "FAIL",
+      "checks": [
+        "S3"
+      ],
+      "ok": true
+    },
+    {
+      "mutation": "evidence_nan",
+      "expected": "FAIL",
+      "verdict": "FAIL",
+      "checks": [
+        "S3"
+      ],
+      "ok": true
+    },
+    {
+      "mutation": "evidence_negative",
+      "expected": "FAIL",
+      "verdict": "FAIL",
+      "checks": [
+        "S3"
+      ],
+      "ok": true
+    },
+    {
+      "mutation": "evidence_list",
+      "expected": "FAIL",
+      "verdict": "FAIL",
+      "checks": [
+        "S3"
+      ],
+      "ok": true
+    },
+    {
+      "mutation": "evidence_bool",
+      "expected": "FAIL",
+      "verdict": "FAIL",
+      "checks": [
+        "S3"
+      ],
+      "ok": true
+    }
+  ],
+  "equivalent_evidence": [
+    {
+      "mutation": "evidence_extra_field",
+      "expected": "PASS",
       "verdict": "PASS",
       "checks": [],
       "ok": true

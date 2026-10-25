@@ -98,7 +98,10 @@ def json_pointer(document: Any, pointer: str) -> Any:
 
 def _values_match(actual: Any, expected: Any) -> bool:
     if isinstance(expected, bool) or isinstance(actual, bool):
-        return bool(actual) is bool(expected)
+        # A boolean matches a boolean and nothing else. Comparing truthiness let a `true`
+        # artefact satisfy a claim of 0.92, because bool(0.92) is True.
+        return (isinstance(actual, bool) and isinstance(expected, bool)
+                and actual is expected)
     if isinstance(expected, (int, float)) and isinstance(actual, (int, float)):
         return math.isclose(float(actual), float(expected), rel_tol=1e-6, abs_tol=1e-9)
     return actual == expected
@@ -194,6 +197,14 @@ class ScientificValidityGate:
                            if re.search(r"" + word + r"", span, re.IGNORECASE)]
         else:
             candidates = _numbers_in(span)
+            # A rate lives in [0, 1]. A sample size written next to the rate — "accuracy 0.92
+            # (n=100)" — is not a candidate value, and letting it through means a claim about
+            # 0.92 is satisfied by the count 100 when the evidence holds 100 by mistake.
+            if units == "rate":
+                if not 0.0 <= float(value) <= 1.0:
+                    return [Finding("S9", f"{cid}: units are 'rate' but the evidence holds "
+                                           f"{value!r}, outside [0, 1]")]
+                candidates = [c for c in candidates if c <= 1.0 + 1e-9]
         if not candidates:
             return []          # nothing numeric in the text: this check does not apply
         tolerance = max(1e-9, abs(float(value)) * 1e-6)

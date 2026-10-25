@@ -398,8 +398,6 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
         f"<text x='12' y='{obs_y + 18}' font-size='10' letter-spacing='0.1em' fill='#98a2b3' "
         f"font-family='ui-monospace,Consolas,monospace'>INSTRUMENTS 4 · "
         f"{'no open defects' if not open_defects else str(open_defects) + ' open defect(s)'}</text>"
-        f"<text x='{width - 22}' y='{obs_y + 18}' text-anchor='end' font-size='10' "
-        f"fill='#98a2b3'>fixtures · mutations · runtime · probes — they observe every row</text>"
         f"</g>")
     svg.append("</g>")
     # Orthogonal return: out of the observer, down into the gutter, up it, and back into the

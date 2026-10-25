@@ -131,7 +131,11 @@ def main(argv: list[str] | None = None) -> int:
             ok, _ = run([PY, "tools/audit_runtime.py"], "both pages execute")
             checks.append(ok)
         else:
-            print("  SKIP  layout, contrast and runtime (no browser in this runner)")
+            # Name what was not run. "PASS (5 checks)" against a local "(9 checks)" reads as
+            # green when three of the checks simply never happened.
+            for skipped in ("monitor layout", "document layout", "WCAG AA",
+                            "both pages execute"):
+                print(f"  SKIP  {skipped} (no browser in this runner)")
 
         gaps = invariants()
         print(f"  {'PASS' if not gaps else 'FAIL'}  content invariants")

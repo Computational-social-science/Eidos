@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Refuse a commit that leaves the suite red.
+#
+# Twice now a refactor was committed and the failure surfaced afterwards: a renamed element id
+# broke the demo (the page rendered, every number stayed blank) and a changed import broke two
+# dashboard tests. Neither is visible to the page gate alone, and neither should reach a commit.
+#
+# Bypass deliberately, never habitually:  git commit --no-verify
+set -euo pipefail
+
+cd "$(git rev-parse --show-toplevel)"
+
+PY="${PYTHON:-python}"
+if ! command -v "$PY" >/dev/null 2>&1; then
+    echo "pre-commit: no python on PATH; set PYTHON=/path/to/python.exe" >&2
+    exit 1
+fi
+
+echo "pre-commit: test suite"
+"$PY" -m pytest -q || { echo "pre-commit: tests failed; commit refused" >&2; exit 1; }
+
+echo "pre-commit: page gate (no browser)"
+"$PY" tools/audit_site.py --no-build --skip-browser \
+    || { echo "pre-commit: page gate failed; commit refused" >&2; exit 1; }
+
+echo "pre-commit: ok"

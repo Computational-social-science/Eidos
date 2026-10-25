@@ -59,3 +59,5 @@ docs/status/chains.json
 docs/status/scheduler.json
 docs/status/scheduler.log
 docs/status/serve.log
+reference/*/docs/results_files/
+reference/*/docs/*_files/

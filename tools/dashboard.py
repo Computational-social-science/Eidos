@@ -258,8 +258,8 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
     if rest:
         grouped.append(("Ungrouped", rest))
 
-    row_h, head_h, top = 19, 16, 34
-    label_w, col_w, gap = 286, 66, 18
+    row_h, head_h, top = 20, 15, 36
+    label_w, col_w, gap = 300, 66, 18
     rows: list[dict] = []
     y = top
     for title, members in grouped:
@@ -307,6 +307,25 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
                    f"font-family='ui-monospace,Consolas,monospace'>"
                    f"{html.escape(short[:10])}</text></g>")
 
+    # vertical structure: a rule under the column names, one between the labels and the
+    # matrix, one between modules and services, and a faint guide at every column boundary.
+    # Horizontal separators alone leave a wide matrix unreadable across its width.
+    svg.append(f"<line x1='0' y1='{top - 4}' x2='{width}' y2='{top - 4}' "
+               f"stroke='rgba(255,255,255,0.10)'/>")
+    svg.append(f"<line x1='{m_x - 10}' y1='{top - 4}' x2='{m_x - 10}' y2='{matrix_bottom}' "
+               f"stroke='rgba(255,255,255,0.10)'/>")
+    svg.append(f"<line x1='{s_x - gap / 2}' y1='{top - 4}' x2='{s_x - gap / 2}' "
+               f"y2='{matrix_bottom}' stroke='rgba(255,255,255,0.10)'/>")
+    for k in range(1, len(modules)):
+        gx = m_x + k * col_w - 8
+        svg.append(f"<line x1='{gx}' y1='{top}' x2='{gx}' y2='{matrix_bottom}' "
+                   f"stroke='rgba(255,255,255,0.05)'/>")
+    for k in range(1, len(services)):
+        gx = s_x + k * col_w - 8
+        svg.append(f"<line x1='{gx}' y1='{top}' x2='{gx}' y2='{matrix_bottom}' "
+                   f"stroke='rgba(255,255,255,0.05)'/>")
+
+    stripe = 0
     for row in rows:
         if row["kind"] == "layer":
             svg.append(f"<text x='0' y='{row['y'] + 11}' font-size='8.5' letter-spacing='0.1em' "
@@ -316,6 +335,10 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
                        f"stroke='rgba(255,255,255,0.06)'/>")
             continue
 
+        stripe += 1
+        if stripe % 2 == 0:
+            svg.append(f"<rect x='0' y='{row['y'] + 2}' width='{width}' height='{row_h - 4}' "
+                       f"fill='rgba(255,255,255,0.018)'/>")
         chain = row["chain"]
         state = chain_now.get(chain, "IDLE")
         info = meta.get(chain) or {}
@@ -326,16 +349,15 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
         svg.append(
             f"<g class='node chain' data-chain='{html.escape(chain)}' tabindex='0' role='button'>"
             f"<title>{html.escape(title)}</title>"
-            f"<rect x='0' y='{y + 3}' width='{label_w - 12}' height='{row_h - 5}' rx='3' "
-            f"fill='transparent'/>"
-            f"<text x='0' y='{y + row_h / 2 + 3}' font-size='9' fill='#6b7480' "
-            f"font-family='ui-monospace,Consolas,monospace'>{chains.index(chain) + 1:02d}</text>"
-            f"<rect x='18' y='{y + 5.5}' width='6' height='{row_h - 8}' rx='1.5' "
-            f"fill='{PALETTE.get(state, PALETTE['IDLE'])}'/>"
-            f"<text x='30' y='{y + row_h / 2 + 3}' font-size='9.5' fill='#c9d1d9'>"
-            f"{html.escape(chain[:30])}</text>"
-            f"<text x='{label_w - 20}' y='{y + row_h / 2 + 3}' text-anchor='end' font-size='8.5' "
-            f"fill='#8b95a5' font-family='ui-monospace,Consolas,monospace'>"
+            # A line, not a rect: the contrast probe composites a label over the first rect
+            # in its group, and a 2.5 px state bar is not the background of the age text.
+            f"<line x1='1' y1='{y + 4}' x2='1' y2='{y + row_h - 4}' "
+            f"stroke='{PALETTE.get(state, PALETTE['IDLE'])}' stroke-width='2.5' "
+            f"stroke-linecap='round'/>"
+            f"<text x='12' y='{y + row_h / 2 + 3.5}' font-size='11' fill='#e6e8eb'>"
+            f"{html.escape(chain)}</text>"
+            f"<text x='{label_w - 16}' y='{y + row_h / 2 + 3.5}' text-anchor='end' font-size='9' "
+            f"fill='#7d8899' font-family='ui-monospace,Consolas,monospace'>"
             f"{html.escape(fmt_age(age) if age is not None else '—')}</text></g>")
 
         used = set(chain_modules.get(chain) or [])
@@ -788,8 +810,8 @@ async function poll() {
     const chains = d.chains || {};
     document.querySelectorAll('g.node.chain').forEach(g => {
       const st = chains[g.dataset.chain] || 'IDLE';
-      const rect = g.querySelector('rect');
-      if (rect) rect.setAttribute('fill', PALETTE[st] || PALETTE.IDLE);
+      const bar = g.querySelector('line');        // the state rule, not a rect
+      if (bar) bar.setAttribute('stroke', PALETTE[st] || PALETTE.IDLE);
     });
     document.querySelectorAll('.edge').forEach(p => {
       const st = chains[p.dataset.from];

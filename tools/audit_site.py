@@ -82,7 +82,9 @@ def invariants() -> list[str]:
 
     if "MONITOR" not in i.upper():
         problems.append("index carries no monitor snapshot")
-    if "/dashboard.html" not in i:
+    # The document is also opened from disk, where /dashboard.html resolves to the filesystem
+    # root. Either the absolute address of the monitor or the server-relative route is fine.
+    if not ("http://127.0.0.1:8765/" in i or 'href="/dashboard.html"' in i):
         problems.append("index does not link to the monitor")
     if "--bg:#0e1013" not in i or "--bg:#0e1013" not in d:
         problems.append("the two pages do not share the same background token")

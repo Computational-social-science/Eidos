@@ -1,0 +1,63 @@
+# DEMO · a quantitative consumer with a planted truth.
+#
+# The point of this register is the control: the same procedure, applied to a deliberately
+# corrupted estimator, must fail to cover the planted value. A measurement that cannot fail is
+# not a measurement.
+
+scope_axes: [model, prompt_shape, items, threshold, non_goals]
+
+scope:
+  model: ["linear model y = theta*x + noise, theta = 0.5 planted by construction"]
+  items: ["400 simulations of 200 observations per arm"]
+  threshold: ["coverage >= 0.90, corrupted coverage <= 0.60, |bias| <= 0.05"]
+  out_of_scope:
+    - axis: prompt_shape
+      reason: "no language model is involved; this consumer exercises the quantitative gate"
+  non_goals:
+    - "any claim about a real dataset: the truth here is planted, not observed"
+
+claims:
+  - id: Q1
+    text: "The 95% interval covers the planted effect in 0.927 of simulations"
+    span: "the interval covers the planted effect in 0.927 of runs"
+    strength: supported
+    design: preregistered
+    evidence:
+      file: docs/evidence.json
+      pointer: /coverage
+      value: 0.927
+    control:
+      file: docs/evidence.json
+      pointer: /coverage_biased
+      value: 0.432
+    assumptions:
+      - "the noise model is Gaussian with known variance; the interval uses that variance"
+    formal: false
+
+  - id: Q2
+    text: "The corrupted estimator covers the planted effect in 0.432 of simulations"
+    span: "corrupted estimator covers the planted effect in 0.432 of runs"
+    strength: supported
+    design: preregistered
+    evidence:
+      file: docs/evidence.json
+      pointer: /coverage_biased
+      value: 0.432
+    control:
+      file: docs/evidence.json
+      pointer: /coverage
+      value: 0.927
+    assumptions:
+      - "the corruption is a fixed +0.30 shift; a different shift would give a different rate"
+    formal: false
+
+power:
+  not_applicable: "coverage is estimated over 400 simulations; the standard error of a rate near 0.93 is about 0.013, so the gate thresholds are far outside sampling noise"
+
+multiplicity:
+  not_applicable: "two descriptive claims from one simulation; no correction applied and none claimed"
+
+journal_fit:
+  file: docs/REFEREE_SIM.md
+  objections: 2
+  unresolved: 0

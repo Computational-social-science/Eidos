@@ -1,0 +1,36 @@
+{
+  "generated": "2026-10-25T08:43:28+00:00",
+  "theta_true": 0.5,
+  "theta_hat": 0.4924,
+  "bias": -0.0076,
+  "coverage": 0.927,
+  "coverage_biased": 0.432,
+  "n_sims": 400,
+  "n_per_sim": 200,
+  "seed": 20261025,
+  "bias_shift": 0.3,
+  "gates": [
+    {
+      "metric": "coverage",
+      "value": 0.927,
+      "threshold": 0.9,
+      "direction": ">=",
+      "met": true
+    },
+    {
+      "metric": "coverage_biased",
+      "value": 0.432,
+      "threshold": 0.6,
+      "direction": "<=",
+      "met": true
+    },
+    {
+      "metric": "abs_bias",
+      "value": 0.0076,
+      "threshold": 0.05,
+      "direction": "<=",
+      "met": true
+    }
+  ],
+  "accepted": true
+}

@@ -1,0 +1,14 @@
+---
+title: "Planted-truth recovery"
+format: html
+---
+
+The planted effect is **0.5**. Across 400 simulations of
+200 observations the mean estimate is **0.4924**
+(bias -0.0076), and the interval covers the planted value in
+**0.927** of runs.
+
+| estimator | coverage |
+|---|---|
+| honest | 0.927 |
+| shifted by 0.3 | 0.432 |

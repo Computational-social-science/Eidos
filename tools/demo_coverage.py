@@ -58,6 +58,10 @@ def capabilities() -> list[dict]:
                 return str(row.get("status") or "")
         return ""
 
+    quant = _load(DOCS / ".." / "reference" / "demo_quantitative" / "docs" / "evidence.json", {})
+    quant_dir = ROOT / "reference" / "demo_quantitative"
+    rendered = (quant_dir / "docs" / "results.html").is_file()
+
     return [
         {"capability": "a project measures itself and registers a claim",
          "proof": "demo_onboarding gate verdict equals expectation",
@@ -74,18 +78,22 @@ def capabilities() -> list[dict]:
         {"capability": "a gate that exits 0 without its artefact is refused",
          "proof": "chain_no_output must FAIL",
          "self_test": chain_status("chain_no_output") == "FAIL",
-         "in_demo": False},
+         "in_demo": _has("reference/demo_quantitative/show_vacuous.py")},
         {"capability": "a missing tool is SKIP, not PASS",
          "proof": "chain_tool_missing must SKIP",
          "self_test": chain_status("chain_tool_missing") == "SKIP",
          "in_demo": False},
-        {"capability": "a manuscript renders to html, pdf and docx from one source",
+        {"capability": "quantitative acceptance thresholds with an explicit direction",
+         "proof": "a consumer runs a BootLoops acceptance gate and records its rows",
+         "self_test": _has("framework/gates/__init__.py"),
+         "in_demo": bool(quant.get("gates")) and bool(quant.get("accepted"))},
+        {"capability": "a result document renders from source",
+         "proof": "demo_quantitative writes docs/results.html through Quarto",
+         "self_test": _has("tools/check_render.py"),
+         "in_demo": rendered},
+        {"capability": "one source renders to html, pdf and docx",
          "proof": "docs/RENDER_CHECK.json lists three formats",
          "self_test": bool(render.get("formats") or render),
-         "in_demo": False},
-        {"capability": "quantitative acceptance thresholds with an explicit direction",
-         "proof": "a consumer runs a BootLoops acceptance gate",
-         "self_test": _has("framework/gates/__init__.py"),
          "in_demo": False},
         {"capability": "experiment tracking (mlflow + dvc) is part of the chain",
          "proof": "the tracking chain passes with its own run id",

@@ -22,7 +22,7 @@
       "capability": "a gate that exits 0 without its artefact is refused",
       "proof": "chain_no_output must FAIL",
       "self_test": true,
-      "in_demo": false
+      "in_demo": true
     },
     {
       "capability": "a missing tool is SKIP, not PASS",
@@ -31,14 +31,20 @@
       "in_demo": false
     },
     {
-      "capability": "a manuscript renders to html, pdf and docx from one source",
-      "proof": "docs/RENDER_CHECK.json lists three formats",
+      "capability": "quantitative acceptance thresholds with an explicit direction",
+      "proof": "a consumer runs a BootLoops acceptance gate and records its rows",
       "self_test": true,
-      "in_demo": false
+      "in_demo": true
     },
     {
-      "capability": "quantitative acceptance thresholds with an explicit direction",
-      "proof": "a consumer runs a BootLoops acceptance gate",
+      "capability": "a result document renders from source",
+      "proof": "demo_quantitative writes docs/results.html through Quarto",
+      "self_test": true,
+      "in_demo": true
+    },
+    {
+      "capability": "one source renders to html, pdf and docx",
+      "proof": "docs/RENDER_CHECK.json lists three formats",
       "self_test": true,
       "in_demo": false
     },
@@ -61,16 +67,14 @@
       "in_demo": false
     }
   ],
-  "self_test": 10,
-  "demo": 3,
+  "self_test": 11,
+  "demo": 6,
   "gaps": [
-    "a gate that exits 0 without its artefact is refused",
     "a missing tool is SKIP, not PASS",
-    "a manuscript renders to html, pdf and docx from one source",
-    "quantitative acceptance thresholds with an explicit direction",
+    "one source renders to html, pdf and docx",
     "experiment tracking (mlflow + dvc) is part of the chain",
     "the framework refuses wrong and accepts equivalent evidence",
     "a service is up only if every endpoint answers"
   ],
-  "total": 10
+  "total": 11
 }

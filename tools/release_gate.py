@@ -15,6 +15,7 @@ than remember. This gate does it the way a newcomer would:
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import shutil
 import subprocess
@@ -43,6 +44,8 @@ def _note(proc: subprocess.CompletedProcess, last: bool = True) -> str:
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--keep", action="store_true")
+    ap.add_argument("--min-coverage", type=int, default=6,
+                    help="capabilities a consumer must demonstrate before a release")
     args = ap.parse_args(argv)
 
     # Inside the repository and ignored by git: a rehearsal on another drive cannot be described
@@ -70,6 +73,20 @@ def main(argv: list[str] | None = None) -> int:
 
         reject = _run([sys.executable, "show_rejection.py"], TEMPLATE, 300)
         steps.append(("template rejects a lie (S9)", reject.returncode == 0, _note(reject)))
+
+        quant = ROOT / "reference" / "demo_quantitative"
+        vacuous = _run([sys.executable, "show_vacuous.py"], quant, 300)
+        steps.append(("a vacuous gate is refused", vacuous.returncode == 0, _note(vacuous)))
+
+        coverage = _run([sys.executable, "tools/demo_coverage.py", "--json"], ROOT, 300)
+        demo_cov = 0
+        try:
+            data = json.loads((ROOT / "docs" / "DEMO_COVERAGE.json").read_text(encoding="utf-8"))
+            demo_cov = int(data.get("demo") or 0)
+        except (OSError, json.JSONDecodeError):
+            pass
+        steps.append((f"demo coverage >= {args.min_coverage}", demo_cov >= args.min_coverage,
+                      f"{demo_cov} capabilities demonstrated"))
     finally:
         # A rehearsal must leave no registration behind: a registry entry pointing at a deleted
         # directory makes every later load_projects() fail, which is how this was found.

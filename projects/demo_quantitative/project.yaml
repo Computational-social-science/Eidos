@@ -1,0 +1,17 @@
+name: demo_quantitative
+root: ../../reference/demo_quantitative
+
+# A structurally different consumer: no language model, a planted truth, a quantitative
+# acceptance gate with explicit directions, and a rendered document. It exists because one
+# demo in one mould demonstrates one mould.
+role: DEMO (quantitative consumer, planted truth + render)
+
+gate_command: ["python", "build.py"]
+test_command: ["python", "build_evidence.py"]
+expects:
+  - docs/evidence.json
+  - docs/results.html
+
+validity_register: analysis/CLAIMS.yaml
+validity_document: docs/REPORT.md
+expected_gate_s: PASS

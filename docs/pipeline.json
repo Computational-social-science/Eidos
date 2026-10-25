@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-25T08:26:53+00:00",
+  "generated": "2026-10-25T08:44:42+00:00",
   "coupling": {
     "nodes": [
       "framework.decision",
@@ -558,6 +558,15 @@
       "expected": "PASS",
       "generated": "2026-10-25T08:11:54+00:00",
       "role": "DEMO (onboarding template, LLM consumer)"
+    },
+    {
+      "name": "demo_quantitative",
+      "root": "E:\\2026-AI4S\\Eidos\\reference\\demo_quantitative",
+      "available": true,
+      "gate_s": "PASS",
+      "expected": "PASS",
+      "generated": "2026-10-25T08:43:28+00:00",
+      "role": "DEMO (quantitative consumer, planted truth + render)"
     },
     {
       "name": "null_study",

@@ -62,6 +62,10 @@ Measured on 2026-10-25: twelve items, 48 calls, **27 s** to evidence, Gate S PAS
 finds the framework by walking up to `framework/decision.py`, so it survives being copied
 anywhere; `EIDOS_ROOT` overrides the search.
 
+For a non-LLM project, `reference/demo_quantitative` is the second template: a planted truth, a
+quantitative acceptance gate with explicit directions, and a Quarto-rendered result. Copy whichever
+is closer to your subject; the contract is the same.
+
 `python show_rejection.py` inside the template edits one number in the register and runs Gate S on
 the copy: it must be rejected by S3 **and** S9, and the script exits 0 only when both fire. A demo
 that shows only success teaches that the gate is a formality.

@@ -125,3 +125,29 @@ Consumers are their own signal: the sampler reads each project's `docs/evidence.
 page's cached copy, and a project nobody has re-measured in 24 hours raises the fault line. The
 same applies to the scheduler: `docs/status/scheduler.json` is checked every tick, and the server
 restarts the loop when the heartbeat is older than two intervals.
+
+## 9. Two demos, and a measured answer to "is one enough?"
+
+One demo proves what it touches. `tools/demo_coverage.py` maps each capability to the artefact
+that would demonstrate it and separates two different claims:
+
+* **self-test** — the framework's own chains exercise the machinery (11/11)
+* **in a demo** — a consumer project produced the artefact (6/11)
+
+That second number is the one that speaks to the mission, and it is printed on the monitor band
+rather than in a footnote. The gap is deliberate and named: service pairing, tracking, three-format
+rendering, mutation equivalence and the SKIP rule are demonstrated by the framework's tests, not by
+a consumer, and the next demo is chosen to close the largest gap rather than the easiest one.
+
+The two demos are structurally unlike each other on purpose:
+
+| | `demo_onboarding` | `demo_quantitative` |
+|---|---|---|
+| input | a language model, three wordings | a linear model, a planted effect |
+| claim | agreement across wordings, Wilson interval | coverage and bias of an estimator |
+| gate | Gate S only | Gate S **and** a quantitative acceptance gate |
+| failure shown | a register that lies (S3 + S9) | a gate that exits 0 with no artefact |
+| output | markdown report | rendered HTML through Quarto |
+
+`release_gate.py` now refuses a release when either the onboarding rehearsal fails or the demo
+coverage falls below six capabilities.

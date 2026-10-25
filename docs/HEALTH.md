@@ -13,7 +13,7 @@ and re-checked by `--check` in CI; none is typed by hand.
 | Gate S on the reference fixture | PASS (valid register) and FAIL (mutated copy) | ✅ |
 | Gate S on Eidos itself | **PASS — 8 objections, 0 open** (consumers are sealed fixtures) | ✅ |
 | CI (GitHub Actions) | test job 3.11 + 3.12 green; audit job green | ✅ |
-| consumers | `demo_onboarding` (template, must pass), `operator_calibration` (LLM, must pass), `null_study` and `prose_lie` (must be rejected) | 4 |
+| consumers | `demo_onboarding` and `demo_quantitative` (templates, must pass), `operator_calibration` (LLM, must pass), `null_study` and `prose_lie` (must be rejected) | 5 |
 | render chain | html 19 KB, pdf 13 KB, docx 11 KB from one Quarto source (`docs/RENDER_CHECK.json`) | ✅ |
 | external contracts | Quarto 1.10.19 (`tools/quarto`, via `QUARTO_BIN`), DVC, MLflow, decision service, BootLoops | ✅ |
 | coupling | 0 import cycles, 0 absolute-path literals | ✅ |
@@ -28,6 +28,7 @@ Additional instruments, each with its own evidence file:
 | service probe | a service counts as up only if every endpoint answers | `tools/audit_services.py` |
 | state ledger | capabilities with the artefact that would refute each | `docs/EVOLUTION.json` |
 | scheduler heartbeat | a scheduler that stops ticking raises a fault within three intervals | `docs/status/scheduler.json` |
+| demo coverage | 6 of 11 capabilities are demonstrated by a consumer, not only by a self-test | `docs/DEMO_COVERAGE.json` |
 
 The SKIP is the project checker: it needs a project path to run. The two adopters are
 deliberately unlike each other — one Python repository with a manuscript, one Lean library

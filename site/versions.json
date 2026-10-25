@@ -106,5 +106,20 @@
       "open_objections": 0,
       "decision_ms": 182
     }
+  },
+  {
+    "version": "4.1.0",
+    "date": "2026-10-25",
+    "commit": "2f65c2c",
+    "metrics": {
+      "tests": 157,
+      "coverage": 69,
+      "chains": 11,
+      "open_objections": 0,
+      "decision_ms": 182,
+      "blind_spots_found": 1,
+      "blind_spots_open": 0,
+      "instruments": 6
+    }
   }
 ]

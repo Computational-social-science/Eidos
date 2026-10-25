@@ -1,44 +1,70 @@
-"""Serve the delivery page with a live status endpoint.
+"""Serve the monitor at / and the document at /index.html, with one live status feed.
 
-A file:// page cannot poll; that is a browser rule, not a design choice. This server adds
-the one thing the snapshot page lacks — a near-real-time feed — without changing the page:
+A file:// page cannot poll; that is a browser rule, not a design choice. This server adds the
+one thing the static pages lack — a near-real-time feed — without changing the pages:
 
-    http://127.0.0.1:8765/            the same site/index.html
-    http://127.0.0.1:8765/api/status  the control loop sample, refreshed every 5 s
+    http://127.0.0.1:8765/            site/dashboard.html   (the assembly monitor)
+    http://127.0.0.1:8765/index.html  site/index.html       (the document)
+    http://127.0.0.1:8765/api/status  one sample, refreshed on an interval
     http://127.0.0.1:8765/api/pipeline the composed pipeline document
 
-The sampler runs in a background thread and never blocks a request. If the watcher fails,
-the endpoint returns the last good sample with `stale: true` rather than pretending.
+Two rules learned the hard way:
+
+  * one instance only — Windows will happily let two processes bind the same port, and then
+    whichever answers first wins, with two samplers writing the same files;
+  * sample on an interval, redraw on a longer one — a full SVG rebuild every few seconds is
+    pure heat for a page nobody watches that closely.
+
+The sampler runs in a background thread and never blocks a request. If it fails, the endpoint
+returns the last good sample with `stale: true` rather than pretending.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import socket
+import sys
 import threading
 import time
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-
-import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 
 import watch_pipeline  # noqa: E402
 
-STATE: dict = {"payload": None, "sampled": 0.0, "error": None}
+STATE: dict = {"payload": None, "sampled": 0.0, "error": None, "strip": "", "strip_sig": None,
+               "written": 0.0, "page_sig": None, "interval": 15.0}
+PAGES = {"/": "dashboard.html", "/dashboard.html": "dashboard.html", "/index.html": "index.html"}
 
 
-def sampler(interval: float) -> None:
+def sampler(interval: float, page_interval: float) -> None:
+    import dashboard
+
     while True:
+        started = time.time()
         try:
-            STATE["payload"] = watch_pipeline.sample(append=True)
+            payload = watch_pipeline.sample(append=True)
+            STATE["payload"] = payload
             STATE["sampled"] = time.time()
             STATE["error"] = None
+
+            timeline = payload.get("timeline") or []
+            sig = (len(timeline), timeline[-1].get("ts") if timeline else None)
+            if sig != STATE["strip_sig"]:
+                STATE["strip"] = dashboard.strip(timeline)
+                STATE["strip_sig"] = sig
+
+            page_sig = json.dumps(payload.get("chains") or {}, sort_keys=True)
+            if page_sig != STATE["page_sig"] or time.time() - STATE["written"] > page_interval:
+                dashboard.OUT.write_text(dashboard.build(), encoding="utf-8")
+                STATE["written"] = time.time()
+                STATE["page_sig"] = page_sig
         except Exception as exc:  # noqa: BLE001 - keep serving, report the failure
             STATE["error"] = f"{type(exc).__name__}: {exc}"
-        time.sleep(interval)
+        time.sleep(max(interval - (time.time() - started), 1.0))
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -48,24 +74,36 @@ class Handler(SimpleHTTPRequestHandler):
     def log_message(self, format: str, *args) -> None:  # noqa: A002 - stdlib name
         pass
 
-    def do_GET(self) -> None:  # noqa: N802 - stdlib name
-        if self.path in ("/", "/index.html"):
-            blob = (ROOT / "site" / "dashboard.html").read_bytes()
-            self.send_response(200)
-            self.send_header("Content-Type", "text/html; charset=utf-8")
-            self.send_header("Content-Length", str(len(blob)))
-            self.send_header("Cache-Control", "no-store")
-            self.end_headers()
-            self.wfile.write(blob)
+    def _html(self, name: str) -> None:
+        path = ROOT / "site" / name
+        if not path.is_file():
+            self.send_error(404, f"{name} has not been built")
             return
-        if self.path.startswith("/api/status"):
-            payload = STATE["payload"] or {}
-            body = dict(payload)
-            body["stale"] = (time.time() - STATE["sampled"]) > 30
+        blob = path.read_bytes()
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(blob)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(blob)
+
+    def do_GET(self) -> None:  # noqa: N802 - stdlib name
+        clean = self.path.split("?")[0]
+        if clean in PAGES:
+            self._html(PAGES[clean])
+            return
+        if clean == "/favicon.ico":
+            self.send_response(204)
+            self.end_headers()
+            return
+        if clean.startswith("/api/status"):
+            body = dict(STATE["payload"] or {})
+            body["stale"] = (time.time() - STATE["sampled"]) > 3 * STATE["interval"]
             body["server_error"] = STATE["error"]
+            body["strip_html"] = STATE["strip"]        # rendered once per sample, not per request
             self._send(body)
             return
-        if self.path.startswith("/api/pipeline"):
+        if clean.startswith("/api/pipeline"):
             path = ROOT / "docs" / "pipeline.json"
             try:
                 self._send(json.loads(path.read_text(encoding="utf-8")))
@@ -73,6 +111,22 @@ class Handler(SimpleHTTPRequestHandler):
                 self._send({"error": str(exc)}, status=503)
             return
         super().do_GET()
+
+    def do_POST(self) -> None:  # noqa: N802 - stdlib name
+        if not self.path.startswith("/api/restart/"):
+            self._send({"error": "unknown endpoint"}, status=404)
+            return
+        name = self.path.rsplit("/", 1)[-1]
+        sys.path.insert(0, str(ROOT))
+        from framework import recovery
+        plan_ = recovery.plan(name)
+        if not plan_.available:
+            self._send({"ok": False, "error": plan_.reason or "no recovery action"}, status=400)
+            return
+        result = recovery.execute(plan_)
+        if result.get("ok") and not result.get("skipped"):
+            result["verify"] = recovery.verify(name, timeout=120)
+        self._send(result, status=202)
 
     def _send(self, payload: dict, status: int = 200) -> None:
         blob = json.dumps(payload).encode("utf-8")
@@ -87,12 +141,27 @@ class Handler(SimpleHTTPRequestHandler):
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--port", type=int, default=8765)
-    ap.add_argument("--interval", type=float, default=5.0)
+    ap.add_argument("--interval", type=float, default=15.0,
+                    help="seconds between samples (each costs ~200 ms)")
+    ap.add_argument("--page-interval", type=float, default=60.0,
+                    help="maximum seconds between full HTML redraws")
     args = ap.parse_args(argv)
 
-    threading.Thread(target=sampler, args=(args.interval,), daemon=True).start()
+    # One instance only: two binds of the same port is how "the site is down" happens while a
+    # process is sitting right there.
+    try:
+        with socket.create_connection(("127.0.0.1", args.port), timeout=0.6):
+            print(f"[FAIL] something is already serving on 127.0.0.1:{args.port}")
+            return 2
+    except OSError:
+        pass
+
+    STATE["interval"] = args.interval
+    threading.Thread(target=sampler, args=(args.interval, args.page_interval),
+                     daemon=True).start()
     server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
-    print(f"serving http://127.0.0.1:{args.port}/  (status every {args.interval:.0f}s)")
+    print(f"serving http://127.0.0.1:{args.port}/  "
+          f"(sample every {args.interval:.0f}s, redraw every {args.page_interval:.0f}s)")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

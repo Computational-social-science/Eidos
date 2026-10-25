@@ -71,6 +71,8 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="the site quality gate")
     ap.add_argument("--no-build", action="store_true", help="audit what is already on disk")
     ap.add_argument("--loop", type=int, default=1, help="attempts before giving up")
+    ap.add_argument("--skip-browser", action="store_true",
+                    help="skip the checks that need Playwright (for CI without a browser)")
     args = ap.parse_args(argv)
 
     for attempt in range(1, max(args.loop, 1) + 1):
@@ -89,15 +91,17 @@ def main(argv: list[str] | None = None) -> int:
         ok, _ = run([PY, "tools/dashboard.py", "--check", "--no-age"], "monitor structure")
         checks.append(ok)
 
-        ok, _ = run([PY, "tools/audit_layout.py", "--widths", "1100,1280,1440,1920"],
-                    "monitor layout")
-        checks.append(ok)
-        ok, _ = run([PY, "tools/audit_layout.py", "--page", "site/index.html",
-                     "--widths", "1100,1280,1440"], "document layout")
-        checks.append(ok)
-
-        ok, _ = run([PY, "tools/audit_contrast.py"], "both pages, WCAG AA")
-        checks.append(ok)
+        if not args.skip_browser:
+            ok, _ = run([PY, "tools/audit_layout.py", "--widths", "1100,1280,1440,1920"],
+                        "monitor layout")
+            checks.append(ok)
+            ok, _ = run([PY, "tools/audit_layout.py", "--page", "site/index.html",
+                         "--widths", "1100,1280,1440"], "document layout")
+            checks.append(ok)
+            ok, _ = run([PY, "tools/audit_contrast.py"], "both pages, WCAG AA")
+            checks.append(ok)
+        else:
+            print("  SKIP  layout and contrast (no browser in this runner)")
 
         gaps = invariants()
         print(f"  {'PASS' if not gaps else 'FAIL'}  content invariants")

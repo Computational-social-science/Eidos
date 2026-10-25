@@ -15,6 +15,7 @@ no automation, because it hides the cause behind a green light.
 
 from __future__ import annotations
 
+import datetime
 import json
 import os
 import re
@@ -43,6 +44,7 @@ def _msys(path: Path) -> str:
 
 
 STATE = ROOT / "docs" / "status" / "recovery_state.json"
+LOG = ROOT / "docs" / "status" / "recoveries.jsonl"
 COOLDOWN_S = 600          # between attempts, per service
 STARTUP_WINDOW_S = 240    # a launcher needs time to load a 4B model before it is "failing"
 MAX_COOLDOWN_S = 3600
@@ -75,6 +77,23 @@ def guard(service: str) -> tuple[bool, str]:
         wait = min(COOLDOWN_S * 2 ** min(row["failures"], 3), MAX_COOLDOWN_S) - since
         return False, f"cooldown after {row['failures']} failed attempt(s): {wait:.0f}s left"
     return True, ""
+
+
+def _log(service: str, action: str, phase: str, ok: bool, **fields) -> None:
+    """One line per decision, in the schema watch_pipeline already writes.
+
+    Same file, same keys (`phase`, `ok`, `error`), so an automatic repair and a manual one are
+    read by the same script instead of two dialects living side by side.
+    """
+    row = {"ts": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
+           "service": service, "phase": phase, "action": action, "ok": bool(ok), "error": None}
+    row.update({k: v for k, v in fields.items() if v is not None})
+    try:
+        LOG.parent.mkdir(parents=True, exist_ok=True)
+        with LOG.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+    except OSError:
+        pass
 
 
 def _note(service: str, **fields) -> None:
@@ -245,20 +264,25 @@ def execute(plan_: RecoveryPlan) -> dict:
     look = preflight(plan_.service)
     if look["healthy"]:
         _note(plan_.service, in_flight=False, ok=True, failures=0)
+        _log(plan_.service, plan_.action, "skipped", True, reason="already healthy")
         return {"ok": True, "skipped": True, "service": plan_.service,
                 "reason": "already healthy; nothing to start", "preflight": look}
     if look["conflict"]:
+        _log(plan_.service, plan_.action, "refused", False, reason="port held by another process",
+             ports={p: v["pid"] for p, v in look["ports"].items() if v["pid"]})
         return {"ok": False, "skipped": True, "service": plan_.service,
                 "reason": "port held by another process: " + ", ".join(
                     f"{p} pid={v['pid']} {v['name']}" for p, v in look["ports"].items() if v["pid"]),
                 "preflight": look}
     if look["owned_by_self"]:
+        _log(plan_.service, plan_.action, "skipped", True, reason="process already exists")
         return {"ok": True, "skipped": True, "service": plan_.service,
                 "reason": "the service process already exists (still starting); not loading it twice",
                 "preflight": look}
 
     allowed, why = guard(plan_.service)
     if not allowed:
+        _log(plan_.service, plan_.action, "skipped", False, reason=why)
         return {"ok": False, "skipped": True, "service": plan_.service, "reason": why}
     _note(plan_.service, last_attempt=time.time(), in_flight=True)
 
@@ -293,6 +317,7 @@ def execute(plan_: RecoveryPlan) -> dict:
               failures=int((_read_state().get(plan_.service) or {}).get("failures", 0)) + 1,
               error=str(exc))
         return {"ok": False, "error": str(exc)}
+    _log(plan_.service, plan_.action, "attempt", True, pid=proc.pid)
     return {"ok": True, "pid": proc.pid, "service": plan_.service,
             "action": plan_.action, "description": plan_.description}
 
@@ -309,6 +334,8 @@ def verify(service: str, timeout: float = 90.0, interval: float = 3.0) -> dict:
             with urllib.request.urlopen(url, timeout=3) as resp:
                 if 200 <= resp.status < 500:      # 401 also proves the server is alive
                     _note(service, in_flight=False, ok=True, failures=0, verified_at=time.time())
+                    _log(service, "verify", "verified", True,
+                         seconds=round(timeout - (deadline - time.time()), 1), url=url)
                     return {"verified": True, "url": url,
                             "seconds": round(timeout - (deadline - time.time()), 1)}
         except (urllib.error.URLError, OSError) as exc:
@@ -317,6 +344,7 @@ def verify(service: str, timeout: float = 90.0, interval: float = 3.0) -> dict:
     row = (_read_state().get(service) or {})
     _note(service, in_flight=False, ok=False,
           failures=int(row.get("failures", 0)) + 1, last_error=last)
+    _log(service, "verify", "failed", False, error=last[:200], waited=timeout, url=url)
     return {"verified": False, "url": url, "error": last, "waited": timeout}
 
 

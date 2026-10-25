@@ -54,7 +54,9 @@ def test_module_state_is_the_worst_of_its_consumers():
 
 def test_dashboard_builds_an_animated_assembly_page():
     page = dash.build()
-    assert "Eidos pipeline — assembly and status" in page
+    # The header is the name and its release: "Eidos v4.0.0". The title carries the rest.
+    assert "class=\"brand\"" in page and ">●</i>Eidos" in page
+    assert "— assembly and status" in page
     assert "--bg:#0e1013" in page              # dark theme
     assert page.count("data-chain=") >= 1      # chains carry their own state
     assert page.count("data-module=") >= 1     # modules carry the worst state of their users

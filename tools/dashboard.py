@@ -876,11 +876,11 @@ def build() -> str:
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark">
-<title>Eidos pipeline — assembly and status</title>
+<title>Eidos v{html.escape(version_label() or '—')} — assembly and status</title>
 <style>{CSS}</style></head>
 <body>
 <header>
-  <span class="brand"><i>●</i>Eidos pipeline<span class="ver"> v{html.escape(version_label() or '—')}</span></span>
+  <span class="brand"><i>●</i>Eidos<span class="ver"> v{html.escape(version_label() or '—')}</span></span>
   <span class="pill {'OK' if ok else 'ALARM'}" id="ov">{html.escape(str(overall))}</span>
   <span class="spacer"></span>
   <span class="meta" id="meta">sampled <b>{stamp}</b> HKT · <b>{status.get('samples', 0)}</b>

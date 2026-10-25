@@ -283,7 +283,7 @@ def sec_architecture(fragment: str) -> str:
                "trusted if the one below it holds. Read bottom-up.", fragment)
 
 
-def fixture_table(fx: dict) -> str:
+def fixture_table(fx: dict, rb: dict | None = None) -> str:
     """Every check needed a fixture that trips it; this is that claim, not a slogan."""
     rows = fx.get("fixtures") or []
     if not rows:
@@ -295,6 +295,18 @@ def fixture_table(fx: dict) -> str:
         f'<td class="{"has" if r["ok"] else "none"}">{"ok" if r["ok"] else "wrong"}</td></tr>'
         for r in rows)
     covered = " ".join(fx.get("covered") or [])
+    rb = rb or {}
+    fuzz = rb.get("fuzz") or {}
+    chain = rb.get("chain") or {}
+    extra = ""
+    if fuzz.get("mutations") or chain.get("fixtures"):
+        n_mut = len(fuzz.get("mutations") or [])
+        n_blind = len(fuzz.get("blind_spots") or [])
+        n_chain = len(chain.get("fixtures") or [])
+        extra = (f'<p class="gm-sum">Robustness beyond the register: <b>{n_mut}</b> mutations of the '
+                 f'clean fixture, <b>{n_blind}</b> accepted &middot; <b>{n_chain}</b> chain consumers '
+                 f'(a gate that exits 0 without its artefact is refused, a missing binary is SKIP)'
+                 f' &middot; <code>python tools/fuzz_register.py</code></p>')
     return f'''<div class="card" style="margin-top:10px"><h3>Every check has a fixture that trips it</h3>
     <p>A checklist that has never rejected anything is a claim about the checklist. Each fixture
     below is a finished project that is wrong in exactly one way; the gate must reject it, and
@@ -302,7 +314,7 @@ def fixture_table(fx: dict) -> str:
     <div class="tw"><table class="gm"><thead><tr><th>fixture</th><th>expected</th><th>actual</th>
     <th>check</th><th>match</th></tr></thead><tbody>{cells}</tbody></table></div>
     <p class="gm-sum">Covered: <b>{covered}</b> &middot; {len(rows)} fixtures &middot;
-    <code>python tools/audit_fixtures.py</code></p></div>'''
+    <code>python tools/audit_fixtures.py</code></p>{extra}</div>'''
 
 
 def sec_gates(ctx: dict) -> str:
@@ -340,7 +352,7 @@ def sec_gates(ctx: dict) -> str:
     (<code>tau_identified = {ctx["tau"]}</code>; lowest confidence on a correct answer
     {ctx["minconf"]}), so a gate may not use <code>none_probability ≥ 0.2</code> as a success
     criterion. The option set does the work, not the threshold.</p></div>
-</div>{fixture_table(ctx.get("fixtures") or {})}'''
+</div>{fixture_table(ctx.get("fixtures") or {}, ctx.get("robustness") or {})}'''
     return sec("04", "gates", "Gates: two kinds, plus a validator",
                "Two gate families, one validator, and a matrix that says where each one sits.",
                body)

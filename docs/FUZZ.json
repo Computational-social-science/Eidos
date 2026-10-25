@@ -1,0 +1,160 @@
+{
+  "mutations": [
+    {
+      "mutation": "no_claims",
+      "verdict": "FAIL",
+      "checks": [
+        "S1"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "value_drift",
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S9"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "pointer_gone",
+      "verdict": "FAIL",
+      "checks": [
+        "S3"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "evidence_file_gone",
+      "verdict": "FAIL",
+      "checks": [
+        "S3"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "prose_number_drift",
+      "verdict": "FAIL",
+      "checks": [
+        "S2"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "span_removed",
+      "verdict": "FAIL",
+      "checks": [
+        "S2"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "unearned_supported",
+      "verdict": "FAIL",
+      "checks": [
+        "S4"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "no_control",
+      "verdict": "FAIL",
+      "checks": [
+        "S4"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "bad_strength",
+      "verdict": "FAIL",
+      "checks": [
+        "S4"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "scope_axis_gone",
+      "verdict": "FAIL",
+      "checks": [
+        "S5"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "scope_oos_without_reason",
+      "verdict": "FAIL",
+      "checks": [
+        "S5"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "power_gone",
+      "verdict": "FAIL",
+      "checks": [
+        "S6"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "multiplicity_gone",
+      "verdict": "FAIL",
+      "checks": [
+        "S6"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "referee_file_gone",
+      "verdict": "FAIL",
+      "checks": [
+        "S7"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "referee_under_reported",
+      "verdict": "FAIL",
+      "checks": [
+        "S7"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "formal_without_proof",
+      "verdict": "FAIL",
+      "checks": [
+        "S8"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "duplicate_id",
+      "verdict": "FAIL",
+      "checks": [
+        "S1"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "value_as_string",
+      "verdict": "FAIL",
+      "checks": [
+        "S3"
+      ],
+      "caught": true
+    },
+    {
+      "mutation": "second_claim_wrong",
+      "verdict": "FAIL",
+      "checks": [
+        "S3",
+        "S9"
+      ],
+      "caught": true
+    }
+  ],
+  "blind_spots": [],
+  "ok": true
+}

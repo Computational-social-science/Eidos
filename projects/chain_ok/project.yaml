@@ -1,0 +1,9 @@
+name: chain_ok
+root: ../../reference/chain/ok
+notes: 'Positive control: the gate runs, exits 0 and leaves the artefact it promised.'
+gate_command:
+- python
+- -c
+- open('docs/evidence.json','w').write('{}')
+expects:
+- docs/evidence.json

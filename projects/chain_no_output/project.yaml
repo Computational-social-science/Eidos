@@ -1,0 +1,10 @@
+name: chain_no_output
+root: ../../reference/chain/no_output
+notes: 'Exits 0 and produces nothing. Without `expects` this is a vacuous pass: a
+  gate that judged no artefact reported as having approved one.'
+gate_command:
+- python
+- -c
+- pass
+expects:
+- docs/evidence.json

@@ -62,6 +62,11 @@ jobs:
       - name: Fixture audit (each gate check must trip)
         run: python tools/audit_fixtures.py
 
+      - name: Mutation and chain audits
+        run: |
+          python tools/fuzz_register.py
+          python tools/audit_chain_fixtures.py
+
       - name: Site gate (no browser here)
         run: python tools/audit_site.py --skip-browser
       - name: Local neural operator (planted fixed point + control)

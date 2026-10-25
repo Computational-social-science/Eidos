@@ -1,0 +1,7 @@
+name: chain_cmd_fails
+root: ../../reference/chain/cmd_fails
+notes: The gate itself fails. The chain must report FAIL, not PASS and not ERROR.
+gate_command:
+- python
+- -c
+- raise SystemExit(1)

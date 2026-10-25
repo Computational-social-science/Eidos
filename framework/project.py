@@ -59,6 +59,9 @@ class ProjectSpec:
     test_command: list[str] = dataclasses.field(default_factory=list)
     render_command: list[str] = dataclasses.field(default_factory=list)
     reports: list[str] = dataclasses.field(default_factory=list)
+    #: Files the gate must leave behind. A gate that exits 0 without producing them has
+    #: not judged anything, and calling that PASS is the vacuous pass this field prevents.
+    expects: list[str] = dataclasses.field(default_factory=list)
     notes: str = ""
     #: Gate S registration: the claim register, the deliverable(s) the claims live in,
     #: and the verdict the consumer is expected to produce (a negative control FAILs).
@@ -76,7 +79,7 @@ class ProjectRun:
     """The outcome of running one project's gate command."""
 
     name: str
-    status: str          # PASS | FAIL | ERROR
+    status: str          # PASS | FAIL | SKIP | ERROR
     exit_code: int
     duration_s: float
     command: list[str]
@@ -139,6 +142,7 @@ def load_project(project_file: Path, allow_missing: bool = False) -> ProjectSpec
         test_command=_as_argv(data.get("test_command"), "test_command", project_file),
         render_command=_as_argv(data.get("render_command"), "render_command", project_file),
         reports=[str(r) for r in (data.get("reports") or [])],
+        expects=[str(r) for r in (data.get("expects") or [])],
         notes=str(data.get("notes") or ""),
         validity_register=str(data.get("validity_register") or ""),
         validity_document=str(data.get("validity_document") or ""),
@@ -219,7 +223,24 @@ def run_command(spec: ProjectSpec, kind: str = "gate", timeout: int = 900) -> Pr
         exit_code = 127
         stdout, stderr = "", f"{type(exc).__name__}: {exc}"
 
-    status = "PASS" if exit_code == 0 else ("FAIL" if exit_code == 1 else "ERROR")
+    # A declared binary that does not exist has not judged the artefact. The vocabulary is
+    # keystroke-observatory's and it is deliberate: SKIP means "no verdict", and a missing
+    # tool that reports FAIL trains a reader to ignore the gate.
+    if exit_code == 127:
+        status = "SKIP"
+    elif exit_code == 0:
+        status = "PASS"
+    elif exit_code == 1:
+        status = "FAIL"
+    else:
+        status = "ERROR"
+
+    if status == "PASS" and spec.expects:
+        missing = [rel for rel in spec.expects if not (spec.root / rel).exists()]
+        if missing:
+            status = "FAIL"
+            note = "declared output missing after a successful run: " + ", ".join(missing)
+            stderr = (stderr.rstrip() + chr(10) + note) if stderr else note
     return ProjectRun(
         name=spec.name,
         status=status,

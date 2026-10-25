@@ -1,0 +1,29 @@
+{
+  "fixtures": [
+    {
+      "project": "chain_ok",
+      "expected": "PASS",
+      "status": "PASS",
+      "ok": true
+    },
+    {
+      "project": "chain_cmd_fails",
+      "expected": "FAIL",
+      "status": "FAIL",
+      "ok": true
+    },
+    {
+      "project": "chain_no_output",
+      "expected": "FAIL",
+      "status": "FAIL",
+      "ok": true
+    },
+    {
+      "project": "chain_tool_missing",
+      "expected": "SKIP",
+      "status": "SKIP",
+      "ok": true
+    }
+  ],
+  "ok": true
+}

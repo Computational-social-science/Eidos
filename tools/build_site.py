@@ -176,6 +176,17 @@ def contracts() -> list[dict]:
             for k, v in boundaries.items()]
 
 
+def robustness() -> dict:
+    """Counts from the three audits that ask whether the chain can say no."""
+    out = {}
+    for key in ("fuzz", "chain"):
+        try:
+            out[key] = json.loads((ROOT / "docs" / f"{key.upper()}.json").read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            out[key] = {}
+    return out
+
+
 def fixtures() -> dict:
     """The fixture audit's machine record: which check each fixture trips."""
     try:
@@ -188,6 +199,7 @@ def collect() -> dict:
     return {"meta": meta(),
             "audit": json.loads((ROOT / "docs" / "SELF_AUDIT.json").read_text(encoding="utf-8")),
             "chains": chains(), "registry": registry(), "referee": referee(), "fixtures": fixtures(),
+            "robustness": robustness(),
             "lean": lean_runs(), "decision": decision(), "extra": extrapolation(),
             "contracts": contracts(),
             "commit": subprocess.run(["git", "-C", str(ROOT), "rev-parse", "--short", "HEAD"],
@@ -535,6 +547,7 @@ def render(data: dict) -> str:
         "nadopt": len(data["registry"]),
         "ncontracts": len(contracts),
         "fixtures": data.get("fixtures") or {"fixtures": [], "covered": [], "ok": False},
+        "robustness": data.get("robustness") or {},
         "latency": dec["latency_ms"] or "—",
         "acc": f"{100 * dec['accuracy']:.1f}%" if dec["accuracy"] is not None else "—",
         "abs_a": (f"{100 * dec['abstain_answerable']:.0f}%"

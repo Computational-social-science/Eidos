@@ -1,0 +1,104 @@
+{
+  "fixtures": [
+    {
+      "fixture": "clean",
+      "expected": "PASS",
+      "actual": "PASS",
+      "checks": [],
+      "ok": true
+    },
+    {
+      "fixture": "s1_no_claims",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "checks": [
+        "S1"
+      ],
+      "ok": true
+    },
+    {
+      "fixture": "s2_span_gone",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "checks": [
+        "S2"
+      ],
+      "ok": true
+    },
+    {
+      "fixture": "s3_pointer_broken",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "checks": [
+        "S3"
+      ],
+      "ok": true
+    },
+    {
+      "fixture": "s4_unearned",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "checks": [
+        "S4"
+      ],
+      "ok": true
+    },
+    {
+      "fixture": "s5_scope_hole",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "checks": [
+        "S5"
+      ],
+      "ok": true
+    },
+    {
+      "fixture": "s6_no_power",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "checks": [
+        "S6"
+      ],
+      "ok": true
+    },
+    {
+      "fixture": "s7_no_referee",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "checks": [
+        "S7"
+      ],
+      "ok": true
+    },
+    {
+      "fixture": "s8_formal_lie",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "checks": [
+        "S8"
+      ],
+      "ok": true
+    },
+    {
+      "fixture": "s9_prose_number",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "checks": [
+        "S9"
+      ],
+      "ok": true
+    }
+  ],
+  "covered": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S7",
+    "S8",
+    "S9"
+  ],
+  "ok": true
+}

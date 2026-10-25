@@ -1,0 +1,31 @@
+scope_axes: [model, prompt_shape, items, threshold, non_goals]
+scope:
+  model: ["fixture operator"]
+  prompt_shape: ["three-way choice"]
+  items: ["100 constructed items"]
+  threshold: ["none; the claim is a rate, not a floor"]
+claims:
+  - id: F1
+    text: "The operator answers 0.92 of the items"
+    span: "operator answers 0.92 of the items"
+    strength: supported
+    design: preregistered
+    evidence:
+      file: docs/evidence.json
+      pointer: /rate
+      value: 0.92
+    control:
+      file: docs/evidence.json
+      pointer: /answerable_abstain
+      value: 0.0
+    assumptions:
+      - "one constructed item set"
+    formal: false
+power:
+  not_applicable: "a control fixture, not an estimate"
+multiplicity:
+  not_applicable: "one claim"
+journal_fit:
+  file: docs/REFEREE_SIM.md
+  objections: 1
+  unresolved: 0

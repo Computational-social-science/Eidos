@@ -176,10 +176,18 @@ def contracts() -> list[dict]:
             for k, v in boundaries.items()]
 
 
+def fixtures() -> dict:
+    """The fixture audit's machine record: which check each fixture trips."""
+    try:
+        return json.loads((ROOT / "docs" / "FIXTURES.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {"fixtures": [], "covered": [], "ok": False}
+
+
 def collect() -> dict:
     return {"meta": meta(),
             "audit": json.loads((ROOT / "docs" / "SELF_AUDIT.json").read_text(encoding="utf-8")),
-            "chains": chains(), "registry": registry(), "referee": referee(),
+            "chains": chains(), "registry": registry(), "referee": referee(), "fixtures": fixtures(),
             "lean": lean_runs(), "decision": decision(), "extra": extrapolation(),
             "contracts": contracts(),
             "commit": subprocess.run(["git", "-C", str(ROOT), "rev-parse", "--short", "HEAD"],
@@ -526,6 +534,7 @@ def render(data: dict) -> str:
         "nres": data["referee"]["total"],
         "nadopt": len(data["registry"]),
         "ncontracts": len(contracts),
+        "fixtures": data.get("fixtures") or {"fixtures": [], "covered": [], "ok": False},
         "latency": dec["latency_ms"] or "—",
         "acc": f"{100 * dec['accuracy']:.1f}%" if dec["accuracy"] is not None else "—",
         "abs_a": (f"{100 * dec['abstain_answerable']:.0f}%"

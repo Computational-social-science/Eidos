@@ -283,6 +283,28 @@ def sec_architecture(fragment: str) -> str:
                "trusted if the one below it holds. Read bottom-up.", fragment)
 
 
+def fixture_table(fx: dict) -> str:
+    """Every check needed a fixture that trips it; this is that claim, not a slogan."""
+    rows = fx.get("fixtures") or []
+    if not rows:
+        return ""
+    cells = "".join(
+        f'<tr><td class="st">{r["fixture"]}</td><td>{r["expected"]}</td>'
+        f'<td class="{"has" if r["actual"] == r["expected"] else "none"}">{r["actual"]}</td>'
+        f'<td>{", ".join(r["checks"]) or "&mdash;"}</td>'
+        f'<td class="{"has" if r["ok"] else "none"}">{"ok" if r["ok"] else "wrong"}</td></tr>'
+        for r in rows)
+    covered = " ".join(fx.get("covered") or [])
+    return f'''<div class="card" style="margin-top:10px"><h3>Every check has a fixture that trips it</h3>
+    <p>A checklist that has never rejected anything is a claim about the checklist. Each fixture
+    below is a finished project that is wrong in exactly one way; the gate must reject it, and
+    the check that fires must be the one the fixture was built for. One clean fixture must pass.</p>
+    <div class="tw"><table class="gm"><thead><tr><th>fixture</th><th>expected</th><th>actual</th>
+    <th>check</th><th>match</th></tr></thead><tbody>{cells}</tbody></table></div>
+    <p class="gm-sum">Covered: <b>{covered}</b> &middot; {len(rows)} fixtures &middot;
+    <code>python tools/audit_fixtures.py</code></p></div>'''
+
+
 def sec_gates(ctx: dict) -> str:
     body = f'''<div class="grid2">
   <div class="card"><h3>Dual gates</h3>
@@ -318,7 +340,7 @@ def sec_gates(ctx: dict) -> str:
     (<code>tau_identified = {ctx["tau"]}</code>; lowest confidence on a correct answer
     {ctx["minconf"]}), so a gate may not use <code>none_probability ≥ 0.2</code> as a success
     criterion. The option set does the work, not the threshold.</p></div>
-</div>'''
+</div>{fixture_table(ctx.get("fixtures") or {})}'''
     return sec("04", "gates", "Gates: two kinds, plus a validator",
                "Two gate families, one validator, and a matrix that says where each one sits.",
                body)

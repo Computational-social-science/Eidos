@@ -19,6 +19,9 @@ fi
 echo "pre-commit: test suite"
 "$PY" -m pytest -q || { echo "pre-commit: tests failed; commit refused" >&2; exit 1; }
 
+echo "pre-commit: fixture audit (every check must trip)"
+"$PY" tools/audit_fixtures.py >/dev/null     || { echo "pre-commit: a gate check has no fixture, or one rejects for the wrong reason" >&2; exit 1; }
+
 echo "pre-commit: page gate (no browser)"
 "$PY" tools/audit_site.py --no-build --skip-browser \
     || { echo "pre-commit: page gate failed; commit refused" >&2; exit 1; }

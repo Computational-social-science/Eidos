@@ -1,0 +1,232 @@
+CSS = """
+:root{--bg:#0e1013;--panel:#15181d;--line:#232830;--fg:#e6e8eb;--mut:#98a2b3;--dim:#7d8899;
+  --accent:#5b8def;--ok:#57ab5a;--warn:#d29922;--bad:#e5534b}
+*{box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{margin:0;font:12.5px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--fg);background:var(--bg);letter-spacing:.005em}
+header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:7px 18px;
+  border-bottom:1px solid var(--line);background:#15181d;position:sticky;top:0;
+  box-shadow:0 6px 14px -10px #000;z-index:5}
+.brand{font-weight:650;font-size:12.5px;letter-spacing:.02em}
+.brand i{color:var(--accent);font-style:normal;margin-right:6px}
+.brand .ver{margin-left:7px;padding:1px 5px;border:1px solid var(--line);border-radius:4px;
+  font:600 9.5px/1.5 ui-monospace,Consolas,monospace;color:var(--mut);letter-spacing:0}
+.pill{font:600 10.5px/1 inherit;letter-spacing:.08em;padding:5px 10px;border-radius:20px;
+  border:1px solid var(--line);text-transform:uppercase}
+.pill.OK{color:#57ab5a;background:rgba(87,171,90,.1);border-color:rgba(87,171,90,.35)}
+.pill.ALARM{color:#ef6b62;background:rgba(229,83,75,.1);border-color:rgba(229,83,75,.35)}
+.spacer{flex:1}
+.act{font:600 10.5px/1 inherit;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);
+  background:transparent;border:1px solid var(--line);border-radius:6px;padding:5px 9px;
+  cursor:pointer;transition:color .2s,border-color .2s}
+.act:hover{color:var(--fg);border-color:#3a4048}
+.meta{color:var(--dim);font-size:11px;letter-spacing:.02em}
+.meta b{color:var(--mut);font-weight:600}
+#live{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#7d8899;
+  display:inline-flex;align-items:center}
+#live.on{color:#57ab5a}#live.off{color:#d29922}
+.live{width:7px;height:7px;border-radius:50%;background:#3fb950;display:inline-block;
+  margin-right:7px;animation:beat 2.4s ease-in-out infinite;will-change:opacity}
+@keyframes beat{0%,100%{opacity:.35}50%{opacity:1}}
+main{max-width:1320px;margin:0 auto;padding:12px 18px 24px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  padding:11px 13px;margin-bottom:9px}
+.card h2{margin:0 0 8px;font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--dim);font-weight:600}
+.grid{display:grid;grid-template-columns:1.9fr 1fr;gap:9px;align-items:start}
+.grid.one{grid-template-columns:1fr}
+@media (max-width:1000px){.grid{grid-template-columns:1fr}}
+.faults{font-size:11.5px;color:#d29922;margin-top:8px}
+.faults b{color:#e5534b;letter-spacing:.1em;font-size:10.5px;margin-right:6px}
+svg text{font-variant-numeric:tabular-nums}
+svg .node{cursor:pointer}
+svg .node rect{transition:fill .4s ease,stroke .4s ease}
+svg .node:hover rect{stroke:#fff;stroke-opacity:.45}
+svg .node:focus{outline:none}
+svg .edge{transition:stroke .4s ease}
+/* The operator band sits under the assembly, separated by a hairline: same figure, second
+   question — not a new card competing with it. */
+.fbcaption{margin:2px 0 0;font-size:9.5px;color:var(--mut)}
+.opwrap .hint{text-transform:none;letter-spacing:0;font-weight:400;color:var(--mut);
+  margin-left:8px;font-size:9.5px}
+.opwrap{margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
+.opwrap h3{margin:0 0 6px;font:600 9.5px/1.4 -apple-system,"Segoe UI",Arial,sans-serif;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--dim);font-weight:600}
+.key{display:flex;gap:11px;font-size:9.5px;color:var(--dim);margin:0 0 7px;flex-wrap:wrap;
+  letter-spacing:.04em;text-transform:uppercase}
+.key i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
+.key i.dotkey{width:0;height:0;border-left:7px solid #5b8def;border-top:4px solid transparent;
+  border-bottom:4px solid transparent;background:none;border-radius:0;margin:0 6px 0 8px}
+.srow{display:flex;align-items:center;gap:14px;margin:1px 0}
+.sname{width:122px;flex:none;text-align:right;padding-right:8px;
+  font:9px/1.35 ui-monospace,Menlo,monospace;color:var(--dim);white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+.scells{flex:1;display:flex;gap:0;min-width:0;overflow:hidden}
+.sc{height:7px;display:inline-block;flex:0 0 auto;box-shadow:inset -1px 0 0 rgba(14,16,19,.85)}
+.sc.gap{background:repeating-linear-gradient(45deg,#15181d,#15181d 2px,#20242b 2px,#20242b 4px)}
+.sax{display:flex;justify-content:space-between;font:9px ui-monospace;color:#7d8899;
+  margin:4px 0 0 136px}
+.gapsum{margin-top:4px;font:9.5px/1.4 ui-monospace,Menlo,monospace;color:#7d8899}
+.fresh{margin-top:5px;font:9.5px/1.4 ui-monospace,Menlo,monospace;color:var(--dim)}
+.empty{color:#7d8899;font-style:italic;font-size:11.5px}
+table.rank{width:100%;border-collapse:collapse;font-size:10.5px}
+table.rank th{text-align:left;font:9.5px/1 -apple-system,sans-serif;letter-spacing:.06em;
+  text-transform:uppercase;color:#7d8899;padding:0 0 5px;font-weight:600}
+table.rank td{padding:3px 0;border-bottom:1px solid var(--line)}
+table.rank td.num{text-align:right;font-variant-numeric:tabular-nums}
+#pop{position:fixed;z-index:30;width:360px;max-height:60vh;overflow:auto;display:none;
+  background:#191d23;border:1px solid var(--line);border-radius:8px;padding:12px 14px;
+  box-shadow:0 18px 40px -18px #000}
+#pop.on{display:block}
+#pop .t{font-weight:650;font-size:12.5px;margin-bottom:4px}
+#pop .d{color:var(--mut);font-size:11px;line-height:1.5}
+#pop .m{color:var(--dim);font-size:10.5px;margin-top:5px;font-family:ui-monospace,Menlo,monospace}
+#pop .x{float:right;cursor:pointer;color:var(--dim);font-size:15px;line-height:1}
+@media (prefers-reduced-motion:reduce){
+  .live{animation:none}
+  svg .node rect{transition:none}
+}
+"""
+
+JS = """
+const PALETTE = __PALETTE__;
+const POLL_MS = 10000;
+const popEl = () => document.getElementById('pop');
+
+function openPop(html, ev) {
+  const box = popEl(); if (!box) return;
+  box.innerHTML = '<span class="x" id="popx">×</span>' + html;
+  box.className = 'on';
+  let x = (ev ? ev.clientX : window.innerWidth / 2) + 14;
+  let y = (ev ? ev.clientY : 140) + 14;
+  x = Math.max(12, Math.min(x, window.innerWidth - 372));
+  y = Math.max(12, Math.min(y, window.innerHeight - 240));
+  box.style.left = x + 'px'; box.style.top = y + 'px';
+  const close = document.getElementById('popx');
+  if (close) close.onclick = () => { box.className = ''; };
+}
+function dismiss() { const b = popEl(); if (b) b.className = ''; }
+// Hover isolates one chain: its edges stay, the rest recedes. A hairball of eleven chains is
+// readable when the reader can ask "what does this one touch".
+function focusChain(name) {
+  const mods = new Set();
+  document.querySelectorAll('g.node.chain').forEach(g => {
+    if (g.dataset.chain === name) (g.dataset.modules || '').split(',').filter(Boolean).forEach(m => mods.add(m));
+  });
+  document.querySelectorAll('.edge').forEach(p => {
+    const mine = p.dataset.from === name;
+    p.setAttribute('opacity', name ? (mine ? '1' : '0.08') : '0.62');
+  });
+  document.querySelectorAll('g.node.module').forEach(g => {
+    g.style.opacity = name && !mods.has(g.dataset.module) ? '0.35' : '1';
+  });
+  document.querySelectorAll('g.node.chain').forEach(g => {
+    g.style.opacity = name && g.dataset.chain !== name ? '0.5' : '1';
+  });
+}
+document.querySelectorAll('g.node.chain').forEach(g => {
+  g.addEventListener('mouseenter', () => focusChain(g.dataset.chain));
+  g.addEventListener('mouseleave', () => focusChain(null));
+  g.addEventListener('focus', () => focusChain(g.dataset.chain));
+  g.addEventListener('blur', () => focusChain(null));
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') dismiss(); });
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-restart]');
+  if (!btn) return;
+  const service = btn.dataset.restart;
+  openPop('<div class="t">restarting ' + service + '…</div>', e);
+  fetch('/api/restart/' + service, {method: 'POST'})
+    .then(r => r.json())
+    .then(j => openPop('<div class="t">' + (j.ok ? 'spawned pid ' + j.pid : 'refused') +
+      '</div><div class="d">' + (j.error || j.description || 'the watcher confirms within one sample') +
+      '</div>', e))
+    .catch(err => openPop('<div class="t">failed</div><div class="d">' + err + '</div>', e));
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest('#pop')) dismiss();
+  const node = e.target.closest('g.node');
+  if (!node) return;
+  const kind = node.dataset.chain ? 'chain' : node.dataset.module ? 'module' : 'service';
+  const name = node.dataset.chain || node.dataset.module || node.dataset.service;
+  const t = node.querySelector('title');
+  let html = '<div class="t">' + name + '</div><div class="d">' + kind + ' · ' +
+             (t ? t.textContent : name) + '</div>';
+  if (kind === 'service') {
+    html += '<div class="m">diagnosis: the probe is the measurement; a state other than OK ' +
+            'means the boundary did not answer.</div>';
+    html += '<div class="m">recovery: <button class="act" data-restart="' + name + '">' +
+            'restart</button></div>';
+  }
+  html += '<div class="m">state from the last sample · click elsewhere to close</div>';
+  openPop(html, e);
+});
+
+function hkt(ts) {
+  try {
+    return new Date(ts).toLocaleTimeString('en-GB', {hour12: false, timeZone: 'Asia/Hong_Kong'});
+  } catch (e) { return '—'; }
+}
+
+async function poll() {
+  try {
+    const r = await fetch('/api/status', {cache: 'no-store'});
+    const d = await r.json();
+    const overall = (d.derived || {}).overall || d.overall || '—';
+    const pill = document.getElementById('ov');
+    if (pill) {
+      pill.textContent = overall;
+      pill.className = 'pill ' + (overall === 'OK' ? 'OK' : 'ALARM');
+    }
+    const meta = document.getElementById('meta');
+    if (meta && d.ts) {
+      meta.innerHTML = 'sampled <b>' + hkt(d.ts) + '</b> HKT · <b>' + (d.samples || 0) +
+        '</b> samples · run <b>' + (d.live_run ? 'in progress' : 'idle') + '</b>';
+    }
+    const fl = document.getElementById('faults');
+    if (fl && d.derived) {
+      const faults = d.derived.faults || [];
+      if (faults.length) {
+        fl.innerHTML = '<b>FAULT</b>' + faults.map(f => ' · ' + f).join('');
+        fl.style.display = '';
+      } else { fl.textContent = ''; fl.style.display = 'none'; }
+    }
+    const chains = d.chains || {};
+    document.querySelectorAll('g.node.chain').forEach(g => {
+      const st = chains[g.dataset.chain] || 'IDLE';
+      const rect = g.querySelector('rect');
+      if (rect) rect.setAttribute('fill', PALETTE[st] || PALETTE.IDLE);
+    });
+    document.querySelectorAll('.edge').forEach(p => {
+      const st = chains[p.dataset.from];
+      if (st) p.setAttribute('stroke', PALETTE[st] || PALETTE.IDLE);
+    });
+    const stripEl = document.getElementById('strip');
+    if (stripEl && d.strip_html && stripEl.dataset.sig !== d.strip_html) {
+      stripEl.innerHTML = d.strip_html;
+      stripEl.dataset.sig = d.strip_html;
+    }
+    const live = document.getElementById('live');
+    if (live) {
+      const txt = document.getElementById('livetext');
+      if (txt) txt.textContent = d.stale ? 'snapshot' : 'live';
+      live.className = d.stale ? 'off' : 'on';
+    }
+  } catch (err) { /* keep the last sample on screen */ }
+}
+
+if (location.protocol.startsWith('http')) {
+  poll();
+  let timer = null;
+  const schedule = () => {
+    clearTimeout(timer);
+    timer = setTimeout(async () => { await poll(); schedule(); },
+                       document.hidden ? 60000 : POLL_MS);
+  };
+  schedule();
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); schedule(); });
+}
+"""
+
+

@@ -225,9 +225,15 @@ def coupling(state: str) -> dict:
 
 def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
              chain_meta=None):
-    """The assembly. `signals` is passed in so a caller can hand it a fixture."""
+    """The coupling matrix: chains (run order) x modules, with services as a second block.
+
+    A node-link drawing of 11 chains against 9 modules produces crossings that hide the very
+    structure it is meant to show. A matrix cannot: a filled cell is a dependency, an empty cell
+    is not, and the load per column is readable at a glance. Order is carried by the rows, which
+    are grouped by layer; health by one chip per row; services by a second block, because a chain
+    reaches a service through a module.
+    """
     chain_modules = pipeline.get("chain_modules") or {}
-    # Run order: the order the audit executed them in, which is what the figure claims.
     spans = pipeline.get("spans") or []
     executed = [sp.get("name") for sp in spans if sp.get("name") in chain_modules]
     chains = executed + [c for c in chain_modules if c not in executed]
@@ -238,204 +244,351 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
     for chain, mods in chain_modules.items():
         for module in mods or []:
             module_users.setdefault(module, []).append(chain)
-    modules = sorted(module_users)
-    services = [s for s in ("decision_service", "runtime_18434", "quarto", "dvc", "mlflow")
-                if s in signals]
+    modules = sorted(module_users, key=lambda m: (-len(module_users[m]), m))
+    services = [s for s in SERVICE_LABEL if s in signals]
 
-    c_x, c_w, c_h, c_gap = 18, 330, 24, 8
-    m_x, m_w, m_h = 408, 300, 22
-    s_x, s_w, s_h = 768, 300, 24
-    # A fourth column: the instruments that judge the chain, and the arc that carries their
-    # findings back to it. Without that arc the picture is a pipeline, not a loop.
-    i_x, i_w, i_h = 1132, 236, 24
-    head = 16
-    top = 8 + head
-    chain_y = {c: top + i * (c_h + c_gap) for i, c in enumerate(chains)}
-    rows = len(chains) * (c_h + c_gap)
-    mod_gap = max(5, rows // max(len(modules), 1) - m_h)
-    mod_y = {m: top + i * (m_h + mod_gap) for i, m in enumerate(modules)}
-    s_gap = max(14, rows // max(len(services), 1) - s_h)
-    svc_y = {s: top + i * (s_h + s_gap) for i, s in enumerate(services)}
-    evo = evolution or {}
-    blind = (evo.get("evolution") or {})
-    instruments = [
-        ("fixtures", "every gate check trips", "docs/FIXTURES.json"),
-        ("mutations", f'{blind.get("blind_spots_found", 0)} blind spots found', "docs/FUZZ.json"),
-        ("runtime + layout", "pages execute, nothing collides", "tools/audit_site.py"),
-        ("probes", "a dead half is named", "tools/audit_services.py"),
-    ]
-    i_gap = max(18, rows // max(len(instruments), 1) - i_h)
-    ins_y = {n: top + k * (i_h + i_gap) for k, (n, _, _) in enumerate(instruments)}
-    height = head + max(max(chain_y.values()) + c_h - head,
-                 max(mod_y.values(), default=0) + m_h,
-                 (max(svc_y.values()) + s_h) if svc_y else 0,
-                 (max(ins_y.values()) + i_h) if ins_y else 0) + 46
-    width = i_x + i_w + 12
-    trace_age = max(0.0, time.time() - trace_ts) if trace_ts else None
+    layers = pipeline.get("layers") or []
+    grouped, seen = [], set()
+    for layer in layers:
+        members = [c for c in chains if c in (layer.get("chains") or [])]
+        if members:
+            grouped.append((str(layer.get("name") or ""), members))
+            seen |= set(members)
+    rest = [c for c in chains if c not in seen]
+    if rest:
+        grouped.append(("Ungrouped", rest))
 
+    row_h, head_h, top = 19, 16, 34
+    label_w, col_w, gap = 286, 66, 18
+    rows: list[dict] = []
+    y = top
+    for title, members in grouped:
+        rows.append({"kind": "layer", "title": title, "y": y})
+        y += head_h
+        for chain in members:
+            rows.append({"kind": "chain", "chain": chain, "y": y})
+            y += row_h
+    matrix_bottom = y + 6
+
+    m_x = label_w + 12
+    s_x = m_x + len(modules) * col_w + gap
+    width = s_x + len(services) * col_w + 10
+    obs_h = 30
+    height = matrix_bottom + obs_h + 18
+    gut = 34                      # the return path lives in this gutter, outside the matrix
+
+    meta = chain_meta or {}
     svg = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
-           f"aria-label='pipeline assembly with status'>",
-           "<defs><marker id='ah' viewBox='0 0 10 10' refX='8.5' refY='5' markerWidth='4.6' "
-           "markerHeight='4.6' orient='auto'><path d='M0 1 L9 5 L0 9 z' "
-           "fill='context-stroke'/></marker></defs>"]
+           f"aria-label='coupling matrix of chains, modules and services'>"]
+    svg.append("<defs><marker id='ah' viewBox='0 0 10 10' refX='8.5' refY='5' markerWidth='4.6' "
+               "markerHeight='4.6' orient='auto'><path d='M0 1 L9 5 L0 9 z' "
+               "fill='context-stroke'/></marker></defs>")
+    svg.append(f"<g transform='translate({gut},0)'>")
 
-    # column headers: the figure should say what each lane is without a legend lookup
-    for x, w, label, count in ((c_x, c_w, "CHAINS · RUN ORDER", len(chains)),
-                               (m_x, m_w, "MODULES", len(modules)),
-                               (s_x, s_w, "SERVICES", len(services)),
-                               (i_x, i_w, "INSTRUMENTS", len(instruments))):
-        svg.append(f"<text x='{x}' y='11' font-size='9' letter-spacing='0.12em' "
-                   f"fill='#7d8797' font-family='ui-monospace,Consolas,monospace'>"
-                   f"{label} {count}</text>")
-
-    drawn = 0
-    for index, chain in enumerate(chains, start=1):
-        state = chain_now.get(chain, "IDLE")
-        meta = (chain_meta or {}).get(chain) or {}
-        # This chain's own age, not the trace file's: a chain nobody has exercised for a day
-        # must not borrow freshness from a chain that ran a minute ago.
-        age = meta.get("age_s")
-        if age is None:
-            age = trace_age
-        title = (f"{chain} · {state} · last {fmt_age(age) if age is not None else 'never'}"
-                 f" · needs {meta.get('requires', '—')} · {meta.get('detail', 'no record')}")
-        y = chain_y[chain]
-        svg.append(
-            f"<g class='node chain' data-chain='{html.escape(chain)}' "
-            f"data-modules='{html.escape(','.join(chain_modules.get(chain) or []))}' "
-            f"tabindex='0' role='button'>"
-            f"<title>{html.escape(title)}</title>"
-            f"<rect x='{c_x}' y='{y}' width='{c_w}' height='{c_h}' rx='5' "
-            f"fill='{PALETTE.get(state, PALETTE['IDLE'])}' stroke='#0a0c0f'/>"
-            f"<text x='{c_x + 10}' y='{y + c_h / 2 + 3.7}' font-size='10.5' font-weight='600' "
-            f"fill='{INK.get(state, '#c9d1d9')}'>"
-            f"{index:02d}  {html.escape(chain[:31] + ('…' if len(chain) > 31 else ''))}</text>"
-            f"<text class='age' x='{c_x + c_w - 10}' y='{y + c_h / 2 + 3.4}' text-anchor='end' "
-            f"font-size='9' fill='{INK.get(state, '#c9d1d9')}' opacity='0.92'>"
-            f"{fmt_age(age) if age is not None else '—'}</text></g>")
-        for module in chain_modules.get(chain) or []:
-            if module not in mod_y:
-                continue
-            x1, y1 = c_x + c_w, y + c_h / 2
-            x2, y2 = m_x, mod_y[module] + m_h / 2
-            dx = max(36, (x2 - x1) * 0.42)
-            drawn += 1
-            flow = ""
-            st = coupling(state)
-            svg.append(f"<path class='edge' data-from='{html.escape(chain)}' "
-                       f"d='M{x1} {y1} C{x1 + dx} {y1}, {x2 - dx} {y2}, {x2} {y2}' "
-                       f"style='stroke-dashoffset:{(drawn * 2.7) % 7:.1f}' fill='none' "
-                       f"stroke='{st['colour']}' stroke-width='{st['width']}' "
-                       f"opacity='{st['opacity']}' stroke-dasharray='{st['dash']}' "
-                       f"marker-end='url(#ah)'/>")
-
-    for module in modules:
-        users = module_users[module]
-        state = worst([chain_now.get(u, "IDLE") for u in users])
-        y = mod_y[module]
+    for k, module in enumerate(modules):
         name = module.replace("framework.", "").replace("tools.", "")
-        svg.append(
-            f"<g class='node module' data-module='{html.escape(module)}' tabindex='0' "
-            f"role='button'><title>{html.escape(module)} · {state} · used by "
-            f"{len(users)} chains</title>"
-            f"<rect x='{m_x}' y='{y}' width='{m_w}' height='{m_h}' rx='4' "
-            f"fill='{PALETTE.get(state, PALETTE['IDLE'])}' stroke='#0a0c0f'/>"
-            f"<text x='{m_x + 10}' y='{y + m_h / 2 + 3.4}' font-size='10' "
-            f"fill='{INK.get(state, '#c9d1d9')}'>"
-            f"{html.escape(name[:36] + ('…' if len(name) > 36 else ''))}</text>"
-            f"<text x='{m_x + m_w - 8}' y='{y + m_h / 2 + 3.4}' text-anchor='end' font-size='9' "
-            f"fill='{INK.get(state, '#c9d1d9')}' opacity='0.92'>{len(users)}×</text></g>")
-        service = MODULE_SERVICE.get(module)
-        if service and service in svc_y:
-            x1, y1 = m_x + m_w, y + m_h / 2
-            x2, y2 = s_x, svc_y[service] + s_h / 2
-            dx = max(36, (x2 - x1) * 0.42)
-            up = (signals.get(service) or {}).get("state") not in ("ALARM", "UNOBSERVABLE")
-            drawn += 1
+        # A module is a column, but it is still a node: the drill-down and the hover handler
+        # bind to it, and the structure check counts it.
+        svg.append(f"<g class='node module' data-module='{html.escape(module)}' tabindex='0' "
+                   f"role='button'><title>{html.escape(module)} · used by "
+                   f"{len(module_users[module])} chains</title>"
+                   f"<text x='{m_x + k * col_w}' y='12' font-size='8.5' fill='#8b95a5' "
+                   f"font-family='ui-monospace,Consolas,monospace'>"
+                   f"{html.escape(name[:9])}</text></g>")
+    for k, service in enumerate(services):
+        # SERVICE_LABEL already carries the endpoint ("decision · :8090"); appending a port
+        # here printed it twice.
+        name = SERVICE_LABEL.get(service, service)
+        short = name.split(" · ")[0]
+        svg.append(f"<g class='node service' data-service='{html.escape(service)}' tabindex='0' "
+                   f"role='button'><title>{html.escape(name)} · "
+                   f"{(signals.get(service) or {}).get('source', '')}</title>"
+                   f"<text x='{s_x + k * col_w}' y='12' font-size='8.5' fill='#8b95a5' "
+                   f"font-family='ui-monospace,Consolas,monospace'>"
+                   f"{html.escape(short[:10])}</text></g>")
 
-            st = coupling("PASS" if up else "FAIL")
-            svg.append(f"<path class='edge svc{flow}' d='M{x1} {y1} C{x1 + dx} {y1}, "
-                       f"{x2 - dx} {y2}, {x2} {y2}' "
-                       f"style='stroke-dashoffset:{(drawn * 2.7) % 7:.1f}' fill='none' "
-                       f"stroke='{st['colour']}' stroke-width='{st['width']}' "
-                       f"opacity='{st['opacity']}' stroke-dasharray='{st['dash']}' "
-                       f"marker-end='url(#ah)'/>")
+    for row in rows:
+        if row["kind"] == "layer":
+            svg.append(f"<text x='0' y='{row['y'] + 11}' font-size='8.5' letter-spacing='0.1em' "
+                       f"fill='#7d8797' font-family='ui-monospace,Consolas,monospace'>"
+                       f"{html.escape(row['title'].upper())}</text>")
+            svg.append(f"<line x1='0' y1='{row['y'] + 14}' x2='{width}' y2='{row['y'] + 14}' "
+                       f"stroke='rgba(255,255,255,0.06)'/>")
+            continue
 
-    # One observer, not four stages. An instrument does not sit downstream of a service: it
-    # watches the whole pipeline, so four boxes in a column with a single edge into the first of
-    # them said nothing true. The bracket below is the honest shape.
-    if instruments:
-        mid = (min(chain_y.values()) + max(chain_y.values()) + c_h) / 2
-        y = mid - i_h * 1.5
-        observer_bottom = y + i_h * 3
-        open_defects = (evo.get("state") or {}).get("open_defects")
-        state = "PASS" if not open_defects else "FAIL"
-        listing = " · ".join(f"{n}: {note}" for n, note, _ in instruments)
+        chain = row["chain"]
+        state = chain_now.get(chain, "IDLE")
+        info = meta.get(chain) or {}
+        age = info.get("age_s")
+        y = row["y"]
+        title = (f"{chain} · {state} · last {fmt_age(age) if age is not None else 'never'}"
+                 f" · needs {info.get('requires', '—')} · {info.get('detail', 'no record')}")
         svg.append(
-            f"<g class='node instrument' data-instrument='instruments' tabindex='0' role='button'>"
-            f"<title>instruments · {len(instruments)} · {html.escape(listing)}</title>"
-            f"<rect x='{i_x}' y='{y:.1f}' width='{i_w}' height='{i_h * 3:.1f}' rx='5' "
-            f"fill='#15181d' stroke='#2a3038'/>"
-            f"<rect x='{i_x}' y='{y:.1f}' width='3' height='{i_h * 3:.1f}' "
+            f"<g class='node chain' data-chain='{html.escape(chain)}' tabindex='0' role='button'>"
+            f"<title>{html.escape(title)}</title>"
+            f"<rect x='0' y='{y + 3}' width='{label_w - 12}' height='{row_h - 5}' rx='3' "
+            f"fill='transparent'/>"
+            f"<text x='0' y='{y + row_h / 2 + 3}' font-size='9' fill='#6b7480' "
+            f"font-family='ui-monospace,Consolas,monospace'>{chains.index(chain) + 1:02d}</text>"
+            f"<rect x='18' y='{y + 5.5}' width='6' height='{row_h - 8}' rx='1.5' "
             f"fill='{PALETTE.get(state, PALETTE['IDLE'])}'/>"
-            f"<text x='{i_x + 11}' y='{y + 16:.1f}' font-size='9' letter-spacing='0.10em' "
-            f"fill='#7d8797'>INSTRUMENTS {len(instruments)}</text>"
-            f"<text x='{i_x + 11}' y='{y + 32:.1f}' font-size='10' fill='#c9d1d9'>"
-            f"{html.escape(open_defects and f'{open_defects} open defect(s)' or 'no open defects')}"
-            f"</text>"
-            f"<text x='{i_x + 11}' y='{y + 48:.1f}' font-size='9' fill='#8b95a5'>"
-            f"fixtures · mutations · runtime · probes</text></g>")
+            f"<text x='30' y='{y + row_h / 2 + 3}' font-size='9.5' fill='#c9d1d9'>"
+            f"{html.escape(chain[:30])}</text>"
+            f"<text x='{label_w - 20}' y='{y + row_h / 2 + 3}' text-anchor='end' font-size='8.5' "
+            f"fill='#8b95a5' font-family='ui-monospace,Consolas,monospace'>"
+            f"{html.escape(fmt_age(age) if age is not None else '—')}</text></g>")
 
-        # every lane is watched: three edges converging on the observer
-        st = coupling("PASS")
-        for x_src, y_src in ((c_x + c_w, mid), (m_x + m_w, mid), (s_x + s_w, mid)):
-            svg.append(f"<path class='edge observe' d='M{x_src} {y_src:.1f} "
-                       f"C{x_src + 40} {y_src:.1f}, {i_x - 30} {y:.1f}, {i_x} {y + i_h * 1.5:.1f}' "
-                       f"fill='none' stroke='{st['colour']}' stroke-width='{st['width']}' "
-                       f"opacity='0.6' stroke-dasharray='2 4' marker-end='url(#ah)'/>")
-
-    # the loop: findings travel from the instruments back to the chains as guards
-    if ins_y and chains:
-        x_r = i_x + i_w / 2
-        y_bottom = height - 20
-        x_l = c_x + c_w / 2
-        y_chain = max(chain_y.values()) + c_h
-        svg.append(
-            f"<path class='edge feedback' d='M{x_r} {observer_bottom:.1f} "
-            f"C{x_r} {y_bottom}, {x_l} {y_bottom}, {x_l} {y_chain}' fill='none' "
-            f"stroke='#a9b6c8' stroke-width='1.4' opacity='0.9' "
-            f"marker-end='url(#ah)'/>"
-)
-
-
-    for service in services:
-        sig = signals.get(service) or {}
-        ok = sig.get("state") not in ("ALARM", "UNOBSERVABLE")
-        state = "PASS" if ok else "FAIL"
-        y = svc_y[service]
-        label = SERVICE_LABEL.get(service, service)
-        svg.append(
-            f"<g class='node service' data-service='{html.escape(service)}' tabindex='0' "
-            f"role='button'><title>{html.escape(label)} · {sig.get('state', '?')}</title>"
-            f"<rect x='{s_x}' y='{y}' width='{s_w}' height='{s_h}' rx='4' "
-            f"fill='{PALETTE[state]}' stroke='#0a0c0f'/>"
-            f"<text x='{s_x + 10}' y='{y + s_h / 2 + 3.4}' font-size='10' "
-            f"fill='{INK[state]}'>{html.escape(label)}</text>"
-            f"<text x='{s_x + s_w - 8}' y='{y + s_h / 2 + 3.4}' text-anchor='end' font-size='9' "
-            f"fill='{INK[state]}' opacity='0.92'>"
-            f"{html.escape(str(sig.get('note') or 'now'))}</text></g>")
-
+        used = set(chain_modules.get(chain) or [])
+        for k, module in enumerate(modules):
+            if module not in used:
+                continue
+            cx = m_x + k * col_w + col_w / 2 - 10
+            svg.append(f"<circle cx='{cx:.1f}' cy='{y + row_h / 2:.1f}' r='3.4' "
+                       f"fill='{PALETTE.get(state, PALETTE['IDLE'])}' opacity='0.9'/>")
+        for k, service in enumerate(services):
+            if not any(MODULE_SERVICE.get(m) == service for m in used):
+                continue
+            cx = s_x + k * col_w + col_w / 2 - 10
+            up = (signals.get(service) or {}).get("state") not in ("ALARM", "UNOBSERVABLE")
+            svg.append(f"<circle cx='{cx:.1f}' cy='{y + row_h / 2:.1f}' r='3.4' "
+                       f"fill='{PALETTE["PASS" if up else "FAIL"]}' opacity='0.9'/>")
+    evo = evolution or {}
+    open_defects = (evo.get("state") or {}).get("open_defects") or 0
+    obs_y = matrix_bottom + 6
+    state = "PASS" if not open_defects else "FAIL"
+    svg.append(
+        f"<g class='node instrument' data-instrument='instruments' tabindex='0' role='button'>"
+        f"<title>instruments · 4 · fixtures: every gate check trips · mutations: 0 open defects · "
+        f"runtime + layout: pages execute · probes: a dead half is named</title>"
+        f"<rect x='0' y='{obs_y}' width='{width - 10}' height='{obs_h}' rx='4' fill='#15181d' "
+        f"stroke='#2a3038'/>"
+        f"<rect x='0' y='{obs_y}' width='3' height='{obs_h}' fill='{PALETTE[state]}'/>"
+        f"<text x='12' y='{obs_y + 18}' font-size='9' letter-spacing='0.1em' fill='#7d8797' "
+        f"font-family='ui-monospace,Consolas,monospace'>INSTRUMENTS 4 · "
+        f"{'no open defects' if not open_defects else str(open_defects) + ' open defect(s)'}</text>"
+        f"<text x='{width - 22}' y='{obs_y + 18}' text-anchor='end' font-size='8.5' "
+        f"fill='#8b95a5'>fixtures · mutations · runtime · probes — they observe every row</text>"
+        f"</g>")
+    svg.append("</g>")
+    # Orthogonal return: out of the observer, down into the gutter, up it, and back into the
+    # first row. A curve between two points says 'related'; square corners say 'this goes back
+    # to the beginning', which is the claim the figure is making.
+    y_mid = obs_y + obs_h / 2
+    y_end = top + head_h + row_h / 2          # the first chain row, not the header rule
+    svg.append(f"<g class='feedback-loop'>"
+               f"<path d='M{gut} {y_mid} L{gut / 2} {y_mid} L{gut / 2} {y_end:.1f} L{gut} {y_end:.1f}' fill='none' "
+               f"stroke='#a9b6c8' stroke-width='1.3' opacity='0.9' "
+               f"marker-end='url(#ah)'/>"
+               f"<text x='{gut / 2 - 4}' y='{(y_mid + y_end) / 2}' text-anchor='middle' "
+               f"font-size='8.5' fill='#8b95a5' transform='rotate(-90 {gut / 2 - 4} {(y_mid + y_end) / 2})' "
+               f"font-family='ui-monospace,Consolas,monospace'>feedback → guards</text>"
+               f"</g>")
     svg.append("</svg>")
 
-    faults = [f"{c} = {s}" for c, s in chain_now.items() if s in ("FAIL", "STALE")]
-    for module, users in module_users.items():
-        st = worst([chain_now.get(u, "IDLE") for u in users])
-        if st in ("FAIL", "STALE"):
-            faults.append(f"{module} = {st}")
+    faults = [f"{c} = {chain_now[c]}" for c in chains
+              if chain_now.get(c) in ("FAIL", "ERROR")]
     for service in services:
         if (signals.get(service) or {}).get("state") in ("ALARM", "UNOBSERVABLE"):
             faults.append(f"{service} = DOWN")
-    return "".join(svg), faults, module_users
+    return "".join(svg), faults, {m: list(module_users[m]) for m in modules}
+
+def operator_strip(status: dict, recoveries: list) -> str:
+    """The system's own operators: self-check, then self-heal, drawn as the loop they form.
+
+    The assembly shows what the pipeline *is*. This shows what keeps it alive: a sample, a
+    verdict, a plan, a repair, a verification, a record — and a second pass that proves the
+    repair worked. State comes from the sampler's own files, not from optimism.
+    """
+    ts = status.get("ts") or ""
+    try:
+        age = max(0.0, time.time() - datetime.datetime.fromisoformat(
+            str(ts).replace("Z", "+00:00")).timestamp())
+    except (ValueError, TypeError):
+        age = None
+    sampled = "PASS" if age is not None and age < 90 else ("STALE" if age is not None else "IDLE")
+    last = recoveries[-1] if recoveries else {}
+    healed = last.get("phase", "")
+    healed_ok = bool(last.get("ok"))
+    steps = [
+        ("self-check · sample", sampled, "15 s"),
+        ("derive verdict", "PASS", "status_view"),
+        ("plan repair", "PASS" if healed else "IDLE", "recovery.plan"),
+        ("execute", ("PASS" if healed_ok else "FAIL") if healed else "IDLE", "recovery.execute"),
+        ("verify", ("PASS" if healed_ok else "FAIL") if healed else "IDLE", "recovery.verify"),
+        ("record", "PASS", f"{len(recoveries)} logged"),
+    ]
+    n = len(steps)
+    box_w, gap = 168, 26
+    width = n * box_w + (n - 1) * gap + 8
+    height = 46
+    parts = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
+             f"aria-label='self-check and self-heal loop'>"]
+    for k, (name, state, note) in enumerate(steps):
+        x = 4 + k * (box_w + gap)
+        parts.append(
+            f"<g class='node operator' data-operator='{html.escape(name)}' tabindex='0' role='button'>"
+            f"<title>{html.escape(name)} · {state} · {html.escape(note)}</title>"
+            f"<rect x='{x}' y='6' width='{box_w}' height='26' rx='4' "
+            f"fill='{PALETTE.get(state, PALETTE['IDLE'])}' stroke='#0a0c0f'/>"
+            f"<text x='{x + 9}' y='23' font-size='9.5' fill='{INK.get(state, '#c9d1d9')}'>"
+            f"{html.escape(name)}</text>"
+            f"<text x='{x + box_w - 8}' y='23' text-anchor='end' font-size='8.5' "
+            f"fill='{INK.get(state, '#c9d1d9')}' opacity='0.85'>{html.escape(note)}</text></g>")
+        if k < n - 1:
+            ax = x + box_w
+            parts.append(f"<path d='M{ax + 3} 19 L{ax + gap - 3} 19' stroke='#96a3b5' "
+                         f"stroke-width='1.1' marker-end='url(#ah2)'/>")
+    # the loop closes: a repair that verifies re-enters the sampler
+    parts.append(f"<path d='M{width - box_w / 2 - 4} 32 C{width - 40} 44, 40 44, "
+                 f"{box_w / 2 + 4} 32' fill='none' stroke='#a9b6c8' stroke-width='1.2' "
+                 f"opacity='0.85' stroke-dasharray='4 3' marker-end='url(#ah2)'/>")
+    parts.append("<defs><marker id='ah2' viewBox='0 0 10 10' refX='8.5' refY='5' markerWidth='4' "
+                 "markerHeight='4' orient='auto'><path d='M0 1 L9 5 L0 9 z' "
+                 "fill='context-stroke'/></marker></defs>")
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def chains_meta() -> dict:
+    """Per-chain record straight from the audit's own file, when the sample is older than it."""
+    try:
+        record = json.loads((ROOT / "docs" / "status" / "chains.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+    out = {}
+    now = time.time()
+    for name, row in (record.get("chains") or {}).items():
+        ran = float(row.get("ts") or 0)
+        out[name] = {**row, "age_s": round(max(0.0, now - ran), 1) if ran else None}
+    return out
+
+
+
+def evolution_loop(evo: dict) -> str:
+    """FEEDBACK -> evolution, drawn as the cycle it is: find, encode, enforce, record, iterate.
+
+    The assembly can show findings returning to the chains; only this can show what happens to
+    them on the way. A defect is not closed by being noticed — it is closed when a fixture, a
+    mutation or a transition rule makes it impossible to repeat, and the next run proves that.
+    """
+    if not evo:
+        return ""
+    state = evo.get("state") or {}
+    hist = evo.get("evolution") or {}
+    instruments = len(state.get("instruments") or [])
+    try:
+        fixtures = len((json.loads((ROOT / "docs" / "FIXTURES.json").read_text(encoding="utf-8"))
+                        or {}).get("fixtures") or [])
+    except (OSError, json.JSONDecodeError):
+        fixtures = 0
+    try:
+        fuzz = json.loads((ROOT / "docs" / "FUZZ.json").read_text(encoding="utf-8")) or {}
+    except (OSError, json.JSONDecodeError):
+        fuzz = {}
+    cases = sum(len(fuzz.get(k) or []) for k in ("wrong", "equivalent", "wrong_evidence",
+                                                 "equivalent_evidence", "pairs"))
+    stages = [
+        ("1 FIND", f"{instruments} instruments", "a mutation, a render, a dead endpoint", "PASS"),
+        ("2 ENCODE", f"{fixtures} fixtures · {cases} cases", "fixture · mutation · transition rule",
+         "PASS"),
+        ("3 ENFORCE", "6 checks before commit", "tests, fixtures, fuzz, chains, state, page",
+         "PASS"),
+        ("4 RECORD", f"{instruments} capabilities", "each with the artefact that would refute it",
+         "PASS"),
+        ("5 ITERATE", f"{hist.get('blind_spots_found', 0)} found · "
+                      f"{hist.get('blind_spots_open', 0)} open", "the next run re-measures", "PASS"),
+    ]
+    n = len(stages)
+    box_w, gap, height = 214, 30, 58
+    width = n * box_w + (n - 1) * gap + 8
+    parts = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
+             f"aria-label='feedback to evolution cycle'>"]
+    for k, (title, count, note, st) in enumerate(stages):
+        x = 4 + k * (box_w + gap)
+        parts.append(
+            f"<g class='node stage' data-stage='{html.escape(title)}' tabindex='0' role='button'>"
+            f"<title>{html.escape(title)} · {html.escape(count)} · {html.escape(note)}</title>"
+            # Stages are not health: a green box would say "passing", and a stage cannot pass.
+            f"<rect x='{x}' y='4' width='{box_w}' height='36' rx='4' fill='#1b2027' "
+            f"stroke='#2a3038'/>"
+            f"<rect x='{x}' y='4' width='3' height='36' fill='#5b8def'/>"
+            f"<text x='{x + 11}' y='17' font-size='8.5' letter-spacing='0.08em' "
+            f"fill='#8b95a5'>{html.escape(title)}</text>"
+            f"<text x='{x + 11}' y='30' font-size='10' fill='#c9d1d9'>"
+            f"{html.escape(count)}</text></g>")
+        if k < n - 1:
+            ax = x + box_w
+            parts.append(f"<path d='M{ax + 4} 22 L{ax + gap - 4} 22' stroke='#96a3b5' "
+                         f"stroke-width='1.1' marker-end='url(#ah3)'/>")
+    # the cycle: stage 5 feeds stage 1 with the next instrument run
+    parts.append(f"<path d='M{width - box_w / 2 - 4} 40 C{width - 30} 54, 30 54, "
+                 f"{box_w / 2 + 4} 40' fill='none' stroke='#a9b6c8' stroke-width='1.2' "
+                 f"opacity='0.85' stroke-dasharray='4 3' marker-end='url(#ah3)'/>")
+    parts.append("<defs><marker id='ah3' viewBox='0 0 10 10' refX='8.5' refY='5' markerWidth='4' "
+                 "markerHeight='4' orient='auto'><path d='M0 1 L9 5 L0 9 z' "
+                 "fill='context-stroke'/></marker></defs>")
+    parts.append("</svg>")
+    return "".join(parts)
+
+
+def version_label() -> str:
+    """The release this page was built from, or the last one on record."""
+    try:
+        rows = json.loads((ROOT / "site" / "versions.json").read_text(encoding="utf-8"))
+        return str((rows[-1] or {}).get("version") or "")
+    except (OSError, json.JSONDecodeError, IndexError):
+        return ""
+
+
+
+def consumer_strip(pipeline: dict) -> str:
+    """The outward face: what the framework does for a project.
+
+    A consumer is only healthy when its verdict equals its *expectation* — a negative control
+    that fails is doing its job, and colouring it red would invert the meaning of the test.
+    """
+    # Only projects Gate S actually judged belong here. The chain fixtures have no claims and
+    # no verdict; listing them as consumers would pad the band with entries that prove nothing.
+    rows = [r for r in (pipeline.get("consumers") or [])
+            if str(r.get("gate_s") or "—") not in ("—", "", "None")]
+    if not rows:
+        return ("<p class='mono' style='color:var(--mut)'>no consumer registered: the framework "
+                "is checking itself and serving no project</p>")
+    box_w, gap, height = 226, 12, 54
+    width = max(600, len(rows) * (box_w + gap) + 8)
+    parts = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
+             f"aria-label='consumers: what the framework does for a project'>"]
+    now = time.time()
+    for k, row in enumerate(rows):
+        name = str(row.get("name") or "?")
+        got, want = str(row.get("gate_s") or "—"), str(row.get("expected") or "—")
+        as_expected = want != "—" and got == want
+        st = "PASS" if as_expected else "FAIL"
+        gen = row.get("generated")
+        age = ""
+        if gen:
+            try:
+                age = fmt_age(max(0.0, now - datetime.datetime.fromisoformat(
+                    str(gen).replace("Z", "+00:00")).timestamp()))
+            except ValueError:
+                age = ""
+        x = 4 + k * (box_w + gap)
+        role = str(row.get("role") or "")
+        tag = ("demo" if role.upper().startswith("DEMO")
+               else "control" if "control" in role.lower()
+               else "consumer" if "consumer" in role.lower() else "")
+        note = (f"{tag} · " if tag else "") + f"gate {got} / expected {want}" +                (f" · {age}" if age else "")
+        parts.append(
+            f"<g class='node consumer' data-consumer='{html.escape(name)}' tabindex='0' role='button'>"
+            f"<title>{html.escape(name)} · {html.escape(note)}</title>"
+            f"<rect x='{x}' y='3' width='{box_w}' height='38' rx='4' fill='#1b2027' stroke='#2a3038'/>"
+            f"<rect x='{x}' y='3' width='3' height='38' fill='{PALETTE[st]}'/>"
+            f"<text x='{x + 11}' y='17' font-size='10' fill='#c9d1d9'>"
+            f"{html.escape(name[:26])}</text>"
+            f"<text x='{x + 11}' y='31' font-size='9' fill='#8b95a5'>"
+            f"{html.escape(note[:46])}</text></g>")
+    parts.append("</svg>")
+    return "".join(parts)
 
 
 CSS = """
@@ -670,204 +823,6 @@ if (location.protocol.startsWith('http')) {
 """
 
 
-
-def operator_strip(status: dict, recoveries: list) -> str:
-    """The system's own operators: self-check, then self-heal, drawn as the loop they form.
-
-    The assembly shows what the pipeline *is*. This shows what keeps it alive: a sample, a
-    verdict, a plan, a repair, a verification, a record — and a second pass that proves the
-    repair worked. State comes from the sampler's own files, not from optimism.
-    """
-    ts = status.get("ts") or ""
-    try:
-        age = max(0.0, time.time() - datetime.datetime.fromisoformat(
-            str(ts).replace("Z", "+00:00")).timestamp())
-    except (ValueError, TypeError):
-        age = None
-    sampled = "PASS" if age is not None and age < 90 else ("STALE" if age is not None else "IDLE")
-    last = recoveries[-1] if recoveries else {}
-    healed = last.get("phase", "")
-    healed_ok = bool(last.get("ok"))
-    steps = [
-        ("self-check · sample", sampled, "15 s"),
-        ("derive verdict", "PASS", "status_view"),
-        ("plan repair", "PASS" if healed else "IDLE", "recovery.plan"),
-        ("execute", ("PASS" if healed_ok else "FAIL") if healed else "IDLE", "recovery.execute"),
-        ("verify", ("PASS" if healed_ok else "FAIL") if healed else "IDLE", "recovery.verify"),
-        ("record", "PASS", f"{len(recoveries)} logged"),
-    ]
-    n = len(steps)
-    box_w, gap = 168, 26
-    width = n * box_w + (n - 1) * gap + 8
-    height = 46
-    parts = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
-             f"aria-label='self-check and self-heal loop'>"]
-    for k, (name, state, note) in enumerate(steps):
-        x = 4 + k * (box_w + gap)
-        parts.append(
-            f"<g class='node operator' data-operator='{html.escape(name)}' tabindex='0' role='button'>"
-            f"<title>{html.escape(name)} · {state} · {html.escape(note)}</title>"
-            f"<rect x='{x}' y='6' width='{box_w}' height='26' rx='4' "
-            f"fill='{PALETTE.get(state, PALETTE['IDLE'])}' stroke='#0a0c0f'/>"
-            f"<text x='{x + 9}' y='23' font-size='9.5' fill='{INK.get(state, '#c9d1d9')}'>"
-            f"{html.escape(name)}</text>"
-            f"<text x='{x + box_w - 8}' y='23' text-anchor='end' font-size='8.5' "
-            f"fill='{INK.get(state, '#c9d1d9')}' opacity='0.85'>{html.escape(note)}</text></g>")
-        if k < n - 1:
-            ax = x + box_w
-            parts.append(f"<path d='M{ax + 3} 19 L{ax + gap - 3} 19' stroke='#96a3b5' "
-                         f"stroke-width='1.1' marker-end='url(#ah2)'/>")
-    # the loop closes: a repair that verifies re-enters the sampler
-    parts.append(f"<path d='M{width - box_w / 2 - 4} 32 C{width - 40} 44, 40 44, "
-                 f"{box_w / 2 + 4} 32' fill='none' stroke='#a9b6c8' stroke-width='1.2' "
-                 f"opacity='0.85' stroke-dasharray='4 3' marker-end='url(#ah2)'/>")
-    parts.append("<defs><marker id='ah2' viewBox='0 0 10 10' refX='8.5' refY='5' markerWidth='4' "
-                 "markerHeight='4' orient='auto'><path d='M0 1 L9 5 L0 9 z' "
-                 "fill='context-stroke'/></marker></defs>")
-    parts.append("</svg>")
-    return "".join(parts)
-
-
-def chains_meta() -> dict:
-    """Per-chain record straight from the audit's own file, when the sample is older than it."""
-    try:
-        record = json.loads((ROOT / "docs" / "status" / "chains.json").read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return {}
-    out = {}
-    now = time.time()
-    for name, row in (record.get("chains") or {}).items():
-        ran = float(row.get("ts") or 0)
-        out[name] = {**row, "age_s": round(max(0.0, now - ran), 1) if ran else None}
-    return out
-
-
-
-def evolution_loop(evo: dict) -> str:
-    """FEEDBACK -> evolution, drawn as the cycle it is: find, encode, enforce, record, iterate.
-
-    The assembly can show findings returning to the chains; only this can show what happens to
-    them on the way. A defect is not closed by being noticed — it is closed when a fixture, a
-    mutation or a transition rule makes it impossible to repeat, and the next run proves that.
-    """
-    if not evo:
-        return ""
-    state = evo.get("state") or {}
-    hist = evo.get("evolution") or {}
-    instruments = len(state.get("instruments") or [])
-    try:
-        fixtures = len((json.loads((ROOT / "docs" / "FIXTURES.json").read_text(encoding="utf-8"))
-                        or {}).get("fixtures") or [])
-    except (OSError, json.JSONDecodeError):
-        fixtures = 0
-    try:
-        fuzz = json.loads((ROOT / "docs" / "FUZZ.json").read_text(encoding="utf-8")) or {}
-    except (OSError, json.JSONDecodeError):
-        fuzz = {}
-    cases = sum(len(fuzz.get(k) or []) for k in ("wrong", "equivalent", "wrong_evidence",
-                                                 "equivalent_evidence", "pairs"))
-    stages = [
-        ("1 FIND", f"{instruments} instruments", "a mutation, a render, a dead endpoint", "PASS"),
-        ("2 ENCODE", f"{fixtures} fixtures · {cases} cases", "fixture · mutation · transition rule",
-         "PASS"),
-        ("3 ENFORCE", "6 checks before commit", "tests, fixtures, fuzz, chains, state, page",
-         "PASS"),
-        ("4 RECORD", f"{instruments} capabilities", "each with the artefact that would refute it",
-         "PASS"),
-        ("5 ITERATE", f"{hist.get('blind_spots_found', 0)} found · "
-                      f"{hist.get('blind_spots_open', 0)} open", "the next run re-measures", "PASS"),
-    ]
-    n = len(stages)
-    box_w, gap, height = 214, 30, 58
-    width = n * box_w + (n - 1) * gap + 8
-    parts = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
-             f"aria-label='feedback to evolution cycle'>"]
-    for k, (title, count, note, st) in enumerate(stages):
-        x = 4 + k * (box_w + gap)
-        parts.append(
-            f"<g class='node stage' data-stage='{html.escape(title)}' tabindex='0' role='button'>"
-            f"<title>{html.escape(title)} · {html.escape(count)} · {html.escape(note)}</title>"
-            # Stages are not health: a green box would say "passing", and a stage cannot pass.
-            f"<rect x='{x}' y='4' width='{box_w}' height='36' rx='4' fill='#1b2027' "
-            f"stroke='#2a3038'/>"
-            f"<rect x='{x}' y='4' width='3' height='36' fill='#5b8def'/>"
-            f"<text x='{x + 11}' y='17' font-size='8.5' letter-spacing='0.08em' "
-            f"fill='#8b95a5'>{html.escape(title)}</text>"
-            f"<text x='{x + 11}' y='30' font-size='10' fill='#c9d1d9'>"
-            f"{html.escape(count)}</text></g>")
-        if k < n - 1:
-            ax = x + box_w
-            parts.append(f"<path d='M{ax + 4} 22 L{ax + gap - 4} 22' stroke='#96a3b5' "
-                         f"stroke-width='1.1' marker-end='url(#ah3)'/>")
-    # the cycle: stage 5 feeds stage 1 with the next instrument run
-    parts.append(f"<path d='M{width - box_w / 2 - 4} 40 C{width - 30} 54, 30 54, "
-                 f"{box_w / 2 + 4} 40' fill='none' stroke='#a9b6c8' stroke-width='1.2' "
-                 f"opacity='0.85' stroke-dasharray='4 3' marker-end='url(#ah3)'/>")
-    parts.append("<defs><marker id='ah3' viewBox='0 0 10 10' refX='8.5' refY='5' markerWidth='4' "
-                 "markerHeight='4' orient='auto'><path d='M0 1 L9 5 L0 9 z' "
-                 "fill='context-stroke'/></marker></defs>")
-    parts.append("</svg>")
-    return "".join(parts)
-
-
-def version_label() -> str:
-    """The release this page was built from, or the last one on record."""
-    try:
-        rows = json.loads((ROOT / "site" / "versions.json").read_text(encoding="utf-8"))
-        return str((rows[-1] or {}).get("version") or "")
-    except (OSError, json.JSONDecodeError, IndexError):
-        return ""
-
-
-
-def consumer_strip(pipeline: dict) -> str:
-    """The outward face: what the framework does for a project.
-
-    A consumer is only healthy when its verdict equals its *expectation* — a negative control
-    that fails is doing its job, and colouring it red would invert the meaning of the test.
-    """
-    # Only projects Gate S actually judged belong here. The chain fixtures have no claims and
-    # no verdict; listing them as consumers would pad the band with entries that prove nothing.
-    rows = [r for r in (pipeline.get("consumers") or [])
-            if str(r.get("gate_s") or "—") not in ("—", "", "None")]
-    if not rows:
-        return ("<p class='mono' style='color:var(--mut)'>no consumer registered: the framework "
-                "is checking itself and serving no project</p>")
-    box_w, gap, height = 226, 12, 54
-    width = max(600, len(rows) * (box_w + gap) + 8)
-    parts = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
-             f"aria-label='consumers: what the framework does for a project'>"]
-    now = time.time()
-    for k, row in enumerate(rows):
-        name = str(row.get("name") or "?")
-        got, want = str(row.get("gate_s") or "—"), str(row.get("expected") or "—")
-        as_expected = want != "—" and got == want
-        st = "PASS" if as_expected else "FAIL"
-        gen = row.get("generated")
-        age = ""
-        if gen:
-            try:
-                age = fmt_age(max(0.0, now - datetime.datetime.fromisoformat(
-                    str(gen).replace("Z", "+00:00")).timestamp()))
-            except ValueError:
-                age = ""
-        x = 4 + k * (box_w + gap)
-        role = str(row.get("role") or "")
-        tag = ("demo" if role.upper().startswith("DEMO")
-               else "control" if "control" in role.lower()
-               else "consumer" if "consumer" in role.lower() else "")
-        note = (f"{tag} · " if tag else "") + f"gate {got} / expected {want}" +                (f" · {age}" if age else "")
-        parts.append(
-            f"<g class='node consumer' data-consumer='{html.escape(name)}' tabindex='0' role='button'>"
-            f"<title>{html.escape(name)} · {html.escape(note)}</title>"
-            f"<rect x='{x}' y='3' width='{box_w}' height='38' rx='4' fill='#1b2027' stroke='#2a3038'/>"
-            f"<rect x='{x}' y='3' width='3' height='38' fill='{PALETTE[st]}'/>"
-            f"<text x='{x + 11}' y='17' font-size='10' fill='#c9d1d9'>"
-            f"{html.escape(name[:26])}</text>"
-            f"<text x='{x + 11}' y='31' font-size='9' fill='#8b95a5'>"
-            f"{html.escape(note[:46])}</text></g>")
-    parts.append("</svg>")
-    return "".join(parts)
 
 
 def build() -> str:

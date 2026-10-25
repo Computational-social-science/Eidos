@@ -195,6 +195,21 @@ def measure() -> dict:
                                     "unit": "chains", "source": "docs/traces/latest.json",
                                     "note": "no trace recorded"}
 
+    # The scheduler is a single point of silent failure: if the tick stops, every chain keeps
+    # its last verdict and the board stays green. Age of the heartbeat is the signal.
+    beat = read_json(STATUS / "scheduler.json", {}) or {}
+    if beat.get("epoch"):
+        age_min = (time.time() - float(beat["epoch"])) / 60.0
+        interval = float(beat.get("interval_min") or 10)
+        signals["scheduler"] = {
+            "value": round(age_min, 1), "reference": round(interval * 3, 1),
+            "direction": "max", "unit": "min", "source": "docs/status/scheduler.json",
+            "note": f"tick {beat.get('ticks', 0)}, {len(beat.get('failed') or [])} failing chain(s)"}
+    else:
+        signals["scheduler"] = {"value": None, "reference": 30.0, "direction": "max",
+                                "unit": "min", "source": "docs/status/scheduler.json",
+                                "note": "no heartbeat recorded"}
+
     audit = read_json(ROOT / "docs" / "SELF_AUDIT.json", {}) or {}
     self_gate = ((audit.get("self_gate_s") or {}).get("status")
                  if isinstance(audit, dict) else None) or "UNKNOWN"

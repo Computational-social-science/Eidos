@@ -619,7 +619,15 @@ def record_release(data: dict) -> list[dict]:
                          "coverage": audit.get("coverage_total"),
                          "chains": len(data["chains"]),
                          "open_objections": data["referee"]["open"],
-                         "decision_ms": data["decision"]["latency_ms"]}}
+                         "decision_ms": data["decision"]["latency_ms"],
+                         # Self-evolution is a capability, so it belongs in the release record:
+                         # how many defects the instruments have caught, and how many remain.
+                         "blind_spots_found": ((data.get("evolution") or {}).get("evolution") or {}
+                                               ).get("blind_spots_found"),
+                         "blind_spots_open": ((data.get("evolution") or {}).get("evolution") or {}
+                                              ).get("blind_spots_open"),
+                         "instruments": len(((data.get("evolution") or {}).get("state") or {}
+                                             ).get("instruments") or [])}}
     history = versions()
     if history and history[-1].get("commit") == entry["commit"]:
         history[-1] = entry          # same commit rebuilt: replace, do not duplicate

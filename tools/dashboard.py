@@ -448,6 +448,8 @@ header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:7px 18px;
   box-shadow:0 6px 14px -10px #000;z-index:5}
 .brand{font-weight:650;font-size:12.5px;letter-spacing:.02em}
 .brand i{color:var(--accent);font-style:normal;margin-right:6px}
+.brand .ver{margin-left:7px;padding:1px 5px;border:1px solid var(--line);border-radius:4px;
+  font:600 9.5px/1.5 ui-monospace,Consolas,monospace;color:var(--mut);letter-spacing:0}
 .pill{font:600 10.5px/1 inherit;letter-spacing:.08em;padding:5px 10px;border-radius:20px;
   border:1px solid var(--line);text-transform:uppercase}
 .pill.OK{color:#57ab5a;background:rgba(87,171,90,.1);border-color:rgba(87,171,90,.35)}
@@ -804,6 +806,15 @@ def evolution_loop(evo: dict) -> str:
     return "".join(parts)
 
 
+def version_label() -> str:
+    """The release this page was built from, or the last one on record."""
+    try:
+        rows = json.loads((ROOT / "site" / "versions.json").read_text(encoding="utf-8"))
+        return str((rows[-1] or {}).get("version") or "")
+    except (OSError, json.JSONDecodeError, IndexError):
+        return ""
+
+
 def build() -> str:
     pipeline = load(PIPELINE, {}) or {}
     status = load(STATUS / "current.json", {}) or {}
@@ -869,7 +880,7 @@ def build() -> str:
 <style>{CSS}</style></head>
 <body>
 <header>
-  <span class="brand"><i>●</i>Eidos pipeline</span>
+  <span class="brand"><i>●</i>Eidos pipeline<span class="ver"> v{html.escape(version_label() or '—')}</span></span>
   <span class="pill {'OK' if ok else 'ALARM'}" id="ov">{html.escape(str(overall))}</span>
   <span class="spacer"></span>
   <span class="meta" id="meta">sampled <b>{stamp}</b> HKT · <b>{status.get('samples', 0)}</b>

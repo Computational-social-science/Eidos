@@ -55,3 +55,7 @@ docs/status/faults.jsonl
 docs/status/durations.jsonl
 docs/status/recoveries.jsonl
 docs/status/recovery_state.json
+docs/status/chains.json
+docs/status/scheduler.json
+docs/status/scheduler.log
+docs/status/serve.log

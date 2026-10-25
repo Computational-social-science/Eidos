@@ -198,7 +198,10 @@ def _shell() -> str:
 
 #: Which endpoints must answer is declared once, in framework.services: the monitor and the
 #: repair path cannot disagree about "up" if they read the same table.
-import services as _services  # noqa: E402  (framework/ is on the path at import time)
+try:                                    # imported as framework.recovery
+    from . import services as _services
+except ImportError:                     # imported flat, with framework/ itself on the path
+    import services as _services
 
 HEALTH = {name: urls[0] for name, urls in _services.ENDPOINTS.items()}
 ENDPOINTS = _services.ENDPOINTS

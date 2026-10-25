@@ -81,6 +81,32 @@ PROBE = """() => {
       }
     }
   });
+  // HTML occlusion: absolute panels, negative margins and overlays cover text without any
+  // bounding-box intersection. Hit-testing the centre is what the reader's eye is doing.
+  const obscured = [];
+  leaves.forEach(el => {
+    if (el.closest('svg')) return;
+    const r = el.getBoundingClientRect();
+    // Off-screen text (a skip link parked at left:-9999px) is not covered by anything; clamping
+    // its centre into the viewport would invent an overlay that is not there.
+    if (r.right < 1 || r.left > window.innerWidth - 1 || r.bottom < 1 || r.top > window.innerHeight - 1)
+      return;
+    const cx = Math.min(Math.max(r.x + r.width / 2, 1), window.innerWidth - 2);
+    const cy = Math.min(Math.max(r.y + r.height / 2, 1), window.innerHeight - 2);
+    const top = document.elementFromPoint(cx, cy);
+    if (!top || top === el || el.contains(top) || top.contains(el)) return;
+    const st = getComputedStyle(top);
+    if (st.visibility === 'hidden' || st.display === 'none') return;
+    // A cell or a wrapper with a transparent background and static position is layout, not an
+    // overlay; only a painted, positioned box hides what is under it.
+    const painted = st.backgroundColor && st.backgroundColor !== 'rgba(0, 0, 0, 0)';
+    if (!painted && st.position === 'static') return;
+    // A mark smaller than the text it sits beside is an icon, not a cover.
+    const tr = top.getBoundingClientRect();
+    if (tr.width * tr.height < r.width * r.height) return;
+    obscured.push({t: (el.textContent || '').trim().slice(0, 26),
+                   by: (top.tagName + (top.className ? '.' + top.className : '')).slice(0, 30)});
+  });
   const clipped = [];
   document.querySelectorAll('svg text').forEach(t => {
     const txt = (t.textContent || '').trim();
@@ -89,7 +115,7 @@ PROBE = """() => {
     if (r.left < s.left - 1 || r.right > s.right + 1 || r.top < s.top - 1 || r.bottom > s.bottom + 1)
       clipped.push({t: txt.slice(0, 26)});
   });
-  return {texts, over, cards, nested, covered, clipped,
+  return {texts, over, cards, nested, covered, clipped, obscured,
           body: document.body.scrollWidth, win: window.innerWidth};
 }"""
 
@@ -128,6 +154,8 @@ def audit(width: int) -> list[str]:
     for item in data.get("covered") or []:
         findings.append(f"{width}px: text {item['t']!r} is painted over by a rect "
                         f"({item['by']})")
+    for item in data.get("obscured") or []:
+        findings.append(f"{width}px: html text {item['t']!r} is covered by {item['by']!r}")
     for item in data.get("clipped") or []:
         findings.append(f"{width}px: svg text {item['t']!r} falls outside its viewBox")
     for item in data["over"]:

@@ -294,11 +294,20 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
                f"stroke='rgba(255,255,255,0.14)'/>")
     svg.append(f"<g transform='translate({gut},0)'>")
 
+    labels = {"framework.quarto_bridge": "quarto·br", "framework.validity": "Gate S",
+              "framework.project": "project", "framework.gates": "gates",
+              "framework.decision": "decision", "framework.inference": "inference",
+              "framework.diagnosis": "diagnosis", "framework.tracking": "tracking",
+              "framework.surrogate": "surrogate", "tools.surrogate": "surrogate"}
     for k, module in enumerate(modules):
-        name = module.replace("framework.", "").replace("tools.", "")
+        name = labels.get(module) or module.replace("framework.", "").replace("tools.", "").split(".")[0]
         # A module is a column, but it is still a node: the drill-down and the hover handler
         # bind to it, and the structure check counts it.
-        mod_state = worst([chain_now.get(c, "IDLE") for c in module_users[module]])
+        # SKIP is not evidence of a problem: a chain nobody ran says nothing about the module.
+        # Only verdicts count; if every user was skipped, the module says SKIP.
+        states = [chain_now.get(c, "IDLE") for c in module_users[module]]
+        judged = [st for st in states if st not in ("SKIP", "IDLE")]
+        mod_state = worst(judged) if judged else ("SKIP" if states else "IDLE")
         svg.append(f"<g class='node module' data-module='{html.escape(module)}' "
                    f"data-users='{html.escape(','.join(module_users[module]))}' tabindex='0' "
                    f"role='button'><title>{html.escape(module)} · {mod_state} · used by "
@@ -306,7 +315,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
                    f"<text x='{m_x + k * col_w}' y='30' font-size='10' "
                    f"fill='{PALETTE.get(mod_state, '#98a2b3') if mod_state != 'PASS' else PALETTE['PASS']}' "
                    f"font-family='ui-monospace,Consolas,monospace'>"
-                   f"{html.escape(name[:9])}</text></g>")
+                   f"{html.escape(name[:12])}</text></g>")
     for k, service in enumerate(services):
         # SERVICE_LABEL already carries the endpoint ("decision · :8090"); appending a port
         # here printed it twice.
@@ -826,9 +835,9 @@ async function poll() {
     const rank = {FAIL: 0, STALE: 1, RUNNING: 2, SKIP: 3, PASS: 4, IDLE: 5};
     document.querySelectorAll('g.node.module').forEach(g => {
       const users = (g.dataset.users || '').split(',').filter(Boolean);
-      let worst = 'IDLE';
-      users.forEach(u => { const st = chains[u] || 'IDLE';
-        if ((rank[st] ?? 9) < (rank[worst] ?? 9)) worst = st; });
+      const judged = users.map(u => chains[u] || 'IDLE').filter(st => st !== 'SKIP' && st !== 'IDLE');
+      let worst = judged.length ? judged.sort((a, b) => (rank[a] ?? 9) - (rank[b] ?? 9))[0]
+                                : (users.length ? 'SKIP' : 'IDLE');
       const t = g.querySelector('text');
       if (t) t.setAttribute('fill', PALETTE[worst] || PALETTE.IDLE);
     });

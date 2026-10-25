@@ -30,6 +30,19 @@ def test_an_opaque_rect_over_a_label_is_reported(tmp_path):
     assert "painted over by a rect" in run.stdout
 
 
+def test_an_html_overlay_is_reported(tmp_path):
+    overlay = ("<div style='position:absolute;top:60px;left:20px;width:900px;height:40px;"
+               "background:#12151a;z-index:99'></div>")
+    source = PAGE.read_text(encoding="utf-8")
+    target = tmp_path / "overlay.html"
+    target.write_text(source.replace("</body>", overlay + "</body>"), encoding="utf-8")
+    run = subprocess.run([sys.executable, "tools/audit_layout.py", "--widths", "1280",
+                          "--page", str(target)], cwd=ROOT, capture_output=True, text=True,
+                         timeout=300)
+    assert run.returncode == 1, run.stdout + run.stderr
+    assert "is covered by" in run.stdout
+
+
 def test_text_outside_the_viewbox_is_reported(tmp_path):
     run = _run_defective(tmp_path, "<text x='5000' y='20' font-size='10' fill='#fff'>far out</text>")
     assert run.returncode == 1, run.stdout + run.stderr

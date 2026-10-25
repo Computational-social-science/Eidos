@@ -151,3 +151,27 @@ The two demos are structurally unlike each other on purpose:
 
 `release_gate.py` now refuses a release when either the onboarding rehearsal fails or the demo
 coverage falls below six capabilities.
+
+## 10. The monitor is audited like the code
+
+A dashboard that lies is worse than no dashboard, so the pages are checked the way a result is:
+
+| check | what it refuses |
+|---|---|
+| layout | two text boxes that intersect; content wider than its box |
+| paint order | a label whose centre sits under an opaque rect drawn after it |
+| clipping | svg text that falls outside its own viewBox |
+| hit-test | html text whose centre is covered by a painted, positioned element |
+| contrast | text below AA, drawn lines below 3:1 |
+| visual language | type sizes off the declared scale, more colours or weights than the scale allows |
+| runtime | a page error, a console error, a canvas that was never drawn |
+
+The first two of these exist because failures shipped: a header band appended after the column
+labels covered them, and a footer ran past its band. Neither is visible to a bounding-box
+intersection test, so both guards were added with a test that builds a page containing the defect
+and requires the audit to reject it (`tests/test_layout_guards.py`).
+
+Column headers carry their own state — a module takes the worst verdict among the chains that use
+it, a service takes its own health — and the poll recomputes both. A chain that was skipped is not
+a fault in the module it uses: SKIP is excluded from the worst-of calculation, and a module whose
+users were all skipped reports SKIP rather than borrowing a colour it did not earn.

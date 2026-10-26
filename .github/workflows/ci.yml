@@ -30,7 +30,7 @@ jobs:
       - name: Install
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev,tracking]"
+          pip install -e ".[dev,tracking,verifiers]"
       - name: Unit tests
         run: |
           set -o pipefail
@@ -67,7 +67,7 @@ jobs:
       - name: Install
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev,tracking]"
+          pip install -e ".[dev,tracking,verifiers]"
       - name: Exercise every chain
         run: python tools/audit_chains.py --ci
       - name: Self-audit record (no drift, no new objection)

@@ -87,7 +87,10 @@ jobs:
           python tools/audit_chain_fixtures.py
 
       - name: Site gate (no browser here)
-        run: python tools/audit_site.py --skip-browser
+        # --no-build: the pages embed host facts (tool versions, the dependency table's date), so
+        # rebuilding them on a runner produces a different file by construction. CI audits the
+        # committed artefact; the local hook audits a rebuild.
+        run: python tools/audit_site.py --skip-browser --no-build
       - name: Local neural operator (planted fixed point + control)
         run: |
           python tools/audit_surrogate.py

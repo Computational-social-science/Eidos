@@ -220,7 +220,7 @@ def sec(num: str, ident: str, title: str, lede: str, body: str) -> str:
 
 
 RAIL = [("position", "Position"), ("pipeline", "The pipeline"),
-        ("architecture", "Architecture"), ("gates", "Gates"),
+        ("architecture", "Architecture"), ("orchestration", "Orchestration"), ("gates", "Gates"),
         ("state", "State"), ("monitor", "Monitor"), ("demo", "The demo"),
         ("start", "Start"), ("limits", "Limits")]
 
@@ -275,6 +275,36 @@ def sec_pipeline(fragment: str) -> str:
     return sec("02", "pipeline", "The pipeline",
                "Nine stages, each with a gate it cannot skip. The order is the point: a result is "
                "certified before it is written, and written before it is packaged.", fragment)
+
+
+def sec_orchestration() -> str:
+    """What runs, and what was removed — the site used to inherit the README's LangGraph claim."""
+    rows = [
+        ("chain registry", "tools/audit_chains.py",
+         "eleven chains, decorator-registered, run in order with spans and verdicts"),
+        ("scheduler", "tools/refresh_chains.py",
+         "per-chain intervals; a heartbeat and 'nothing due' instead of a cron that always runs"),
+        ("sampler", "tools/watch_pipeline.py",
+         "every 15 s: probe, classify against a reference, derive one verdict, drive recovery"),
+        ("typed operator", "framework/decision.py",
+         "choice / yes-no / score from a local model; unreachable raises, it does not guess"),
+        ("update governance", "tools/update_operator.py",
+         "sense weekly, try in a throwaway environment, promote on a passing try, roll back"),
+    ]
+    body = "<table><caption>Five pieces, each with one job and one file. No agent graph.</caption>" \
+           "<thead><tr><th>piece</th><th>file</th><th>what it does</th></tr></thead><tbody>"
+    for name, path, why in rows:
+        body += f"<tr><td><strong>{name}</strong></td><td class='mono'>{path}</td><td>{why}</td></tr>"
+    body += "</tbody></table>"
+    body += ("<p style='margin:10px 0 0;font-size:12px;color:var(--dim)'>Removed rather than "
+             "documented as present: LangGraph/LangChain agents (no consumer), Hydra (never "
+             "wired), and the vector memory layer (no consumer, and it segfaulted on this host). "
+             "The README claimed the first of these until 2026-10-26; "
+             "<a href='../docs/ORCHESTRATION.md'>docs/ORCHESTRATION.md</a> records what happened "
+             "and <code>tests/test_documentation_claims.py</code> keeps it recorded.</p>")
+    return sec("04", "orchestration", "Orchestration",
+               "What actually runs, and what was deliberately taken out. A graph nobody executes "
+               "is a diagram; the chains are the system.", body)
 
 
 def sec_architecture(fragment: str) -> str:
@@ -362,7 +392,7 @@ def sec_gates(ctx: dict) -> str:
     {ctx["minconf"]}), so a gate may not use <code>none_probability ≥ 0.2</code> as a success
     criterion. The option set does the work, not the threshold.</p></div>
 </div>{fixture_table(ctx.get("fixtures") or {}, ctx.get("robustness") or {})}'''
-    return sec("04", "gates", "Gates: two kinds, plus a validator",
+    return sec("05", "gates", "Gates: two kinds, plus a validator",
                "Two gate families, one validator, and a matrix that says where each one sits.",
                body)
 
@@ -458,7 +488,7 @@ def sec_state(ctx: dict) -> str:
   measured sweep.</p>
   {ctx["opdemo"]}
 </div>'''
-    return sec("05", "state", "State, at this build",
+    return sec("06", "state", "State, at this build",
                'Chain-by-chain and module-by-module state is live in the '
                '<a href="http://127.0.0.1:8765/">monitor</a>, which is the only place that draws it. '
                'This page records what the framework <em>is</em>; the monitor records what it is '
@@ -498,7 +528,7 @@ def sec_monitor(ctx: dict) -> str:
   <p class="mnote">Collected from <code>docs/status/current.json</code> when this page was
   built. The live page polls the same payload every ten seconds; this frame does not.</p>
 </div><!--snapshot:end-->'''
-    return sec("06", "monitor", "Monitor — the pipeline at build time",
+    return sec("07", "monitor", "Monitor — the pipeline at build time",
                "A still frame, so the document cannot claim a state the monitor contradicts.",
                body)
 
@@ -545,7 +575,7 @@ def sec_demo(ctx: dict) -> str:
     {ctx["inmax"]} inside, {ctx["outmax"]} outside. The operator does not fail here — the map is
     smooth and one-dimensional, and training on λ ≤ 0.2 still holds 0.31%. That is a property of
     this system, not a licence to extrapolate.</figcaption></div>'''
-    return sec("07", "demo", "The demo: system-level quantities from a learned operator",
+    return sec("08", "demo", "The demo: system-level quantities from a learned operator",
                "Fitted on short-step data, solved for fixed points and stability. Every panel is "
                "computed at build time; the page carries its own data and needs no other file.",
                body)
@@ -581,7 +611,7 @@ python tools/audit_validity.py --project ../my_study</code></pre></div>
 </div>
 <p style="margin-top:10px">The page has no external script, font or network call; formulas are
 MathML, the demo is inline, and every number is computed at build time.</p>'''
-    return sec("08", "start", "Start a project", "Two commands to instantiate, one to audit.",
+    return sec("09", "start", "Start a project", "Two commands to instantiate, one to audit.",
                body)
 
 
@@ -598,7 +628,7 @@ def sec_limits() -> str:
   <p><b>Licence.</b> The framework is MIT. The decision operator's weights are CC BY-NC 4.0
   (non-commercial): a project that needs commercial terms must swap the operator, and the
   framework must not assume it is redistributable.</p></div>'''
-    return sec("09", "limits", "Limits and licence", "What this page will not claim.", body)
+    return sec("10", "limits", "Limits and licence", "What this page will not claim.", body)
 
 
 JS = r"""
@@ -673,6 +703,7 @@ makes is checked against an artefact.">
 {sec_position()}
 {sec_pipeline(ctx["pipeline"])}
 {sec_architecture(ctx["stack"])}
+{sec_orchestration()}
 {sec_gates(ctx)}
 {sec_state(ctx)}
 {sec_monitor(ctx)}

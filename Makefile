@@ -71,5 +71,12 @@ package:
 	$(PY) projects/$(PROJECT)/scripts/build_package.py --docker --binder
 
 clean:
-	find . -type d -name __pycache__ -prune -exec rm -rf {} +
-	rm -rf .pytest_cache
+	@before=$$(du -sm . 2>/dev/null | cut -f1); \
+	find . -type d -name __pycache__ -prune -exec rm -rf {} +; \
+	rm -rf .pytest_cache; \
+	for d in .venv .venv-ci .venv311 .venv312; do [ -d "$$d" ] && rm -rf "$$d"; done; \
+	rm -rf docs/status/_shots; \
+	find docs/status/update_tries -mindepth 1 -maxdepth 1 -type d -exec rm -rf {} + 2>/dev/null || true; \
+	after=$$(du -sm . 2>/dev/null | cut -f1); \
+	echo "clean: $$before MB -> $$after MB (scratch environments, caches, screenshot temp)"
+	@echo "kept: docs/status/update_tries/*.json (the try verdicts) and every built artefact"

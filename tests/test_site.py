@@ -41,9 +41,12 @@ def test_render_has_no_unsubstituted_tokens():
     assert not re.findall(r"__[A-Z_]+__", page), "a token survived substitution"
 
 
-def test_render_has_eight_sections_and_resolving_nav():
+def test_every_section_has_a_nav_entry_and_the_nav_resolves():
+    import site_page
     page = build_site.render(DATA)
-    assert page.count("<section") == 9
+    # The count is pinned to the navigation list, not to a number typed once: adding a section
+    # without adding a rail entry (or the reverse) is a broken page.
+    assert page.count("<section") == len(site_page.RAIL)
     ids = set(re.findall(r'<section[^>]*id="([^"]+)"', page))
     nav = re.findall(r'<nav class="rail"[^>]*>(.*?)</nav>', page, re.S)[0]
     hrefs = set(re.findall(r'href="#([^"]+)"', nav))

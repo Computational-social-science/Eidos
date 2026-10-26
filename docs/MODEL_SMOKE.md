@@ -53,10 +53,50 @@ reply is 140 reasoning tokens and an empty `content` string — a silent failure
 only `content` would record as an empty verdict. Plan §5 does not mention it. Any S4/S7 call must set
 `enable_thinking: false`; the value is not a preference, it is what makes JSON mode mean anything.
 
+## On the GPU, with the card to itself
+
+Measured by `tools/measure_sciencersi_load.py`: `-ngl 99 -c 28672 --jinja`, the plan's flags, after
+stopping the decision service and the monitor (both restarted afterwards and verified).
+
+| Quantity | Plan §5 | Measured |
+|---|---|---|
+| Load time | — | **4.56 s** |
+| Total card usage after load | budget 10.5 GB | **10351 MiB (10.11 GiB; 10.86 GB decimal)** |
+| Incremental VRAM (this model) | 6.9 GB | **8760 MiB (8.56 GiB)** |
+| of which KV cache at 28672 | ~1.4 GB (implied) | **3.53 GB** |
+
+The estimate in the plan is 24% low. At 28k context the model needs 8.6 GB of the card, not 6.9:
+weights are 5.03 GB and the KV cache is 3.53 GB. Adding the 1.6 GiB the desktop already held gives
+10351 MiB, i.e. 10.86 GB in decimal units — **above the plan's 10.5 GB budget** (10015 MiB), by
+336 MiB. Units matter here: the same 10351 MiB is 10.11 GiB, which would slip under a 10.5 GiB
+budget. Read as written (GB), §10's "peak VRAM ≤ 10.5 GB" fails at 28672. Judgements are short JSON; at `-c 16384` the KV cache halves to ~2.0 GB and the
+total lands near 7.2 GB, inside the budget. That is a configuration change, not a hardware limit.
+
+### Latency
+
+Five S4 judgements through `framework/inference/llama_cpp.py` (thinking off, JSON mode), one prompt
+each, no batching:
+
+| case | verdict | s |
+|---|---|---|
+| power 0.41 vs required 0.80 | FAIL | 0.84 |
+| power 0.93 | PASS | 0.59 |
+| power 0.78, shortfall pre-declared | WEAK_PASS | 0.64 |
+| no power analysis reported | FAIL | 0.62 |
+| power 0.86, confounders adjusted | PASS | 0.58 |
+
+**Median 0.62 s**, max 0.84 s — against a plan target of ≤7 s. Four of the five verdicts are
+unambiguous; the `WEAK_PASS` is defensible (0.78 against 0.80 with the shortfall declared in
+advance) and shows the third verdict class is reachable rather than decorative.
+
+All five answers were **inadmissible** as evidence: each pointed at
+`/artifacts/evaluation/stat_recompute.json`, which this repository does not have. The pointer check
+refused them for that reason alone — which is the designed behaviour, and the reason a model answer
+alone is never a Gate S pass.
+
 ## Not measured
 
-* **GPU latency.** The plan's target is ≤7 s median on the card. Measuring it needs the resident
-  7 GB runtime unloaded first; that eviction is a deliberate act, not a side effect of a test.
-* **Peak VRAM on load.** Same reason.
-* **Quantization effect on verdicts.** One prompt is an anecdote; the plan's answer is a behavioural
-  probe over at least 15 fixtures, and those do not exist yet.
+* **Quantization effect on verdicts.** Five prompts are an anecdote. The plan's answer is a
+  behavioural probe over at least 15 labelled fixtures; five exist as cases here, not as fixtures.
+* **Long-context behaviour.** All calls were ~120 prompt tokens; nothing here says how the model
+  behaves at 20k.

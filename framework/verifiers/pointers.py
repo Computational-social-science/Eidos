@@ -71,7 +71,8 @@ def split_pointer(pointer: str) -> tuple[str, str]:
     return path.lstrip("/"), frag
 
 
-def resolve_artefact(root: Path, pointer: str):
+def resolve_artefact(root: Path | str, pointer: str):
+    root = Path(root)
     rel, frag = split_pointer(pointer)
     if not rel:
         raise PointerError(f"{pointer!r} names no artefact")

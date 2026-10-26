@@ -129,7 +129,9 @@ class ModelManager:
             mutex_with=("ScienceRSI-8b-i1-Q4_K_M",)),
         "ScienceRSI-8b-i1-Q4_K_M": ModelSpec(
             "ScienceRSI-8b-i1-Q4_K_M", ModelProvider.LLAMA_CPP, ModelSize.MEDIUM,
-            sciencersi_path(), 6.9, 28672, supports_streaming=True, quantization="q4_k_m",
+            # 6.9 GB was the plan's estimate; measured 8.56 GB at 28672 (5.03 weights + 3.53 KV).
+            # The number here is the measurement, so the budget check refuses what would not fit.
+            sciencersi_path(), 8.6, 28672, supports_streaming=True, quantization="q4_k_m",
             tags=["science", "json", "s4", "s7", "hypothesis"],
             mutex_with=("StartLux-Decision-4B-Q8_0",)),
         "Qwen3.6-35B-A3B-UD-Q4_K_M": ModelSpec(

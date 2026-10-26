@@ -2,8 +2,9 @@
 
 **Gate S self-audit: PASS** — 8 objections, 0 open. Five project consumers: three that must pass (`operator_calibration`, `demo_onboarding`, `demo_quantitative`) and two controls that must be rejected (`null_study`, `prose_lie`), plus four chain fixtures. Record: `docs/SELF_AUDIT.json`.
 
-**Version 4.2.0** · Quarto + BootLoops + complementary quality gates, with dependency governance
-Local-first · model-agnostic · project-agnostic
+**Version 4.2.0** — local-first · model-agnostic · project-agnostic
+
+Quarto + BootLoops + complementary quality gates, including dependency governance
 
 One source → journal LaTeX/PDF + Word + interactive HTML + executable code,
 with quantitative and semantic quality gates enforced throughout.

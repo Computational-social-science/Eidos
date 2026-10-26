@@ -1,8 +1,8 @@
 """Citation identity and retraction, before a claim is allowed to exist.
 
 `proofpath` answers one question per reference: does this exist, and has it been retracted. It does
-not ask whether the source *supports* the sentence — that is Step 3 (Callimachus), and the plan
-keeps them apart so two tools never judge the same sentence.
+not ask whether the source *supports* the sentence — that is the separate support check in
+`support.py`, and keeping them apart stops two tools judging the same sentence.
 
 Fail closed. A reference that cannot be resolved, that resolves to a retracted work, or whose
 provider was unreachable, is `BLOCKED`: a claim may not cite it. The distinction between

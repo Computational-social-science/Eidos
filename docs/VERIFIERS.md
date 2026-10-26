@@ -89,7 +89,7 @@ fixture that misstates p or d fails") holds, and both fixtures prove it.
 |---|---|---|
 | 1. proofpath (identity, retraction) | **done** | `framework/verifiers/citations.py`, live run above, 4 tests |
 | 2. academic-research-kernel (statistics) | **done** | `framework/verifiers/stats.py`, 3 fixtures, 5 tests |
-| 3. Callimachus (support) | **not started** | needs a running Callimachus endpoint; nothing in this repo can fake a passage pointer |
+| 3. support verification | **backend not available — contract implemented** | see below |
 | 4. Instructor on S4/S7 | **blocked** | needs ScienceRSI-8b; no `ScienceRSI-8b.i1-Q4_K_M.gguf` exists on this host |
 | 5. DSPy compile | **blocked** | needs ≥ 15 labelled S4/S7 fixtures, which need step 4 |
 
@@ -104,3 +104,28 @@ present (build 11671 through the Hermes runtime), the mutex contract is already 
 * A passing recomputation is not a correct analysis. It says the printed statistic follows from the
   printed summary data — not that the test was appropriate, pre-registered, or unconfounded.
 * `SOURCE_UNAVAILABLE` is not evidence of anything. It is a retry.
+
+
+## Step 3: support verification, with no backend assumed
+
+The plan names a support-checking service for this step. On 2026-10-26 no such tool could be
+verified as accessible: the name resolves to an unrelated project, and the site linked from the
+plan serves no documentation. It is therefore **not** referenced by this framework — a dependency
+that exists only in a document is the defect this repository corrected with LangGraph.
+
+What exists is the contract, and it is enforced:
+
+| state | meaning | Gate S |
+|---|---|---|
+| `SUPPORTED` | a passage with source, offsets and text backs the claim | may pass |
+| `NOT_SUPPORTED` | a passage contradicts it | FAIL |
+| `UNCLEAR` | the source does not settle it | FAIL |
+| `SUPPORT_UNCHECKED` | no backend has run | **BLOCKED**, never PASS |
+
+`framework/verifiers/support.py` writes one record per claim under
+`artifacts/literature/support/<claim>.json`. It refuses a `SUPPORTED` verdict that has no passage,
+no offsets, or a quote that does not match the source at those offsets — an unchecked "supported"
+is worse than an admitted `SUPPORT_UNCHECKED`.
+
+A backend that produces the verdict (BM25 retrieval over a fetched paper plus a bounded entailment
+question) is not implemented, and no external service is assumed to provide it.

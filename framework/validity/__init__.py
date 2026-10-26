@@ -256,6 +256,59 @@ class ScientificValidityGate:
                                        f"{rel}{pointer} holds {actual!r}"))
         return out
 
+    # -- verifiers ---------------------------------------------------------------
+    def _verifier_findings(self, claims: list[dict]) -> tuple[list[Finding], list[str]]:
+        """S10: a claim that cites or reports numbers needs the verifier artefacts behind it.
+
+        Missing artefact -> BLOCKED (nothing judged the claim yet), not FAIL (which would claim the
+        claim is wrong). A present artefact that says no is a FAIL, and the refusal is quoted.
+        """
+        findings: list[Finding] = []
+        blocked: list[str] = []
+        root = self.root
+
+        citations_path = root / "artifacts" / "literature" / "proofpath.json"
+        stats_path = root / "artifacts" / "evaluation" / "stat_recompute.json"
+        citations = None
+        if citations_path.is_file():
+            citations = json.loads(citations_path.read_text(encoding="utf-8"))
+        stats = None
+        if stats_path.is_file():
+            stats = json.loads(stats_path.read_text(encoding="utf-8"))
+
+        for claim in claims:
+            cid = claim.get("id", "?")
+            refs = claim.get("citations") or []
+            if refs:
+                if citations is None:
+                    blocked.append(f"{cid}: cites {len(refs)} reference(s) but "
+                                   f"artifacts/literature/proofpath.json does not exist")
+                else:
+                    by_ref = {r.get("reference"): r for r in citations.get("records") or []}
+                    for ref in refs:
+                        record = by_ref.get(ref)
+                        if record is None:
+                            blocked.append(f"{cid}: {ref} is not in the proofpath artefact")
+                        elif record.get("status") != "VERIFIED":
+                            findings.append(Finding(
+                                "S10", f"{cid}: cited {ref} is {record.get('status')} "
+                                       f"({record.get('reason') or 'no reason'})"))
+            if claim.get("statistics"):
+                if stats is None:
+                    blocked.append(f"{cid}: reports statistics but "
+                                   f"artifacts/evaluation/stat_recompute.json does not exist")
+                elif stats.get("verdict") != "PASS":
+                    bad = [c for c in stats.get("checks") or [] if c.get("status") != "PASS"]
+                    findings.append(Finding(
+                        "S10", f"{cid}: statistics do not recompute "
+                               f"({', '.join(c.get('id', '?') for c in bad) or 'verdict FAIL'})"))
+            if claim.get("support") == "required":
+                from framework.verifiers import support
+                allowed, reason = support.passable(cid)
+                if not allowed:
+                    blocked.append(f"{cid}: support {reason}")
+        return findings, blocked
+
     # -- checks ----------------------------------------------------------------
     def run(self) -> GateResult:
         findings: List[Finding] = []
@@ -421,16 +474,26 @@ class ScientificValidityGate:
                     for m in messages:
                         findings.append(Finding("S8", f"{claim['id']}: {m}"))
 
-        passed = not findings
+        verifier_findings, blocked = self._verifier_findings(claims)
+        findings.extend(verifier_findings)
+
+        passed = not findings and not blocked
+        if passed:
+            verdict = "PASS"
+        elif blocked and not findings:
+            verdict = "BLOCKED"
+        else:
+            verdict = "FAIL"
         return GateResult(
             self.name, passed, score=1.0 if passed else 0.0,
-            status="PASS" if passed else "FAIL",
+            status=verdict,
             details={
                 "register": str(self.register_path.relative_to(self.root))
                 if self.register_path.is_relative_to(self.root) else str(self.register_path),
                 "claims": len(claims),
                 "formal_claims": len(formal),
                 "findings": [str(f) for f in findings],
+                "blocked": blocked,
             },
             artifacts=[str(self.register_path)],
         )

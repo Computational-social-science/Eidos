@@ -43,6 +43,9 @@ class ModelSpec:
     supports_batching: bool = False
     quantization: str = "q4_k_m"  # q4_k_m, q8_0, awq, fp16, etc.
     tags: List[str] = field(default_factory=list)
+    #: Models that may never be resident at the same time (VRAM contract, plan §5). The
+    #: declaration must be symmetric; `validate_registry` refuses a one-sided claim.
+    mutex_with: tuple = ()
 
 @dataclass
 class InferenceRequest:
@@ -169,6 +172,27 @@ class ModelManager:
             return 5.0
         return 5.0  # Default
     
+    def mutex_partners_loaded(self, model_name: str) -> List[str]:
+        """Which declared mutex partners are currently resident."""
+        spec = self.get_model_spec(model_name)
+        if not spec:
+            return []
+        return [name for name in getattr(spec, "mutex_with", ()) if name in self.loaded_models]
+
+    @classmethod
+    def validate_registry(cls) -> None:
+        """Refuse an asymmetric mutex: A says it excludes B, but B does not say it excludes A."""
+        problems = []
+        for name, spec in cls.MODEL_REGISTRY.items():
+            for partner in getattr(spec, "mutex_with", ()):
+                other = cls.MODEL_REGISTRY.get(partner)
+                if other is None:
+                    problems.append(f"{name} declares a mutex with unknown model {partner!r}")
+                elif name not in getattr(other, "mutex_with", ()):
+                    problems.append(f"{name} excludes {partner}, but {partner} does not exclude {name}")
+        if problems:
+            raise ValueError("; ".join(problems))
+
     def can_load(self, model_name: str) -> bool:
         """Check if model can be loaded within the CONFIGURED VRAM budget.
 
@@ -176,6 +200,9 @@ class ModelManager:
         built for an 8 GB card still admitted a 12 GB plan.
         """
         with self._lock:
+            if self.mutex_partners_loaded(model_name):
+                # Footprints could both fit and still violate the contract (plan §5).
+                return False
             needed = self.estimate_vram(model_name)
             return (self.vram_used_gb + needed) <= self.vram_budget
     

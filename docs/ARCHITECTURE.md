@@ -232,3 +232,12 @@ Two checks are deterministic and run before anything is written into a claim reg
 
 Neither loads a model. The ScienceRSI integration plan puts them first for that reason: a check that
 needs a GPU to fail is a check that will be skipped when the GPU is busy.
+
+Gate S gained **S10**: a claim that declares `citations` or `statistics` must have the corresponding
+artefact, and the verdict distinguishes "nothing has judged this yet" (`BLOCKED`) from "the verifier
+said no" (`FAIL`). A claim that declares `support: required` needs a `SUPPORTED` record with a
+resolvable passage; without one the gate is `BLOCKED`.
+
+`framework/inference` now carries the VRAM mutex the plan requires: `mutex_with` on a model spec,
+refusal to load when a partner is resident even if both footprints would fit, and
+`validate_registry()`, which rejects an asymmetric declaration outright.

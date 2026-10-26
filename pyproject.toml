@@ -33,6 +33,9 @@ all = [
 dev = ["pytest>=7.0", "coverage>=7.0"]
 # Browser audits and screenshot capture are optional: the tests that need them skip without them.
 browser = ["playwright>=1.40", "pillow>=10"]
+# Deterministic verifiers (P0 of the ScienceRSI integration plan). proofpath is a CLI, installed
+# with `uv tool install git+https://github.com/Yigtwxx/proofpath`, not a Python dependency.
+verifiers = ["academic-research-kernel>=2.2"]
 
 [tool.setuptools.packages.find]
 include = ["framework*"]

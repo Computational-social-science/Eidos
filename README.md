@@ -71,6 +71,7 @@ Eidos is the **global skeleton** every research project inherits. It provides:
 | **Decision** | StartLux-Decision-4B-Q8_0: typed choice / yes-no / score with calibrated probabilities for routing, gate triage and failure classification |
 | **Inference** | Stage-aware scheduling for a 12 GB GPU: one large model resident at a time |
 | **Packaging** | One-click Docker/Binder executable package with full provenance |
+| **Verifiers (P0)** | `proofpath` decides whether a cited work exists and whether it was retracted; `academic-research-kernel` recomputes p, d, power and CI. Both are model-free, both refuse a claim, and both write an artefact a gate can point at — `docs/VERIFIERS.md` |
 | **Dependencies** | `pyproject.toml` declares, `uv.lock` pins 294 packages, `update_operator.py` moves a pin only on a passing try. No `requirements.txt` — a third copy drifts |
 
 A new project inherits all of it with one command; only its overrides live in

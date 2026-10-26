@@ -218,3 +218,17 @@ rather than left to be discovered:
 The README claimed LangGraph orchestration until 2026-10-26 while no module imported it — the
 framework's own rule (a claim must resolve to an artefact) applied to the framework. See
 `docs/ORCHESTRATION.md` for what actually runs.
+
+## 13. Verifiers run before a claim
+
+Two checks are deterministic and run before anything is written into a claim register:
+
+* **identity** — `framework/verifiers/citations.py` asks `proofpath` whether a reference resolves
+  and whether a retraction notice exists, and maps the answer onto `VERIFIED` / `BLOCKED` /
+  `SOURCE_UNAVAILABLE`. The third state exists because a provider outage is not a bad citation.
+* **arithmetic** — `framework/verifiers/stats.py` recomputes p, d, g, achieved power and CI
+  consistency with `academic-research-kernel` and compares them with what the document reports, at
+  the precision the document reports. Both write JSON artefacts under `artifacts/`.
+
+Neither loads a model. The ScienceRSI integration plan puts them first for that reason: a check that
+needs a GPU to fail is a check that will be skipped when the GPU is busy.

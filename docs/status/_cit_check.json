@@ -1,0 +1,157 @@
+{
+  "ts": "2026-10-26T13:25:13+00:00",
+  "verdict": "BLOCKED",
+  "n": 3,
+  "verified": 1,
+  "blocked": [
+    {
+      "reference": "10.1016/S0140-6736(97)11096-0",
+      "status": "BLOCKED",
+      "reason": "retracted"
+    },
+    {
+      "reference": "10.9999/does-not-exist-xyz",
+      "status": "BLOCKED",
+      "reason": "unresolved"
+    }
+  ],
+  "records": [
+    {
+      "status": "VERIFIED",
+      "reason": null,
+      "doi": "10.1038/s41586-020-2649-2",
+      "title": "Array programming with NumPy",
+      "match": {
+        "title": 0.0,
+        "author": false,
+        "year": false
+      },
+      "notes": [
+        "DOI 10.1038/s41586-020-2649-2 resolved",
+        "the entry is only an identifier; no title, author or year to compare"
+      ],
+      "reference": "10.1038/s41586-020-2649-2",
+      "ts": "2026-10-26T13:25:00+00:00",
+      "raw": {
+        "result": {
+          "state": "RESOLVED (low confidence)",
+          "best": {
+            "doi": "10.1038/s41586-020-2649-2",
+            "title": "Array programming with NumPy",
+            "first_author": "Harris",
+            "year": 2020,
+            "venue": "Nature",
+            "provider": "doi",
+            "url": ""
+          },
+          "candidates": [
+            {
+              "doi": "10.1038/s41586-020-2649-2",
+              "title": "Array programming with NumPy",
+              "first_author": "Harris",
+              "year": 2020,
+              "venue": "Nature",
+              "provider": "doi",
+              "url": ""
+            }
+          ],
+          "notes": [
+            "DOI 10.1038/s41586-020-2649-2 resolved",
+            "the entry is only an identifier; no title, author or year to compare"
+          ],
+          "match": {
+            "title": 0.0,
+            "author": false,
+            "year": false
+          }
+        },
+        "retraction": null,
+        "retraction_error": null
+      }
+    },
+    {
+      "status": "BLOCKED",
+      "reason": "retracted",
+      "retraction": {
+        "source": "retraction-watch",
+        "date": "2010-02-06",
+        "notice_doi": "10.1016/s0140-6736(10)60175-4",
+        "label": "Retraction"
+      },
+      "doi": "10.1016/s0140-6736(97)11096-0",
+      "title": "RETRACTED: Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+      "notes": [
+        "DOI 10.1016/S0140-6736(97)11096-0 resolved",
+        "the entry is only an identifier; no title, author or year to compare"
+      ],
+      "reference": "10.1016/S0140-6736(97)11096-0",
+      "ts": "2026-10-26T13:25:07+00:00",
+      "raw": {
+        "result": {
+          "state": "RESOLVED (low confidence)",
+          "best": {
+            "doi": "10.1016/s0140-6736(97)11096-0",
+            "title": "RETRACTED: Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+            "first_author": "Wakefield",
+            "year": 1998,
+            "venue": "The Lancet",
+            "provider": "doi",
+            "url": ""
+          },
+          "candidates": [
+            {
+              "doi": "10.1016/s0140-6736(97)11096-0",
+              "title": "RETRACTED: Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
+              "first_author": "Wakefield",
+              "year": 1998,
+              "venue": "The Lancet",
+              "provider": "doi",
+              "url": ""
+            }
+          ],
+          "notes": [
+            "DOI 10.1016/S0140-6736(97)11096-0 resolved",
+            "the entry is only an identifier; no title, author or year to compare"
+          ],
+          "match": {
+            "title": 0.0,
+            "author": false,
+            "year": false
+          }
+        },
+        "retraction": {
+          "source": "retraction-watch",
+          "date": "2010-02-06",
+          "notice_doi": "10.1016/s0140-6736(10)60175-4",
+          "label": "Retraction"
+        },
+        "retraction_error": null
+      }
+    },
+    {
+      "status": "BLOCKED",
+      "reason": "unresolved",
+      "detail": "AMBIGUOUS",
+      "notes": [
+        "DOI 10.9999/does-not-exist-xyz does not resolve",
+        "the entry is only an identifier, and it does not resolve; nothing else to search by"
+      ],
+      "reference": "10.9999/does-not-exist-xyz",
+      "ts": "2026-10-26T13:25:13+00:00",
+      "raw": {
+        "result": {
+          "state": "AMBIGUOUS",
+          "best": null,
+          "candidates": [],
+          "notes": [
+            "DOI 10.9999/does-not-exist-xyz does not resolve",
+            "the entry is only an identifier, and it does not resolve; nothing else to search by"
+          ],
+          "match": null
+        },
+        "retraction": null,
+        "retraction_error": null
+      }
+    }
+  ]
+}

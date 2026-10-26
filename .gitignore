@@ -67,3 +67,6 @@ docs/status/update_tries/*/
 _shots/
 docs/status/*.jsonl
 scripts/monitor.env
+
+# verifier outputs (regenerated, with fixtures committed instead)
+artifacts/

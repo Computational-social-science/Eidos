@@ -2,6 +2,9 @@
 
 **Gate S self-audit: PASS** — 8 objections, 0 open. Five project consumers: three that must pass (`operator_calibration`, `demo_onboarding`, `demo_quantitative`) and two controls that must be rejected (`null_study`, `prose_lie`), plus four chain fixtures. Record: `docs/SELF_AUDIT.json`.
 
+[![ci](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml/badge.svg)](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
+[![Gate S](https://img.shields.io/badge/Gate%20S-self--audit-PASS-2f7d32)](docs/SELF_AUDIT.json)
+
 **Version 4.2.0** — local-first · model-agnostic · project-agnostic
 
 Quarto + BootLoops + complementary quality gates, including dependency governance

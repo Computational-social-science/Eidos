@@ -22,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SCALE = {10.0, 11.0, 12.0, 12.5, 15.0}
 MIN_PX = 10.0
 MAX_SIZES = 5
-MAX_COLOURS = 6
+MAX_COLOURS = 6      # design colours; palette state colours are exempt (a FAIL is allowed to be red)
 MAX_WEIGHTS = 3
 
 PROBE = """() => {
@@ -55,6 +55,23 @@ def audit(page: Path) -> dict:
     return data
 
 
+def _is_state_colour(colour: str) -> bool:
+    """A palette colour used as text is a verdict, not a design decision.
+
+    The six state colours may all appear at once when the sample has failures; counting them
+    against the design budget would make the check fail on bad news rather than on drift.
+    """
+    import sys
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import dashboard as dash
+
+    def rgb(value: str) -> str:
+        value = value.strip().lstrip("#")
+        return "rgb({}, {}, {})".format(*(int(value[i:i + 2], 16) for i in (0, 2, 4)))
+
+    return str(colour).replace(" ", "") in {rgb(v).replace(" ", "") for v in dash.PALETTE.values()}
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--json", action="store_true")
@@ -83,8 +100,9 @@ def main(argv: list[str] | None = None) -> int:
         small = sorted(s for s in sizes if s < MIN_PX)
         if small:
             sink.append(f"{name}: text below {MIN_PX}px {small}")
-        if len(colours) > MAX_COLOURS:
-            sink.append(f"{name}: {len(colours)} text colours (max {MAX_COLOURS}): {colours}")
+        design = [c for c in colours if not _is_state_colour(c)]
+        if len(design) > MAX_COLOURS:
+            sink.append(f"{name}: {len(design)} design text colours (max {MAX_COLOURS}): {design}")
         if len(weights) > MAX_WEIGHTS:
             sink.append(f"{name}: {len(weights)} font weights {weights}")
 

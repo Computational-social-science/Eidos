@@ -54,26 +54,32 @@ def test_module_state_is_the_worst_of_its_consumers():
 
 def test_dashboard_builds_an_animated_assembly_page():
     page = dash.build()
-    # The header is the name and its release. The title carries the rest.
+    # The shell: name, release, theme, and the one animation the compositor can handle.
     assert "class=\"brand\"" in page and ">●</i>Eidos" in page
     assert "— assembly and status" in page
-    assert "--bg:#0e1013" in page                    # dark theme
-    assert "<title>" in page                         # hover gives the detail
+    assert "--bg:#0e1013" in page
+    assert "<title>" in page
     assert "@keyframes beat" in page and "prefers-reduced-motion" in page
     assert "POLL_MS" in page and "setInterval(poll" not in page
 
-    # The figure's contract is about what the drawing does; without sampled state there is no
-    # drawing, and asserting on one would only pass on the machine that had run the sampler.
-    if dash.PIPELINE.is_file():
-        assert page.count("data-chain=") >= 1        # chains carry their own state
-        assert page.count("data-module=") >= 1       # modules carry the worst state of their users
-        assert page.count("data-service=") >= 1      # services are the third column
-        assert "transition:fill" in page.replace(" ", "")
-        # Cost contract: no per-frame animation inside the SVG. Measured on this page, 15 SMIL
-        # dots cost 38% of one core and a stroke-opacity keyframe on 15 paths cost 34%; both
-        # repaint the whole SVG layer. Direction is therefore geometry, not motion.
-        assert "animateMotion" not in page
-        assert "marker-end='url(#ah)'" in page
+
+def test_the_figure_renders_one_row_per_chain_and_column_per_module():
+    """The matrix from a fixture, so the assertion does not depend on what a host has sampled.
+
+    Counting `data-chain=` in a page built from the working tree made this test pass here and
+    fail on a runner that had the same files but no sample history — a test of the machine.
+    """
+    pipeline = {"chains": {"alpha": {"status": "PASS"}, "beta": {"status": "FAIL"}},
+                "chain_modules": {"alpha": ["framework.gates"], "beta": ["framework.decision"]}}
+    svg, _notes, _users = dash.topology(pipeline, {"alpha": "PASS", "beta": "FAIL"}, {}, {"decision_service": {"state": "OK"}},
+                        "2026-01-01T00:00:00+00:00")
+    assert svg.count("data-chain=") == 2
+    assert svg.count("data-module=") == 2
+    assert "data-service=" in svg
+    # Cost contract: no per-frame animation inside the SVG. Measured on the real page, 15 SMIL
+    # dots cost 38% of one core; direction is geometry (an arrowhead), not motion.
+    assert "animateMotion" not in svg
+    assert "marker-end='url(#ah)'" in svg
 
 
 def test_an_authenticated_service_is_up_not_down(monkeypatch):

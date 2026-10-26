@@ -30,6 +30,7 @@ import subprocess
 import sys
 import threading
 import time
+import traceback
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -73,6 +74,32 @@ def ensure_scheduler(interval_min: int = 10) -> str:
     return f"scheduler was stale ({age / 60:.0f} min); started it"
 
 
+STALL_LIMIT = 180.0   # a sample that takes longer than this is a hang, not a slow probe
+
+
+def stall_watchdog(limit: float = STALL_LIMIT, check_every: float = 20.0) -> None:
+    """Exit the process when sampling stops, so the supervisor can start a clean one.
+
+    The sampler caught exceptions but a blocked probe does not raise — the thread simply stops
+    producing samples while the server keeps answering, which is how the monitor served a page
+    seven minutes old with no error to show for it.
+    """
+    while True:
+        time.sleep(check_every)
+        last = STATE.get("sampled") or 0.0
+        age = time.time() - last
+        if age > limit:
+            stamp = datetime.datetime.now().isoformat(timespec="seconds")
+            line = f"{stamp} sampler stalled for {age:.0f} s; exiting so the supervisor restarts it"
+            print(line, flush=True)
+            try:
+                (ROOT / "docs" / "status" / "serve.log").open("a", encoding="utf-8").write(
+                    line + chr(10))
+            except OSError:
+                pass
+            os._exit(3)
+
+
 def sampler(interval: float, page_interval: float) -> None:
     import dashboard
 
@@ -107,6 +134,7 @@ def sampler(interval: float, page_interval: float) -> None:
                 STATE["page_sig"] = page_sig
         except Exception as exc:  # noqa: BLE001 - keep serving, report the failure
             STATE["error"] = f"{type(exc).__name__}: {exc}"
+            traceback.print_exc()
         time.sleep(max(interval - (time.time() - started), 1.0))
 
 
@@ -211,6 +239,7 @@ def main(argv: list[str] | None = None) -> int:
     STATE["interval"] = args.interval
     threading.Thread(target=sampler, args=(args.interval, args.page_interval),
                      daemon=True).start()
+    threading.Thread(target=stall_watchdog, daemon=True).start()
     server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
     print(f"serving http://127.0.0.1:{args.port}/  "
           f"(sample every {args.interval:.0f}s, redraw every {args.page_interval:.0f}s)")

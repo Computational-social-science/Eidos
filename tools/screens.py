@@ -22,6 +22,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCREENS = ROOT / "docs" / "screens"
+WEB = SCREENS / "web"
 RECORD = ROOT / "docs" / "SCREENS.json"
 PAGES = {"dashboard.html": SCREENS / ".." / ".." / "site" / "dashboard.html",
          "index.html": SCREENS / ".." / ".." / "site" / "index.html"}
@@ -86,6 +87,21 @@ def capture(out_dir: Path) -> dict:
     return written
 
 
+def web_copies(images: dict) -> dict:
+    """Smaller versions for the README: a page that opens with 800 KB of PNG is a slow first look."""
+    from PIL import Image
+    WEB.mkdir(parents=True, exist_ok=True)
+    out = {}
+    for name in images:
+        source = SCREENS / f"{name}.png"
+        target = WEB / f"{name}.webp"
+        # Text-heavy dark UI: WebP at 86 is about a third smaller than the PNG and stays legible,
+        # while JPEG of the same picture came out larger than the PNG.
+        Image.open(source).convert("RGB").save(target, "WEBP", quality=86, method=6)
+        out[name] = {"sha256": _sha(target), "bytes": target.stat().st_size}
+    return out
+
+
 def record(images: dict) -> None:
     RECORD.write_text(json.dumps({
         "viewport": VIEWPORT, "scale": SCALE,
@@ -93,6 +109,7 @@ def record(images: dict) -> None:
         "images": {name: {"sha256": digest,
                           "bytes": (SCREENS / f"{name}.png").stat().st_size}
                    for name, digest in images.items()},
+        "web": web_copies(images),
     }, indent=2) + "\n", encoding="utf-8")
 
 
@@ -136,7 +153,9 @@ def main(argv=None) -> int:
     images = capture(SCREENS)
     record(images)
     total = sum((SCREENS / f"{n}.png").stat().st_size for n in images)
-    print(f"wrote {len(images)} screenshots, {total / 1024:.0f} KB, record docs/SCREENS.json")
+    web = sum((WEB / f"{n}.webp").stat().st_size for n in images)
+    print(f"wrote {len(images)} screenshots: {total / 1024:.0f} KB PNG, "
+          f"{web / 1024:.0f} KB WebP for the README")
     return 0
 
 

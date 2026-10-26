@@ -38,6 +38,8 @@ import status_view
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(ROOT))
+from framework import recovery  # noqa: E402  (the single writer for recovery rows)
+
 STATUS = ROOT / "docs" / "status"
 CURRENT = STATUS / "current.json"
 RECOVERY_STATE = STATUS / "recovery_state.json"

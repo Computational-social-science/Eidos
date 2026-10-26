@@ -21,26 +21,26 @@ The monitor is the framework auditing itself: eleven chains in run order, the ni
 use, the five services those modules reach (Quarto, DVC, MLflow, llama.cpp, the decision
 operator), and the instruments that judge the result. Every dot is a verdict, not a decoration.
 
-![The monitor — assembly, live state, and the instruments](docs/screens/dashboard-top.png)
+![The monitor — assembly, live state, and the instruments](docs/screens/web/dashboard-top.webp)
 
 Under the assembly sit the two loops that make the picture mean something. **Operators** show the
 framework checking itself and repairing what it can, with the last attempt coloured by outcome —
 an attempt that started is not a repair that held:
 
-![Operators — sample, verdict, plan, execute, verify, record](docs/screens/dashboard-operator.png)
+![Operators — sample, verdict, plan, execute, verify, record](docs/screens/web/dashboard-operator.webp)
 
 **Consumers** are the projects the framework serves, with capability coverage measured rather than
 asserted (6 of 11 demonstrated by a consumer, the rest by the framework's own tests). Green means
 the verdict matched the expectation, so a negative control doing its job — failing — is green too.
 The colour reports the instrument, not the project:
 
-![Consumers — verdicts against expectation, including the controls](docs/screens/dashboard-consumers.png)
+![Consumers — verdicts against expectation, including the controls](docs/screens/web/dashboard-consumers.webp)
 
 The lower row is history rather than state: the same nodes over the last 80 samples, and the node
 incidents that recurred in the last 24 hours — a service that flapped twice is a different fault
 from one that died once:
 
-![History and fault ranking](docs/screens/dashboard-history.png)
+![History and fault ranking](docs/screens/web/dashboard-history.webp)
 
 Every image above is regenerated from the built pages by `tools/screens.py --update`, and the
 commit hook runs `--check`: if a page changes after its picture was taken, the commit is refused.
@@ -49,7 +49,7 @@ The record is `docs/SCREENS.json` (page hashes, image hashes, viewport).
 The document carries the declared side of the same picture — the dependency contract, which is
 documentation, not live state:
 
-![Dependency versions — pinned, installed, upstream, state](docs/screens/index-deps.png)
+![Dependency versions — pinned, installed, upstream, state](docs/screens/web/index-deps.webp)
 
 ---
 
@@ -335,6 +335,19 @@ from the rule it applies to projects.
 stability, Newton replay), a checkpoint table, and an out-of-sample panel. It is built by
 `tools/build_site.py` from `framework/surrogate/demo.py`, the same operator the gate
 audits, and it embeds its data, so it opens from disk with no server and no network.
+
+## Running the monitor
+
+```
+python tools/serve_site.py --port 8765      # foreground: / is the monitor, /index.html the document
+scripts\install-autostart.cmd               # start at logon, restart on exit (no admin needed)
+```
+
+The sampler writes `docs/status/current.json` every 15 s. If it stalls — a blocked probe does not
+raise — a watchdog exits the process so the supervisor can start a clean one, and the log says why.
+The commit hook and the screenshots keep the page tied to the tree; this keeps it tied to the host.
+
+---
 
 ## Delivery page
 

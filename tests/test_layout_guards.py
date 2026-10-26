@@ -11,8 +11,14 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[1]
 PAGE = ROOT / "site" / "dashboard.html"
+
+# The audit is a browser audit. A runner without Playwright (CI installs no browser) cannot
+# exercise it, and a skipped test says that; a failure would blame the page for the runner.
+pytest.importorskip("playwright.sync_api", reason="browser layout audits need Playwright")
 
 
 def _run_defective(tmp_path: Path, injected: str) -> subprocess.CompletedProcess:

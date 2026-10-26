@@ -10,8 +10,8 @@
   },
   "images": {
     "dashboard-top": {
-      "sha256": "08afe3b5a6b2a308a24eb8187254409421c5cc11cfa22ccd71f11a8e4d8f193f",
-      "bytes": 284773
+      "sha256": "124a7a1342af32df2ecfc5eda30af1a3a4e42c863cd51f0bdaa4b805adeaa960",
+      "bytes": 284772
     },
     "dashboard-operator": {
       "sha256": "02f7b84b00db7e27a0cae066673a853fe65777e8b8cbc1fab3e8a29cdf011848",
@@ -32,6 +32,32 @@
     "index-deps": {
       "sha256": "8e877988edda9304bfa7cccd60f817ea8c51f37db41dc391f53d387cf8fd8422",
       "bytes": 68062
+    }
+  },
+  "web": {
+    "dashboard-top": {
+      "sha256": "e7a2a07dc80d9c45ec5eb8a900f9f99f49d9c0ca01816463016fee927a44d73c",
+      "bytes": 173668
+    },
+    "dashboard-operator": {
+      "sha256": "539be52ac2220b16643b1ca909f5674943f03d5f8a50f7de0496c41a756f8ac5",
+      "bytes": 20816
+    },
+    "dashboard-consumers": {
+      "sha256": "ead4894c12c16d1cb714ce952052158fbdf00babbc833c695e0c210f227006af",
+      "bytes": 32702
+    },
+    "dashboard-history": {
+      "sha256": "ce8d7bc1b3da7328c560c7fc6f7d0a16f554c815fa38c495a8985ce183a42c6c",
+      "bytes": 70008
+    },
+    "index-top": {
+      "sha256": "9b72acd8523a2f4bab43d9aef2c619464e50b8e99f69957fe073197b3a3cfa10",
+      "bytes": 237180
+    },
+    "index-deps": {
+      "sha256": "e45edddebb9209bf95082b43b2166d165e7f150622765497444d4e92a655d0e3",
+      "bytes": 42764
     }
   }
 }

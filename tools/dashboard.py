@@ -394,7 +394,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
             cx = s_x + k * col_w + col_w / 2 - 10
             up = (signals.get(service) or {}).get("state") not in ("ALARM", "UNOBSERVABLE")
             svg.append(f"<circle cx='{cx:.1f}' cy='{y + row_h / 2:.1f}' r='3.4' "
-                       f"fill='{PALETTE["PASS" if up else "FAIL"]}' opacity='0.9'/>")
+                       f"fill='{PALETTE['PASS' if up else 'FAIL']}' opacity='0.9'/>")
     evo = evolution or {}
     open_defects = (evo.get("state") or {}).get("open_defects") or 0
     obs_y = matrix_bottom + 6

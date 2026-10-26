@@ -301,8 +301,8 @@ def stack_svg() -> str:
         chains = "|".join(LAYER_INDEX.get(title, []))
         fill = "rgba(91,141,239,.10)" if is_gate else "rgba(255,255,255,.018)"
         stroke = "rgba(91,141,239,.60)" if is_gate else "var(--rule)"
-        parts.append(f'<g class="layer" data-chains="{chains}"'
-                     f'{" data-gate='1'" if is_gate else ""}>')
+        gate_attr = " data-gate='1'" if is_gate else ""
+        parts.append(f'<g class="layer" data-chains="{chains}"{gate_attr}>')
         parts.append(f'<rect x="8" y="{y}" width="804" height="{height}" rx="7" '
                      f'fill="{fill}" stroke="{stroke}" stroke-width="{1.4 if is_gate else 1}"/>')
         parts.append(f'<circle class="lstate" cx="704" cy="{y + 24}" r="4.5" '

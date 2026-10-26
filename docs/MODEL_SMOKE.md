@@ -85,7 +85,9 @@ each, no batching:
 | no power analysis reported | FAIL | 0.62 |
 | power 0.86, confounders adjusted | PASS | 0.58 |
 
-**Median 0.62 s**, max 0.84 s — against a plan target of ≤7 s. Four of the five verdicts are
+**Median 0.62 s**, max 0.84 s — against a plan target of ≤7 s. With the rules-plus-demonstrations
+prompt (350–360 prompt tokens instead of ~120), the server logged ≈1.0 s per call, 67–70 tok/s: four
+times the prompt, still an order of magnitude under the budget. Four of the five verdicts are
 unambiguous; the `WEAK_PASS` is defensible (0.78 against 0.80 with the shortfall declared in
 advance) and shows the third verdict class is reachable rather than decorative.
 

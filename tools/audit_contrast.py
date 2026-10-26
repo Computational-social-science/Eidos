@@ -101,9 +101,11 @@ PROBE = r"""() => {
 
 def audit(page: pathlib.Path, width: int) -> list[str]:
     from playwright.sync_api import sync_playwright
+    from browser import launch as browser_launch
+
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(channel="chrome")
+        browser = browser_launch(p)
         tab = browser.new_page(viewport={"width": width, "height": 900})
         tab.goto(page.as_uri(), wait_until="load")
         tab.wait_for_timeout(900)

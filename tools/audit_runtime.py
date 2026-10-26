@@ -20,10 +20,12 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 def audit(page: pathlib.Path) -> list[str]:
     from playwright.sync_api import sync_playwright
+    from browser import launch as browser_launch
+
 
     problems: list[str] = []
     with sync_playwright() as p:
-        browser = p.chromium.launch(channel="chrome")
+        browser = browser_launch(p)
         tab = browser.new_page(viewport={"width": 1280, "height": 900})
         tab.on("pageerror", lambda e: problems.append(f"page error: {e}"))
         tab.on("console", lambda m: problems.append(f"console.{m.type}: {m.text}")

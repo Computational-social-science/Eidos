@@ -206,7 +206,7 @@ def evolution_record() -> dict:
 
 def fuzz_history() -> dict:
     """How many mutation runs are on record, and when the last one was."""
-    path = ROOT / "docs" / "fuzz_history.jsonl"
+    path = ROOT / "docs" / "status" / "fuzz_history.jsonl"
     try:
         lines = [l for l in path.read_text(encoding="utf-8").splitlines() if l.strip()]
         last = json.loads(lines[-1]) if lines else {}

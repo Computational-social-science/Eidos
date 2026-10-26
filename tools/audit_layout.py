@@ -122,10 +122,12 @@ PROBE = """() => {
 
 def audit(width: int) -> list[str]:
     from playwright.sync_api import sync_playwright
+    from browser import launch as browser_launch
+
 
     findings: list[str] = []
     with sync_playwright() as p:
-        browser = p.chromium.launch(channel="chrome")
+        browser = browser_launch(p)
         page = browser.new_page(viewport={"width": width, "height": 1000})
         page.goto(PAGE.as_uri(), wait_until="load")
         # Entrance animations start at opacity 0; measuring during them would report a

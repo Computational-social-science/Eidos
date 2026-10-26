@@ -100,6 +100,17 @@ def stall_watchdog(limit: float = STALL_LIMIT, check_every: float = 20.0) -> Non
             os._exit(3)
 
 
+def _reload_if_changed(module, path) -> object:
+    """Pick up edits to a module this long-running process imported at start."""
+    stamp = path.stat().st_mtime if path.exists() else 0
+    key = f"_mtime_{module.__name__}"
+    if STATE.get(key) != stamp:
+        STATE[key] = stamp
+        if stamp:
+            module = importlib.reload(module)
+    return module
+
+
 def sampler(interval: float, page_interval: float) -> None:
     import dashboard
 
@@ -109,7 +120,10 @@ def sampler(interval: float, page_interval: float) -> None:
             note = ensure_scheduler()
             if "started" in note:
                 print(note, flush=True)
-            payload = watch_pipeline.sample(append=True)
+            # The sampler imported this at start: without a reload a fix to the probe layer is
+            # invisible until a restart, and the monitor keeps reporting the old verdicts.
+            wp = _reload_if_changed(watch_pipeline, ROOT / "tools" / "watch_pipeline.py")
+            payload = wp.sample(append=True)
             STATE["payload"] = payload
             STATE["sampled"] = time.time()
             STATE["error"] = None

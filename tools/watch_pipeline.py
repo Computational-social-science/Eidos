@@ -103,6 +103,29 @@ def age_hours(iso: str | None) -> float | None:
     return round(delta.total_seconds() / 3600.0, 2)
 
 
+def _has_module(package: str) -> tuple[bool, str]:
+    """Is the package importable from *this* process, and if not, say which one it is.
+
+    A service does not inherit the shell that launched it: started from a shell whose PYTHONPATH
+    pointed at another environment, the monitor reported dvc and mlflow missing while the same
+    interpreter found them in a terminal. The user site is where they live here, so it is added
+    before giving up, and the executable is recorded either way.
+    """
+    import importlib
+    import site
+    import sys
+
+    if importlib.util.find_spec(package):
+        return True, sys.executable
+    user_site = site.getusersitepackages()
+    if user_site and user_site not in sys.path:
+        sys.path.append(user_site)
+    importlib.invalidate_caches()
+    if importlib.util.find_spec(package):
+        return True, f"{sys.executable} (+ user site)"
+    return False, f"not importable by {sys.executable}"
+
+
 def measure() -> dict:
     """One sample. Each entry: value, reference, direction, and where it came from."""
     signals: dict[str, dict] = {}
@@ -149,9 +172,10 @@ def measure() -> dict:
                          "direction": "min", "unit": "up", "source": quarto_where,
                          "note": env_quarto or "on PATH"}
     for package in ("dvc", "mlflow"):
-        signals[package] = {"value": 1 if importlib.util.find_spec(package) else 0,
+        found, note = _has_module(package)
+        signals[package] = {"value": 1 if found else 0,
                             "reference": 1, "direction": "min", "unit": "up",
-                            "source": f"python -m {package}", "note": ""}
+                            "source": f"python -m {package}", "note": note}
 
     traces = read_json(ROOT / "docs" / "traces" / "latest.json", {}) or {}
     trace_meta = traces.get("trace") or {}
@@ -349,6 +373,23 @@ def _append_recovery(row: dict) -> None:
 
 def sample(append: bool = True) -> dict:
     signals = measure()
+    # The chain audit refreshes docs/status/chains.json; it does not refresh
+    # docs/traces/latest.json. Taking the age from the trace alone left this signal permanently
+    # stale while every chain was freshly green, and the "unobserved" rule then painted the whole
+    # column STALE. The record that is actually refreshed is the authority, and it must be read
+    # before the verdict is classified, not after.
+    try:
+        _record = json.loads((STATUS / "chains.json").read_text(encoding="utf-8"))
+        _newest = max((float(r.get("ts") or 0) for r in (_record.get("chains") or {}).values()),
+                      default=0.0)
+        if _newest:
+            signals["chains_age"] = {
+                "value": round((time.time() - _newest) / 3600.0, 2),
+                "reference": 24.0, "direction": "max", "unit": "h",
+                "source": "docs/status/chains.json", "note": "last chain run"}
+    except (OSError, json.JSONDecodeError, ValueError):
+        pass
+
     states = {}
     worst = "OK"
     for name, signal in signals.items():

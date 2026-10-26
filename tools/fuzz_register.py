@@ -36,7 +36,7 @@ sys.path.insert(0, str(ROOT))
 from framework.validity import ScientificValidityGate  # noqa: E402
 
 CLEAN = ROOT / "reference" / "fixtures" / "clean"
-HISTORY = ROOT / "docs" / "fuzz_history.jsonl"
+HISTORY = ROOT / "docs" / "status" / "fuzz_history.jsonl"
 
 
 def _claim(register: dict) -> dict:

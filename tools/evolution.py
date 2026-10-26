@@ -46,7 +46,7 @@ def _version() -> str:
 
 
 def _history() -> list[dict]:
-    path = DOCS / "fuzz_history.jsonl"
+    path = DOCS / "status" / "fuzz_history.jsonl"
     try:
         return [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines() if l.strip()]
     except OSError:

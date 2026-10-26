@@ -6,6 +6,12 @@ REM that exit into a restart. Register it once with scripts/register-monitor.cmd
 setlocal
 cd /d "%~dp0.."
 
+REM The interpreter is this host's business, not the repository's: a local file names it.
+if exist "%~dp0monitor.env" call "%~dp0monitor.env"
+REM A parent shell may point PYTHONPATH at another environment (the agent venv does), and may
+REM disable the user site where dvc/mlflow are installed. The monitor needs this host's packages.
+set PYTHONPATH=
+set PYTHONNOUSERSITE=
 if "%PYTHON%"=="" set PYTHON=python
 if not exist "%QUARTO_BIN%" set QUARTO_BIN=%~dp0..\..\tools\quarto\bin\quarto.exe
 

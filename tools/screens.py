@@ -51,11 +51,13 @@ def _page_path(name: str) -> Path:
 
 def capture(out_dir: Path) -> dict:
     from playwright.sync_api import sync_playwright
+    from browser import launch as browser_launch
+
 
     out_dir.mkdir(parents=True, exist_ok=True)
     written = {}
     with sync_playwright() as p:
-        browser = p.chromium.launch(channel="chrome")
+        browser = browser_launch(p)
         for page_name in ("dashboard.html", "index.html"):
             page = browser.new_page(viewport=VIEWPORT, device_scale_factor=SCALE)
             page.goto(_page_path(page_name).as_uri(), wait_until="load")

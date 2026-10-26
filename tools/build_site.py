@@ -588,29 +588,27 @@ def deps_table() -> str:
         # Measured now, not remembered from the last sense: a snapshot's `installed` goes stale the
         # moment anything is installed, and a table that repeats it will claim a divergence exists
         # or hide one that does.
-        measured = upd.installed(name)
-        installed = measured.get("version") or "—"
+        # No `installed` column: a committed page cannot claim what one machine has installed,
+        # and rebuilding it elsewhere would make the page differ from the file for that reason
+        # alone. The host is measured by `update_operator.py status`, which runs on the host.
         upstream_state = item.get("state") or "unknown"
         offer = item.get("available")
-        if pin and installed and str(installed) != str(pin):
-            # The pin says what should run; the host says what does.
-            state, cls = "diverged", "warn"
-        else:
-            state = upstream_state
-            cls = {"behind": "warn", "unknown": "warn", "unmonitored": "dim"}.get(state, "")
+        state = upstream_state
+        cls = {"behind": "warn", "unknown": "warn", "unmonitored": "dim"}.get(state, "")
         upstream = (f"<b>{offer}</b>" if upstream_state == "behind" and offer
                     else {"unmonitored": "no upstream", "unknown": "unreachable"}.get(
                         upstream_state, "—"))
         rows.append(f"<tr><td class='mono'>{html.escape(labels.get(name, name))}</td>"
                     f"<td class='mono'>{html.escape(str(pin))}</td>"
-                    f"<td class='mono'>{html.escape(str(installed))}</td>"
                     f"<td class='{cls}'>{upstream}</td>"
                     f"<td class='mono {cls}'>{html.escape(state)}</td></tr>")
     checked = _stamp_hkt(sense.get("ts"))
     return ("<div class='tw'><table><caption>Pins are the contract; the upstream column is what "
             "sensing found. A promotion needs a passing try, and <code>apply</code> is the only "
-            "command that installs.</caption><thead><tr><th>dependency</th><th>pinned</th>"
-            "<th>installed</th><th>upstream</th><th>state</th></tr></thead><tbody>"
+            "command that installs. What a particular host has installed is reported by "
+            "<code>update_operator.py status</code>, not recorded here.</caption>"
+            "<thead><tr><th>dependency</th><th>pinned</th>"
+            "<th>upstream</th><th>state</th></tr></thead><tbody>"
             + "".join(rows) +
             f"</tbody></table></div><p class='mono' style='margin:6px 0 0;color:var(--dim)'>"
             f"sensed {html.escape(checked)}</p>")

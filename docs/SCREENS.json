@@ -1,0 +1,37 @@
+{
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "scale": 2,
+  "sources": {
+    "dashboard.html": "373f8478433119b5e84dac338901118913441c7996afebf5e9c21dbf6e089fa1",
+    "index.html": "d6a6b68c46aa2e290eafd5dfd95b4c950b8f1ddcd30385e0f9c0c68cc4317295"
+  },
+  "images": {
+    "dashboard-top": {
+      "sha256": "08afe3b5a6b2a308a24eb8187254409421c5cc11cfa22ccd71f11a8e4d8f193f",
+      "bytes": 284773
+    },
+    "dashboard-operator": {
+      "sha256": "02f7b84b00db7e27a0cae066673a853fe65777e8b8cbc1fab3e8a29cdf011848",
+      "bytes": 33988
+    },
+    "dashboard-consumers": {
+      "sha256": "fd6f7a910bef63b3f8a64ef49f2f57c02dd36d4673dfcb2b864281e01ffb4e0d",
+      "bytes": 39590
+    },
+    "dashboard-history": {
+      "sha256": "2ed91972772f5b43b8c909d58704e5d0b8912773d31e5bb98afa1cc37edb8342",
+      "bytes": 78627
+    },
+    "index-top": {
+      "sha256": "c8d6fe53deca07f1ae73d79bc7e20d493da60c22b744f2a6c08e184fe5db9cf0",
+      "bytes": 353141
+    },
+    "index-deps": {
+      "sha256": "8e877988edda9304bfa7cccd60f817ea8c51f37db41dc391f53d387cf8fd8422",
+      "bytes": 68062
+    }
+  }
+}

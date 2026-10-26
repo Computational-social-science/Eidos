@@ -29,6 +29,9 @@ echo "pre-commit: mutation and chain audits"
 echo "pre-commit: state record is current"
 "$PY" tools/evolution.py --check >/dev/null     || { echo "pre-commit: docs/EVOLUTION.json is stale; run tools/evolution.py" >&2; exit 1; }
 
+echo "pre-commit: screenshots match their pages"
+"$PY" tools/screens.py --check >/dev/null     || { echo "pre-commit: a page changed after its screenshot was taken; run tools/screens.py --update" >&2; exit 1; }
+
 echo "pre-commit: page gate (no browser)"
 "$PY" tools/audit_site.py --no-build --skip-browser \
     || { echo "pre-commit: page gate failed; commit refused" >&2; exit 1; }

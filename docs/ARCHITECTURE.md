@@ -195,3 +195,10 @@ over twelve fixed questions (agreement ≥ 0.90, mean |Δp| ≤ 0.05).
 
 The pin is single-sourced in `lock/versions.lock.json`; `docs/UPDATES.md` explains the rules and
 what the operator deliberately does not do (it does not install binaries or weights).
+
+### The README's pictures are artefacts too
+
+`docs/screens/*.png` are captured from the built pages by `tools/screens.py`, which records the
+source page hashes in `docs/SCREENS.json`. The commit hook refuses a commit when a page changed
+after its picture was taken: before this, the README kept showing the previous release's monitor
+because nothing tied the image to the page it claimed to show.

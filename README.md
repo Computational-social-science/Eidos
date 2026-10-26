@@ -41,6 +41,10 @@ from one that died once:
 
 ![History and fault ranking](docs/screens/dashboard-history.png)
 
+Every image above is regenerated from the built pages by `tools/screens.py --update`, and the
+commit hook runs `--check`: if a page changes after its picture was taken, the commit is refused.
+The record is `docs/SCREENS.json` (page hashes, image hashes, viewport).
+
 The document carries the declared side of the same picture — the dependency contract, which is
 documentation, not live state:
 

@@ -31,6 +31,7 @@ Additional instruments, each with its own evidence file:
 | demo coverage | 6 of 11 capabilities are demonstrated by a consumer, not only by a self-test | `docs/DEMO_COVERAGE.json` |
 | model A/B | twelve fixed questions to two endpoints; agreement and score drift against a pre-registered rule, with a self-comparison control | `framework/model_ab.py`, `docs/status/model_ab.json` |
 | dependency updates | sense on a timer, try in a throwaway env, promote only on a passing try inside the TTL, roll back from lock history | `lock/versions.lock.json`, `tools/update_operator.py` |
+| README screenshots | captured from the built pages; page hashes recorded, commit refused when a page changed after its picture | `tools/screens.py`, `docs/SCREENS.json` |
 | page guards | paint order, clipping, html hit-test, contrast, visual language, runtime — each with a test that builds the defect | `tools/audit_layout.py`, `tools/audit_contrast.py`, `tools/audit_visual.py`, `tests/test_layout_guards.py` |
 
 The SKIP is the project checker: it needs a project path to run. The two adopters are

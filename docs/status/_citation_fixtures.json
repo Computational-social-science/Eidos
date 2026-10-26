@@ -1,5 +1,5 @@
 {
-  "ts": "2026-10-26T13:31:03+00:00",
+  "ts": "2026-10-26T13:33:11+00:00",
   "verdict": "BLOCKED",
   "n": 3,
   "verified": 1,
@@ -31,7 +31,7 @@
       "reference": "10.1038/s41586-020-2649-2",
       "status": "VERIFIED",
       "title": "Array programming with NumPy",
-      "ts": "2026-10-26T13:31:03+00:00",
+      "ts": "2026-10-26T13:33:11+00:00",
       "cached": true
     },
     {
@@ -50,7 +50,7 @@
       },
       "status": "BLOCKED",
       "title": "RETRACTED: Ileal-lymphoid-nodular hyperplasia, non-specific colitis, and pervasive developmental disorder in children",
-      "ts": "2026-10-26T13:31:03+00:00",
+      "ts": "2026-10-26T13:33:11+00:00",
       "cached": true
     },
     {
@@ -62,7 +62,7 @@
       "reason": "unresolved",
       "reference": "10.9999/does-not-exist-xyz",
       "status": "BLOCKED",
-      "ts": "2026-10-26T13:31:03+00:00",
+      "ts": "2026-10-26T13:33:11+00:00",
       "cached": true
     }
   ]

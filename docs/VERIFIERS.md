@@ -129,3 +129,16 @@ is worse than an admitted `SUPPORT_UNCHECKED`.
 
 A backend that produces the verdict (BM25 retrieval over a fetched paper plus a bounded entailment
 question) is not implemented, and no external service is assumed to provide it.
+
+## Step 4: S4 and S7 are checked, not trusted
+
+`framework/verifiers/pointers.py` resolves every `evidence_pointer` of the form
+`/artifacts/…/file.json#/json/pointer` against the artefact on disk and enforces the category rules:
+`statistics` must land in `stat_recompute.json`, `support` in a support record, `identification` in
+`proofpath.json`. A `PASS` carrying a failed check, a `blocking` entry that did not fail, or a
+pointer that escapes the project root are all inadmissible. This runs without a model, so a dangling
+pointer fails identically when the server is down.
+
+The model's own output is held to it: `tests/fixtures/s4_real_answer.json` is the verbatim reply
+from the deployed ScienceRSI-8b, and one test asserts it is admissible while eight assert that
+mutations of it are not.

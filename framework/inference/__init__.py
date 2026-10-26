@@ -23,12 +23,29 @@ class ModelProvider(Enum):
     #: An external HTTP service that answers typed decisions. "Loading" means a
     #: health check; the scheduler never spawns a process for it.
     STARTLUX = "startlux"
+    #: A GGUF served by an external llama-server. Eidos does not spawn it: the process and its
+    #: VRAM belong to the host, and the mutex contract is what keeps it from overlapping StartLux.
+    LLAMA_CPP = "llama_cpp"
 
 class ModelSize(Enum):
     SMALL = "small"      # < 4B params
     MEDIUM = "medium"    # 4B - 14B params
     LARGE = "large"      # 14B - 70B params
     XL = "xl"            # > 70B params
+
+def sciencersi_path() -> str:
+    """Where the GGUF lives, without hard-coding a drive letter.
+
+    Order: `$SCIENCERSI_GGUF`, then the Hermes managed model directory. A missing file stays a
+    missing file — the plan forbids falling back to another quantization.
+    """
+    override = os.environ.get("SCIENCERSI_GGUF")
+    if override:
+        return override
+    home = os.environ.get("HERMES_HOME") or os.path.join(
+        os.environ.get("LOCALAPPDATA", ""), "hermes")
+    return os.path.join(home, "models", "ScienceRSI-8b.i1-Q4_K_M.gguf")
+
 
 @dataclass
 class ModelSpec:
@@ -108,7 +125,13 @@ class ModelManager:
             "StartLux-Decision-4B-Q8_0", ModelProvider.STARTLUX, ModelSize.MEDIUM,
             os.environ.get("DECISION_SERVICE_URL", "http://127.0.0.1:8090"),
             6.0, 32768, supports_streaming=False, quantization="q8_0",
-            tags=["decision", "choice", "yes-no", "score"]),
+            tags=["decision", "choice", "yes-no", "score"],
+            mutex_with=("ScienceRSI-8b-i1-Q4_K_M",)),
+        "ScienceRSI-8b-i1-Q4_K_M": ModelSpec(
+            "ScienceRSI-8b-i1-Q4_K_M", ModelProvider.LLAMA_CPP, ModelSize.MEDIUM,
+            sciencersi_path(), 6.9, 28672, supports_streaming=True, quantization="q4_k_m",
+            tags=["science", "json", "s4", "s7", "hypothesis"],
+            mutex_with=("StartLux-Decision-4B-Q8_0",)),
         "Qwen3.6-35B-A3B-UD-Q4_K_M": ModelSpec(
             "Qwen3.6-35B-A3B-UD-Q4_K_M", ModelProvider.CPU, ModelSize.MEDIUM,
             "Qwen3.6-35B-A3B-UD-Q4_K_M.gguf", 9.5, 262144,

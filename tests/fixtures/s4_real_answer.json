@@ -1,0 +1,1 @@
+{"verdict":"FAIL","checks":[{"id":"power","status":"FAIL","evidence_pointer":"/artifacts/evaluation/stat_recompute.json"}],"blocking":["power"]}

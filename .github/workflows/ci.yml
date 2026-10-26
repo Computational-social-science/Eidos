@@ -34,7 +34,13 @@ jobs:
       - name: Unit tests
         run: |
           set -o pipefail
-          pytest -q 2>&1 | tee /tmp/pytest.log
+          pytest -q 2>&1 | tee /tmp/pytest.log || {
+            # Annotations are readable without a token; a red X with no reason is not.
+            grep -E "^(FAILED|ERROR)" /tmp/pytest.log | head -n 5 | while IFS= read -r line; do
+              echo "::error title=pytest::$line"
+            done
+            exit 1
+          }
 
       # A red badge with no readable reason is a dead end for anyone who did not run it locally.
       # The tail of the run goes to the job summary, which is visible without authentication.

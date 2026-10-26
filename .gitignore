@@ -64,3 +64,4 @@ reference/*/docs/*_files/
 
 # throwaway environments created by tools/update_operator.py try (the JSON verdicts stay)
 docs/status/update_tries/*/
+_shots/

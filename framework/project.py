@@ -70,10 +70,19 @@ class ProjectSpec:
     validity_register: str = ""
     validity_document: str = ""
     expected_gate_s: str = ""
+    #: Project-level overrides of the global policy (configs/global/framework.yaml). The project
+    #: states only what differs; `effective_config()` merges, and the global file is never edited.
+    overrides: dict[str, Any] = dataclasses.field(default_factory=dict)
     #: False when the checkout is absent. Loading a missing project is allowed only
     #: for enumeration (``list``); running it always raises.
     available: bool = True
     missing_reason: str = ""
+
+    def effective_config(self) -> dict[str, Any]:
+        """Global policy with this project's overrides applied."""
+        from framework.config import effective
+
+        return effective(self.overrides)
 
 
 @dataclasses.dataclass
@@ -150,6 +159,7 @@ def load_project(project_file: Path, allow_missing: bool = False) -> ProjectSpec
         validity_register=str(data.get("validity_register") or ""),
         validity_document=str(data.get("validity_document") or ""),
         expected_gate_s=str(data.get("expected_gate_s") or ""),
+        overrides=dict(data.get("overrides") or {}),
         available=available,
         missing_reason="" if available else f"checkout not found: {root}",
     )
@@ -274,6 +284,11 @@ def main(argv: list[str] | None = None) -> int:
     p_check.add_argument("--json", action="store_true")
     p_check.add_argument("--timeout", type=int, default=900)
 
+    p_config = sub.add_parser("config", help="print the effective policy for a project")
+    p_config.add_argument("name")
+    p_config.add_argument("--projects-dir", default=None)
+    p_config.add_argument("--key", default=None, help="print one dotted key instead of the document")
+
     p_exec = sub.add_parser("exec", help="run a declared command: gate, test or render")
     p_exec.add_argument("name")
     p_exec.add_argument("kind", choices=sorted(_COMMANDS))
@@ -303,6 +318,20 @@ def main(argv: list[str] | None = None) -> int:
     if spec is None:
         print(f"unknown project {args.name!r}; known: {sorted(specs)}", file=sys.stderr)
         return 2
+
+    if args.action == "config":
+        merged = spec.effective_config()
+        if args.key:
+            node: Any = merged
+            for part in args.key.split("."):
+                if not isinstance(node, dict) or part not in node:
+                    print(f"{args.key}: not set", file=sys.stderr)
+                    return 2
+                node = node[part]
+            print(json.dumps(node, indent=2) if isinstance(node, (dict, list)) else node)
+            return 0
+        print(json.dumps(merged, indent=2))
+        return 0
 
     kind = "gate" if args.action == "check" else args.kind
     try:

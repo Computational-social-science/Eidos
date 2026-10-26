@@ -121,9 +121,9 @@ framework:
       - name: "ScienceRSI-8b-i1-Q4_K_M"
         provider: "llama_cpp"
         quant: "q4_k_m"
-        context: 28672
-        vram_gb: 8.6           # measured: 5.03 weights + 3.53 KV at this context
-        note: "at 16384 the KV cache halves and the total is ~7.0 GB"
+        context: 16384
+        vram_gb: 7.0           # measured at this context (9211 MiB total on an idle card)
+        note: "28672 measured 8.6 GB, which broke the 10.5 GB budget; 16384 fits"
         mutex_with: ["StartLux-Decision-4B-Q8_0"]
         used_for: ["S4", "S7", "hypothesis draft", "diagnosis"]
       - name: "StartLux-Decision-4B-Q8_0"

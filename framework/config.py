@@ -43,5 +43,25 @@ def get(dotted: str, default=None, path: str | os.PathLike | None = None):
     return node
 
 
+def deep_merge(base: dict, override: dict) -> dict:
+    """Merge mappings recursively; the override wins, siblings survive.
+
+    Lists are replaced, not concatenated: a project that redefines `inference.models` means its
+    list, and silently appending the global one would schedule models it never asked for.
+    """
+    out = dict(base)
+    for key, value in (override or {}).items():
+        if isinstance(value, dict) and isinstance(out.get(key), dict):
+            out[key] = deep_merge(out[key], value)
+        else:
+            out[key] = value
+    return out
+
+
+def effective(overrides: dict | None = None) -> dict:
+    """Global policy with a project's overrides applied. The project never edits the global file."""
+    return deep_merge(global_config(), overrides or {})
+
+
 def reset_cache() -> None:
     _load.cache_clear()

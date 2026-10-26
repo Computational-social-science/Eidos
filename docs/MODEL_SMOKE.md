@@ -124,13 +124,37 @@ estimate": it did not invent one, it ignored the sentence next to it. A prompt c
 this — and because the fix is a prompt, it must be measured on these fifteen cases rather than
 assumed. That is exactly what P4's fixture gate is for, and it is why the gate is a gate.
 
-The same run at `-c 16384` used 8681 MiB on the card (≈7.0 GB incremental), consistent with the
-halved KV cache predicted above.
+### At 16384, the configuration that fits
+
+Re-measured with `-c 16384`, idle card at 2099 MiB: **9211 MiB total**, i.e. ≈7.0 GB incremental
+against the 8.56 GB at 28672. The registry and `framework.yaml` now declare 16384 / 7.0 GB, and the
+budget check accepts it. The probe reproduces **11/15** at this context — verdicts do not depend on
+the window, so the smaller context costs nothing measured.
+
+## The prompt that was supposed to fix it, and did not
+
+`tools/compile_s4_prompt.py` does what the plan's P4 describes without the DSPy dependency: state
+the five clauses explicitly, then add up to three worked examples chosen greedily on ten train cases,
+and judge on five held-out cases that include the rule types the model missed.
+
+| prompt | train (10) | holdout (5) |
+|---|---|---|
+| baseline, zero-shot | 7/10 | **4/5** |
+| rules stated + greedy demos | 8/10 | **4/5** |
+
+**Do not promote.** The holdout did not move, and the one case the candidate still misses is `s4-06`
+— three confounders named, one adjusted — with clause (2) sitting in the system prompt in plain
+English. The greedy search selected no demonstration that improved train over the rules alone, so
+the candidate is the rules-only prompt.
+
+The finding is narrower and more useful than the headline: the model can follow a rule it is given
+*when the rule is about the number* (clauses 3–5 all worked), and still ignores a rule about a
+*different field in the same sentence* (clause 2). Instructions are not the lever for that; a
+structured pre-pass that extracts the fields, or a model that reads them, is. That is a design
+change, not a prompt change — and it is worth saying before anyone spends a day on DSPy.
 
 ## Not measured
 
-* **Long-context behaviour.** All calls were ~120 prompt tokens; nothing here says how the model
-  behaves at 20k.
-* **Whether a compiled prompt closes the gap.** Fifteen cases are enough to compile against and too
-  few to trust a 0.90 claim on; the plan holds out five, which leaves ten to fit. That is thin, and
-  the probe reports it rather than hiding it.
+* **Long-context behaviour.** All calls were ~120–200 prompt tokens; nothing here says how the model
+  behaves at 10k.
+* **Whether a structured pre-pass fixes clause 2.** It is the next experiment, not a result.

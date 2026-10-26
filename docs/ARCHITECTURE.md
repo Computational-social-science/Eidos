@@ -14,6 +14,10 @@ what it deliberately does not do.
    vector-store memory block that no longer existed. `tests/test_framework_config.py`
    now holds it to the code: model names, mutex pairs, probe size, VRAM budget,
    no absolute paths, no deleted layer. The version lives only in `pyproject.toml`.
+   A project may declare `overrides:` in its `project.yaml`; `ProjectSpec.effective_config()`
+   deep-merges them over the global policy (project wins, lists replace rather than concatenate),
+   and `python -m framework.project config <name> [--key k]` prints the result. The global file is
+   never edited by a project. `tests/test_project_config.py` pins the precedence.
 2. **A gate that cannot fail is not a gate.** Every gate is tested in both
    directions (`tests/test_gates.py`). The acceptance gate originally treated
    every threshold as ">=" and silently passed an error rate of 0.12 against a

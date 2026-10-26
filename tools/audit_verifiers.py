@@ -64,7 +64,7 @@ def _run_fixtures() -> int:
     refs = [line.strip() for line in (FIXTURES / "refs.txt").read_text(encoding="utf-8").splitlines()
             if line.strip()]
     result = citations.check(refs, network=False, cache_path=FIXTURES / "cache.json",
-                             out=ROOT / "docs" / "status" / "_citation_fixtures.json")
+                             out=ROOT / "artifacts" / "verifiers" / "citation_fixtures.json")
     expected_status = ["VERIFIED", "BLOCKED", "BLOCKED"]
     got = [r["status"] for r in result["records"]]
     ok = got == expected_status and result["verdict"] == "BLOCKED"

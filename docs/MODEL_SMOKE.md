@@ -94,9 +94,43 @@ All five answers were **inadmissible** as evidence: each pointed at
 refused them for that reason alone — which is the designed behaviour, and the reason a model answer
 alone is never a Gate S pass.
 
+## Behavioural probe: 11/15, and the misses are all the same mistake
+
+`tools/probe_s4.py` asks fifteen labelled design cases, each decided by a rule stated in the file
+(required power 0.80; 0.75–0.80 is `WEAK_PASS` only if the shortfall was declared before data
+collection; unadjusted confounders or no power analysis are `FAIL`). The labels are computed from
+the case fields, not assigned by hand.
+
+**Agreement 11/15 = 0.733.** The plan's promotion bar is 0.90. The model is not promotable.
+
+The decomposition is the interesting part:
+
+| cases | what decides them | agreement |
+|---|---|---|
+| 9 | the headline power number alone | **9/9** |
+| 6 | a qualification — declaration, pre-registration, confounders, the 0.75 floor | **2/6** |
+
+Every miss is the same failure: the model reads the number and discards the fields that qualify it.
+
+| case | expected | got | what it ignored |
+|---|---|---|---|
+| s4-04 | FAIL | PASS | 0.78 with **no** declared shortfall |
+| s4-06 | FAIL | PASS | 3 confounders named, **1** adjusted |
+| s4-07 | WEAK_PASS | PASS | **no** pre-registration |
+| s4-08 | FAIL | WEAK_PASS | 0.74 — below the floor, where a declaration does not apply |
+
+This is the failure mode the plan warns about when it says the model "may not invent a power
+estimate": it did not invent one, it ignored the sentence next to it. A prompt can be compiled to fix
+this — and because the fix is a prompt, it must be measured on these fifteen cases rather than
+assumed. That is exactly what P4's fixture gate is for, and it is why the gate is a gate.
+
+The same run at `-c 16384` used 8681 MiB on the card (≈7.0 GB incremental), consistent with the
+halved KV cache predicted above.
+
 ## Not measured
 
-* **Quantization effect on verdicts.** Five prompts are an anecdote. The plan's answer is a
-  behavioural probe over at least 15 labelled fixtures; five exist as cases here, not as fixtures.
 * **Long-context behaviour.** All calls were ~120 prompt tokens; nothing here says how the model
   behaves at 20k.
+* **Whether a compiled prompt closes the gap.** Fifteen cases are enough to compile against and too
+  few to trust a 0.90 claim on; the plan holds out five, which leaves ten to fit. That is thin, and
+  the probe reports it rather than hiding it.

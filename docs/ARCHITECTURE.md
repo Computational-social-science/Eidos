@@ -14,9 +14,9 @@ what it deliberately does not do.
    every threshold as ">=" and silently passed an error rate of 0.12 against a
    0.05 ceiling; direction is now explicit.
 3. **Optional dependencies stay optional.** The core (gates, diagnosis) imports
-   with stdlib + pyyaml. mlflow/dvc/chromadb/langgraph are extras
-   (`pip install -e '.[tracking]'`), and a missing extra raises a clear error
-   only when the capability is used.
+   with stdlib + pyyaml. numpy and matplotlib are core (the package imports them); mlflow/dvc are
+   the `tracking` extra, playwright/pillow the `browser` extra. There is no langgraph, hydra or
+   chromadb dependency — see §12.
 4. **Failures are reported, never swallowed.** A missing tool makes its gate
    fail with an explanation; it does not become a pass.
 
@@ -202,3 +202,19 @@ what the operator deliberately does not do (it does not install binaries or weig
 source page hashes in `docs/SCREENS.json`. The commit hook refuses a commit when a page changed
 after its picture was taken: before this, the README kept showing the previous release's monitor
 because nothing tied the image to the page it claimed to show.
+
+## 12. What is not here, and why
+
+Three things that earlier documents promised are not in the code, and their absence is recorded
+rather than left to be discovered:
+
+| Piece | Status | Reason |
+|---|---|---|
+| LangGraph / LangChain agent graph | removed | `framework/agents` had eleven symbols and no consumer. The work is done by chains plus the typed decision operator. |
+| Hydra configuration | never wired | `framework/project.py` merges one YAML per project; a second configuration system would be a second source of truth. |
+| Vector memory (`chromadb`) | removed | No consumer, and it segfaulted with sentence-transformers on this host (`KNOWN_ISSUES.md` §1). |
+| `requirements.txt` | deliberate | `pyproject.toml` declares, `uv.lock` pins. A flat list beside them drifts; `uv export --no-hashes` generates one when a tool demands it. |
+
+The README claimed LangGraph orchestration until 2026-10-26 while no module imported it — the
+framework's own rule (a claim must resolve to an artefact) applied to the framework. See
+`docs/ORCHESTRATION.md` for what actually runs.

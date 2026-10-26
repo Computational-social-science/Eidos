@@ -14,6 +14,10 @@ if /i "%~1"=="remove" (
     exit /b 0
 )
 
+REM Record the interpreter this shell resolves, so the service does not inherit a random one.
+if "%PYTHON%"=="" for /f "delims=" %%i in ('where python 2^>nul') do if not defined PYTHON set "PYTHON=%%i"
+if defined PYTHON > "%~dp0monitor.env" echo set PYTHON=%PYTHON%
+
 > "%SHIM%" echo @echo off
 >> "%SHIM%" echo call "%~dp0eidos-monitor.cmd"
 echo wrote %SHIM%

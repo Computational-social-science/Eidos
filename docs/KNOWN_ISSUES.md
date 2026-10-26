@@ -8,6 +8,9 @@ forced.
 
 ## 1. chromadb + sentence-transformers segfaults this Python 3.14 install
 
+**Status: removed.** `framework/memory` was deleted (no consumer); this entry is kept because the
+combination still crashes this interpreter, and anyone tempted to reinstate it should know.
+
 **Observed:** `python -c "import chromadb; from sentence_transformers import SentenceTransformer"`
 prints `c ok` and then dies with `Segmentation fault` (exit 139). The reverse
 order (`sentence_transformers` first) also dies at the chromadb import. Each

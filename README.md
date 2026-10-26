@@ -64,13 +64,14 @@ Eidos is the **global skeleton** every research project inherits. It provides:
 |---|---|
 | **Delivery** | Quarto single source → PDF/LaTeX, DOCX, HTML, code artifacts |
 | **Quality gates** | BootLoops (quantitative) + Inspect / DeepEval / Promptfoo / Ragas (semantic) |
-| **Agents** | LangGraph nodes: hypothesis, literature, design, execution, evaluation, diagnosis, manuscript |
-| **Orchestration** | Hydra + MLflow + DVC |
+| **Orchestration** | Eleven chains in a registry (order, dependencies, spans, verdicts), a tiered scheduler and a 15 s sampler that derives one status and drives recovery. No agent graph — `docs/ORCHESTRATION.md` says what was removed and why |
+| **Tracking** | MLflow + DVC, optional extras |
 | **Diagnosis** | Structured failure reports with root cause, severity, suggested actions |
 | **Knowledge** | Agent skills for procedure, each project's `LESSONS` file for history — no vector store |
 | **Decision** | StartLux-Decision-4B-Q8_0: typed choice / yes-no / score with calibrated probabilities for routing, gate triage and failure classification |
 | **Inference** | Stage-aware scheduling for a 12 GB GPU: one large model resident at a time |
 | **Packaging** | One-click Docker/Binder executable package with full provenance |
+| **Dependencies** | `pyproject.toml` declares, `uv.lock` pins 294 packages, `update_operator.py` moves a pin only on a passing try. No `requirements.txt` — a third copy drifts |
 
 A new project inherits all of it with one command; only its overrides live in
 `projects/<name>/configs/project.yaml`.
@@ -86,6 +87,20 @@ A new project inherits all of it with one command; only its overrides live in
 | Repairs that report honestly | attempt (process started) and terminal (repair verified) are separate records with a schema | `framework/recovery.py` |
 | Pages that are audited like results | paint order, clipping, hit-testing, contrast, type scale, runtime errors — each with a test that builds the defect | `tests/test_layout_guards.py` |
 | Dependencies that move on evidence | sense weekly, try in a throwaway environment, promote only on a passing try, roll back from lock history | `lock/versions.lock.json`, `docs/UPDATES.md` |
+
+---
+
+## Installing
+
+```bash
+uv sync --extra tracking                 # exact resolved set from uv.lock
+# or, without uv:
+pip install -e ".[dev,tracking]"
+```
+
+`pyproject.toml` says what the project needs, `uv.lock` says what resolved together. There is no
+`requirements.txt` on purpose: it would be a third copy that drifts. If a tool insists on a flat
+list, generate it — `uv export --no-hashes > requirements.txt` — and never edit it by hand.
 
 ---
 

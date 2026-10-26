@@ -1,3 +1,8 @@
+> **Historical design note (pre-implementation).** This document describes what the framework
+> was *intended* to be, including pieces that were later removed — LangGraph agent nodes, Hydra,
+> a vector memory layer. It is kept for provenance, not as a description of the current system.
+> For what runs today, see `docs/ORCHESTRATION.md` and `README.md`.
+
 # Global Reusable Research Pipeline Framework (Optimized)
 ## Quarto + BootLoops + Complementary Quality Gates
 

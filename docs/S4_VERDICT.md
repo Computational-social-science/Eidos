@@ -46,7 +46,11 @@ extraction hypothesis for those. Two did not:
 * `s4-08` — `power: 0.74` with a declared shortfall → the model answers **WEAK_PASS**, applying the
   declaration below the 0.75 floor where it does not belong.
 
-Both are comparisons between numbers it was given. That is not a reading failure and not a prompting
+Structured calls are also far cheaper: the engine logged ~128 ms and 7 output tokens per structured
+judgement, against 620–1000 ms for the prose prompt, because the answer is a label rather than a
+justification.
+
+Both misses are comparisons between numbers it was given. That is not a reading failure and not a prompting
 failure; it is the model declining to apply an inequality.
 
 ## Decision

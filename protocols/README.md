@@ -13,10 +13,13 @@ decision service: deployed once, called by every project.
 `framework/gates` resolves the BootLoops root in this order:
 
 1. `$BOOTLOOPS_ROOT`
-2. `bootloops_root` in `configs/global/framework.yaml`
-3. `E:/2026-AI4S/bootloops`
+2. `quality_gates.quantitative.root` in `configs/global/framework.yaml` (null by default)
+3. `~/.bootloops/config.json`
 4. **fail loudly** — a project that declares quantitative gates but has no
    BootLoops install is a configuration error, not a silent pass.
+
+The framework itself never writes a drive letter for this; a project may pin one in its own
+override if it must.
 
 ## What is used from it
 

@@ -8,7 +8,12 @@ what it deliberately does not do.
 1. **One source of truth per fact.** Global defaults live in
    `configs/global/framework.yaml`; a project states only its overrides in
    `configs/project.yaml`. Duplicating the global file into a project is
-   forbidden because the two copies then drift.
+   forbidden because the two copies then drift. The file is loaded by
+   `framework/config.py` — until 2026-10 nothing read it, and it had drifted to
+   naming the framework `global_research_framework`, version 4.0, with a
+   vector-store memory block that no longer existed. `tests/test_framework_config.py`
+   now holds it to the code: model names, mutex pairs, probe size, VRAM budget,
+   no absolute paths, no deleted layer. The version lives only in `pyproject.toml`.
 2. **A gate that cannot fail is not a gate.** Every gate is tested in both
    directions (`tests/test_gates.py`). The acceptance gate originally treated
    every threshold as ">=" and silently passed an error rate of 0.12 against a

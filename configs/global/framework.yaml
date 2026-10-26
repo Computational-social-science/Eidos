@@ -1,28 +1,37 @@
-# Global Research Framework Configuration
-# This is the central configuration for the entire framework
+# Global framework policy.
+#
+# Read by framework/config.py; a project states only its overrides in project.yaml.
+# There is no version key here: pyproject.toml is the single source for the version.
+#
+# Paths are not written here. External toolboxes resolve from an environment variable or the
+# user-level config, so a clone on another machine is not pinned to this one's drive letters.
 
 framework:
-  name: "global_research_framework"
-  version: "4.0"
-  description: "Quarto + BootLoops + Complementary Quality Gates"
-  status: "production-ready"
-  
-  # Hardware target
+  name: "Eidos"
+  description: "Deterministic gates first; a model judges only what the verifiers let through"
+  status: "pre-release"        # measured state, not a promise: docs/HEALTH.md
+
   hardware:
-    gpu: "RTX 4070 (12 GB VRAM)"
-    scheduling: "stage-aware"
+    gpu: "RTX 4070 (12 GB)"
+    vram_budget_gb: 10.5       # of 12.3 GB; ~1.8 GB stays with the desktop
     max_concurrent_models: 1
     unload_between_stages: true
 
-  # Dual quality gates
+  # Knowledge lives in three places and nowhere else. The vector store was removed in 2026-10:
+  # a layer with no consumer is deleted, not kept "for later".
+  knowledge:
+    procedural: "global skill"
+    factual: "agent memory"
+    historical: "project LESSONS"
+    vector_store: false
+
   quality_gates:
     quantitative:
       name: "BootLoops"
       repo: "https://github.com/BootLoops-ai/bootloops"
-      # Resolved from the shared install, never vendored into a project.
-      # Override with $BOOTLOOPS_ROOT when the toolbox lives elsewhere.
-      root: "E:/2026-AI4S/bootloops"
-      activate: "~/.bootloops/activate.sh"
+      # null means: $BOOTLOOPS_ROOT, then ~/.bootloops/config.json, then the built-in default.
+      # A project may pin a path here; the framework does not.
+      root: null
       protocols:
         - acceptance-gate
         - planted-truth
@@ -37,18 +46,44 @@ framework:
       tools:
         - name: "Inspect"
           license: "MIT"
-          purpose: "agent & tool-use evaluation, sandboxed execution"
+          purpose: "agent and tool-use evaluation, sandboxed execution"
         - name: "DeepEval"
           license: "Apache-2.0"
-          purpose: "pytest-style LLM/RAG/Agent unit tests, 50+ metrics"
+          purpose: "pytest-style LLM and RAG assertions"
         - name: "Promptfoo"
           license: "MIT"
           purpose: "config-driven prompt comparison, red-teaming, CI gates"
         - name: "Ragas"
           license: "Apache-2.0"
-          purpose: "RAG-specific metrics (faithfulness, context precision/recall)"
+          purpose: "RAG faithfulness and retrieval metrics"
 
-  # Human review gates (mandatory)
+  # Order matters: identity, then arithmetic, then support. A model may not skip a step.
+  verifiers:
+    citations:
+      tool: "proofpath"
+      artefact: "artifacts/literature/proofpath.json"
+      states: ["VERIFIED", "BLOCKED", "SOURCE_UNAVAILABLE"]
+      fail_closed: true
+    statistics:
+      tool: "academic-research-kernel"
+      artefact: "artifacts/evaluation/stat_recompute.json"
+      tolerance: "reported precision, half a unit in the last place; 1e-3 floor"
+    support:
+      artefact: "artifacts/literature/support/<claim>.json"
+      backend: null            # no accessible tool exists; SUPPORT_UNCHECKED until one does
+      pass_requires: "passage with source, offsets and matching text"
+    pointers:
+      form: "/artifacts/<file>.json#/json/pointer"
+      applies_to: ["S4", "S7"]
+      rules:
+        statistics: "stat_recompute.json"
+        support: "a support record"
+        identification: "proofpath.json"
+  gates:
+    s4_probe:
+      cases: 15                # tests/test_s4_probe.py asserts the count and the rule
+      promotion_threshold: 0.90
+
   human_gates:
     mandatory:
       - "hypothesis_confirmation"
@@ -59,46 +94,52 @@ framework:
     optional:
       - "experiment_execution"
 
-  # Cross-project memory
-  memory:
-    type: "lightweight_vector"
-    storage: "local_qdrant"
-    max_entries: 10000
-    auto_update: true
-
-  # Failure diagnosis
   diagnosis:
     enabled: true
     auto_trigger_on_gate_failure: true
     output_format: "structured_report"
 
-  # Multi-format delivery
   delivery:
-    formats:
-      - "latex_pdf"
-      - "docx"
-      - "html"
-      - "code_artifacts"
+    formats: ["latex_pdf", "docx", "html", "code_artifacts"]
     quarto:
-      freeze: auto
+      freeze: "auto"
       cache: true
 
-  # Reproducibility package
   executable_package:
     docker: true
     binder: true
     freeze_cache: true
     provenance: true
 
-  # Stage-aware inference scheduling
+  # Stage-aware scheduling. One model resident at a time: the mutex is a contract, not an
+  # intention, and framework/inference/__init__.py refuses a load that would break it.
   inference:
-    interactive:
-      provider: "ollama"
-      models: ["llama3.1:8b", "qwen2.5:14b", "gemma2:9b"]
-    batch:
-      provider: "vllm"
-      quantization: "awq"
-    bootloops_tools:
-      provider: "cpu"
+    vram_budget_gb: 10.5
     max_concurrent: 1
     unload_between_stages: true
+    models:
+      - name: "ScienceRSI-8b-i1-Q4_K_M"
+        provider: "llama_cpp"
+        quant: "q4_k_m"
+        context: 28672
+        vram_gb: 8.6           # measured: 5.03 weights + 3.53 KV at this context
+        note: "at 16384 the KV cache halves and the total is ~7.0 GB"
+        mutex_with: ["StartLux-Decision-4B-Q8_0"]
+        used_for: ["S4", "S7", "hypothesis draft", "diagnosis"]
+      - name: "StartLux-Decision-4B-Q8_0"
+        provider: "startlux"
+        quant: "q8_0"
+        context: 32768
+        vram_gb: 6.0
+        mutex_with: ["ScienceRSI-8b-i1-Q4_K_M"]
+        used_for: ["routing", "gate triage", "hypothesis screening"]
+      - name: "Qwen3.6-35B-A3B-UD-Q4_K_M"
+        provider: "cpu"
+        quant: "q4_k_m"
+        vram_gb: 9.5
+        used_for: ["manuscript", "second opinion"]
+      - name: "Qwen3.8-27B-UD-Q4_K_M"
+        provider: "cpu"
+        quant: "q4_k_m"
+        vram_gb: 8.0
+        used_for: ["manuscript", "second opinion"]

@@ -125,4 +125,12 @@ jobs:
       - name: Layout guards (paint order, clipping, hit-test)
         run: pytest -q tests/test_layout_guards.py
       - name: Page audits (layout, contrast, visual language, runtime)
-        run: python tools/audit_site.py --no-build
+        run: |
+          python tools/audit_site.py --no-build 2>&1 | tee /tmp/site.log || {
+            # Annotations are readable without a token; the log is not.
+            grep -E "^\[FAIL\]|FAIL " /tmp/site.log | head -n 6 | while IFS= read -r line; do
+              echo "::error title=page audit::$line"
+            done
+            tail -n 3 /tmp/site.log | sed 's/^/::error title=page audit tail::/'
+            exit 1
+          }

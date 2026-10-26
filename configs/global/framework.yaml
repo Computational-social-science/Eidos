@@ -80,9 +80,17 @@ framework:
         support: "a support record"
         identification: "proofpath.json"
   gates:
+    s4:
+      verdict_source: "deterministic"   # extract_s4.verdict over a structured record
+      record_fields: [power, required, named, adjusted, prereg, declared]
+      prose_admissible: false            # extraction from prose reads 7/10 on unseen text
     s4_probe:
       cases: 15                # tests/test_s4_probe.py asserts the count and the rule
       promotion_threshold: 0.90
+      model_accuracy_structured: 0.867    # docs/S4_VERDICT.md; below the bar, not promoted
+    s7:
+      status: "not gateable"             # 0.750: detects 8/8, categorises 6/8, one false positive
+      allowed_use: "draft objections for human review"
 
   human_gates:
     mandatory:

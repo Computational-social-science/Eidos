@@ -307,7 +307,39 @@ class ScientificValidityGate:
                 allowed, reason = support.passable(cid)
                 if not allowed:
                     blocked.append(f"{cid}: support {reason}")
+            if claim.get("s4"):
+                findings_s4, blocked_s4 = self._s4_verdict(cid, claim["s4"])
+                findings.extend(findings_s4)
+                blocked.extend(blocked_s4)
         return findings, blocked
+
+    def _s4_verdict(self, claim_id: str, record: dict) -> tuple[list[Finding], list[str]]:
+        """S11: the design verdict is arithmetic, and arithmetic is not a model's opinion.
+
+        The record must carry the fields, not a paragraph: extraction from prose reads 7/10 on unseen
+        paraphrases (docs/S4_VERDICT.md), so a prose claim cannot be adjudicated here at all. When the
+        fields are present the rule decides; an asserted verdict that disagrees is a FAIL, whoever
+        wrote it — including a model.
+        """
+        from framework.verifiers import extract_s4
+
+        fields = {k: record.get(k) for k in ("power", "required", "prereg", "named", "adjusted",
+                                             "declared")}
+        if not extract_s4.complete(fields):
+            missing = [k for k in ("prereg", "named", "adjusted", "declared") if fields[k] is None]
+            return [], [f"{claim_id}: S4 record is incomplete ({', '.join(missing)} unread); "
+                        f"a verdict here would be a guess"]
+        decided = extract_s4.verdict(fields)
+        asserted = record.get("verdict")
+        if not asserted:
+            return [], [f"{claim_id}: S4 record states no verdict to check"]
+        if asserted != decided:
+            return [Finding("S11", f"{claim_id}: design verdict {asserted} does not follow from the "
+                                    f"fields (power {fields['power']}, required {fields['required']}, "
+                                    f"named {fields['named']}, adjusted {fields['adjusted']}, "
+                                    f"prereg {fields['prereg']}, declared {fields['declared']}) "
+                                    f"-> {decided}")], []
+        return [], []
 
     # -- checks ----------------------------------------------------------------
     def run(self) -> GateResult:

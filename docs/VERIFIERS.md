@@ -142,3 +142,24 @@ pointer fails identically when the server is down.
 The model's own output is held to it: `tests/fixtures/s4_real_answer.json` is the verbatim reply
 from the deployed ScienceRSI-8b, and one test asserts it is admissible while eight assert that
 mutations of it are not.
+
+
+## S11: the design verdict is arithmetic
+
+A claim may carry an `s4` record — `power`, `required`, `named`, `adjusted`, `prereg`, `declared`,
+and the `verdict` being asserted. Gate S recomputes the verdict from the fields and fails a mismatch:
+
+```yaml
+- id: C7
+  s4: {power: 0.78, required: 0.80, named: 2, adjusted: 2, prereg: true,
+       declared: false, verdict: FAIL}
+```
+
+A record missing a field the branch needs is BLOCKED, not guessed. Prose is not admissible: extraction
+from unseen paraphrases reads 7/10 (docs/S4_VERDICT.md), so a paragraph cannot gate anything. The
+model is not consulted — it scored 0.867 on these records and missed precisely the two comparisons
+(docs/S4_VERDICT.md).
+
+S7 is a different rule family and a different outcome: 0.750, detecting all eight planted defects but
+mislabelling two and inventing one on a clean case (docs/S7_VERDICT.md). It drafts objections for a
+human; it does not gate.

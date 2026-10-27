@@ -26,6 +26,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CURRENT = ROOT / "docs" / "status" / "current.json"
+#: What the last run saw. The sequence comparison below is the only way to tell a live sampler from
+#: one that keeps rewriting the same sample.
+STATE = ROOT / "docs" / "status" / "watchdog_state.json"
 LOG = ROOT / "docs" / "status" / "watchdog.log"
 
 
@@ -57,6 +60,23 @@ def main(argv: list[str] | None = None) -> int:
             age = age_seconds(payload.get("ts", ""))
             problem = (f"the watcher has not sampled for {age:.0f}s "
                        f"(limit {args.max_age:.0f}s)") if age is not None and age > args.max_age else ""
+
+            seq = payload.get("seq")
+            if not problem and seq is not None:
+                try:
+                    record = json.loads(STATE.read_text(encoding="utf-8"))
+                except Exception:            # noqa: BLE001 - first run, or an unreadable record
+                    record = {}
+                seen = int(record.get("seq") or 0)
+                since = age_seconds(record.get("checked", "")) or 0.0
+                if int(seq) > seen or int(seq) < seen:
+                    # Advanced, or the sampler restarted and its counter began again: both are fine.
+                    STATE.parent.mkdir(parents=True, exist_ok=True)
+                    STATE.write_text(json.dumps({"seq": int(seq), "checked": datetime.datetime.now(
+                        datetime.timezone.utc).isoformat(timespec="seconds")}), encoding="utf-8")
+                elif since > args.max_age:
+                    problem = (f"sample seq is still {seq} after {since:.0f}s: the file is fresh but "
+                               f"the content is not advancing")
 
     if problem:
         LOG.parent.mkdir(parents=True, exist_ok=True)

@@ -508,7 +508,17 @@ def sample(append: bool = True) -> dict:
     states = maybe_auto_recover(states)
 
     derived = status_view.derive(states, chain_state)
-    payload = {"ts": now_iso(), "overall": derived["overall"], "derived": derived,
+
+    # A monotonic counter, because a file's mtime says it was written, not that the content moved.
+    # The watchdog compares this with the last value it saw; a sampler stuck on one payload would
+    # otherwise look alive for as long as it keeps touching the file.
+    previous_seq = 0
+    try:
+        previous_seq = int(json.loads(CURRENT.read_text(encoding="utf-8")).get("seq") or 0)
+    except Exception:      # noqa: BLE001 - a missing or corrupt sample just restarts the count
+        previous_seq = 0
+
+    payload = {"seq": previous_seq + 1, "ts": now_iso(), "overall": derived["overall"], "derived": derived,
                "signals": states,
                "chains": chain_state, "chain_meta": chain_meta,
                "timeline": timeline[-60:], "live_run": live,

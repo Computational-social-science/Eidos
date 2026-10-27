@@ -58,3 +58,24 @@ layer is useful (no production consumer; the one exploration failed and is in
    this framework gates.
 4. **Quarto is installed outside the repository** (`E:/2026-AI4S/tools/quarto`), reached
    through `QUARTO_BIN`; a fresh clone without that variable will report SKIP.
+
+## Checking it, without reading a label
+
+```bash
+python tools/health.py            # OK    seq=41 age=4.2s faults=-
+python tools/serve_model.py status
+python tools/serve_model.py swap --model ScienceRSI-8b.i1-Q4_K_M --dry-run
+```
+
+`health.py` prints the verdict **and** the sample sequence and age that produced it, and exits
+non-zero on STALE/ALARM/unreachable. It exists because `overall: OK` was read as health for ten hours
+on 2026-10-27 while the sampler was dead — the `stale` flag was in the payload and nobody looked.
+
+`serve_model.py swap` decides before it acts: registry footprint against measured free VRAM, refuses
+when the target would not fit beside what is resident, unloads through the router's API instead of
+killing a process, and confirms identity from `/v1/models` afterwards. Two hand swaps had already
+sent StartLux prompts into ScienceRSI and killed the desktop runtime; the procedure belongs in code.
+
+The watchdog now also compares the sample `seq` with the last one it saw, so a sampler that keeps
+rewriting the same payload is reported instead of looking alive.
+

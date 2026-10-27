@@ -70,3 +70,7 @@ scripts/monitor.env
 
 # verifier outputs (regenerated, with fixtures committed instead)
 artifacts/
+# Fixture artefacts are part of the test inputs, not runtime output: the clean control cites a
+# reproduction record, and a clone without it fails S12. Everything else under artifacts/ stays out.
+!reference/fixtures/*/artifacts/
+!reference/fixtures/*/artifacts/**

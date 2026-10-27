@@ -129,10 +129,11 @@ class ModelManager:
             mutex_with=("ScienceRSI-8b-i1-Q4_K_M",)),
         "ScienceRSI-8b-i1-Q4_K_M": ModelSpec(
             "ScienceRSI-8b-i1-Q4_K_M", ModelProvider.LLAMA_CPP, ModelSize.MEDIUM,
-            # Measured, twice: 8.56 GB incremental at 28672 (5.03 weights + 3.53 KV), which put the
-            # card at 10.86 GB and over the 10.5 budget. At 16384 the KV cache halves and the
-            # incremental cost is 7.0 GB, so the registered configuration is the one that fits.
-            sciencersi_path(), 7.0, 16384, supports_streaming=True, quantization="q4_k_m",
+            # The deployed configuration is the host preset's, not the framework's wish: ctx 40960
+            # with q8_0 KV, measured at 10251 MiB resident (8.1 GiB incremental). The earlier 16384
+            # figure (7.0 GB) was a configuration nothing ran. Quantising the KV is why quadrupling
+            # the context costs about the same as 28672 with f16 KV (8.56 GB).
+            sciencersi_path(), 8.1, 40960, supports_streaming=True, quantization="q4_k_m",
             tags=["science", "json", "s4", "s7", "hypothesis"],
             mutex_with=("StartLux-Decision-4B-Q8_0",)),
         "Qwen3.6-35B-A3B-UD-Q4_K_M": ModelSpec(

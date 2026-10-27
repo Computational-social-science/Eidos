@@ -126,12 +126,24 @@ estimate": it did not invent one, it ignored the sentence next to it. A prompt c
 this — and because the fix is a prompt, it must be measured on these fifteen cases rather than
 assumed. That is exactly what P4's fixture gate is for, and it is why the gate is a gate.
 
-### At 16384, the configuration that fits
+### What is actually deployed, and the number that replaced a wish
 
-Re-measured with `-c 16384`, idle card at 2099 MiB: **9211 MiB total**, i.e. ≈7.0 GB incremental
-against the 8.56 GB at 28672. The registry and `framework.yaml` now declare 16384 / 7.0 GB, and the
-budget check accepts it. The probe reproduces **11/15** at this context — verdicts do not depend on
-the window, so the smaller context costs nothing measured.
+Three contexts were measured on this card:
+
+| ctx | KV type | resident | incremental |
+|---|---|---|---|
+| 28672 | f16 | 10351 MiB | 8.56 GiB |
+| 16384 | f16 | 9211 MiB | 7.0 GiB |
+| **40960** | **q8_0** | **10251 MiB** | **8.1 GiB** |
+
+The registry declared 16384 / 7.0 GB for a while, and **nothing ran it**: the router loads the model
+from the host preset, whose context is 40960 with a quantised KV cache. So the third row is the
+deployment, and it is what the registry and `framework.yaml` now say. The lesson is not "16384 was
+wrong" — it is that a declared configuration nobody exercises is a wish, and this project has a rule
+about wishes.
+
+Quantising the KV is why four times the context costs about what 28672 cost with f16. It is also why
+the model still fits alone inside the 10.5 GB budget, with roughly 0.5 GiB to spare.
 
 ## The prompt that was supposed to fix it, and did not
 
@@ -165,10 +177,10 @@ Identity is checked from the router's own report: the `-m` argument in `status.a
 GGUF, and a missing path is a refusal, not a pass — matching the id is not enough when a preset can be
 renamed.
 
-One drift the tool now reports instead of accepting: the router loaded the model at **ctx 40960**
-(its preset, q8_0 KV) rather than the registry's 16384, for 10251 MiB resident. Context belongs to the
-host preset; the registry declares only what the framework would ask for. They should agree, and when
-they do not, the operator is told.
+The tool compares the context the router actually loaded with the context the registry declares, and
+says so when they differ. That check is what closed this drift: the registry had been declaring 16384
+while the preset ran 40960, and the registry now records the deployed value (see the table above). A
+future preset that diverges will be reported rather than inherited.
 
 ## Not measured
 

@@ -60,3 +60,9 @@ def test_refuse_when_nothing_is_resident_but_it_still_does_not_fit():
 def test_swap_when_it_fits():
     action, why = serve_model.plan(None, "ScienceRSI-8b.i1-Q4_K_M", 1.6, 7.0, 10.5)
     assert action == "swap" and "fits" in why
+
+
+def test_the_router_id_resolves_to_the_deployed_context():
+    """The registry records what the preset runs (40960), not what the framework once wished for."""
+    assert serve_model.context_of("ScienceRSI-8b.i1-Q4_K_M") == 40960
+    assert serve_model.footprint("ScienceRSI-8b.i1-Q4_K_M") == 8.1

@@ -79,6 +79,15 @@ def vram_used_gb() -> float:
     return int(out.replace("MiB", "").strip()) / 1024
 
 
+def context_of(name: str) -> int | None:
+    from framework.inference import ModelManager
+    sq = lambda text: "".join(ch for ch in text.lower() if ch.isalnum())      # noqa: E731
+    for key, spec in ModelManager.MODEL_REGISTRY.items():
+        if sq(key) == sq(name):
+            return spec.context_window
+    return None
+
+
 def footprint(name: str) -> float:
     """Registry footprint, tolerating the router's dotted id versus the registry's hyphenated key."""
     from framework.inference import ModelManager
@@ -117,12 +126,26 @@ def swap(target: str, budget: float, dry_run: bool) -> int:
     loaded_s = time.time() - started
 
     now_id, record = resident()
-    path = str(record.get("model") or "")
-    print(f"loaded {now_id} in {loaded_s:.1f}s from {path or 'unknown path'}")
+    status = record.get("status") or {}
+    args = [str(a) for a in (status.get("args") or [])]
+    path = next((args[i + 1] for i, a in enumerate(args)
+                 if a in ("-m", "--model") and i + 1 < len(args)), "")
+    ctx = next((args[i + 1] for i, a in enumerate(args)
+                if a in ("--ctx-size", "-c") and i + 1 < len(args)), "")
+    print(f"loaded {now_id} in {loaded_s:.1f}s from {path or 'path not reported'}")
     if now_id != target:
         print(f"REFUSED: asked for {target}, router reports {now_id}", file=sys.stderr)
         return 2
-    print(f"identity confirmed: {Path(path).name if path else now_id}")
+    if not path:
+        # The id matching is not an identity check: presets can be renamed, and this project has
+        # already talked to the wrong weights once.
+        print("IDENTITY UNVERIFIED: the router reported no model path", file=sys.stderr)
+        return 2
+    print(f"identity confirmed: {Path(path).name}")
+    expected_ctx = context_of(target)
+    if expected_ctx and str(ctx) != str(expected_ctx):
+        print(f"WARNING: the router loaded ctx {ctx}, the registry declares {expected_ctx} "
+              f"(the preset owns this, not the framework)", file=sys.stderr)
     return 0
 
 
@@ -134,7 +157,17 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("--budget", type=float, default=10.5)
     s.add_argument("--dry-run", action="store_true")
     sub.add_parser("status", help="what is resident")
+    sub.add_parser("unload", help="release whatever is resident")
     args = ap.parse_args(argv)
+
+    if args.action == "unload":
+        loaded_id, _ = resident()
+        if not loaded_id:
+            print("nothing resident")
+            return 0
+        _request("POST", "/models/unload", {"model": loaded_id})
+        print(f"unloaded {loaded_id}")
+        return 0
 
     if args.action == "status":
         loaded_id, record = resident()

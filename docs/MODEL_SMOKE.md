@@ -155,6 +155,21 @@ The finding is narrower and more useful than the headline: the model can follow 
 structured pre-pass that extracts the fields, or a model that reads them, is. That is a design
 change, not a prompt change — and it is worth saying before anyone spends a day on DSPy.
 
+## Through the router, which is how it should be loaded
+
+`python tools/serve_model.py swap --model ScienceRSI-8b.i1-Q4_K_M` — 3.7 s end to end (budget check,
+unload, autoload, verification), and the probe through `18434` reproduces **11/15**, so the serving
+path changes nothing about the verdicts.
+
+Identity is checked from the router's own report: the `-m` argument in `status.args` must name the
+GGUF, and a missing path is a refusal, not a pass — matching the id is not enough when a preset can be
+renamed.
+
+One drift the tool now reports instead of accepting: the router loaded the model at **ctx 40960**
+(its preset, q8_0 KV) rather than the registry's 16384, for 10251 MiB resident. Context belongs to the
+host preset; the registry declares only what the framework would ask for. They should agree, and when
+they do not, the operator is told.
+
 ## Not measured
 
 * **Long-context behaviour.** All calls were ~120–200 prompt tokens; nothing here says how the model

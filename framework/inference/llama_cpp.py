@@ -12,6 +12,7 @@ No dependency on the OpenAI SDK: one POST, parsed, validated by the caller.
 from __future__ import annotations
 
 import json
+import os
 import urllib.error
 import urllib.request
 
@@ -26,12 +27,15 @@ class EmptyJudgement(JudgementUnavailable):
 
 class LlamaCppClient:
     def __init__(self, base_url: str = "http://127.0.0.1:8081", model: str = "ScienceRSI-8b",
-                 temperature: float = 0.15, max_tokens: int = 400, timeout: float = 180.0):
+                 temperature: float = 0.15, max_tokens: int = 400, timeout: float = 180.0,
+                 api_key: str | None = None):
         self.base_url = base_url.rstrip("/")
         self.model = model
         self.temperature = temperature
         self.max_tokens = max_tokens
         self.timeout = timeout
+        self.api_key = api_key if api_key is not None else os.environ.get(
+            "HERMES_LOCAL_LLAMACPP_KEY", "")
 
     def payload(self, system: str, user: str) -> dict:
         return {
@@ -48,8 +52,11 @@ class LlamaCppClient:
 
     def ask(self, system: str, user: str) -> dict:
         body = json.dumps(self.payload(system, user)).encode("utf-8")
+        headers = {"Content-Type": "application/json"}
+        if self.api_key:
+            headers["Authorization"] = f"Bearer {self.api_key}"
         request = urllib.request.Request(f"{self.base_url}/v1/chat/completions", data=body,
-                                         headers={"Content-Type": "application/json"})
+                                         headers=headers)
         try:
             raw = urllib.request.urlopen(request, timeout=self.timeout).read()
         except urllib.error.URLError as exc:

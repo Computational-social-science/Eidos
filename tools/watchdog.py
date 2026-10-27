@@ -25,6 +25,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "tools"))
+import health  # noqa: E402  - one definition of "healthy", shared with the CLI
 CURRENT = ROOT / "docs" / "status" / "current.json"
 #: What the last run saw. The sequence comparison below is the only way to tell a live sampler from
 #: one that keeps rewriting the same sample.
@@ -58,8 +60,18 @@ def main(argv: list[str] | None = None) -> int:
             age = None
         else:
             age = age_seconds(payload.get("ts", ""))
-            problem = (f"the watcher has not sampled for {age:.0f}s "
-                       f"(limit {args.max_age:.0f}s)") if age is not None and age > args.max_age else ""
+            # The verdict comes from the same function the CLI uses. Two definitions of "healthy"
+            # drift, and this one did: the cron said the watcher was dead while `overall` said OK.
+            payload["sample_age_s"] = round(age, 1) if age is not None else None
+            payload["stale"] = age is None or age > args.max_age
+            verdict, evidence = health.classify(payload)
+            if verdict == "STALE" and age is not None:
+                problem = (f"the watcher has not sampled for {age:.0f}s "
+                           f"(limit {args.max_age:.0f}s)")
+            elif verdict != "OK":
+                problem = "; ".join(evidence) or f"verdict {verdict}"
+            else:
+                problem = ""
 
             seq = payload.get("seq")
             if not problem and seq is not None:

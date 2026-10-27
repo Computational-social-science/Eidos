@@ -129,9 +129,9 @@ framework:
       - name: "ScienceRSI-8b-i1-Q4_K_M"
         provider: "llama_cpp"
         quant: "q4_k_m"
-        context: 40960         # the host preset's value; the framework declared 16384 and nothing ran it
-        vram_gb: 8.1           # measured: 10251 MiB resident on an idle card
-        note: "q8_0 KV: 40960 costs about what 28672 costs with f16 (8.56 GB)"
+        context: 16384         # host preset reduced from 40960; measured 8151 MiB resident
+        vram_gb: 6.2           # 6.2 GiB incremental, against 8.1 GiB at 40960
+        note: "the reduction saved 2.05 GiB: the 40960 KV cache was bigger than the estimate"
         mutex_with: ["StartLux-Decision-4B-Q8_0"]
         used_for: ["S4", "S7", "hypothesis draft", "diagnosis"]
       - name: "StartLux-Decision-4B-Q8_0"

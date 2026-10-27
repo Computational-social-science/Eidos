@@ -63,6 +63,11 @@ def test_swap_when_it_fits():
 
 
 def test_the_router_id_resolves_to_the_deployed_context():
-    """The registry records what the preset runs (40960), not what the framework once wished for."""
-    assert serve_model.context_of("ScienceRSI-8b.i1-Q4_K_M") == 40960
-    assert serve_model.footprint("ScienceRSI-8b.i1-Q4_K_M") == 8.1
+    """The registry records what the preset runs, not what the framework once wished for.
+
+    History: 16384 declared while 40960 ran (a wish), then 40960 recorded (the deployment), then the
+    preset reduced to 16384 and measured at 6.2 GiB. The test pins the last measured state, so the
+    registry cannot drift back to either a wish or a superseded measurement.
+    """
+    assert serve_model.context_of("ScienceRSI-8b.i1-Q4_K_M") == 16384
+    assert serve_model.footprint("ScienceRSI-8b.i1-Q4_K_M") == 6.2

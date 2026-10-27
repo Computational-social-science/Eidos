@@ -134,7 +134,13 @@ Three contexts were measured on this card:
 |---|---|---|---|
 | 28672 | f16 | 10351 MiB | 8.56 GiB |
 | 16384 | f16 | 9211 MiB | 7.0 GiB |
-| **40960** | **q8_0** | **10251 MiB** | **8.1 GiB** |
+| 40960 | q8_0 | 10251 MiB | 8.1 GiB |
+| **16384** | **q8_0** | **8151 MiB** | **6.2 GiB** |
+
+The last row is the current deployment: the host preset was reduced from 40960 to 16384, which
+bought **2.05 GiB** — more than the ~1 GiB the arithmetic suggested, because the 40960 KV cache was
+larger than the weights alone implied. Editing `presets.ini` had no effect until the router was
+restarted; the running process had cached its arguments.
 
 The registry declared 16384 / 7.0 GB for a while, and **nothing ran it**: the router loads the model
 from the host preset, whose context is 40960 with a quantised KV cache. So the third row is the

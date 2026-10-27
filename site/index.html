@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
-<title>Eidos v4.3.12 — a reusable research pipeline with dual gates</title>
+<title>Eidos v4.3.13 — a reusable research pipeline with dual gates</title>
 <meta name="description" content="Eidos is the reusable skeleton behind a research project: dual
 quality gates, a typed decision layer, provenance, and multi-format delivery. Every claim it
 makes is checked against an artefact.">
@@ -181,13 +181,13 @@ footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:v
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="top"><div class="top-in">
-  <span class="brand"><i>●</i>Eidos<span class="ver">v4.3.12</span></span>
+  <span class="brand"><i>●</i>Eidos<span class="ver">v4.3.13</span></span>
   <span class="spacer"></span>
   <span class="hchip ok">Gate S pass</span>
   <span class="hchip">11 chains · 190 tests</span>
   <a class="cta" href="http://127.0.0.1:8765/">Monitor →</a>
 </div></header>
-<div class="shell"><nav class="rail" aria-label="Sections"><ol><li><a href="#position"><span>01</span>Position</a></li><li><a href="#pipeline"><span>02</span>The pipeline</a></li><li><a href="#architecture"><span>03</span>Architecture</a></li><li><a href="#orchestration"><span>04</span>Orchestration</a></li><li><a href="#gates"><span>05</span>Gates</a></li><li><a href="#state"><span>06</span>State</a></li><li><a href="#monitor"><span>07</span>Monitor</a></li><li><a href="#demo"><span>08</span>The demo</a></li><li><a href="#start"><span>09</span>Start</a></li><li><a href="#limits"><span>10</span>Limits</a></li></ol><div class="rail-meta">build 1b63bdf · 2026-10-27<br>v4.3.12 · 10 releases<br>MIT · operator CC BY-NC 4.0</div></nav><main id="main">
+<div class="shell"><nav class="rail" aria-label="Sections"><ol><li><a href="#position"><span>01</span>Position</a></li><li><a href="#pipeline"><span>02</span>The pipeline</a></li><li><a href="#architecture"><span>03</span>Architecture</a></li><li><a href="#orchestration"><span>04</span>Orchestration</a></li><li><a href="#gates"><span>05</span>Gates</a></li><li><a href="#state"><span>06</span>State</a></li><li><a href="#monitor"><span>07</span>Monitor</a></li><li><a href="#demo"><span>08</span>The demo</a></li><li><a href="#start"><span>09</span>Start</a></li><li><a href="#limits"><span>10</span>Limits</a></li></ol><div class="rail-meta">build 159cfa4 · 2026-10-27<br>v4.3.13 · 10 releases<br>MIT · operator CC BY-NC 4.0</div></nav><main id="main">
 <div class="hero">
   <p class="eyebrow">Global reusable research pipeline</p>
   <h1>A skeleton, not a paper factory.</h1>
@@ -270,7 +270,7 @@ footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:v
   <th>last result</th><th>witness</th></tr></thead><tbody><tr><td class="st">every Gate S check fires on a case built to trip it</td><td>a check with no fixture, or a fixture rejected for the wrong reason</td><td class="num">11 fixtures, 10/9 checks covered</td><td class="mono">docs/FIXTURES.json</td></tr><tr><td class="st">the gate rejects wrong claims and accepts equivalent ones</td><td>a wrong register accepted, or an equivalent one rejected</td><td class="num">21 wrong + 28 pairs rejected, 8 equivalent accepted</td><td class="mono">docs/FUZZ.json</td></tr><tr><td class="st">a gate that exits 0 without its artefact is not a pass</td><td>a consumer that finishes with no evidence and is reported PASS</td><td class="num">4 chain consumers as declared</td><td class="mono">docs/CHAIN.json</td></tr><tr><td class="st">a service is up only if every endpoint answers</td><td>a front door answering while its engine is dead</td><td class="num">decision service 2/2, runtime 1/1</td><td class="mono">tools/audit_services.py</td></tr><tr><td class="st">the delivered pages render, execute and do not collide</td><td>a page error, a canvas never drawn, text overlap, contrast below AA</td><td class="num">9 checks: build, currency, structure, layout, contrast, runtime, invariants</td><td class="mono">tools/audit_site.py</td></tr><tr><td class="st">chains run end to end against live boundaries</td><td>a chain that passes while its boundary is detached</td><td class="num">10 pass, 1 skip, 0 fail</td><td class="mono">docs/SELF_AUDIT.json</td></tr></tbody></table></div>
   <p class="gm-sum">10 chains pass,
   269 tests collected, 0 open defect(s)
-  &middot; recorded 2026-10-27T12:51</p>
+  &middot; recorded 2026-10-27T13:12</p>
 </div>
 <div class="grid2" style="margin-top:10px">
   <div class="card"><h3>Evolution: the defects its instruments caught</h3>
@@ -278,7 +278,7 @@ footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:v
     regressions: a mutation the gate accepts, a component with no style rule, a page that renders
     without running, a service whose front door answers while its engine is dead.</p>
     <div class="readout">
-      <div class="kv"><div class="k">mutation runs</div><div class="v">94</div></div>
+      <div class="kv"><div class="k">mutation runs</div><div class="v">96</div></div>
       <div class="kv"><div class="k">blind spots found</div><div class="v">1</div></div>
       <div class="kv"><div class="k">still open</div><div class="v">0</div></div>
     </div>
@@ -341,7 +341,7 @@ footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:v
 <section class="sec" id="monitor"><div class="sec-h"><span class="num">07</span><h2>Monitor — the pipeline at build time<a class="anchor" href="#monitor" aria-label="permalink">¶</a></h2></div><p class="lede">A still frame, so the document cannot claim a state the monitor contradicts.</p><!--snapshot:start--><div class="card">
   <div class="mrow">
     <span class="mpill ok">OK</span>
-    <span class="mmeta">snapshot at <b>2026-10-27 12:52:04</b> HKT · <b>2000</b> samples ·
+    <span class="mmeta">snapshot at <b>2026-10-27 13:13:05</b> HKT · <b>2000</b> samples ·
     <b>11/11</b> chains healthy</span>
     <a class="mlink" href="http://127.0.0.1:8765/">open the live monitor →</a>
   </div>
@@ -427,8 +427,8 @@ MathML, the demo is inline, and every number is computed at build time.</p></sec
   <p><b>Licence.</b> The framework is MIT. The decision operator's weights are CC BY-NC 4.0
   (non-commercial): a project that needs commercial terms must swap the operator, and the
   framework must not assume it is redistributable.</p></div></section>
-<footer>Generated by <code>tools/build_site.py</code> from <code>1b63bdf</code> on
-2026-10-27 · v4.3.12 · 10 recorded builds · MIT.
+<footer>Generated by <code>tools/build_site.py</code> from <code>159cfa4</code> on
+2026-10-27 · v4.3.13 · 10 recorded builds · MIT.
 <br>Machine record: <a href="../docs/SELF_AUDIT.json">docs/SELF_AUDIT.json</a> ·
 <a href="../docs/HEALTH.md">docs/HEALTH.md</a> · <a href="../README.md">README</a></footer>
 </main></div>

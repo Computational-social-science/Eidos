@@ -149,3 +149,24 @@ Rule: anything that scaffolds into a temporary directory passes `--no-register`,
 registration it created in a `finally` block. The rehearsal now runs inside
 `docs/status/_release_rehearsal` for the same reason: a path on another drive cannot be written
 relative to the registry.
+
+
+## A hot reload can leave a module half-built
+
+`tools/serve_site.py` reloads `watch_pipeline` when its mtime changes, so a fix to a probe is visible
+without restarting the monitor. On 2026-10-27 that reload was interrupted (the process was killed
+mid-reload) and left the module with a partial namespace: every later sample failed with
+`NameError: _has_module is not defined`, a name that exists in the file. The sampler died; the HTTP
+layer kept answering with the last sample, and `overall` still read OK while the data was ten hours
+old.
+
+Two changes came out of it:
+
+* the reload is transactional — the previous module is kept unless the new one has the names the
+  sampler needs;
+* `/api/status` now reports `sample_age_s` and forces `overall: STALE` when the sample is older than
+  three intervals. A stale sample cannot be a healthy verdict, and that should not depend on an
+  external cron noticing.
+
+The cron watchdog was right both times; the lesson is that the watchdog is a second line, not the
+first.

@@ -22,6 +22,14 @@ claims:
     assumptions:
       - "one constructed item set"
     formal: false
+    s4:
+      power: 0.93
+      required: 0.80
+      named: 2
+      adjusted: 2
+      prereg: true
+      declared: false
+      verdict: PASS
 power:
   not_applicable: "a control fixture, not an estimate"
 multiplicity:

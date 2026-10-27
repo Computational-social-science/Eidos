@@ -101,14 +101,34 @@ def stall_watchdog(limit: float = STALL_LIMIT, check_every: float = 20.0) -> Non
 
 
 def _reload_if_changed(module, path) -> object:
-    """Pick up edits to a module this long-running process imported at start."""
+    """Pick up edits to a module this long-running process imported at start.
+
+    A reload re-executes the module in place. If that is interrupted — a kill, an import error, a
+    half-written file — the module is left with a partial namespace, and every later call fails with
+    a NameError that has nothing to do with the code on disk. That happened on 2026-10-27: the
+    sampler errored every 15 s for ten hours while the HTTP layer kept answering with the last
+    sample, which is precisely the false green this monitor exists to prevent.
+
+    So the reload is transactional: keep the module we had unless the new one is complete.
+    """
     stamp = path.stat().st_mtime if path.exists() else 0
     key = f"_mtime_{module.__name__}"
-    if STATE.get(key) != stamp:
-        STATE[key] = stamp
-        if stamp:
-            module = importlib.reload(module)
-    return module
+    if STATE.get(key) == stamp or not stamp:
+        return module
+    STATE[key] = stamp
+    try:
+        importlib.invalidate_caches()
+        reloaded = importlib.reload(module)
+    except Exception as exc:                      # noqa: BLE001 - a reload must not kill the loop
+        STATE["reload_error"] = f"{module.__name__}: {exc}"
+        return module
+    # A partial module is worse than a stale one: check the names the sampler needs.
+    missing = [name for name in ("sample", "measure") if not hasattr(reloaded, name)]
+    if missing:
+        STATE["reload_error"] = f"{module.__name__}: reload left {missing} undefined"
+        return module
+    STATE["reload_error"] = None
+    return reloaded
 
 
 def sampler(interval: float, page_interval: float) -> None:
@@ -192,7 +212,19 @@ class Handler(SimpleHTTPRequestHandler):
             return
         if clean.startswith("/api/status"):
             body = dict(STATE["payload"] or {})
-            body["stale"] = (time.time() - STATE["sampled"]) > 3 * STATE["interval"]
+            age = time.time() - STATE["sampled"]
+            body["sample_age_s"] = round(age, 1)
+            body["stale"] = age > 3 * STATE["interval"]
+            # A stale sample cannot be a healthy verdict. Before this guard, a sampler that died at
+            # 00:53 still answered `overall: OK` for ten hours — the exact false green the watchdog
+            # exists to catch, and it should not be left to an external cron alone.
+            if body["stale"]:
+                body["overall"] = "STALE"
+                derived = dict(body.get("derived") or {})
+                derived["overall"] = "STALE"
+                derived["faults"] = list(derived.get("faults") or []) + [
+                    f"sample is {age:.0f}s old (interval {STATE['interval']}s)"]
+                body["derived"] = derived
             body["server_error"] = STATE["error"]
             body["strip_html"] = STATE["strip"]        # rendered once per sample, not per request
             self._send(body)

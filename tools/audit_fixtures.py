@@ -39,6 +39,7 @@ EXPECTED = {
     "s7_no_referee": ("FAIL", "S7"),
     "s8_formal_lie": ("FAIL", "S8"),
     "s9_prose_number": ("FAIL", "S9"),
+    "s11_wrong_verdict": ("FAIL", "S11"),
 }
 
 
@@ -98,7 +99,7 @@ def main(argv: list[str] | None = None) -> int:
         for line in problems:
             print(f"[FAIL] {line}")
         return 1
-    print(f"[OK] {len(EXPECTED)} fixtures: S1-S9 each trip once, the clean control passes")
+    print(f"[OK] {len(EXPECTED)} fixtures: S1-S11 each trip once, the clean control passes")
     return 0
 
 

@@ -87,10 +87,20 @@
         "S9"
       ],
       "ok": true
+    },
+    {
+      "fixture": "s11_wrong_verdict",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "checks": [
+        "S11"
+      ],
+      "ok": true
     }
   ],
   "covered": [
     "S1",
+    "S11",
     "S2",
     "S3",
     "S4",

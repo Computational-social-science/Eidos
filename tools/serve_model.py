@@ -34,6 +34,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 BASE = os.environ.get("HERMES_LOCAL_LLAMACPP_URL", "http://127.0.0.1:18434")
+PRESETS = Path(os.environ.get("HERMES_HOME") or
+               Path(os.environ.get("LOCALAPPDATA", "")) / "hermes") / "runtimes" / "llamacpp" / "presets.ini"
 KEY = os.environ.get("HERMES_LOCAL_LLAMACPP_KEY", "")
 
 
@@ -70,6 +72,74 @@ def resident() -> tuple[str | None, dict]:
         if status == "loaded":
             return entry.get("id"), entry
     return None, {}
+
+
+def parse_presets(text: str) -> dict[str, dict[str, str]]:
+    """`[name]` sections of the runtime's ini, as dictionaries.
+
+    The file is the deployment, but a running router caches the arguments it started with, so an edit
+    here does nothing until the router restarts. That distinction is the reason `status` reads this
+    file and compares it with what is actually loaded.
+    """
+    sections: dict[str, dict[str, str]] = {}
+    current = None
+    for raw in text.splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or line.startswith(";"):
+            continue
+        if line.startswith("[") and line.endswith("]"):
+            current = line[1:-1].strip()
+            sections[current] = {}
+        elif current and "=" in line:
+            key, value = line.split("=", 1)
+            sections[current][key.strip()] = value.strip()
+    return sections
+
+
+def preset_table() -> dict[str, dict]:
+    """Preset vs registry vs what is loaded, for every model the framework knows."""
+    from framework.inference import ModelManager
+
+    try:
+        sections = parse_presets(PRESETS.read_text(encoding="utf-8"))
+    except OSError:
+        return {}
+    loaded_id, record = resident()
+    loaded_ctx = None
+    if loaded_id:
+        args = [str(a) for a in ((record.get("status") or {}).get("args") or [])]
+        if "--ctx-size" in args:
+            loaded_ctx = args[args.index("--ctx-size") + 1]
+        elif "-c" in args:
+            loaded_ctx = args[args.index("-c") + 1]
+
+    table = {}
+    sq = lambda text: "".join(ch for ch in text.lower() if ch.isalnum())      # noqa: E731
+    for name, values in sections.items():
+        registry_key = next((k for k in ModelManager.MODEL_REGISTRY if sq(k) == sq(name)), None)
+        spec = ModelManager.MODEL_REGISTRY[registry_key] if registry_key else None
+        declared = spec.context_window if spec else None
+        provider = getattr(spec.provider, "value", None) if spec else None
+        preset_ctx = values.get("ctx-size")
+        note = describe(name, preset_ctx, declared, loaded_ctx if name == loaded_id else None,
+                        provider)
+        table[name] = {"ctx": preset_ctx, "registry_ctx": declared,
+                       "loaded_ctx": loaded_ctx if name == loaded_id else None, "note": note}
+    return table
+
+
+def describe(name: str, preset_ctx, declared, loaded_ctx, provider) -> str:
+    """The note for one preset row. Pure, so the comparisons can be tested without a router."""
+    if loaded_ctx is not None and str(loaded_ctx) != str(preset_ctx):
+        return (f"preset says {preset_ctx}, the router loaded {loaded_ctx}: restart the router for "
+                f"the preset to take effect")
+    if provider != "llama_cpp":
+        # Served by something else (the decision service on 8081, for instance): this preset is not
+        # how it runs, so its context is not evidence of anything.
+        return ""
+    if declared is not None and str(declared) != str(preset_ctx):
+        return f"registry declares {declared}, preset says {preset_ctx}"
+    return ""
 
 
 def vram_used_gb() -> float:
@@ -172,7 +242,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.action == "status":
         loaded_id, record = resident()
         print(json.dumps({"resident": loaded_id, "path": record.get("model"),
-                          "used_gb": round(vram_used_gb(), 1)}, indent=2))
+                          "used_gb": round(vram_used_gb(), 1),
+                          "presets": preset_table()}, indent=2))
         return 0
     return swap(args.model, args.budget, args.dry_run)
 

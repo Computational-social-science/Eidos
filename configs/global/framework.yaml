@@ -89,8 +89,10 @@ framework:
       promotion_threshold: 0.90
       model_accuracy_structured: 0.867    # docs/S4_VERDICT.md; below the bar, not promoted
     s7:
-      status: "not gateable"             # 0.750: detects 8/8, categorises 6/8, one false positive
+      status: "not gateable"             # open-ended 0.750; constrained 0.917 (n=12, CI 0.65-0.99)
+      constrained_variant: "category fixed by the artefact; model answers support only"
       allowed_use: "draft objections for human review"
+      not_established: "11/12 clears 0.90 as a point estimate; the interval does not"
 
   human_gates:
     mandatory:
@@ -137,7 +139,7 @@ framework:
       - name: "StartLux-Decision-4B-Q8_0"
         provider: "startlux"
         quant: "q8_0"
-        context: 32768
+        context: 16384         # measured from the engine's /props, not from the preset (65536)
         vram_gb: 6.0
         mutex_with: ["ScienceRSI-8b-i1-Q4_K_M"]
         used_for: ["routing", "gate triage", "hypothesis screening"]

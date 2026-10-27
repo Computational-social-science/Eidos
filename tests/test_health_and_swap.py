@@ -71,3 +71,39 @@ def test_the_router_id_resolves_to_the_deployed_context():
     """
     assert serve_model.context_of("ScienceRSI-8b.i1-Q4_K_M") == 16384
     assert serve_model.footprint("ScienceRSI-8b.i1-Q4_K_M") == 6.2
+
+
+SAMPLE_INI = """
+# hermes-decision: {"model_id": "A", "window": 40960}
+[A]
+ctx-size = 40960
+model = /models/a.gguf
+[B]
+ctx-size = 16384
+"""
+
+
+def test_preset_sections_are_parsed_and_comments_ignored():
+    sections = serve_model.parse_presets(SAMPLE_INI)
+    assert set(sections) == {"A", "B"}
+    assert sections["A"]["ctx-size"] == "40960"
+    assert sections["A"]["model"] == "/models/a.gguf"
+
+
+def test_a_changed_preset_is_reported_as_needing_a_restart():
+    note = serve_model.describe("A", "40960", 16384, "16384", "llama_cpp")
+    assert "restart the router" in note
+
+
+def test_a_model_served_elsewhere_is_not_compared_with_this_preset():
+    """StartLux runs on 8081 from the decision service; the Hermes preset is not its deployment."""
+    assert serve_model.describe("StartLux", "65536", 16384, None, "startlux") == ""
+
+
+def test_a_registry_that_disagrees_with_the_preset_is_reported():
+    note = serve_model.describe("A", "8192", 16384, None, "llama_cpp")
+    assert "registry declares 16384" in note
+
+
+def test_agreement_is_silent():
+    assert serve_model.describe("A", "16384", 16384, None, "llama_cpp") == ""

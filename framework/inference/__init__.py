@@ -124,7 +124,9 @@ class ModelManager:
         "StartLux-Decision-4B-Q8_0": ModelSpec(
             "StartLux-Decision-4B-Q8_0", ModelProvider.STARTLUX, ModelSize.MEDIUM,
             os.environ.get("DECISION_SERVICE_URL", "http://127.0.0.1:8090"),
-            6.0, 32768, supports_streaming=False, quantization="q8_0",
+            # Measured from the engine's /props: n_ctx 16384. The registry said 32768 and the Hermes
+            # preset says 65536 — three numbers, one of them the running one.
+            6.0, 16384, supports_streaming=False, quantization="q8_0",
             tags=["decision", "choice", "yes-no", "score"],
             mutex_with=("ScienceRSI-8b-i1-Q4_K_M",)),
         "ScienceRSI-8b-i1-Q4_K_M": ModelSpec(
@@ -141,7 +143,8 @@ class ModelManager:
             tags=["chat", "reasoning", "moe"]),
         "Qwen3.8-27B-UD-Q4_K_M": ModelSpec(
             "Qwen3.8-27B-UD-Q4_K_M", ModelProvider.CPU, ModelSize.MEDIUM,
-            "Qwen3.8-27B-UD-Q4_K_M.gguf", 8.0, 262144,
+            # The preset loads 65536; 262144 was a wish nobody exercised. Unmeasured for this project.
+            "Qwen3.8-27B-UD-Q4_K_M.gguf", 8.0, 65536,
             tags=["chat", "reasoning", "moe"]),
         "d1-3b-native": ModelSpec(
             "d1-3b-native", ModelProvider.HUGGINGFACE, ModelSize.SMALL,

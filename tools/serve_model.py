@@ -11,7 +11,7 @@ this, so the procedure belongs in code:
     GET  /v1/models                   confirm the path that actually loaded
 
 The budget check comes from the registry and the last measurement, not from optimism: ScienceRSI at
-28672 costs 8.6 GB, at 16384 about 7.0 GB (docs/MODEL_SMOKE.md).
+28672 costs 8.6 GB, at 16384 about 7.0 GB (docs/MODEL_VERDICTS.md).
 
 Usage:
     python tools/serve_model.py swap --model ScienceRSI-8b.i1-Q4_K_M --dry-run

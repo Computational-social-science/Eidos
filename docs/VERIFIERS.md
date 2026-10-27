@@ -156,10 +156,10 @@ and the `verdict` being asserted. Gate S recomputes the verdict from the fields 
 ```
 
 A record missing a field the branch needs is BLOCKED, not guessed. Prose is not admissible: extraction
-from unseen paraphrases reads 7/10 (docs/S4_VERDICT.md), so a paragraph cannot gate anything. The
+from unseen paraphrases reads 7/10 (docs/MODEL_VERDICTS.md), so a paragraph cannot gate anything. The
 model is not consulted — it scored 0.867 on these records and missed precisely the two comparisons
-(docs/S4_VERDICT.md).
+(docs/MODEL_VERDICTS.md).
 
 S7 is a different rule family and a different outcome: 0.750, detecting all eight planted defects but
-mislabelling two and inventing one on a clean case (docs/S7_VERDICT.md). It drafts objections for a
+mislabelling two and inventing one on a clean case (docs/MODEL_VERDICTS.md). It drafts objections for a
 human; it does not gate.

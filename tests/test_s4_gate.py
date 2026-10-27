@@ -1,7 +1,7 @@
 """S11: a design verdict is arithmetic, and an asserted verdict must follow from the fields.
 
 The model scored 13/15 on structured design records and missed exactly the two comparisons
-(docs/S4_VERDICT.md). So the gate does not ask it: the record carries the fields, the rule decides,
+(docs/MODEL_VERDICTS.md). So the gate does not ask it: the record carries the fields, the rule decides,
 and an asserted verdict that disagrees fails — whoever wrote it.
 """
 

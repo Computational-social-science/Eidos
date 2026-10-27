@@ -24,7 +24,10 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 
 from framework.inference.llama_cpp import JudgementUnavailable, LlamaCppClient  # noqa: E402
+import math  # noqa: E402
+
 import probe_s7  # noqa: E402
+import s7_cases  # noqa: E402
 
 ARTEFACT = {
     "statistics": "a statistical results table",
@@ -44,11 +47,14 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", default="http://127.0.0.1:18434")
     ap.add_argument("--model", default="ScienceRSI-8b.i1-Q4_K_M")
+    ap.add_argument("--cases", choices=("12", "40"), default="40")
     args = ap.parse_args()
+
+    cases = probe_s7.CASES if args.cases == "12" else s7_cases.CASES
 
     client = LlamaCppClient(base_url=args.url, model=args.model)
     rows, hits = [], 0
-    for cid, planted, text in probe_s7.CASES:
+    for cid, planted, text in cases:
         kind = ARTEFACT[planted]
         question = f"Claim and evidence: {text}\n\nThe artefact is {kind}. Does it support the claim?"
         try:
@@ -65,10 +71,19 @@ def main() -> int:
         print(f"{cid}  {'ok  ' if ok else 'MISS'}  supports={str(supports):5s} "
               f"expected={str(expected):5s}  {(out['answer'] or {}).get('reason', '')[:70]}")
 
+    def wilson(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
+        p_ = k / n
+        denom = 1 + z * z / n
+        centre = p_ + z * z / (2 * n)
+        half = z * math.sqrt(p_ * (1 - p_) / n + z * z / (4 * n * n))
+        return (centre - half) / denom, (centre + half) / denom
+
+    lo, hi = wilson(hits, len(rows))
     record = {"ts": __import__("datetime").datetime.now().astimezone().isoformat(timespec="seconds"),
               "model": args.model, "mode": "category fixed by artefact; model answers support only",
-              "n": len(rows), "hits": hits, "accuracy": round(hits / len(rows), 3),
-              "open_ended_accuracy": 0.750, "rows": rows}
+              "set": args.cases, "n": len(rows), "hits": hits,
+              "accuracy": round(hits / len(rows), 3),
+              "wilson95": [round(lo, 3), round(hi, 3)], "rows": rows}
     out_path = ROOT / "artifacts" / "evaluation" / "s7_constrained.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")

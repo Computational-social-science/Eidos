@@ -317,7 +317,7 @@ class ScientificValidityGate:
         """S11: the design verdict is arithmetic, and arithmetic is not a model's opinion.
 
         The record must carry the fields, not a paragraph: extraction from prose reads 7/10 on unseen
-        paraphrases (docs/S4_VERDICT.md), so a prose claim cannot be adjudicated here at all. When the
+        paraphrases (docs/MODEL_VERDICTS.md), so a prose claim cannot be adjudicated here at all. When the
         fields are present the rule decides; an asserted verdict that disagrees is a FAIL, whoever
         wrote it — including a model.
         """

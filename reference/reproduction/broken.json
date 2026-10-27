@@ -1,0 +1,7 @@
+{
+  "paper": "fixture-broken",
+  "tool": "stub",
+  "command": ["python", "reference/reproduction/repro_stub.py", "0.400"],
+  "expected": 0.927,
+  "tolerance": 0.001
+}

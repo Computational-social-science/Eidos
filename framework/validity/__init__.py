@@ -311,6 +311,10 @@ class ScientificValidityGate:
                 findings_s4, blocked_s4 = self._s4_verdict(cid, claim["s4"])
                 findings.extend(findings_s4)
                 blocked.extend(blocked_s4)
+            if claim.get("reproduction"):
+                findings_r, blocked_r = self._reproduction_verdict(cid, claim["reproduction"])
+                findings.extend(findings_r)
+                blocked.extend(blocked_r)
         return findings, blocked
 
     def _s4_verdict(self, claim_id: str, record: dict) -> tuple[list[Finding], list[str]]:
@@ -339,6 +343,28 @@ class ScientificValidityGate:
                                     f"named {fields['named']}, adjusted {fields['adjusted']}, "
                                     f"prereg {fields['prereg']}, declared {fields['declared']}) "
                                     f"-> {decided}")], []
+        return [], []
+
+    def _reproduction_verdict(self, claim_id: str, paper: str) -> tuple[list[Finding], list[str]]:
+        """S12: a reproduced method needs a run, and the run needs a number.
+
+        Paper2Agent deliveries are toolboxes; a tool that was converted is not a tool that worked.
+        The artefact is written by framework/reproduction after executing a spec, and only MATCH
+        lets the claim through. A missing artefact is BLOCKED — nothing has run — while a MISMATCH is
+        FAIL, because the paper's number and the code's number disagree and that is a finding.
+        """
+        from framework.reproduction import MATCH, load
+
+        directory = self.root / "artifacts" / "reproduction"
+        record = load(paper, directory)
+        if record is None:
+            return [], [f"{claim_id}: cites reproduction of {paper!r} but "
+                        f"artifacts/reproduction/{paper}.json does not exist"]
+        verdict = record.get("verdict")
+        if verdict != MATCH:
+            return [Finding("S12", f"{claim_id}: reproduction of {paper!r} is {verdict} "
+                                    f"(expected {record.get('expected')}, observed "
+                                    f"{record.get('observed')}, delta {record.get('delta')})")], []
         return [], []
 
     # -- checks ----------------------------------------------------------------

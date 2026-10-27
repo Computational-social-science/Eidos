@@ -72,6 +72,7 @@ Eidos is the **global skeleton** every research project inherits. It provides:
 | **Inference** | Stage-aware scheduling for a 12 GB GPU: one large model resident at a time |
 | **Packaging** | One-click Docker/Binder executable package with full provenance |
 | **Verifiers (P0–P1)** | `proofpath` decides whether a cited work exists and whether it was retracted; `academic-research-kernel` recomputes p, d, power and CI. Both are model-free, both refuse a claim, and both write an artefact a gate can point at — `docs/VERIFIERS.md` |
+| **Reproduction** | A Paper2Agent delivery is accepted only under contract (paper skill + MCP component), and a cited method needs a run: `tools/reproduction_check.py` executes a spec and compares the number with the paper's, Gate S **S12** blocks a claim without `MATCH` — `docs/PAPER2AGENT.md` |
 | **Model verdicts** | No model gates anything. S4 design judgement measured **0.867** with structured input (bar 0.90), S7 support judgement **0.850** held out — both negative, both with named failure families, both kept out of the gate — `docs/MODEL_VERDICTS.md` |
 | **Dependencies** | `pyproject.toml` declares, `uv.lock` pins 294 packages, `update_operator.py` moves a pin only on a passing try. No `requirements.txt` — a third copy drifts |
 

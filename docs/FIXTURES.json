@@ -96,11 +96,21 @@
         "S11"
       ],
       "ok": true
+    },
+    {
+      "fixture": "s12_mismatch",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "checks": [
+        "S12"
+      ],
+      "ok": true
     }
   ],
   "covered": [
     "S1",
     "S11",
+    "S12",
     "S2",
     "S3",
     "S4",

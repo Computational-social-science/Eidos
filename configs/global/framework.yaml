@@ -72,6 +72,12 @@ framework:
       artefact: "artifacts/literature/support/<claim>.json"
       backend: null            # no accessible tool exists; SUPPORT_UNCHECKED until one does
       pass_requires: "passage with source, offsets and matching text"
+    reproduction:
+      tool: "Paper2Agent (MIT) — toolbox, never evidence"
+      requires: ["skill/SKILL.md", "mcp/<repo>-mcp/USAGE.md"]
+      artefact: "artifacts/reproduction/<paper>.json"
+      verdicts: [MATCH, MISMATCH, UNRUN]
+      gate: "S12 — no MATCH, no claim"
     pointers:
       form: "/artifacts/<file>.json#/json/pointer"
       applies_to: ["S4", "S7"]

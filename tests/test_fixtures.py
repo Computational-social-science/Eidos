@@ -17,7 +17,7 @@ def test_every_check_has_a_fixture_that_trips_it():
     run = subprocess.run([sys.executable, "tools/audit_fixtures.py"], cwd=ROOT,
                          capture_output=True, text=True, timeout=300)
     assert run.returncode == 0, run.stdout + run.stderr
-    assert "S1-S11 each trip once" in run.stdout
+    assert "S1-S12 each trip once" in run.stdout
 
 
 def test_the_clean_fixture_is_not_rejected():

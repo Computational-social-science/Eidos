@@ -163,3 +163,13 @@ model is not consulted — it scored 0.867 on these records and missed precisely
 S7 is a different rule family and a different outcome: 0.750, detecting all eight planted defects but
 mislabelling two and inventing one on a clean case (docs/MODEL_VERDICTS.md). It drafts objections for a
 human; it does not gate.
+
+
+## S12: a reproduced method needs a run
+
+A claim may declare `reproduction: <paper>`. Gate S then requires
+`artifacts/reproduction/<paper>.json` with verdict `MATCH`; a missing record is `BLOCKED`, a
+`MISMATCH` is `FAIL`. The record is written by `tools/reproduction_check.py` after executing a spec —
+command, expected value, tolerance — and comparing what the code printed with what the paper reported.
+Paper2Agent deliveries are consumed as toolboxes under contract, never as evidence: see
+`docs/PAPER2AGENT.md`.

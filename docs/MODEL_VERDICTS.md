@@ -66,27 +66,43 @@ does not follow from its fields fails, whoever wrote the verdict.
 
 ## 4. S7 — support and objections
 
-| condition | result | Wilson 95% |
-|---|---|---|
-| open-ended: model picks the category, 12 cases | 9/12 = 0.750 | [0.468, 0.911] |
-| category fixed by the artefact, 12 cases | 11/12 = 0.917 | [0.646, 0.985] |
-| **category fixed by the artefact, 40 cases** | **38/40 = 0.950** | **[0.835, 0.986]** |
+| condition | n | result | Wilson 95% |
+|---|---|---|---|
+| open-ended: model picks the category | 12 | 9/12 = 0.750 | [0.468, 0.911] |
+| category fixed by the artefact — the twelve that motivated it | 12 | 11/12 = 0.917 | [0.646, 0.985] |
+| same, expanded set | 40 | 38/40 = 0.950 | [0.835, 0.986] |
+| **same, held-out set written afterwards** | **20** | **17/20 = 0.850** | **[0.640, 0.948]** |
+| restate-the-numbers-first variant | 40 | 36/40 = 0.900 | [0.769, 0.960] |
 
-The architecture that raised the score: resolve the artefact first, let its type fix the category,
-and ask one question — does this evidence support the claim? The model never names a category, so it
+The architecture that raised the score: resolve the artefact first, let its type fix the category, and
+ask one question — does this evidence support the claim. The model never names a category, so it
 cannot mislabel one, which was two of the three failures in the open-ended run.
 
-The two remaining misses are informative rather than random:
+**The tuned figure was about 0.10 optimistic.** Twenty cases written after the failures were seen
+score 0.850, not 0.950. That is the number to quote, and it does not clear the bar.
 
-* **X-23** (design, 31% vs 4% attrition): the model *described* the differential attrition correctly
-  and still answered "supports". A reasoning slip after a correct reading.
-* **X-33** (clean, generalisation to adults, evidence lists two adult samples and one adolescent): the
-  model read it as "only one adolescent sample". A reading error on a clean case.
+### Three failure families, not noise
 
-**Verdict: not established.** 0.95 as a point estimate, 0.835 as a lower bound. At this accuracy the
-interval reaches 0.90 only at n ≈ 200; perfect accuracy on the existing 40 would give [0.912, 1.0].
-So the cheapest path to a decision is to fix the two failure modes and re-run 40, not to add cases
-blindly. Until then: `do not gate on S7`; the model may draft objections for a human.
+| family | cases | what happens |
+|---|---|---|
+| significance rationalised | X-03, X-06, H-02 | quotes "chi-square on continuous measurements" or "three of fourteen benchmarks" and then concludes support from p < 0.05 |
+| selection rationalised | X-23, X-10 | quotes 31% vs 4% attrition, or completers-vs-dropouts, and then argues the comparison supports the claim |
+| over-strict on a clean case | X-33, H-16 | reads "two adult samples and one adolescent" as "only one adolescent"; calls a blinded, placebo-controlled study insufficient |
+
+### The restate experiment, and what it refuted
+
+X-23 looked like a slip after a correct reading, so the prompt was changed to require quoting the
+decisive numbers before answering. It made things **worse**: 36/40 against 38/40. Quoting did not
+trigger the rule — it supplied material for a rationalisation, as X-03 shows: the model restated that a
+chi-square had been applied to continuous measurements and then wrote "p = 0.03 … indicating
+statistical significance, which supports the claim".
+
+The hypothesis was wrong, and the prompt was reverted. The failure is recorded in
+`tools/probe_s7_constrained.py` where the prompt lives, so the next person does not re-run it.
+
+**Verdict: not gateable.** 0.850 out of sample, with two families of defect that a gate cannot tolerate
+(the expensive direction is failing a clean study, and it does that too). The model may draft
+objections for a human; it does not decide.
 
 ## 5. What this means for the gate
 

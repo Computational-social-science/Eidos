@@ -89,13 +89,14 @@ framework:
       promotion_threshold: 0.90
       model_accuracy_structured: 0.867    # docs/MODEL_VERDICTS.md; below the bar, not promoted
     s7:
-      status: "not gateable"             # 38/40 = 0.950, Wilson [0.835, 0.986]: the point clears, the bound does not
+      status: "not gateable"             # held-out 17/20 = 0.850 [0.640, 0.948]; tuned 0.950 was ~0.10 optimistic
       constrained_variant: "category fixed by the artefact; model answers support only"
       allowed_use: "draft objections for human review"
-      cases: 40
-      accuracy: 0.95
-      wilson95: [0.835, 0.986]
-      not_established: "at 0.95, a lower bound of 0.90 needs n~200; perfect accuracy on 40 gives [0.912, 1.0]"
+      held_out_cases: 20
+      held_out_accuracy: 0.85
+      wilson95: [0.640, 0.948]
+      failure_families: ["significance rationalised", "selection rationalised", "over-strict on clean cases"]
+      refuted: "quoting the decisive numbers first made it worse: 36/40 against 38/40"
 
   human_gates:
     mandatory:

@@ -28,6 +28,7 @@ import math  # noqa: E402
 
 import probe_s7  # noqa: E402
 import s7_cases  # noqa: E402
+import s7_cases_holdout  # noqa: E402
 
 ARTEFACT = {
     "statistics": "a statistical results table",
@@ -37,6 +38,10 @@ ARTEFACT = {
     None: "the full package: verified citations, a pre-registered design, and the analysis",
 }
 
+# A restate-before-answering variant was tried and made things worse (36/40 against 38/40): the model
+# quoted the fatal detail and then argued it into support — X-03 restated "chi-square on continuous
+# measurements" and concluded significance from p = 0.03. Quoting did not trigger the rule; it supplied
+# material for a rationalisation. The plain form is what the measurements support, so it is the default.
 SYSTEM = (
     "You are checking one claim against one artefact. Answer a single question: does this artefact "
     "support the claim as stated? Do not judge anything else. "
@@ -47,10 +52,10 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--url", default="http://127.0.0.1:18434")
     ap.add_argument("--model", default="ScienceRSI-8b.i1-Q4_K_M")
-    ap.add_argument("--cases", choices=("12", "40"), default="40")
+    ap.add_argument("--cases", choices=("12", "40", "20"), default="40")
     args = ap.parse_args()
 
-    cases = probe_s7.CASES if args.cases == "12" else s7_cases.CASES
+    cases = {"12": probe_s7.CASES, "40": s7_cases.CASES, "20": s7_cases_holdout.CASES}[args.cases]
 
     client = LlamaCppClient(base_url=args.url, model=args.model)
     rows, hits = [], 0
@@ -67,7 +72,8 @@ def main() -> int:
         ok = supports == expected
         hits += ok
         rows.append({"id": cid, "planted": planted, "supports": supports, "expected": expected,
-                     "ok": ok, "reason": (out["answer"] or {}).get("reason")})
+                     "ok": ok, "reason": (out["answer"] or {}).get("reason"),
+                     "restate": (out["answer"] or {}).get("restate")})
         print(f"{cid}  {'ok  ' if ok else 'MISS'}  supports={str(supports):5s} "
               f"expected={str(expected):5s}  {(out['answer'] or {}).get('reason', '')[:70]}")
 

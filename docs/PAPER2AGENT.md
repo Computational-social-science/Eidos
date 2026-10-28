@@ -150,9 +150,9 @@ the diagnosis took one command to overturn:
 | destination | result |
 |---|---|
 | `/tmp/p2a` (MSYS path) | `fatal: fetch-pack: invalid index-pack output` — twice |
-| `E:/tmp_p2a_depth` (native path) | **cloned**, `--depth 1` |
-| `E:/tmp_p2a_filter` (native path) | **cloned**, `--filter=blob:none` |
-| `E:/tmp_p2a_full` (native path) | **cloned**, full history |
+| `.scratch/clone-depth` (native path) | **cloned**, `--depth 1` |
+| `.scratch/clone-filter` (native path) | **cloned**, `--filter=blob:none` |
+| `.scratch/clone-full` (native path) | **cloned**, full history |
 
 Git here is a native Windows binary and MSYS does not translate arguments for it, so `/tmp/p2a`
 reached git as a drive-relative path (`E:	mp\p2a`); it created the directory and then failed inside
@@ -160,4 +160,36 @@ its pack step, reporting `invalid index-pack` rather than anything about paths. 
 and the link were fine throughout.
 
 The build failure above is a different matter and stays: it reproduces with a native output path
-(`E:/tmp/stage_native`), so it is the engine's validator, not the filesystem.
+(`.scratch/stage-native`), so it is the engine's validator, not the filesystem.
+
+
+## The MCP server, and the third-party verifier that passes it
+
+The paper-only branch stalls (above), so the code branch was taken instead: four tools from Equations
+13, 19, 42 and 43, in `reference/reproduction/barron2026/mcp/server.py`, on `fastmcp==4.0.3` — the
+baseline the skill names in `references/runtime.md` — with `mcp` resolving to 2.3.0.
+
+Paper2Agent's verifier ran unmodified, with `--require-all-tools`:
+
+```
+{"success": true, "mode": "calls", "cases_checked": 4}
+```
+
+| case | tool | asserted |
+|---|---|---|
+| `log_softmax_stable_value` | `log_softmax` | `first == -3.0459958111350716e-08` |
+| `softmax_normalised` | `softmax` | `is_normalised` |
+| `hard_ce_gradient_sums_to_zero` | `hard_cross_entropy` | `grad_sum_is_zero`, `loss == 3.0459958111350716e-08` |
+| `soft_ce_gradient_sums_to_zero` | `soft_target_cross_entropy` | `grad_sum_is_zero`, exact gradient |
+
+`grad_sum_is_zero` is not a fitted tolerance: it tests the sum against 8 ulp of the gradient's own
+scale, the error a three-term float64 sum can accumulate. On `z = [9, -9, -9]` the residual is
+`8.9e-16`.
+
+One claim is deliberately **not** reproduced: the paper says the naive form returns *exactly* `0.0` on
+that input. In float64 numpy it returns `-3.0459959887707555e-08`, so the collapse depends on precision
+and backend. The tool returns both evaluations and the gap between them rather than asserting a
+collapse that does not happen here.
+
+`tests/test_mcp_barron.py` keeps the report honest: it fails if `verify.json` stops describing this
+package (inventory, case count, every case passing), so a stale report cannot outlive the code.

@@ -1,0 +1,6 @@
+[
+  "log_softmax",
+  "softmax",
+  "hard_cross_entropy",
+  "soft_target_cross_entropy"
+]

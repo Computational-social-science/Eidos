@@ -242,7 +242,7 @@ lockfile, and the executable environment (Docker/Binder).
 
 ## Status and honest limits
 
-- **Tested:** `make test` → **69 tests pass**. They cover both directions of
+- **Tested:** `make test` → **301 tests pass**. They cover both directions of
   every gate (a gate that cannot fail is not a gate), direction-aware acceptance
   criteria, diagnosis severity/actions/redaction with gate details carried into
   the cause, BootLoops root resolution, the project registry's failure modes

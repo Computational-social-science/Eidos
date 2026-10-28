@@ -91,7 +91,10 @@ def test_gate_s_blocks_a_claim_without_a_reproduction_record(tmp_path):
 
 def test_gate_s_fails_a_claim_whose_reproduction_mismatched(tmp_path):
     reproduction.write({"paper": "p", "verdict": reproduction.MISMATCH, "expected": 0.927,
-                        "observed": 0.4, "delta": 0.527}, tmp_path / "artifacts" / "reproduction")
+                        "observed": 0.4, "delta": 0.527,
+                        "registered_at": "2026-10-26T00:00:00+00:00",
+                        "ts": "2026-10-27T00:00:00+00:00"},
+                       tmp_path / "artifacts" / "reproduction")
     findings, blocked = ScientificValidityGate(tmp_path)._reproduction_verdict("C2", "p")
     assert blocked == []
     assert any("S12" in str(f) and "MISMATCH" in str(f) for f in findings)
@@ -99,7 +102,10 @@ def test_gate_s_fails_a_claim_whose_reproduction_mismatched(tmp_path):
 
 def test_gate_s_passes_a_claim_whose_reproduction_matched(tmp_path):
     reproduction.write({"paper": "p", "verdict": reproduction.MATCH, "expected": 0.927,
-                        "observed": 0.927, "delta": 0.0}, tmp_path / "artifacts" / "reproduction")
+                        "observed": 0.927, "delta": 0.0,
+                        "registered_at": "2026-10-26T00:00:00+00:00",
+                        "ts": "2026-10-27T00:00:00+00:00"},
+                       tmp_path / "artifacts" / "reproduction")
     findings, blocked = ScientificValidityGate(tmp_path)._reproduction_verdict("C3", "p")
     assert findings == [] and blocked == []
 
@@ -126,3 +132,28 @@ def test_a_set_is_judged_as_a_set():
     assert reproduction.run_set({'paper': 'p', 'specs': [good, good]})['verdict'] == reproduction.MATCH
     mixed = reproduction.run_set({'paper': 'p', 'specs': [good, bad]})
     assert mixed['verdict'] == reproduction.MISMATCH and mixed['counts']['MISMATCH'] == 1
+
+
+def test_s12_blocks_a_record_without_pre_registration(tmp_path):
+    reproduction.write({"paper": "p", "verdict": reproduction.MATCH, "expected": 1.0,
+                        "observed": 1.0, "delta": 0.0}, tmp_path / "artifacts" / "reproduction")
+    findings, blocked = ScientificValidityGate(tmp_path)._reproduction_verdict("C", "p")
+    assert findings == [] and any("pre-registered" in b for b in blocked)
+
+
+def test_s12_fails_a_spec_registered_after_the_run(tmp_path):
+    reproduction.write({"paper": "p", "verdict": reproduction.MATCH, "expected": 1.0,
+                        "observed": 1.0, "registered_at": "2026-10-28T12:00:00+00:00",
+                        "ts": "2026-10-28T10:00:00+00:00"},
+                       tmp_path / "artifacts" / "reproduction")
+    findings, blocked = ScientificValidityGate(tmp_path)._reproduction_verdict("C", "p")
+    assert blocked == [] and any("after the run" in str(f) for f in findings)
+
+
+def test_s12_accepts_a_spec_registered_before_the_run(tmp_path):
+    reproduction.write({"paper": "p", "verdict": reproduction.MATCH, "expected": 1.0,
+                        "observed": 1.0, "registered_at": "2026-10-28T09:00:00+00:00",
+                        "ts": "2026-10-28T10:00:00+00:00"},
+                       tmp_path / "artifacts" / "reproduction")
+    findings, blocked = ScientificValidityGate(tmp_path)._reproduction_verdict("C", "p")
+    assert findings == [] and blocked == []

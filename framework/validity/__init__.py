@@ -360,6 +360,16 @@ class ScientificValidityGate:
         if record is None:
             return [], [f"{claim_id}: cites reproduction of {paper!r} but "
                         f"artifacts/reproduction/{paper}.json does not exist"]
+        # Pre-registration: a spec written after the run can be shaped to the answer. The bundle must
+        # carry `registered_at`, and it must precede the record's ts.
+        registered = record.get("registered_at")
+        if not registered:
+            return [], [f"{claim_id}: reproduction of {paper!r} has no registered_at — the spec was "
+                        f"not pre-registered, so its tolerance could have been chosen after the fact"]
+        if str(registered) > str(record.get("ts")):
+            return [Finding("S12", f"{claim_id}: reproduction of {paper!r} was registered at "
+                                    f"{registered}, after the run at {record.get('ts')}")], []
+
         verdict = record.get("verdict")
         if verdict != MATCH:
             return [Finding("S12", f"{claim_id}: reproduction of {paper!r} is {verdict} "

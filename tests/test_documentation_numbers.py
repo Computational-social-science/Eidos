@@ -47,3 +47,15 @@ def test_the_documents_do_not_quote_the_superseded_s7_figure_as_current():
     if "0.950" in VERDICTS:
         assert "0.850" in VERDICTS
         assert "optimistic" in VERDICTS.lower()
+
+
+def test_health_table_matches_the_self_audit_record():
+    """The table's two headline numbers come from docs/SELF_AUDIT.json; drift must fail here."""
+    import json as _json
+    from pathlib import Path as _Path
+
+    root = _Path(__file__).resolve().parents[1]
+    record = _json.loads((root / "docs" / "SELF_AUDIT.json").read_text(encoding="utf-8"))
+    health = (root / "docs" / "HEALTH.md").read_text(encoding="utf-8")
+    assert f"**{record['tests_collected']} collected**" in health
+    assert f"**{record['coverage_total']}%**" in health

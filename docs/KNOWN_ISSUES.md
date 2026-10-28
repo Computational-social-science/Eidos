@@ -170,3 +170,18 @@ Two changes came out of it:
 
 The cron watchdog was right both times; the lesson is that the watchdog is a second line, not the
 first.
+
+
+## 9. Misdiagnoses, and the command that settles each
+
+Two failures in this project were diagnosed by symptom rather than by test, and in both the first
+diagnosis was wrong. They are recorded together because the shape repeats.
+
+| symptom | wrong diagnosis | what it actually was | the one command that shows it |
+|---|---|---|---|
+| `gate` green while the store was empty | "the gate passes" | harness substituted an empty list; the gate never ran on data | run the gate on a fixture that must fail |
+| `fatal: fetch-pack: invalid index-pack output` | "the network, or GitHub" | native `git` given an MSYS path (`/tmp/x` becomes `E:\tmp\x`) | clone the same URL to `<repo>/.scratch/x` |
+
+The rule this produces: a tool's error text names the layer that failed, not the cause. Before
+attributing a failure to the environment, change **one** variable the failure depends on — the path,
+the fixture, the input — and see whether the failure follows.

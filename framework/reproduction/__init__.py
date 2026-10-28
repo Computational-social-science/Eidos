@@ -162,4 +162,5 @@ def run_set(bundle: dict, cwd: str | Path | None = None) -> dict:
     else:
         verdict = UNRUN
     return {"paper": paper, "verdict": verdict, "specs": records,
+            "registered_at": bundle.get("registered_at"),
             "counts": {v: verdicts.count(v) for v in set(verdicts)}, "ts": _now()}

@@ -5,7 +5,10 @@
   "specs": [
     {
       "tool": "log_softmax",
-      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "command": [
+        ".venv-repro/Scripts/python.exe",
+        "reference/reproduction/barron2026/paper_examples.py"
+      ],
       "json_path": "log_softmax.0",
       "expected": -3.046e-08,
       "tolerance": 0.01,
@@ -14,7 +17,10 @@
     },
     {
       "tool": "softmax_grad",
-      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "command": [
+        ".venv-repro/Scripts/python.exe",
+        "reference/reproduction/barron2026/paper_examples.py"
+      ],
       "json_path": "softmax_grad_t",
       "expected": 3.046e-08,
       "tolerance": 0.01,
@@ -23,7 +29,10 @@
     },
     {
       "tool": "cross_entropy",
-      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "command": [
+        ".venv-repro/Scripts/python.exe",
+        "reference/reproduction/barron2026/paper_examples.py"
+      ],
       "json_path": "ce_value",
       "expected": 3.046e-08,
       "tolerance": 0.01,
@@ -32,7 +41,10 @@
     },
     {
       "tool": "cross_entropy_grad_sum",
-      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "command": [
+        ".venv-repro/Scripts/python.exe",
+        "reference/reproduction/barron2026/paper_examples.py"
+      ],
       "json_path": "ce_grad_sum",
       "expected": 0.0,
       "tolerance": 1e-12,
@@ -40,7 +52,10 @@
     },
     {
       "tool": "standard_cross_entropy_baseline",
-      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "command": [
+        ".venv-repro/Scripts/python.exe",
+        "reference/reproduction/barron2026/paper_examples.py"
+      ],
       "json_path": "standard_ce_value",
       "expected": 0.0,
       "tolerance": 1e-12,
@@ -48,7 +63,10 @@
     },
     {
       "tool": "soft_target_grad",
-      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "command": [
+        ".venv-repro/Scripts/python.exe",
+        "reference/reproduction/barron2026/paper_examples.py"
+      ],
       "json_path": "soft_grad.0",
       "expected": -4.595504e-08,
       "tolerance": 0.01,
@@ -57,7 +75,10 @@
     },
     {
       "tool": "soft_target_exactness",
-      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "command": [
+        ".venv-repro/Scripts/python.exe",
+        "reference/reproduction/barron2026/paper_examples.py"
+      ],
       "json_path": "fixed_max_abs_error",
       "expected": 0.0,
       "tolerance": 1e-12,
@@ -65,12 +86,17 @@
     },
     {
       "tool": "standard_soft_target_baseline",
-      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "command": [
+        ".venv-repro/Scripts/python.exe",
+        "reference/reproduction/barron2026/paper_examples.py"
+      ],
       "json_path": "standard_soft_grad.0",
       "expected": -5.960464e-08,
       "tolerance": 0.01,
       "relative": true,
       "claim": "Section 3: the standard implementation's first entry is -5.960464e-8 — wrong by 30%"
     }
-  ]
+  ],
+  "registered_at": "2026-10-28T14:01:26+00:00",
+  "registration_note": "Registered before this run; the eight values had been observed in an earlier ad-hoc run, which is stated in docs/PAPER2AGENT.md rather than hidden."
 }

@@ -1,0 +1,67 @@
+[
+  {
+    "name": "log_softmax_stable_value",
+    "tool": "log_softmax",
+    "arguments": {
+      "z": [
+        9,
+        -9,
+        -9
+      ]
+    },
+    "expected_subset": {
+      "first": -3.0459958111350716e-08
+    }
+  },
+  {
+    "name": "softmax_normalised",
+    "tool": "softmax",
+    "arguments": {
+      "z": [
+        9,
+        -9,
+        -9
+      ]
+    },
+    "expected_subset": {
+      "is_normalised": true
+    }
+  },
+  {
+    "name": "hard_ce_gradient_sums_to_zero",
+    "tool": "hard_cross_entropy",
+    "arguments": {
+      "z": [
+        9,
+        -9,
+        -9
+      ],
+      "target": 0
+    },
+    "expected_subset": {
+      "grad_sum_is_zero": true,
+      "loss": 3.0459958111350716e-08
+    }
+  },
+  {
+    "name": "soft_ce_gradient_sums_to_zero",
+    "tool": "soft_target_cross_entropy",
+    "arguments": {
+      "student": [
+        1,
+        0
+      ],
+      "teacher": [
+        0.5,
+        0.5
+      ]
+    },
+    "expected_subset": {
+      "grad_sum_is_zero": true,
+      "grad": [
+        0.2310585786300049,
+        -0.2310585786300049
+      ]
+    }
+  }
+]

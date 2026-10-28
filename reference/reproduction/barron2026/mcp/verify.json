@@ -1,0 +1,147 @@
+{
+  "success": true,
+  "mode": "calls",
+  "require_all_tools": true,
+  "server": "E:\\2026-AI4S\\Eidos\\reference\\reproduction\\barron2026\\mcp\\server.py",
+  "cwd": "E:\\2026-AI4S\\Eidos\\reference\\reproduction\\barron2026\\mcp",
+  "python": "E:\\2026-AI4S\\Eidos\\.venv-repro\\Scripts\\python.exe",
+  "python_version": "3.14.5",
+  "fastmcp": "4.0.3",
+  "expected": [
+    "hard_cross_entropy",
+    "log_softmax",
+    "soft_target_cross_entropy",
+    "softmax"
+  ],
+  "actual": [
+    "hard_cross_entropy",
+    "log_softmax",
+    "soft_target_cross_entropy",
+    "softmax"
+  ],
+  "missing": [],
+  "unexpected": [],
+  "schemas": {
+    "log_softmax": {
+      "input": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "z": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "z"
+        ]
+      },
+      "output": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    "softmax": {
+      "input": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "z": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "z"
+        ]
+      },
+      "output": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    "hard_cross_entropy": {
+      "input": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "z": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "target": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "z",
+          "target"
+        ]
+      },
+      "output": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    },
+    "soft_target_cross_entropy": {
+      "input": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "student": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "teacher": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "student",
+          "teacher"
+        ]
+      },
+      "output": {
+        "additionalProperties": true,
+        "type": "object"
+      }
+    }
+  },
+  "cases": [
+    {
+      "name": "log_softmax_stable_value",
+      "tool": "log_softmax",
+      "success": true,
+      "artifacts_checked": 0
+    },
+    {
+      "name": "softmax_normalised",
+      "tool": "softmax",
+      "success": true,
+      "artifacts_checked": 0
+    },
+    {
+      "name": "hard_ce_gradient_sums_to_zero",
+      "tool": "hard_cross_entropy",
+      "success": true,
+      "artifacts_checked": 0
+    },
+    {
+      "name": "soft_ce_gradient_sums_to_zero",
+      "tool": "soft_target_cross_entropy",
+      "success": true,
+      "artifacts_checked": 0
+    }
+  ]
+}

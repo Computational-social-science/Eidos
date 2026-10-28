@@ -121,8 +121,8 @@ a list, so `soft_grad.0` was unaddressable. Both are fixed and pinned by tests.
 
 ## Running the engine on the PDF: where it stops
 
-The engine was fetched from the upstream tarball (a fresh `git clone` failed on this network; codeload
-worked) and its paper-side pipeline was executed against the PDF:
+The engine was fetched from the upstream tarball, and its paper-side pipeline was executed against
+the PDF:
 
 | stage | result |
 |---|---|
@@ -140,3 +140,24 @@ What this changes: **the engine is not currently usable as-is on this host**, so
 the previous section was produced by the manual workflow (the paper's own listing), not by a converted
 MCP server. The artefact S12 reads is the same either way; what is missing is the third-party tool,
 not the evidence.
+
+
+### Correction: the clone failure was a path, not the network
+
+An earlier version of this file said a fresh `git clone` failed on this network. That was wrong, and
+the diagnosis took one command to overturn:
+
+| destination | result |
+|---|---|
+| `/tmp/p2a` (MSYS path) | `fatal: fetch-pack: invalid index-pack output` — twice |
+| `E:/tmp_p2a_depth` (native path) | **cloned**, `--depth 1` |
+| `E:/tmp_p2a_filter` (native path) | **cloned**, `--filter=blob:none` |
+| `E:/tmp_p2a_full` (native path) | **cloned**, full history |
+
+Git here is a native Windows binary and MSYS does not translate arguments for it, so `/tmp/p2a`
+reached git as a drive-relative path (`E:	mp\p2a`); it created the directory and then failed inside
+its pack step, reporting `invalid index-pack` rather than anything about paths. The repo, the server
+and the link were fine throughout.
+
+The build failure above is a different matter and stays: it reproduces with a native output path
+(`E:/tmp/stage_native`), so it is the engine's validator, not the filesystem.

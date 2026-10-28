@@ -83,3 +83,6 @@ reference/reproduction/*/dist/
 # Scratch: the only place this project writes outside its tracked tree.
 .scratch/
 docs/status/watchdog_state.json
+docs/status/monitor.lock
+docs/status/supervisor.out
+docs/status/_probe.py

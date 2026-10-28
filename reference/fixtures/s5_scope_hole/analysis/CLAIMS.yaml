@@ -1,3 +1,4 @@
+registered_at: 2026-01-01T00:00:00+00:00  # synthetic fixture: the date is part of the fixture
 scope_axes: [model, prompt_shape, items, threshold, non_goals]
 scope:
   model: ["fixture operator"]

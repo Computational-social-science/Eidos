@@ -78,6 +78,9 @@ jobs:
           pytest -q tests/test_site.py tests/test_demo.py
       - name: Monitor page is structurally complete
         run: python tools/dashboard.py --check --no-age
+      - name: Stray-directory check
+        run: python tools/audit_stray.py
+
       - name: Fixture audit (each gate check must trip)
         run: python tools/audit_fixtures.py
 

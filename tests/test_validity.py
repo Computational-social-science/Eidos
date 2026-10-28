@@ -49,7 +49,8 @@ ARTIFACT = {"cross_arm": {"separated": True}, "control": {"fired": True},
 
 
 def write_project(root: Path, *, claims=None, scope=None, power=None,
-                  multiplicity=None, journal=None, manuscript=MANUSCRIPT) -> Path:
+                  multiplicity=None, journal=None, manuscript=MANUSCRIPT,
+                  registered_at="2025-01-01T00:00:00+00:00") -> Path:
     (root / "docs").mkdir(parents=True, exist_ok=True)
     (root / "data").mkdir(parents=True, exist_ok=True)
     (root / "analysis").mkdir(parents=True, exist_ok=True)
@@ -70,7 +71,7 @@ def write_project(root: Path, *, claims=None, scope=None, power=None,
         "assumptions": ["severity matched"],
         "formal": False,
     }
-    register = {
+    register = {"registered_at": registered_at, 
         "scope": scope or {
             "corpus": ["136M Keystrokes"], "task": ["restoration"],
             "models": ["qwen2.5-7b"], "writing_system": ["Latin"],

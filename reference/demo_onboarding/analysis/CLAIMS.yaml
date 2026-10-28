@@ -1,3 +1,4 @@
+registered_at: 2026-01-01T00:00:00+00:00  # synthetic fixture: the date is part of the fixture
 # DEMO · the claim register a new project starts from.
 #
 # Every field here is checked by Gate S. Delete nothing until you know what it does:

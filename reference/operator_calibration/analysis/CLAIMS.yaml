@@ -1,3 +1,4 @@
+registered_at: 2026-01-01T00:00:00+00:00  # synthetic fixture: the date is part of the fixture
 # Gate S register -- operator calibration (LLM consumer, sealed evidence)
 #
 # One instrument, one constructed item set, 100 forward passes. The claims are about the

@@ -1,3 +1,4 @@
+registered_at: 2026-01-01T00:00:00+00:00  # synthetic fixture: the date is part of the fixture
 # Gate S register -- negative control (this claim is false on purpose)
 #
 # The operator consumer proves the gate can pass. It does not prove the gate rejects a

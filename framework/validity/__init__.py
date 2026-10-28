@@ -46,6 +46,8 @@ Checks, each with its own code:
     S6  power and multiplicity are stated and point at a file
     S7  the referee simulation exists and has no unresolved objection
     S8  a claim marked ``formal`` passes the Lean audit (see lean_audit.py)
+    S4b a ``preregistered`` design carries a date that precedes its evidence, so the design
+        could not have been chosen after the result (same freedom S12 closes for specs)
 
 The gate is deliberately strict about S8: a claim that *declares* itself machine-checked
 but whose toolchain is missing is a FAIL, not a SKIP -- the declaration cannot be
@@ -56,6 +58,7 @@ from __future__ import annotations
 
 import html as _html
 import json
+from datetime import datetime, timezone
 import math
 import re
 from dataclasses import dataclass, field
@@ -377,6 +380,57 @@ class ScientificValidityGate:
                                     f"{record.get('observed')}, delta {record.get('delta')})")], []
         return [], []
 
+    @staticmethod
+    def _moment(value: Any) -> Optional[datetime]:
+        """Parse an ISO timestamp; a bare date counts as midnight UTC."""
+        if not value:
+            return None
+        text = str(value).strip().replace("Z", "+00:00")
+        try:
+            parsed = datetime.fromisoformat(text)
+        except ValueError:
+            return None
+        return parsed if parsed.tzinfo else parsed.replace(tzinfo=timezone.utc)
+
+    def _registration(self, claim: Dict[str, Any], cid: str,
+                      register: Dict[str, Any]) -> List[Finding]:
+        """S4b -- 'preregistered' must be evidenced by a date, not asserted by a word.
+
+        A design that claims pre-registration is only pre-registered relative to something. The register
+        carries `registered_at`; the evidence it points at carries `recorded_at`, `ts`, or a file mtime.
+        If the register was written after the evidence existed, the design could have been chosen to fit
+        the result, which is the same freedom S12 closes for reproduction specs.
+        """
+        findings: List[Finding] = []
+        registered = self._moment(register.get("registered_at"))
+        if registered is None:
+            return [Finding("S4", f"{cid}: design is 'preregistered' but the register has no readable "
+                                   f"registered_at, so pre-registration is asserted, not evidenced")]
+
+        evidence = claim.get("evidence") or {}
+        path = evidence.get("file")
+        if not path:
+            return findings
+        target = self.root / path
+        if not target.is_file():
+            return findings  # S3 already reports the missing file
+        recorded = None
+        if target.suffix == ".json":
+            try:
+                payload = json.loads(target.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                payload = None
+            if isinstance(payload, dict):
+                recorded = self._moment(payload.get("recorded_at") or payload.get("ts"))
+        if recorded is None:
+            recorded = datetime.fromtimestamp(target.stat().st_mtime, tz=timezone.utc)
+        if registered > recorded:
+            findings.append(Finding("S4", f"{cid}: register was registered at "
+                                           f"{registered.isoformat()} but its evidence existed at "
+                                           f"{recorded.isoformat()} — the design could have been "
+                                           f"chosen after the result"))
+        return findings
+
     # -- checks ----------------------------------------------------------------
     def run(self) -> GateResult:
         findings: List[Finding] = []
@@ -441,6 +495,7 @@ class ScientificValidityGate:
                                                    f"could have failed"))
                 else:
                     findings.extend(self._evidence(claim.get("control"), cid, "control"))
+                findings.extend(self._registration(claim, cid, data))
 
             # S8 -- formal claims need the Lean chain
             if claim.get("formal"):

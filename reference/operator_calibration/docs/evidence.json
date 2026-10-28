@@ -7,7 +7,7 @@
       "choice": "yes",
       "confidence": 0.99706870350491,
       "none": 0.0004599993580749725,
-      "latency_ms": 223.8
+      "latency_ms": 208.7
     },
     {
       "id": "a2",
@@ -16,7 +16,7 @@
       "choice": "no",
       "confidence": 0.993029716656735,
       "none": 0.0010340273422266078,
-      "latency_ms": 101.2
+      "latency_ms": 111.1
     },
     {
       "id": "a3",
@@ -25,7 +25,7 @@
       "choice": "yes",
       "confidence": 0.9967430017751828,
       "none": 0.0006383287827636523,
-      "latency_ms": 120.3
+      "latency_ms": 142.4
     },
     {
       "id": "a4",
@@ -34,7 +34,7 @@
       "choice": "yes",
       "confidence": 0.6583845673721374,
       "none": 0.006646551832603797,
-      "latency_ms": 96.4
+      "latency_ms": 101.8
     },
     {
       "id": "a5",
@@ -43,7 +43,7 @@
       "choice": "no",
       "confidence": 0.9871846421799189,
       "none": 0.00426797990206864,
-      "latency_ms": 97.9
+      "latency_ms": 101.2
     },
     {
       "id": "a6",
@@ -52,7 +52,7 @@
       "choice": "no",
       "confidence": 0.9924135552698758,
       "none": 0.0023608424681561533,
-      "latency_ms": 115.1
+      "latency_ms": 101.1
     },
     {
       "id": "a7",
@@ -61,7 +61,7 @@
       "choice": "no",
       "confidence": 0.9884915664601284,
       "none": 0.002278059119466462,
-      "latency_ms": 114.8
+      "latency_ms": 116.5
     },
     {
       "id": "a8",
@@ -70,7 +70,7 @@
       "choice": "yes",
       "confidence": 0.9970423870577001,
       "none": 0.0004594999510766711,
-      "latency_ms": 104.1
+      "latency_ms": 102.9
     },
     {
       "id": "a9",
@@ -79,7 +79,7 @@
       "choice": "yes",
       "confidence": 0.9428618522616814,
       "none": 0.004242760793809096,
-      "latency_ms": 108.0
+      "latency_ms": 101.8
     },
     {
       "id": "a10",
@@ -88,7 +88,7 @@
       "choice": "yes",
       "confidence": 0.5396293672587991,
       "none": 0.01629558791806742,
-      "latency_ms": 98.1
+      "latency_ms": 102.5
     },
     {
       "id": "u1",
@@ -97,7 +97,7 @@
       "choice": "not_stated",
       "confidence": 0.9934210067153941,
       "none": 0.001838765903505191,
-      "latency_ms": 115.1
+      "latency_ms": 132.4
     },
     {
       "id": "u2",
@@ -106,7 +106,7 @@
       "choice": "not_stated",
       "confidence": 0.9207696392742921,
       "none": 0.0329905234409503,
-      "latency_ms": 127.8
+      "latency_ms": 114.6
     },
     {
       "id": "u3",
@@ -115,7 +115,7 @@
       "choice": "not_stated",
       "confidence": 0.9966371291262395,
       "none": 0.00357383797879506,
-      "latency_ms": 109.6
+      "latency_ms": 115.7
     },
     {
       "id": "u4",
@@ -124,7 +124,7 @@
       "choice": "not_stated",
       "confidence": 0.9958858232094108,
       "none": 0.002873255579494757,
-      "latency_ms": 125.1
+      "latency_ms": 128.5
     },
     {
       "id": "u5",
@@ -133,7 +133,7 @@
       "choice": "not_stated",
       "confidence": 0.9885461228675443,
       "none": 0.0049224772875279595,
-      "latency_ms": 116.8
+      "latency_ms": 120.4
     },
     {
       "id": "u6",
@@ -142,7 +142,7 @@
       "choice": "not_stated",
       "confidence": 0.693516533954422,
       "none": 0.024005864730996963,
-      "latency_ms": 120.5
+      "latency_ms": 118.1
     },
     {
       "id": "u7",
@@ -151,7 +151,7 @@
       "choice": "not_stated",
       "confidence": 0.8004627361657213,
       "none": 0.02140544657156235,
-      "latency_ms": 141.3
+      "latency_ms": 119.8
     },
     {
       "id": "u8",
@@ -160,7 +160,7 @@
       "choice": "not_stated",
       "confidence": 0.9634407347236833,
       "none": 0.0059947672550151555,
-      "latency_ms": 199.5
+      "latency_ms": 115.8
     },
     {
       "id": "u9",
@@ -169,7 +169,7 @@
       "choice": "not_stated",
       "confidence": 0.9798259254672135,
       "none": 0.007955284610742094,
-      "latency_ms": 128.8
+      "latency_ms": 137.8
     },
     {
       "id": "u10",
@@ -178,7 +178,7 @@
       "choice": "not_stated",
       "confidence": 0.805199320133041,
       "none": 0.01695423881573182,
-      "latency_ms": 118.4
+      "latency_ms": 120.8
     },
     {
       "id": "ga0",
@@ -187,7 +187,7 @@
       "choice": "yes",
       "confidence": 0.9948345876922671,
       "none": 0.0010220741786718791,
-      "latency_ms": 104.4
+      "latency_ms": 113.8
     },
     {
       "id": "ga1",
@@ -196,7 +196,7 @@
       "choice": "no",
       "confidence": 0.9428411254888196,
       "none": 0.005363505031096774,
-      "latency_ms": 106.6
+      "latency_ms": 103.4
     },
     {
       "id": "ga2",
@@ -205,7 +205,7 @@
       "choice": "no",
       "confidence": 0.953765314925775,
       "none": 0.0045915988372283,
-      "latency_ms": 105.4
+      "latency_ms": 118.3
     },
     {
       "id": "ga3",
@@ -214,7 +214,7 @@
       "choice": "yes",
       "confidence": 0.9805823653838002,
       "none": 0.002576946110529614,
-      "latency_ms": 104.2
+      "latency_ms": 103.4
     },
     {
       "id": "ga4",
@@ -223,7 +223,7 @@
       "choice": "no",
       "confidence": 0.9200046019678028,
       "none": 0.007884971061788613,
-      "latency_ms": 111.6
+      "latency_ms": 103.9
     },
     {
       "id": "ga5",
@@ -232,7 +232,7 @@
       "choice": "yes",
       "confidence": 0.9955368368566571,
       "none": 0.0008342227513563525,
-      "latency_ms": 130.4
+      "latency_ms": 111.5
     },
     {
       "id": "ga6",
@@ -241,7 +241,7 @@
       "choice": "yes",
       "confidence": 0.9947284930502533,
       "none": 0.0010839278155874705,
-      "latency_ms": 142.7
+      "latency_ms": 105.6
     },
     {
       "id": "ga7",
@@ -250,7 +250,7 @@
       "choice": "no",
       "confidence": 0.9066763371658653,
       "none": 0.008918898785223603,
-      "latency_ms": 106.2
+      "latency_ms": 125.7
     },
     {
       "id": "ga8",
@@ -259,7 +259,7 @@
       "choice": "yes",
       "confidence": 0.8902929011583778,
       "none": 0.006334349512975908,
-      "latency_ms": 125.2
+      "latency_ms": 101.9
     },
     {
       "id": "ga9",
@@ -268,7 +268,7 @@
       "choice": "no",
       "confidence": 0.9021731899787457,
       "none": 0.010778099069156048,
-      "latency_ms": 118.5
+      "latency_ms": 114.9
     },
     {
       "id": "ga10",
@@ -277,7 +277,7 @@
       "choice": "no",
       "confidence": 0.9085020473160941,
       "none": 0.009439375201190708,
-      "latency_ms": 99.3
+      "latency_ms": 103.2
     },
     {
       "id": "ga11",
@@ -286,7 +286,7 @@
       "choice": "yes",
       "confidence": 0.9874515818217271,
       "none": 0.002190014577650547,
-      "latency_ms": 103.5
+      "latency_ms": 113.6
     },
     {
       "id": "ga12",
@@ -295,7 +295,7 @@
       "choice": "yes",
       "confidence": 0.9784259116161236,
       "none": 0.00246120663942121,
-      "latency_ms": 107.5
+      "latency_ms": 105.2
     },
     {
       "id": "ga13",
@@ -304,7 +304,7 @@
       "choice": "no",
       "confidence": 0.7639628972441495,
       "none": 0.010605949528777633,
-      "latency_ms": 105.2
+      "latency_ms": 101.7
     },
     {
       "id": "ga14",
@@ -313,7 +313,7 @@
       "choice": "yes",
       "confidence": 0.8884919588628564,
       "none": 0.013336865625668473,
-      "latency_ms": 105.3
+      "latency_ms": 100.2
     },
     {
       "id": "ga15",
@@ -322,7 +322,7 @@
       "choice": "yes",
       "confidence": 0.9926585143274553,
       "none": 0.0012830874188481357,
-      "latency_ms": 103.7
+      "latency_ms": 103.8
     },
     {
       "id": "ga16",
@@ -331,7 +331,7 @@
       "choice": "no",
       "confidence": 0.9259336582762132,
       "none": 0.004741757018976811,
-      "latency_ms": 106.4
+      "latency_ms": 100.7
     },
     {
       "id": "ga17",
@@ -340,7 +340,7 @@
       "choice": "yes",
       "confidence": 0.9895629612850043,
       "none": 0.002042630993093493,
-      "latency_ms": 104.3
+      "latency_ms": 100.1
     },
     {
       "id": "ga18",
@@ -349,7 +349,7 @@
       "choice": "yes",
       "confidence": 0.993301761413067,
       "none": 0.0013488091951013499,
-      "latency_ms": 106.0
+      "latency_ms": 103.1
     },
     {
       "id": "ga19",
@@ -358,7 +358,7 @@
       "choice": "no",
       "confidence": 0.8706357771516557,
       "none": 0.009397603110075075,
-      "latency_ms": 122.7
+      "latency_ms": 132.8
     },
     {
       "id": "ga20",
@@ -367,7 +367,7 @@
       "choice": "no",
       "confidence": 0.8284228767608199,
       "none": 0.008807843169784621,
-      "latency_ms": 105.3
+      "latency_ms": 105.9
     },
     {
       "id": "ga21",
@@ -376,7 +376,7 @@
       "choice": "yes",
       "confidence": 0.9894629918975506,
       "none": 0.0020893095035476993,
-      "latency_ms": 102.6
+      "latency_ms": 105.8
     },
     {
       "id": "ga22",
@@ -385,7 +385,7 @@
       "choice": "yes",
       "confidence": 0.9884729259933485,
       "none": 0.0023614922592348378,
-      "latency_ms": 104.7
+      "latency_ms": 102.7
     },
     {
       "id": "ga23",
@@ -394,7 +394,7 @@
       "choice": "yes",
       "confidence": 0.9427296591439043,
       "none": 0.005932408660055451,
-      "latency_ms": 101.0
+      "latency_ms": 102.7
     },
     {
       "id": "ga24",
@@ -403,7 +403,7 @@
       "choice": "no",
       "confidence": 0.8601311278313934,
       "none": 0.010183194295000276,
-      "latency_ms": 102.7
+      "latency_ms": 104.2
     },
     {
       "id": "ga25",
@@ -412,7 +412,7 @@
       "choice": "yes",
       "confidence": 0.9909970251743363,
       "none": 0.001569594613720213,
-      "latency_ms": 102.3
+      "latency_ms": 104.4
     },
     {
       "id": "ga26",
@@ -421,7 +421,7 @@
       "choice": "no",
       "confidence": 0.8279073274842885,
       "none": 0.014355213743687667,
-      "latency_ms": 102.0
+      "latency_ms": 125.4
     },
     {
       "id": "ga27",
@@ -430,7 +430,7 @@
       "choice": "no",
       "confidence": 0.8762870420161402,
       "none": 0.008429990035970605,
-      "latency_ms": 97.6
+      "latency_ms": 104.5
     },
     {
       "id": "ga28",
@@ -439,7 +439,7 @@
       "choice": "no",
       "confidence": 0.8763537528558798,
       "none": 0.008210323346282489,
-      "latency_ms": 99.2
+      "latency_ms": 101.3
     },
     {
       "id": "ga29",
@@ -448,7 +448,7 @@
       "choice": "no",
       "confidence": 0.9006689686682372,
       "none": 0.00926744494307001,
-      "latency_ms": 113.8
+      "latency_ms": 113.5
     },
     {
       "id": "ga30",
@@ -457,7 +457,7 @@
       "choice": "yes",
       "confidence": 0.9966757778685502,
       "none": 0.0006771816595339745,
-      "latency_ms": 102.5
+      "latency_ms": 114.3
     },
     {
       "id": "ga31",
@@ -466,7 +466,7 @@
       "choice": "yes",
       "confidence": 0.9952984070571786,
       "none": 0.000964119797418719,
-      "latency_ms": 127.4
+      "latency_ms": 100.3
     },
     {
       "id": "ga32",
@@ -475,7 +475,7 @@
       "choice": "yes",
       "confidence": 0.9946827694812703,
       "none": 0.0011167529075497222,
-      "latency_ms": 99.1
+      "latency_ms": 98.1
     },
     {
       "id": "ga33",
@@ -484,7 +484,7 @@
       "choice": "no",
       "confidence": 0.8925088709842446,
       "none": 0.0076381891410041486,
-      "latency_ms": 100.8
+      "latency_ms": 102.3
     },
     {
       "id": "ga34",
@@ -493,7 +493,7 @@
       "choice": "yes",
       "confidence": 0.902242866679769,
       "none": 0.009818198309339877,
-      "latency_ms": 127.2
+      "latency_ms": 103.8
     },
     {
       "id": "ga35",
@@ -502,7 +502,7 @@
       "choice": "yes",
       "confidence": 0.9805444917048858,
       "none": 0.003239031153669137,
-      "latency_ms": 116.3
+      "latency_ms": 100.0
     },
     {
       "id": "ga36",
@@ -511,7 +511,7 @@
       "choice": "no",
       "confidence": 0.8140819616098358,
       "none": 0.009387574561051795,
-      "latency_ms": 108.4
+      "latency_ms": 103.1
     },
     {
       "id": "ga37",
@@ -520,7 +520,7 @@
       "choice": "yes",
       "confidence": 0.9055593175864214,
       "none": 0.007591087322246401,
-      "latency_ms": 101.5
+      "latency_ms": 116.3
     },
     {
       "id": "ga38",
@@ -529,7 +529,7 @@
       "choice": "yes",
       "confidence": 0.9692051135301278,
       "none": 0.0050120269537949555,
-      "latency_ms": 102.4
+      "latency_ms": 106.3
     },
     {
       "id": "ga39",
@@ -538,7 +538,7 @@
       "choice": "yes",
       "confidence": 0.9933506969163743,
       "none": 0.0011928657603498603,
-      "latency_ms": 116.7
+      "latency_ms": 119.2
     },
     {
       "id": "gu0",
@@ -547,7 +547,7 @@
       "choice": "not_stated",
       "confidence": 0.9866524957039389,
       "none": 0.0034428240013113383,
-      "latency_ms": 130.2
+      "latency_ms": 118.3
     },
     {
       "id": "gu1",
@@ -556,7 +556,7 @@
       "choice": "not_stated",
       "confidence": 0.990624838644234,
       "none": 0.0039984536633434955,
-      "latency_ms": 114.1
+      "latency_ms": 115.2
     },
     {
       "id": "gu2",
@@ -565,7 +565,7 @@
       "choice": "not_stated",
       "confidence": 0.9834067013901897,
       "none": 0.005404869198953393,
-      "latency_ms": 111.4
+      "latency_ms": 114.2
     },
     {
       "id": "gu3",
@@ -574,7 +574,7 @@
       "choice": "not_stated",
       "confidence": 0.9836633017962673,
       "none": 0.005476837606706956,
-      "latency_ms": 113.3
+      "latency_ms": 118.6
     },
     {
       "id": "gu4",
@@ -583,7 +583,7 @@
       "choice": "not_stated",
       "confidence": 0.9940442770048423,
       "none": 0.0027729447030303447,
-      "latency_ms": 112.7
+      "latency_ms": 119.8
     },
     {
       "id": "gu5",
@@ -592,7 +592,7 @@
       "choice": "not_stated",
       "confidence": 0.9875470837404023,
       "none": 0.003337460713352246,
-      "latency_ms": 115.6
+      "latency_ms": 126.2
     },
     {
       "id": "gu6",
@@ -601,7 +601,7 @@
       "choice": "not_stated",
       "confidence": 0.9911250161990495,
       "none": 0.0027525999360613726,
-      "latency_ms": 110.6
+      "latency_ms": 117.3
     },
     {
       "id": "gu7",
@@ -610,7 +610,7 @@
       "choice": "not_stated",
       "confidence": 0.9927398596378154,
       "none": 0.0032966107374904317,
-      "latency_ms": 110.7
+      "latency_ms": 136.1
     },
     {
       "id": "gu8",
@@ -619,7 +619,7 @@
       "choice": "not_stated",
       "confidence": 0.99673868000021,
       "none": 0.002395907814809066,
-      "latency_ms": 109.7
+      "latency_ms": 119.0
     },
     {
       "id": "gu9",
@@ -628,7 +628,7 @@
       "choice": "not_stated",
       "confidence": 0.9750471005819439,
       "none": 0.006057502987268161,
-      "latency_ms": 113.6
+      "latency_ms": 118.1
     },
     {
       "id": "gu10",
@@ -637,7 +637,7 @@
       "choice": "not_stated",
       "confidence": 0.9828141687378511,
       "none": 0.005896717440387878,
-      "latency_ms": 100.0
+      "latency_ms": 104.6
     },
     {
       "id": "gu11",
@@ -646,7 +646,7 @@
       "choice": "not_stated",
       "confidence": 0.992962612240327,
       "none": 0.00350118839401742,
-      "latency_ms": 133.6
+      "latency_ms": 118.8
     },
     {
       "id": "gu12",
@@ -655,7 +655,7 @@
       "choice": "not_stated",
       "confidence": 0.992438735390859,
       "none": 0.0029316060061630404,
-      "latency_ms": 138.0
+      "latency_ms": 116.8
     },
     {
       "id": "gu13",
@@ -664,7 +664,7 @@
       "choice": "not_stated",
       "confidence": 0.9814723545908266,
       "none": 0.00541107885619017,
-      "latency_ms": 112.4
+      "latency_ms": 113.2
     },
     {
       "id": "gu14",
@@ -673,7 +673,7 @@
       "choice": "not_stated",
       "confidence": 0.995646124230193,
       "none": 0.0024118884549324915,
-      "latency_ms": 112.9
+      "latency_ms": 118.2
     },
     {
       "id": "gu15",
@@ -682,7 +682,7 @@
       "choice": "not_stated",
       "confidence": 0.9956204212667163,
       "none": 0.0027920736763120163,
-      "latency_ms": 113.1
+      "latency_ms": 116.5
     },
     {
       "id": "gu16",
@@ -691,7 +691,7 @@
       "choice": "not_stated",
       "confidence": 0.9972296591267131,
       "none": 0.0017530377671094565,
-      "latency_ms": 111.3
+      "latency_ms": 126.1
     },
     {
       "id": "gu17",
@@ -700,7 +700,7 @@
       "choice": "not_stated",
       "confidence": 0.995840562040728,
       "none": 0.0024550307563451722,
-      "latency_ms": 115.6
+      "latency_ms": 119.3
     },
     {
       "id": "gu18",
@@ -709,7 +709,7 @@
       "choice": "not_stated",
       "confidence": 0.9969274579912928,
       "none": 0.0019668876568749473,
-      "latency_ms": 112.4
+      "latency_ms": 114.1
     },
     {
       "id": "gu19",
@@ -718,7 +718,7 @@
       "choice": "not_stated",
       "confidence": 0.9873204251338727,
       "none": 0.003951438802726988,
-      "latency_ms": 108.4
+      "latency_ms": 117.0
     },
     {
       "id": "gu20",
@@ -727,7 +727,7 @@
       "choice": "not_stated",
       "confidence": 0.9916335444940452,
       "none": 0.002719776205737358,
-      "latency_ms": 100.9
+      "latency_ms": 107.5
     },
     {
       "id": "gu21",
@@ -736,7 +736,7 @@
       "choice": "not_stated",
       "confidence": 0.9973920018467541,
       "none": 0.001825782116813022,
-      "latency_ms": 114.2
+      "latency_ms": 121.1
     },
     {
       "id": "gu22",
@@ -745,7 +745,7 @@
       "choice": "not_stated",
       "confidence": 0.9867949887998111,
       "none": 0.005184730230883893,
-      "latency_ms": 112.8
+      "latency_ms": 116.0
     },
     {
       "id": "gu23",
@@ -754,7 +754,7 @@
       "choice": "not_stated",
       "confidence": 0.9888581693980387,
       "none": 0.0032859916406691933,
-      "latency_ms": 112.4
+      "latency_ms": 117.9
     },
     {
       "id": "gu24",
@@ -763,7 +763,7 @@
       "choice": "not_stated",
       "confidence": 0.9960949838400419,
       "none": 0.00224790963436547,
-      "latency_ms": 112.4
+      "latency_ms": 116.2
     },
     {
       "id": "gu25",
@@ -772,7 +772,7 @@
       "choice": "not_stated",
       "confidence": 0.996639449806811,
       "none": 0.0020527362354619636,
-      "latency_ms": 114.5
+      "latency_ms": 119.9
     },
     {
       "id": "gu26",
@@ -781,7 +781,7 @@
       "choice": "not_stated",
       "confidence": 0.9848936653853575,
       "none": 0.005099503896127822,
-      "latency_ms": 122.4
+      "latency_ms": 113.9
     },
     {
       "id": "gu27",
@@ -790,7 +790,7 @@
       "choice": "not_stated",
       "confidence": 0.9964068529340113,
       "none": 0.0021647435645985877,
-      "latency_ms": 118.8
+      "latency_ms": 113.0
     },
     {
       "id": "gu28",
@@ -799,7 +799,7 @@
       "choice": "not_stated",
       "confidence": 0.9868933278360172,
       "none": 0.004647057739353532,
-      "latency_ms": 117.1
+      "latency_ms": 114.1
     },
     {
       "id": "gu29",
@@ -808,7 +808,7 @@
       "choice": "not_stated",
       "confidence": 0.9792737995823599,
       "none": 0.0057025018260429,
-      "latency_ms": 114.4
+      "latency_ms": 117.6
     },
     {
       "id": "gu30",
@@ -817,7 +817,7 @@
       "choice": "not_stated",
       "confidence": 0.9905349357945297,
       "none": 0.0026606694949505277,
-      "latency_ms": 100.9
+      "latency_ms": 104.6
     },
     {
       "id": "gu31",
@@ -826,7 +826,7 @@
       "choice": "not_stated",
       "confidence": 0.9882420770636473,
       "none": 0.0033509699223186746,
-      "latency_ms": 116.1
+      "latency_ms": 122.7
     },
     {
       "id": "gu32",
@@ -835,7 +835,7 @@
       "choice": "not_stated",
       "confidence": 0.9977191936823435,
       "none": 0.001732557843094526,
-      "latency_ms": 111.3
+      "latency_ms": 115.8
     },
     {
       "id": "gu33",
@@ -844,7 +844,7 @@
       "choice": "not_stated",
       "confidence": 0.9974885282089792,
       "none": 0.0017478498040194035,
-      "latency_ms": 114.9
+      "latency_ms": 116.0
     },
     {
       "id": "gu34",
@@ -853,7 +853,7 @@
       "choice": "not_stated",
       "confidence": 0.9894031151738785,
       "none": 0.0031014325137164256,
-      "latency_ms": 109.9
+      "latency_ms": 127.5
     },
     {
       "id": "gu35",
@@ -862,7 +862,7 @@
       "choice": "not_stated",
       "confidence": 0.9921097581348182,
       "none": 0.00360905869434229,
-      "latency_ms": 112.7
+      "latency_ms": 118.7
     },
     {
       "id": "gu36",
@@ -871,7 +871,7 @@
       "choice": "not_stated",
       "confidence": 0.9956953139955811,
       "none": 0.002409317316111965,
-      "latency_ms": 116.2
+      "latency_ms": 119.6
     },
     {
       "id": "gu37",
@@ -880,7 +880,7 @@
       "choice": "not_stated",
       "confidence": 0.9947417878069991,
       "none": 0.003071721271657502,
-      "latency_ms": 111.1
+      "latency_ms": 135.6
     },
     {
       "id": "gu38",
@@ -889,7 +889,7 @@
       "choice": "not_stated",
       "confidence": 0.9973887045276464,
       "none": 0.0018282980852061014,
-      "latency_ms": 111.4
+      "latency_ms": 115.8
     },
     {
       "id": "gu39",
@@ -898,7 +898,7 @@
       "choice": "not_stated",
       "confidence": 0.9926783089723166,
       "none": 0.0031549610708898773,
-      "latency_ms": 113.9
+      "latency_ms": 116.3
     }
   ],
   "accuracy": 1.0,
@@ -1269,5 +1269,5 @@
       "correct": 10
     }
   ],
-  "generated": "2026-10-26T12:14:18+00:00"
+  "generated": "2026-10-28T11:12:38+00:00"
 }

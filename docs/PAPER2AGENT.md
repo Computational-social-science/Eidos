@@ -117,3 +117,26 @@ a claim about them would need its own specs.
 Two failures found while building this, both in my code rather than the paper's: `run_spec` parsed
 only the last line of stdout, so any pretty-printed JSON was `UNRUN`; and `json_path` could not index
 a list, so `soft_grad.0` was unaddressable. Both are fixed and pinned by tests.
+
+
+## Running the engine on the PDF: where it stops
+
+The engine was fetched from the upstream tarball (a fresh `git clone` failed on this network; codeload
+worked) and its paper-side pipeline was executed against the PDF:
+
+| stage | result |
+|---|---|
+| `prepare` | **ok** — 1 source, snapshot kept, review plan created |
+| `extract` | **ok** — 10 pages classified, status `needs_agent_review`, page plans on disk |
+| `build --draft` | **fails** — the builder's own validator rejects the package it just wrote: `Unexpected directory: assetsigure … Unexpected file: references\paper.md` |
+| `verify` | not reached — no `build.json` exists to verify |
+
+The build failure reproduces with a fresh output directory (`/tmp/stage1`), so it is not a path or
+stale-output artefact. It is the same class as the engine defects the skill itself warns about, and
+fixing it means patching third-party code — which this project does not do silently. The working tree
+stays on disk (`p2a_work/`, gitignored) so a later attempt does not restart from zero.
+
+What this changes: **the engine is not currently usable as-is on this host**, so the reproduction in
+the previous section was produced by the manual workflow (the paper's own listing), not by a converted
+MCP server. The artefact S12 reads is the same either way; what is missing is the third-party tool,
+not the evidence.

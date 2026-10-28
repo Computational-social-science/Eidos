@@ -74,3 +74,8 @@ artifacts/
 # reproduction record, and a clone without it fails S12. Everything else under artifacts/ stays out.
 !reference/fixtures/*/artifacts/
 !reference/fixtures/*/artifacts/**
+
+# Paper2Agent working trees and third-party PDFs stay out of the repository.
+reference/reproduction/*/p2a_work/
+reference/reproduction/*/paper/
+reference/reproduction/*/dist/

@@ -31,6 +31,10 @@ def main(argv: list[str] | None = None) -> int:
     c = sub.add_parser("check", help="validate a Paper2Agent delivery tree")
     c.add_argument("delivery")
 
+    b = sub.add_parser("run-set", help="execute every spec for one paper; MATCH only if all match")
+    b.add_argument("bundle")
+    b.add_argument("--out", default=str(OUT))
+
     r = sub.add_parser("run", help="execute a reproduction spec and record the verdict")
     r.add_argument("spec")
     r.add_argument("--out", default=str(OUT))
@@ -45,6 +49,18 @@ def main(argv: list[str] | None = None) -> int:
         report = reproduction.check_delivery(args.delivery)
         print(json.dumps(report, indent=2))
         return 0 if report["ok"] else 2
+
+    if args.action == "run-set":
+        bundle = json.loads(Path(args.bundle).read_text(encoding="utf-8"))
+        record = reproduction.run_set(bundle, cwd=ROOT)
+        path = reproduction.write(record, args.out)
+        for spec in record["specs"]:
+            print(f"  {spec['verdict']:<9} {spec.get('json_path', 'value'):24s} "
+                  f"expected {spec.get('expected')} observed {spec.get('observed')}")
+        print(f"{record['verdict']:<9} {record['paper']}  "
+              f"{record['counts']}")
+        print(f"written: {path}")
+        return 0 if record["verdict"] == reproduction.MATCH else 1
 
     if args.action == "run":
         spec = json.loads(Path(args.spec).read_text(encoding="utf-8"))

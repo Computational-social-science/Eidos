@@ -1,0 +1,76 @@
+{
+  "paper": "barron2026-softmax-fix",
+  "source": "Barron, Gnanapragasam & Tschannen, A fix for softmax and cross-entropy, arXiv:2610.31642",
+  "note": "Every value below is printed in the paper. Tolerances follow the printed precision (four significant digits), not the code's accuracy.",
+  "specs": [
+    {
+      "tool": "log_softmax",
+      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "json_path": "log_softmax.0",
+      "expected": -3.046e-08,
+      "tolerance": 0.01,
+      "relative": true,
+      "claim": "Section 2: log_softmax([9,-9,-9])[0] is -3.046e-8, not 0"
+    },
+    {
+      "tool": "softmax_grad",
+      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "json_path": "softmax_grad_t",
+      "expected": 3.046e-08,
+      "tolerance": 0.01,
+      "relative": true,
+      "claim": "Section 2: the target gradient through softmax is 3.046e-8, not 0"
+    },
+    {
+      "tool": "cross_entropy",
+      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "json_path": "ce_value",
+      "expected": 3.046e-08,
+      "tolerance": 0.01,
+      "relative": true,
+      "claim": "Section 2: the fixed loss is 3.046e-8, while the standard implementation returns 0"
+    },
+    {
+      "tool": "cross_entropy_grad_sum",
+      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "json_path": "ce_grad_sum",
+      "expected": 0.0,
+      "tolerance": 1e-12,
+      "claim": "Section 2: the gradients sum to zero, which the standard implementation does not"
+    },
+    {
+      "tool": "standard_cross_entropy_baseline",
+      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "json_path": "standard_ce_value",
+      "expected": 0.0,
+      "tolerance": 1e-12,
+      "claim": "Section 2: the standard implementation returns exactly 0 — the bug the paper names"
+    },
+    {
+      "tool": "soft_target_grad",
+      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "json_path": "soft_grad.0",
+      "expected": -4.595504e-08,
+      "tolerance": 0.01,
+      "relative": true,
+      "claim": "Section 3: the fixed soft-target gradient entry is -4.595504e-8"
+    },
+    {
+      "tool": "soft_target_exactness",
+      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "json_path": "fixed_max_abs_error",
+      "expected": 0.0,
+      "tolerance": 1e-12,
+      "claim": "Section 3: the fp32 gradient matches the exact fp64 gradient"
+    },
+    {
+      "tool": "standard_soft_target_baseline",
+      "command": [".venv-repro/Scripts/python.exe", "reference/reproduction/barron2026/paper_examples.py"],
+      "json_path": "standard_soft_grad.0",
+      "expected": -5.960464e-08,
+      "tolerance": 0.01,
+      "relative": true,
+      "claim": "Section 3: the standard implementation's first entry is -5.960464e-8 — wrong by 30%"
+    }
+  ]
+}

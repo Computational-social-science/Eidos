@@ -102,3 +102,27 @@ def test_gate_s_passes_a_claim_whose_reproduction_matched(tmp_path):
                         "observed": 0.927, "delta": 0.0}, tmp_path / "artifacts" / "reproduction")
     findings, blocked = ScientificValidityGate(tmp_path)._reproduction_verdict("C3", "p")
     assert findings == [] and blocked == []
+
+
+def test_pretty_printed_json_is_parsed(tmp_path):
+    """Regression: parsing the last line alone rejected valid multi-line output."""
+    script = tmp_path / 'pretty.py'
+    script.write_text('import json' + chr(10) + "print(json.dumps({'value': 1.5, 'nested': {'k': [0, 2.5]}}, indent=2))" + chr(10), encoding='utf-8')
+    record = reproduction.run_spec({'paper': 'p', 'command': [sys.executable, str(script)],
+                                    'expected': 1.5}, cwd=tmp_path)
+    assert record['verdict'] == reproduction.MATCH and record['observed'] == 1.5
+    nested = reproduction.run_spec({'paper': 'p', 'command': [sys.executable, str(script)],
+                                    'json_path': 'nested.k.1', 'expected': 2.5}, cwd=tmp_path)
+    assert nested['verdict'] == reproduction.MATCH
+
+
+def test_a_set_is_judged_as_a_set():
+    """One mismatch fails the set: taking the best number would be a new kind of p-hacking."""
+    def pr(value):
+        return [sys.executable, "-c", f"import json;print(json.dumps({{'value': {value}}}))"]
+
+    good = {'tool': 'g', 'command': pr(1.0), 'expected': 1.0}
+    bad = {'tool': 'b', 'command': pr(2.0), 'expected': 1.0}
+    assert reproduction.run_set({'paper': 'p', 'specs': [good, good]})['verdict'] == reproduction.MATCH
+    mixed = reproduction.run_set({'paper': 'p', 'specs': [good, bad]})
+    assert mixed['verdict'] == reproduction.MISMATCH and mixed['counts']['MISMATCH'] == 1

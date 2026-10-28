@@ -96,14 +96,25 @@ def run_spec(spec: dict, cwd: str | Path | None = None, timeout: float = 900.0) 
                 "reason": f"command exited {completed.returncode}: {completed.stderr.strip()[:300]}",
                 "ts": _now()}
 
-    try:
-        payload = json.loads(completed.stdout.strip().splitlines()[-1])
-    except (json.JSONDecodeError, IndexError) as exc:
+    # Pretty-printed JSON ends with "}", so parsing the last line alone rejects valid output. Try the
+    # whole stream first, then the last line for tools that log before printing.
+    text = completed.stdout.strip()
+    payload = None
+    for candidate in (text, text.splitlines()[-1] if text else ""):
+        try:
+            payload = json.loads(candidate)
+            break
+        except json.JSONDecodeError:
+            continue
+    if payload is None:
         return {"paper": spec.get("paper"), "verdict": UNRUN,
-                "reason": f"output is not JSON: {exc}", "ts": _now()}
+                "reason": f"output is not JSON: {text[:120]!r}", "ts": _now()}
 
     node = payload
     for part in str(spec.get("json_path") or "value").split("."):
+        if isinstance(node, list) and part.isdigit() and int(part) < len(node):
+            node = node[int(part)]
+            continue
         if not isinstance(node, dict) or part not in node:
             return {"paper": spec.get("paper"), "verdict": UNRUN,
                     "reason": f"output has no {spec.get('json_path') or 'value'}", "ts": _now()}
@@ -130,3 +141,25 @@ def load(paper: str, out_dir: str | Path) -> dict | None:
     safe = "".join(ch if ch.isalnum() or ch in "-_." else "_" for ch in paper)
     path = Path(out_dir) / f"{safe}.json"
     return json.loads(path.read_text(encoding="utf-8")) if path.is_file() else None
+
+
+def run_set(bundle: dict, cwd: str | Path | None = None) -> dict:
+    """Run every spec for one paper. The verdict is MATCH only when all of them match.
+
+    A paper is rarely one number: a table of gradients, a loss, a diagnostic baseline. Taking the best
+    of them would be a new kind of p-hacking, so the set is judged as a set.
+    """
+    paper = bundle.get("paper")
+    specs = bundle.get("specs") or []
+    if not specs:
+        raise ValueError("bundle has no specs")
+    records = [run_spec({**spec, "paper": paper}, cwd=cwd) for spec in specs]
+    verdicts = [r["verdict"] for r in records]
+    if all(v == MATCH for v in verdicts):
+        verdict = MATCH
+    elif any(v == MISMATCH for v in verdicts):
+        verdict = MISMATCH
+    else:
+        verdict = UNRUN
+    return {"paper": paper, "verdict": verdict, "specs": records,
+            "counts": {v: verdicts.count(v) for v in set(verdicts)}, "ts": _now()}

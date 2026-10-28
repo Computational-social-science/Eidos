@@ -78,3 +78,42 @@ framework is willing to argue from.
   relative tolerance must be asked for explicitly.
 * A `MISMATCH` does not say the paper is wrong. It says the code and the text disagree, and a human
   has to decide which one the project is going to cite.
+
+
+## First real object: Barron et al., *A fix for softmax and cross-entropy*
+
+The test object is arXiv:2610.31642 (Barron, Gnanapragasam & Tschannen, 2026). Its Sections 2 and 3
+print four-significant-digit values for two numerical bugs, which makes it a good object: the claims
+are exact numbers, not narrative.
+
+**The engine could not be run here.** The installed skill ships `SKILL.md` only; the repository's
+`paper2mcp/scripts/` (preprocess, verify) are absent locally and a fresh clone failed on this network
+(`invalid index-pack output`). A conversion is also a 25-minute agentic build with no LLM channel of
+its own. So this is the manual workflow the skill itself documents — paper to code to tool — and the
+result is the same artefact S12 reads.
+
+Eight specs, one per printed number, executed with the paper's own JAX listing under
+`.venv-repro` (jax 0.4x, optax 0.2.8):
+
+| quantity | paper | observed |
+|---|---|---|
+| `log_softmax([9,-9,-9])[0]` | −3.046e−8 | −3.0459972e−8 |
+| target gradient through softmax | 3.046e−8 | 3.0459969e−8 |
+| fixed cross-entropy | 3.046e−8 | 3.0459972e−8 |
+| gradient sum | 0 | 0.0 |
+| standard cross-entropy (the bug) | 0 | 0.0 |
+| soft-target gradient, first entry | −4.595504e−8 | −4.5955044e−8 |
+| fp32 vs fp64 maximum error | 0 | 2.54e−15 |
+| standard soft-target, first entry | −5.960464e−8 | −5.9604645e−8 |
+
+All eight `MATCH`, so the record is `MATCH` and a claim citing `reproduction: barron2026-softmax-fix`
+passes S12.
+
+What this establishes: the paper's numerical claims reproduce on this host with its own code. What it
+does not establish: that JAX's autodiff and the analytic gradient agree beyond this example, or
+anything about Section 4's training results (Slingshot, grokking) — those need the training runs, and
+a claim about them would need its own specs.
+
+Two failures found while building this, both in my code rather than the paper's: `run_spec` parsed
+only the last line of stdout, so any pretty-printed JSON was `UNRUN`; and `json_path` could not index
+a list, so `soft_grad.0` was unaddressable. Both are fixed and pinned by tests.

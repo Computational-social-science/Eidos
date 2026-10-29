@@ -247,9 +247,14 @@ def test_dashboard_check_rejects_a_missing_page(monkeypatch, tmp_path):
     assert dash.main(["--check"]) == 1
 
 
-def _operator_states(recoveries):
-    """Read the operator strip's own titles, so the test asserts what the page says."""
-    svg = dash.operator_strip({"ts": ""}, recoveries)
+def _operator_states(recoveries, faults=("runtime_18434 = DOWN",)):
+    """Read the operator strip's own titles, so the test asserts what the page says.
+
+    `faults` defaults to one active fault: these cases describe a repair episode. A healthy board is
+    a different case, covered by test_the_operator_strip_stops_reporting_an_old_failure.
+    """
+    status = {"ts": "", "derived": {"faults": list(faults)}}
+    svg = dash.operator_strip(status, recoveries)
     out = {}
     for chunk in svg.split("<g class='node operator'")[1:]:
         title = chunk.split("<title>")[1].split("</title>")[0]
@@ -287,3 +292,18 @@ def test_a_legacy_terminal_row_without_ok_is_read_as_success():
     # Rows written before the schema existed: {'phase': 'verified', 'outcome': 'recovered'}.
     states = _operator_states([{"phase": "verified", "outcome": "recovered"}])
     assert states["verify"] == "PASS"
+
+
+def test_the_operator_strip_stops_reporting_an_old_failure():
+    """A failed repair from an earlier episode must not paint a currently healthy board red."""
+    import tools.dashboard as dashboard
+
+    status = {"ts": "2026-10-29T14:00:00+00:00", "derived": {"faults": []}}
+    recoveries = [
+        {"ts": "2026-10-29T07:20:50+00:00", "service": "runtime_18434", "phase": "attempt", "ok": True},
+        {"ts": "2026-10-29T07:21:45+00:00", "service": "runtime_18434", "phase": "verified",
+         "ok": False, "outcome": "no effect"},
+    ]
+    svg = dashboard.operator_strip(status, recoveries)
+    assert "no active fault" in svg
+    assert "verify · FAIL" not in svg

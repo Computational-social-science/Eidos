@@ -47,7 +47,9 @@ def log_softmax(z: list[float]) -> dict:
     """
     z_arr = _as_array(z)
     stable = z_arr - _logsumexp(z_arr)
-    naive = z_arr - np.log(np.sum(np.exp(z_arr)))
+    # The textbook form the paper compares against: returned so a caller can see the gap, never
+    # used to answer.
+    naive = z_arr - np.log(np.sum(np.exp(z_arr)))  # numerics: intentional — comparison only
     return {
         "log_softmax": [float(v) for v in stable],
         "first": float(stable[0]),

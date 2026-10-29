@@ -453,7 +453,17 @@ def operator_strip(status: dict, recoveries: list) -> str:
     terminal = next((r for r in reversed(recoveries)
                      if r.get("phase") in ("verified", "failed", "gave_up")), None)
     attempt = next((r for r in reversed(recoveries) if r.get("phase") == "attempt"), None)
-    if terminal:
+    # The strip describes the *current* loop. An episode that ended "no effect" last night is history
+    # once nothing is faulting: showing it as a red verify forever made a healthy board look broken,
+    # which is the same false signal as a green board with a dead sampler.
+    active_faults = list((status.get("derived") or {}).get("faults") or [])
+    if not active_faults:
+        exec_state = verify_state = plan_state = "IDLE"
+        # The box is 168 px wide; "last episode: no effect" overlapped the label at every viewport.
+        # The history stays in recoveries.jsonl and in the service popup, where there is room for it.
+        verify_note = "no active fault" if terminal else "recovery.verify"
+        last_note = ""
+    elif terminal:
         # Rows written before the schema was enforced carry `outcome` but no `ok`.
         ok = terminal.get("ok")
         if ok is None:
@@ -470,6 +480,7 @@ def operator_strip(status: dict, recoveries: list) -> str:
         exec_state = verify_state = plan_state = "IDLE"
         verify_note = "recovery.verify"
     healed = len([r for r in recoveries if r.get("phase") == "verified"])
+
     steps = [
         ("self-check · sample", sampled, "15 s"),
         ("derive verdict", "PASS", "status_view"),

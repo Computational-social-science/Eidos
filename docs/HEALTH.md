@@ -7,7 +7,7 @@ and re-checked by `--check` in CI; none is typed by hand.
 
 | dimension | measurement | verdict |
 |---|---|---|
-| unit tests | **316 collected**, all passing | ✅ |
+| unit tests | **324 collected**, all passing | ✅ |
 | coverage of `framework/` | **73%**, no-regression by >1 point | ✅ |
 | chain audit | **11 chains: 10 PASS, 1 SKIP, 0 FAIL/ERROR** | ✅ |
 | Gate S on the reference fixture | PASS (valid register) and FAIL (mutated copy) | ✅ |

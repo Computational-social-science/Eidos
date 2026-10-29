@@ -12,3 +12,4 @@ validity_document: docs/REPORT.md
 expected_gate_s: PASS
 expects:
 - docs/evidence.json
+numerics: required

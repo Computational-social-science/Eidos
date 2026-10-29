@@ -175,6 +175,10 @@ def preflight(service: str) -> dict:
     hints = OWNER_HINTS.get(service, ())
     report = {"service": service, "healthy": False, "ports": {}, "conflict": False,
               "owned_by_self": False, "owners": []}
+    # Loading a 4B GGUF on a busy GPU can take minutes; 90 s was short enough that a healthy start
+    # was recorded as "no effect" and retried, which is how duplicates were born.
+    timeout = float(timeout if timeout is not None
+                    else 300.0 if service == "runtime_18434" else 90.0)
     urls = ENDPOINTS.get(service) or ((HEALTH.get(service),) if HEALTH.get(service) else ())
     if urls:
         report["healthy"] = all(_answers(u) for u in urls)
@@ -282,6 +286,17 @@ def execute(plan_: RecoveryPlan) -> dict:
         _log(plan_.service, plan_.action, "skipped", True, reason="already healthy")
         return {"ok": True, "skipped": True, "service": plan_.service,
                 "reason": "already healthy; nothing to start", "preflight": look}
+    # A port that already has a listener is not a port to start on. Five llama-server processes
+    # accumulated on :18434 this way: each attempt answered "ok", each verification timed out while
+    # the model loaded, and ten minutes later the next attempt started a sixth.
+    held = {p: v["pid"] for p, v in (look.get("ports") or {}).items() if v.get("pid")}
+    if held and not look["healthy"]:
+        _log(plan_.service, plan_.action, "refused", False,
+             reason="port already held; refusing to start a second instance", ports=held)
+        return {"ok": False, "skipped": True, "service": plan_.service,
+                "reason": "port already held by pid " + ", ".join(str(v) for v in held.values())
+                          + "; waiting for it to become healthy beats starting a duplicate",
+                "preflight": look}
     if look["conflict"]:
         _log(plan_.service, plan_.action, "refused", False, reason="port held by another process",
              ports={p: v["pid"] for p, v in look["ports"].items() if v["pid"]})
@@ -342,8 +357,12 @@ def execute(plan_: RecoveryPlan) -> dict:
             "action": plan_.action, "description": plan_.description}
 
 
-def verify(service: str, timeout: float = 90.0, interval: float = 3.0) -> dict:
+def verify(service: str, timeout: float | None = None, interval: float = 3.0) -> dict:
     """Wait for the boundary to answer. A restart is only a repair if the probe agrees."""
+    # Loading a 4B GGUF on a busy GPU can take minutes; 90 s was short enough that a healthy start
+    # was recorded as "no effect" and retried, which is how duplicates were born.
+    timeout = float(timeout if timeout is not None
+                    else 300.0 if service == "runtime_18434" else 90.0)
     urls = ENDPOINTS.get(service) or ((HEALTH.get(service),) if HEALTH.get(service) else ())
     if not urls:
         return {"verified": False, "error": f"no health endpoint declared for {service}"}

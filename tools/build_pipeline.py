@@ -22,6 +22,7 @@ from __future__ import annotations
 import argparse
 import datetime
 import json
+import os
 import subprocess
 import sys
 import urllib.request
@@ -174,18 +175,29 @@ def consumers() -> list[dict]:
 def probe() -> dict:
     state = {}
 
-    def get(url: str, timeout: float = 2.0):
+    def get(url: str, timeout: float = 2.0, key: str | None = None):
+        request = urllib.request.Request(url)
+        if key:
+            request.add_header("Authorization", f"Bearer {key}")
         try:
-            with urllib.request.urlopen(url, timeout=timeout) as r:
+            with urllib.request.urlopen(request, timeout=timeout) as r:
                 return r.status, json.loads(r.read().decode("utf-8", "replace"))
+        except urllib.error.HTTPError as exc:
+            # A service that answers 401 is running and refusing, not absent. Reporting it as DOWN
+            # is how a healthy runtime sat in ALARM for a day: the probe sent no key and read the
+            # refusal as a corpse.
+            return exc.code, {"error": f"HTTP {exc.code}"}
         except Exception as exc:  # noqa: BLE001 - absence is the datum
             return 0, {"error": type(exc).__name__}
 
     code, body = get("http://127.0.0.1:8090/health")
     state["decision"] = {"up": bool(code == 200 and body.get("status") == "ok"),
                          "model": body.get("model")}
-    code, body = get("http://127.0.0.1:18434/v1/models")
-    state["runtime_18434"] = {"up": code == 200}
+    key = os.environ.get("HERMES_LOCAL_LLAMACPP_KEY") or os.environ.get("LLAMACPP_API_KEY")
+    code, body = get("http://127.0.0.1:18434/v1/models", key=key)
+    state["runtime_18434"] = {"up": code in (200, 401, 403),
+                              "note": ("auth required" if code in (401, 403)
+                                       else None if code == 200 else body.get("error"))}
     return state
 
 

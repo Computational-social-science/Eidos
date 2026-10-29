@@ -185,3 +185,23 @@ diagnosis was wrong. They are recorded together because the shape repeats.
 The rule this produces: a tool's error text names the layer that failed, not the cause. Before
 attributing a failure to the environment, change **one** variable the failure depends on — the path,
 the fixture, the input — and see whether the failure follows.
+
+
+## 10. A live sampler can hold dead probes
+
+On 2026-10-29 the board reported `decision_service = DOWN; runtime_18434 = DOWN` while both endpoints
+answered from a shell in milliseconds (200 and 401). The sampler process itself was healthy: its `ts` was
+current, its age was seconds, and `error` was null. What had gone stale was inside it — every probe was
+returning "silent" for services that were up.
+
+Restarting the sampler cleared both faults at the next sample. Two lessons, neither of which the payload
+states on its own:
+
+- **A fresh timestamp is not a fresh probe.** The payload's `ts` proves the sampler is looping, not that
+  its measurements succeed. When a signal says `silent:` but `curl` answers, the probe is the fault.
+- **The note carries the diagnosis.** `silent: 127.0.0.1:8090/health` means the request failed from that
+  process; `refused` and `200` look identical in `value`, which is why the notes exist.
+
+Separately, the runtime probe had been reporting a 401 as DOWN because it sent no key. `http_status`
+already documents that 401 proves liveness; `tools/build_pipeline.py` did not follow it. It now sends
+`HERMES_LOCAL_LLAMACPP_KEY` and accepts 200/401/403 as reachable.

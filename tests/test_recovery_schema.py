@@ -24,3 +24,18 @@ def test_log_terminal_derives_ok(tmp_path, monkeypatch):
     recovery.log_terminal("svc", "recovered")
     row = json.loads(log.read_text(encoding="utf-8"))
     assert row["phase"] == "verified" and row["ok"] is True and row["outcome"] == "recovered"
+
+
+def test_a_port_that_already_has_a_listener_is_not_started_on_twice(tmp_path, monkeypatch):
+    """Five llama-server processes accumulated on :18434 because each attempt started a new one."""
+    monkeypatch.setattr(recovery, "LOG", tmp_path / "recoveries.jsonl")
+    monkeypatch.setattr(recovery, "STATE", tmp_path / "recovery_state.json")
+    monkeypatch.setattr(recovery, "preflight", lambda service: {
+        "service": service, "healthy": False, "conflict": False, "owned_by_self": True,
+        "ports": {"18434": {"pid": 4242, "name": "llama-server.exe"}},
+    })
+    monkeypatch.setenv("LOCALAPPDATA", str(tmp_path))
+    plan = recovery.RecoveryPlan("runtime_18434", "start", "description", True)
+    result = recovery.execute(plan)
+    assert result["skipped"] is True and result["ok"] is False
+    assert "already held" in result["reason"]

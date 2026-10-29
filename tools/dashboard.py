@@ -833,8 +833,14 @@ document.addEventListener('click', e => {
   if (!e.target.closest('#pop')) dismiss();
   const node = e.target.closest('g.node');
   if (!node) return;
-  const kind = node.dataset.chain ? 'chain' : node.dataset.module ? 'module' : 'service';
-  const name = node.dataset.chain || node.dataset.module || node.dataset.service;
+  // Only addressable nodes answer a click: a chain, a module, a service. The operator strip and
+  // the instrument column are also g.node groups, and defaulting them to 'service' produced the
+  // popup "undefined · service · verify · FAIL · no effect" — a label that described nothing.
+  const kind = node.dataset.chain ? 'chain' : node.dataset.module ? 'module'
+             : node.dataset.service ? 'service' : node.dataset.operator ? 'operator' : null;
+  if (!kind) return;
+  const name = node.dataset.chain || node.dataset.module || node.dataset.service
+             || node.dataset.operator;
   const t = node.querySelector('title');
   let html = '<div class="t">' + name + '</div><div class="d">' + kind + ' · ' +
              (t ? t.textContent : name) + '</div>';

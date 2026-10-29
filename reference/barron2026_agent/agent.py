@@ -74,6 +74,7 @@ def build_evidence(run: dict) -> dict:
                      and not run["control"]["grad_sum_is_zero"])
 
     return {
+        "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "recorded_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "paper": "barron2026-softmax-fix",
         "server": {"path": str(SERVER.relative_to(REPO)).replace("\\", "/"),

@@ -1,0 +1,44 @@
+{
+  "recorded_at": "2026-10-29T13:52:55+00:00",
+  "paper": "barron2026-softmax-fix",
+  "server": {
+    "path": "reference/reproduction/barron2026/mcp/server.py",
+    "inventory": [
+      "hard_cross_entropy",
+      "log_softmax",
+      "soft_target_cross_entropy",
+      "softmax"
+    ]
+  },
+  "claims": {
+    "C1": {
+      "matches_paper_value": true,
+      "observed": -3.0459958111350716e-08,
+      "expected": -3.046e-08
+    },
+    "C2": {
+      "grad_sum_is_zero": true,
+      "grad_sum": 8.943546729315933e-16,
+      "gradient": [
+        -3.0459957667261506e-08,
+        1.522997928080809e-08,
+        1.522997928080809e-08
+      ]
+    }
+  },
+  "control": {
+    "unnormalised_teacher_grad_sum": -0.09999999999999998,
+    "expected": -0.10000000000000009,
+    "fired": true
+  },
+  "softmax": {
+    "sum": 1.0000000000000009,
+    "is_normalised": true
+  },
+  "power": {
+    "not_applicable": "deterministic float64 arithmetic, not an estimate"
+  },
+  "multiplicity": {
+    "not_applicable": "two claims, each a single equality check"
+  }
+}

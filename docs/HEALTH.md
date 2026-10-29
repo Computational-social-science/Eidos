@@ -7,13 +7,13 @@ and re-checked by `--check` in CI; none is typed by hand.
 
 | dimension | measurement | verdict |
 |---|---|---|
-| unit tests | **310 collected**, all passing | ✅ |
+| unit tests | **315 collected**, all passing | ✅ |
 | coverage of `framework/` | **73%**, no-regression by >1 point | ✅ |
-| chain audit | **11 chains: 10 PASS, 1 SKIP, 0 FAIL/ERROR** | ✅ |
+| chain audit | **11 chains: 9 PASS, 2 SKIP, 0 FAIL/ERROR** | ✅ |
 | Gate S on the reference fixture | PASS (valid register) and FAIL (mutated copy) | ✅ |
 | Gate S on Eidos itself | **PASS — 8 objections, 0 open** (consumers are sealed fixtures) | ✅ |
 | CI (GitHub Actions) | test job 3.11 + 3.12 green; audit job green | ✅ |
-| consumers | `demo_onboarding` and `demo_quantitative` (templates, must pass), `operator_calibration` (LLM, must pass), `null_study` and `prose_lie` (must be rejected) | 5 |
+| consumers | `demo_onboarding` and `demo_quantitative` (templates, must pass), `operator_calibration` (LLM, must pass), `null_study` and `prose_lie` (must be rejected), `barron2026_agent` (paper-to-agent, must pass) | 6 |
 | render chain | html 19 KB, pdf 13 KB, docx 11 KB from one Quarto source (`docs/RENDER_CHECK.json`) | ✅ |
 | external contracts | Quarto 1.10.19 (`tools/quarto`, via `QUARTO_BIN`), DVC, MLflow, decision service, BootLoops | ✅ |
 | coupling | 0 import cycles, 0 absolute-path literals | ✅ |

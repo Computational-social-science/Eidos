@@ -137,3 +137,28 @@ jobs:
             tail -n 3 /tmp/site.log | sed 's/^/::error title=page audit tail::/'
             exit 1
           }
+
+  agent-e2e:
+    # The MCP report is evidence only if CI can regenerate it. This job starts the converted
+    # server over stdio, runs Paper2Agent's own verifier, then drives the agent end to end.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+          pip install "fastmcp==4.0.3"
+      - name: Paper2Agent verifier (vendored, unmodified)
+        run: >
+          python reference/reproduction/barron2026/mcp/vendor/verify_mcp_server.py
+          --server reference/reproduction/barron2026/mcp/server.py
+          --expected reference/reproduction/barron2026/mcp/expected.json
+          --cases reference/reproduction/barron2026/mcp/cases.json
+          --require-all-tools --report "$RUNNER_TEMP/verify.json"
+          --cwd reference/reproduction/barron2026/mcp
+      - name: Agent end to end, judged by Gate S
+        run: python reference/barron2026_agent/agent.py

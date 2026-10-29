@@ -1,0 +1,50 @@
+registered_at: 2026-10-29T00:05:00+00:00
+scope_axes: [model, arithmetic, input, threshold, non_goals]
+scope:
+  model: ["the paper's four functions, exposed as MCP tools"]
+  arithmetic: ["float64 numpy; the paper's own listing is JAX"]
+  input: ["z = [9, -9, -9], the vector the paper prints"]
+  threshold: ["agreement with the printed value at 1% relative, the tolerance the specs already use"]
+  non_goals:
+    - "training dynamics, grokking, and any claim about other precisions"
+claims:
+  - id: C1
+    text: "On the paper's input, the log-softmax tool returns the paper's stated value."
+    span: "the log-softmax tool returns the paper's stated value"
+    strength: supported
+    design: preregistered
+    evidence:
+      file: docs/evidence.json
+      pointer: /claims/C1/matches_paper_value
+      value: true
+    control:
+      file: docs/evidence.json
+      pointer: /control/fired
+      value: true
+    assumptions:
+      - "the paper's printed value is the reference, not the paper's code"
+    formal: false
+  - id: C2
+    text: "The hard-target gradient sums to zero within float-point rounding."
+    span: "hard-target gradient sums to zero within float-point rounding"
+    strength: supported
+    design: preregistered
+    evidence:
+      file: docs/evidence.json
+      pointer: /claims/C2/grad_sum_is_zero
+      value: true
+    control:
+      file: docs/evidence.json
+      pointer: /control/fired
+      value: true
+    assumptions:
+      - "the zero-sum bound is 8 ulp of the gradient scale, not a fitted tolerance"
+    formal: false
+power:
+  not_applicable: "deterministic float64 arithmetic, not an estimate from a sample"
+multiplicity:
+  not_applicable: "two claims, each a single equality check"
+journal_fit:
+  file: docs/REFEREE_SIM.md
+  objections: 1
+  unresolved: 0

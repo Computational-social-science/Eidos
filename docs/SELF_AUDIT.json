@@ -1,11 +1,11 @@
 {
   "chains": {
     "total": 11,
-    "pass": 10,
-    "skip": 1,
+    "pass": 9,
+    "skip": 2,
     "fail": 0
   },
-  "tests_collected": 310,
+  "tests_collected": 315,
   "coverage_total": 73,
   "gate_s": {
     "fixture_status": "PASS"

@@ -193,3 +193,35 @@ collapse that does not happen here.
 
 `tests/test_mcp_barron.py` keeps the report honest: it fails if `verify.json` stops describing this
 package (inventory, case count, every case passing), so a stale report cannot outlive the code.
+
+
+## The agent Eidos can actually call
+
+A converted MCP server is a toolbox; an agent is a toolbox plus a caller that checks what came back.
+`reference/barron2026_agent/agent.py` is that caller, and `projects/barron2026_agent/project.yaml`
+registers it with the framework, so the dashboard, the chain audit and the site see it beside the other
+consumers.
+
+One run does five things:
+
+1. starts `reference/reproduction/barron2026/mcp/server.py` over stdio (the same file Paper2Agent's
+   verifier checks);
+2. calls all four tools on the paper's input `z = [9, -9, -9]` and one negative control;
+3. writes `docs/evidence.json` and `docs/agent_trace.json`;
+4. compares the answer against `specs.json` — the tolerance is the one already registered there, not a
+   new number chosen for this run;
+5. runs Gate S on `analysis/CLAIMS.yaml` and exits non-zero unless it passes.
+
+```
+C1  matches_paper_value  true   (-3.0459958111350716e-08 against the printed -3.046e-08)
+C2  grad_sum_is_zero     true   (8.9e-16)
+control fired            true   (teacher [0.5, 0.6] leaves -0.1 in the gradient sum, as arithmetic says)
+gate_s                   PASS
+```
+
+The control is the part worth keeping: the same tool, called with a teacher that does not sum to one,
+must leave exactly `1 - sum(teacher)` behind. Without it, "the gradient sums to zero" would pass on a
+tool that returns zeros for everything.
+
+CI runs this in its own `agent-e2e` job — the vendored verifier first, then the agent — so the committed
+report cannot outlive a change that breaks the server.

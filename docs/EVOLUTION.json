@@ -1,14 +1,14 @@
 {
-  "asof": "2026-10-28T23:12:55+08:00",
-  "version": "4.3.24",
+  "asof": "2026-10-29T22:00:58+08:00",
+  "version": "4.3.25",
   "state": {
     "chains": {
       "total": 11,
-      "pass": 10,
-      "skip": 1,
+      "pass": 9,
+      "skip": 2,
       "fail": 0
     },
-    "tests": 310,
+    "tests": 315,
     "coverage": 73,
     "instruments": [
       {
@@ -44,14 +44,14 @@
       {
         "capability": "chains run end to end against live boundaries",
         "contradicted_by": "a chain that passes while its boundary is detached",
-        "result": "10 pass, 1 skip, 0 fail",
+        "result": "9 pass, 2 skip, 0 fail",
         "witness": "docs/SELF_AUDIT.json"
       }
     ],
     "open_defects": 0
   },
   "evolution": {
-    "mutation_runs": 133,
+    "mutation_runs": 139,
     "runs_with_a_blind_spot": 1,
     "blind_spots_found": 1,
     "blind_spots_open": 0,

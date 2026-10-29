@@ -307,3 +307,7 @@ def test_the_operator_strip_stops_reporting_an_old_failure():
     svg = dashboard.operator_strip(status, recoveries)
     assert "no active fault" in svg
     assert "verify · FAIL" not in svg
+    # The three repair stages had nothing to act on; SKIP is the framework's word for that, and it
+    # reads as neutral rather than as a dead control.
+    for stage in ("plan repair", "execute", "verify"):
+        assert f"{stage} · SKIP" in svg, stage

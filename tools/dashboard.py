@@ -458,10 +458,13 @@ def operator_strip(status: dict, recoveries: list) -> str:
     # which is the same false signal as a green board with a dead sampler.
     active_faults = list((status.get("derived") or {}).get("faults") or [])
     if not active_faults:
-        exec_state = verify_state = plan_state = "IDLE"
+        # SKIP, not IDLE: the stage had nothing to act on, which is the same word the chains use for
+        # "precondition absent". IDLE painted the three boxes almost black, and a healthy loop read as
+        # a broken one — the state was right and the vocabulary was not.
+        exec_state = verify_state = plan_state = "SKIP"
         # The box is 168 px wide; "last episode: no effect" overlapped the label at every viewport.
         # The history stays in recoveries.jsonl and in the service popup, where there is room for it.
-        verify_note = "no active fault" if terminal else "recovery.verify"
+        verify_note = "no active fault" if terminal else "nothing to repair"
         last_note = ""
     elif terminal:
         # Rows written before the schema was enforced carry `outcome` but no `ok`.
@@ -487,7 +490,7 @@ def operator_strip(status: dict, recoveries: list) -> str:
         ("plan repair", plan_state, "recovery.plan"),
         ("execute", exec_state, "recovery.execute"),
         ("verify", verify_state, verify_note),
-        ("record", "PASS", f"{healed} healed"),
+        ("record", "PASS", f"{healed} healed · log"),
     ]
     n = len(steps)
     box_w, gap = 168, 26

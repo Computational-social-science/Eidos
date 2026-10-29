@@ -701,6 +701,7 @@ def consumer_strip(pipeline: dict) -> str:
             st = "STALE"
         age = fmt_age(age_h * 3600.0) if age_h is not None else ""
         x = 4 + k * (box_w + gap)
+        stale_attr = ' data-stale="1"' if st == "STALE" else ""
         role = str(row.get("role") or "")
         tag = ("demo" if role.upper().startswith("DEMO")
                else "control" if "control" in role.lower()
@@ -708,7 +709,7 @@ def consumer_strip(pipeline: dict) -> str:
         note = (f"{tag} · " if tag else "") + f"gate {got} / want {want}" +                (f" · {age}" if age else "") + (" · STALE" if st == "STALE" else "")
         parts.append(
             f"<g class='node consumer' data-consumer='{html.escape(name)}'"
-            f"{' data-stale=\"1\"' if st == 'STALE' else ''} tabindex='0' role='button'>"
+            f"{stale_attr} tabindex='0' role='button'>"
             f"<title>{html.escape(name)} · {html.escape(note)}</title>"
             f"<rect x='{x}' y='3' width='{box_w}' height='38' rx='4' fill='#1b2027' stroke='#2a3038'/>"
             f"<rect x='{x}' y='3' width='3' height='38' fill='{PALETTE[st]}'/>"

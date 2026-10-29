@@ -86,11 +86,12 @@ def registry() -> list[dict]:
         root = re.search(r"^root:\s*(\S+)", text, re.M)
         gate = re.search(r"^gate_command:\s*(\[.*\])", text, re.M)
         register = re.search(r"^validity_register:\s*(\S+)", text, re.M)
-        document = re.search(r'^validity_document:\s*"?([^"]+)"?', text, re.M)
+        document = re.search(r'^validity_document:\s*"?([^"\n]+)"?', text, re.M)
         expected = re.search(r'^expected_gate_s:\s*(\w+)', text, re.M)
         root_path = (spec.parent / (root.group(1) if root else "")).resolve()
         row = {"name": name.group(1) if name else spec.parent.name,
                "root": root.group(1) if root else "?",
+               "root_path": str(root_path),
                "gate": gate.group(1) if gate else "?",
                "available": root_path.is_dir(),
                "register": register.group(1) if register else None,
@@ -248,7 +249,7 @@ def collect() -> dict:
 
 
 # ----------------------------------------------------------------------- figures
-PILL = {"PASS": "pass", "SKIP": "skip", "FAIL": "fail", "ERROR": "fail"}
+PILL = {"PASS": "pass", "SKIP": "skip", "FAIL": "fail", "ERROR": "fail", "STALE": "skip"}
 
 
 def pill(status: str) -> str:
@@ -438,14 +439,27 @@ def chain_rows(rows: list[dict]) -> str:
 def adopt_rows(rows: list[dict]) -> str:
     def gs(value: str) -> str:
         return pill(value) if value in PILL else f"<span class='detail'>{value}</span>"
-    return "".join(
-        f"<tr><td class='mono'>{html.escape(p['name'])}</td><td>{html.escape(p['root'])}</td>"
-        f"<td><code>{html.escape(p['gate'])}</code></td>"
-        f"<td>{'present' if p['available'] else 'absent'}</td>"
-        f"<td>{gs(p.get('gate_s', '—'))}"
-        + (" <span class='detail'>(expected)</span>"
-           if p.get('expected') == 'FAIL' and p.get('gate_s') == 'FAIL' else "")
-        + "</td></tr>" for p in rows)
+
+    from framework.project import evidence_age_hours
+
+    out = []
+    for p in rows:
+        verdict = p.get("gate_s", "—")
+        note = ""
+        # A cached verdict is not a current one. Past 24 h the row shows STALE and the age, because
+        # "PASS" on its own claims a measurement that may be a week old.
+        age_h = evidence_age_hours(p.get("root_path") or p.get("root") or "")             if verdict in ("PASS", "FAIL") else None
+        if age_h is not None and age_h > 24.0:
+            verdict = "STALE"
+            note = f" <span class='detail'>(was {p.get('gate_s')}) · evidence {age_h:.0f} h old</span>"
+        elif p.get("expected") == "FAIL" and p.get("gate_s") == "FAIL":
+            note = " <span class='detail'>(expected)</span>"
+        out.append(
+            f"<tr><td class='mono'>{html.escape(p['name'])}</td><td>{html.escape(p['root'])}</td>"
+            f"<td><code>{html.escape(p['gate'])}</code></td>"
+            f"<td>{'present' if p['available'] else 'absent'}</td>"
+            f"<td>{gs(verdict)}{note}</td></tr>")
+    return "".join(out)
 
 
 def lean_rows(rows: list[dict]) -> str:

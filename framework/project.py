@@ -353,3 +353,30 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+def evidence_age_hours(root: Path | str) -> float | None:
+    """How old is this project's evidence artefact, in hours?
+
+    A verdict is a statement about the moment it was measured. The file's own timestamp is the
+    authority; the filesystem mtime is the fallback for artefacts written before the field existed.
+    """
+    import datetime as _dt
+    import json as _json
+
+    path = Path(root) / "docs" / "evidence.json"
+    if not path.is_file():
+        return None
+    stamp = None
+    try:
+        payload = _json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(payload, dict):
+            stamp = payload.get("generated") or payload.get("recorded_at")
+    except (OSError, ValueError):
+        stamp = None
+    try:
+        when = (_dt.datetime.fromisoformat(str(stamp).replace("Z", "+00:00")).timestamp()
+                if stamp else path.stat().st_mtime)
+    except (ValueError, TypeError):
+        when = path.stat().st_mtime
+    return max(0.0, (_dt.datetime.now(_dt.timezone.utc).timestamp() - when) / 3600.0)

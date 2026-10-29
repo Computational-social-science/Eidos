@@ -312,6 +312,31 @@ def classify(signal: dict) -> tuple[str, float | None]:
     return ("OK" if ok else "ALARM"), round(error, 2)
 
 
+def check_verdict(payload: dict) -> tuple[bool, str]:
+    """Does the declared verdict follow from the numbers it was derived from?
+
+    Without this, the "derive verdict" step is a green box that never reads anything: it would say PASS
+    on a payload whose `overall` contradicted its own faults. The check recomputes each signal's state
+    from value/reference/direction and requires `overall == ALARM` exactly when faults exist.
+    """
+    signals = payload.get("signals") or {}
+    mismatched = []
+    for name, row in signals.items():
+        if not isinstance(row, dict) or not row.get("state"):
+            continue
+        expected, _ = classify(row)
+        if row["state"] != expected:
+            mismatched.append(f"{name} {row['state']}≠{expected}")
+    faults = list((payload.get("derived") or {}).get("faults") or [])
+    overall = payload.get("overall")
+    overall_ok = (overall == "ALARM") == bool(faults)
+    if mismatched:
+        return False, "signal state contradicts its value: " + ", ".join(mismatched[:2])
+    if not overall_ok:
+        return False, f"overall {overall} contradicts {len(faults)} fault(s)"
+    return True, f"{len(signals)} signals ok"
+
+
 def maybe_auto_recover(states: dict) -> dict:
     """Closed loop: sustain a fault long enough, then act once and verify the effect.
 

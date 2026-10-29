@@ -311,3 +311,40 @@ def test_the_operator_strip_stops_reporting_an_old_failure():
     # reads as neutral rather than as a dead control.
     for stage in ("plan repair", "execute", "verify"):
         assert f"{stage} · SKIP" in svg, stage
+
+
+def test_the_derive_step_fails_when_a_state_contradicts_its_value():
+    import sys
+    sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[1] / "tools"))
+    from watch_pipeline import check_verdict
+
+    payload = {"overall": "OK", "signals": {"x": {"value": 0, "reference": 1, "direction": "min",
+                                                  "state": "OK"}},
+               "derived": {"faults": []}}
+    ok, note = check_verdict(payload)
+    assert ok is False and "x" in note
+
+
+def test_the_derive_step_fails_when_overall_contradicts_the_faults():
+    import sys
+    sys.path.insert(0, str(__import__("pathlib").Path(__file__).resolve().parents[1] / "tools"))
+    from watch_pipeline import check_verdict
+
+    payload = {"overall": "OK", "signals": {}, "derived": {"faults": ["a = DOWN"]}}
+    ok, note = check_verdict(payload)
+    assert ok is False and "contradicts" in note
+
+
+def test_a_consumer_verdict_older_than_a_day_reads_stale(tmp_path):
+    import json as _json
+    import datetime as _dt
+    import tools.dashboard as dashboard
+
+    project = tmp_path / "old"
+    (project / "docs").mkdir(parents=True)
+    stamp = (_dt.datetime.now(_dt.timezone.utc) - _dt.timedelta(hours=30)).isoformat()
+    (project / "docs" / "evidence.json").write_text(_json.dumps({"generated": stamp}), encoding="utf-8")
+    pipeline = {"consumers": [{"name": "old", "root": str(project), "gate_s": "PASS",
+                               "expected": "PASS", "role": "consumer"}]}
+    svg = dashboard.consumer_strip(pipeline)
+    assert "STALE" in svg

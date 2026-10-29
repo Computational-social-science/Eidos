@@ -482,15 +482,34 @@ def operator_strip(status: dict, recoveries: list) -> str:
     else:
         exec_state = verify_state = plan_state = "IDLE"
         verify_note = "recovery.verify"
-    healed = len([r for r in recoveries if r.get("phase") == "verified"])
+    # "N healed" was cumulative for the life of the log. A count from six weeks ago is not a statement
+    # about this run; the window is the last 24 hours.
+    cutoff = time.time() - 24 * 3600
+    recent = []
+    for row in recoveries:
+        try:
+            when = datetime.datetime.fromisoformat(str(row.get("ts") or "").replace("Z", "+00:00"))
+        except ValueError:
+            continue
+        if when.timestamp() >= cutoff:
+            recent.append(row)
+    healed = len([r for r in recent if r.get("phase") == "verified"])
 
+    try:
+        try:
+            from watch_pipeline import check_verdict          # script run: tools/ is sys.path[0]
+        except ImportError:
+            from tools.watch_pipeline import check_verdict    # imported as a package
+        verdict_ok, verdict_note = check_verdict(status)
+    except Exception as exc:  # noqa: BLE001 - a broken checker is a FAIL, not a PASS
+        verdict_ok, verdict_note = False, f"checker unavailable: {type(exc).__name__}"
     steps = [
         ("self-check · sample", sampled, "15 s"),
-        ("derive verdict", "PASS", "status_view"),
+        ("derive verdict", "PASS" if verdict_ok else "FAIL", verdict_note),
         ("plan repair", plan_state, "recovery.plan"),
         ("execute", exec_state, "recovery.execute"),
         ("verify", verify_state, verify_note),
-        ("record", "PASS", f"{healed} healed · log"),
+        ("record", "PASS", f"{healed} healed · 24 h"),
     ]
     n = len(steps)
     box_w, gap = 168, 26
@@ -670,20 +689,23 @@ def consumer_strip(pipeline: dict) -> str:
         got, want = str(row.get("gate_s") or "—"), str(row.get("expected") or "—")
         as_expected = want != "—" and got == want
         st = "PASS" if as_expected else "FAIL"
-        gen = row.get("generated")
-        age = ""
-        if gen:
-            try:
-                age = fmt_age(max(0.0, now - datetime.datetime.fromisoformat(
-                    str(gen).replace("Z", "+00:00")).timestamp()))
-            except ValueError:
-                age = ""
+        # A verdict is about the moment it was measured. Past 24 h the box reads STALE and says how
+        # old the evidence is: the old colour claimed a currency nobody had re-established.
+        age_h = None
+        try:
+            from framework.project import evidence_age_hours
+            age_h = evidence_age_hours(row.get("root") or "")
+        except Exception:  # noqa: BLE001 - a missing helper must not break the board
+            age_h = None
+        if age_h is not None and age_h > 24.0:
+            st = "STALE"
+        age = fmt_age(age_h * 3600.0) if age_h is not None else ""
         x = 4 + k * (box_w + gap)
         role = str(row.get("role") or "")
         tag = ("demo" if role.upper().startswith("DEMO")
                else "control" if "control" in role.lower()
                else "consumer" if "consumer" in role.lower() else "")
-        note = (f"{tag} · " if tag else "") + f"gate {got} / expected {want}" +                (f" · {age}" if age else "")
+        note = (f"{tag} · " if tag else "") + f"gate {got} / want {want}" +                (f" · {age}" if age else "") + (" · STALE" if st == "STALE" else "")
         parts.append(
             f"<g class='node consumer' data-consumer='{html.escape(name)}' tabindex='0' role='button'>"
             f"<title>{html.escape(name)} · {html.escape(note)}</title>"

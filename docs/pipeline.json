@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-25T08:44:42+00:00",
+  "generated": "2026-10-29T16:08:21+00:00",
   "coupling": {
     "nodes": [
       "framework.decision",
@@ -515,6 +515,15 @@
   },
   "consumers": [
     {
+      "name": "barron2026_agent",
+      "root": "E:\\2026-AI4S\\Eidos\\reference\\barron2026_agent",
+      "available": true,
+      "gate_s": "PASS",
+      "expected": "PASS",
+      "generated": "2026-10-29T14:12:57+00:00",
+      "role": "paper-to-agent consumer (MCP tools from a converted paper, driven end to end)"
+    },
+    {
       "name": "chain_cmd_fails",
       "root": "E:\\2026-AI4S\\Eidos\\reference\\chain\\cmd_fails",
       "available": true,
@@ -556,7 +565,7 @@
       "available": true,
       "gate_s": "PASS",
       "expected": "PASS",
-      "generated": "2026-10-25T08:11:54+00:00",
+      "generated": "2026-10-29T16:07:20+00:00",
       "role": "DEMO (onboarding template, LLM consumer)"
     },
     {
@@ -565,7 +574,7 @@
       "available": true,
       "gate_s": "PASS",
       "expected": "PASS",
-      "generated": "2026-10-25T08:43:28+00:00",
+      "generated": "2026-10-29T16:07:21+00:00",
       "role": "DEMO (quantitative consumer, planted truth + render)"
     },
     {
@@ -583,7 +592,7 @@
       "available": true,
       "gate_s": "PASS",
       "expected": "PASS",
-      "generated": "2026-10-25T08:16:19+00:00",
+      "generated": "2026-10-29T16:07:32+00:00",
       "role": "LLM consumer (calibration of a typed decision operator)"
     },
     {
@@ -678,5 +687,14 @@
       ]
     }
   ],
-  "health": {}
+  "health": {
+    "decision": {
+      "up": true,
+      "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+    },
+    "runtime_18434": {
+      "up": true,
+      "note": null
+    }
+  }
 }

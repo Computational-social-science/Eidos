@@ -3,10 +3,10 @@ root: ../../reference/barron2026_agent
 role: paper-to-agent consumer (MCP tools from a converted paper, driven end to end)
 gate_command:
 - python
-- agent.py
+- gate.py
 test_command:
 - python
-- agent.py
+- gate.py
 validity_register: analysis/CLAIMS.yaml
 validity_document: docs/REPORT.md
 expected_gate_s: PASS

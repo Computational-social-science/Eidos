@@ -707,7 +707,8 @@ def consumer_strip(pipeline: dict) -> str:
                else "consumer" if "consumer" in role.lower() else "")
         note = (f"{tag} · " if tag else "") + f"gate {got} / want {want}" +                (f" · {age}" if age else "") + (" · STALE" if st == "STALE" else "")
         parts.append(
-            f"<g class='node consumer' data-consumer='{html.escape(name)}' tabindex='0' role='button'>"
+            f"<g class='node consumer' data-consumer='{html.escape(name)}'"
+            f"{' data-stale=\"1\"' if st == 'STALE' else ''} tabindex='0' role='button'>"
             f"<title>{html.escape(name)} · {html.escape(note)}</title>"
             f"<rect x='{x}' y='3' width='{box_w}' height='38' rx='4' fill='#1b2027' stroke='#2a3038'/>"
             f"<rect x='{x}' y='3' width='3' height='38' fill='{PALETTE[st]}'/>"
@@ -854,6 +855,19 @@ document.querySelectorAll('g.node.chain').forEach(g => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') dismiss(); });
 document.addEventListener('click', e => {
+  const refresh = e.target.closest('[data-refresh]');
+  if (refresh) {
+    const name = refresh.dataset.refresh;
+    openPop('<div class="t">refreshing ' + name + '…</div><div class="d">the gate command runs; ' +
+            'evidence age is read afterwards</div>', e);
+    fetch('/api/refresh/' + name, {method: 'POST'})
+      .then(r => r.json())
+      .then(j => openPop('<div class="t">' + (j.ok ? 'refreshed' : 'failed') + '</div>' +
+        '<div class="d">' + (j.error || ('status ' + j.status + ' · ' + j.seconds + ' s · evidence ' +
+        (j.evidence_age_h === null ? 'absent' : j.evidence_age_h + ' h old'))) + '</div>', e))
+      .catch(err => openPop('<div class="t">failed</div><div class="d">' + err + '</div>', e));
+    return;
+  }
   const btn = e.target.closest('[data-restart]');
   if (!btn) return;
   const service = btn.dataset.restart;
@@ -873,13 +887,19 @@ document.addEventListener('click', e => {
   // the instrument column are also g.node groups, and defaulting them to 'service' produced the
   // popup "undefined · service · verify · FAIL · no effect" — a label that described nothing.
   const kind = node.dataset.chain ? 'chain' : node.dataset.module ? 'module'
-             : node.dataset.service ? 'service' : node.dataset.operator ? 'operator' : null;
+             : node.dataset.service ? 'service' : node.dataset.consumer ? 'consumer'
+             : node.dataset.operator ? 'operator' : null;
   if (!kind) return;
   const name = node.dataset.chain || node.dataset.module || node.dataset.service
-             || node.dataset.operator;
+             || node.dataset.consumer || node.dataset.operator;
   const t = node.querySelector('title');
   let html = '<div class="t">' + name + '</div><div class="d">' + kind + ' · ' +
              (t ? t.textContent : name) + '</div>';
+  if (kind === 'consumer') {
+    html += '<div class="m">refresh: re-run this project&#39;s gate command and time the new evidence</div>';
+    html += '<div class="m"><button class="act" data-refresh="' + name + '">refresh evidence</button>' +
+            (node.dataset.stale ? ' <span class="d">stale</span>' : '') + '</div>';
+  }
   if (kind === 'service') {
     html += '<div class="m">diagnosis: the probe is the measurement; a state other than OK ' +
             'means the boundary did not answer.</div>';

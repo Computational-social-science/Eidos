@@ -549,6 +549,15 @@ def sample(append: bool = True) -> dict:
                "timeline": timeline[-60:], "live_run": live,
                "alarms": alarms[-20:], "samples": len(history),
                "history": [{k: row.get(k) for k in ("ts", "values")} for row in history[-40:]]}
+    # Publish only a payload whose verdict follows from its own numbers. If the derivation is
+    # inconsistent, that inconsistency is itself the fault: the board must say so rather than show a
+    # state nobody can reproduce from the signals next to it.
+    consistent, note = check_verdict(payload)
+    payload["consistency"] = {"ok": consistent, "note": note}
+    if not consistent:
+        derived.setdefault("faults", []).append("verdict inconsistent: " + note)
+        payload["overall"] = derived["overall"] = "ALARM"
+
     CURRENT.parent.mkdir(parents=True, exist_ok=True)
     CURRENT.write_text(json.dumps(payload, indent=2) + chr(10), encoding="utf-8")
     ALARMS.write_text(json.dumps(alarms, indent=2) + chr(10), encoding="utf-8")

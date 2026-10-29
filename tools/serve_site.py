@@ -239,6 +239,9 @@ class Handler(SimpleHTTPRequestHandler):
         super().do_GET()
 
     def do_POST(self) -> None:  # noqa: N802 - stdlib name
+        if self.path.startswith("/api/refresh/"):
+            self._refresh(self.path.rsplit("/", 1)[-1])
+            return
         if not self.path.startswith("/api/restart/"):
             self._send({"error": "unknown endpoint"}, status=404)
             return
@@ -253,6 +256,35 @@ class Handler(SimpleHTTPRequestHandler):
         if result.get("ok") and not result.get("skipped"):
             result["verify"] = recovery.verify(name, timeout=120)
         self._send(result, status=202)
+
+
+    def _refresh(self, name: str) -> None:
+        """Re-run a consumer's gate command and report whether its evidence moved.
+
+        A STALE box says the verdict is old; this is the action that can make it current. Only a
+        registered project can be refreshed, and only its declared gate command runs.
+        """
+        sys.path.insert(0, str(ROOT))
+        from framework.project import load_projects, run_command
+        from framework.project import evidence_age_hours
+
+        spec = load_projects().get(name)
+        if spec is None:
+            self._send({"ok": False, "error": f"no project named {name!r}"}, status=404)
+            return
+        if not spec.available:
+            self._send({"ok": False, "error": "project root is absent"}, status=400)
+            return
+        if not spec.gate_command:
+            self._send({"ok": False, "error": "no gate command declared"}, status=400)
+            return
+        started = time.time()
+        run = run_command(spec, kind="gate", timeout=900)
+        age_h = evidence_age_hours(spec.root)
+        self._send({"ok": run.status == "PASS", "status": run.status,
+                    "seconds": round(time.time() - started, 1),
+                    "evidence_age_h": None if age_h is None else round(age_h, 2),
+                    "tail": (run.stdout_tail or "")[-600:]}, status=202)
 
     def _send(self, payload: dict, status: int = 200) -> None:
         blob = json.dumps(payload).encode("utf-8")

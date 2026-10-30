@@ -348,3 +348,47 @@ def test_a_consumer_verdict_older_than_a_day_reads_stale(tmp_path):
                                "expected": "PASS", "role": "consumer"}]}
     svg = dashboard.consumer_strip(pipeline)
     assert "STALE" in svg
+
+
+def test_refresh_refuses_a_second_run_on_the_same_project():
+    """A double click must not run the gate command twice into one evidence file."""
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
+    import serve_site
+
+    name = "demo_onboarding"
+    lock = serve_site.REFRESH_LOCKS.setdefault(name, __import__("threading").Lock())
+    lock.acquire()
+    try:
+        result = serve_site.refresh_project(name)
+    finally:
+        lock.release()
+    assert result["ok"] is False and result.get("busy") is True
+
+
+def test_refresh_rejects_an_unknown_project():
+    import sys
+    from pathlib import Path
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tools"))
+    import serve_site
+
+    result = serve_site.refresh_project("not_a_project")
+    assert result["ok"] is False and "no project" in result["error"]
+
+
+def test_a_service_with_no_module_mapping_is_reported():
+    """dvc was labelled, diagnosed and measured, but no module reached it, so it was never drawn."""
+    import tools.dashboard as dashboard
+
+    problems = dashboard.service_coverage(mapping={"framework.tracking": ("mlflow",)},
+                                          diagnosis=["dvc"])
+    assert any("dvc" in p and "never drawn" in p for p in problems)
+
+
+def test_a_module_may_reach_two_services():
+    import tools.dashboard as dashboard
+
+    assert dashboard.services_for_module("framework.tracking") == ("mlflow", "dvc")

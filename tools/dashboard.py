@@ -42,12 +42,46 @@ INK = {"IDLE": "#e6e8eb", "RUNNING": "#0b0e12", "PASS": "#0b0e12",
        "SKIP": "#0b0e12", "FAIL": "#ffffff", "STALE": "#141414"}
 SEVERITY = {"FAIL": 5, "STALE": 4, "RUNNING": 3, "SKIP": 2, "PASS": 1, "IDLE": 0}
 
+# One module can reach more than one service: framework.tracking uses mlflow *and* dvc, and the
+# single-value map silently dropped dvc from the matrix for as long as it existed.
 MODULE_SERVICE = {
-    "framework.decision": "decision_service",
-    "framework.inference": "runtime_18434",
-    "framework.quarto_bridge": "quarto",
-    "framework.tracking": "mlflow",
+    "framework.decision": ("decision_service",),
+    "framework.inference": ("runtime_18434",),
+    "framework.quarto_bridge": ("quarto",),
+    "framework.tracking": ("mlflow", "dvc"),
 }
+
+
+def services_for_module(module: str, mapping: dict | None = None) -> tuple[str, ...]:
+    value = (mapping or MODULE_SERVICE).get(module, ())
+    return tuple(value) if isinstance(value, (tuple, list)) else (value,)
+
+
+def service_coverage(mapping: dict | None = None, labels: dict | None = None,
+                     diagnosis: list[str] | None = None,
+                     signals: dict | None = None) -> list[str]:
+    """Every service the framework claims to diagnose must be drawn, measured and reachable.
+
+    dvc was in SERVICE_LABEL and in diagnosis, and had a live signal, but no module mapped to it —
+    so the matrix skipped its column and the service looked untracked. Three sources must agree;
+    this function is the agreement.
+    """
+    mapping = mapping if mapping is not None else MODULE_SERVICE
+    labels = labels if labels is not None else SERVICE_LABEL
+    problems: list[str] = []
+    targets = {name for value in mapping.values()
+               for name in (value if isinstance(value, (tuple, list)) else (value,))}
+    for service in (diagnosis or []):
+        if service not in labels:
+            problems.append(f"{service}: diagnosable but unlabelled")
+        if service not in targets:
+            problems.append(f"{service}: diagnosable but no module reaches it, so it is never drawn")
+        if signals is not None and service not in signals:
+            problems.append(f"{service}: diagnosable but no signal measures it")
+    for service in labels:
+        if service not in targets:
+            problems.append(f"{service}: labelled but unreachable (no module maps to it)")
+    return problems
 SERVICE_LABEL = {
     "decision_service": "decision · :8090",
     "runtime_18434": "llama.cpp · :18434",
@@ -389,7 +423,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
             svg.append(f"<circle cx='{cx:.1f}' cy='{y + row_h / 2:.1f}' r='3.4' "
                        f"fill='{PALETTE.get(state, PALETTE['IDLE'])}' opacity='0.9'/>")
         for k, service in enumerate(services):
-            if not any(MODULE_SERVICE.get(m) == service for m in used):
+            if not any(service in services_for_module(m) for m in used):
                 continue
             cx = s_x + k * col_w + col_w / 2 - 10
             up = (signals.get(service) or {}).get("state") not in ("ALARM", "UNOBSERVABLE")

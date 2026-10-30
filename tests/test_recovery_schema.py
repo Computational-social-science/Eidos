@@ -39,3 +39,11 @@ def test_a_port_that_already_has_a_listener_is_not_started_on_twice(tmp_path, mo
     result = recovery.execute(plan)
     assert result["skipped"] is True and result["ok"] is False
     assert "already held" in result["reason"]
+
+
+def test_preflight_reads_the_machine_without_raising():
+    """It probes ports and process names on every recovery attempt; an UnboundLocalError there made
+    every repair fail before it started, and the traceback pointed at a variable that looked local."""
+    report = recovery.preflight("decision_service")
+    assert report["service"] == "decision_service"
+    assert "ports" in report and "healthy" in report

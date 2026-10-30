@@ -148,6 +148,24 @@ def sampler(interval: float, page_interval: float) -> None:
             STATE["sampled"] = time.time()
             STATE["error"] = None
 
+            # Once an hour, refresh the stalest consumer if its evidence is past a day. The lock
+            # makes this safe beside a manual click; a failure is recorded, never retried in a loop.
+            if time.time() - STATE.get("last_auto", 0.0) > 3600:
+                STATE["last_auto"] = time.time()
+                try:
+                    from framework.project import evidence_age_hours, load_projects
+                    stale = []
+                    for spec in load_projects().values():
+                        age_h = evidence_age_hours(spec.root)
+                        if age_h is not None and age_h > 24.0:
+                            stale.append((age_h, spec.name))
+                    if stale:
+                        _, name = max(stale)
+                        threading.Thread(target=refresh_project, args=(name,), daemon=True).start()
+                        STATE["auto_note"] = f"auto-refresh started: {name} ({max(stale)[0]:.0f} h)"
+                except Exception as exc:  # noqa: BLE001 - the loop must keep sampling
+                    STATE["auto_note"] = f"auto-refresh failed: {type(exc).__name__}"
+
             timeline = payload.get("timeline") or []
             sig = (len(timeline), timeline[-1].get("ts") if timeline else None)
             if sig != STATE["strip_sig"]:
@@ -170,6 +188,53 @@ def sampler(interval: float, page_interval: float) -> None:
             STATE["error"] = f"{type(exc).__name__}: {exc}"
             traceback.print_exc()
         time.sleep(max(interval - (time.time() - started), 1.0))
+
+
+
+REFRESH_LOCKS: dict[str, threading.Lock] = {}
+
+
+def refresh_project(name: str) -> dict:
+    """Run one project's gate command, one at a time, then rebuild the registry.
+
+    A double click used to start two runs writing the same `docs/evidence.json`. The lock makes the
+    second request answer "already running" instead of racing the first.
+    """
+    sys.path.insert(0, str(ROOT))
+    from framework.project import evidence_age_hours, load_projects, run_command
+
+    spec = load_projects().get(name)
+    if spec is None:
+        return {"ok": False, "error": f"no project named {name!r}"}
+    if not spec.available:
+        return {"ok": False, "error": "project root is absent"}
+    if not spec.gate_command:
+        return {"ok": False, "error": "no gate command declared"}
+
+    lock = REFRESH_LOCKS.setdefault(name, threading.Lock())
+    if not lock.acquire(blocking=False):
+        return {"ok": False, "busy": True, "error": f"{name} is already refreshing"}
+    started = time.time()
+    try:
+        run = run_command(spec, kind="gate", timeout=900)
+        # The dashboard reads docs/pipeline.json for Gate S verdicts; a new evidence file without a
+        # rebuild would be measured against the old registry.
+        try:
+            subprocess.run([sys.executable, str(ROOT / "tools" / "build_pipeline.py"), "--probe"],
+                           cwd=str(ROOT), capture_output=True, text=True, timeout=300)
+        except (OSError, subprocess.SubprocessError):
+            pass
+        age_h = evidence_age_hours(spec.root)
+        # A negative control is *supposed* to fail. "ok" means the refresh did what this project is
+        # for, not that the command exited 0.
+        expected = str(getattr(spec, "expected_gate_s", "") or "").upper() or None
+        matches = run.status == (expected or "PASS")
+        return {"ok": matches, "status": run.status, "expected": expected,
+                "seconds": round(time.time() - started, 1),
+                "evidence_age_h": None if age_h is None else round(age_h, 2),
+                "tail": (run.stdout_tail or "")[-600:]}
+    finally:
+        lock.release()
 
 
 class Handler(SimpleHTTPRequestHandler):
@@ -259,32 +324,9 @@ class Handler(SimpleHTTPRequestHandler):
 
 
     def _refresh(self, name: str) -> None:
-        """Re-run a consumer's gate command and report whether its evidence moved.
-
-        A STALE box says the verdict is old; this is the action that can make it current. Only a
-        registered project can be refreshed, and only its declared gate command runs.
-        """
-        sys.path.insert(0, str(ROOT))
-        from framework.project import load_projects, run_command
-        from framework.project import evidence_age_hours
-
-        spec = load_projects().get(name)
-        if spec is None:
-            self._send({"ok": False, "error": f"no project named {name!r}"}, status=404)
-            return
-        if not spec.available:
-            self._send({"ok": False, "error": "project root is absent"}, status=400)
-            return
-        if not spec.gate_command:
-            self._send({"ok": False, "error": "no gate command declared"}, status=400)
-            return
-        started = time.time()
-        run = run_command(spec, kind="gate", timeout=900)
-        age_h = evidence_age_hours(spec.root)
-        self._send({"ok": run.status == "PASS", "status": run.status,
-                    "seconds": round(time.time() - started, 1),
-                    "evidence_age_h": None if age_h is None else round(age_h, 2),
-                    "tail": (run.stdout_tail or "")[-600:]}, status=202)
+        result = refresh_project(name)
+        status = 202 if result.get("ok") else (409 if result.get("busy") else 400)
+        self._send(result, status=status)
 
     def _send(self, payload: dict, status: int = 200) -> None:
         blob = json.dumps(payload).encode("utf-8")

@@ -7,8 +7,8 @@ and re-checked by `--check` in CI; none is typed by hand.
 
 | dimension | measurement | verdict |
 |---|---|---|
-| unit tests | **327 collected**, all passing | ✅ |
-| coverage of `framework/` | **73%**, no-regression by >1 point | ✅ |
+| unit tests | **332 collected**, all passing | ✅ |
+| coverage of `framework/` | **72%**, no-regression by >1 point | ✅ |
 | chain audit | **11 chains: 10 PASS, 1 SKIP, 0 FAIL/ERROR** | ✅ |
 | Gate S on the reference fixture | PASS (valid register) and FAIL (mutated copy) | ✅ |
 | Gate S on Eidos itself | **PASS — 8 objections, 0 open** (consumers are sealed fixtures) | ✅ |

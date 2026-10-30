@@ -175,10 +175,6 @@ def preflight(service: str) -> dict:
     hints = OWNER_HINTS.get(service, ())
     report = {"service": service, "healthy": False, "ports": {}, "conflict": False,
               "owned_by_self": False, "owners": []}
-    # Loading a 4B GGUF on a busy GPU can take minutes; 90 s was short enough that a healthy start
-    # was recorded as "no effect" and retried, which is how duplicates were born.
-    timeout = float(timeout if timeout is not None
-                    else 300.0 if service == "runtime_18434" else 90.0)
     urls = ENDPOINTS.get(service) or ((HEALTH.get(service),) if HEALTH.get(service) else ())
     if urls:
         report["healthy"] = all(_answers(u) for u in urls)

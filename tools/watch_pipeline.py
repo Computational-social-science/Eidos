@@ -67,29 +67,10 @@ def read_json(path: Path, default=None):
         return default
 
 
-def http_json(url: str, timeout: float = 2.0) -> tuple[int, dict]:
-    try:
-        with urllib.request.urlopen(url, timeout=timeout) as response:
-            return response.status, json.loads(response.read().decode("utf-8", "replace"))
-    except Exception as exc:  # noqa: BLE001 - absence is the measurement
-        return 0, {"error": type(exc).__name__}
-
-
-def http_status(url: str, headers: dict | None = None, timeout: float = 2.0) -> int:
-    """Return the HTTP status, or 0 when nothing answers.
-
-    401 is not absence: it proves the server is alive and enforcing auth. Treating it as
-    "down" made an authenticated runtime look dead on the dashboard.
-    """
-    import urllib.error
-    request = urllib.request.Request(url, headers=headers or {})
-    try:
-        with urllib.request.urlopen(request, timeout=timeout) as response:
-            return response.status
-    except urllib.error.HTTPError as exc:
-        return exc.code
-    except Exception:  # noqa: BLE001 - absence is the measurement
-        return 0
+try:  # script run puts tools/ on sys.path; package import does not
+    from probes import http_json, http_status
+except ImportError:  # pragma: no cover - exercised by the package import path
+    from tools.probes import http_json, http_status
 
 
 def age_hours(iso: str | None) -> float | None:
@@ -136,11 +117,16 @@ def measure() -> dict:
     sys.path.insert(0, str(ROOT))
     from framework import services as _services
     code, body = http_json("http://127.0.0.1:8090/health")
-    look = _services.check("decision_service")
-    up = code == 200 and body.get("status") == "ok" and look["healthy"]
+    # Probe both halves here, with the same raw socket the other signals use. `framework.services`
+    # answers through urllib and its verdict was the one that went stale inside this process.
+    urls = _services.endpoints("decision_service") or ()
+    codes = {u: http_status(u) for u in urls}
+    pair_up = bool(codes) and all(c and c < 500 for c in codes.values())
+    up = code == 200 and body.get("status") == "ok" and pair_up
     note = body.get("model") or body.get("error")
-    if not up and look["silent"]:
-        note = "silent: " + ", ".join(u.split("//")[-1] for u in look["silent"])
+    if not up:
+        silent = [u.split("//")[-1] for u, c in codes.items() if not c]
+        note = ("silent: " + ", ".join(silent)) if silent else f"status {code} / pair {codes}"
     signals["decision_service"] = {
         "value": 1 if up else 0,
         "reference": 1, "direction": "min", "unit": "up",

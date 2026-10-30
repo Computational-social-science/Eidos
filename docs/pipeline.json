@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-29T16:08:21+00:00",
+  "generated": "2026-10-30T13:05:38+00:00",
   "coupling": {
     "nodes": [
       "framework.decision",
@@ -520,7 +520,7 @@
       "available": true,
       "gate_s": "PASS",
       "expected": "PASS",
-      "generated": "2026-10-29T14:12:57+00:00",
+      "generated": "2026-10-29T16:09:37+00:00",
       "role": "paper-to-agent consumer (MCP tools from a converted paper, driven end to end)"
     },
     {
@@ -694,7 +694,7 @@
     },
     "runtime_18434": {
       "up": true,
-      "note": null
+      "note": "auth required"
     }
   }
 }

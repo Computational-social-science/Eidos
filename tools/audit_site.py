@@ -122,6 +122,27 @@ def invariants() -> list[str]:
     return problems
 
 
+def service_map_gaps() -> list[str]:
+    """Three sources must agree about every service: diagnosis, the matrix mapping, and a signal."""
+    import json
+    import sys as _sys
+
+    _sys.path.insert(0, str(ROOT / "tools"))
+    _sys.path.insert(0, str(ROOT))
+    import dashboard  # noqa: WPS433 - the page's own map, not a copy
+
+    text = (ROOT / "framework" / "diagnosis" / "__init__.py").read_text(encoding="utf-8")
+    services = sorted(set(re.findall(r'"service:([a-z0-9_]+)"', text)))
+    current = ROOT / "docs" / "status" / "current.json"
+    signals = {}
+    if current.is_file():
+        try:
+            signals = json.loads(current.read_text(encoding="utf-8")).get("signals") or {}
+        except (OSError, json.JSONDecodeError):
+            signals = {}
+    return dashboard.service_coverage(diagnosis=services, signals=signals or None)
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="the site quality gate")
     ap.add_argument("--no-build", action="store_true", help="audit what is already on disk")
@@ -165,6 +186,12 @@ def main(argv: list[str] | None = None) -> int:
             for skipped in ("monitor layout", "document layout", "WCAG AA",
                             "both pages execute"):
                 print(f"  SKIP  {skipped} (no browser in this runner)")
+
+        map_gaps = service_map_gaps()
+        print(f"  {'PASS' if not map_gaps else 'FAIL'}  service coverage (diagnosis = mapping = signal)")
+        for gap in map_gaps:
+            print(f"         {gap}")
+        checks.append(not map_gaps)
 
         gaps = invariants()
         print(f"  {'PASS' if not gaps else 'FAIL'}  content invariants")

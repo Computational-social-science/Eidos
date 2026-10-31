@@ -1,6 +1,6 @@
 {
-  "generated": "2026-10-31T11:50:50+00:00",
-  "scanned": 5,
+  "generated": "2026-10-31T13:19:45+00:00",
+  "scanned": 10,
   "findings": [],
   "kernel_regression": {
     "paper": "arxiv:2610.31642v3",

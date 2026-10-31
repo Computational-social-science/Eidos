@@ -7,7 +7,7 @@ and re-checked by `--check` in CI; none is typed by hand.
 
 | dimension | measurement | verdict |
 |---|---|---|
-| unit tests | **642 collected**, 642 passed; 4 optional Torch modules skipped in project env (16 tests separately passed on CUDA Python) | ✅ |
+| unit tests | **645 collected**, 645 passed; 4 optional Torch modules skipped in project env (16 tests separately passed on CUDA Python) | ✅ |
 | coverage of `framework/` | **69%**, source-only scope including unexecuted modules; future no-regression by >1 point | measured |
 | chain audit | **11 chains: 10 PASS, 1 SKIP, 0 FAIL/ERROR** | ✅ |
 | Gate S on the reference fixture | PASS (valid register) and FAIL (mutated copy) | ✅ |
@@ -91,4 +91,4 @@ Matrix acceptance: 36 complete trajectories, 1,836 points, 36 independent final 
 
 Consumer snapshot acceptance: changed declarations revoke cached verdicts, background checks preserve sampling, and timeout cleanup owns descendants. See [functional completeness](FUNCTIONAL_COMPLETENESS.md). Generic Docker/Binder packaging remains incomplete.
 
-Release observation on 2026-11-01: strict soak remains RUNNING after 610 observations, with 47 failures retained. This is not a clean 24-hour acceptance. See [dated snapshot](SOAK-OBSERVATION-2026-11-01.json).
+Release observation on 2026-11-01: strict soak remains RUNNING after 682 observations, with 47 failures retained. This is not a clean 24-hour acceptance. See [dated snapshot](SOAK-OBSERVATION-2026-11-01.json).

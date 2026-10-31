@@ -97,7 +97,7 @@ The repair uses centered logit differences, `expm1`/`log1p`, and a zero-sum corr
 ### Numerical execution and independent references
 
 Backend: numpy 2.5.4. Decimal references use represented inputs and adaptive precision.
-Eidos 0.4.2; Python 3.12.4. No random seed applies to this deterministic grid.
+Eidos 0.4.3; Python 3.12.4. No random seed applies to this deterministic grid.
 Source and lock SHA-256 hashes are recorded in evidence.json; bundle checksums cover the shipped source.
 The browser selects recorded cases; it does not simulate float32 training.
 

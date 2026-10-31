@@ -34,7 +34,17 @@ def main(argv=None) -> int:
     from tools.consumer_snapshot import atomic_json
     command=([configured['PYTHON'],str(ROOT/'tools/watchdog.py')] if args.kind=='watchdog' else
              [configured['PYTHON'],str(ROOT/'tools/contract_snapshot.py'),'--check','--json'])
-    record={'generated':datetime.now(timezone.utc).isoformat(),'kind':args.kind,'ok':False}
+    record={'generated':datetime.now(timezone.utc).isoformat(),'kind':args.kind,'ok':False,
+            'entry_python':sys.executable,'python_version':sys.version.split()[0],
+            'isolated':bool(sys.flags.isolated),'utf8_mode':bool(sys.flags.utf8_mode),
+            'pythonpath_present':bool(os.environ.get('PYTHONPATH')),
+            'pythonhome_present':bool(os.environ.get('PYTHONHOME'))}
+    record['console_window']=None
+    if os.name=='nt':
+        import ctypes
+        window=ctypes.windll.kernel32.GetConsoleWindow
+        window.restype=ctypes.c_void_p
+        record['console_window']=int(window() or 0)
     try:
         run=run_tree(command,cwd=ROOT,timeout=300)
         record['exit_code'] = run.returncode

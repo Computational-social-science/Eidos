@@ -9,7 +9,8 @@ PUBLIC = ('ACADEMIC_POSITIONING.md','FUNCTIONAL_COMPLETENESS.md','HEALTH.md','SE
           'PUBLICATION-QUALITY.md','PUBLICATION-QA.json','PUBLICATION-VISUAL-REVIEW.json',
           'MODEL_VERDICTS.md','MODEL-TASK-QUALITY.md','MODEL_TASK_READINESS.json','CAPABILITY-TRUTH-AUDIT-2026-11-01.md',
           'MONITOR-SEMANTICS.md','MONITOR-UI-ACCEPTANCE-2026-11-01.json',
-          'EXECUTABLE-DELIVERY.md','PACKAGE-ACCEPTANCE.json')
+          'EXECUTABLE-DELIVERY.md','PACKAGE-ACCEPTANCE.json',
+          'CRON-ISOLATION.md','CRON-SCHEDULER-ACCEPTANCE-2026-11-01.json')
 
 PUBLIC_ASSETS = ('docs/screens/web/index-top.webp',
                  'reference/package_delivery_acceptance/package.zip')

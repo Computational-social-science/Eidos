@@ -59,8 +59,9 @@ an accidental-change detector, not signed attestation or a sandbox for untrusted
 
 ## Verified local and container replay
 
-The acceptance ZIP at `reference/package_delivery_acceptance/package.zip` contains
+The v0.4.2 acceptance ZIP at `reference/package_delivery_acceptance/package.zip` contains
 only declared inputs and generated launch files, without results from earlier runs.
+It retains the qualified v0.4.2 source and is unchanged by the v0.4.3 scheduler fix.
 Extract a new copy for each local or Docker replay. Building a container from an
 already executed copy carries its old outputs into the image and is deliberately
 rejected by the runner.

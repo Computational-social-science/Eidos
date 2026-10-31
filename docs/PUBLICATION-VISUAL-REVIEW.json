@@ -1,12 +1,12 @@
 {
-  "generated": "2026-10-31T18:36:04.614623+00:00",
-  "assessor": "Codex: per-page pixel comparison to fully inspected v0.4.1 baseline; both changed pages manually re-inspected",
+  "generated": "2026-10-31T19:45:07.252087+00:00",
+  "assessor": "Codex: per-page pixel comparison to fully inspected v0.4.2 baseline; both changed pages manually re-inspected",
   "scope": "Rendered PDF and Word pages only; web layout is a separate browser check. Manuscript spacing permits whitespace before intact figures/tables.",
   "submission_ready": false,
   "reports": [
     {
       "path": "site/reports/numerics/report.pdf",
-      "sha256": "1a38680ec101690385462d3ffe23ade15e486ec0aae2acddc4815c60480e4a34",
+      "sha256": "072d5eaae0fa5eb7b3ba6201f5f942de46ee4bb531955bf303820c835c16fe5e",
       "pages_inspected": [
         1,
         2,
@@ -20,7 +20,7 @@
       "renderer": "Poppler",
       "page_png_sha256": [
         "5a721d8c8fd6a3d94bcab23258f40790add2b7d7d586e0f37119d068c54b03c2",
-        "f4a628ee80f6a8f05c77e36410b178b8d33a608d1f996e37e3369338f662b162",
+        "2401cccd593ef9827ae9764c8e7da3a7ccf855d417d0dafed1f23c5ae446864f",
         "7330dfc4b56904a66d0540d7fef5de8f3238c39410e1bba9c56242eefb53584d",
         "36112ba1d8923ecfcec10ec2b1ffe23f6585dc6e3fbeb5211ffdf987c5842af9",
         "1b7f9c95ac2ce92fd2b7f9b6bc12e7abbad1844d47140655dfda0fc0f55724a3",
@@ -41,7 +41,7 @@
     },
     {
       "path": "site/reports/numerics/report.docx",
-      "sha256": "e65db1b2a821f3e31fa6ae807eab6e885c60c61325766fd05aa58b21fcfab2b4",
+      "sha256": "5cfab06ce9a147666d7beae9f755c85b83757033663e0e1c7f6867bf702b76d5",
       "pages_inspected": [
         1,
         2,
@@ -55,7 +55,7 @@
       "renderer": "Bundled render_docx.py PNG pipeline; native Microsoft Word read-only conversion adapter",
       "page_png_sha256": [
         "0dcd5ed98eb7c949f3024a07aa8d77035f5f33e67221fb367e9400b09f8fb2e0",
-        "b88e131b52cab1d5a5e8af77aeb53f12a4dfbbff59531bd19550c66dcc5c74e0",
+        "cda1bdf20095bea585a8b42cb26481fca4f96e385d16628ff1e732694fb5cc24",
         "8946a42950d26320a80d1ee961f599d7a9db9c27f856c0ec5a80e06044b472f4",
         "485d553f9b0551d9df6a967100a216baad21a72cd6437af4e1989d30519e82b2",
         "60daad8f065666a94411181e944267429d48c4e5a0607a74b29cf6f5376696cd",
@@ -76,7 +76,7 @@
     },
     {
       "path": "site/reports/softmax-matrix/report.pdf",
-      "sha256": "cab7a3ff782c648d4cfb2836813b9cb39c88f3c156374d3fb1d041ab769206c2",
+      "sha256": "19bbb1baa54e4d29349ae8c1f8bea7a6a895d0bd5a7bab47329c2275b6fef7a4",
       "pages_inspected": [
         1,
         2,
@@ -107,7 +107,7 @@
     },
     {
       "path": "site/reports/softmax-matrix/report.docx",
-      "sha256": "38d1e7d2cc2ccb2fb25e17310f4b7f8888ecf1a0272533e774f5395f860860a1",
+      "sha256": "f180cc2e9470d236b5a19cd48b3916992c96531976d2478a09e2c21cbb95e451",
       "pages_inspected": [
         1,
         2,
@@ -137,7 +137,7 @@
       ]
     }
   ],
-  "baseline_tag": "v0.4.1",
+  "baseline_tag": "v0.4.2",
   "page_comparison": [
     {
       "path": "site/reports/numerics/report.pdf",
@@ -154,7 +154,7 @@
         851,
         413,
         860,
-        427
+        428
       ],
       "changed_region_review": "Version glyph manually inspected"
     },
@@ -215,7 +215,7 @@
         1237,
         675,
         1250,
-        695
+        696
       ],
       "changed_region_review": "Version glyph manually inspected"
     },

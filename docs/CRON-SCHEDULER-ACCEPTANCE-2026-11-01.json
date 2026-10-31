@@ -1,0 +1,250 @@
+{
+  "recorded_at": "2026-10-31T19:36:35.467136+00:00",
+  "scope": "Same-host Windows; real Hermes managed-store bootstrap and actual watchdog scheduler executions. No reboot/logon or 24-hour stability claim.",
+  "before": {
+    "id": "af4ae1129d9c",
+    "name": "eidos-watchdog",
+    "enabled": true,
+    "schedule": {
+      "kind": "interval",
+      "minutes": 5,
+      "display": "every 5m"
+    },
+    "last_run_at": "2026-11-01T03:14:06.166189+08:00",
+    "last_status": "error",
+    "last_error": "Script exited with code 1\nstderr:\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import os, runpy, site, sys;site.addsitedir('C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\hermes\\\\installs\\\\bd3acbc64406c95b\\\\environments\\\\8698a72e03264e419a447af2292759eb\\\\venv\\\\Lib\\\\site-packages');script = sys.argv[1];sys.argv = [script] + sys.argv[2:];sys.path.insert(0, os.path.dirname(os.path.abspath(script)));runpy.run_path(script, run_name='__main__')\n                                                                                                                                                                                                                                                                                                                               ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"C:\\Users\\Administrator\\AppData\\Local\\hermes\\scripts\\eidos_watchdog.py\", line 6, in <module>\n    runpy.run_path(entry,run_name=\"__main__\")\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"E:\\2026-AI4S\\Eidos\\tools\\cron_entry.py\", line 68, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"E:\\2026-AI4S\\Eidos\\tools\\cron_entry.py\", line 33, in main\n    from tools.bounded_process import run_tree\nModuleNotFoundError: No module named 'tools.bounded_process'",
+    "failure_streak": 32,
+    "next_run_at": "2026-11-01T03:19:06.166189+08:00"
+  },
+  "after": {
+    "id": "af4ae1129d9c",
+    "name": "eidos-watchdog",
+    "enabled": true,
+    "schedule": {
+      "kind": "interval",
+      "minutes": 5,
+      "display": "every 5m"
+    },
+    "last_run_at": "2026-11-01T03:32:06.526938+08:00",
+    "last_status": "ok",
+    "last_error": null,
+    "failure_streak": 0,
+    "next_run_at": "2026-11-01T03:37:06.526938+08:00"
+  },
+  "successful_scheduled_executions": [
+    {
+      "id": "e4149e2261ca4fa8bd4c69419e2bf5a6",
+      "job_id": "af4ae1129d9c",
+      "status": "completed",
+      "started_at": "2026-11-01T03:32:05.925830+08:00",
+      "finished_at": "2026-11-01T03:32:06.531460+08:00",
+      "error": null,
+      "scheduled_instant": "2026-10-31T19:31:06.521796+00:00"
+    },
+    {
+      "id": "a4a55a5fc9234934834fa030f8163056",
+      "job_id": "af4ae1129d9c",
+      "status": "completed",
+      "started_at": "2026-11-01T03:26:06.009049+08:00",
+      "finished_at": "2026-11-01T03:26:06.525131+08:00",
+      "error": null,
+      "scheduled_instant": "2026-10-31T19:25:06.798160+00:00"
+    },
+    {
+      "id": "7cd2ecd941274ac3938d43285b708731",
+      "job_id": "af4ae1129d9c",
+      "status": "completed",
+      "started_at": "2026-11-01T03:20:05.917267+08:00",
+      "finished_at": "2026-11-01T03:20:06.801868+08:00",
+      "error": null,
+      "scheduled_instant": "2026-10-31T19:19:06.166189+00:00"
+    }
+  ],
+  "recent_execution_history": [
+    {
+      "id": "e4149e2261ca4fa8bd4c69419e2bf5a6",
+      "job_id": "af4ae1129d9c",
+      "status": "completed",
+      "started_at": "2026-11-01T03:32:05.925830+08:00",
+      "finished_at": "2026-11-01T03:32:06.531460+08:00",
+      "error": null,
+      "scheduled_instant": "2026-10-31T19:31:06.521796+00:00"
+    },
+    {
+      "id": "a4a55a5fc9234934834fa030f8163056",
+      "job_id": "af4ae1129d9c",
+      "status": "completed",
+      "started_at": "2026-11-01T03:26:06.009049+08:00",
+      "finished_at": "2026-11-01T03:26:06.525131+08:00",
+      "error": null,
+      "scheduled_instant": "2026-10-31T19:25:06.798160+00:00"
+    },
+    {
+      "id": "7cd2ecd941274ac3938d43285b708731",
+      "job_id": "af4ae1129d9c",
+      "status": "completed",
+      "started_at": "2026-11-01T03:20:05.917267+08:00",
+      "finished_at": "2026-11-01T03:20:06.801868+08:00",
+      "error": null,
+      "scheduled_instant": "2026-10-31T19:19:06.166189+00:00"
+    },
+    {
+      "id": "fc1d9881b91f430eb7f5e9e0838eee67",
+      "job_id": "af4ae1129d9c",
+      "status": "failed",
+      "started_at": "2026-11-01T03:14:05.941344+08:00",
+      "finished_at": "2026-11-01T03:14:06.169822+08:00",
+      "error": "Script exited with code 1\nstderr:\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import os, runpy, site, sys;site.addsitedir('C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\hermes\\\\installs\\\\bd3acbc64406c95b\\\\environments\\\\8698a72e03264e419a447af2292759eb\\\\venv\\\\Lib\\\\site-packages');script = sys.argv[1];sys.argv = [script] + sys.argv[2:];sys.path.insert(0, os.path.dirname(os.path.abspath(script)));runpy.run_path(script, run_name='__main__')\n                                                                                                                                                                                                                                                                                                                               ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"C:\\Users\\Administrator\\AppData\\Local\\hermes\\scripts\\eidos_watchdog.py\", line 6, in <module>\n    runpy.run_path(entry,run_name=\"__main__\")\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"E:\\2026-AI4S\\Eidos\\tools\\cron_entry.py\", line 68, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"E:\\2026-AI4S\\Eidos\\tools\\cron_entry.py\", line 33, in main\n    from tools.bounded_process import run_tree\nModuleNotFoundError: No module named 'tools.bounded_process'",
+      "scheduled_instant": "2026-10-31T19:13:06.283186+00:00"
+    },
+    {
+      "id": "d23d6cb52b834556aaf7f5c08695cb82",
+      "job_id": "af4ae1129d9c",
+      "status": "failed",
+      "started_at": "2026-11-01T03:08:06.001980+08:00",
+      "finished_at": "2026-11-01T03:08:06.289616+08:00",
+      "error": "Script exited with code 1\nstderr:\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import os, runpy, site, sys;site.addsitedir('C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\hermes\\\\installs\\\\bd3acbc64406c95b\\\\environments\\\\8698a72e03264e419a447af2292759eb\\\\venv\\\\Lib\\\\site-packages');script = sys.argv[1];sys.argv = [script] + sys.argv[2:];sys.path.insert(0, os.path.dirname(os.path.abspath(script)));runpy.run_path(script, run_name='__main__')\n                                                                                                                                                                                                                                                                                                                               ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"C:\\Users\\Administrator\\AppData\\Local\\hermes\\scripts\\eidos_watchdog.py\", line 6, in <module>\n    runpy.run_path(entry,run_name=\"__main__\")\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"E:\\2026-AI4S\\Eidos\\tools\\cron_entry.py\", line 68, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"E:\\2026-AI4S\\Eidos\\tools\\cron_entry.py\", line 33, in main\n    from tools.bounded_process import run_tree\nModuleNotFoundError: No module named 'tools.bounded_process'",
+      "scheduled_instant": "2026-10-31T19:07:06.114572+00:00"
+    },
+    {
+      "id": "7d0c51f800bb44e3ac7cead5ecadb9f9",
+      "job_id": "af4ae1129d9c",
+      "status": "failed",
+      "started_at": "2026-11-01T03:02:05.938656+08:00",
+      "finished_at": "2026-11-01T03:02:06.120579+08:00",
+      "error": "Script exited with code 1\nstderr:\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import os, runpy, site, sys;site.addsitedir('C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\hermes\\\\installs\\\\bd3acbc64406c95b\\\\environments\\\\8698a72e03264e419a447af2292759eb\\\\venv\\\\Lib\\\\site-packages');script = sys.argv[1];sys.argv = [script] + sys.argv[2:];sys.path.insert(0, os.path.dirname(os.path.abspath(script)));runpy.run_path(script, run_name='__main__')\n                                                                                                                                                                                                                                                                                                                               ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"C:\\Users\\Administrator\\AppData\\Local\\hermes\\scripts\\eidos_watchdog.py\", line 6, in <module>\n    runpy.run_path(entry,run_name=\"__main__\")\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"E:\\2026-AI4S\\Eidos\\tools\\cron_entry.py\", line 68, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"E:\\2026-AI4S\\Eidos\\tools\\cron_entry.py\", line 33, in main\n    from tools.bounded_process import run_tree\nModuleNotFoundError: No module named 'tools.bounded_process'",
+      "scheduled_instant": "2026-10-31T19:01:06.093077+00:00"
+    },
+    {
+      "id": "f5e260d6c8214cd29672a84a01236a34",
+      "job_id": "af4ae1129d9c",
+      "status": "failed",
+      "started_at": "2026-11-01T02:56:05.934584+08:00",
+      "finished_at": "2026-11-01T02:56:06.096336+08:00",
+      "error": "Script exited with code 1\nstderr:\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import os, runpy, site, sys;site.addsitedir('C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\hermes\\\\installs\\\\bd3acbc64406c95b\\\\environments\\\\8698a72e03264e419a447af2292759eb\\\\venv\\\\Lib\\\\site-packages');script = sys.argv[1];sys.argv = [script] + sys.argv[2:];sys.path.insert(0, os.path.dirname(os.path.abspath(script)));runpy.run_path(script, run_name='__main__')\n                                                                                                                                                                                                                                                                                                                               ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"C:\\Users\\Administrator\\AppData\\Local\\hermes\\scripts\\eidos_watchdog.py\", line 6, in <module>\n    runpy.run_path(entry,run_name=\"__main__\")\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"E:\\2026-AI4S\\Eidos\\tools\\cron_entry.py\", line 68, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"E:\\2026-AI4S\\Eidos\\tools\\cron_entry.py\", line 33, in main\n    from tools.bounded_process import run_tree\nModuleNotFoundError: No module named 'tools.bounded_process'",
+      "scheduled_instant": "2026-10-31T18:55:06.105887+00:00"
+    },
+    {
+      "id": "88042fae60d746b69c7bbd27bd2c7f3a",
+      "job_id": "af4ae1129d9c",
+      "status": "failed",
+      "started_at": "2026-11-01T02:50:05.939585+08:00",
+      "finished_at": "2026-11-01T02:50:06.108975+08:00",
+      "error": "Script exited with code 1\nstderr:\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import os, runpy, site, sys;site.addsitedir('C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\hermes\\\\installs\\\\bd3acbc64406c95b\\\\environments\\\\8698a72e03264e419a447af2292759eb\\\\venv\\\\Lib\\\\site-packages');script = sys.argv[1];sys.argv = [script] + sys.argv[2:];sys.path.insert(0, os.path.dirname(os.path.abspath(script)));runpy.run_path(script, run_name='__main__')\n                                                                                                                                                                                                                                                                                                                               ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"C:\\Users\\Administrator\\AppData\\Local\\hermes\\scripts\\eidos_watchdog.py\", line 6, in <module>\n    runpy.run_path(entry,run_name=\"__main__\")\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"E:\\2026-AI4S\\Eidos\\tools\\cron_entry.py\", line 68, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"E:\\2026-AI4S\\Eidos\\tools\\cron_entry.py\", line 33, in main\n    from tools.bounded_process import run_tree\nModuleNotFoundError: No module named 'tools.bounded_process'",
+      "scheduled_instant": "2026-10-31T18:49:06.112216+00:00"
+    }
+  ],
+  "scheduled_watchdog_runtime": {
+    "generated": "2026-10-31T19:32:06.164694+00:00",
+    "kind": "watchdog",
+    "ok": true,
+    "entry_python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+    "python_version": "3.12.4",
+    "isolated": true,
+    "utf8_mode": true,
+    "pythonpath_present": false,
+    "pythonhome_present": false,
+    "console_window": 0,
+    "exit_code": 0
+  },
+  "manual_contracts_runtime": {
+    "generated": "2026-10-31T19:33:03.436085+00:00",
+    "kind": "contracts",
+    "ok": true,
+    "entry_python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+    "python_version": "3.12.4",
+    "isolated": true,
+    "utf8_mode": true,
+    "pythonpath_present": false,
+    "pythonhome_present": false,
+    "console_window": 0,
+    "exit_code": 0,
+    "boundaries": {
+      "quarto": {
+        "kind": "CLI",
+        "ok": true,
+        "version": "1.10.19",
+        "path": "E:\\2026-AI4S\\tools\\quarto\\bin\\quarto.exe"
+      },
+      "dvc": {
+        "kind": "CLI",
+        "ok": true,
+        "version": "DVC version: 3.67.1 (pip)",
+        "reason": ""
+      },
+      "mlflow": {
+        "kind": "library",
+        "ok": true,
+        "version": "3.17.2",
+        "reason": ""
+      },
+      "decision": {
+        "kind": "HTTP",
+        "ok": true,
+        "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF",
+        "answer_kind": "auto_think",
+        "engine": "llamacpp"
+      },
+      "bootloops": {
+        "kind": "toolkit",
+        "ok": true,
+        "root": "E:/2026-AI4S/bootloops",
+        "has_activate": false
+      },
+      "runtimes": {
+        "kind": "HTTP/TCP",
+        "ollama": {
+          "ok": true,
+          "models": 59
+        },
+        "llamacpp_18434": {
+          "ok": true,
+          "note": "TCP reachability only (API needs a key)"
+        },
+        "llamacpp_8081": {
+          "ok": true
+        },
+        "ok": true
+      }
+    },
+    "findings": [
+      "mlflow.version: '3.17.1' -> '3.17.2'"
+    ]
+  },
+  "contracts_scheduled_tick_observed": false,
+  "manual_bootstrap_before": {
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    import os,runpy,site,sys;site.addsitedir('C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\hermes\\\\installs\\\\bd3acbc64406c95b\\\\environments\\\\8698a72e03264e419a447af2292759eb\\\\venv\\\\Lib\\\\site-packages');script=sys.argv[1];sys.argv=[script]+sys.argv[2:];sys.path.insert(0,os.path.dirname(os.path.abspath(script)));runpy.run_path(script,run_name=\"__main__\")\n                                                                                                                                                                                                                                                                                                                     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"C:\\Users\\Administrator\\AppData\\Local\\hermes\\scripts\\eidos_watchdog.py\", line 6, in <module>\n    runpy.run_path(entry,run_name=\"__main__\")\n    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen runpy>\", line 294, in run_path\n  File \"<frozen runpy>\", line 98, in _run_module_code\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"E:\\2026-AI4S\\Eidos\\tools\\cron_entry.py\", line 68, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"E:\\2026-AI4S\\Eidos\\tools\\cron_entry.py\", line 33, in main\n    from tools.bounded_process import run_tree\nModuleNotFoundError: No module named 'tools.bounded_process'\n",
+    "workspace": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\installs\\bd3acbc64406c95b\\environments\\8698a72e03264e419a447af2292759eb\\workspace",
+    "site_packages": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\installs\\bd3acbc64406c95b\\environments\\8698a72e03264e419a447af2292759eb\\venv\\Lib\\site-packages"
+  },
+  "manual_bootstrap_after": [
+    {
+      "kind": "watchdog",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "kind": "contracts",
+      "exit_code": 0,
+      "stdout": "EIDOS contract changes: mlflow.version: '3.17.1' -> '3.17.2'\n",
+      "stderr": ""
+    }
+  ],
+  "contract_findings_preserved": [
+    "mlflow.version: '3.17.1' -> '3.17.2'"
+  ],
+  "source_sha256": {
+    "tools/cron_entry.py": "51e58842d9e945cfd1a53dea73e7f9468380aa8ab777f85f35ed126eedf061b6",
+    "tools/install_hermes_cron.py": "4c2158f9cb482fe4b6833e48d2bb68ab21d7e2834883482ec7c3a2b640fb825b",
+    "tests/test_cron_entry.py": "f34e12d198819c2fe8664b61dc7948f1c968a4e869419ac4020d01e141ae3c85"
+  },
+  "installed_shims": {
+    "eidos_watchdog.py": "0cc42d14e9c5f9e602a22a8383692e02130d8f27c43b137af4c5dcb796fc684e",
+    "eidos_contracts.py": "834555e27c632a8424372fa636e1e28a1c3abd7378cb83789cc1af412f0a5d9e"
+  },
+  "job_state_manually_modified": false,
+  "schedule_and_enabled_unchanged": true
+}

@@ -2,6 +2,9 @@
 import subprocess
 import json
 import pytest
+import os
+import sys
+from pathlib import Path
 
 
 def test_runtime_config_is_parsed_without_executing_batch_commands(tmp_path,monkeypatch):
@@ -77,3 +80,54 @@ def test_invalid_second_job_cannot_partially_install_the_first(tmp_path):
     with pytest.raises(ValueError):
         install(home,tmp_path/'repo')
     assert (folder/'eidos_watchdog.py').read_bytes()==original
+
+
+@pytest.mark.parametrize('exit_code',[0,7])
+def test_scheduler_shim_isolates_project_from_preloaded_foreign_tools(tmp_path,exit_code):
+    from tools.install_hermes_cron import shim
+    project=tmp_path/'research project';(project/'tools').mkdir(parents=True)
+    (project/'tools/helper.py').write_text('MARKER="project"\n')
+    entry=project/'tools/cron_entry.py'
+    entry.write_text('''import sys,json,os,subprocess
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+def runtime(): return {'PYTHON':sys.executable}
+if __name__=='__main__':
+    from tools.helper import MARKER
+    code='import sys;sys.path.insert(0,'+repr(str(Path(__file__).resolve().parents[1]))+');from tools.helper import MARKER;print(MARKER)'
+    child=subprocess.run([sys.executable,'-c',code],capture_output=True,text=True,encoding='utf-8',creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+    if child.returncode: raise SystemExit(child.stderr)
+    console=__import__('ctypes').windll.kernel32.GetConsoleWindow() if os.name=='nt' else None
+    print(json.dumps({'marker':MARKER,'descendant':child.stdout.strip(),'isolated':sys.flags.isolated,'utf8':sys.flags.utf8_mode,'kind':sys.argv[1],'console_window':console,'message':'科学 → µ'},ensure_ascii=False))
+''',encoding='utf-8')
+    with entry.open('a',encoding='utf-8') as stream:
+        stream.write(f"if __name__=='__main__': raise SystemExit({exit_code})\n")
+    foreign=tmp_path/'foreign';(foreign/'tools').mkdir(parents=True)
+    (foreign/'tools/__init__.py').write_text('MARKER="scheduler"\n')
+    launcher=tmp_path/'scheduler.py';launcher.write_text(shim('watchdog',project),encoding='utf-8')
+    env=os.environ.copy();env['PYTHONPATH']=str(foreign)
+    run=subprocess.run([sys.executable,'-c',
+                        'import tools,runpy,sys;runpy.run_path(sys.argv[1],run_name="__main__")',str(launcher)],
+                       cwd=tmp_path,env=env,capture_output=True,text=True,encoding='utf-8',errors='replace',
+                       timeout=30,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+    assert run.returncode==exit_code,run.stderr
+    data=json.loads(run.stdout)
+    assert data['marker']=='project' and data['kind']=='watchdog'
+    assert data['descendant']=='project'
+    assert data['isolated']==1 and data['utf8']==1 and data['message']=='科学 → µ'
+    if os.name=='nt':assert data['console_window']==0
+
+
+def test_real_cron_configuration_can_load_with_foreign_tools_already_imported(tmp_path):
+    foreign=tmp_path/'foreign';(foreign/'tools').mkdir(parents=True)
+    (foreign/'tools/__init__.py').write_text('MARKER="scheduler"\n')
+    env=os.environ.copy();env.update(PYTHONPATH=str(foreign),EIDOS_PYTHON=sys.executable)
+    entry=Path(__file__).resolve().parents[1]/'tools/cron_entry.py'
+    code=('import tools,runpy,sys;assert tools.MARKER=="scheduler";'
+          'ns=runpy.run_path(sys.argv[1],run_name="_eidos_scheduler_config");'
+          'assert ns["runtime"]()["PYTHON"]==sys.executable;print("configuration-ready")')
+    run=subprocess.run([sys.executable,'-c',code,str(entry)],cwd=tmp_path,env=env,
+                       capture_output=True,text=True,encoding='utf-8',timeout=30,
+                       creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+    assert run.returncode==0,run.stderr
+    assert run.stdout.strip()=='configuration-ready'

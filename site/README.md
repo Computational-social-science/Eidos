@@ -1,6 +1,6 @@
 # EIDOS — scientific claims, executable evidence
 
-**Version 0.4.2** · initial development · local-first · MIT framework
+**Version 0.4.3** · initial development · local-first · MIT framework
 
 [![CI](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml/badge.svg)](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
 
@@ -102,8 +102,10 @@ For executable delivery, declare exact input files, a reproduction command, a
 validator, required outputs and provenance in the [delivery contract](docs/EXECUTABLE-DELIVERY.md).
 The exporter produces a self-contained Python/Docker package; each copy permits
 one execution and rejects changed inputs, stale outputs and failed validators.
-The [acceptance capsule](reference/package_delivery_acceptance/package.zip) was
+The [v0.4.2 acceptance capsule](reference/package_delivery_acceptance/package.zip) was
 installed in a new Windows environment and replayed in an offline Linux container.
+It retains its qualified v0.4.2 source; the v0.4.3 scheduler repair does not change
+this numerical delivery probe.
 Its [qualification record](docs/PACKAGE-ACCEPTANCE.json) retains image, source and
 output hashes, the failed default-registry route and successful official ECR override.
 Remote Binder and new-machine/GPU/Quarto qualification remain open.
@@ -126,6 +128,12 @@ is insufficient health evidence: samples must be fresh and their sequence must a
 Consumer checks bind registry/configuration, gate source and declared file inputs.
 Unknown or changed inputs revoke cached conclusions. Negative controls succeed by
 being rejected, while their original evidence stays intact.
+
+Existing Hermes EIDOS jobs use an isolated project interpreter, explicit UTF-8 and
+hidden Windows subprocesses. The wrapper removes scheduler import paths from the
+whole checker tree and preserves captured errors and exit codes. See
+[runtime isolation and real scheduled acceptance](docs/CRON-ISOLATION.md);
+manual health checks alone are not scheduler qualification.
 
 The chain audit runs eleven chains; a missing external checkout is a SKIP, not a pass.
 This framework audits itself using a valid-register fixture and a mutated control.

@@ -16,10 +16,27 @@ sys.path.insert(0,str(ROOT))
 
 def shim(kind: str, root: Path = ROOT) -> str:
     entry=str(root/'tools/cron_entry.py')
-    return ('"""EIDOS managed scheduler shim; configuration lives in the project."""\n'
-            'import runpy\nimport sys\n'
-            f'entry={entry!r}\nsys.argv=[entry,{kind!r}]\n'
-            'runpy.run_path(entry,run_name="__main__")\n')
+    return f'''"""EIDOS managed scheduler shim; configuration lives in the project."""
+import os
+import runpy
+import subprocess
+import sys
+
+entry={entry!r}
+# Load only the stdlib configuration reader in the scheduler's environment.
+configuration=runpy.run_path(entry,run_name="_eidos_scheduler_config")
+configured=configuration["runtime"]()
+environment=os.environ.copy()
+# Descendants run without -I; do not reintroduce the scheduler's import/ABI paths.
+environment.pop("PYTHONPATH",None)
+environment.pop("PYTHONHOME",None)
+environment["PYTHONUTF8"]="1"
+# A fresh isolated interpreter removes scheduler PYTHONPATH and imported-module state.
+result=subprocess.run([configured["PYTHON"],"-I","-X","utf8",entry,{kind!r}],
+                      stdin=subprocess.DEVNULL,stdout=sys.stdout,stderr=sys.stderr,
+                      env=environment,creationflags=getattr(subprocess,"CREATE_NO_WINDOW",0))
+raise SystemExit(result.returncode)
+'''
 
 
 def install(home: Path, root: Path = ROOT) -> list[str]:

@@ -1,6 +1,6 @@
 {
-  "asof": "2026-11-01T02:50:41+08:00",
-  "version": "0.4.2",
+  "asof": "2026-11-01T03:45:12+08:00",
+  "version": "0.4.3",
   "state": {
     "chains": {
       "total": 11,
@@ -8,7 +8,7 @@
       "skip": 1,
       "fail": 0
     },
-    "tests": 642,
+    "tests": 645,
     "coverage": 69,
     "instruments": [
       {
@@ -51,7 +51,7 @@
     "open_defects": 0
   },
   "evolution": {
-    "mutation_runs": 226,
+    "mutation_runs": 230,
     "runs_with_a_blind_spot": 1,
     "blind_spots_found": 1,
     "blind_spots_open": 0,

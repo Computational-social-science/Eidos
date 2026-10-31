@@ -159,5 +159,24 @@
       "blind_spots_open": 0,
       "instruments": 6
     }
+  },
+  {
+    "version": "0.4.3",
+    "date": "2026-11-01",
+    "commit": "047dec9",
+    "source_commit": "047dec9",
+    "tag": "v0.4.3",
+    "summary": "Isolate Hermes scheduler imports and descendants; qualify real hidden watchdog dispatches and preserve failure evidence",
+    "schema": 2,
+    "metrics": {
+      "tests": 645,
+      "coverage": 69,
+      "chains": 11,
+      "open_objections": 0,
+      "decision_ms": 182,
+      "blind_spots_found": 1,
+      "blind_spots_open": 0,
+      "instruments": 6
+    }
   }
 ]

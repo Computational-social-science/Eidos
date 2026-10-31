@@ -1,6 +1,6 @@
 # EIDOS — scientific claims, executable evidence
 
-**Version 0.4.1** · initial development · local-first · MIT framework
+**Version 0.4.2** · initial development · local-first · MIT framework
 
 [![CI](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml/badge.svg)](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
 
@@ -9,7 +9,7 @@ and reproducible delivery. Its purpose is to make a result inspectable: what was
 assumed, what ran, which checks could reject it, and which conclusion the evidence
 supports. Diagnosed failures become reusable checks for subsequent projects.
 
-Start with the [scientific showcase](site/index.html),
+Start with the [scientific showcase](index.html),
 [reproduction instructions](#reproduce-the-measured-case), or
 [functional completeness ledger](docs/FUNCTIONAL_COMPLETENESS.md).
 The monitor and website serve different jobs: research interpretation belongs on
@@ -30,9 +30,9 @@ Paper2Agent conversion and tests the chain from method to scientific conclusion.
 | Does the implementation affect a system using it? | Saved teacher/student models, equality and parameter-drift checks | A bounded stationarity experiment; numerical correctness and learning outcomes require separate acceptance. |
 | Is generalisation consistently improved? | 36 complete trajectories, 18 paired endpoints, independent final-model and gradient checks | Fixed CE is higher in 5 pairs, lower in 12, tied in 1. The paper's training result is not reproduced. All specified seeds and unfavorable outcomes remain available. |
 
-Open the [measurement report](site/reports/numerics/report.html),
-[precision/epsilon matrix](site/reports/softmax-matrix/report.html),
-[paired CSV](site/reports/softmax-matrix/paired.csv), and
+Open the [measurement report](reports/numerics/report.html),
+[precision/epsilon matrix](reports/softmax-matrix/report.html),
+[paired CSV](reports/softmax-matrix/paired.csv), and
 [academic positioning](docs/ACADEMIC_POSITIONING.md).
 AMP/bfloat16, higher-order backward and other backends require separate qualification.
 These results do not establish universal superiority or autonomous scientific discovery.
@@ -58,8 +58,8 @@ is deliberately separate from the framework's core Python environment.
 
 Standalone case downloads:
 
-- [Numerical kernels and stationarity case](site/reports/numerics/reproduce.zip)
-- [Complete precision/epsilon matrix](site/reports/softmax-matrix/reproduce.zip)
+- [Numerical kernels and stationarity case](reports/numerics/reproduce.zip)
+- [Complete precision/epsilon matrix](reports/softmax-matrix/reproduce.zip)
 
 Both bundles contain checksums and reproduction instructions. Generic Docker/Binder
 packaging is still incomplete; the case bundles do not certify the generic packager.
@@ -98,6 +98,16 @@ See [project integration](docs/PROJECT_INTEGRATION.md),
 [technical framework](Quarto_Centric_Local_Research_Pipeline_Technical_Framework.md).
 The implementation uses deterministic chains and explicit gates; there is no agent graph.
 
+For executable delivery, declare exact input files, a reproduction command, a
+validator, required outputs and provenance in the [delivery contract](docs/EXECUTABLE-DELIVERY.md).
+The exporter produces a self-contained Python/Docker package; each copy permits
+one execution and rejects changed inputs, stale outputs and failed validators.
+The [acceptance capsule](reference/package_delivery_acceptance/package.zip) was
+installed in a new Windows environment and replayed in an offline Linux container.
+Its [qualification record](docs/PACKAGE-ACCEPTANCE.json) retains image, source and
+output hashes, the failed default-registry route and successful official ECR override.
+Remote Binder and new-machine/GPU/Quarto qualification remain open.
+
 ## Inspect and verify
 
 ```bash
@@ -132,6 +142,7 @@ These checks establish bounded execution/acceptance behaviour, not scientific no
 | `tools/consumer_snapshot.py`, `tools/watch_pipeline.py` | Input-bound cached verdicts and current observations |
 | `tools/serve_site.py`, `tools/monitor_supervisor.py` | Loopback monitor, lifetime ownership, recovery and background verification |
 | `framework/quarto_bridge/` | Quarto delivery; external Quarto/TeX installation is required for rendering |
+| `framework/executable_package.py` | Explicit delivery manifests, locked installs, exclusive execution and atomic provenance records |
 | `tools/publication.py`, `tools/audit_publication.py` | Shared scientific manuscript policy, physical figure/PDF/Word audits and staleness checks |
 | `reference/` | Protocols, original evidence, models, controls and existing Paper2Agent tools |
 

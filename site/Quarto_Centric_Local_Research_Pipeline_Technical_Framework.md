@@ -1,6 +1,10 @@
 # Eidos：可复核科研流水线技术框架
 
-**实现基线：0.4.1（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
+**实现基线：0.4.2（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
+
+**0.4.2 新增交付合同（发布状态另由标签与版本履历证明）：** 通用交付包改为显式文件清单、锁定依赖、复现与验证两步命令、必需输出及种子/数据/配置版本；生成包不再等同于执行通过。新增运行器拒绝旧输出、输入或清单变更以及 Windows 路径别名冲突。独立安装与执行验收、Docker/Binder 状态分别记录于 `docs/PACKAGE-ACCEPTANCE.json`；合同见 [可执行交付](docs/EXECUTABLE-DELIVERY.md)。容器镜像拉取失败不能记为容器验收通过；本轮不扩展既有数值科学结论。
+
+2026-11-01 补充验收：新增独占执行声明与原子执行记录，真实双进程回归只允许一次实验调用；全量测试为 642 passed、4 个可选模块 skipped。新建 Windows 环境和禁用网络的 Linux 容器均通过 12 个数值正例与 2 个故障对照。容器构建使用 AWS ECR 上的官方 Python 镜像及固定摘要覆盖；原 Docker Hub 连接失败仍保留，远端 Binder 和新机器验收未完成。上述为 0.4.2 交付验证；历史 v0.4.1 的自审记录保留在既有标签，不改写为本次结果。
 
 旧 v4.1 设计原文已完整归档至 [历史设计](docs/archive/technical-framework-v4.1-2026-10-20.md)。原有“production-ready”“certified results”及代理图示不能作为当前能力证明。
 
@@ -176,7 +180,7 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 
 相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。
 
-本轮验收：626 passed、4 个可选 Torch 模块 skipped，框架源码覆盖率 68%，11 条链为 10 PASS/1 SKIP。既有 CUDA 16 项已独立通过；本轮未修改数值后端。
+本轮验收：642 passed、4 个可选 Torch 模块 skipped，框架源码覆盖率 69%，11 条链为 10 PASS/1 SKIP。既有 CUDA 16 项已独立通过；本轮未修改数值后端。
 
 ## 10. 实时运行总览：视觉与状态语义复核（2026-11-01）
 

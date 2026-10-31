@@ -5,9 +5,9 @@
     "skip": 1,
     "fail": 0
   },
-  "tests_collected": 626,
+  "tests_collected": 642,
   "tests": {
-    "passed": 626,
+    "passed": 642,
     "failed": 0,
     "skipped": 4,
     "errors": 0
@@ -15,22 +15,22 @@
   "stability": {
     "stable": true,
     "before": {
-      "source_sha256": "4bd4d98528e0c76c85d95280a4b56e682aa7183a488074eb70d7a1d7c59c5d06",
-      "distribution_sha256": "1a0f6bacc37e5d8eddd1d34cee98f634cabbfc789e5dfb7ce782404b777c02aa"
+      "source_sha256": "51476be05affb666f3215f6b2fd06784cf2ded65b520cf5c15144f605348d96a",
+      "distribution_sha256": "f4452d935ebf0cef46e2d1b57b4cbc6c813bbb9dc8f238725dcc190ad41f49fb"
     },
     "after": {
-      "source_sha256": "4bd4d98528e0c76c85d95280a4b56e682aa7183a488074eb70d7a1d7c59c5d06",
-      "distribution_sha256": "1a0f6bacc37e5d8eddd1d34cee98f634cabbfc789e5dfb7ce782404b777c02aa"
+      "source_sha256": "51476be05affb666f3215f6b2fd06784cf2ded65b520cf5c15144f605348d96a",
+      "distribution_sha256": "f4452d935ebf0cef46e2d1b57b4cbc6c813bbb9dc8f238725dcc190ad41f49fb"
     },
-    "collection_after": 626,
+    "collection_after": 642,
     "execution": {
-      "reported_items": 626,
+      "reported_items": 642,
       "collection_level_skips": 4
     },
     "deselection_detected": false,
-    "collected_ids": 626,
-    "unique_ids": 626,
-    "recollected_ids": 626,
+    "collected_ids": 642,
+    "unique_ids": 642,
+    "recollected_ids": 642,
     "scope": "Framework/tools/tests Python sources, project version/lock/README/claims, installed distribution names+versions, collected test IDs"
   },
   "skip_reasons": [
@@ -40,7 +40,7 @@
     "SKIPPED [1] tests\\test_stable_numerics_torch.py:6: could not import 'torch': No module named 'torch'"
   ],
   "diagnostics": {},
-  "coverage_total": 68,
+  "coverage_total": 69,
   "coverage_scope": "framework; unexecuted modules included; tests and tools excluded",
   "gate_s": {
     "fixture_status": "PASS"

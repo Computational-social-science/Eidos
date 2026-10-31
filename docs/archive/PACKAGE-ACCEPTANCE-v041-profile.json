@@ -1,0 +1,123 @@
+{
+  "recorded_at": "2026-10-31T18:19:23.831695+00:00",
+  "release_status": "unreleased development after v0.4.1",
+  "scope": "Copied source, separate Windows Python environment and same-host Linux Docker container; not a new-machine or remote Binder qualification.",
+  "source_archive": "reference/package_delivery_acceptance/snapshots/14624876488b6338f6df1b5383f94f8f353e4adde0fa3559a1d7dd20f46ff1ac.zip",
+  "archive_sha256": "14624876488b6338f6df1b5383f94f8f353e4adde0fa3559a1d7dd20f46ff1ac",
+  "generator_sha256": "a2d9d135dfa0c0884f21b58a52fee11158f604e52e35c000009fb66ce7c85f03",
+  "clean_install": {
+    "status": "PASS",
+    "command": "uv sync --locked --no-dev --python 3.12",
+    "environment": "C:/Users/Administrator/.venvs/eidos-package-acceptance-owned",
+    "installed_packages": 13,
+    "original_checkout_import_rejected": true
+  },
+  "execution": {
+    "seed": null,
+    "seed_reason": "deterministic represented inputs",
+    "data_version": "arxiv2610.31642v3-kernel-grid",
+    "config_version": "12-qualified-plus-2-broken-controls",
+    "command": [
+      "python",
+      "run.py"
+    ],
+    "verify_command": [
+      "python",
+      "check.py"
+    ],
+    "generated": "2026-10-31T18:17:56.845124+00:00",
+    "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+    "executable": "C:\\Users\\Administrator\\.venvs\\eidos-package-acceptance-owned\\Scripts\\python.exe",
+    "outputs": {
+      "result.json": "442f7590d2d765fc9b7491ad4892f22b9145ef4326f13b7a04d23d1b4c28c32a"
+    },
+    "manifest_sha256": "e5389e3bf114d6e3c3ce40442651abfcf57b1989070f21ba99e220cb8e771d99",
+    "scope": "Declared commands and output integrity only; not independent scientific certification."
+  },
+  "numerical_probe": {
+    "status": "PASS",
+    "positive_cases": 12,
+    "negative_controls": [
+      {
+        "name": "lost target gradient",
+        "rejected": true
+      },
+      {
+        "name": "nonzero stationary gradient",
+        "rejected": true
+      }
+    ],
+    "implementation_path": "E:\\2026-AI4S\\Eidos\\.scratch\\package-acceptance\\source\\outputs\\delivery-owned\\framework\\stable_numerics.py"
+  },
+  "tests": {
+    "passed": 642,
+    "collection_skipped_modules": 4,
+    "command": "python -m pytest -q"
+  },
+  "docker": {
+    "status": "PASS",
+    "scope": "Same-host Linux container; official ECR base-image override. Default Docker Hub connectivity remains failed.",
+    "original_attempt": {
+      "status": "FAIL",
+      "stage": "base-image token retrieval",
+      "image_built": false,
+      "container_executed": false,
+      "error": "auth.docker.io anonymous-token connection forcibly closed",
+      "uv_binary_image_manifest": "ghcr.io/astral-sh/uv:0.12.17 manifest inspected successfully",
+      "alternative_combined_image": "ghcr.io/astral-sh/uv:0.12.17-python3.12-bookworm-slim not found"
+    },
+    "network_mode": "none",
+    "exit_code": 0,
+    "image_id": "sha256:31ef20f2a2738bf467e184137145d4dabc6639ff835c607f1f31363b0c3ae48b",
+    "base_image": "public.ecr.aws/docker/library/python@sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+    "build_context_override": "python:3.12-slim-bookworm=docker-image://public.ecr.aws/docker/library/python@sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+    "build_proxy": "http://host.docker.internal:7890",
+    "execution": {
+      "seed": null,
+      "seed_reason": "deterministic represented inputs",
+      "data_version": "arxiv2610.31642v3-kernel-grid",
+      "config_version": "12-qualified-plus-2-broken-controls",
+      "command": [
+        "python",
+        "run.py"
+      ],
+      "verify_command": [
+        "python",
+        "check.py"
+      ],
+      "generated": "2026-10-31T18:19:19.903532+00:00",
+      "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
+      "executable": "/workspace/.venv/bin/python",
+      "outputs": {
+        "result.json": "dfbe870f726a68f4ad4feedd4d6d82a400fefa1b38667f93d83e31a3ec1af2bf"
+      },
+      "manifest_sha256": "e5389e3bf114d6e3c3ce40442651abfcf57b1989070f21ba99e220cb8e771d99",
+      "scope": "Declared commands and output integrity only; not independent scientific certification."
+    },
+    "numerical_probe": {
+      "verdict": "PASS",
+      "positive_cases": 12,
+      "negative_controls": [
+        {
+          "name": "lost target gradient",
+          "rejected": true
+        },
+        {
+          "name": "nonzero stationary gradient",
+          "rejected": true
+        }
+      ],
+      "backend": "numpy 2.5.4",
+      "implementation_path": "/workspace/framework/stable_numerics.py"
+    },
+    "stale_output_negative_control": {
+      "rejected": true,
+      "message": "refusing pre-existing output: result.json"
+    }
+  },
+  "binder": {
+    "status": "UNVERIFIED",
+    "remote_launch_performed": false
+  },
+  "original_source_archive": "reference/package_delivery_acceptance/package.zip"
+}

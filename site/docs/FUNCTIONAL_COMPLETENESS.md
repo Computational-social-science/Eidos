@@ -1,6 +1,6 @@
 # Functional completeness ledger
 
-Audit date: 2026-10-31. Eidos remains pre-release. A successful case or self-audit
+Baseline audit: 2026-10-31; executable-delivery update: 2026-11-01. Eidos remains pre-release. A successful case or self-audit
 does not establish completeness. Acceptance means an executed, reproducible
 lifecycle: onboard → register falsifiable claims → run → independently check →
 reject unsupported claims → deliver → detect changes and revalidate.
@@ -18,7 +18,7 @@ reject unsupported claims → deliver → detect changes and revalidate.
 | Inference and decisions | Local contracts, GPU budget tests, typed operator calibration | Calibration is bounded. Model scientific judgements missed acceptance thresholds and remain outside scientific gates. See `docs/MODEL_VERDICTS.md`. |
 | Tracking and provenance | Optional DVC/MLflow chains and case-specific metadata | General deliveries need explicit required code/data/config/seed/checkpoint/run records, and must reject missing required provenance. Not every project uses both services. |
 | Reporting and visualization | Shared manuscript policy, Quarto HTML/PDF/DOCX, physical font/dimension/PDF/Word audits and artifact fingerprints; `docs/PUBLICATION-QUALITY.md` | Every changed layout requires complete PDF/Word page inspection. Human metadata and journal-specific scientific review remain necessary. |
-| Executable delivery | Checksum-verified case ZIPs; independently checked matrix CPU extraction | Generic `QuartoBridge.build_executable_package()` is incomplete: Docker copies a missing root `requirements.txt`; copied directories omit `pyproject.toml`, `uv.lock` and framework sources; Binder attempts `pip install -e .` without them. Require repair and a clean build/run before claiming one-click execution. |
+| Executable delivery | Explicit-manifest export, fresh Windows installation and offline Linux container replay; 12 numerical cases pass and 2 broken controls are rejected; exclusive execution ownership and atomic records | Same-host CPU acceptance uses an official ECR image override with pinned digest; default Docker Hub connectivity remains failed. Remote Binder, new-machine/Quarto/TeX/GPU qualification and lifecycle integration remain separate. See [delivery contract](EXECUTABLE-DELIVERY.md) and `docs/PACKAGE-ACCEPTANCE.json`. |
 | Knowledge transfer | Existing Paper2Agent/MCP, filed failures/findings and reusable numerical checks | Demonstrate transfer to a second independent research problem and detection of a newly introduced error. Autonomous scientific self-improvement is not established. |
 | Release | Windows local suite, Linux CI, fixture/mutation/site hooks, versioned evidence | Validate source-archive installation and generic packaging; keep docs, exports, screenshots and CI tied to the release. |
 

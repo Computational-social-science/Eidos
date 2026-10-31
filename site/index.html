@@ -284,7 +284,7 @@ footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:v
   <span class="hchip">11 chains · 701 tests</span>
   <a class="cta" href="http://127.0.0.1:8765/">Monitor →</a>
 </div></header>
-<div class="shell"><nav class="rail" aria-label="Sections"><ol><li><a href="#position"><span>01</span>Academic proposition</a></li><li><a href="#evidence"><span>02</span>Measured evidence</a></li><li><a href="#demo"><span>03</span>Softmax case study</a></li><li><a href="#pipeline"><span>04</span>Research method</a></li><li><a href="#models"><span>05</span>Model capability limits</a></li><li><a href="#gates"><span>06</span>Validity checks</a></li><li><a href="#research"><span>07</span>Research agenda</a></li><li><a href="#architecture"><span>08</span>Architecture</a></li><li><a href="#orchestration"><span>09</span>Orchestration</a></li><li><a href="#state"><span>10</span>Verification ledger</a></li><li><a href="#monitor"><span>11</span>Live operations</a></li><li><a href="#start"><span>12</span>Use & reproduce</a></li><li><a href="#limits"><span>13</span>Scope & licence</a></li></ol><div class="rail-meta">build c9f390a · 2026-11-01<br>v0.4.4 · 13 releases<br>MIT · operator CC BY-NC 4.0</div></nav><main id="main">
+<div class="shell"><nav class="rail" aria-label="Sections"><ol><li><a href="#position"><span>01</span>Academic proposition</a></li><li><a href="#evidence"><span>02</span>Measured evidence</a></li><li><a href="#demo"><span>03</span>Softmax case study</a></li><li><a href="#pipeline"><span>04</span>Research method</a></li><li><a href="#models"><span>05</span>Model capability limits</a></li><li><a href="#gates"><span>06</span>Validity checks</a></li><li><a href="#research"><span>07</span>Research agenda</a></li><li><a href="#architecture"><span>08</span>Architecture</a></li><li><a href="#orchestration"><span>09</span>Orchestration</a></li><li><a href="#state"><span>10</span>Verification ledger</a></li><li><a href="#monitor"><span>11</span>Live operations</a></li><li><a href="#start"><span>12</span>Use & reproduce</a></li><li><a href="#limits"><span>13</span>Scope & licence</a></li></ol><div class="rail-meta">build a406fff · 2026-11-01<br>v0.4.4 · 14 releases<br>MIT · operator CC BY-NC 4.0</div></nav><main id="main">
 <div class="hero">
   <div class="hero-layout"><div>
   <p class="eyebrow">EIDOS · research infrastructure · pre-release</p>
@@ -592,7 +592,7 @@ loss.backward()
   <th>last result</th><th>witness</th></tr></thead><tbody><tr><td class="st">every Gate S check fires on a case built to trip it</td><td>a check with no fixture, or a fixture rejected for the wrong reason</td><td class="num">13 fixtures, 12/12 checks covered</td><td class="mono">docs/FIXTURES.json</td></tr><tr><td class="st">the gate rejects wrong claims and accepts equivalent ones</td><td>a wrong register accepted, or an equivalent one rejected</td><td class="num">21 wrong + 28 pairs rejected, 8 equivalent accepted</td><td class="mono">docs/FUZZ.json</td></tr><tr><td class="st">a gate that exits 0 without its artefact is not a pass</td><td>a consumer that finishes with no evidence and is reported PASS</td><td class="num">4 chain consumers as declared</td><td class="mono">docs/CHAIN.json</td></tr><tr><td class="st">a service is up only if every endpoint answers</td><td>a front door answering while its engine is dead</td><td class="num">decision service 2/2, runtime 1/1</td><td class="mono">tools/audit_services.py</td></tr><tr><td class="st">the delivered pages render, execute and do not collide</td><td>a page error, a canvas never drawn, text overlap, contrast below AA</td><td class="num">9 checks: build, currency, structure, layout, contrast, runtime, invariants</td><td class="mono">tools/audit_site.py</td></tr><tr><td class="st">chains run end to end against live boundaries</td><td>a chain that passes while its boundary is detached</td><td class="num">10 pass, 1 skip, 0 fail</td><td class="mono">docs/SELF_AUDIT.json</td></tr></tbody></table></div>
   <p class="gm-sum">10 chains pass,
   701 tests collected, 0 open defect(s)
-  &middot; recorded 2026-11-01T05:10</p>
+  &middot; recorded 2026-11-01T05:17</p>
 </div>
 <div class="grid2" style="margin-top:10px">
   <div class="card"><h3>Evolution: the defects its instruments caught</h3>
@@ -600,15 +600,15 @@ loss.backward()
     regressions: a mutation the gate accepts, a component with no style rule, a page that renders
     without running, a service whose front door answers while its engine is dead.</p>
     <div class="readout">
-      <div class="kv"><div class="k">mutation runs</div><div class="v">238</div></div>
+      <div class="kv"><div class="k">mutation runs</div><div class="v">240</div></div>
       <div class="kv"><div class="k">blind spots found</div><div class="v">1</div></div>
       <div class="kv"><div class="k">still open</div><div class="v">0</div></div>
     </div>
     <p class="mono" style="margin:9px 0 0">blind spots per run <svg viewBox="0 0 190 34" width="190" height="34" role="img" aria-label="trend, last value 0"><polyline fill="none" stroke="var(--bad, #e5534b)" stroke-width="1.3" points="0.0,30.0 17.3,30.0 34.5,30.0 51.8,30.0 69.1,30.0 86.4,30.0 103.6,30.0 120.9,30.0 138.2,30.0 155.5,30.0 172.7,30.0 190.0,30.0"/></svg></p></div>
   <div class="card"><h3>Tests per release</h3>
-    <p>6 releases on record; the last is 645 tests
-    at v0.4.3.</p>
-    <p class="mono" style="margin:9px 0 0"><svg viewBox="0 0 190 34" width="190" height="34" role="img" aria-label="trend, last value 645"><polyline fill="none" stroke="var(--accent)" stroke-width="1.3" points="0.0,30.0 38.0,29.8 76.0,28.3 114.0,4.9 152.0,4.1 190.0,4.0"/></svg></p>
+    <p>6 releases on record; the last is 701 tests
+    at v0.4.4.</p>
+    <p class="mono" style="margin:9px 0 0"><svg viewBox="0 0 190 34" width="190" height="34" role="img" aria-label="trend, last value 701"><polyline fill="none" stroke="var(--accent)" stroke-width="1.3" points="0.0,30.0 38.0,28.6 76.0,7.4 114.0,6.7 152.0,6.5 190.0,4.0"/></svg></p>
     <p style="font-size:12px;color:var(--dim);margin:8px 0 0">Release history:
     <a href="../site/versions.json">site/versions.json</a>. Written by the build, not by hand.</p></div>
 </div><div class="card" style="margin-top:10px">
@@ -662,7 +662,7 @@ loss.backward()
 <section class="sec" id="monitor"><div class="sec-h"><span class="num">11</span><h2>Monitor — the pipeline at build time<a class="anchor" href="#monitor" aria-label="permalink">¶</a></h2></div><p class="lede">A still frame, so the document cannot claim a state the monitor contradicts.</p><!--snapshot:start--><div class="card">
   <div class="mrow">
     <span class="mpill ok">OK</span>
-    <span class="mmeta">snapshot at <b>2026-11-01 05:10:41</b> HKT · <b>2000</b> samples ·
+    <span class="mmeta">snapshot at <b>2026-11-01 05:18:11</b> HKT · <b>2000</b> samples ·
     <b>11/11</b> chains healthy</span>
     <a class="mlink" href="http://127.0.0.1:8765/">open the live monitor →</a>
   </div>
@@ -719,8 +719,8 @@ MathML, the demo is inline, and every number is computed at build time.</p></sec
   <p><b>Licence.</b> The framework is MIT. The decision operator's weights are CC BY-NC 4.0
   (non-commercial): a project that needs commercial terms must swap the operator, and the
   framework must not assume it is redistributable.</p></div></section>
-<footer>Generated by <code>tools/build_site.py</code> from <code>c9f390a</code> on
-2026-11-01 · v0.4.4 · 13 recorded builds · MIT.
+<footer>Generated by <code>tools/build_site.py</code> from <code>a406fff</code> on
+2026-11-01 · v0.4.4 · 14 recorded builds · MIT.
 <br>Machine record: <a href="../docs/SELF_AUDIT.json">docs/SELF_AUDIT.json</a> ·
 <a href="../docs/HEALTH.md">docs/HEALTH.md</a> · <a href="../README.md">README</a></footer>
 </main></div>

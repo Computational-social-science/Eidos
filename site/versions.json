@@ -178,5 +178,24 @@
       "blind_spots_open": 0,
       "instruments": 6
     }
+  },
+  {
+    "version": "0.4.4",
+    "date": "2026-11-01",
+    "commit": "a406fff",
+    "source_commit": "a406fff",
+    "tag": "v0.4.4",
+    "summary": "Bind validator sources and declared inputs; protect rehearsal and scheduler ownership; preserve failure states and synchronized audit headlines; host runtime migration pending",
+    "schema": 2,
+    "metrics": {
+      "tests": 701,
+      "coverage": 69,
+      "chains": 11,
+      "open_objections": 0,
+      "decision_ms": 182,
+      "blind_spots_found": 1,
+      "blind_spots_open": 0,
+      "instruments": 6
+    }
   }
 ]

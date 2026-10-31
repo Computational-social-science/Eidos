@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-31T21:08:41+00:00",
+  "generated": "2026-10-31T21:19:11+00:00",
   "coupling": {
     "nodes": [
       "framework.artifacts",
@@ -1262,12 +1262,12 @@
       "framework.surrogate.demo": 1,
       "framework.tracking": 0,
       "framework.updates": 0,
-      "framework.verifiers.support": 0,
-      "framework.verifiers.extract_s4": 0,
       "framework.validity.lean_audit": 0,
+      "framework.verifiers.extract_s4": 0,
+      "framework.verifiers.support": 0,
       "framework.validity": 1,
-      "framework.verifiers.citations": 0,
       "framework.verifiers.stats": 0,
+      "framework.verifiers.citations": 0,
       "framework.verifiers": 1,
       "framework.verifiers.pointers": 0,
       "tools.academic_case": 0,
@@ -1295,8 +1295,8 @@
       "tools.bounded_process": 0,
       "tools.browser": 0,
       "tools.build_pipeline": 4,
-      "tools.site_documents": 1,
       "tools.versioning": 1,
+      "tools.site_documents": 1,
       "tools.build_site": 5,
       "tools.chain_states": 0,
       "tools.check_render": 3,
@@ -1320,8 +1320,8 @@
       "tools.model_ab": 2,
       "tools.monitor_supervisor": 0,
       "tools.numerics_figure": 0,
-      "tools.publication": 0,
       "tools.training_figure": 1,
+      "tools.publication": 0,
       "tools.numerics_case": 2,
       "tools.owned_workspace": 0,
       "tools.pipeline_extras": 0,
@@ -1602,7 +1602,7 @@
       "input_digest": "36f6f9d4e6d396297d93305bb7569bb88cf36041a0e473667191e97ef7ed7710",
       "input_error": null,
       "role": "paper-to-agent consumer (MCP tools from a converted paper, driven end to end)",
-      "checked_at": "2026-10-31T21:08:41+00:00",
+      "checked_at": "2026-10-31T21:19:11+00:00",
       "findings": []
     },
     {
@@ -1659,7 +1659,7 @@
       "input_digest": "8289c8f4d42504bbe933ebf0ae71fd9f667466b64ac0cec177849395b5ef4a3d",
       "input_error": null,
       "role": "DEMO (onboarding template, LLM consumer)",
-      "checked_at": "2026-10-31T21:08:42+00:00",
+      "checked_at": "2026-10-31T21:19:12+00:00",
       "findings": []
     },
     {
@@ -1672,7 +1672,7 @@
       "input_digest": "a4b02d2a9805f7b3286d64ba4b850021cfb0ee419ce6a4b4619508101732e779",
       "input_error": null,
       "role": "DEMO (quantitative consumer, planted truth + render)",
-      "checked_at": "2026-10-31T21:08:42+00:00",
+      "checked_at": "2026-10-31T21:19:12+00:00",
       "findings": []
     },
     {
@@ -1685,7 +1685,7 @@
       "input_digest": "7716eeac1b517483612402d80b6be014417b1d5478250e6913276302ed858ad3",
       "input_error": null,
       "role": "negative control (expected rejection)",
-      "checked_at": "2026-10-31T21:08:42+00:00",
+      "checked_at": "2026-10-31T21:19:12+00:00",
       "findings": [
         "[S3] N1: evidence says 0 but ../operator_calibration/docs/evidence.json/abstain_unanswerable holds 1.0"
       ]
@@ -1700,7 +1700,7 @@
       "input_digest": "60d784c95adbf0947c95084c09e0e1fe51473dc98059fd84e618d3d188decf1d",
       "input_error": null,
       "role": "LLM consumer (calibration of a typed decision operator)",
-      "checked_at": "2026-10-31T21:08:42+00:00",
+      "checked_at": "2026-10-31T21:19:12+00:00",
       "findings": []
     },
     {
@@ -1713,7 +1713,7 @@
       "input_digest": "dc34fe1e693c7a329e517f13d0b573b5c26970b0ccc7219a406b5324a16be3b1",
       "input_error": null,
       "role": "negative control for S9 (prose contradicts its own evidence)",
-      "checked_at": "2026-10-31T21:08:42+00:00",
+      "checked_at": "2026-10-31T21:19:12+00:00",
       "findings": [
         "[S9] P1: the text states [19.0] but the evidence holds 1"
       ]
@@ -1728,7 +1728,7 @@
       "input_digest": "8087fc4c12c33c97a6a5461be9326207d6ffc47fdbbbcab80330dfa447972d36",
       "input_error": null,
       "role": "measured paired loss-precision and epsilon reconstruction; all outcomes retained",
-      "checked_at": "2026-10-31T21:08:43+00:00",
+      "checked_at": "2026-10-31T21:19:12+00:00",
       "findings": []
     },
     {
@@ -1741,7 +1741,7 @@
       "input_digest": "955d848faf25a3d6f97be99f795e160018d4059212eafccf8e3f685d30d06b57",
       "input_error": null,
       "role": "measured optimizer-level training consumer; adapted stationarity experiment",
-      "checked_at": "2026-10-31T21:08:43+00:00",
+      "checked_at": "2026-10-31T21:19:12+00:00",
       "findings": []
     }
   ],

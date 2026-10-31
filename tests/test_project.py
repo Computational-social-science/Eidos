@@ -50,6 +50,36 @@ def test_load_project_resolves_relative_root(tmp_path):
     assert spec.reports == ["docs/REPORT.html"]
 
 
+def test_required_numerics_blocks_a_successful_but_unsafe_consumer(tmp_path):
+    projects = _make_project(tmp_path, extra="numerics: required\n")
+    spec = load_project(projects / "demo/project.yaml")
+    (spec.root / "unsafe.py").write_text(
+        'import numpy as np\ndef log_softmax(z):\n'
+        '    return z - np.log(np.exp(z).sum())\n', encoding="utf-8")
+    result = run_command(spec)
+    assert result.status == "FAIL"
+    assert result.numerics["findings"]
+
+
+def test_required_numerics_preserves_auditable_scope(tmp_path):
+    projects = _make_project(tmp_path, extra="numerics: required\n")
+    result = run_command(load_project(projects / "demo/project.yaml"))
+    assert result.status == "PASS"
+    assert result.numerics["kernel_regression"]["verdict"] == "PASS"
+    assert "not certify" in result.numerics["scope"]
+
+
+def test_misspelled_numerics_policy_is_not_ignored(tmp_path):
+    projects = _make_project(tmp_path, extra="numerics: requried\n")
+    with pytest.raises(ValueError, match="numerics"):
+        load_project(projects / "demo/project.yaml")
+
+
+@pytest.mark.parametrize("name", ["python", "python3", "python.exe"])
+def test_generic_python_command_uses_the_selected_project_interpreter(name):
+    assert _materialise([name, "gate.py"]) == [sys.executable, "gate.py"]
+
+
 def test_missing_root_raises(tmp_path):
     projects = _make_project(tmp_path)
     (tmp_path / "repo").rename(tmp_path / "repo_moved")
@@ -152,6 +182,22 @@ def test_python_placeholder_uses_the_running_interpreter(tmp_path):
 
 def test_materialise_leaves_other_arguments_untouched():
     assert _materialise(["{python}", "-m", "pytest"]) == [sys.executable, "-m", "pytest"]
+
+
+@pytest.mark.parametrize("code, expected", [(3, "OPEN"), (4, "REFUSED"), (5, "SKIP")])
+def test_explicit_research_exit_vocabulary_is_preserved(tmp_path, code, expected):
+    projects = _make_project(tmp_path, gate_body=f"raise SystemExit({code})",
+                             extra='exit_statuses: {3: OPEN, 4: REFUSED, 5: SKIP}')
+    spec = load_project(projects / "demo" / "project.yaml")
+    result = run_command(spec)
+    assert result.status == expected
+    assert result.exit_code == code
+
+
+def test_exit_mapping_cannot_turn_a_nonzero_exit_into_a_pass(tmp_path):
+    projects = _make_project(tmp_path, extra='exit_statuses: {3: PASS}')
+    with pytest.raises(ValueError, match="exit_statuses"):
+        load_project(projects / "demo" / "project.yaml")
 
 
 def test_exec_undeclared_command_is_a_configuration_error(tmp_path):

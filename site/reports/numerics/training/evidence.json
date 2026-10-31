@@ -1,0 +1,1236 @@
+{
+  "status": "COMPLETE",
+  "started_at": "2026-10-31T09:18:35.527501+00:00",
+  "protocol": {
+    "study_id": "softmax-distillation-v1",
+    "registered_at": "2026-10-31T09:08:26+00:00",
+    "registration": "prospective local protocol, saved before execution; not an external preregistration",
+    "paper": "https://arxiv.org/html/2610.31642v3",
+    "scope": "adapted mechanistic replication of soft-target stationarity, not a reproduction of all paper training outcomes",
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "modulus": 53,
+    "train_fraction": 0.5,
+    "hidden_width": 128,
+    "teacher_max_steps": 1000,
+    "teacher_min_steps": 200,
+    "teacher_lr": 0.01,
+    "teacher_stop": "first 25-step checkpoint after minimum with 100 percent training accuracy, else maximum; all outcomes retained",
+    "distillation_steps": 2000,
+    "log_interval": 100,
+    "temperature": 4.0,
+    "student_lr": 0.002,
+    "betas": [
+      0.9,
+      0.98
+    ],
+    "epsilon": 1e-08,
+    "weight_decay": 0,
+    "dtype": "float32",
+    "device": "cuda",
+    "loss_scale": 1.0,
+    "initialization": "both students are exact state copies of the trained frozen teacher",
+    "primary_endpoint": "L2 parameter displacement from teacher after 2000 full-batch Adam steps",
+    "secondary_endpoints": [
+      "held-out signed float64 KL",
+      "test accuracy",
+      "teacher agreement"
+    ],
+    "hypothesis": "fixed gradients preserve exact stationarity; standard arithmetic can induce drift",
+    "acceptance": "complete all declared seeds and checkpoints; fixed exact stationarity; independent backend preflight and source/data provenance; standard drift is an outcome, never a pass criterion",
+    "analysis": "show every seed; descriptive comparison only, no significance or training-generalisation claim"
+  },
+  "backend_preflight": {
+    "paper": "arxiv:2610.31642v3",
+    "backend": "torch 2.13.0+cu126; cuda; actual autograd",
+    "verdict": "PASS",
+    "cases": [
+      {
+        "name": "float32 hard margin 0",
+        "verdict": "PASS",
+        "dtype": "float32",
+        "loss": 1.0986123085021973,
+        "gradient": [
+          -0.6666666269302368,
+          0.3333333134651184,
+          0.3333333134651184
+        ],
+        "gradient_relative_error": 5.96046448e-08,
+        "loss_relative_error": 1.8053764565705332e-08,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 5e-05
+      },
+      {
+        "name": "float32 hard margin 18",
+        "verdict": "PASS",
+        "dtype": "float32",
+        "loss": 3.0459961664064394e-08,
+        "gradient": [
+          -3.0459961664064394e-08,
+          1.5229980832032197e-08,
+          1.5229980832032197e-08
+        ],
+        "gradient_relative_error": 1.0185333097838319e-07,
+        "loss_relative_error": 8.662335006903356e-08,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 5e-05
+      },
+      {
+        "name": "float32 hard margin 80",
+        "verdict": "PASS",
+        "dtype": "float32",
+        "loss": 3.6097029441556067e-35,
+        "gradient": [
+          -3.6097029441556067e-35,
+          1.8048514720778033e-35,
+          1.8048514720778033e-35
+        ],
+        "gradient_relative_error": 4.666998554282207e-08,
+        "loss_relative_error": 4.666998554282207e-08,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 5e-05
+      },
+      {
+        "name": "float32 equality",
+        "verdict": "PASS",
+        "dtype": "float32",
+        "loss": 0.8323955535888672,
+        "gradient": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gradient_relative_error": 0.0,
+        "loss_relative_error": 3.393947816314133e-08,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 5e-05
+      },
+      {
+        "name": "float32 near teacher",
+        "verdict": "PASS",
+        "dtype": "float32",
+        "loss": 0.8323955535888672,
+        "gradient": [
+          -4.595504066173817e-08,
+          4.1441900577865454e-08,
+          4.513141416140343e-09
+        ],
+        "gradient_relative_error": 7.530039920956548e-08,
+        "loss_relative_error": 3.393948442129996e-08,
+        "zero_sum_relative_residual": 1.4495337084401232e-08,
+        "tolerance": 5e-05
+      },
+      {
+        "name": "float32 far teacher",
+        "verdict": "PASS",
+        "dtype": "float32",
+        "loss": 2000.0,
+        "gradient": [
+          1.0,
+          -1.0
+        ],
+        "gradient_relative_error": 0.0,
+        "loss_relative_error": 0.0,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 5e-05
+      },
+      {
+        "name": "float64 hard margin 0",
+        "verdict": "PASS",
+        "dtype": "float64",
+        "loss": 1.0986122886681098,
+        "gradient": [
+          -0.6666666666666666,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "gradient_relative_error": 1e-16,
+        "loss_relative_error": 9.885630798354097e-17,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 1e-11
+      },
+      {
+        "name": "float64 hard margin 40",
+        "verdict": "PASS",
+        "dtype": "float64",
+        "loss": 8.496708510583178e-18,
+        "gradient": [
+          -8.496708510583178e-18,
+          4.248354255291589e-18,
+          4.248354255291589e-18
+        ],
+        "gradient_relative_error": 9.596137827553064e-18,
+        "loss_relative_error": 5.347783572261475e-18,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 1e-11
+      },
+      {
+        "name": "float64 hard margin 700",
+        "verdict": "PASS",
+        "dtype": "float64",
+        "loss": 1.971935308751954e-304,
+        "gradient": [
+          -1.971935308751954e-304,
+          9.85967654375977e-305,
+          9.85967654375977e-305
+        ],
+        "gradient_relative_error": 8.688980507074157e-17,
+        "loss_relative_error": 8.688980507074157e-17,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 1e-11
+      },
+      {
+        "name": "float64 equality",
+        "verdict": "PASS",
+        "dtype": "float64",
+        "loss": 0.8323955818399389,
+        "gradient": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gradient_relative_error": 0.0,
+        "loss_relative_error": 3.2494257375030433e-17,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 1e-11
+      },
+      {
+        "name": "float64 near teacher",
+        "verdict": "PASS",
+        "dtype": "float64",
+        "loss": 0.8323955818399423,
+        "gradient": [
+          -3.854988419656131e-08,
+          3.476398644231001e-08,
+          3.785897754251295e-09
+        ],
+        "gradient_relative_error": 2.650348913323884e-16,
+        "loss_relative_error": 2.866971122729686e-16,
+        "zero_sum_relative_residual": 1.0728704246364678e-17,
+        "tolerance": 1e-11
+      },
+      {
+        "name": "float64 far teacher",
+        "verdict": "PASS",
+        "dtype": "float64",
+        "loss": 2000.0,
+        "gradient": [
+          1.0,
+          -1.0
+        ],
+        "gradient_relative_error": 0.0,
+        "loss_relative_error": 0.0,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 1e-11
+      }
+    ],
+    "negative_controls": [
+      {
+        "name": "lost target gradient",
+        "rejected": true
+      },
+      {
+        "name": "nonzero stationary gradient",
+        "rejected": true
+      }
+    ],
+    "scope": "bounded numerical kernels; consumer backends and training outcomes are not certified"
+  },
+  "runs": [
+    {
+      "seed": 0,
+      "teacher_steps": 200,
+      "teacher_state_sha256": "d7d73a0e7cd152b0c312d08e5c93e0f58eea26d9739466a10644d0e8906bf2b3",
+      "data_sha256": "0e5166b2eb73f6856d33d7d1e00b1376d1582bd8c2602ef6455cccb1232afdfb",
+      "teacher_train_accuracy": 1.0,
+      "teacher_test_accuracy": 0.0007117437780834734,
+      "variants": {
+        "standard": {
+          "initial_state_sha256": "d7d73a0e7cd152b0c312d08e5c93e0f58eea26d9739466a10644d0e8906bf2b3",
+          "checkpoints": [
+            {
+              "step": 0,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 100,
+              "parameter_displacement_l2": 0.17089818696656003,
+              "heldout_kl_float64": 4.7502121131404157e-07,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9992882609367371
+            },
+            {
+              "step": 200,
+              "parameter_displacement_l2": 0.17075100329003978,
+              "heldout_kl_float64": 1.6120353895176383e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9985765218734741
+            },
+            {
+              "step": 300,
+              "parameter_displacement_l2": 0.17107497667866128,
+              "heldout_kl_float64": 1.6760133099807344e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 400,
+              "parameter_displacement_l2": 0.17108757820662485,
+              "heldout_kl_float64": 9.632699854899673e-07,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 500,
+              "parameter_displacement_l2": 0.17139223231514386,
+              "heldout_kl_float64": 1.6082213085556302e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 600,
+              "parameter_displacement_l2": 0.1712802588203526,
+              "heldout_kl_float64": 1.2042171155507402e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 700,
+              "parameter_displacement_l2": 0.17135280383359883,
+              "heldout_kl_float64": 1.0721114547155045e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9985765218734741
+            },
+            {
+              "step": 800,
+              "parameter_displacement_l2": 0.17176680447024117,
+              "heldout_kl_float64": 1.4017413644734709e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9985765218734741
+            },
+            {
+              "step": 900,
+              "parameter_displacement_l2": 0.17186997052738323,
+              "heldout_kl_float64": 1.3809830441286932e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9992882609367371
+            },
+            {
+              "step": 1000,
+              "parameter_displacement_l2": 0.17147250307114464,
+              "heldout_kl_float64": 1.1139445142116119e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9992882609367371
+            },
+            {
+              "step": 1100,
+              "parameter_displacement_l2": 0.17160390225074723,
+              "heldout_kl_float64": 2.606539780579815e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9964413046836853
+            },
+            {
+              "step": 1200,
+              "parameter_displacement_l2": 0.1724170523800561,
+              "heldout_kl_float64": 1.880688787883391e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9992882609367371
+            },
+            {
+              "step": 1300,
+              "parameter_displacement_l2": 0.17159202714225794,
+              "heldout_kl_float64": 1.0277631764394964e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1400,
+              "parameter_displacement_l2": 0.1717416385214966,
+              "heldout_kl_float64": 9.132187935137785e-07,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1500,
+              "parameter_displacement_l2": 0.17203790060932184,
+              "heldout_kl_float64": 1.2337477625961024e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 1600,
+              "parameter_displacement_l2": 0.1724167566036564,
+              "heldout_kl_float64": 2.3565276185038358e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1700,
+              "parameter_displacement_l2": 0.17236177663280938,
+              "heldout_kl_float64": 1.6860643493632446e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 1800,
+              "parameter_displacement_l2": 0.17196718815092482,
+              "heldout_kl_float64": 1.6953398861354359e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1900,
+              "parameter_displacement_l2": 0.1721241909017575,
+              "heldout_kl_float64": 1.1821470336592283e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9992882609367371
+            },
+            {
+              "step": 2000,
+              "parameter_displacement_l2": 0.17216121147914168,
+              "heldout_kl_float64": 1.689734415496532e-06,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 0.9992882609367371
+            }
+          ],
+          "initial_logits_equal": true,
+          "final_state_sha256": "dc8b62ecfbee73d07a3f5c622ecb092cef1d8fa051f261856364cb31ebd73be8"
+        },
+        "fixed": {
+          "initial_state_sha256": "d7d73a0e7cd152b0c312d08e5c93e0f58eea26d9739466a10644d0e8906bf2b3",
+          "checkpoints": [
+            {
+              "step": 0,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 100,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 200,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 300,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 400,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 500,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 600,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 700,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 800,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 900,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1000,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1100,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1200,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1300,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1400,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1500,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1600,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1700,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1800,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1900,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 2000,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0007117437780834734,
+              "teacher_agreement": 1.0
+            }
+          ],
+          "initial_logits_equal": true,
+          "final_state_sha256": "d7d73a0e7cd152b0c312d08e5c93e0f58eea26d9739466a10644d0e8906bf2b3"
+        }
+      }
+    },
+    {
+      "seed": 1,
+      "teacher_steps": 200,
+      "teacher_state_sha256": "7774c8a7950d016bdb5a800bc26a2f074903d319896fb1aeae2704fa3072c36d",
+      "data_sha256": "6ac4e65d160fff07829bc64d605394b3e2096862559ec9493a89187d17dd61b3",
+      "teacher_train_accuracy": 1.0,
+      "teacher_test_accuracy": 0.0,
+      "variants": {
+        "standard": {
+          "initial_state_sha256": "7774c8a7950d016bdb5a800bc26a2f074903d319896fb1aeae2704fa3072c36d",
+          "checkpoints": [
+            {
+              "step": 0,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 100,
+              "parameter_displacement_l2": 0.1485033224996069,
+              "heldout_kl_float64": 4.84950760029925e-07,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 200,
+              "parameter_displacement_l2": 0.14813406689602243,
+              "heldout_kl_float64": 8.983361146107666e-07,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 300,
+              "parameter_displacement_l2": 0.14909670982276335,
+              "heldout_kl_float64": 2.0812652757566747e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9985765218734741
+            },
+            {
+              "step": 400,
+              "parameter_displacement_l2": 0.1490938359323652,
+              "heldout_kl_float64": 1.1675966698135675e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 500,
+              "parameter_displacement_l2": 0.14881769134508335,
+              "heldout_kl_float64": 1.4779854241410436e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9971530437469482
+            },
+            {
+              "step": 600,
+              "parameter_displacement_l2": 0.14919093877116302,
+              "heldout_kl_float64": 1.3473075257040846e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 700,
+              "parameter_displacement_l2": 0.14933387146358845,
+              "heldout_kl_float64": 1.362960502715091e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9985765218734741
+            },
+            {
+              "step": 800,
+              "parameter_displacement_l2": 0.14903080116780862,
+              "heldout_kl_float64": 1.3800049576359178e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9985765218734741
+            },
+            {
+              "step": 900,
+              "parameter_displacement_l2": 0.14884049285991843,
+              "heldout_kl_float64": 8.096338735806403e-07,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9992882609367371
+            },
+            {
+              "step": 1000,
+              "parameter_displacement_l2": 0.14971397544524698,
+              "heldout_kl_float64": 1.5724384872351555e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9992882609367371
+            },
+            {
+              "step": 1100,
+              "parameter_displacement_l2": 0.14975345287942676,
+              "heldout_kl_float64": 2.1132632410752217e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9985765218734741
+            },
+            {
+              "step": 1200,
+              "parameter_displacement_l2": 0.15010243929201364,
+              "heldout_kl_float64": 1.4402271098030944e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 1300,
+              "parameter_displacement_l2": 0.14976421137551232,
+              "heldout_kl_float64": 1.534823782427033e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9971530437469482
+            },
+            {
+              "step": 1400,
+              "parameter_displacement_l2": 0.14984866519867757,
+              "heldout_kl_float64": 1.3458483706923086e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9985765218734741
+            },
+            {
+              "step": 1500,
+              "parameter_displacement_l2": 0.15047212694717157,
+              "heldout_kl_float64": 1.2154641138071947e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 1600,
+              "parameter_displacement_l2": 0.150226894819072,
+              "heldout_kl_float64": 1.4814379992628995e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9992882609367371
+            },
+            {
+              "step": 1700,
+              "parameter_displacement_l2": 0.14973687072916683,
+              "heldout_kl_float64": 8.507912179042433e-07,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 1800,
+              "parameter_displacement_l2": 0.1502308234348699,
+              "heldout_kl_float64": 9.919383423234825e-07,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9992882609367371
+            },
+            {
+              "step": 1900,
+              "parameter_displacement_l2": 0.15062460818984408,
+              "heldout_kl_float64": 2.062404185383089e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9971530437469482
+            },
+            {
+              "step": 2000,
+              "parameter_displacement_l2": 0.15021692486456747,
+              "heldout_kl_float64": 1.10853921866692e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9985765218734741
+            }
+          ],
+          "initial_logits_equal": true,
+          "final_state_sha256": "8a6ac28e2f4a5b5265f968521da33cb77017ceed1f651791a88dc9171c0eb64d"
+        },
+        "fixed": {
+          "initial_state_sha256": "7774c8a7950d016bdb5a800bc26a2f074903d319896fb1aeae2704fa3072c36d",
+          "checkpoints": [
+            {
+              "step": 0,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 100,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 200,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 300,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 400,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 500,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 600,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 700,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 800,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 900,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1000,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1100,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1200,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1300,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1400,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1500,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1600,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1700,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1800,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1900,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 2000,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            }
+          ],
+          "initial_logits_equal": true,
+          "final_state_sha256": "7774c8a7950d016bdb5a800bc26a2f074903d319896fb1aeae2704fa3072c36d"
+        }
+      }
+    },
+    {
+      "seed": 2,
+      "teacher_steps": 200,
+      "teacher_state_sha256": "8c9afcdc0c962cd79e39272479f9d557a5ea97b77fa8d7d7b9c79886832dc254",
+      "data_sha256": "eab43ca3e3310989ecc5c07ede5c7f25034241c0810328f11b88a0d71bd45c41",
+      "teacher_train_accuracy": 1.0,
+      "teacher_test_accuracy": 0.0,
+      "variants": {
+        "standard": {
+          "initial_state_sha256": "8c9afcdc0c962cd79e39272479f9d557a5ea97b77fa8d7d7b9c79886832dc254",
+          "checkpoints": [
+            {
+              "step": 0,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 100,
+              "parameter_displacement_l2": 0.18039008869732298,
+              "heldout_kl_float64": 4.715945772115649e-07,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 200,
+              "parameter_displacement_l2": 0.18029414771747707,
+              "heldout_kl_float64": 7.302283059877299e-07,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9992882609367371
+            },
+            {
+              "step": 300,
+              "parameter_displacement_l2": 0.18111935714338812,
+              "heldout_kl_float64": 1.1730931932320614e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9985765218734741
+            },
+            {
+              "step": 400,
+              "parameter_displacement_l2": 0.18115801900568274,
+              "heldout_kl_float64": 1.4840246729083948e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9971530437469482
+            },
+            {
+              "step": 500,
+              "parameter_displacement_l2": 0.1809103067533842,
+              "heldout_kl_float64": 1.497308175758621e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9992882609367371
+            },
+            {
+              "step": 600,
+              "parameter_displacement_l2": 0.18097786179786027,
+              "heldout_kl_float64": 1.0195772921956252e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 700,
+              "parameter_displacement_l2": 0.18101562235069976,
+              "heldout_kl_float64": 1.1265369896765627e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9971530437469482
+            },
+            {
+              "step": 800,
+              "parameter_displacement_l2": 0.18085339456161809,
+              "heldout_kl_float64": 1.5216958260335538e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9957295656204224
+            },
+            {
+              "step": 900,
+              "parameter_displacement_l2": 0.18126089333470694,
+              "heldout_kl_float64": 1.4631444472047099e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 1000,
+              "parameter_displacement_l2": 0.1811059783326727,
+              "heldout_kl_float64": 1.1908010494378116e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 1100,
+              "parameter_displacement_l2": 0.18110234563517133,
+              "heldout_kl_float64": 9.95774578462459e-07,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9985765218734741
+            },
+            {
+              "step": 1200,
+              "parameter_displacement_l2": 0.18114750159785326,
+              "heldout_kl_float64": 1.090177721925742e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9992882609367371
+            },
+            {
+              "step": 1300,
+              "parameter_displacement_l2": 0.181306922084847,
+              "heldout_kl_float64": 1.7738664307317152e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 1400,
+              "parameter_displacement_l2": 0.18149342964680323,
+              "heldout_kl_float64": 1.6051033958483664e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9985765218734741
+            },
+            {
+              "step": 1500,
+              "parameter_displacement_l2": 0.18157630272520425,
+              "heldout_kl_float64": 1.7020050196001242e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9971530437469482
+            },
+            {
+              "step": 1600,
+              "parameter_displacement_l2": 0.18126177958874845,
+              "heldout_kl_float64": 1.0384544218750139e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9985765218734741
+            },
+            {
+              "step": 1700,
+              "parameter_displacement_l2": 0.18144829310596483,
+              "heldout_kl_float64": 8.299083986483965e-07,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9985765218734741
+            },
+            {
+              "step": 1800,
+              "parameter_displacement_l2": 0.18177106788815078,
+              "heldout_kl_float64": 1.3535100323650718e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 1900,
+              "parameter_displacement_l2": 0.18227957564164102,
+              "heldout_kl_float64": 1.6318785066337561e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9978647828102112
+            },
+            {
+              "step": 2000,
+              "parameter_displacement_l2": 0.1816059595415668,
+              "heldout_kl_float64": 1.3146327971355845e-06,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 0.9971530437469482
+            }
+          ],
+          "initial_logits_equal": true,
+          "final_state_sha256": "6b1b5d5528ccc8db14c8724b2154b275023a0ae4291a9c51b120df6cec95fa65"
+        },
+        "fixed": {
+          "initial_state_sha256": "8c9afcdc0c962cd79e39272479f9d557a5ea97b77fa8d7d7b9c79886832dc254",
+          "checkpoints": [
+            {
+              "step": 0,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 100,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 200,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 300,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 400,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 500,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 600,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 700,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 800,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 900,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1000,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1100,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1200,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1300,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1400,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1500,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1600,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1700,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1800,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 1900,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            },
+            {
+              "step": 2000,
+              "parameter_displacement_l2": 0.0,
+              "heldout_kl_float64": 0.0,
+              "test_accuracy": 0.0,
+              "teacher_agreement": 1.0
+            }
+          ],
+          "initial_logits_equal": true,
+          "final_state_sha256": "8c9afcdc0c962cd79e39272479f9d557a5ea97b77fa8d7d7b9c79886832dc254"
+        }
+      }
+    }
+  ],
+  "artifacts": {
+    "checkpoints/seed-0-split.json": "22b3f0b02d74baebc0fd5623883c2e7041def281f66b19e6f8c911d2bafe3303",
+    "checkpoints/seed-0-teacher.pt": "05de155bb0c86eb2e90bffa759417510e4d8ebfa9547b6b0b7a9a7062272fe64",
+    "checkpoints/seed-0-standard.pt": "ab88ef49277422fd8827b767d76bf7833f1d62276619cb65d8fe3b7d9f857dc5",
+    "checkpoints/seed-0-fixed.pt": "f18ea69d1de3ea54e0b6fcc229436a795c2535576e6a516b07a738a23f6f3f99",
+    "checkpoints/seed-1-split.json": "b2c228b5b9e92e17c6469b980f3424339a5ecb6a1a7e7c0784c61c8918930b8a",
+    "checkpoints/seed-1-teacher.pt": "1d0cce4b3d8cbf2124cdd5420530d5929d766e36b5d8c8e68747994b84d53c50",
+    "checkpoints/seed-1-standard.pt": "ab8a186c2f9e81ff4c38e9b4046b19270a6f70e0dcc488db32cd1c06e81b7bfe",
+    "checkpoints/seed-1-fixed.pt": "22ff75caf887bb72f558f37e71c9dccf7eacfd6a1a7f30788fdd904b77c327d2",
+    "checkpoints/seed-2-split.json": "8c3779d37fc09256c67ce23cdba3dd3f5eaa1f543d1e04eddefeba25628295f6",
+    "checkpoints/seed-2-teacher.pt": "f8e44b6aada254b7e44db649a3f8d014aacdf8812c0fbb69266650401b52c9d5",
+    "checkpoints/seed-2-standard.pt": "41ccb86fa714cd6290c42c5291de54cc49f05a8038372d4af1cef3b241fbb284",
+    "checkpoints/seed-2-fixed.pt": "abb04d5231a2abbfffd9b7fef1558cbc9f6bffcf98850e4affcab2cc5ee87ba8"
+  },
+  "runtime": {
+    "python": "3.14.3",
+    "torch": "2.13.0+cu126",
+    "numpy": "2.4.1",
+    "cuda": "12.6",
+    "device": "NVIDIA GeForce RTX 4070",
+    "dtype": "float32",
+    "device_type": "cuda",
+    "tf32": false,
+    "deterministic_algorithms": true
+  },
+  "source_sha256": {
+    "reference/softmax_training/protocol.json": "d4d8b20caee0f215cd20937809c38e7c6373dea3d61cc8bad8604b34e8784465",
+    "reference/softmax_training/train.py": "7d2c33cbdea24655872196c0cdbcd820c5c2e22cf21e4bd4ebbe185eea893389",
+    "reference/softmax_training/validate.py": "28dc4e96134d5db8c363c934824e65843cac2afa938fca137d601751520d60d9",
+    "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
+    "framework/verifiers/numerics.py": "a45240cb251abca05780e47b029aa769eddccf12053e83d834c2446befaa1243"
+  },
+  "source_hash_policy": "UTF-8 with LF line endings; data/model artifacts hashed as raw bytes",
+  "finished_at": "2026-10-31T09:18:54.095156+00:00",
+  "acceptance": {
+    "status": "PASS",
+    "findings": []
+  }
+}

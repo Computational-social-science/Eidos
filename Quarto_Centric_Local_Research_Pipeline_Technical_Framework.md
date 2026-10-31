@@ -1,408 +1,149 @@
-> **Historical design note (pre-implementation).** This document describes what the framework
-> was *intended* to be, including pieces that were later removed — LangGraph agent nodes, Hydra,
-> a vector memory layer. It is kept for provenance, not as a description of the current system.
-> For what runs today, see `docs/ORCHESTRATION.md` and `README.md`.
+# Eidos：可复核科研流水线技术框架
 
-# Global Reusable Research Pipeline Framework (Optimized)
-## Quarto + BootLoops + Complementary Quality Gates
+**实现基线：4.3.32；同步日期：2026-10-31（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证；本轮修改尚未提交或推送。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准。
 
-**Version:** 4.1
-**Date:** October 20, 2026
-**Status:** Production-ready global template; v4.1 removes the memory layer and routes decisions to a dedicated operator
-**Target Hardware:** NVIDIA RTX 4070 (12 GB VRAM) and above
-**Primary Goal:** Theory-driven LLM experimentation → Multi-layered certified results → Multi-format reproducible delivery
+旧 v4.1 设计原文已完整归档至 [历史设计](docs/archive/technical-framework-v4.1-2026-10-20.md)。原有“production-ready”“certified results”及代理图示不能作为当前能力证明。
 
-**One Source → Journal LaTeX/PDF + Word + Interactive Website + Executable Code**  
-**with BootLoops + complementary lightweight quality gates enforced throughout.**
+## 1. 实际架构与目标
 
----
+目标：使研究问题、源码、数据、实验、独立验收和交付之间具有可追踪的执行关系。
 
-## 1. Executive Summary
-
-This Version 4.1 optimizes the previous global framework by:
-
-1. Explicitly addressing remaining logical defects.
-2. Integrating complementary lightweight open-source resources that maximize research productivity while remaining local-first and model-agnostic.
-3. Establishing a dual quality-gate system:
-   - **BootLoops** for quantitative precision and certified numerical claims.
-   - **Inspect / DeepEval / Promptfoo / Ragas** for semantic, agentic, RAG, and prompt-level quality.
-4. Strengthening human-in-the-loop gates, failure diagnosis, and one-click executable reproducibility.
-5. **Removing the framework-owned memory layer.** Knowledge is kept in three explicit places instead: agent skills for procedure, agent memory for facts, and each project's own `LESSONS` file for history. A framework vector store was a fourth place nothing wrote to.
-6. **Splitting generation from judgement.** High-frequency decisions (routing, gate triage, hypothesis screening, failure classification) are asked of **StartLux-Decision-4B-Q8_0**, a typed-decision operator that returns calibrated option probabilities in one forward pass, instead of a general 7B–8B generator whose text must then be parsed.
-
-The entire workflow remains a **project-agnostic global skeleton**. New projects inherit all quality gates, publishing capability, and reproducibility machinery automatically.
-
----
-
-## 2. Identified Logical Defects and Mitigations
-
-| Defect | Description | Mitigation in v4.1 |
-|--------|-------------|--------------------|
-| Incomplete quality coverage | BootLoops is strong on quantitative precision but weaker on NLP semantic quality, hypothesis novelty, and theoretical consistency | Dual-gate system: BootLoops (quantitative) + Inspect/DeepEval/Promptfoo/Ragas (semantic & agentic) |
-| Ambiguous human intervention | Over-automation risk; low-quality but “gate-passed” results may reach the paper | Explicit mandatory human review gates at hypothesis confirmation, critical experiment design, and final manuscript submission |
-| Weak interactive exploration | Heavy focus on batch → gate → write; early hypothesis probing is inefficient | Optional interactive mode with AIPOCH-style workbench patterns and live literature feedback |
-| Limited executable reproducibility | Provenance exists but reviewers still need manual environment setup | One-click executable package (Quarto + Docker/Binder template + freeze cache) |
-| Knowledge had no home | Patterns and lessons were to be kept in a framework vector store that nothing wrote to | Three explicit layers: agent skills (procedure), agent memory (facts), project `LESSONS` file (history). No vector store. |
-| Judgement delegated to generators | Routing, gate triage and failure classification were asked of a general 7B–8B model, whose text then had to be parsed; confidence needed separate calibration | **StartLux-Decision-4B-Q8_0** returns typed decisions (choice / yes-no / score) with calibrated probabilities in one forward pass |
-| Weak failure diagnosis | Gates mostly block; little structured analysis of why a gate failed | Dedicated failure-diagnosis node, fed the gate's structured `details`, producing actionable reports |
-| Resource contention on 4070 | Simultaneous heavy LLM + BootLoops tools can overload VRAM | Explicit stage scheduling and model unloading rules; the 4B decision operator (~4.3 GB Q8) stays resident while larger generators swap |
-
----
-
-## 3. High-Level Optimized Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                  Multi-Format Delivery (Quarto – Single Source)             │
-│         Journal LaTeX/PDF  │  Word  │  Interactive HTML  │  Code Artifacts  │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                  Dual Quality-Gate Layer (Mandatory)                        │
-│  BootLoops (quantitative)  +  Inspect/DeepEval/Promptfoo/Ragas (semantic)  │
-│  + Explicit Human Review Gates                                              │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                  Analysis, Writing & Critique Layer                         │
-│  Local LLM Agents (LangGraph) + Failure Diagnosis Node                      │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                  Decision Layer (typed, calibrated)                         │
-│  StartLux-Decision-4B-Q8_0: choice / yes-no / score → option probabilities  │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                  Evaluation & Robustness Layer                              │
-│  Ragas + DeepEval + Inspect + Custom Scientific Metrics                     │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                  Experiment Orchestration Layer (Reusable Core)             │
-│  Hydra + LangGraph + MLflow + DVC                                           │
-│  Knowledge: agent skills (procedure) · agent memory (facts) · project LESSONS│
-├─────────────────────────────────────────────────────────────────────────────┤
-│                  Retrieval & Knowledge Layer                                │
-│  LlamaIndex + Qdrant/Chroma + Hybrid Search                                 │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                  Inference Serving Layer                                    │
-│  vLLM (batch) + Ollama (interactive) + StartLux (decisions) + Scheduling     │
-└─────────────────────────────────────────────────────────────────────────────┘
+```text
+projects/*/project.yaml → framework.project → 消费者 gate / test / render
+                                └─ numerics: required → 数值 preflight
+chain registry → scheduler → sampler → derived verdict → recovery / verify
+                                      └─ dashboard / evidence ledger
+论文与本地协议 → 实现与独立参考 → 实验/负对照 → 有效性门 → Quarto/图件/数据/代码包
 ```
 
----
+编排由确定性链路、注册器、调度器和显式人工关口实现。当前代码 does not use LangGraph / LangChain；Hydra is absent，ChromaDB is removed。具体入口见 [实际编排](docs/ORCHESTRATION.md)，不再把旧设计意图描述成已运行的代理系统。
 
-## 4. Dual Quality-Gate System
+## 2. 组件与责任
 
-### 4.1 BootLoops (Quantitative Precision Gate)
-
-- Repository: https://github.com/BootLoops-ai/bootloops + skills
-- Role: Certified computational tools + working protocols that define “done”.
-- Key protocols enforced:
-  - acceptance-gate
-  - planted-truth
-  - independence-bookkeeping
-  - timing-discipline
-  - tool-stewardship
-  - lit-review / ref-check
-  - prose-lint
-  - referee-sim (optional)
-
-### 4.2 Complementary Lightweight Gates
-
-| Tool | Primary Strength | Integration Point | License |
-|------|------------------|-------------------|---------|
-| **Inspect** | Research-grade agent & tool-use evaluation, sandboxed execution | Complex multi-step reasoning and agent evaluation | MIT |
-| **DeepEval** | Pytest-style LLM/RAG/Agent unit tests, 50+ metrics, local Judge | Daily experiment regression and CI gates | Apache-2.0 |
-| **Promptfoo** | Config-driven prompt comparison, red-teaming, CI gates | Hypothesis generation and writing nodes | MIT |
-| **Ragas** | RAG-specific metrics (faithfulness, context precision/recall) | Literature retrieval and knowledge injection | Apache-2.0 |
-
-### 4.3 Gate Placement (Optimized)
-
-| Stage | Quantitative Gate (BootLoops) | Semantic/Agent Gate | Human Gate |
-|-------|-------------------------------|---------------------|------------|
-| Hypothesis generation | lit-review, planted-truth | Promptfoo + novelty checks | Mandatory review |
-| Experiment design | tool-stewardship, timing-discipline | DeepEval design tests | Recommended |
-| Experiment execution | acceptance-gate, independence-bookkeeping | — | Optional |
-| Evaluation | acceptance-gate | Inspect + DeepEval + Ragas | — |
-| Result injection | independence-bookkeeping, prose-lint | DeepEval faithfulness | — |
-| Manuscript drafting | prose-lint, ref-check | Promptfoo style checks | Mandatory before final |
-| Package generation | Full battery | Full semantic suite | Mandatory final sign-off |
-
-### 4.4 Decision routing: a decision operator, not a small generator
-
-The framework makes many **judgements per run** — which branch to take, whether a
-gate's failure is methodological or environmental, whether a hypothesis survives
-screening. Asking a general 7B–8B model for these means generating prose and then
-parsing it back into a decision, and the confidence in that decision has to be
-calibrated separately.
-
-**StartLux-Decision-4B-Q8_0** is trained for typed decisions and returns them
-directly: `choice`, `noul` (yes/no probability) and `score`, with per-option
-probabilities and a `none_probability` in one response.
-
-| Dimension | General 7B–8B (Q4/Q8) | StartLux-Decision-4B-Q8 |
+| 层 | 当前入口 | 边界 |
 |---|---|---|
-| Training target | text generation | typed decisions (choice / yes-no / score) |
-| Output | prose that must be parsed | option probabilities directly |
-| Latency | generation-bound | one forward pass; **measured 182 ms wall clock for 2 questions (n=3) and 253 ms for 3 questions (n=5) over HTTP; the published ~26 ms is the engine read-out, not the round trip** |
-| Confidence | needs separate calibration | calibrated probabilities, usable for threshold routing |
-| Footprint | 7–8B Q4/Q8 | 4B Q8, ~4.3 GB file, fits beside a resident generator |
+| 项目注册 | framework/project.py | 保持外部项目原位，运行其命令、核对输出、保留研究状态；未知/缺失项目不静默通过 |
+| 链路调度 | tools/audit_chains.py、tools/refresh_chains.py | 按依赖和间隔执行；缺少可选消费者为 SKIP |
+| 状态与恢复 | tools/watch_pipeline.py、tools/status_view.py、tools/serve_site.py、tools/monitor_supervisor.py | 样本新鲜度与序号共同决定健康；OS 生命周期锁、watchdog、事务式热更新；启动尝试与恢复验证分开记录 |
+| 科学有效性 | framework/validity/ | 主张必须解析到登记证据；框架门通过不能证明主张普遍为真 |
+| 数值验证 | framework/verifiers/numerics.py | 独立 Decimal 定义、实际后端适配、相对误差和负对照；静态筛查是启发式 |
+| 数值实现 | framework/stable_numerics.py、framework/stable_numerics_torch.py | 有限 float32/float64；Torch 自定义损失只支持一阶反向 |
+| 论文工具 | reference/barron2026_agent/、reference/reproduction/barron2026/mcp/ | 复用已有 Paper2Agent，四个工具及真实调用轨迹；工具可调用不等于复现训练结果 |
+| 出版交付 | tools/build_site.py、tools/numerics_case.py、Quarto | 网站、数据、三格式报告和代码包共用证据 |
+| 科研图件 | tools/numerics_figure.py、tools/training_figure.py | Python 生成可编辑矢量，浏览器只选择已记录数据 |
 
-**Where it is used.** Stage routing (which branch or model), gate triage (which
-action a failure implies), hypothesis screening (keep / drop / escalate), and
-failure classification (category). **Where it is not used:** drafting, summarising,
-or anything whose output is prose — that stays with a generator.
+模型仅用于路由和判断草稿。未达到验证门槛的模型判断不得成为科学验收。假设、关键设计和最终投稿继续遵守项目人工关口政策。
 
-The division is deliberate: general 7B–8B models are kept for light **generative**
-work where output is text, and every **judgement** — which is high-frequency and
-needs a calibrated probability rather than a paragraph — goes to the 4B operator.
-Nothing that is a decision is routed to a generator, and nothing that is prose is
-routed to the operator.
+## 3. 科学验收与自进化
 
-**Threshold policy.** A decision is acted on only when its `none_probability` is
-below the model's measured threshold and its top probability clears the project's
-threshold; otherwise the case escalates to a human gate. `none_probability ≥ 0.2`
-is the authors' calibration point (66.3 % of all-options-wrong questions caught at
-2.2 % false flags); it is borrowed and must be re-measured before it enters a
-success criterion.
+论文机制 → 独立参考 → 可失败的检查 → 负对照 → 可复用实现 → 实际消费者 → CI/回归 → 有范围的交付。
 
-**Failure semantics.** If the operator is unreachable the framework **escalates or
-skips** — it never silently substitutes a regex or a general model and calls the
-result a decision. This is the same rule the gates follow for a missing tool.
+- 区分论文数值复现、实现资格、训练效果复现和科学新发现。
+- 不用有限 loss、概率和为 1 或绝对误差下限替代梯度正确性。
+- 独立参考按实际可表示输入计算；不能先舍入高精度参考再宣称零误差。
+- 保留失败、阴性结果和所有预先指定的种子；预期科学效果不出现不等于执行失败，实验缺失或前提被破坏则必须拒绝。
+- 新后端须验收自己的执行路径，不能借用 NumPy 的 PASS。
 
-**Licence.** The weights are **CC BY-NC 4.0 (non-commercial)**. Any project that
-needs commercial terms must swap the operator, and the framework must not assume
-this model is universally redistributable.
+## 4. Softmax Collapse / Cancellation：修复前后与方案
 
----
+来源：[A Fix for Softmax and Cross-Entropy, v3](https://arxiv.org/html/2610.31642v3)，发现与方法归 Barron、Gnanapragasam、Tschannen。
 
-## 5. Global Reusable Framework Structure
+| 机制 | 修复前 | 修复方案 | 验收 |
+|---|---|---|---|
+| Collapse | 高置信度下 q[target]−1 舍入为零；最大值平移只能阻止指数溢出 | 排除一个 argmax 后用 log1p；target 梯度取其他梯度的负和；同时修复前向与反向 | 41 个 gap × 2 个 dtype，逐项检查 loss、梯度及 dtype |
+| Cancellation | 近似分布的浮点概率相减失准，相等 logits 也可能产生残差 | teacher logits、中心化差值、expm1/log1p、远分支和零和修正 | 7 个请求扰动 × 2 个 dtype，记录实际扰动，单独检查精确相等 |
+
+共 96 个展示案例，另有 12 项资格检查和 2 个必须被拒绝的负对照。整体 PASS 还须全部展示点通过，错误 loss 不得借用正确梯度的 PASS。float32 gap 18 时，标准 target 梯度为 0，修复约为 −3.046×10⁻⁸。
+
+网页主体必须包含修复前后测量、算法解释、实现入口和下载，不只呈现异常现象。
+
+```python
+from framework.stable_numerics_torch import logit_distillation
+loss = logit_distillation(student_logits, teacher_logits).mean()
+loss.backward()
+# 硬标签：hard_cross_entropy(logits, targets).mean()
+```
+
+## 5. 实际优化对照：平稳点机制实验
+
+消费者位于 reference/softmax_training/。protocol.json 是执行前保存的本地前瞻协议，不是外部平台注册。
+
+数据为 (a+b) mod 53，共 2,809 个整数对，50% 训练划分；种子 0、1、2。教师为两个线性层及 ReLU 的 MLP，隐藏宽度 128。两种学生精确复制教师权重，并严格验证初始表示 logits 相等；各执行 2,000 步全批次 Adam，T=4，lr=0.002，betas=(0.9,0.98)，eps=1e−8，无 weight decay。
+
+主要终点为参数 L2 位移。标准版约为 0.172161、0.150217、0.181606；修复版全部精确为 0。保存全部种子轨迹、训练/测试指标和模型；CPU 验收器直接读取浮点存储、不执行 pickle 代码，独立重算最终权重位移。
+
+**限制：教师训练准确率为 100%，held-out 仅约 0–0.0712%。此结果支持平稳点/优化漂移的有界机制结论，不支持泛化收益，也未复现原论文高测试准确率。** 三个种子只作描述性比较，不作显著性宣称。
+
+首轮失败已保留：教师先算完整批次再切片，学生直接计算训练批次；CUDA GEMM 造成约 1.05×10⁻⁵ 的初始 logits 差异，破坏前提。docs/failed-batch-shape.zip 包含原始代码、证据和模型。修复为匹配批次的教师缓存及严格相等断言后，才完成修正重跑。
+
+## 6. 本轮逻辑缺口与科学修复
+
+| 缺口 | 已接通的执行/拒绝路径 |
+|---|---|
+| numerics: required 被执行器忽略 | 注册器枚举校验；gate 前执行 preflight；危险代码即使自身退出 0 也被拒绝 |
+| 数值政策拼写错误静默降级 | 非 required/optional/not_applicable 配置拒绝 |
+| 抽查 PASS 扩大为完整展示 PASS | 逐点验证；gap 22 的错误梯度和错误 loss 都有失败回归 |
+| 极小梯度被绝对阈值掩盖/偷偷降精度 | 相对误差、相对零和残差、输入输出 dtype 保持 |
+| 高精度参考提前转 float64 | Decimal 内计算误差后才转换显示值 |
+| 缺协议/种子/模型或伪造位移仍可通过 | 完整协议/运行时/源文件/数据划分/模型清单与哈希，独立权重重算 |
+| 相同权重被当作相同 logits | 同形状计算路径上 torch.equal，不满足则拒绝实验 |
+| 自审忽略 pytest 失败 | 核查真实退出码，失败不覆盖最后有效记录 |
+| 热更新失败回退启动旧代码 | 保留最后接受模块，连续成功/失败更新回归 |
+| watchdog/PID 文件故障 | 故障路径测试、OS 生命周期锁、受控进程恢复验证 |
+
+通用 preflight 只证明源码筛查和内置数值资格，不认证消费者梯度。实际 Torch/JAX/融合后端仍须进入消费者自己的 gate。
+
+## 7. Nature 图件技术规范
+
+依据 [Nature 官方图件指南](https://research-figure-guide.nature.com/figures/building-and-exporting-figure-panels/) 与 [最终提交要求](https://www.nature.com/nature/for-authors/final-submission)：主图宽 183 mm，内核图高 132 mm、训练图高 70 mm，低于 170 mm。图内字号 6–7 pt，本机使用 Arial；PDF 嵌入 TrueType/Type42，SVG 保留可编辑文字，主图不栅格化。
+
+白底出版画布使用蓝/朱红/黑配合实/虚/点线，黑色高对比文字；面板依次 a–d。真实零值在对数轴外标记，不制造正数地板。训练 KL 的 symlog 线性区明确标注。确定性网格无统计误差条；训练展示全部种子。PNG 仅用于 Word 和预览。
+
+规格记录为 site/reports/numerics/figure-policy.json。网页与出版母版分别生成：网页使用原站深色背景、12 px SVG 图中文字与响应式坐标，出版母版保留白底及实际物理尺寸，供独立下载。网页不再嵌入白底静态图，也不把网页截图当出版母版。
+
+Figure 1 联动 failure mode × dtype × 实测输入：a 为当前案例的有符号梯度，b 为整段实测误差与选中游标；Collapse 显示相对 L2 误差，Cancellation 显示绝对 L2 误差。滑块、选择器、表格与读数同步。对数轴中的精确零值有独立轨道；Δ=0 不伪造对数横坐标。Figure 2 支持 seed × endpoint × scale × Adam step 与 standard/fixed 显隐；只读取归档检查点，保留完整轨迹与游标。全部组合均来自实测，没有在浏览器重新计算 softmax 或伪造未运行的实验参数。375–1440 px 宽度下验证无页面横向溢出。
+
+出版图内精确零使用面板内计数注释，避免轴下标记与刻度重叠；Cancellation 的近教师面板直接显示相对梯度误差。技术规格符合公开要求不代表 Nature 编辑部认可研究结论。
+
+## 8. 单源交付、环境与运行
+
+生成入口为 tools/build_site.py；禁止手改 site/index.html。tools/numerics_case.py --render 生成 HTML/PDF/DOCX，以及共用证据的 JSON/CSV、矢量图、训练轨迹、协议、失败档案和带校验和的源码包。包内保留原有 Agent/MCP 与训练模型；CPU 可复核已保存权重，重新训练须具备记录的 CUDA 环境。
+
+源码当前在 E:/2026-AI4S/Eidos，勿假定为会话的 D 盘目录。项目环境在 C:/Users/Administrator/.venvs/eidos-py312（Python 3.12.4），源码盘为 exFAT USB。声明 Python >=3.11；使用 uv.lock 的 locked sync，不做无目的升级。
+
+Git 对源代码采用 LF；对绑定原始 SHA256 的训练证据、检查点和截图所绑定的生成页面保留原始字节，防止 Windows/Linux 换行转换破坏验收。提交前从 Git index 导出独立副本，重新运行模型和分析证据验收；只在原工作区通过不足以证明克隆后可复核。
+
+本次训练使用 py -3.14：Python 3.14.3、Torch 2.13.0+cu126、NumPy 2.4.1、CUDA 12.6、RTX 4070，关闭 TF32并启用确定性算法。主项目环境不强制安装 Torch，可选模块 SKIP 与 GPU 环境的单独 PASS 分别记录；.venv-repro 保留给原有论文 JAX 消费者。
 
 ```text
-Eidos/                                     # ← Single reusable core
-├── framework/
-│   ├── gates/                             # BootLoops + Inspect/DeepEval/Promptfoo wrappers
-│   ├── diagnosis/                         # Failure diagnosis node (consumes gate details)
-│   ├── decision.py                        # Typed-decision client (StartLux operator)
-│   ├── project.py                         # Registry: external repositories by pointer
-│   ├── tracking/                          # MLflow + DVC
-│   ├── quarto_bridge/
-│   └── inference/                         # Stage-aware scheduling
-├── protocols/                             # BootLoops skills (submodule)
-├── tools/                                 # BootLoops toolkit + chain audit
-├── templates/
-│   ├── project_skeleton/
-│   ├── quarto_manuscript/
-│   └── executable_package/                # Docker/Binder one-click template
-├── configs/global/
-└── docs/
-
-projects/                                  # In-tree projects, or pointers to external ones
-├── <name>/project.yaml                    # root + gate/test/render commands (pointer)
-└── ...                                    # no files are copied into the framework
+python -m pytest tests/ -q
+python tools/record_self_audit.py
+python tools/audit_numerics.py --projects
+python -m framework.project check barron2026_agent
+python -m framework.project check softmax_training
+python tools/build_site.py
+python tools/numerics_case.py --render
+python tools/audit_site.py --no-build
+python tools/check_render.py --json
+python tools/health.py --json
 ```
 
-New projects are created via:
+命令使用 AGENTS.md 指定的项目解释器。重新训练用已验证的 GPU 解释器：py -3.14 reference/softmax_training/train.py。常规 gate 读取并核验一次训练的证据，不在调度轮询中反复训练。
 
-```bash
-./bootstrap_project.sh <project_name>
-```
+监控为 http://127.0.0.1:8765/，案例为 /index.html#demo。健康须有新鲜样本和递增 seq；沿用现有 Startup 入口，不重复部署启动器。24 小时观察写入 .scratch/quality/soak-24h.json，运行中为 RUNNING，不能写为 PASS；受控进程恢复不等于整机登录重启验证。
 
-An existing repository is **registered**, not moved:
+Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不再把七个消费者压缩到同一 SVG 横栏。`prose_lie` 是应当被 Gate S 拒绝的负对照（文本 19 与证据 1 冲突）：新鲜且实际判为 FAIL 时显示 Expected rejection，不能把它描述为科研通过。负对照按实际核验时间计时，保留旧证据时间；正项目按证据生成时间计时。监控取最旧消费者，未知时间不伪装新鲜；年龄原值参与阈值判断。轮询与手动核验都会更新消费者卡片。
 
-```yaml
-# projects/<name>/project.yaml
-root: ../../../<repo>
-gate_command: ["{python}", "scripts/check_handoff.py"]
-```
+2026-10-31 的 24 小时观察已记录两次失败，日志显示开发期间旧进程加载的新 dashboard 找不到旧缓存 project 模块中的 `consumer_freshness`。监督进程重启后恢复；失败记录保留，此轮严格连续观察不能宣称全通过。
 
-All gates, publishing logic, diagnosis, decision routing and tracking are inherited
-automatically; the project keeps its own gate implementation and tests.
+## 9. 未验证范围与下一步
 
----
+完整论文参数表、AMP/bfloat16、高阶求导及其他后端仍未验证；有限指数范围和输入量化不可恢复。覆盖率以框架源码范围测量，薄弱路径不能被测试代码覆盖率掩盖。
 
-## 6. Optimized End-to-End Workflow
+三种子 Transformer 跟进实验与完整结果见 [SOFTMAX-TRAINING-FOLLOWUP](docs/SOFTMAX-TRAINING-FOLLOWUP.md)。10,000 epoch 重建未获得达标教师；显式登记的探索性 50,000 epoch 延长获得三名超过预设 95% held-out 阈值的教师，并完成精确初始教师蒸馏对照。延长实验与父实验六条轨迹在 10,000 epoch 的模型哈希完全相同；后续沿用优化器，但原始优化器矩未单独保存供独立验证。原实验和不利结果全部保留，不能声称整篇论文 MATCH 或普遍泛化优越性。
 
-1. **Project Instantiation**  
-   Bootstrap from global template → full inheritance of dual gates and Quarto pipeline.
+验收器核对源/协议/运行时/划分/完整模型清单、原始张量、独立最终准确率、margin、CE、蒸馏位移及父实验重放。此前“删掉产物清单仍可通过”的漏洞有真实报告变异测试覆盖。单独分析脚本 `tools/grokking_analysis.py` 补测最终检查点 target 梯度为零的比例，绑定模型、实验与分析代码哈希；不冒充未记录的梯度时间轨迹。这些跟进结果独立归档，主页 Figure 2 仍明确展示原 MLP 平稳点案例。
 
-2. **Hypothesis & Literature**  
-   Agents + LlamaIndex → BootLoops lit-review + Promptfoo + mandatory human review.
-   StartLux-Decision screens candidates into keep / drop / escalate, with a
-   `none_probability` that flags "no listed option fits" instead of forcing a choice.
+下一阶段登记完整 dtype × epsilon 参数矩阵和跨种子设计，核对原论文未明确的实现选择，再判断泛化结果的可迁移性；保留所有阶段的成功、阴性与失败证据。新科学主张仍须文献对照、可证伪假设和独立数据支持。当前全量本地验收为 527 passed、3 个可选 Torch 模块 skipped；CUDA 环境另有 12 passed，框架源码覆盖率 67%，11 条链为 10 PASS/1 SKIP。
 
-3. **Experiment Design & Execution**  
-   Hydra + vLLM/Ollama → MLflow/DVC → BootLoops acceptance-gate + timing-discipline.
-   Design choices that are judgements (which control, which baseline) are asked as
-   typed decisions and recorded with their probabilities.
-
-4. **Evaluation**  
-   Dual suite: BootLoops quantitative batteries + Inspect/DeepEval/Ragas semantic metrics.
-
-5. **Failure Diagnosis**  
-   If any gate fails, the diagnosis node receives the gate's structured `details`
-   (which metric, which threshold, which observed value) and asks StartLux to
-   classify the cause; the report carries both the classification and its
-   probability. Below threshold, the case escalates to a human gate.
-
-6. **Result Certification & Injection**  
-   Only certified results enter the Quarto source. Prose-lint and faithfulness checks applied.
-
-7. **Manuscript Drafting**  
-   Local LLM agents refine sections under dual gates + mandatory human sign-off.
-
-8. **Multi-Format Rendering + Executable Package**  
-   Quarto produces LaTeX/PDF, Word, interactive HTML, and code.  
-   One-click executable package (Docker/Binder + freeze + full provenance) is generated only after final human gate.
-
-9. **Lessons Recorded, Not Stored in a Vector Database**  
-   A failure that cost time is written to the **project's own `LESSONS` file**, and a
-   procedure that generalises is written as an **agent skill**. There is no shared
-   memory service: the lesson travels with the code or with the agent, not in a store
-   nobody queries.
-
----
-
-## 7. Quarto Multi-Format Configuration (Inherited)
-
-```yaml
-project:
-  type: manuscript
-
-format:
-  pdf:
-    documentclass: article          # or journal-specific template
-    number-sections: true
-  docx: default
-  html:
-    theme: cosmo
-    toc: true
-    code-fold: true
-
-execute:
-  freeze: auto
-  cache: true
-```
-
----
-
-## 8. Reproducibility & Audit Chain (Strengthened)
-
-Every delivered package contains:
-
-- Git commit of framework + project
-- DVC data/model hashes
-- MLflow run ID(s)
-- BootLoops self-test and acceptance-gate logs
-- Inspect / DeepEval / Promptfoo / Ragas evaluation reports
-- Quarto `_freeze` cache
-- Environment lockfile
-- One-click executable environment (Docker/Binder)
-- Explicit record of all applied gates and human review signatures
-
----
-
-## 9. Hardware & Scheduling Notes (RTX 4070)
-
-- **Decisions** (routing, gate triage, hypothesis screening, failure classification) → **StartLux-Decision-4B-Q8_0**, ~4.3 GB, resident; one forward pass per question set
-- Interactive writing / drafting → Ollama (8B–14B Q4), loaded on demand
-- Batch experiments → vLLM (quantized)
-- BootLoops pure-Python tools → CPU preferred
-- Explicit model unloading between heavy stages; only one large **generator** resident at a time (the 4B decision operator may stay)
-- The decision operator is reached over HTTP (`DECISION_SERVICE_URL`, default `http://127.0.0.1:8090`); if it is down the caller escalates or skips, never silently substitutes
-
----
-
-## 10. Core Dependencies
-
-```text
-# Core framework
-langgraph
-llama-index
-mlflow
-dvc
-hydra-core
-vllm
-ollama
-qdrant-client
-litellm
-
-# Dual quality gates
-# BootLoops (git submodule)
-inspect-ai
-deepeval
-promptfoo
-ragas
-
-# Publishing
-quarto
-
-# Optional workbench patterns
-# AIPOCH Open-Science concepts for interactive exploration
-
-# Decision operator (shared, outside any project)
-# startlux-decide  (upstream: github.com/StartLuxLabs/StartLux-Decision)
-# weights: StartLux-Decision-v1.1-4B-AutoThink-GGUF, Q8_0, ~4.3 GB
-# licence: code Apache-2.0; weights CC BY-NC 4.0 (NON-COMMERCIAL)
-# the Eidos client is stdlib-only (framework/decision.py); no SDK is vendored
-```
-
----
-
-## 11. Conclusion
-
-Version 4.1 transforms the framework into a more robust, production-grade global research system by:
-
-- Closing the most important logical gaps identified in reflection.
-- Establishing a complementary dual quality-gate architecture (BootLoops + Inspect/DeepEval/Promptfoo/Ragas).
-- Separating **judgement** from **generation**: typed, calibrated decisions come from a dedicated 4B operator; prose comes from generators.
-- Keeping knowledge in three explicit layers (skills, agent memory, project `LESSONS`) instead of a framework vector store nothing wrote to.
-- Making human review, failure diagnosis, and one-click executable reproducibility first-class citizens.
-- Preserving full local-first operation and deep customizability.
-
-Researchers clone the global framework once and bootstrap any number of projects, obtaining consistent quality enforcement, multi-format delivery, and strong reproducibility guarantees across all work.
-
----
-
-## 12. Changelog
-
-### v4.1 — 2026-10-20
-
-**Removed the memory layer.** `framework/memory` (JSON + ChromaDB backends, six
-tests) was built, exercised, and deleted: no project ever wrote to it. Knowledge now
-has three explicit homes — agent skills for procedure, agent memory for facts, and
-each project's `LESSONS` file for history. The removal is recorded in
-`docs/CHAIN_AUDIT.md`, with the host's `chromadb` + `sentence-transformers` segfault
-as supporting evidence in `docs/KNOWN_ISSUES.md` §1.
-
-**Added the decision operator.** `framework/decision.py` is a stdlib-only client for
-the shared **StartLux-Decision-4B-Q8_0** service (`POST /v1/systemone`), returning
-typed `choice` / `noul` / `score` answers with calibrated probabilities and a
-`none_probability`. `framework/inference` registers the model and routes decision
-stages to it; generative stages keep their generators.
-
-**Evidence and limits, stated once.** The Decision Index 68.21 and DecisionPivot
-59.9 are the model authors' published figures. The operator was deployed on
-2026-10-20 (GGUF Q8_0 behind llama.cpp, `startlux-decide` on :8090) and probed with
-known-answer questions: p(17 prime)=0.963, p(15 prime)=0.0076, and 0.9 chosen over
-0.11 at p=0.995. **Measured wall clock: 182 ms median for 2 questions (n=3), 253 ms
-for 3 questions (n=5)** — the published ~26 ms is the engine's read-out, not the
-HTTP round trip, and a framework must quote the number its callers experience. Three
-upstream deployment defects were found and are recorded in
-`docs/CHAIN_AUDIT.md`; the working commands are in
-`decision-service/docs/DEPLOYMENT_VERIFIED.md`. The weights remain **CC BY-NC 4.0
-(non-commercial)**.
-
-**Calibration, measured here (n=100).** Fifty items answerable from a short state and
-fifty asking about a dimension the state never mentions, offered as a three-way choice
-(`yes`/`no`/`not_stated`): accuracy 50/50, abstention 0/50 vs 50/50, Fisher exact
-p = 2e-29. `none_probability` was returned on every choice answer and **never
-exceeded 0.033**, including on the items the operator declined. So the 0.2 threshold
-is inert in practice: abstention is produced by *offering* a "not stated" option, not
-by that field, and a bare yes/no question is answered rather than declined (p(yes)
-0.21–0.64 on unanswerable items). The confidence floor is **not identified** by this
-data — nothing was answered wrongly, so precision stayed 1.000 at every floor from 0.50
-to 0.99; the lowest confidence on a correct answer was 0.540. Gates must therefore rest
-on an explicit option set and on a floor no higher than that bound until items the
-operator sometimes gets wrong exist; `none_probability >= 0.2` must not be written as a
-success criterion.
-
----
-
-**Global Optimized Framework Template — Ready for Instantiation**  
-**All components are open-source and designed for local, offline operation.**  
-**BootLoops:** https://github.com/BootLoops-ai/bootloops  
-**Complementary gates:** Inspect, DeepEval, Promptfoo, Ragas  
-**Decision operator:** StartLux-Decision (weights CC BY-NC 4.0, non-commercial)
+相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。

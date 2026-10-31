@@ -1,0 +1,29 @@
+scope_axes: [model, arithmetic, data, design, non_goals]
+scope:
+  model: [two-affine-layer ReLU MLP, width 128]
+  arithmetic: [float32 Torch CUDA training; float64 recorded KL]
+  data: [modular addition mod 53; seeds 0, 1, 2; 50 percent training split]
+  design: [prospective local protocol; corrected mechanistic rerun after recorded batch-shape confound]
+  non_goals: [external preregistration, paper-wide reproduction, generalisation benefit, statistical significance]
+claims:
+  - id: T1
+    text: The fixed students preserve the teacher parameters in this recorded experiment.
+    span: The fixed students preserve the teacher parameters in this recorded experiment.
+    strength: tentative
+    design: observational
+    evidence:
+      file: docs/gate_evidence.json
+      pointer: /fixed_stationarity
+      value: true
+    assumptions:
+      - The software runtime and local execution records are trusted; this is not remote execution attestation.
+      - The claim register summarizes completed results; the prospective local protocol is a separate file.
+    formal: false
+power:
+  not_applicable: descriptive numerical stationarity comparison; all three seeds reported, no population inference
+multiplicity:
+  not_applicable: one bounded descriptive claim, no significance tests
+journal_fit:
+  file: docs/REFEREE_SIM.md
+  objections: 3
+  unresolved: 0

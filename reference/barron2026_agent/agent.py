@@ -18,6 +18,8 @@ import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
+import numpy as np
+
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[1]
 SERVER = REPO / "reference" / "reproduction" / "barron2026" / "mcp" / "server.py"
@@ -48,35 +50,67 @@ async def _call_server() -> dict:
                                             "args": [str(SERVER)], "cwd": str(SERVER.parent)}}}
     async with Client(config) as client:
         inventory = sorted(tool.name for tool in await client.list_tools())
-
-        log_softmax = (await client.call_tool("log_softmax", {"z": PAPER_INPUT})).data
-        softmax = (await client.call_tool("softmax", {"z": PAPER_INPUT})).data
-        hard = (await client.call_tool("hard_cross_entropy",
-                                       {"z": PAPER_INPUT, "target": 0})).data
-        soft = (await client.call_tool("soft_target_cross_entropy",
-                                       {"student": [1.0, 0.0], "teacher": [0.5, 0.5]})).data
-        # Negative control: a teacher that does not sum to one must break the zero-sum gradient.
-        control = (await client.call_tool("soft_target_cross_entropy",
-                                          {"student": [1.0, 0.0], "teacher": [0.5, 0.6]})).data
-
-    return {"inventory": inventory, "log_softmax": log_softmax, "softmax": softmax,
-            "hard": hard, "soft": soft, "control": control}
+        teacher = np.array([2, 1, 0], dtype=np.float32)
+        student = teacher + np.array([-1e-7, 1e-7, 0], dtype=np.float32)
+        run = {"inventory": inventory, "calls": [],
+               "soft_inputs": {"student": student.tolist(), "teacher": teacher.tolist()}}
+        cases = [
+            ("log_softmax", "log_softmax", {"z": PAPER_INPUT, "dtype": "float64"}),
+            ("softmax", "softmax", {"z": PAPER_INPUT, "dtype": "float64"}),
+            ("hard", "hard_cross_entropy", {"z": PAPER_INPUT, "target": 0, "dtype": "float64"}),
+            ("control", "hard_cross_entropy", {"z": [40, 0, 0], "target": 0, "dtype": "float64"}),
+            ("soft_equal", "soft_target_cross_entropy", {"student": teacher.tolist(),
+                "teacher": teacher.tolist(), "teacher_kind": "logits", "dtype": "float32"}),
+            ("soft_near", "soft_target_cross_entropy", {"student": student.tolist(),
+                "teacher": teacher.tolist(), "teacher_kind": "logits", "dtype": "float32"}),
+        ]
+        for name, tool, arguments in cases:
+            result = (await client.call_tool(tool, arguments)).data
+            run[name] = result
+            run["calls"].append({"case": name, "tool": tool, "arguments": arguments, "result": result})
+    return run
 
 
 def build_evidence(run: dict) -> dict:
+    sys.path.insert(0, str(REPO))
+    from framework.verifiers.numerics import probe_logit_distillation
+
     spec = _spec("log_softmax")
     matches_spec = _agrees(float(run["log_softmax"]["first"]), spec)
-    control_sum = float(run["control"]["grad_sum"])
-    # The control is arithmetic, not a threshold: an unnormalised teacher leaves exactly
-    # 1 - sum(teacher) in the gradient sum.
-    expected_control = 1.0 - (0.5 + 0.6)
-    control_fired = (abs(control_sum - expected_control) <= 1e-12
-                     and not run["control"]["grad_sum_is_zero"])
+    control = run["control"]
+    gradient = np.asarray(control["grad"], dtype=np.float64)
+    scale = float(np.abs(gradient).sum())
+    residual = abs(float(gradient.sum())) / scale if scale else float("inf")
+    control_fired = bool(np.isfinite(gradient).all() and gradient[0] < 0
+                         and control["standard_grad"][0] == 0
+                         and not control["standard_grad_sum_is_zero"]
+                         and residual <= 8 * np.finfo(np.float64).eps)
+    teacher = np.asarray(run["soft_inputs"]["teacher"], dtype=np.float32)
+    student = np.asarray(run["soft_inputs"]["student"], dtype=np.float32)
+    qualification = {"design": "posthoc regression qualification",
+                     "inputs": {"student": student.tolist(), "teacher": teacher.tolist(),
+                                "represented_perturbation": (student - teacher).tolist()}}
+    for name, values in (("soft_equal", teacher), ("soft_near", student)):
+        response = run[name]
+        def candidate(s, t):
+            return response["loss"], np.asarray(response["grad"], dtype=np.float32)
+        result = probe_logit_distillation(candidate, values, teacher)
+        result["contract_matches"] = (response.get("teacher_kind") == "logits"
+                                       and response.get("dtype") == "float32"
+                                       and response.get("cancellation_fix") is True)
+        if not result["contract_matches"]:
+            result["verdict"] = "FAIL"
+        qualification[name] = result
+    qualification["verdict"] = ("PASS" if all(qualification[name]["verdict"] == "PASS"
+                                             for name in ("soft_equal", "soft_near")) else "FAIL")
 
     return {
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "recorded_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "paper": "barron2026-softmax-fix",
+        "provenance": {"paper_version": "arxiv:2610.31642v3", "backend": f"numpy {np.__version__}",
+                       "python": sys.version.split()[0],
+                       "scope": "bounded NumPy float64 hard-target and float32 logits-distillation regression; no training reproduction"},
         "server": {"path": str(SERVER.relative_to(REPO)).replace("\\", "/"),
                    "inventory": run["inventory"]},
         "claims": {
@@ -87,9 +121,11 @@ def build_evidence(run: dict) -> dict:
                    "grad_sum": float(run["hard"]["grad_sum"]),
                    "gradient": [float(v) for v in run["hard"]["grad"]]},
         },
-        "control": {"unnormalised_teacher_grad_sum": control_sum,
-                    "expected": expected_control,
-                    "fired": bool(control_fired)},
+        "control": {"input": [40, 0, 0], "dtype": "float64", "target": 0,
+                    "standard_target": float(control["standard_grad"][0]),
+                    "fixed_target": float(gradient[0]), "zero_sum_relative_residual": residual,
+                    "design": "posthoc regression qualification", "fired": control_fired},
+        "qualification": qualification,
         "softmax": {"sum": float(run["softmax"]["sum"]),
                     "is_normalised": bool(run["softmax"]["is_normalised"])},
         "power": {"not_applicable": "deterministic float64 arithmetic, not an estimate"},
@@ -108,11 +144,7 @@ def main() -> int:
                                                  encoding="utf-8")
     (HERE / "docs" / "agent_trace.json").write_text(
         json.dumps({"recorded_at": evidence["recorded_at"],
-                    "calls": [{"tool": "log_softmax", "result": run["log_softmax"]},
-                              {"tool": "softmax", "result": run["softmax"]},
-                              {"tool": "hard_cross_entropy", "result": run["hard"]},
-                              {"tool": "soft_target_cross_entropy", "result": run["soft"]},
-                              {"tool": "soft_target_cross_entropy (control)", "result": run["control"]}]},
+                    "provenance": evidence["provenance"], "calls": run["calls"]},
                    indent=2) + "\n", encoding="utf-8")
 
     problems = []
@@ -124,6 +156,8 @@ def main() -> int:
         problems.append("C2: the gradient does not sum to zero")
     if not evidence["control"]["fired"]:
         problems.append("control did not fire: the zero-sum check accepts a broken gradient")
+    if evidence["qualification"]["verdict"] != "PASS":
+        problems.append("v3 soft-target independent qualification failed")
 
     sys.path.insert(0, str(REPO))
     from framework.validity import ScientificValidityGate
@@ -136,11 +170,12 @@ def main() -> int:
                       "C1": evidence["claims"]["C1"],
                       "C2": evidence["claims"]["C2"]["grad_sum"],
                       "control": evidence["control"],
+                      "v3_qualification": evidence["qualification"]["verdict"],
                       "gate_s": result.status}, indent=2))
     if problems:
         print("FAIL " + "; ".join(problems))
         return 1
-    print("PASS barron2026 agent: server answered, paper value reproduced, control fired, Gate S PASS")
+    print("PASS barron2026 agent: server answered, paper value reproduced, v3 regressions qualified, Gate S PASS")
     return 0
 
 

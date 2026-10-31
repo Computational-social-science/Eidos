@@ -14,6 +14,7 @@ this exits 0, and not before.
 from __future__ import annotations
 
 import argparse
+import os
 import pathlib
 import re
 import subprocess
@@ -23,15 +24,22 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 PY = sys.executable
 
 
+def _print(message: str) -> None:
+    """Keep diagnostics printable even when the calling terminal uses GBK."""
+    encoding = getattr(sys.stdout, "encoding", None) or "utf-8"
+    print(message.encode(encoding, errors="backslashreplace").decode(encoding))
+
+
 def run(cmd: list[str], label: str) -> tuple[bool, str]:
+    env = dict(os.environ, PYTHONIOENCODING="utf-8:replace")
     proc = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True,
-                          encoding="utf-8", errors="replace")
+                          encoding="utf-8", errors="replace", env=env)
     out = (proc.stdout or "") + (proc.stderr or "")
     ok = proc.returncode == 0
-    print(f"  {'PASS' if ok else 'FAIL'}  {label}")
+    _print(f"  {'PASS' if ok else 'FAIL'}  {label}")
     if not ok:
         for line in out.strip().splitlines()[:8]:
-            print(f"         {line}")
+            _print(f"         {line}")
     return ok, out
 
 
@@ -153,7 +161,7 @@ def main(argv: list[str] | None = None) -> int:
 
     for attempt in range(1, max(args.loop, 1) + 1):
         if args.loop > 1:
-            print(f"attempt {attempt}/{args.loop}")
+            _print(f"attempt {attempt}/{args.loop}")
         checks: list[bool] = []
 
         if not args.no_build:
@@ -185,24 +193,24 @@ def main(argv: list[str] | None = None) -> int:
             # green when three of the checks simply never happened.
             for skipped in ("monitor layout", "document layout", "WCAG AA",
                             "both pages execute"):
-                print(f"  SKIP  {skipped} (no browser in this runner)")
+                _print(f"  SKIP  {skipped} (no browser in this runner)")
 
         map_gaps = service_map_gaps()
-        print(f"  {'PASS' if not map_gaps else 'FAIL'}  service coverage (diagnosis = mapping = signal)")
+        _print(f"  {'PASS' if not map_gaps else 'FAIL'}  service coverage (diagnosis = mapping = signal)")
         for gap in map_gaps:
-            print(f"         {gap}")
+            _print(f"         {gap}")
         checks.append(not map_gaps)
 
         gaps = invariants()
-        print(f"  {'PASS' if not gaps else 'FAIL'}  content invariants")
+        _print(f"  {'PASS' if not gaps else 'FAIL'}  content invariants")
         for gap in gaps:
-            print(f"         {gap}")
+            _print(f"         {gap}")
         checks.append(not gaps)
 
         if all(checks):
-            print(f"\nsite gate: PASS ({len(checks)} checks)")
+            _print(f"\nsite gate: PASS ({len(checks)} checks)")
             return 0
-        print(f"\nsite gate: FAIL ({sum(1 for c in checks if not c)} of {len(checks)})")
+        _print(f"\nsite gate: FAIL ({sum(1 for c in checks if not c)} of {len(checks)})")
 
     return 1
 

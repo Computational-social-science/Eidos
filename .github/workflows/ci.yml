@@ -12,9 +12,15 @@ on:
   pull_request:
   workflow_dispatch:
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      UV_PYTHON: ${{ matrix.python-version }}
     strategy:
       fail-fast: false
       matrix:
@@ -27,14 +33,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: '0.12.17'
       - name: Install
         run: |
-          python -m pip install --upgrade pip
-          pip install -e ".[dev,tracking,verifiers]"
+          uv lock --check --python "$UV_PYTHON"
+          uv sync --locked --python "$UV_PYTHON" --extra dev --extra tracking --extra verifiers
       - name: Unit tests
         run: |
           set -o pipefail
-          pytest -q 2>&1 | tee /tmp/pytest.log || {
+          uv run --no-sync python -m pytest -q 2>&1 | tee /tmp/pytest.log || {
             # Annotations are readable without a token; a red X with no reason is not.
             grep -E "^(FAILED|ERROR)" /tmp/pytest.log | head -n 5 | while IFS= read -r line; do
               echo "::error title=pytest::$line"
@@ -55,6 +64,8 @@ jobs:
 
   audit:
     runs-on: ubuntu-latest
+    env:
+      UV_PYTHON: '3.12'
     needs: test
     steps:
       - uses: actions/checkout@v4
@@ -64,75 +75,83 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: '0.12.17'
       - name: Install
         run: |
-          python -m pip install --upgrade pip
-          pip install -e ".[dev,tracking,verifiers]"
+          uv lock --check --python "$UV_PYTHON"
+          uv sync --locked --python "$UV_PYTHON" --extra dev --extra tracking --extra verifiers
       - name: Exercise every chain
-        run: python tools/audit_chains.py --ci
+        run: uv run --no-sync python tools/audit_chains.py --ci
       - name: Self-audit record (no drift, no new objection)
-        run: python tools/record_self_audit.py --check
+        run: uv run --no-sync python tools/record_self_audit.py --check
       - name: Delivery page builds from artefacts
         run: |
-          python tools/build_site.py
-          pytest -q tests/test_site.py tests/test_demo.py
+          uv run --no-sync python tools/build_site.py
+          uv run --no-sync python -m pytest -q tests/test_site.py tests/test_demo.py
       - name: Monitor page is structurally complete
-        run: python tools/dashboard.py --check --no-age
+        run: uv run --no-sync python tools/dashboard.py --check --no-age
       - name: Numerical guard (softmax collapse and cancellation)
-        run: python tools/audit_numerics.py --projects
+        run: uv run --no-sync python tools/audit_numerics.py --projects
 
       - name: Stray-directory check
-        run: python tools/audit_stray.py
+        run: uv run --no-sync python tools/audit_stray.py
 
       - name: Fixture audit (each gate check must trip)
-        run: python tools/audit_fixtures.py
+        run: uv run --no-sync python tools/audit_fixtures.py
 
       - name: Mutation and chain audits
         run: |
-          python tools/fuzz_register.py
-          python tools/audit_chain_fixtures.py
+          uv run --no-sync python tools/fuzz_register.py
+          uv run --no-sync python tools/audit_chain_fixtures.py
 
       - name: Site gate (no browser here)
         # --no-build: the pages embed host facts (tool versions, the dependency table's date), so
         # rebuilding them on a runner produces a different file by construction. CI audits the
         # committed artefact; the local hook audits a rebuild.
-        run: python tools/audit_site.py --skip-browser --no-build
+        run: uv run --no-sync python tools/audit_site.py --skip-browser --no-build
       - name: Local neural operator (planted fixed point + control)
         run: |
-          python tools/audit_surrogate.py
-          python tools/audit_surrogate.py --negative-test
+          uv run --no-sync python tools/audit_surrogate.py
+          uv run --no-sync python tools/audit_surrogate.py --negative-test
       - name: Gate S (scientific validity) on the reference fixture
-        run: python tools/audit_validity.py --project tests/fixtures/valid_project
+        run: uv run --no-sync python tools/audit_validity.py --project tests/fixtures/valid_project
 
       - name: Dependency pins match this host
         run: |
-          python tools/update_operator.py sense --offline
-          python tools/update_operator.py status
+          uv run --no-sync python tools/update_operator.py sense --offline
+          uv run --no-sync python tools/update_operator.py status
       - name: Coupling gate (no import cycles)
-        run: python tools/audit_coupling.py
+        run: uv run --no-sync python tools/audit_coupling.py
       - name: External contracts (recorded, not gated)
-        run: python tools/contract_snapshot.py --check --allow-missing
+        run: uv run --no-sync python tools/contract_snapshot.py --check --allow-missing
 
   browser:
     # The page guards are browser guards. Without this job they exist only on the machine of
     # whoever runs them, and a layout regression reaches the monitor unchallenged.
     runs-on: ubuntu-latest
+    env:
+      UV_PYTHON: '3.12'
     needs: test
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: '0.12.17'
       - name: Install
         run: |
-          python -m pip install --upgrade pip
-          pip install -e ".[dev,browser]"
-          python -m playwright install --with-deps chromium
+          uv lock --check --python "$UV_PYTHON"
+          uv sync --locked --python "$UV_PYTHON" --extra dev --extra browser
+          uv run --no-sync python -m playwright install --with-deps chromium
       - name: Layout guards (paint order, clipping, hit-test)
-        run: pytest -q tests/test_layout_guards.py
+        run: uv run --no-sync python -m pytest -q tests/test_layout_guards.py
       - name: Page audits (layout, contrast, visual language, runtime)
         run: |
-          python tools/audit_site.py --no-build 2>&1 | tee /tmp/site.log || {
+          uv run --no-sync python tools/audit_site.py --no-build 2>&1 | tee /tmp/site.log || {
             # Annotations are readable without a token; the log is not.
             grep -E "^\[FAIL\]|FAIL " /tmp/site.log | head -n 6 | while IFS= read -r line; do
               echo "::error title=page audit::$line"
@@ -145,23 +164,27 @@ jobs:
     # The MCP report is evidence only if CI can regenerate it. This job starts the converted
     # server over stdio, runs Paper2Agent's own verifier, then drives the agent end to end.
     runs-on: ubuntu-latest
+    env:
+      UV_PYTHON: '3.12'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: '0.12.17'
       - name: Install
         run: |
-          python -m pip install --upgrade pip
-          pip install -e ".[dev]"
-          pip install "fastmcp==4.0.3"
+          uv lock --check --python "$UV_PYTHON"
+          uv sync --locked --python "$UV_PYTHON" --extra dev --extra agent
       - name: Paper2Agent verifier (vendored, unmodified)
         run: >
-          python reference/reproduction/barron2026/mcp/vendor/verify_mcp_server.py
+          uv run --no-sync python reference/reproduction/barron2026/mcp/vendor/verify_mcp_server.py
           --server reference/reproduction/barron2026/mcp/server.py
           --expected reference/reproduction/barron2026/mcp/expected.json
           --cases reference/reproduction/barron2026/mcp/cases.json
           --require-all-tools --report "$RUNNER_TEMP/verify.json"
           --cwd reference/reproduction/barron2026/mcp
       - name: Agent end to end, judged by Gate S
-        run: python reference/barron2026_agent/agent.py
+        run: uv run --no-sync python reference/barron2026_agent/agent.py

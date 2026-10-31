@@ -1,0 +1,63 @@
+{
+  "study_id": "softmax-grokking-extension-v1",
+  "registered_at": "2026-10-31T11:08:38+00:00",
+  "registration": "prospective local exploratory follow-up, explicitly informed by low held-out accuracy in the 10000-epoch reconstruction",
+  "paper": "https://arxiv.org/html/2610.31642v3",
+  "scope": "exploratory 50000-epoch extension; not the paper 10000-epoch protocol",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "modulus": 31,
+  "train_fraction": 0.5,
+  "width": 64,
+  "heads": 4,
+  "layers": 1,
+  "activation": "ReLU",
+  "layer_norm": false,
+  "epochs": 50000,
+  "log_interval": 1000,
+  "optimizer": "AdamW",
+  "lr": 0.001,
+  "betas": [
+    0.9,
+    0.98
+  ],
+  "epsilon": 1e-08,
+  "weight_decay": 1.0,
+  "dtype": "float32",
+  "device": "cuda",
+  "implementation_choices_not_specified_by_paper": {
+    "input": "two tokens [a,b], shared token embedding, learned two-position embedding, read last position",
+    "attention": "causal, manual scaled dot product, biases enabled, no dropout",
+    "feedforward_multiplier": 4,
+    "initialization": "PyTorch defaults for embedding/linear; position normal std 0.02",
+    "decay": "all parameters, including biases and embeddings"
+  },
+  "pairing": "standard and fixed arms copy identical initial weights and use the same split",
+  "teacher_minimum_test_accuracy": 0.95,
+  "teacher_selection": "final fixed-arm checkpoint for each seed, no selection of an earlier or best checkpoint",
+  "distillation": {
+    "steps": 2000,
+    "log_interval": 100,
+    "temperature": 4.0,
+    "lr": 0.002,
+    "betas": [
+      0.9,
+      0.98
+    ],
+    "epsilon": 1e-08,
+    "weight_decay": 0.0
+  },
+  "primary_endpoints": [
+    "all-seed final held-out accuracy",
+    "training logit margin",
+    "zero target-gradient fraction"
+  ],
+  "acceptance": "complete planned arms, epochs and checkpoints; verify source/config/splits/model tensors and recompute final predictions independently; desired superiority is not a completion criterion",
+  "downstream_rule": "if final teacher accuracy is below 0.95, explicitly SKIP its distillation; never substitute a seed or cherry-pick a checkpoint",
+  "analysis": "all seeds and arms, parent outcomes retained, no superiority requirement and no significance claim",
+  "parent": "reference/softmax_grokking/docs/evidence.json",
+  "continuation": "replay original training from seed; require exact parent model hash at epoch10000, then continue with the same optimizer state; no optimizer reset"
+}

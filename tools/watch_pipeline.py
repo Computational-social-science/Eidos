@@ -207,39 +207,40 @@ def measure() -> dict:
                                     "unit": "chains", "source": "docs/traces/latest.json",
                                     "note": "no trace recorded"}
 
-    # Consumers are the outward face: a project whose evidence has not been rebuilt in a day is
-    # a claim nobody has checked today. Read each consumer's own artefact — the cached copy in
-    # pipeline.json only moves when the page is rebuilt, which is exactly the drift to avoid.
-    stamps = []
+    # Every applicable consumer contributes. A fresh project must not hide an old one.
+    ages = []
+    unexpected = []
     try:
         sys.path.insert(0, str(ROOT))
-        from framework.project import load_projects
+        from framework.project import load_projects, consumer_freshness, aggregate_consumer_freshness
+        pipeline = json.loads((ROOT / "docs/pipeline.json").read_text(encoding="utf-8"))
+        checked = {r["name"]: r for r in pipeline.get("consumers", [])}
         for spec in load_projects().values():
-            evidence = spec.root / "docs" / "evidence.json"
-            if not evidence.is_file():
+            expected = str(spec.expected_gate_s or "").upper()
+            if expected not in ("PASS", "FAIL"):
                 continue
-            try:
-                stamp = json.loads(evidence.read_text(encoding="utf-8")).get("generated")
-                if stamp:
-                    stamps.append((spec.name, float(datetime.datetime.fromisoformat(
-                        str(stamp).replace("Z", "+00:00")).timestamp())))
-            except (json.JSONDecodeError, ValueError):
-                continue
-    except Exception:  # noqa: BLE001 - a broken registry must not stop the sample
-        stamps = []
-    if stamps:
-        name, newest = max(stamps, key=lambda pair: pair[1])
-        age_h = (time.time() - newest) / 3600.0
-        stale = [n for n, ts in stamps if (time.time() - ts) / 3600.0 > 24]
+            row = checked.get(spec.name, {})
+            freshness = consumer_freshness(spec.root, expected, row.get("checked_at"))
+            ages.append((spec.name, freshness["age_h"]))
+            if row.get("gate_s") != expected:
+                unexpected.append(spec.name)
+        aggregate = aggregate_consumer_freshness(ages)
+    except Exception as exc:  # preserve sampling, but expose the unobservable registry
+        aggregate = {"age_h": None, "name": None, "stale": [], "unknown": [f"registry: {type(exc).__name__}"]}
+        unexpected = ["registry unavailable"]
+    if ages:
+        age_h = aggregate["age_h"]
         signals["consumers"] = {
-            "value": round(age_h, 1), "reference": 24.0, "direction": "max", "unit": "h",
-            "source": "projects/*/project.yaml -> docs/evidence.json",
-            "note": (f"newest: {name}" + (f"; stale: {', '.join(stale)}" if stale else "")
-                     + f" ({len(stamps)} with evidence)")}
+            "value": age_h, "reference": 24.0, "direction": "max", "unit": "h",
+            "source": "consumer evidence; immutable controls use actual verification time",
+            "note": f"oldest: {aggregate['name']}; stale: {aggregate['stale']}; unknown: {aggregate['unknown']}"}
     else:
         signals["consumers"] = {"value": None, "reference": 24.0, "direction": "max",
                                 "unit": "h", "source": "docs/evidence.json",
                                 "note": "no consumer has produced evidence"}
+    signals["consumer_verdicts"] = {"value": len(unexpected), "reference": 0, "direction": "max",
+        "unit": "projects", "source": "current Gate S verdict compared with each registered expectation",
+        "note": "unexpected: " + (", ".join(unexpected) or "none")}
 
     # The scheduler is a single point of silent failure: if the tick stops, every chain keeps
     # its last verdict and the board stays green. Age of the heartbeat is the signal.

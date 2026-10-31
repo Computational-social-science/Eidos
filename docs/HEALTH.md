@@ -7,13 +7,13 @@ and re-checked by `--check` in CI; none is typed by hand.
 
 | dimension | measurement | verdict |
 |---|---|---|
-| unit tests | **332 collected**, all passing | ✅ |
-| coverage of `framework/` | **72%**, no-regression by >1 point | ✅ |
+| unit tests | **527 collected**, 527 passed; 3 optional Torch modules skipped in project env (12 tests separately passed on CUDA Python) | ✅ |
+| coverage of `framework/` | **67%**, source-only scope including unexecuted modules; future no-regression by >1 point | measured |
 | chain audit | **11 chains: 10 PASS, 1 SKIP, 0 FAIL/ERROR** | ✅ |
 | Gate S on the reference fixture | PASS (valid register) and FAIL (mutated copy) | ✅ |
 | Gate S on Eidos itself | **PASS — 8 objections, 0 open** (consumers are sealed fixtures) | ✅ |
-| CI (GitHub Actions) | test job 3.11 + 3.12 green; audit job green | ✅ |
-| consumers | `demo_onboarding` and `demo_quantitative` (templates, must pass), `operator_calibration` (LLM, must pass), `null_study` and `prose_lie` (must be rejected), `barron2026_agent` (paper-to-agent, must pass) | 6 |
+| CI (GitHub Actions) | locked installs; local checks and remote CI are separate. See the [workflow runs](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml) for the commit being assessed | live result |
+| consumers | `demo_onboarding`, `demo_quantitative`, `operator_calibration`, `null_study`, `prose_lie`, `barron2026_agent`, plus measured `softmax_training` (saved weights and splits independently validated) | 7 |
 | render chain | html 19 KB, pdf 13 KB, docx 11 KB from one Quarto source (`docs/RENDER_CHECK.json`) | ✅ |
 | external contracts | Quarto 1.10.19 (`tools/quarto`, via `QUARTO_BIN`), DVC, MLflow, decision service, BootLoops | ✅ |
 | coupling | 0 import cycles, 0 absolute-path literals | ✅ |
@@ -40,6 +40,13 @@ with neither — which is what closed O8.
 
 ## What is measured, and what is only asserted
 
+2026-10-31: the former coverage command included tests and tools while this table called it
+framework coverage. It now uses `coverage run --source=framework`, including unexecuted
+framework modules. This changes the denominator; compare future records only within this scope.
+Scientific case scope and corrected failure paths: [quality review](QUALITY-2026-10-31.md).
+The Collapse/Cancellation case has 96 recorded cases, 12 qualification cases, two rejected
+negative controls, and the existing four-tool MCP/agent. Full paper training outcomes remain UNRUN.
+
 Measured: test count, coverage, chain verdicts, contract reachability, coupling, the Gate S
 fixture pair, and the local-operator recovery error.
 
@@ -52,8 +59,8 @@ layer is useful (no production consumer; the one exploration failed and is in
 
 1. **Single adopter.** Every claim about the framework's effect is a claim about
    keystroke-observatory.
-2. **Coverage is uneven.** `inference` (32%) and `project` (55%) are exercised mainly by
-   chains, not by unit tests.
+2. **Coverage is uneven.** `inference/__init__.py` (38%), `inference/gguf.py` (0%) and
+   `project.py` (56%) still leave substantial paths untested.
 3. **The Lean chain is verified on two projects** (lean-nhb, atlas-lean), not on a project
    this framework gates.
 4. **Quarto is installed outside the repository** (`E:/2026-AI4S/tools/quarto`), reached

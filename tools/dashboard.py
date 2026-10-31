@@ -713,49 +713,52 @@ def consumer_strip(pipeline: dict) -> str:
     if not rows:
         return ("<p class='mono' style='color:var(--mut)'>no consumer registered: the framework "
                 "is checking itself and serving no project</p>")
-    box_w, gap, height = 226, 12, 54
-    width = max(600, len(rows) * (box_w + gap) + 8)
-    parts = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
-             f"aria-label='consumers: what the framework does for a project'>"]
-    now = time.time()
-    for k, row in enumerate(rows):
+    parts = ['<div class="consumer-grid" aria-label="Consumers: what the framework does for a project">']
+    from framework.project import consumer_freshness
+    for row in rows:
         name = str(row.get("name") or "?")
         got, want = str(row.get("gate_s") or "—"), str(row.get("expected") or "—")
         as_expected = want != "—" and got == want
         st = "PASS" if as_expected else "FAIL"
-        # A verdict is about the moment it was measured. Past 24 h the box reads STALE and says how
-        # old the evidence is: the old colour claimed a currency nobody had re-established.
-        age_h = None
-        try:
-            from framework.project import evidence_age_hours
-            age_h = evidence_age_hours(row.get("root") or "")
-        except Exception:  # noqa: BLE001 - a missing helper must not break the board
-            age_h = None
-        if age_h is not None and age_h > 24.0:
+        freshness = consumer_freshness(row.get("root") or "", want, row.get("checked_at"))
+        age_h = freshness["age_h"]
+        if freshness["stale"]:
             st = "STALE"
         age = fmt_age(age_h * 3600.0) if age_h is not None else ""
-        x = 4 + k * (box_w + gap)
         stale_attr = ' data-stale="1"' if st == "STALE" else ""
         role = str(row.get("role") or "")
         tag = ("demo" if role.upper().startswith("DEMO")
                else "control" if "control" in role.lower()
                else "consumer" if "consumer" in role.lower() else "")
-        note = (f"{tag} · " if tag else "") + f"gate {got} / want {want}" +                (f" · {age}" if age else "") + (" · STALE" if st == "STALE" else "")
+        label = "Expected rejection" if want == "FAIL" and as_expected else "As expected" if as_expected else "Unexpected verdict"
+        note = f"Gate S {got} · expected {want}"
+        timing = f"{'Checked' if freshness['source'] == 'verification' else 'Evidence'} {age} ago" if age else "Freshness unavailable"
+        description = f"{name} · {label} · {note} · {timing}"
         parts.append(
-            f"<g class='node consumer' data-consumer='{html.escape(name)}'"
-            f"{stale_attr} tabindex='0' role='button'>"
-            f"<title>{html.escape(name)} · {html.escape(note)}</title>"
-            f"<rect x='{x}' y='3' width='{box_w}' height='38' rx='4' fill='#1b2027' stroke='#2a3038'/>"
-            f"<rect x='{x}' y='3' width='3' height='38' fill='{PALETTE[st]}'/>"
-            f"<text x='{x + 11}' y='17' font-size='10' fill='#e6e8eb'>"
-            f"{html.escape(name[:26])}</text>"
-            f"<text x='{x + 11}' y='31' font-size='10' fill='#98a2b3'>"
-            f"{html.escape(note[:46])}</text></g>")
-    parts.append("</svg>")
+            f'<button type="button" class="node consumer consumer-card" data-consumer="{html.escape(name, quote=True)}"'
+            f' data-description="{html.escape(description, quote=True)}"{stale_attr}'
+            f' style="--consumer-state:{PALETTE[st]}" aria-label="{html.escape(description, quote=True)}">'
+            f'<span class="consumer-head"><strong>{html.escape(name)}</strong><span class="consumer-state">{st}</span></span>'
+            f'<span class="consumer-verdict">{html.escape(label)} · {html.escape(note)}</span>'
+            f'<span class="consumer-meta">{html.escape(tag)} · {html.escape(timing)}</span></button>')
+    parts.append("</div>")
     return "".join(parts)
 
 
 CSS = """
+.consumer-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.consumer-card{display:flex;flex-direction:column;align-items:stretch;gap:6px;text-align:left;min-width:0;min-height:96px;
+  padding:12px 14px;background:#1b2027;border:1px solid #2a3038;border-left:3px solid var(--consumer-state);border-radius:4px;
+  font:inherit;color:#e6e8eb;cursor:pointer}
+.consumer-card:hover{border-color:#495365;border-left-color:var(--consumer-state)}
+.consumer-card:focus-visible{outline:2px solid #5b8def;outline-offset:3px}
+.consumer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.consumer-head strong{font-size:12.5px;font-weight:600;overflow-wrap:anywhere}
+.consumer-state{font-size:11px;color:var(--consumer-state);letter-spacing:.04em;white-space:nowrap}
+.consumer-verdict,.consumer-meta{font-size:12px;line-height:1.5;overflow-wrap:anywhere;color:#b7c0ce}
+.consumer-meta{color:#98a2b3}
+@media(max-width:1000px){.consumer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.consumer-grid{grid-template-columns:1fr}}
 :root{--bg:#0e1013;--panel:#15181d;--line:#232830;--fg:#e6e8eb;--mut:#98a2b3;--dim:#7d8899;
   --accent:#5b8def;--ok:#57ab5a;--warn:#d29922;--bad:#e5534b}
 *{box-sizing:border-box}
@@ -850,6 +853,8 @@ JS = """
 const PALETTE = __PALETTE__;
 const POLL_MS = 10000;
 const popEl = () => document.getElementById('pop');
+const safeHTML = value => String(value ?? '').replace(/[&<>"']/g, c =>
+  ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function openPop(html, ev) {
   const box = popEl(); if (!box) return;
@@ -889,18 +894,32 @@ document.querySelectorAll('g.node.chain').forEach(g => {
   g.addEventListener('blur', () => focusChain(null));
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') dismiss(); });
+function updateConsumers(markup) {
+  const host = document.getElementById('consumer-cards');
+  if (!host || !markup || host.dataset.sig === markup) return;
+  const focused = document.activeElement?.dataset.consumer;
+  const template = document.createElement('template');
+  template.innerHTML = markup; // server-rendered, escaped consumer markup
+  host.replaceChildren(template.content);
+  host.dataset.sig = markup;
+  if (focused) Array.from(host.querySelectorAll('[data-consumer]'))
+    .find(n => n.dataset.consumer === focused)?.focus();
+}
 document.addEventListener('click', e => {
   const refresh = e.target.closest('[data-refresh]');
   if (refresh) {
     const name = refresh.dataset.refresh;
-    openPop('<div class="t">refreshing ' + name + '…</div><div class="d">the gate command runs; ' +
+    openPop('<div class="t">refreshing ' + safeHTML(name) + '…</div><div class="d">the gate command runs; ' +
             'evidence age is read afterwards</div>', e);
-    fetch('/api/refresh/' + name, {method: 'POST'})
+    fetch('/api/refresh/' + encodeURIComponent(name), {method: 'POST'})
       .then(r => r.json())
-      .then(j => openPop('<div class="t">' + (j.ok ? 'refreshed' : 'failed') + '</div>' +
-        '<div class="d">' + (j.error || ('status ' + j.status + ' · ' + j.seconds + ' s · evidence ' +
-        (j.evidence_age_h === null ? 'absent' : j.evidence_age_h + ' h old'))) + '</div>', e))
-      .catch(err => openPop('<div class="t">failed</div><div class="d">' + err + '</div>', e));
+      .then(j => {
+        updateConsumers(j.consumers_html);
+        openPop('<div class="t">' + (j.ok ? 'refreshed' : 'failed') + '</div>' +
+        '<div class="d">' + safeHTML(j.error || ('status ' + j.status + ' · ' + j.seconds + ' s · evidence ' +
+        (j.evidence_age_h === null ? 'absent' : j.evidence_age_h + ' h old'))) + '</div>', e);
+      })
+      .catch(err => openPop('<div class="t">failed</div><div class="d">' + safeHTML(err) + '</div>', e));
     return;
   }
   const btn = e.target.closest('[data-restart]');
@@ -916,7 +935,7 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('click', e => {
   if (!e.target.closest('#pop')) dismiss();
-  const node = e.target.closest('g.node');
+  const node = e.target.closest('.node');
   if (!node) return;
   // Only addressable nodes answer a click: a chain, a module, a service. The operator strip and
   // the instrument column are also g.node groups, and defaulting them to 'service' produced the
@@ -928,11 +947,11 @@ document.addEventListener('click', e => {
   const name = node.dataset.chain || node.dataset.module || node.dataset.service
              || node.dataset.consumer || node.dataset.operator;
   const t = node.querySelector('title');
-  let html = '<div class="t">' + name + '</div><div class="d">' + kind + ' · ' +
-             (t ? t.textContent : name) + '</div>';
+  let html = '<div class="t">' + safeHTML(name) + '</div><div class="d">' + kind + ' · ' +
+             safeHTML(node.dataset.description || (t ? t.textContent : name)) + '</div>';
   if (kind === 'consumer') {
     html += '<div class="m">refresh: re-run this project&#39;s gate command and time the new evidence</div>';
-    html += '<div class="m"><button class="act" data-refresh="' + name + '">refresh evidence</button>' +
+    html += '<div class="m"><button class="act" data-refresh="' + safeHTML(name) + '">refresh / verify</button>' +
             (node.dataset.stale ? ' <span class="d">stale</span>' : '') + '</div>';
   }
   if (kind === 'service') {
@@ -974,6 +993,7 @@ async function poll() {
         fl.style.display = '';
       } else { fl.textContent = ''; fl.style.display = 'none'; }
     }
+    updateConsumers(d.consumers_html);
     const chains = d.chains || {};
     document.querySelectorAll('g.node.chain').forEach(g => {
       const st = chains[g.dataset.chain] || 'IDLE';
@@ -1119,7 +1139,7 @@ def build() -> str:
     <div class="opwrap"><h3>Consumers — what the framework does for a project
       <span class="hint">green = verdict equals expectation, not “the project passed”
       · capability coverage {cov}</span></h3>
-    {consumers}</div>
+    <div id="consumer-cards">{consumers}</div></div>
     <div class="opwrap"><h3>Operators — self-check, then self-heal</h3>{operator}</div>
     <div class="opwrap"><h3>Feedback → evolution — how a defect becomes a guard</h3>{evoloop}</div>
     {fault_line}

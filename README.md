@@ -1,11 +1,21 @@
 # Eidos — Global Reusable Research Pipeline Framework
 
-**Gate S self-audit: PASS** — 8 objections, 0 open. Five project consumers: three that must pass (`operator_calibration`, `demo_onboarding`, `demo_quantitative`) and two controls that must be rejected (`null_study`, `prose_lie`), plus four chain fixtures. Record: `docs/SELF_AUDIT.json`.
+**Gate S self-audit: PASS** — 8 objections, 0 open. Six fixture consumers: four that must pass (`operator_calibration`, `demo_onboarding`, `demo_quantitative`, `barron2026_agent`) and two controls that must be rejected (`null_study`, `prose_lie`), plus four chain fixtures. Record: `docs/SELF_AUDIT.json`; scope: `docs/HEALTH.md`.
 
 [![ci](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml/badge.svg)](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
 [![Gate S](https://img.shields.io/badge/Gate%20S-self--audit-PASS-2f7d32)](docs/SELF_AUDIT.json)
 
-**Version 4.2.0** — local-first · model-agnostic · project-agnostic
+**Version 4.3.32** — local-first · model-agnostic · project-agnostic
+
+The current scientific showcase is [Softmax Collapse and Softmax Cancellation](site/index.html#demo),
+reusing the existing Paper2Agent conversion with independent Decimal gradient checks,
+96 measured cases, deliberately broken controls, and a [reproduction bundle](site/reports/numerics/reproduce.zip).
+Read the [scientific report](site/reports/numerics/report.html) and
+[quality review](docs/QUALITY-2026-10-31.md) for the measured scope and remaining gaps.
+The dark, responsive figures link mode/precision/input and seed/endpoint/step selections to
+filed evidence. Separate editable SVG/PDF print masters retain publication dimensions.
+[Transformer follow-up](docs/SOFTMAX-TRAINING-FOLLOWUP.md) archives the three-seed reconstruction
+and explicitly exploratory extension, including unfavorable outcomes and checkpoint-bound validation.
 
 Quarto + BootLoops + complementary quality gates, including dependency governance
 
@@ -74,7 +84,7 @@ Eidos is the **global skeleton** every research project inherits. It provides:
 | **Verifiers (P0–P1)** | `proofpath` decides whether a cited work exists and whether it was retracted; `academic-research-kernel` recomputes p, d, power and CI. Both are model-free, both refuse a claim, and both write an artefact a gate can point at — `docs/VERIFIERS.md` |
 | **Reproduction** | A Paper2Agent delivery is accepted only under contract (paper skill + MCP component), and a cited method needs a run: `tools/reproduction_check.py` executes a spec and compares the number with the paper's, Gate S **S12** blocks a claim without `MATCH` — `docs/PAPER2AGENT.md` |
 | **Model verdicts** | No model gates anything. S4 design judgement measured **0.867** with structured input (bar 0.90), S7 support judgement **0.850** held out — both negative, both with named failure families, both kept out of the gate — `docs/MODEL_VERDICTS.md` |
-| **Dependencies** | `pyproject.toml` declares, `uv.lock` pins 294 packages, `update_operator.py` moves a pin only on a passing try. No `requirements.txt` — a third copy drifts |
+| **Dependencies** | `pyproject.toml` declares, `uv.lock` pins the resolved packages, `update_operator.py` moves a pin only on a passing try. No `requirements.txt` — a third copy drifts |
 
 A new project inherits all of it with one command; only its overrides live in
 `projects/<name>/configs/project.yaml`.
@@ -110,26 +120,26 @@ list, generate it — `uv export --no-hashes > requirements.txt` — and never e
 ## Quick start
 
 ```bash
-# 1. Create a project (inherits every gate, the Quarto pipeline and diagnosis)
-make bootstrap PROJECT=my_project      # or: ./bootstrap_project.sh my_project
+# 1. Create and register a consumer from the working onboarding fixture
+python tools/bootstrap_project.py --name my_study --dest ../my_study
 
-# 2. Edit the only file that is project-specific
-$EDITOR projects/my_project/configs/project.yaml
+# 2. Exercise the supplied fixture before replacing it with your research
+python ../my_study/build_evidence.py
+python -m framework.project check my_study
+python tools/audit_validity.py --project my_study
 
-# 3. Run the pipeline stages
-python projects/my_project/scripts/run_experiment.py
-python projects/my_project/scripts/run_evaluation.py     # dual gates
-python projects/my_project/scripts/build_manuscript.py   # Quarto, all formats
-python projects/my_project/scripts/build_package.py      # Docker/Binder
-
-# 4. Render
-make render PROJECT=my_project
+# 3. Rebuild the published numerical case and its three report formats
+python tools/numerics_case.py --render
+python tools/audit_numerics.py --projects
 ```
 
 `make` is not installed on every host; `mingw32-make` works, and every target is a
 thin wrapper over a documented `python -m ...` command. On a host where bare
 `python` is not the interpreter that has the dependencies, pass it explicitly:
-`make test PY=C:/Python314/python.exe`.
+`make test PY=/path/to/project/python`. On this Windows host, use the interpreter
+and environment configuration in [AGENTS.md](AGENTS.md). The shell compatibility
+entry is `bash bootstrap_project.sh name`; it delegates to the same Python scaffold
+and refuses overwrites. A passing onboarding fixture is not evidence for a new hypothesis.
 
 ### Registering an existing repository
 
@@ -279,10 +289,10 @@ lockfile, and the executable environment (Docker/Binder).
   `PASS 15  FAIL 0  UNVERIFIED 0`, `GATE: OPEN`; its render command produced
   HTML/DOCX/Typst PDF in 37.6 s. The repository was **not** moved — see
   `docs/PROJECT_INTEGRATION.md`.
-- **Bootstrap smoke-tested:** `./bootstrap_project.sh test_project` produced a
-  complete project (config, Quarto manuscript, bibliography, four scripts); the
-  test project was then removed. `projects/` therefore contains only the
-  `keystroke_observatory` registration (a pointer, not a copy).
+- **Bootstrap verified:** `bash bootstrap_project.sh name` delegates to the safe
+  Python onboarding entry. Isolated shell tests exercise creation, registration,
+  interpreter selection, unsafe names, unknown projects and overwrite refusal.
+  It no longer generates unfinished experiment scripts that return success.
 - **Installed extras on this host (verified by import):** `mlflow-skinny 3.17.1`,
   `dvc 3.67.1`, `inspect-ai 0.3.282`. `deepeval` and `ragas` are **not**
   installed; their gates report a missing-tool failure until a project installs

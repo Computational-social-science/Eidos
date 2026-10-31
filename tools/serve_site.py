@@ -22,7 +22,9 @@ returns the last good sample with `stale: true` rather than pretending.
 from __future__ import annotations
 
 import argparse
+import datetime
 import importlib
+import importlib.util
 import json
 import os
 import socket
@@ -40,8 +42,15 @@ sys.path.insert(0, str(ROOT / "tools"))
 import watch_pipeline  # noqa: E402
 
 STATE: dict = {"payload": None, "sampled": 0.0, "error": None, "strip": "", "strip_sig": None,
+               "consumers_html": "",
                "written": 0.0, "page_sig": None, "interval": 15.0}
 PAGES = {"/": "dashboard.html", "/dashboard.html": "dashboard.html", "/index.html": "index.html"}
+
+
+def current_consumer_html() -> str:
+    import dashboard
+    pipeline = json.loads((ROOT / "docs/pipeline.json").read_text(encoding="utf-8"))
+    return dashboard.consumer_strip(pipeline)
 
 
 
@@ -111,23 +120,29 @@ def _reload_if_changed(module, path) -> object:
 
     So the reload is transactional: keep the module we had unless the new one is complete.
     """
-    stamp = path.stat().st_mtime if path.exists() else 0
+    stamp = path.stat().st_mtime_ns if path.exists() else 0
     key = f"_mtime_{module.__name__}"
     if STATE.get(key) == stamp or not stamp:
-        return module
-    STATE[key] = stamp
+        return sys.modules.get(module.__name__, module)
     try:
         importlib.invalidate_caches()
-        reloaded = importlib.reload(module)
+        spec = importlib.util.spec_from_file_location(module.__name__, path)
+        if spec is None or spec.loader is None:
+            raise ImportError(f"no loader for {path}")
+        reloaded = importlib.util.module_from_spec(spec)
+        # Compile the source, rather than a possibly same-second, same-size cached .pyc.
+        exec(compile(path.read_bytes(), str(path), "exec"), reloaded.__dict__)
     except Exception as exc:                      # noqa: BLE001 - a reload must not kill the loop
         STATE["reload_error"] = f"{module.__name__}: {exc}"
-        return module
+        return sys.modules.get(module.__name__, module)
     # A partial module is worse than a stale one: check the names the sampler needs.
-    missing = [name for name in ("sample", "measure") if not hasattr(reloaded, name)]
+    missing = [name for name in ("sample", "measure") if not callable(getattr(reloaded, name, None))]
     if missing:
         STATE["reload_error"] = f"{module.__name__}: reload left {missing} undefined"
-        return module
+        return sys.modules.get(module.__name__, module)
     STATE["reload_error"] = None
+    STATE[key] = stamp
+    sys.modules[module.__name__] = reloaded
     return reloaded
 
 
@@ -144,6 +159,7 @@ def sampler(interval: float, page_interval: float) -> None:
             # invisible until a restart, and the monitor keeps reporting the old verdicts.
             wp = _reload_if_changed(watch_pipeline, ROOT / "tools" / "watch_pipeline.py")
             payload = wp.sample(append=True)
+            STATE["consumers_html"] = current_consumer_html()
             STATE["payload"] = payload
             STATE["sampled"] = time.time()
             STATE["error"] = None
@@ -220,16 +236,20 @@ def refresh_project(name: str) -> dict:
         # The dashboard reads docs/pipeline.json for Gate S verdicts; a new evidence file without a
         # rebuild would be measured against the old registry.
         try:
-            subprocess.run([sys.executable, str(ROOT / "tools" / "build_pipeline.py"), "--probe"],
+            rebuilt = subprocess.run([sys.executable, str(ROOT / "tools" / "build_pipeline.py"), "--probe"],
                            cwd=str(ROOT), capture_output=True, text=True, timeout=300)
-        except (OSError, subprocess.SubprocessError):
-            pass
+            if rebuilt.returncode != 0:
+                return {"ok": False, "status": run.status, "error": "gate ran, but registry rebuild failed"}
+        except (OSError, subprocess.SubprocessError) as exc:
+            return {"ok": False, "status": run.status, "error": f"gate ran, but registry rebuild failed: {type(exc).__name__}"}
         age_h = evidence_age_hours(spec.root)
         # A negative control is *supposed* to fail. "ok" means the refresh did what this project is
         # for, not that the command exited 0.
         expected = str(getattr(spec, "expected_gate_s", "") or "").upper() or None
         matches = run.status == (expected or "PASS")
+        STATE["consumers_html"] = current_consumer_html()
         return {"ok": matches, "status": run.status, "expected": expected,
+                "consumers_html": STATE["consumers_html"],
                 "seconds": round(time.time() - started, 1),
                 "evidence_age_h": None if age_h is None else round(age_h, 2),
                 "tail": (run.stdout_tail or "")[-600:]}
@@ -292,6 +312,7 @@ class Handler(SimpleHTTPRequestHandler):
                 body["derived"] = derived
             body["server_error"] = STATE["error"]
             body["strip_html"] = STATE["strip"]        # rendered once per sample, not per request
+            body["consumers_html"] = STATE["consumers_html"]
             self._send(body)
             return
         if clean.startswith("/api/pipeline"):

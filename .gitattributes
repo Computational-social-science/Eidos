@@ -4,4 +4,13 @@
 *.toml text eol=lf
 *.sh text eol=lf
 .githooks/* text eol=lf
+# Preserve byte-bound research artifacts across Windows/Linux checkouts.
+reference/softmax_*/checkpoints/* -text
+reference/softmax_*/docs/*.json -text whitespace=cr-at-eol
+# Screenshot records bind to the generated page bytes.
+site/index.html -text whitespace=cr-at-eol
+site/dashboard.html -text whitespace=cr-at-eol
+# Generated plotting paths and archived Markdown retain producer formatting.
+site/reports/numerics/** whitespace=-blank-at-eol,-blank-at-eof
+docs/archive/** whitespace=-blank-at-eol
 *.sh text eol=lf

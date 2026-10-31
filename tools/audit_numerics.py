@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,16 +23,9 @@ from framework.verifiers import numerics  # noqa: E402
 
 
 def _project_roots(only_required: bool) -> list[tuple[str, Path]]:
-    import yaml
-
-    roots = []
-    for spec in sorted((ROOT / "projects").glob("*/project.yaml")):
-        data = yaml.safe_load(spec.read_text(encoding="utf-8")) or {}
-        if only_required and data.get("numerics") != "required":
-            continue
-        root = (spec.parent / str(data.get("root") or ".")).resolve()
-        roots.append((str(data.get("name") or spec.parent.name), root))
-    return roots
+    from framework.project import load_projects
+    return [(spec.name, spec.root) for spec in load_projects(ROOT / "projects", allow_missing=True).values()
+            if not only_required or spec.numerics == "required"]
 
 
 def _default_targets() -> list[Path]:
@@ -46,8 +40,10 @@ def _python_files(targets: list[Path]) -> list[Path]:
         if target.is_file() and target.suffix == ".py":
             files.append(target)
         elif target.is_dir():
-            files.extend(p for p in target.rglob("*.py") if "__pycache__" not in p.parts
-                         and ".venv" not in p.parts and ".scratch" not in p.parts)
+            for parent, directories, names in os.walk(target):
+                directories[:] = [d for d in directories if not d.startswith(".venv")
+                                  and d not in {"__pycache__", ".scratch", ".git", "node_modules", "venv"}]
+                files.extend(Path(parent) / name for name in names if name.endswith(".py"))
     return sorted(set(files))
 
 
@@ -67,9 +63,15 @@ def main(argv: list[str] | None = None) -> int:
         targets = _default_targets()
 
     files = _python_files(targets)
+    absent = [str(target) for target in targets if not target.exists()]
+    if absent:
+        print("ERROR missing scan target(s): " + ", ".join(absent), file=sys.stderr)
+        return 2
     findings = numerics.audit_source(files)
+    runtime = numerics.kernel_regression_report()
     report = {"generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-              "scanned": len(files), "findings": findings}
+              "scanned": len(files), "findings": findings, "kernel_regression": runtime,
+              "static_scope": "heuristic patterns; a clean scan does not certify consumer gradients"}
     (ROOT / "docs" / "NUMERICS.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
 
     if args.json:
@@ -80,7 +82,10 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  {item['file']}:{item['line']}  {item['kind']}  {item['detail'][:90]}")
     else:
         print(f"clean {len(files)} files")
-    return 1 if findings else 0
+    if not args.json:
+        print(f"{runtime['verdict']} numerical kernels: {len(runtime['cases'])} cases; "
+              f"{sum(c['rejected'] for c in runtime['negative_controls'])} negative controls rejected")
+    return 1 if findings or runtime["verdict"] != "PASS" else 0
 
 
 if __name__ == "__main__":

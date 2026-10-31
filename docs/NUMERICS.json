@@ -1,5 +1,202 @@
 {
-  "generated": "2026-10-29T16:30:30+00:00",
-  "scanned": 2,
-  "findings": []
+  "generated": "2026-10-31T11:50:50+00:00",
+  "scanned": 5,
+  "findings": [],
+  "kernel_regression": {
+    "paper": "arxiv:2610.31642v3",
+    "backend": "numpy 2.5.4",
+    "verdict": "PASS",
+    "cases": [
+      {
+        "name": "float32 hard margin 0",
+        "verdict": "PASS",
+        "dtype": "float32",
+        "loss": 1.0986123085021973,
+        "gradient": [
+          -0.6666666865348816,
+          0.3333333432674408,
+          0.3333333432674408
+        ],
+        "gradient_relative_error": 2.98023224e-08,
+        "loss_relative_error": 1.8053764565705332e-08,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 5e-05
+      },
+      {
+        "name": "float32 hard margin 18",
+        "verdict": "PASS",
+        "dtype": "float32",
+        "loss": 3.0459961664064394e-08,
+        "gradient": [
+          -3.0459961664064394e-08,
+          1.5229980832032197e-08,
+          1.5229980832032197e-08
+        ],
+        "gradient_relative_error": 1.0185333097838319e-07,
+        "loss_relative_error": 8.662335006903356e-08,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 5e-05
+      },
+      {
+        "name": "float32 hard margin 80",
+        "verdict": "PASS",
+        "dtype": "float32",
+        "loss": 3.6097029441556067e-35,
+        "gradient": [
+          -3.6097029441556067e-35,
+          1.8048514720778033e-35,
+          1.8048514720778033e-35
+        ],
+        "gradient_relative_error": 4.666998554282207e-08,
+        "loss_relative_error": 4.666998554282207e-08,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 5e-05
+      },
+      {
+        "name": "float32 equality",
+        "verdict": "PASS",
+        "dtype": "float32",
+        "loss": 0.8323955535888672,
+        "gradient": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gradient_relative_error": 0.0,
+        "loss_relative_error": 3.393947816314133e-08,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 5e-05
+      },
+      {
+        "name": "float32 near teacher",
+        "verdict": "PASS",
+        "dtype": "float32",
+        "loss": 0.8323955535888672,
+        "gradient": [
+          -4.5955044214451846e-08,
+          4.144190413057913e-08,
+          4.5131418602295525e-09
+        ],
+        "gradient_relative_error": 6.122749609071066e-08,
+        "loss_relative_error": 3.393948442129996e-08,
+        "zero_sum_relative_residual": 1.932711452500108e-08,
+        "tolerance": 5e-05
+      },
+      {
+        "name": "float32 far teacher",
+        "verdict": "PASS",
+        "dtype": "float32",
+        "loss": 2000.0,
+        "gradient": [
+          1.0,
+          -1.0
+        ],
+        "gradient_relative_error": 0.0,
+        "loss_relative_error": 0.0,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 5e-05
+      },
+      {
+        "name": "float64 hard margin 0",
+        "verdict": "PASS",
+        "dtype": "float64",
+        "loss": 1.0986122886681098,
+        "gradient": [
+          -0.6666666666666666,
+          0.3333333333333333,
+          0.3333333333333333
+        ],
+        "gradient_relative_error": 1e-16,
+        "loss_relative_error": 9.885630798354097e-17,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 1e-11
+      },
+      {
+        "name": "float64 hard margin 40",
+        "verdict": "PASS",
+        "dtype": "float64",
+        "loss": 8.496708510583178e-18,
+        "gradient": [
+          -8.496708510583178e-18,
+          4.248354255291589e-18,
+          4.248354255291589e-18
+        ],
+        "gradient_relative_error": 9.596137827553064e-18,
+        "loss_relative_error": 5.347783572261475e-18,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 1e-11
+      },
+      {
+        "name": "float64 hard margin 700",
+        "verdict": "PASS",
+        "dtype": "float64",
+        "loss": 1.971935308751954e-304,
+        "gradient": [
+          -1.971935308751954e-304,
+          9.85967654375977e-305,
+          9.85967654375977e-305
+        ],
+        "gradient_relative_error": 8.688980507074157e-17,
+        "loss_relative_error": 8.688980507074157e-17,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 1e-11
+      },
+      {
+        "name": "float64 equality",
+        "verdict": "PASS",
+        "dtype": "float64",
+        "loss": 0.8323955818399389,
+        "gradient": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "gradient_relative_error": 0.0,
+        "loss_relative_error": 3.2494257375030433e-17,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 1e-11
+      },
+      {
+        "name": "float64 near teacher",
+        "verdict": "PASS",
+        "dtype": "float64",
+        "loss": 0.8323955818399424,
+        "gradient": [
+          -3.8549884196561315e-08,
+          3.476398644231002e-08,
+          3.785897754251295e-09
+        ],
+        "gradient_relative_error": 1.9650757092935354e-16,
+        "loss_relative_error": 1.66561923930236e-16,
+        "zero_sum_relative_residual": 1.0728704246364675e-17,
+        "tolerance": 1e-11
+      },
+      {
+        "name": "float64 far teacher",
+        "verdict": "PASS",
+        "dtype": "float64",
+        "loss": 2000.0,
+        "gradient": [
+          1.0,
+          -1.0
+        ],
+        "gradient_relative_error": 0.0,
+        "loss_relative_error": 0.0,
+        "zero_sum_relative_residual": 0.0,
+        "tolerance": 1e-11
+      }
+    ],
+    "negative_controls": [
+      {
+        "name": "lost target gradient",
+        "rejected": true
+      },
+      {
+        "name": "nonzero stationary gradient",
+        "rejected": true
+      }
+    ],
+    "scope": "bounded numerical kernels; consumer backends and training outcomes are not certified"
+  },
+  "static_scope": "heuristic patterns; a clean scan does not certify consumer gradients"
 }

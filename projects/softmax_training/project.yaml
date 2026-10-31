@@ -1,0 +1,11 @@
+name: softmax_training
+root: ../../reference/softmax_training
+role: measured optimizer-level training consumer; adapted stationarity experiment
+gate_command: ["{python}", "gate.py"]
+test_command: ["{python}", "validate.py"]
+expects: [docs/evidence.json, docs/gate_evidence.json]
+validity_register: analysis/CLAIMS.yaml
+validity_document: docs/REPORT.md
+expected_gate_s: PASS
+numerics: required
+reports: [docs/REPORT.md]

@@ -1,0 +1,126 @@
+{
+  "status": "COMPLETE",
+  "generated_at": "2026-10-31T11:33:50.284518+00:00",
+  "scope": "Final-checkpoint endpoint only; no claim about unrecorded gradient trajectories.",
+  "definition": "Target-class derivative of full-training-batch mean CE; both kernels at each saved final model.",
+  "evidence_sha256": "8fdf433cea2f2af43537f8ea4476fc5f4b15e70fc4972fba3965e7cc821c9c1e",
+  "analysis_source_sha256": "b413c9a5f5895f9584ce5059c35b2af25a0b24aeb39e7eab707acff88134e02f",
+  "runtime": {
+    "torch": "2.13.0+cu126",
+    "cuda": "12.6",
+    "device": "NVIDIA GeForce RTX 4070",
+    "dtype": "float32",
+    "tf32": false,
+    "deterministic_algorithms": true
+  },
+  "endpoints": [
+    {
+      "seed": 0,
+      "training_arm": "standard",
+      "evaluation_kernel": "standard",
+      "checkpoint_sha256": "5924d9874699f85027170f407e2198823b00e35935ea080589ce1c18eae586f0",
+      "sample_count": 480,
+      "zero_target_gradient_count": 26,
+      "zero_target_gradient_fraction": 0.05416666666666667
+    },
+    {
+      "seed": 0,
+      "training_arm": "standard",
+      "evaluation_kernel": "fixed",
+      "checkpoint_sha256": "5924d9874699f85027170f407e2198823b00e35935ea080589ce1c18eae586f0",
+      "sample_count": 480,
+      "zero_target_gradient_count": 0,
+      "zero_target_gradient_fraction": 0.0
+    },
+    {
+      "seed": 0,
+      "training_arm": "fixed",
+      "evaluation_kernel": "standard",
+      "checkpoint_sha256": "618b4742cc1f8331cda2ff4af8360504520d48055daf8e58051d7b72c3fac337",
+      "sample_count": 480,
+      "zero_target_gradient_count": 454,
+      "zero_target_gradient_fraction": 0.9458333333333333
+    },
+    {
+      "seed": 0,
+      "training_arm": "fixed",
+      "evaluation_kernel": "fixed",
+      "checkpoint_sha256": "618b4742cc1f8331cda2ff4af8360504520d48055daf8e58051d7b72c3fac337",
+      "sample_count": 480,
+      "zero_target_gradient_count": 0,
+      "zero_target_gradient_fraction": 0.0
+    },
+    {
+      "seed": 1,
+      "training_arm": "standard",
+      "evaluation_kernel": "standard",
+      "checkpoint_sha256": "0767b6657a3d0901be27b89aaf710f3762cd956b39f158c719238a14d6d85b49",
+      "sample_count": 480,
+      "zero_target_gradient_count": 64,
+      "zero_target_gradient_fraction": 0.13333333333333333
+    },
+    {
+      "seed": 1,
+      "training_arm": "standard",
+      "evaluation_kernel": "fixed",
+      "checkpoint_sha256": "0767b6657a3d0901be27b89aaf710f3762cd956b39f158c719238a14d6d85b49",
+      "sample_count": 480,
+      "zero_target_gradient_count": 0,
+      "zero_target_gradient_fraction": 0.0
+    },
+    {
+      "seed": 1,
+      "training_arm": "fixed",
+      "evaluation_kernel": "standard",
+      "checkpoint_sha256": "a1a923d40072fe9c67b3281bbcbdff7cf270862888c55362632be40cecbde70b",
+      "sample_count": 480,
+      "zero_target_gradient_count": 404,
+      "zero_target_gradient_fraction": 0.8416666666666667
+    },
+    {
+      "seed": 1,
+      "training_arm": "fixed",
+      "evaluation_kernel": "fixed",
+      "checkpoint_sha256": "a1a923d40072fe9c67b3281bbcbdff7cf270862888c55362632be40cecbde70b",
+      "sample_count": 480,
+      "zero_target_gradient_count": 0,
+      "zero_target_gradient_fraction": 0.0
+    },
+    {
+      "seed": 2,
+      "training_arm": "standard",
+      "evaluation_kernel": "standard",
+      "checkpoint_sha256": "edd2e7bbb8fae6b9f2e69b7a87d73c69251acb6cfc0e99e4756e9cb022ea6dc1",
+      "sample_count": 480,
+      "zero_target_gradient_count": 2,
+      "zero_target_gradient_fraction": 0.004166666666666667
+    },
+    {
+      "seed": 2,
+      "training_arm": "standard",
+      "evaluation_kernel": "fixed",
+      "checkpoint_sha256": "edd2e7bbb8fae6b9f2e69b7a87d73c69251acb6cfc0e99e4756e9cb022ea6dc1",
+      "sample_count": 480,
+      "zero_target_gradient_count": 0,
+      "zero_target_gradient_fraction": 0.0
+    },
+    {
+      "seed": 2,
+      "training_arm": "fixed",
+      "evaluation_kernel": "standard",
+      "checkpoint_sha256": "46551bed00e409605a91ec6097723f5b2095d647f4b39161491cd1f89ae0aa39",
+      "sample_count": 480,
+      "zero_target_gradient_count": 410,
+      "zero_target_gradient_fraction": 0.8541666666666666
+    },
+    {
+      "seed": 2,
+      "training_arm": "fixed",
+      "evaluation_kernel": "fixed",
+      "checkpoint_sha256": "46551bed00e409605a91ec6097723f5b2095d647f4b39161491cd1f89ae0aa39",
+      "sample_count": 480,
+      "zero_target_gradient_count": 0,
+      "zero_target_gradient_fraction": 0.0
+    }
+  ]
+}

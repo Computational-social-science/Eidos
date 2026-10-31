@@ -7,7 +7,7 @@ name = "eidos"
 version = "4.3.32"
 description = "Global reusable research pipeline: Quarto + BootLoops + complementary quality gates"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = { text = "MIT" }
 dependencies = [
     "pyyaml>=6.0",
@@ -33,6 +33,8 @@ all = [
 dev = ["pytest>=7.0", "coverage>=7.0"]
 # Browser audits and screenshot capture are optional: the tests that need them skip without them.
 browser = ["playwright>=1.40", "pillow>=10"]
+# Paper-to-agent validation has its own optional, reproducible environment.
+agent = ["fastmcp==4.0.3"]
 # Deterministic verifiers (P0 of the ScienceRSI integration plan). proofpath is a CLI, installed
 # with `uv tool install git+https://github.com/Yigtwxx/proofpath`, not a Python dependency.
 verifiers = ["academic-research-kernel>=2.2"]

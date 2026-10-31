@@ -5,8 +5,8 @@ quality gates, a typed decision layer, provenance, and multi-format delivery. Th
 has to say that before it says anything about any single gate, and every number on it is
 read at build time from an artefact rather than typed.
 
-The demo is self-contained: three panels, a Newton replay and a checkpoint table, all
-inline. Nothing on this page links to another page for its core content.
+The scientific case selects recorded Softmax Collapse/Cancellation measurements;
+the report and reproduction bundle are built from the same evidence.
 
     python tools/build_site.py            # writes site/index.html
     python tools/build_site.py --check    # rebuild and compare with the file on disk
@@ -37,6 +37,7 @@ from framework.surrogate import (RandomFeatureOperator, fixed_point,  # noqa: E4
                                  spectral_radius)
 from audit_surrogate import training_pairs  # noqa: E402
 from framework.surrogate.demo import build_demo
+from numerics_case import build_case, export_case
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import pipeline_view  # noqa: E402  # noqa: E402
@@ -531,11 +532,9 @@ def contract_strip(rows: list[dict]) -> str:
 
 
 def demo_payload() -> str:
-    lab = build_demo()
-    return json.dumps({"rows": [{"lam": round(r["lam"], 3), "learned": r["learned"],
-                                 "truth": r["truth"], "rho": r["rho"]} for r in lab["rows"]],
-                       "checkpoints": lab["checkpoints"], "traces": lab["traces"]},
-                      separators=(",", ":"))
+    data = build_case()
+    export_case(ROOT / "site/reports/numerics", data)
+    return json.dumps(data, allow_nan=False, separators=(",", ":"))
 
 
 

@@ -162,12 +162,17 @@ def consumers() -> list[dict]:
             run = subprocess.run(args + ["--json"], cwd=ROOT, capture_output=True,
                                  text=True, timeout=900)
             try:
-                row["gate_s"] = json.loads(run.stdout).get("status", "ERROR")
+                checked = json.loads(run.stdout)
+                verdict = checked.get("status", "ERROR")
+                row["gate_s"] = verdict if ((verdict == "PASS" and run.returncode == 0)
+                                              or (verdict == "FAIL" and run.returncode == 1)) else "ERROR"
+                row["checked_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+                row["findings"] = checked.get("findings", [])
             except json.JSONDecodeError:
                 row["gate_s"] = "ERROR"
         evidence = Path(row["root"]) / "docs" / "evidence.json"
         payload = read_json(evidence, {}) if spec.available else {}
-        row["generated"] = payload.get("generated")
+        row["generated"] = payload.get("generated") or payload.get("recorded_at") or payload.get("finished_at")
         rows.append(row)
     return rows
 

@@ -1,7 +1,7 @@
 {
   "ok": true,
   "quarto": "ok",
-  "pdflatex": null,
+  "pdflatex": "pdfTeX 3.141592653-2.6-1.40.29 (TeX Live 2026)",
   "formats": {
     "html": {
       "ok": true,
@@ -19,5 +19,5 @@
       "reported": true
     }
   },
-  "generated": "2026-10-23T14:08:47+00:00"
+  "generated": "2026-10-31T11:43:41+00:00"
 }

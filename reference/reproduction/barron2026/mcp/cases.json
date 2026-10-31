@@ -10,7 +10,7 @@
       ]
     },
     "expected_subset": {
-      "first": -3.0459958111350716e-08
+      "first": -3.0459959025520705e-08
     }
   },
   {
@@ -40,7 +40,7 @@
     },
     "expected_subset": {
       "grad_sum_is_zero": true,
-      "loss": 3.0459958111350716e-08
+      "loss": 3.0459959025520705e-08
     }
   },
   {
@@ -63,5 +63,23 @@
         -0.2310585786300049
       ]
     }
+  },
+  {
+    "name": "hard_ce_precision_cliff_control",
+    "tool": "hard_cross_entropy",
+    "arguments": {"z": [40, 0, 0], "target": 0, "dtype": "float64"},
+    "expected_subset": {"grad_sum_is_zero": true, "standard_grad_sum_is_zero": false, "grad_sum": 0.0}
+  },
+  {
+    "name": "soft_logits_exact_stationarity_float32",
+    "tool": "soft_target_cross_entropy",
+    "arguments": {"student": [2, 1, 0], "teacher": [2, 1, 0], "teacher_kind": "logits", "dtype": "float32"},
+    "expected_subset": {"grad": [0.0, 0.0, 0.0], "grad_sum_is_zero": true, "cancellation_fix": true}
+  },
+  {
+    "name": "soft_logits_near_teacher_float32",
+    "tool": "soft_target_cross_entropy",
+    "arguments": {"student": [1.9999998807907104, 1.0000001192092896, 0], "teacher": [2, 1, 0], "teacher_kind": "logits", "dtype": "float32"},
+    "expected_subset": {"grad_sum_is_zero": true, "cancellation_fix": true}
   }
 ]

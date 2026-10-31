@@ -1,68 +1,181 @@
 {
-  "recorded_at": "2026-10-29T16:09:37+00:00",
+  "recorded_at": "2026-10-31T08:15:57+00:00",
+  "provenance": {
+    "paper_version": "arxiv:2610.31642v3",
+    "backend": "numpy 2.5.4",
+    "python": "3.12.4",
+    "scope": "bounded NumPy float64 hard-target and float32 logits-distillation regression; no training reproduction"
+  },
   "calls": [
     {
+      "case": "log_softmax",
       "tool": "log_softmax",
+      "arguments": {
+        "z": [
+          9.0,
+          -9.0,
+          -9.0
+        ],
+        "dtype": "float64"
+      },
       "result": {
         "log_softmax": [
-          -3.0459958111350716e-08,
+          -3.0459959025520705e-08,
           -18.000000030459958,
           -18.000000030459958
         ],
-        "first": -3.0459958111350716e-08,
-        "naive_first": -3.0459959887707555e-08,
-        "stable_minus_naive": 1.7763568394002505e-15
+        "first": -3.0459959025520705e-08,
+        "naive_first": -3.045995897971379e-08,
+        "stable_minus_naive": -4.580691313024702e-17,
+        "dtype": "float64",
+        "paper_version": "2610.31642v3"
       }
     },
     {
+      "case": "softmax",
       "tool": "softmax",
+      "arguments": {
+        "z": [
+          9.0,
+          -9.0,
+          -9.0
+        ],
+        "dtype": "float64"
+      },
       "result": {
         "softmax": [
-          0.9999999695400423,
+          0.9999999695400414,
           1.522997928080809e-08,
           1.522997928080809e-08
         ],
-        "sum": 1.0000000000000009,
+        "sum": 1.0,
         "is_normalised": true,
-        "max": 0.9999999695400423
+        "max": 0.9999999695400414,
+        "dtype": "float64"
       }
     },
     {
+      "case": "hard",
       "tool": "hard_cross_entropy",
+      "arguments": {
+        "z": [
+          9.0,
+          -9.0,
+          -9.0
+        ],
+        "target": 0,
+        "dtype": "float64"
+      },
       "result": {
-        "loss": 3.0459958111350716e-08,
+        "loss": 3.0459959025520705e-08,
         "grad": [
-          -3.0459957667261506e-08,
+          -3.045995856161618e-08,
           1.522997928080809e-08,
           1.522997928080809e-08
-        ],
-        "grad_sum": 8.943546729315933e-16,
-        "grad_sum_is_zero": true,
-        "smallest_gradient": 1.522997928080809e-08
-      }
-    },
-    {
-      "tool": "soft_target_cross_entropy",
-      "result": {
-        "loss": 0.8132616875182228,
-        "grad": [
-          0.2310585786300049,
-          -0.2310585786300049
         ],
         "grad_sum": 0.0,
-        "grad_sum_is_zero": true
+        "grad_sum_is_zero": true,
+        "smallest_gradient": 1.522997928080809e-08,
+        "standard_grad": [
+          -3.0459958555439925e-08,
+          1.522997928080809e-08,
+          1.522997928080809e-08
+        ],
+        "standard_grad_sum_is_zero": false,
+        "dtype": "float64"
       }
     },
     {
-      "tool": "soft_target_cross_entropy (control)",
-      "result": {
-        "loss": 0.944587856270045,
-        "grad": [
-          0.2310585786300049,
-          -0.3310585786300049
+      "case": "control",
+      "tool": "hard_cross_entropy",
+      "arguments": {
+        "z": [
+          40,
+          0,
+          0
         ],
-        "grad_sum": -0.09999999999999998,
-        "grad_sum_is_zero": false
+        "target": 0,
+        "dtype": "float64"
+      },
+      "result": {
+        "loss": 8.496708510583178e-18,
+        "grad": [
+          -8.496708510583178e-18,
+          4.248354255291589e-18,
+          4.248354255291589e-18
+        ],
+        "grad_sum": 0.0,
+        "grad_sum_is_zero": true,
+        "smallest_gradient": 4.248354255291589e-18,
+        "standard_grad": [
+          0.0,
+          4.248354255291589e-18,
+          4.248354255291589e-18
+        ],
+        "standard_grad_sum_is_zero": false,
+        "dtype": "float64"
+      }
+    },
+    {
+      "case": "soft_equal",
+      "tool": "soft_target_cross_entropy",
+      "arguments": {
+        "student": [
+          2.0,
+          1.0,
+          0.0
+        ],
+        "teacher": [
+          2.0,
+          1.0,
+          0.0
+        ],
+        "teacher_kind": "logits",
+        "dtype": "float32"
+      },
+      "result": {
+        "loss": 0.8323955535888672,
+        "grad": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "grad_sum": 0.0,
+        "grad_sum_is_zero": true,
+        "teacher_kind": "logits",
+        "dtype": "float32",
+        "cancellation_fix": true
+      }
+    },
+    {
+      "case": "soft_near",
+      "tool": "soft_target_cross_entropy",
+      "arguments": {
+        "student": [
+          1.9999998807907104,
+          1.0000001192092896,
+          0.0
+        ],
+        "teacher": [
+          2.0,
+          1.0,
+          0.0
+        ],
+        "teacher_kind": "logits",
+        "dtype": "float32"
+      },
+      "result": {
+        "loss": 0.8323955535888672,
+        "grad": [
+          -4.5955044214451846e-08,
+          4.144190413057913e-08,
+          4.5131418602295525e-09
+        ],
+        "grad_sum": 1.7763568394002505e-15,
+        "grad_sum_is_zero": true,
+        "teacher_kind": "logits",
+        "dtype": "float32",
+        "cancellation_fix": true
       }
     }
   ]

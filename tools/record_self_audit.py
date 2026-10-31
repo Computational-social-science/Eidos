@@ -23,7 +23,8 @@ OUT = ROOT / "docs" / "SELF_AUDIT.json"
 
 
 def _run(cmd: list[str], timeout: int = 900) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=timeout)
+    return subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=timeout,
+                          encoding="utf-8", errors="replace")
 
 
 def collect() -> dict:
@@ -44,10 +45,18 @@ def collect() -> dict:
     # visible drift, and the gate only refuses a drop larger than one point.
     coverage_total = None
     if _run([sys.executable, "-m", "coverage", "--version"], timeout=120).returncode == 0:
-        _run([sys.executable, "-m", "coverage", "run", "-m", "pytest", "-q"], timeout=900)
+        executed = _run([sys.executable, "-m", "coverage", "run", "--source=framework", "-m", "pytest", "-q"], timeout=900)
         report = _run([sys.executable, "-m", "coverage", "report"], timeout=300)
         m2 = re.search(r"TOTAL\s+\d+\s+\d+\s+(\d+)%", report.stdout)
         coverage_total = int(m2.group(1)) if m2 else None
+    else:
+        executed = _run([sys.executable, "-m", "pytest", "-q"], timeout=900)
+    test_output = executed.stdout + executed.stderr
+    test_counts = {}
+    for label in ("passed", "failed", "skipped", "errors"):
+        pattern = "errors?" if label == "errors" else label
+        count = re.search(rf"(\d+)\s+{pattern}\b", test_output)
+        test_counts[label] = int(count.group(1)) if count else 0
 
     gate = _run([sys.executable, "tools/audit_validity.py",
                  "--project", "tests/fixtures/valid_project", "--json"])
@@ -74,13 +83,34 @@ def collect() -> dict:
         if m2:
             open_objections = int(m2.group(1))
 
-    return {"chains": counts, "tests_collected": collected,
+    diagnostics = {name: (run.stdout + run.stderr)[-12000:] for name, run in
+                   (("tests", executed), ("test_collection", tests), ("chains", chains),
+                    ("gate_s", gate), ("self_gate_s", self_run)) if run.returncode != 0}
+    return {"chains": counts, "tests_collected": collected, "tests": test_counts,
+            "diagnostics": diagnostics,
             "coverage_total": coverage_total,
+            "coverage_scope": "framework; unexecuted modules included; tests and tools excluded",
             "gate_s": {"fixture_status": gate_status},
             "self_gate_s": {"status": self_data.get("status"), "findings": self_findings,
                             "open_objections": open_objections},
             "exit_codes": {"chains": chains.returncode, "gate_s": gate.returncode,
-                           "self_gate_s": self_run.returncode}}
+                           "self_gate_s": self_run.returncode,
+                           "test_collection": tests.returncode, "tests": executed.returncode}}
+
+
+def measurement_failures(record: dict) -> list[str]:
+    """A repeated failure is still a failure, even when the baseline contains it."""
+    codes = record.get("exit_codes", {})
+    failures = [f"{stage} exited {codes.get(stage)!r}"
+                for stage in ("chains", "test_collection", "tests", "gate_s", "self_gate_s")
+                if codes.get(stage) != 0]
+    if record.get("chains", {}).get("fail", 0):
+        failures.append("one or more chains failed")
+    if record.get("gate_s", {}).get("fixture_status") != "PASS":
+        failures.append("fixture Gate S did not pass")
+    if record.get("self_gate_s", {}).get("status") != "PASS":
+        failures.append("framework Gate S did not pass")
+    return failures
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -90,6 +120,13 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     new = collect()
+    failures = measurement_failures(new)
+    if failures:
+        for failure in failures:
+            print(f"[FAIL] {failure}")
+        for stage, output in new.get("diagnostics", {}).items():
+            print(f"--- {stage} diagnostic ---\n{output}")
+        return 1
     if args.check:
         if not OUT.is_file():
             print(f"[FAIL] {OUT.name} has never been recorded")

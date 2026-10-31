@@ -1,0 +1,7 @@
+{
+  "status": "PASS",
+  "fixed_stationarity": true,
+  "findings": [],
+  "gate_source_sha256": "c59ba1cfe68cca0e32587b207d33a794ca8ae0cc99dc7888ff4644aa3fbde86d",
+  "scope": "observational local evidence; not a paper-wide training or generalisation claim"
+}

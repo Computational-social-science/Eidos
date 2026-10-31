@@ -77,6 +77,9 @@ class ProjectSpec:
     #: for enumeration (``list``); running it always raises.
     available: bool = True
     missing_reason: str = ""
+    #: Opt-in scientific gate vocabulary; other nonzero exits remain ERROR.
+    exit_statuses: dict[int, str] = dataclasses.field(default_factory=dict)
+    numerics: str = "optional"
 
     def effective_config(self) -> dict[str, Any]:
         """Global policy with this project's overrides applied."""
@@ -90,12 +93,13 @@ class ProjectRun:
     """The outcome of running one project's gate command."""
 
     name: str
-    status: str          # PASS | FAIL | SKIP | ERROR
+    status: str          # PASS | FAIL | SKIP | ERROR | OPEN | REFUSED
     exit_code: int
     duration_s: float
     command: list[str]
     stdout_tail: str = ""
     stderr_tail: str = ""
+    numerics: dict[str, Any] = dataclasses.field(default_factory=dict)
 
     def as_dict(self) -> dict[str, Any]:
         return dataclasses.asdict(self)
@@ -127,6 +131,12 @@ def load_project(project_file: Path, allow_missing: bool = False) -> ProjectSpec
     if not isinstance(raw, dict):
         raise ValueError(f"{project_file}: expected a mapping at the top level")
     data: dict[str, Any] = raw
+    exit_statuses = data.get("exit_statuses", {})
+    if (not isinstance(exit_statuses, dict) or any(
+            type(code) is not int or code in (0, 1, 124, 127) or
+            state not in {"OPEN", "REFUSED", "SKIP", "ERROR"}
+            for code, state in exit_statuses.items())):
+        raise ValueError(f"{project_file}: invalid exit_statuses; nonzero research states only")
 
     root_raw = data.get("root")
     if not root_raw:
@@ -146,6 +156,9 @@ def load_project(project_file: Path, allow_missing: bool = False) -> ProjectSpec
     if not gate_command:
         raise ValueError(f"{project_file}: 'gate_command' is required")
 
+    numerics = data.get("numerics", "optional")
+    if numerics not in ("required", "optional", "not_applicable"):
+        raise ValueError(f"{project_file}: numerics must be required, optional or not_applicable")
     return ProjectSpec(
         name=str(data.get("name") or project_file.parent.name),
         root=root,
@@ -162,6 +175,8 @@ def load_project(project_file: Path, allow_missing: bool = False) -> ProjectSpec
         overrides=dict(data.get("overrides") or {}),
         available=available,
         missing_reason="" if available else f"checkout not found: {root}",
+        exit_statuses=exit_statuses,
+        numerics=numerics,
     )
 
 
@@ -187,7 +202,10 @@ def _materialise(argv: list[str]) -> list[str]:
     bare ``python`` on this host resolves to a 3.15 install that lacks the project's
     dependencies, which would fail for the wrong reason.
     """
-    return [part.replace("{python}", sys.executable) for part in argv]
+    materialised = [part.replace("{python}", sys.executable) for part in argv]
+    if materialised and materialised[0].lower() in {"python", "python3", "python.exe", "python3.exe"}:
+        materialised[0] = sys.executable
+    return materialised
 
 
 _COMMANDS = {"gate": "gate_command", "test": "test_command", "render": "render_command"}
@@ -211,6 +229,14 @@ def run_command(spec: ProjectSpec, kind: str = "gate", timeout: int = 900) -> Pr
 
     started = time.monotonic()
     argv = _materialise(declared)
+    numerical = {}
+    if kind == "gate" and spec.numerics == "required":
+        from framework.verifiers.numerics import consumer_preflight
+        numerical = consumer_preflight(spec.root)
+        if numerical["verdict"] != "PASS":
+            return ProjectRun(spec.name, "FAIL", 1, round(time.monotonic() - started, 2), argv,
+                              stderr_tail="required numerical preflight failed; project gate was not run",
+                              numerics=numerical)
     try:
         proc = subprocess.run(
             argv,
@@ -219,6 +245,8 @@ def run_command(spec: ProjectSpec, kind: str = "gate", timeout: int = 900) -> Pr
             text=True,
             timeout=timeout,
             check=False,
+            encoding="utf-8",
+            errors="replace",
         )
         exit_code = proc.returncode
         stdout, stderr = proc.stdout or "", proc.stderr or ""
@@ -246,7 +274,7 @@ def run_command(spec: ProjectSpec, kind: str = "gate", timeout: int = 900) -> Pr
     elif exit_code == 1:
         status = "FAIL"
     else:
-        status = "ERROR"
+        status = spec.exit_statuses.get(exit_code, "ERROR")
 
     if status == "PASS" and spec.expects:
         missing = [rel for rel in spec.expects if not (spec.root / rel).exists()]
@@ -262,6 +290,7 @@ def run_command(spec: ProjectSpec, kind: str = "gate", timeout: int = 900) -> Pr
         command=argv,
         stdout_tail=stdout[-4000:],
         stderr_tail=stderr[-2000:],
+        numerics=numerical,
     )
 
 
@@ -348,7 +377,7 @@ def main(argv: list[str] | None = None) -> int:
             print("      --- stderr ---")
             for line in run.stderr_tail.strip().splitlines()[-6:]:
                 print(f"      {line}")
-    return 0 if run.status == "PASS" else 1
+    return 0 if run.status == "PASS" else {"OPEN": 3, "REFUSED": 4}.get(run.status, 1)
 
 
 if __name__ == "__main__":
@@ -371,7 +400,7 @@ def evidence_age_hours(root: Path | str) -> float | None:
     try:
         payload = _json.loads(path.read_text(encoding="utf-8"))
         if isinstance(payload, dict):
-            stamp = payload.get("generated") or payload.get("recorded_at")
+            stamp = payload.get("generated") or payload.get("recorded_at") or payload.get("finished_at")
     except (OSError, ValueError):
         stamp = None
     try:
@@ -380,3 +409,33 @@ def evidence_age_hours(root: Path | str) -> float | None:
     except (ValueError, TypeError):
         when = path.stat().st_mtime
     return max(0.0, (_dt.datetime.now(_dt.timezone.utc).timestamp() - when) / 3600.0)
+
+
+def consumer_freshness(root, expected=None, checked_at=None, max_age_h=24.0) -> dict:
+    """An immutable negative fixture needs a recent check, not rewritten input data."""
+    import datetime as dt
+    artifact_age = evidence_age_hours(root)
+    source = "verification" if expected == "FAIL" else "evidence"
+    age = artifact_age
+    if source == "verification":
+        try:
+            when = dt.datetime.fromisoformat(str(checked_at).replace("Z", "+00:00"))
+            if when.tzinfo is None:
+                raise ValueError("ambiguous verification time")
+            age = (dt.datetime.now(dt.timezone.utc) - when).total_seconds() / 3600
+            if age < -1 / 60:
+                age = None
+            elif age < 0:
+                age = 0.0
+        except (ValueError, TypeError):
+            age = None
+    return {"age_h": age, "artifact_age_h": artifact_age, "source": source,
+            "stale": age is None or age > max_age_h}
+
+
+def aggregate_consumer_freshness(ages, max_age_h=24.0) -> dict:
+    known = [(name, age) for name, age in ages if age is not None]
+    unknown = [name for name, age in ages if age is None]
+    oldest = max(known, key=lambda row: row[1]) if known else (None, None)
+    return {"name": oldest[0], "age_h": None if unknown else oldest[1],
+            "stale": [name for name, age in known if age > max_age_h], "unknown": unknown}

@@ -57,7 +57,7 @@ def test_render_carries_captions_math_and_the_demo_data():
     page = build_site.render(DATA)
     assert page.count("<caption") == page.count("<table") >= 4
     assert page.count("<math") >= 3
-    assert "const DATA = {" in page
+    assert '<script id="demo-data" type="application/json">{' in page
     assert "demo" in page.lower()
 
 
@@ -66,7 +66,9 @@ def test_demo_is_self_contained():
     page = build_site.render(DATA)
     assert "lab/lab.html" not in page
     assert "iframe" not in page.lower()
-    assert page.count("<canvas") >= 2
+    assert 'id="numerics-gradients"' in page
+    assert 'id="numerics-regime"' in page
+    assert "reports/numerics/evidence.json" in page
 
 
 def test_page_states_the_whole_framework_not_only_gate_s():

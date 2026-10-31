@@ -1,110 +1,110 @@
-"""MCP tools for Barron (2026), "A fix for softmax and cross-entropy".
+"""Existing Paper2Agent tools upgraded to the arXiv:2610.31642v3 kernel contract.
 
-Runs on fastmcp 4.0.3, the baseline the Paper2Agent skill names in its runtime reference.
-
-The four functions reproduce the paper's Equations 13, 19, 42 and 43 with float64 numpy, the same
-arithmetic the paper's JAX listing performs. Each tool returns the value *and* the property the paper
-claims for it, so a caller can assert a boolean rather than compare float reprs.
-
-Run over stdio:  python server.py
+Four tool names are preserved. Teacher probabilities remain a named legacy mode;
+the v3 cancellation fix requires teacher_kind="logits". This validates numerical
+kernels, not the paper's training/grokking claims. NumPy float32/float64 only.
 """
-
 from __future__ import annotations
+
+import sys
+from pathlib import Path
+from typing import Literal
 
 import numpy as np
 from fastmcp import FastMCP
 
-mcp = FastMCP("barron2026-softmax-fix")
+ROOT = Path(__file__).resolve().parents[4]
+sys.path.insert(0, str(ROOT))
+from framework import stable_numerics as kernels
 
+mcp = FastMCP("barron2026-softmax-fix")
 EPS = float(np.finfo(np.float64).eps)
 
 
 def _sum_is_zero(values: np.ndarray) -> bool:
-    """A sum of a few float64 terms is zero to within their own rounding error.
+    """Residual relative to gradient magnitude, with no absolute tolerance floor."""
+    values = np.asarray(values)
+    if not np.isfinite(values).all():
+        return False
+    scale = float(np.abs(values).sum())
+    residual = abs(float(values.sum()))
+    return bool(residual == 0 if scale == 0 else residual <= 8 * np.finfo(values.dtype).eps * scale)
 
-    The bound is 8 eps times the larger of 1 and the largest entry — the error a three-term sum can
-    accumulate — not a tolerance fitted to the observed residual.
+
+def _as_array(values: list[float], dtype: str = "float64") -> np.ndarray:
+    if dtype not in ("float32", "float64"):
+        raise ValueError("dtype must be float32 or float64")
+    array = np.asarray(values, dtype=dtype)
+    if array.ndim != 1 or not array.size or not np.isfinite(array).all():
+        raise ValueError("tools require a nonempty finite vector")
+    return array
+
+
+@mcp.tool()
+def log_softmax(z: list[float], dtype: Literal["float32", "float64"] = "float64") -> dict:
+    """v3 Eq. 5: excluded-maximum log1p; max shifting alone is the comparison."""
+    values = _as_array(z, dtype)
+    fixed = kernels.log_softmax(values)
+    shifted = values - values.max()
+    standard = shifted - np.log(np.sum(np.exp(shifted)))  # numerics: intentional comparison
+    return {"log_softmax": fixed.tolist(), "first": float(fixed[0]),
+            "naive_first": float(standard[0]),
+            "stable_minus_naive": float(fixed[0] - standard[0]),
+            "dtype": dtype, "paper_version": "2610.31642v3"}
+
+
+@mcp.tool()
+def softmax(z: list[float], dtype: Literal["float32", "float64"] = "float64") -> dict:
+    """Exponentiated fixed log-softmax; gradients require the differentiable adapter."""
+    out = kernels.softmax(_as_array(z, dtype))
+    return {"softmax": out.tolist(), "sum": float(out.sum()),
+            "is_normalised": bool(abs(float(out.sum()) - 1) <= 8 * np.finfo(out.dtype).eps),
+            "max": float(out.max()), "dtype": dtype}
+
+
+@mcp.tool()
+def hard_cross_entropy(z: list[float], target: int,
+                       dtype: Literal["float32", "float64"] = "float64") -> dict:
+    """v3 Eqs. 6–7: retain the target derivative past the precision cliff."""
+    values = _as_array(z, dtype)
+    loss, gradient = kernels.hard_cross_entropy(values, target)
+    # Deliberately retain the conventional computation as a negative control.
+    shifted = values - values.max()
+    log_p = shifted - np.log(np.sum(np.exp(shifted)))  # numerics: intentional comparison
+    standard = np.exp(log_p)
+    standard[target] -= 1
+    return {"loss": float(loss), "grad": gradient.tolist(),
+            "grad_sum": float(gradient.sum()), "grad_sum_is_zero": _sum_is_zero(gradient),
+            "smallest_gradient": float(np.min(np.abs(gradient))),
+            "standard_grad": standard.tolist(),
+            "standard_grad_sum_is_zero": _sum_is_zero(standard), "dtype": dtype}
+
+
+@mcp.tool()
+def soft_target_cross_entropy(student: list[float], teacher: list[float],
+                              teacher_kind: Literal["probabilities", "logits"] = "probabilities",
+                              dtype: Literal["float32", "float64"] = "float64") -> dict:
+    """v3 Eq. 9 for teacher logits; probability targets are explicit legacy compatibility.
+
+    The legacy default preserves prior callers. It cannot recover precision lost
+    before the probabilities reached the tool and is not certified against v3 cancellation.
     """
-    scale = max(1.0, float(np.abs(values).max()))
-    return bool(abs(float(values.sum())) <= 8 * EPS * scale)
-
-
-def _as_array(values: list[float]) -> np.ndarray:
-    return np.asarray(values, dtype=np.float64)
-
-
-def _logsumexp(z: np.ndarray) -> float:
-    return float(z.max() + np.log(np.sum(np.exp(z - z.max()))))
-
-
-@mcp.tool()
-def log_softmax(z: list[float]) -> dict:
-    """Equation 13: log_softmax(z) = z - log(sum(exp(z))), stabilised by the max shift.
-
-    Both evaluations are returned. The paper reports the naive form collapsing to exactly 0.0 on
-    z = [9, -9, -9]; in float64 numpy it returns -3.046e-8 instead, so the collapse is a property of the
-    precision and the backend, not of the formula alone. `stable_minus_naive` shows the gap directly.
-    """
-    z_arr = _as_array(z)
-    stable = z_arr - _logsumexp(z_arr)
-    # The textbook form the paper compares against: returned so a caller can see the gap, never
-    # used to answer.
-    naive = z_arr - np.log(np.sum(np.exp(z_arr)))  # numerics: intentional — comparison only
-    return {
-        "log_softmax": [float(v) for v in stable],
-        "first": float(stable[0]),
-        "naive_first": float(naive[0]),
-        "stable_minus_naive": float(stable[0] - naive[0]),
-    }
-
-
-@mcp.tool()
-def softmax(z: list[float]) -> dict:
-    """Equation 19: softmax(z) = exp(z - log_softmax(z)), which stays finite and normalised."""
-    z_arr = _as_array(z)
-    out = np.exp(z_arr - _logsumexp(z_arr))
-    return {
-        "softmax": [float(v) for v in out],
-        "sum": float(out.sum()),
-        "is_normalised": bool(abs(out.sum() - 1.0) < 1e-12),
-        "max": float(out.max()),
-    }
-
-
-@mcp.tool()
-def hard_cross_entropy(z: list[float], target: int) -> dict:
-    """Equation 42: cross-entropy of a one-hot target, and the gradient it produces.
-
-    The paper's claim: the gradient is softmax(z) - onehot(t), which sums to zero. `grad_sum_is_zero`
-    reports that property directly, so a caller never has to eyeball a float.
-    """
-    z_arr = _as_array(z)
-    log_p = z_arr - _logsumexp(z_arr)
-    onehot = np.zeros_like(z_arr)
-    onehot[target] = 1.0
-    grad = np.exp(log_p) - onehot
-    return {
-        "loss": float(-log_p[target]),
-        "grad": [float(v) for v in grad],
-        "grad_sum": float(grad.sum()),
-        "grad_sum_is_zero": _sum_is_zero(grad),
-        "smallest_gradient": float(np.min(np.abs(grad))),
-    }
-
-
-@mcp.tool()
-def soft_target_cross_entropy(student: list[float], teacher: list[float]) -> dict:
-    """Equation 43: cross-entropy against a soft target, whose gradient is softmax(student) - teacher."""
-    s = _as_array(student)
-    t = _as_array(teacher)
-    log_p = s - _logsumexp(s)
-    grad = np.exp(log_p) - t
-    return {
-        "loss": float(-np.sum(t * log_p)),
-        "grad": [float(v) for v in grad],
-        "grad_sum": float(grad.sum()),
-        "grad_sum_is_zero": _sum_is_zero(grad),
-    }
+    s, t = _as_array(student, dtype), _as_array(teacher, dtype)
+    if s.shape != t.shape:
+        raise ValueError("student and teacher must have matching shapes")
+    if teacher_kind == "logits":
+        loss, gradient = kernels.logit_distillation(s, t)
+    elif teacher_kind == "probabilities":
+        if np.any(t < 0) or abs(float(t.sum()) - 1) > 8 * np.finfo(t.dtype).eps:
+            raise ValueError("probability targets must be nonnegative and sum to one")
+        loss = -np.sum(t * kernels.log_softmax(s))
+        gradient = kernels.softmax(s) - t
+    else:
+        raise ValueError("teacher_kind must be probabilities or logits")
+    return {"loss": float(loss), "grad": gradient.tolist(),
+            "grad_sum": float(gradient.sum()), "grad_sum_is_zero": _sum_is_zero(gradient),
+            "teacher_kind": teacher_kind, "dtype": dtype,
+            "cancellation_fix": teacher_kind == "logits"}
 
 
 if __name__ == "__main__":

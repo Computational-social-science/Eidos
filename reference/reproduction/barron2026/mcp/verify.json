@@ -4,8 +4,8 @@
   "require_all_tools": true,
   "server": "E:\\2026-AI4S\\Eidos\\reference\\reproduction\\barron2026\\mcp\\server.py",
   "cwd": "E:\\2026-AI4S\\Eidos\\reference\\reproduction\\barron2026\\mcp",
-  "python": "E:\\2026-AI4S\\Eidos\\.venv-repro\\Scripts\\python.exe",
-  "python_version": "3.14.5",
+  "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+  "python_version": "3.12.4",
   "fastmcp": "4.0.3",
   "expected": [
     "hard_cross_entropy",
@@ -32,6 +32,14 @@
               "type": "number"
             },
             "type": "array"
+          },
+          "dtype": {
+            "default": "float64",
+            "enum": [
+              "float32",
+              "float64"
+            ],
+            "type": "string"
           }
         },
         "required": [
@@ -53,6 +61,14 @@
               "type": "number"
             },
             "type": "array"
+          },
+          "dtype": {
+            "default": "float64",
+            "enum": [
+              "float32",
+              "float64"
+            ],
+            "type": "string"
           }
         },
         "required": [
@@ -77,6 +93,14 @@
           },
           "target": {
             "type": "integer"
+          },
+          "dtype": {
+            "default": "float64",
+            "enum": [
+              "float32",
+              "float64"
+            ],
+            "type": "string"
           }
         },
         "required": [
@@ -105,6 +129,22 @@
               "type": "number"
             },
             "type": "array"
+          },
+          "teacher_kind": {
+            "default": "probabilities",
+            "enum": [
+              "probabilities",
+              "logits"
+            ],
+            "type": "string"
+          },
+          "dtype": {
+            "default": "float64",
+            "enum": [
+              "float32",
+              "float64"
+            ],
+            "type": "string"
           }
         },
         "required": [
@@ -139,6 +179,24 @@
     },
     {
       "name": "soft_ce_gradient_sums_to_zero",
+      "tool": "soft_target_cross_entropy",
+      "success": true,
+      "artifacts_checked": 0
+    },
+    {
+      "name": "hard_ce_precision_cliff_control",
+      "tool": "hard_cross_entropy",
+      "success": true,
+      "artifacts_checked": 0
+    },
+    {
+      "name": "soft_logits_exact_stationarity_float32",
+      "tool": "soft_target_cross_entropy",
+      "success": true,
+      "artifacts_checked": 0
+    },
+    {
+      "name": "soft_logits_near_teacher_float32",
       "tool": "soft_target_cross_entropy",
       "success": true,
       "artifacts_checked": 0

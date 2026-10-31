@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-30T13:05:38+00:00",
+  "generated": "2026-10-31T11:35:33+00:00",
   "coupling": {
     "nodes": [
       "framework.decision",
@@ -488,7 +488,7 @@
   "render": {
     "ok": true,
     "quarto": "ok",
-    "pdflatex": null,
+    "pdflatex": "pdfTeX 3.141592653-2.6-1.40.29 (TeX Live 2026)",
     "formats": {
       "html": {
         "ok": true,
@@ -506,7 +506,7 @@
         "reported": true
       }
     },
-    "generated": "2026-10-23T14:08:47+00:00"
+    "generated": "2026-10-31T08:35:05+00:00"
   },
   "self_audit": {
     "gate_s": null,
@@ -520,8 +520,10 @@
       "available": true,
       "gate_s": "PASS",
       "expected": "PASS",
-      "generated": "2026-10-29T16:09:37+00:00",
-      "role": "paper-to-agent consumer (MCP tools from a converted paper, driven end to end)"
+      "generated": "2026-10-31T08:15:57+00:00",
+      "role": "paper-to-agent consumer (MCP tools from a converted paper, driven end to end)",
+      "checked_at": "2026-10-31T11:35:33+00:00",
+      "findings": []
     },
     {
       "name": "chain_cmd_fails",
@@ -565,8 +567,10 @@
       "available": true,
       "gate_s": "PASS",
       "expected": "PASS",
-      "generated": "2026-10-29T16:07:20+00:00",
-      "role": "DEMO (onboarding template, LLM consumer)"
+      "generated": "2026-10-31T07:37:00+00:00",
+      "role": "DEMO (onboarding template, LLM consumer)",
+      "checked_at": "2026-10-31T11:35:33+00:00",
+      "findings": []
     },
     {
       "name": "demo_quantitative",
@@ -574,8 +578,10 @@
       "available": true,
       "gate_s": "PASS",
       "expected": "PASS",
-      "generated": "2026-10-29T16:07:21+00:00",
-      "role": "DEMO (quantitative consumer, planted truth + render)"
+      "generated": "2026-10-31T07:37:00+00:00",
+      "role": "DEMO (quantitative consumer, planted truth + render)",
+      "checked_at": "2026-10-31T11:35:33+00:00",
+      "findings": []
     },
     {
       "name": "null_study",
@@ -584,7 +590,11 @@
       "gate_s": "FAIL",
       "expected": "FAIL",
       "generated": null,
-      "role": "negative control (expected rejection)"
+      "role": "negative control (expected rejection)",
+      "checked_at": "2026-10-31T11:35:33+00:00",
+      "findings": [
+        "[S3] N1: evidence says 0 but ../operator_calibration/docs/evidence.json/abstain_unanswerable holds 1.0"
+      ]
     },
     {
       "name": "operator_calibration",
@@ -592,8 +602,10 @@
       "available": true,
       "gate_s": "PASS",
       "expected": "PASS",
-      "generated": "2026-10-29T16:07:32+00:00",
-      "role": "LLM consumer (calibration of a typed decision operator)"
+      "generated": "2026-10-31T07:37:12+00:00",
+      "role": "LLM consumer (calibration of a typed decision operator)",
+      "checked_at": "2026-10-31T11:35:33+00:00",
+      "findings": []
     },
     {
       "name": "prose_lie",
@@ -602,7 +614,22 @@
       "gate_s": "FAIL",
       "expected": "FAIL",
       "generated": null,
-      "role": "negative control for S9 (prose contradicts its own evidence)"
+      "role": "negative control for S9 (prose contradicts its own evidence)",
+      "checked_at": "2026-10-31T11:35:33+00:00",
+      "findings": [
+        "[S9] P1: the text states [19.0] but the evidence holds 1"
+      ]
+    },
+    {
+      "name": "softmax_training",
+      "root": "E:\\2026-AI4S\\Eidos\\reference\\softmax_training",
+      "available": true,
+      "gate_s": "PASS",
+      "expected": "PASS",
+      "generated": "2026-10-31T09:18:54.095156+00:00",
+      "role": "measured optimizer-level training consumer; adapted stationarity experiment",
+      "checked_at": "2026-10-31T11:35:34+00:00",
+      "findings": []
     }
   ],
   "chain_modules": {

@@ -27,12 +27,12 @@ def _stable_log_softmax(z):
     return [v - m - total for v in z]
 
 
-def test_the_textbook_form_collapses_when_exp_overflows():
+def test_exponent_overflow_is_separate_from_gradient_collapse():
     result = numerics.probe(_naive_log_softmax, numerics.OVERFLOW_INPUT)
-    assert result["verdict"] == "COLLAPSE"
+    assert result["verdict"] == "OVERFLOW"
 
 
-def test_the_textbook_form_cancels_to_zero_in_float32():
+def test_forward_log_probability_rounds_to_zero_in_float32():
     """The paper's own observation: at float32 the naive form returns exactly 0.0 for [9, -9, -9]."""
     import numpy as np
 
@@ -41,18 +41,17 @@ def test_the_textbook_form_cancels_to_zero_in_float32():
         return [float(v) for v in values - np.log(np.sum(np.exp(values)))]
 
     result = numerics.probe(naive_float32, numerics.PAPER_INPUT)
-    assert result["verdict"] == "CANCELLATION", result
+    assert result["verdict"] == "FORWARD_ROUNDING", result
 
 
-def test_the_stabilised_form_passes_both_inputs():
-    for z in (numerics.PAPER_INPUT, numerics.OVERFLOW_INPUT):
-        result = numerics.probe(_stable_log_softmax, z)
-        assert result["verdict"] == "PASS", (z, result)
+def test_max_shift_is_sufficient_only_for_the_mild_float64_case():
+    assert numerics.probe(_stable_log_softmax, numerics.PAPER_INPUT)["verdict"] == "PASS"
+    assert numerics.probe(_stable_log_softmax, numerics.OVERFLOW_INPUT)["verdict"] == "FORWARD_ROUNDING"
 
 
-def test_a_function_that_returns_zero_is_named_a_cancellation():
+def test_a_zero_forward_result_is_not_mislabeled_gradient_cancellation():
     result = numerics.probe(lambda z: [0.0 for _ in z], numerics.PAPER_INPUT)
-    assert result["verdict"] == "CANCELLATION"
+    assert result["verdict"] == "FORWARD_ROUNDING"
 
 
 def test_the_static_scan_finds_the_textbook_shape(tmp_path: Path):
@@ -82,3 +81,33 @@ def test_the_converted_server_is_clean():
     server = (Path(__file__).resolve().parents[1] / "reference" / "reproduction" /
               "barron2026" / "mcp" / "server.py")
     assert numerics.audit_source([server]) == []
+
+
+def test_max_shift_alone_is_not_certified_as_the_paper_fix(tmp_path):
+    path = tmp_path / "max_shift.py"
+    path.write_text('import numpy as np\ndef log_softmax(z):\n'
+                    '    return z - z.max() - np.log(np.sum(np.exp(z - z.max())))\n',
+                    encoding="utf-8")
+    assert numerics.audit_source([path])
+
+
+def test_the_decimal_oracle_preserves_small_dominant_log_probability():
+    assert numerics.reference_log_softmax([1000.0, 0.0, -1000.0])[0] < 0
+
+
+def test_numerical_oracle_does_not_mutate_decimal_context():
+    import importlib
+    from decimal import localcontext, getcontext
+    with localcontext() as context:
+        context.prec = 23
+        importlib.reload(numerics)
+        numerics.reference_log_softmax([9.0, -9.0, -9.0])
+        assert getcontext().prec == 23
+
+
+def test_unparseable_source_is_not_reported_clean(tmp_path):
+    path = tmp_path / "broken.py"
+    path.write_text("def softmax(:\n", encoding="utf-8")
+    assert numerics.audit_source([path])[0]["kind"] == "unscannable-source"
+    path.write_bytes(b"#\xff\n")
+    assert numerics.audit_source([path])[0]["kind"] == "unscannable-source"

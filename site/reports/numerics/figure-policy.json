@@ -1,0 +1,22 @@
+{
+  "source": "https://research-figure-guide.nature.com/figures/building-and-exporting-figure-panels/",
+  "checked_on": "2026-10-31",
+  "width_mm": 183,
+  "height_mm": 132,
+  "font": "Arial",
+  "font_pt": 6.5,
+  "font_range_pt": [
+    6,
+    7
+  ],
+  "pdf_font_type": 42,
+  "editable_text": true,
+  "rasterized": false,
+  "colours": [
+    "#d55e00",
+    "#0072b2",
+    "#222222"
+  ],
+  "zero_policy": "exact zeros separate from logarithmic axes; no invented numerical floor",
+  "replication": "deterministic grids; no error bars or sample-based significance claims"
+}

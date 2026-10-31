@@ -78,6 +78,15 @@ framework:
       artefact: "artifacts/reproduction/<paper>.json"
       verdicts: [MATCH, MISMATCH, UNRUN]
       gate: "S12 — no MATCH, no claim"
+    numerics:
+      source: "https://arxiv.org/html/2610.31642v3"
+      command: "python tools/audit_numerics.py --projects"
+      artefact: "docs/NUMERICS.json"
+      kernels: ["framework.stable_numerics", "framework.stable_numerics_torch"]
+      qualified_dtypes: [float32, float64]
+      contract: "independent Decimal references, represented inputs, preserved dtype, relative gradients, negative controls"
+      scope: "built-in bounded kernel qualification plus heuristic static screening; each consumer backend requires its own probes"
+      exclusions: [AMP, bfloat16, higher_order_backward, full_training_outcomes]
     pointers:
       form: "/artifacts/<file>.json#/json/pointer"
       applies_to: ["S4", "S7"]

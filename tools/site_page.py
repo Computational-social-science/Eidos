@@ -8,13 +8,14 @@ two is what keeps a restyle from touching measurement, and a new metric from tou
 from __future__ import annotations
 
 import html
+import json
 import pathlib
 
 import theme
 
-# The demo's canvas script is an asset, not a string literal: it is the only executable code
-# on the page, and keeping it in its own file means a restyle cannot mangle it.
-DEMO_JS = (pathlib.Path(__file__).parent / "demo_js.js").read_text(encoding="utf-8")
+# Evidence selection is an asset; numerical measurements remain in the Python producer.
+DEMO_JS = "\n".join((pathlib.Path(__file__).parent / name).read_text(encoding="utf-8")
+                    for name in ("demo_js.js", "demo_charts.js"))
 
 CSS = theme.root_css() + """
 *{box-sizing:border-box}
@@ -176,6 +177,56 @@ canvas{width:100%;height:auto;display:block;max-width:100%}
   border:1px solid var(--line);border-radius:6px;padding:6px 10px;cursor:pointer}
 .controls button:hover{color:var(--fg);border-color:var(--accent)}
 .controls span{font:11px var(--mono);color:var(--mut)}
+.numerics-intro{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.numerics-intro p{flex:1;min-width:220px}.numerics-intro .pill{flex:none}
+.numerics-controls{display:flex;flex-wrap:wrap;gap:12px;margin:10px 0}
+.numerics-controls>div{display:grid;gap:4px;min-width:130px}
+.numerics-controls label{color:var(--mut);font-size:11px}
+.numerics-controls select{min-height:36px;width:100%;min-width:0;max-width:100%;padding:6px 30px 6px 9px;
+  border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--fg);
+  font:12px var(--mono)}
+#demo :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.numerics-panels{align-items:start}.numerics-table{font-size:11.5px}
+.numerics-table th:first-child{white-space:nowrap}.numerics-table td{font-family:var(--mono);white-space:nowrap}
+.numerics-table th.numerics-standard{color:var(--warn)}
+.numerics-table th.numerics-fixed{color:var(--accent)}
+.numerics-table tr[aria-current=true]{background:rgba(91,141,239,.08)}
+.numerics-errors{display:flex;gap:18px;flex-wrap:wrap;margin:12px 0}
+.numerics-errors dt{color:var(--mut);font-size:10.5px}.numerics-errors dd{margin:3px 0 0;
+  color:var(--fg);font:13px var(--mono)}
+.numerics-note{font-size:11px;color:var(--dim);margin:8px 0;overflow-wrap:anywhere}
+.numerics-inputs{font:10.5px/1.7 var(--mono);color:var(--mut);overflow-wrap:anywhere}
+.numerics-scope{max-width:110ch;margin-top:12px}
+.numerics-links{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:11px}
+.numerics-publication{margin:18px 0 22px;min-width:0}
+.numerics-plot{min-width:0;max-width:100%;background:var(--panel);border:1px solid var(--line);border-radius:6px}
+.numerics-plot svg{display:block;width:100%;height:300px;overflow:hidden;color:var(--body);font:12px Arial,sans-serif}
+.numerics-chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;min-width:0}
+.numerics-chart-title{font-size:12px;font-weight:500;color:var(--fg);margin:14px 16px 0}
+.numerics-legend{display:flex;flex-wrap:wrap;gap:8px 20px;color:var(--mut);font-size:12px;margin:12px 0}
+.numerics-legend span:before{content:"";display:inline-block;width:22px;border-top:2px solid #6ebcff;margin:0 7px 3px 0}
+.numerics-legend .standard:before{border-color:#f29a70;border-top-style:dashed}
+.numerics-legend .reference:before{border-color:#bdc4ce;border-top-style:dotted}
+.numerics-readout{font:12px/1.8 var(--mono);color:var(--body);min-height:2em;overflow-wrap:anywhere}
+#training-readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:4px 16px}
+.numerics-scrubber{display:grid;grid-template-columns:auto minmax(70px,1fr) auto;align-items:center;gap:12px;margin:14px 0;color:var(--mut);font-size:12px}
+.numerics-scrubber input{width:100%;min-width:0;accent-color:var(--accent);min-height:30px}
+.numerics-controls fieldset{border:0;padding:0;display:flex;gap:14px;align-items:center;min-width:0}
+.numerics-controls legend{color:var(--mut);font-size:11px;margin-bottom:7px}
+.numerics-controls fieldset label{font-size:12px;color:var(--body)}
+.numerics-publication figcaption{margin-top:10px;color:var(--body);font-size:11px;line-height:1.65;max-width:95ch}
+.numerics-figure-downloads{display:flex;gap:16px;margin-top:7px;flex-wrap:wrap}
+@media(max-width:800px){.numerics-chart-grid{grid-template-columns:1fr}}
+.numerics-repair,.numerics-training{margin:24px 0;padding-top:18px;border-top:1px solid var(--rule)}
+.numerics-remedies h4{font-size:12px;margin:12px 0 7px}
+.numerics-remedies p,.numerics-training>p{font-size:12px;color:var(--body);line-height:1.7}
+.numerics-method,.numerics-usage{margin:12px 0;color:var(--mut);font-size:11px}
+.numerics-method:not([open])>:not(summary),.numerics-usage:not([open])>:not(summary){display:none}
+.numerics-method summary,.numerics-usage summary{cursor:pointer;color:var(--body);padding:4px 0}
+.numerics-method .tw{margin:7px 0;color:var(--fg);font-size:14px}
+@media(max-width:620px){.numerics-controls{display:grid;grid-template-columns:1fr 1fr}
+  .numerics-controls>div:first-child{grid-column:1/-1}.numerics-controls>div{min-width:0}
+  .numerics-intro p{min-width:0;flex-basis:100%}}
 footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:var(--dim);
   font-size:11px;line-height:1.7}
 @media print{
@@ -186,20 +237,6 @@ footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:v
   a{color:#111}
 }
 """
-
-
-# Formulas are MathML: the page has no external font, script or network call, and the formal
-# statements stay selectable text rather than a picture.
-M_DUDT = ('<math display="inline"><mfrac><mrow><mi>d</mi><mi>u</mi></mrow>'
-          '<mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>λ</mi><mo>−</mo>'
-          '<msup><mi>u</mi><mn>2</mn></msup></math>')
-M_PSI = ('<math display="inline"><mi>ψ</mi><mo>(</mo><mi>u</mi><mo>)</mo><mo>=</mo>'
-         '<mi>S</mi><mo>(</mo><mi>u</mi><mo>)</mo><mo>−</mo><mi>u</mi><mo>=</mo>'
-         '<mn>0</mn></math>')
-M_USTAR = ('<math display="inline"><msup><mi>u</mi><mo>*</mo></msup><mo>=</mo>'
-           '<msqrt><mi>λ</mi></msqrt></math>')
-M_RHO = ('<math display="inline"><mi>ρ</mi><mo>(</mo><mi>S</mi><mo>)</mo><mo>&lt;</mo>'
-         '<mn>1</mn></math>')
 
 
 def pill(status: str) -> str:
@@ -533,51 +570,222 @@ def sec_monitor(ctx: dict) -> str:
                body)
 
 
-def sec_demo(ctx: dict) -> str:
-    """The demo: three panels and a table, all drawn by tools/demo_js.js.
+def _demo_data(ctx: dict) -> dict:
+    """Accept the existing serialized-payload convention or a prepared mapping."""
+    value = ctx["demo"]
+    return json.loads(value) if isinstance(value, str) else value
 
-    The ids here are the script's contract (`plot`, `rho_plot`, `trace`, `lam`, `lamval`,
-    `u_learned`, `err`, `rho`, `trace_lam`, `replay`, `rows`). A rewrite that renamed them
-    silently broke the demo: canvases existed, the section rendered, and every number stayed
-    at an em dash because the script threw on the first missing id.
-    """
-    body = f'''<p>The operator is fitted to one-step pairs of {M_DUDT} and Newton solves
-  {M_PSI} on the learned map. Circles are the operator; the line is the analytic {M_USTAR}.
-  Drag the parameter: the point, the reading and the Newton trace follow together.</p>
-  <div class="grid2">
-    <div class="card"><h3>Fixed point against parameter</h3>
-      <canvas id="plot" width="640" height="330" aria-label="Learned fixed point against lambda"></canvas>
-      <div class="controls"><input id="lam" type="range" min="0.2" max="1" step="0.02" value="0.5"
-        aria-label="lambda"><span>λ = <b id="lamval">0.50</b></span></div>
-      <div class="readout">
-        <div class="kv"><div class="k">learned u*</div><div class="v" id="u_learned">—</div></div>
-        <div class="kv"><div class="k">relative error</div><div class="v" id="err">—</div></div>
-        <div class="kv"><div class="k">spectral radius</div><div class="v" id="rho">—</div></div>
-      </div></div>
-    <div class="card"><h3>Stability</h3>
-      <canvas id="rho_plot" width="640" height="330" aria-label="Spectral radius at the learned fixed point"></canvas>
-      <figcaption>Below {M_RHO} a perturbation decays; the red rule is the unit threshold.</figcaption></div>
+
+def _demo_json(ctx: dict) -> str:
+    return json.dumps(_demo_data(ctx), separators=(",", ":")).replace("<", "\\u003c")
+
+
+def _demo_number(value) -> str:
+    if value is None:
+        return "undefined"
+    return f"{float(value):.5e}"
+
+
+def _demo_gradient_rows(row: dict) -> str:
+    cells = []
+    for index, (standard, fixed, reference) in enumerate(zip(
+            row["standard_gradient"], row["fixed_gradient"], row["reference_gradient"])):
+        cells.append(f'<tr><th scope="row">g<sub>{index}</sub></th>'
+                     f'<td class="num">{_demo_number(standard)}</td>'
+                     f'<td class="num">{_demo_number(fixed)}</td>'
+                     f'<td class="num" title="{html.escape(str(reference), quote=True)}">'
+                     f'{_demo_number(reference)}</td></tr>')
+    return "".join(cells)
+
+
+def sec_demo(ctx: dict) -> str:
+    """A filed numerical case study, with a fully visible no-JavaScript default."""
+    data = _demo_data(ctx)
+    rows = [row for row in data["collapse"] if row["dtype"] == "float32"]
+    selected = next((row for row in rows if row["margin"] == 18), rows[0])
+    options = "".join(f'<option value="{index}"'
+                      f'{" selected" if row is selected else ""}>{row["margin"]:g}</option>'
+                      for index, row in enumerate(rows))
+    regime = "".join(
+        f'<tr><th scope="row">{row["margin"]:g}</th>'
+        f'<td class="num">{_demo_number(row["standard_error"])}</td>'
+        f'<td class="num">{_demo_number(row["fixed_error"])}</td></tr>'
+        for row in rows if row["margin"] in (0, 10, 16, 18, 20, 36, 40, 60, 80))
+    download_labels = (("report", "Measurement report"), ("json", "Evidence JSON"),
+                       ("csv", "Cases CSV"), ("pdf", "PDF report"),
+                       ("docx", "Word report"), ("bundle", "Reproduction bundle"))
+    links = "".join(f'<a href="{html.escape(data["downloads"][key], quote=True)}"'
+                    f'{" download" if key != "report" else ""}>{label}</a>'
+                    for key, label in download_labels if key in data["downloads"])
+    verdict = html.escape(data["qualification"]["verdict"])
+    figure = '''<figure class="numerics-publication" aria-labelledby="numerics-figure-caption">
+    <div class="numerics-legend" aria-label="Series legend"><span class="standard">Standard · before repair</span>
+      <span>Fixed · after repair</span><span class="reference">Independent Decimal</span></div>
+    <div class="numerics-chart-grid" id="numerics-figure">
+      <div class="numerics-plot"><h4 class="numerics-chart-title">a · Selected gradient by class</h4>
+        <svg id="numerics-gradient-chart" role="img" aria-label="Selected measured gradients by class"></svg></div>
+      <div class="numerics-plot"><h4 class="numerics-chart-title" id="numerics-sweep-title">b · Across the measured regime</h4>
+        <svg id="numerics-sweep-chart" role="img" aria-label="Measured error sweep with selected case"></svg></div>
+    </div>
+    <div class="numerics-scrubber"><label for="numerics-scrub">Measured case</label>
+      <input type="range" id="numerics-scrub" min="0" max="40" value="9" step="1">
+      <output id="numerics-scrub-value" for="numerics-scrub">Gap 18</output></div>
+    <p class="numerics-readout" id="numerics-chart-readout" aria-live="polite" aria-atomic="true"></p>
+    <figcaption id="numerics-figure-caption"><b>Figure 1.</b> Mode × arithmetic × measured input.
+      Both panels follow the selected case. The sweep shows relative L2 error for collapse and absolute L2 error for cancellation;
+      exact zeros have a separate rail, and zero perturbation is excluded from the logarithmic x-axis.
+      Deterministic cases; no error bars. White-background publication masters cover the full regime:
+      <span class="numerics-figure-downloads"><a id="numerics-figure-svg" href="reports/numerics/figure-float32.svg" download>Print master · editable SVG</a>
+      <a id="numerics-figure-pdf" href="reports/numerics/figure-float32.pdf" download>Print master · PDF · 183 mm</a></span>
+    </figcaption>
+  </figure>'''
+    equal = next((row for row in data["cancellation"]
+                  if row["dtype"] == "float32" and row["perturbation"] == 0), {})
+    repair = f'''<div class="numerics-repair">
+    <h3>Repair strategy · computation and evidence</h3>
+    <div class="tw" tabindex="0" role="region" aria-label="Measured before and after repair">
+    <table><caption>Before repair → After repair · float32, logit gap 18 or exact teacher equality</caption>
+    <thead><tr><th scope="col">Mechanism</th><th scope="col">Before repair</th><th scope="col">After repair</th></tr></thead>
+    <tbody><tr><th scope="row">Collapse</th><td>Target derivative {_demo_number(selected['standard_gradient'][0])}<br>
+      Relative L2 error {_demo_number(selected['standard_error'])}</td>
+      <td>Target derivative {_demo_number(selected['fixed_gradient'][0])}<br>Relative L2 error {_demo_number(selected['fixed_error'])}</td></tr>
+    <tr><th scope="row">Cancellation at equality</th><td>Absolute gradient error {_demo_number(equal.get('standard_absolute_error'))}</td>
+      <td>Absolute gradient error {_demo_number(equal.get('fixed_absolute_error'))}</td></tr></tbody></table></div>
+    <div class="grid2 numerics-remedies">
+      <div><h4>Collapse: preserve the small derivative</h4>
+        <p>A max shift prevents exponent overflow; subtraction from 1 can still erase the target gradient.
+        Exclude exactly one argmax before <code>log1p</code>; compute the target derivative as a
+        <b>negative sum</b> of the non-target derivatives. Both forward and backward need the repair.</p></div>
+      <div><h4>Cancellation: retain the logit difference</h4>
+        <p>Subtracting rounded probabilities loses information near the teacher. Use teacher logits,
+        centered logit differences and <code>expm1</code>/<code>log1p</code>, then enforce the zero-sum
+        correction. Use the ordinary difference in the far branch; preserve exact equality.</p></div>
+    </div>
+    <details class="numerics-usage"><summary>Use the tested implementation · PyTorch, first-order float32/float64</summary>
+    <pre><code>from framework.stable_numerics_torch import logit_distillation
+
+loss = logit_distillation(student_logits, teacher_logits).mean()
+loss.backward()
+# For hard targets, use hard_cross_entropy(logits, targets).mean().</code></pre>
+    <p>The source bundle contains the full implementation and independent tests. AMP, bfloat16 and higher-order derivatives require separate qualification.</p></details>
+  </div>'''
+    training = data.get("training", {})
+    training_html = ""
+    if training.get("status") == "PASS":
+        training_rows = "".join(f'<tr><th scope="row">{row["seed"]}</th><td class="num">{_demo_number(row["standard_displacement"])}</td>'
+                                f'<td class="num">{_demo_number(row["fixed_displacement"])}</td></tr>' for row in training["seeds"])
+        training_html = f'''<div class="numerics-training"><h3>Optimizer-level before / after</h3>
+        <p>Three trained teachers on modular addition; each student starts with exactly the same weights and represented logits.
+        After {training['steps']:,} full-batch Adam steps, saved checkpoints independently reproduce these parameter displacements:</p>
+        <p>Teacher training accuracy: {min(r['teacher_train_accuracy'] for r in training['seeds']) * 100:.3g}–{max(r['teacher_train_accuracy'] for r in training['seeds']) * 100:.3g}%.
+        Held-out accuracy: {min(r['teacher_test_accuracy'] for r in training['seeds']) * 100:.4g}–{max(r['teacher_test_accuracy'] for r in training['seeds']) * 100:.4g}%.
+        This teacher does not establish a generalization result; the comparison tests exact stationarity.</p>
+        <div class="tw"><table><caption>Final parameter displacement (L2) · every registered seed</caption>
+        <thead><tr><th scope="col">Seed</th><th scope="col">Before repair · standard</th><th scope="col">After repair · fixed</th></tr></thead>
+        <tbody>{training_rows}</tbody></table></div>
+        <figure class="numerics-publication" aria-labelledby="training-figure-caption">
+        <div class="numerics-controls" role="group" aria-label="Training trajectory combinations">
+          <div><label for="training-seed">Registered seed</label><select id="training-seed"><option value="all">All three seeds</option>
+          {''.join(f'<option value="{r["seed"]}">Seed {r["seed"]}</option>' for r in training['seeds'])}</select></div>
+          <div><label for="training-metric">Measured endpoint</label><select id="training-metric">
+            <option value="parameter_displacement_l2">Parameter displacement · L2</option>
+            <option value="heldout_kl_float64">Held-out KL · float64 evaluation</option></select></div>
+          <div><label for="training-scale">Value scale</label><select id="training-scale">
+            <option value="linear">Linear</option><option value="symlog">Signed symmetric log · ±1e−12</option></select></div>
+          <fieldset><legend>Repair comparison</legend><label><input id="training-standard" type="checkbox" checked> Standard</label>
+            <label><input id="training-fixed" type="checkbox" checked> Fixed</label></fieldset>
+        </div>
+        <div class="numerics-legend"><span class="standard">Standard · before repair</span><span>Fixed · after repair</span></div>
+        <div class="numerics-plot"><h4 class="numerics-chart-title" id="training-chart-title">Movement from the teacher</h4>
+          <svg id="training-chart" role="img" aria-label="Measured training trajectories for selected seeds and metric"></svg></div>
+        <div class="numerics-scrubber"><label for="training-step">Adam step</label>
+          <input id="training-step" type="range" min="0" max="{training['steps']}" step="100" value="{training['steps']}">
+          <output id="training-step-value" for="training-step">{training['steps']}</output></div>
+        <p class="numerics-readout" id="training-readout" aria-live="polite" aria-atomic="true"></p>
+        <figcaption id="training-figure-caption"><b>Figure 2.</b> Seed × endpoint × scale × optimizer step, with measured checkpoints only.
+          The cursor reads the selected step; curves retain the complete trajectory. Zero is preserved on both scales.
+          Corrected mechanistic rerun after a documented batch-shape confound.
+          All three registered seeds are available. This stationarity experiment does not establish improved generalization or reproduce all paper training results.
+          <span class="numerics-figure-downloads"><a href="reports/numerics/training/trajectory.svg" download>SVG</a>
+          <a href="reports/numerics/training/trajectory.pdf" download>PDF · 183 mm</a>
+          <a href="reports/numerics/training/trajectory.csv" download>All trajectories</a>
+          <a href="reports/numerics/training/evidence.json">Training evidence</a>
+          <a href="reports/numerics/training/protocol.json">Prospective local protocol</a>
+          <a href="reports/numerics/training/failed-batch-shape.zip" download>Preserved failed run</a></span></figcaption></figure></div>'''
+    body = f'''<div class="numerics-intro">
+    <p>Two floating-point failure modes in published softmax and cross-entropy kernels.
+    <b>Softmax Collapse</b> loses the dominant target gradient;
+    <b>Softmax Cancellation</b> loses the difference between nearby distributions.</p>
+    <span class="pill {"pass" if verdict == "PASS" else "fail"}">Kernel checks {verdict}</span>
   </div>
-  <div class="grid2" style="margin-top:10px">
-    <div class="card"><h3>Newton iterates</h3>
-      <svg id="trace" viewBox="0 0 640 96" width="100%" role="img"
-        aria-label="Newton iterates from u=1" style="display:block"></svg>
-      <div class="controls"><button id="replay" type="button">Replay</button>
-        <span>λ = <b id="trace_lam">0.50</b> · one point per step</span></div></div>
-    <div class="card"><h3>Checkpoints</h3>
-      <div class="tw"><table><caption>All {ctx["grid"]} grid points are stable.</caption>
-      <thead><tr><th class="num">λ</th><th class="num">u* analytic</th><th class="num">u* learned</th>
-      <th class="num">ε</th><th class="num">ρ</th></tr></thead><tbody id="rows"></tbody></table></div></div>
+  <div class="numerics-controls" role="group" aria-label="Inspect precomputed numerical evidence">
+    <div><label for="numerics-mode">Failure mode</label><select id="numerics-mode">
+      <option value="collapse">Softmax Collapse</option>
+      <option value="cancellation">Softmax Cancellation</option></select></div>
+    <div><label for="numerics-dtype">Arithmetic</label><select id="numerics-dtype">
+      <option value="float32">float32</option><option value="float64">float64</option></select></div>
+    <div><label for="numerics-case" id="numerics-case-label">Logit gap</label>
+      <select id="numerics-case">{options}</select></div>
   </div>
-  <div class="card" style="margin-top:10px"><h3>Outside the training data</h3>
-    {ctx["extrap"]}
-    <figcaption>Fit restricted to λ ≤ 0.6 (shaded: outside the data). Max relative error
-    {ctx["inmax"]} inside, {ctx["outmax"]} outside. The operator does not fail here — the map is
-    smooth and one-dimensional, and training on λ ≤ 0.2 still holds 0.31%. That is a property of
-    this system, not a licence to extrapolate.</figcaption></div>'''
-    return sec("08", "demo", "The demo: system-level quantities from a learned operator",
-               "Fitted on short-step data, solved for fixed points and stability. Every panel is "
-               "computed at build time; the page carries its own data and needs no other file.",
+  {figure}
+  {repair}
+  {training_html}
+  <p id="numerics-explanation" class="numerics-note">One dominant target, two non-target classes.
+    The fixed kernel sums non-target gradients before negating their sum at the target.</p>
+  <div class="grid2 numerics-panels">
+    <div class="card"><h3>Inspect the gradient</h3>
+      <p id="numerics-status" class="numerics-note" aria-live="polite" aria-atomic="true">float32 ·
+        logit gap {selected["margin"]:g} · target class 0</p>
+      <div class="tw" tabindex="0" role="region" aria-label="Gradient comparison table">
+      <table class="numerics-table"><caption>Gradient by class · Independent Decimal reference</caption>
+        <thead><tr><th scope="col">Class</th><th scope="col" class="numerics-standard">Standard</th>
+        <th scope="col" class="numerics-fixed">Fixed · v3</th><th scope="col">Reference</th></tr></thead>
+        <tbody id="numerics-gradients">{_demo_gradient_rows(selected)}</tbody></table></div>
+      <dl class="numerics-errors">
+        <div><dt>Standard relative L2 error</dt><dd id="numerics-standard-error">{_demo_number(selected["standard_error"])}</dd></div>
+        <div><dt>Fixed relative L2 error</dt><dd id="numerics-fixed-error">{_demo_number(selected["fixed_error"])}</dd></div>
+      </dl>
+      <p id="numerics-details" class="numerics-note">Loss: standard {_demo_number(selected["standard_loss"])};
+        fixed {_demo_number(selected["fixed_loss"])}. Absolute gradient sum: standard
+        {_demo_number(selected["standard_residual"])}; fixed {_demo_number(selected["fixed_residual"])}.</p>
+      <p id="numerics-inputs" class="numerics-inputs"></p>
+    </div>
+    <div class="card"><h3>Across the measured regime</h3>
+      <div class="tw" tabindex="0" role="region" aria-label="Precision regime table">
+      <table class="numerics-table"><caption id="numerics-regime-caption">Selected logit gaps · float32 · relative L2 gradient error</caption>
+        <thead><tr><th scope="col" id="numerics-regime-axis">Logit gap</th>
+        <th scope="col" class="numerics-standard">Standard</th>
+        <th scope="col" class="numerics-fixed">Fixed · v3</th></tr></thead>
+        <tbody id="numerics-regime">{regime}</tbody></table></div>
+      <p class="numerics-note">A zero reference gradient makes relative error undefined.
+        The class-by-class values remain visible. Logit gap denotes the dominant logit
+        minus either other logit; it differs from the paper’s log-sum-exp margin.</p>
+    </div>
+  </div>
+  <details class="numerics-method"><summary>Numerical kernels · Eqs. 5–9</summary>
+    <p>Exclude exactly one argmax before log1p. Hard-target gradients use a negative sum.
+      Distillation uses centered logit deltas for the log-ratio s; far entries use q − p.</p>
+    <div class="tw"><math aria-label="Fixed log softmax"><mrow><mi>log</mi><msub><mi>q</mi><mi>k</mi></msub>
+      <mo>=</mo><msub><mover><mi>z</mi><mo>~</mo></mover><mi>k</mi></msub><mo>−</mo>
+      <mi>log1p</mi><mo>(</mo><munder><mo>∑</mo><mrow><mi>j</mi><mo>≠</mo><msub><mi>i</mi><mi>max</mi></msub></mrow></munder>
+      <msup><mi>e</mi><msub><mover><mi>z</mi><mo>~</mo></mover><mi>j</mi></msub></msup><mo>)</mo></mrow></math></div>
+    <div class="tw"><math aria-label="Stable hard target derivative"><mrow><msub><mi>g</mi><mi>t</mi></msub>
+      <mo>=</mo><mo>−</mo><munder><mo>∑</mo><mrow><mi>j</mi><mo>≠</mo><mi>t</mi></mrow></munder>
+      <msub><mi>g</mi><mi>j</mi></msub></mrow></math></div>
+    <div class="tw"><math aria-label="Stable distillation derivative"><mrow><msub><mi>u</mi><mi>k</mi></msub>
+      <mo>=</mo><msub><mi>p</mi><mi>k</mi></msub><mi>expm1</mi><mo>(</mo><msub><mi>s</mi><mi>k</mi></msub><mo>)</mo>
+      <mo>,</mo><mspace width="1em"/><msub><mi>g</mi><mi>k</mi></msub><mo>=</mo><msub><mi>u</mi><mi>k</mi></msub>
+      <mo>−</mo><msub><mi>q</mi><mi>k</mi></msub><munder><mo>∑</mo><mi>i</mi></munder><msub><mi>u</mi><mi>i</mi></msub></mrow></math></div>
+  </details>
+  <p class="numerics-note numerics-scope">Offline, precomputed NumPy measurements of the v3 numerical kernels;
+    selectors only choose filed cases. This does not reproduce the paper’s grokking or training
+    experiments. Finite exponent range and input quantization still apply.</p>
+  <div class="numerics-links"><a href="{html.escape(data["paper"], quote=True)}">Paper · {html.escape(data["paper_version"])}</a>
+    <a href="reports/numerics/paper2agent.md">Existing Paper2Agent integration</a>{links}</div>
+  <noscript><p class="numerics-note">JavaScript is disabled. The default measured case is shown above;
+    the evidence downloads contain both modes and both dtypes.</p></noscript>'''
+    return sec("08", "demo", "The demo: Softmax Collapse &amp; Cancellation",
+               "Published numerical fixes, independently checked and exposed through the existing Paper2Agent chain.",
                body)
 
 
@@ -585,7 +793,7 @@ def sec_start() -> str:
     body = '''<div class="grid2">
   <div class="card"><h3>Instantiate or register</h3>
 <pre><code># new project: inherits gates, tracking, rendering
-./bootstrap_project.sh my_study
+bash bootstrap_project.sh my_study
 
 # existing repository: pointer, not a copy
 cat &gt; projects/my_study/project.yaml &lt;&lt;'YAML'
@@ -618,7 +826,7 @@ MathML, the demo is inline, and every number is computed at build time.</p>'''
 def sec_limits() -> str:
     body = '''<div class="stack">
   <p><b>What is measured.</b> Tests, coverage, chain verdicts, Lean runs, decision calibration,
-  and the demo's error against a closed form.</p>
+  and the demo's error against independent high-precision arithmetic.</p>
   <p><b>What is not.</b> That the gates improve a project's science — that would need a control
   group this programme does not have. That the interfaces generalise beyond three sealed
   fixtures. That a project's PDF path works everywhere: Quarto is installed outside the
@@ -715,7 +923,8 @@ makes is checked against an artefact.">
 <br>Machine record: <a href="../docs/SELF_AUDIT.json">docs/SELF_AUDIT.json</a> ·
 <a href="../docs/HEALTH.md">docs/HEALTH.md</a> · <a href="../README.md">README</a></footer>
 </main></div>
-<script>{DEMO_JS.replace("__DEMO__", ctx["demo"])}</script>
+<script id="demo-data" type="application/json">{_demo_json(ctx)}</script>
+<script>{DEMO_JS}</script>
 <script>{JS}</script>
 </body></html>'''
     return head

@@ -84,5 +84,6 @@ reference/reproduction/*/dist/
 .scratch/
 docs/status/watchdog_state.json
 docs/status/monitor.lock
+docs/status/running.json
 docs/status/supervisor.out
 docs/status/_probe.py

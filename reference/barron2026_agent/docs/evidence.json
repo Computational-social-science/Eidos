@@ -1,7 +1,13 @@
 {
-  "generated": "2026-10-29T16:09:37+00:00",
-  "recorded_at": "2026-10-29T16:09:37+00:00",
+  "generated": "2026-10-31T08:15:57+00:00",
+  "recorded_at": "2026-10-31T08:15:57+00:00",
   "paper": "barron2026-softmax-fix",
+  "provenance": {
+    "paper_version": "arxiv:2610.31642v3",
+    "backend": "numpy 2.5.4",
+    "python": "3.12.4",
+    "scope": "bounded NumPy float64 hard-target and float32 logits-distillation regression; no training reproduction"
+  },
   "server": {
     "path": "reference/reproduction/barron2026/mcp/server.py",
     "inventory": [
@@ -14,26 +20,86 @@
   "claims": {
     "C1": {
       "matches_paper_value": true,
-      "observed": -3.0459958111350716e-08,
+      "observed": -3.0459959025520705e-08,
       "expected": -3.046e-08
     },
     "C2": {
       "grad_sum_is_zero": true,
-      "grad_sum": 8.943546729315933e-16,
+      "grad_sum": 0.0,
       "gradient": [
-        -3.0459957667261506e-08,
+        -3.045995856161618e-08,
         1.522997928080809e-08,
         1.522997928080809e-08
       ]
     }
   },
   "control": {
-    "unnormalised_teacher_grad_sum": -0.09999999999999998,
-    "expected": -0.10000000000000009,
+    "input": [
+      40,
+      0,
+      0
+    ],
+    "dtype": "float64",
+    "target": 0,
+    "standard_target": 0.0,
+    "fixed_target": -8.496708510583178e-18,
+    "zero_sum_relative_residual": 0.0,
+    "design": "posthoc regression qualification",
     "fired": true
   },
+  "qualification": {
+    "design": "posthoc regression qualification",
+    "inputs": {
+      "student": [
+        1.9999998807907104,
+        1.0000001192092896,
+        0.0
+      ],
+      "teacher": [
+        2.0,
+        1.0,
+        0.0
+      ],
+      "represented_perturbation": [
+        -1.1920928955078125e-07,
+        1.1920928955078125e-07,
+        0.0
+      ]
+    },
+    "soft_equal": {
+      "verdict": "PASS",
+      "dtype": "float32",
+      "loss": 0.8323955535888672,
+      "gradient": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "gradient_relative_error": 0.0,
+      "loss_relative_error": 3.393947816314133e-08,
+      "zero_sum_relative_residual": 0.0,
+      "tolerance": 5e-05,
+      "contract_matches": true
+    },
+    "soft_near": {
+      "verdict": "PASS",
+      "dtype": "float32",
+      "loss": 0.8323955535888672,
+      "gradient": [
+        -4.5955044214451846e-08,
+        4.144190413057913e-08,
+        4.5131418602295525e-09
+      ],
+      "gradient_relative_error": 6.122749609071066e-08,
+      "loss_relative_error": 3.393948442129996e-08,
+      "zero_sum_relative_residual": 1.932711452500108e-08,
+      "tolerance": 5e-05,
+      "contract_matches": true
+    },
+    "verdict": "PASS"
+  },
   "softmax": {
-    "sum": 1.0000000000000009,
+    "sum": 1.0,
     "is_normalised": true
   },
   "power": {

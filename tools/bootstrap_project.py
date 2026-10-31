@@ -11,9 +11,12 @@ from __future__ import annotations
 
 import argparse
 import os
+import re
 import shutil
 import sys
 from pathlib import Path
+
+import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE = ROOT / "reference" / "demo_onboarding"
@@ -39,17 +42,26 @@ def main(argv: list[str] | None = None) -> int:
                     help="scaffold only; do not add a registry entry (used by the release rehearsal)")
     args = ap.parse_args(argv)
 
+    if not re.fullmatch(r"[a-z][a-z0-9_]*", args.name):
+        print("[FAIL] name must start with a lowercase letter and contain only lowercase letters, digits or underscores")
+        return 1
+
     if not TEMPLATE.is_dir():
         print(f"[FAIL] template missing: {TEMPLATE}")
         return 1
     dest = Path(args.dest).expanduser()
     if not dest.is_absolute():
         dest = (ROOT / dest).resolve()
-    if dest.exists() and any(dest.iterdir()):
+    if dest.exists() and (not dest.is_dir() or any(dest.iterdir())):
         print(f"[FAIL] {dest} exists and is not empty; refusing to overwrite")
         return 1
 
-    shutil.copytree(TEMPLATE, dest)
+    registry = ROOT / "projects" / args.name
+    if not args.no_register and registry.exists():
+        print(f"[FAIL] {registry} is already registered; refusing to overwrite")
+        return 1
+
+    shutil.copytree(TEMPLATE, dest, dirs_exist_ok=True)
     for rel in ("docs/evidence.json",):
         (dest / rel).unlink(missing_ok=True)
 
@@ -57,19 +69,21 @@ def main(argv: list[str] | None = None) -> int:
         print(f"created {dest} (not registered)")
         return 0
 
-    registry = ROOT / "projects" / args.name
     registry.mkdir(parents=True, exist_ok=True)
     spec = registry / "project.yaml"
-    spec.write_text(
-        f"name: {args.name}\n"
-        f"root: {Path(os.path.relpath(dest, registry)).as_posix()}\n\n"
-        "role: consumer (scaffolded from the onboarding template)\n\n"
-        'gate_command: ["python", "build_evidence.py"]\n'
-        'test_command: ["python", "build_evidence.py"]\n'
-        "expects:\n  - docs/evidence.json\n\n"
-        "validity_register: analysis/CLAIMS.yaml\n"
-        "validity_document: docs/REPORT.md\n"
-        "expected_gate_s: PASS\n", encoding="utf-8")
+    registration = {
+        "name": args.name,
+        "root": _root_field(dest, registry),
+        "role": "consumer (scaffolded from the onboarding template)",
+        "gate_command": ["python", "build_evidence.py"],
+        "test_command": ["python", "build_evidence.py"],
+        "expects": ["docs/evidence.json"],
+        "validity_register": "analysis/CLAIMS.yaml",
+        "validity_document": "docs/REPORT.md",
+        "expected_gate_s": "PASS",
+    }
+    spec.write_text(yaml.safe_dump(registration, sort_keys=False, allow_unicode=True),
+                    encoding="utf-8")
 
     print(f"created {dest}")
     print(f"registered {spec.relative_to(ROOT)}")

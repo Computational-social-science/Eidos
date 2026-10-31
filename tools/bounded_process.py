@@ -6,9 +6,11 @@ import signal
 import subprocess
 import sys
 from pathlib import Path
+from collections.abc import Mapping
 
 
-def run_tree(args: list[str], *, cwd: Path, timeout: float) -> subprocess.CompletedProcess:
+def run_tree(args: list[str], *, cwd: Path, timeout: float,
+             env: Mapping[str,str] | None = None) -> subprocess.CompletedProcess:
     if os.name == "nt":
         # The helper joins a kill-on-close Job before starting the requested tool.
         # Killing the helper therefore also kills tool/Lean/etc descendants.
@@ -17,9 +19,10 @@ def run_tree(args: list[str], *, cwd: Path, timeout: float) -> subprocess.Comple
                               stdin=subprocess.DEVNULL,
                               capture_output=True, text=True, encoding="utf-8",
                               errors="replace", timeout=timeout,
-                              creationflags=subprocess.CREATE_NO_WINDOW)
+                              creationflags=subprocess.CREATE_NO_WINDOW, env=env)
     process = subprocess.Popen(args, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                               text=True, encoding="utf-8", errors="replace", start_new_session=True)
+                               text=True, encoding="utf-8", errors="replace", start_new_session=True,
+                               stdin=subprocess.DEVNULL, env=env)
     try:
         stdout, stderr = process.communicate(timeout=timeout)
         return subprocess.CompletedProcess(args, process.returncode, stdout, stderr)

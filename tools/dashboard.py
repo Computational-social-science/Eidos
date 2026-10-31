@@ -825,7 +825,7 @@ CSS = """
 .consumer-head strong{font-size:12.5px;font-weight:600;overflow-wrap:anywhere}
 .consumer-state{font-size:11px;color:var(--consumer-state);letter-spacing:.04em;white-space:nowrap}
 .consumer-card[data-state=PASS] .consumer-state{color:#6cbf6e}
-.consumer-verdict,.consumer-meta{font-size:12px;line-height:1.5;overflow-wrap:anywhere;color:#b7c0ce}
+.consumer-verdict,.consumer-meta{font-size:12px;line-height:1.5;overflow-wrap:anywhere;color:var(--mut)}
 .consumer-meta{color:#98a2b3}
 @media(max-width:1000px){.consumer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.consumer-grid{grid-template-columns:1fr}}

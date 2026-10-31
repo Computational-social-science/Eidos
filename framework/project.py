@@ -82,6 +82,8 @@ class ProjectSpec:
     #: Opt-in scientific gate vocabulary; other nonzero exits remain ERROR.
     exit_statuses: dict[int, str] = dataclasses.field(default_factory=dict)
     numerics: str = "optional"
+    #: Additional local validator helpers, configuration and data that bind a cached verdict.
+    validity_inputs: list[str] = dataclasses.field(default_factory=list)
 
     def effective_config(self) -> dict[str, Any]:
         """Global policy with this project's overrides applied."""
@@ -175,6 +177,7 @@ def load_project(project_file: Path, allow_missing: bool = False) -> ProjectSpec
         validity_document=str(data.get("validity_document") or ""),
         validity_external_inputs=_as_argv(data.get("validity_external_inputs"),
                                          "validity_external_inputs", project_file),
+        validity_inputs=_as_argv(data.get("validity_inputs"), "validity_inputs", project_file),
         expected_gate_s=str(data.get("expected_gate_s") or ""),
         overrides=dict(data.get("overrides") or {}),
         available=available,
@@ -281,7 +284,7 @@ def run_command(spec: ProjectSpec, kind: str = "gate", timeout: int = 900) -> Pr
     else:
         status = spec.exit_statuses.get(exit_code, "ERROR")
 
-    if status == "PASS" and spec.expects:
+    if kind == "gate" and status == "PASS" and spec.expects:
         missing = [rel for rel in spec.expects if not (spec.root / rel).exists()]
         if missing:
             status = "FAIL"

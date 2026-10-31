@@ -1,0 +1,48 @@
+{
+  "recorded_at": "2026-10-31T20:28:03.224801+00:00",
+  "status": "PENDING_RUNTIME_MIGRATION",
+  "configured_project_python": "C:/Users/Administrator/.venvs/eidos-py312/Scripts/python.exe",
+  "observed_processes": [
+    {
+      "pid": 16616,
+      "parent": 22704,
+      "cwd": "E:\\2026-AI4S\\Eidos",
+      "exe": "C:\\Python314\\python.exe",
+      "created": 1793427859.9206855,
+      "script": "tools/refresh_chains.py",
+      "loop": true
+    },
+    {
+      "pid": 25476,
+      "parent": 22704,
+      "cwd": "E:\\2026-AI4S\\Eidos",
+      "exe": "C:\\Python314\\python.exe",
+      "created": 1793427874.917099,
+      "script": "tools/refresh_chains.py",
+      "loop": true
+    },
+    {
+      "pid": 50656,
+      "parent": 35004,
+      "cwd": "E:\\2026-AI4S\\Eidos",
+      "exe": "C:\\Python314\\python.exe",
+      "created": 1793462712.6436653,
+      "script": "tools\\monitor_supervisor.py",
+      "loop": false
+    },
+    {
+      "pid": 55564,
+      "parent": 50656,
+      "cwd": "E:\\2026-AI4S\\Eidos",
+      "exe": "C:\\Python314\\python.exe",
+      "created": 1793462712.7177167,
+      "script": "tools/serve_site.py",
+      "loop": false
+    }
+  ],
+  "all_recorded_old_processes_still_live": true,
+  "migration_performed": false,
+  "automatic_approval": "Process stop/restart command rejected with blocked by policy; no more specific reason was returned. No alternate termination path was attempted.",
+  "source_fix_scope": "New scheduler starts use loop/tick OS ownership and hidden bounded workers. Old already-running interpreter instances have not loaded those changes.",
+  "stability_scope": "Existing strict soak retains prior failures; no clean-24h or reboot/logon claim."
+}

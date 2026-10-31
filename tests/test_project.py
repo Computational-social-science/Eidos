@@ -113,6 +113,12 @@ def test_gate_command_must_be_a_list(tmp_path):
         load_project(cfg)
 
 
+def test_validator_inputs_are_explicit_files_not_a_shell_string(tmp_path):
+    projects=_make_project(tmp_path,extra='validity_inputs: "helper.py data.json"\n')
+    with pytest.raises(ValueError,match='validity_inputs must be a list'):
+        load_project(projects/'demo/project.yaml')
+
+
 def test_gate_command_is_required(tmp_path):
     projects = _make_project(tmp_path)
     cfg = projects / "demo" / "project.yaml"
@@ -225,6 +231,15 @@ def test_exec_runs_the_declared_test_command(tmp_path):
     run = run_command(load_project(cfg), "test")
     assert run.status == "PASS"
     assert (repo / "ran.txt").read_text(encoding="utf-8") == "yes"
+
+
+def test_test_command_does_not_have_to_produce_the_gates_research_outputs(tmp_path):
+    projects=_make_project(tmp_path,extra='expects: [docs/evidence.json]\n')
+    cfg=projects/'demo/project.yaml'
+    cfg.write_text(cfg.read_text().replace('["{python}", "-m", "pytest", "-q"]',
+                                          '["{python}", "-c", "pass"]'))
+    result=run_command(load_project(cfg),'test')
+    assert result.status=='PASS',result.stderr_tail
 
 
 def test_missing_project_root_raises_locally_but_is_skippable_in_ci(tmp_path):

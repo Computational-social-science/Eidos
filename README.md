@@ -1,6 +1,6 @@
 # EIDOS — scientific claims, executable evidence
 
-**Version 0.4.3** · initial development · local-first · MIT framework
+**Version 0.4.4** · initial development · local-first · MIT framework
 
 [![CI](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml/badge.svg)](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
 
@@ -61,8 +61,9 @@ Standalone case downloads:
 - [Numerical kernels and stationarity case](site/reports/numerics/reproduce.zip)
 - [Complete precision/epsilon matrix](site/reports/softmax-matrix/reproduce.zip)
 
-Both bundles contain checksums and reproduction instructions. Generic Docker/Binder
-packaging is still incomplete; the case bundles do not certify the generic packager.
+Both bundles contain checksums and reproduction instructions. The generic Python
+exporter has bounded Windows/offline-container acceptance; the case bundles and
+that acceptance do not qualify remote Binder or every project's runtime.
 A new-machine installation and an independent project's full lifecycle remain
 release acceptance work, tracked in the completeness ledger.
 
@@ -83,6 +84,11 @@ A registration points to an existing checkout and declares commands, required
 outputs, evidence documents and expected outcomes. Projects retain their own code
 and data. A gate that exits successfully without its required artifacts is refused.
 Missing tools and unperformed checks retain explicit states.
+
+Cached scientific verdicts bind the Python gate entry and explicitly declared
+validator/data/configuration inputs. Declare imported helpers and module entry
+files in `validity_inputs`; this is not automatic dependency discovery. See the
+[integration contract and independent intake evidence](docs/PROJECT_INTEGRATION.md).
 
 The reusable research contract is:
 

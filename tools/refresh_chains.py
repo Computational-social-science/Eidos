@@ -24,12 +24,15 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import os
 import subprocess
 import sys
 import time
+from contextlib import ExitStack
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT))
 STATUS = ROOT / "docs" / "status"
 CHAINS = STATUS / "chains.json"
 HEARTBEAT = STATUS / "scheduler.json"
@@ -64,10 +67,28 @@ def due(report: dict, interval_min: int) -> tuple[list[str], dict[str, float]]:
 
 def run_chain(name: str) -> dict:
     started = now()
-    proc = subprocess.run([sys.executable, "tools/audit_chains.py", "--only", name],
-                          cwd=ROOT, capture_output=True, text=True, timeout=900)
-    return {"chain": name, "exit": proc.returncode, "ms": round((now() - started) * 1000, 1),
-            "tail": (proc.stdout or proc.stderr or "").strip().splitlines()[-1:]}
+    from tools.bounded_process import run_tree
+    try:
+        proc = run_tree([sys.executable, "tools/audit_chains.py", "--only", name, '--json'],
+                        cwd=ROOT, timeout=900)
+    except subprocess.TimeoutExpired:
+        return {'chain':name,'exit':124,'status':'ERROR','ms':round((now()-started)*1000,1),
+                'tail':['chain timed out after 900s; owned process tree terminated']}
+    try:
+        rows=json.loads(proc.stdout)
+        if (not isinstance(rows,list) or len(rows)!=1 or not isinstance(rows[0],dict)
+                or rows[0].get('chain')!=name or rows[0].get('status') not in {'PASS','SKIP','FAIL','ERROR'}):
+            raise ValueError('expected exactly one named chain verdict')
+        status=rows[0]['status']
+        if (proc.returncode==0)!=(status in {'PASS','SKIP'}):
+            raise ValueError('chain exit and structured verdict disagree')
+        tail=[str(rows[0].get('detail',''))[-1000:]]
+        code=proc.returncode
+    except (ValueError,TypeError):
+        status='ERROR';code=proc.returncode or 2
+        tail=['invalid or contradictory structured chain result',
+              (proc.stderr or proc.stdout or '')[-1000:]]
+    return {'chain':name,'exit':code,'status':status,'ms':round((now()-started)*1000,1),'tail':tail}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -79,6 +100,24 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--loop", action="store_true",
                     help="keep ticking every --interval minutes (the scheduler itself)")
     args = ap.parse_args(argv)
+    if args.interval<1:
+        ap.error('--interval must be positive')
+    if args.loop and (args.report or args.dry_run):
+        ap.error('--loop cannot be combined with --report or --dry-run')
+
+    from framework.artifacts import output_lock
+    with ExitStack() as ownership:
+        if not (args.report or args.dry_run):
+            kind='scheduler-loop' if args.loop else 'scheduler-tick'
+            try:
+                ownership.enter_context(output_lock(STATUS/kind,timeout=0))
+            except TimeoutError:
+                print(f'{kind} is already owned; no duplicate work started')
+                return 0 if args.loop else 75
+        return _dispatch(args)
+
+
+def _dispatch(args) -> int:
 
     if args.loop:
         # No elevation is available on this host for a scheduled task, and an agent-based cron
@@ -114,7 +153,7 @@ def main(argv: list[str] | None = None) -> int:
         ran.append(result)
         if result["exit"] != 0:
             failed.append(name)
-        print(f"{'PASS' if result['exit'] == 0 else 'FAIL'}  {name:<28} "
+        print(f"{result['status']}  {name:<28} "
               f"{result['ms']:>8.0f} ms")
 
     HEARTBEAT.parent.mkdir(parents=True, exist_ok=True)
@@ -128,8 +167,12 @@ def main(argv: list[str] | None = None) -> int:
         "failed": failed,
         "ticks": int(beat.get("ticks") or 0) + 1,
         "failures_total": int(beat.get("failures_total") or 0) + len(failed),
+        "pid": os.getpid(), "python": sys.executable,
+        "python_version": sys.version.split()[0],
     }
-    HEARTBEAT.write_text(json.dumps(beat, indent=2), encoding="utf-8")
+    from framework.artifacts import atomic_output
+    with atomic_output(HEARTBEAT) as temporary:
+        temporary.write_text(json.dumps(beat, indent=2), encoding="utf-8")
 
     if not stale:
         print("nothing due; heartbeat refreshed")

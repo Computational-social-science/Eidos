@@ -10,13 +10,14 @@ import dataclasses
 import hashlib
 import json
 import os
+import re
 import tempfile
 from pathlib import Path
 
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-SCOPE = "registry, framework Python sources, and declared Gate S file inputs"
+SCOPE = "registry, framework Python sources, Python gate entry, explicit validity_inputs and Gate S file handles"
 
 
 def _digest(value) -> str:
@@ -71,6 +72,38 @@ def capture_inputs(spec, root: Path = ROOT) -> dict:
             add(path.relative_to(root), root)
         for rel in ("tools/audit_validity.py", "tools/consumer_snapshot.py"):
             add(rel, root)
+        # Bind the directly executed Python script, not just the argv spelling.
+        # Imported helpers and module-mode/non-Python commands need validity_inputs.
+        command=spec.gate_command
+        entry=None
+        if command and Path(command[0]).suffix.lower() in {'.py','.pyw'}:
+            entry=command[0]
+        elif len(command)>1 and (command[0]=='{python}' or
+                re.fullmatch(r'python(?:\d+(?:\.\d+)*)?(?:\.exe)?',Path(command[0]).name,re.I)):
+            args=iter(command[1:])
+            for arg in args:
+                if arg.startswith('-m'):
+                    if not spec.validity_inputs:
+                        raise ValueError('module-mode gate requires explicit validity_inputs')
+                    break
+                if arg.startswith('-c') or arg=='-':
+                    break
+                if arg in {'-X','-W','--check-hash-based-pycs'}:
+                    if next(args,None) is None:
+                        raise ValueError('Python gate option has no value')
+                elif arg.startswith(('-X','-W','--check-hash-based-pycs=')):
+                    continue
+                elif arg=='--':
+                    entry=next(args,None)
+                    break
+                elif arg.startswith('-'):
+                    if len(arg)<2 or any(c not in 'bBdEiIOPqRsSuvVx' for c in arg[1:]):
+                        raise ValueError(f'cannot bind unknown Python gate option: {arg}')
+                elif not arg.startswith('-'):
+                    entry=arg
+                    break
+        for rel in ([entry] if entry else []) + spec.validity_inputs:
+            add(rel)
         for rel in [spec.validity_register, *spec.validity_document.split(","),
                     *spec.expects, "docs/evidence.json",
                     "artifacts/literature/proofpath.json", "artifacts/evaluation/stat_recompute.json"]:

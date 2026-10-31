@@ -1,6 +1,10 @@
 # Eidos：可复核科研流水线技术框架
 
-**实现基线：0.4.3（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
+**实现基线：0.4.4（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
+
+运行部署边界：核查发现现存监控及两条旧链路循环仍使用全局 Python 3.14；本地启动配置已选择项目 Python 3.12，但受控停止/重启被自动审批以 blocked by policy 拒绝，未执行、未改道终止。新增调度循环源码已补 OS 生命周期锁、单次 tick 互斥、隐藏子进程树超时清理及原子心跳；这些规则不会追溯应用到旧进程。运行迁移仍为 PENDING，不能以网页可访问或源码测试通过替代实际部署验收。详见 docs/MONITOR-RUNTIME-MIGRATION-2026-11-01.json。
+
+0.4.4 安全接入与输入绑定修复：发布演练及其缺失输出负控改用独占临时目录，不再覆盖或删除固定同名项目；清理前核对目录身份，替换目录予以保留并报错。失败的接入和覆盖率生成不能沿用旧通过，超时清理覆盖完整子孙进程。消费者快照现绑定 Python 验证入口与显式 validity_inputs（辅助代码、配置、数据）；模块入口缺声明、未知解释器选项或未授权外部文件不能绑定。gate 的必需输出不再误用于实验前的 test 阶段。监控缺包探测不擅自启用 user-site；不可用/非有限测量显式标为 UNOBSERVABLE，并保留诊断、输出有效 JSON；运行标记只读取一次以避免消失竞态。独立 HPAF 接入已用 1,033 条现有记录验证正常报告、坏 JSON 缺输出拒绝、错误计数拒绝及源码/语料变化撤销旧状态；首次过强声明的 S4 拒绝如实保留，未补造预注册。此为接入与绑定证据，不代表完整科研生命周期、科研新颖性或出版验收；见 docs/INDEPENDENT-INTAKE-ACCEPTANCE.json。
 
 **0.4.2 新增交付合同（发布状态另由标签与版本履历证明）：** 通用交付包改为显式文件清单、锁定依赖、复现与验证两步命令、必需输出及种子/数据/配置版本；生成包不再等同于执行通过。新增运行器拒绝旧输出、输入或清单变更以及 Windows 路径别名冲突。独立安装与执行验收、Docker/Binder 状态分别记录于 `docs/PACKAGE-ACCEPTANCE.json`；合同见 [可执行交付](docs/EXECUTABLE-DELIVERY.md)。容器镜像拉取失败不能记为容器验收通过；本轮不扩展既有数值科学结论。
 
@@ -182,7 +186,11 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 
 相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。
 
-本轮验收：645 passed、4 个可选 Torch 模块 skipped，框架源码覆盖率 69%，11 条链为 10 PASS/1 SKIP。既有 CUDA 16 项已独立通过；本轮未修改数值后端。
+<!-- self-audit:start -->
+本轮验收：701 passed、0 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 69%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
+<!-- self-audit:end -->
+
+既有 CUDA 16 项已独立通过；本轮未修改数值后端。
 
 ## 10. 实时运行总览：视觉与状态语义复核（2026-11-01）
 

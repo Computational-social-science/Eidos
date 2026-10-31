@@ -3,11 +3,18 @@
 Every number here is produced by `tools/record_self_audit.py` into `docs/SELF_AUDIT.json`
 and re-checked by `--check` in CI; none is typed by hand.
 
+Successful record publication synchronizes the measured test counts, item/module
+skips, coverage and chain counts here and in the technical framework's current
+summary. A missing coverage measurement or document marker aborts publication;
+failed writes restore prior records. `--check` does not publish these records or headline documents; its measurements
+still produce runtime/test artifacts.
+Historical CUDA results retain their original separate qualification scope.
+
 ## Current state
 
 | dimension | measurement | verdict |
 |---|---|---|
-| unit tests | **645 collected**, 645 passed; 4 optional Torch modules skipped in project env (16 tests separately passed on CUDA Python) | ✅ |
+| unit tests | **701 collected**, 701 passed; 0 item skips, 4 collection-level optional-module skips (historical separate CUDA qualification: 16 passed) | ✅ |
 | coverage of `framework/` | **69%**, source-only scope including unexecuted modules; future no-regression by >1 point | measured |
 | chain audit | **11 chains: 10 PASS, 1 SKIP, 0 FAIL/ERROR** | ✅ |
 | Gate S on the reference fixture | PASS (valid register) and FAIL (mutated copy) | ✅ |
@@ -16,7 +23,7 @@ and re-checked by `--check` in CI; none is typed by hand.
 | consumers | `demo_onboarding`, `demo_quantitative`, `operator_calibration`, `null_study`, `prose_lie`, `barron2026_agent`, plus measured `softmax_training` and `softmax_matrix` (saved models and final gradient endpoints independently validated) | 8 |
 | render chain | html 19 KB, pdf 13 KB, docx 11 KB from one Quarto source (`docs/RENDER_CHECK.json`) | ✅ |
 | external contracts | Quarto 1.10.19 (`tools/quarto`, via `QUARTO_BIN`), DVC, MLflow, decision service, BootLoops | ✅ |
-| coupling | 0 import cycles across 108 scanned modules; 5 path-pattern matches in documentation/regex, manually reviewed | measured heuristic |
+| coupling | 0 import cycles across 109 scanned modules; 5 path-pattern matches in documentation/regex, manually reviewed | measured heuristic |
 
 Additional instruments, each with its own evidence file:
 
@@ -91,4 +98,4 @@ Matrix acceptance: 36 complete trajectories, 1,836 points, 36 independent final 
 
 Consumer snapshot acceptance: changed declarations revoke cached verdicts, background checks preserve sampling, and timeout cleanup owns descendants. See [functional completeness](FUNCTIONAL_COMPLETENESS.md). Generic Docker/Binder packaging remains incomplete.
 
-Release observation on 2026-11-01: strict soak remains RUNNING after 682 observations, with 47 failures retained. This is not a clean 24-hour acceptance. See [dated snapshot](SOAK-OBSERVATION-2026-11-01.json).
+Release observation on 2026-11-01: strict soak remains RUNNING after 769 observations, with 105 failures retained. This is not a clean 24-hour acceptance. See [dated snapshot](SOAK-OBSERVATION-2026-11-01.json).

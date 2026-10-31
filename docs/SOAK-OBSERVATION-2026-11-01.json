@@ -7,463 +7,12 @@
   "max_age_s": 45.0,
   "restart_policy": "sequence regression fails the strict soak",
   "scope": "periodic HTTP observations; no reboot or continuous-availability proof",
-  "elapsed_s": 40900.640999999996,
-  "observations": 682,
-  "failure_count": 47,
-  "sequence_advances": 681,
+  "elapsed_s": 46125.657,
+  "observations": 769,
+  "failure_count": 105,
+  "sequence_advances": 768,
   "restart_events": 0,
   "recent_samples": [
-    {
-      "elapsed_s": 33753.657,
-      "seq": 10419,
-      "failures": []
-    },
-    {
-      "elapsed_s": 33813.765999999996,
-      "seq": 10423,
-      "failures": []
-    },
-    {
-      "elapsed_s": 33873.829,
-      "seq": 10427,
-      "failures": []
-    },
-    {
-      "elapsed_s": 33933.875,
-      "seq": 10431,
-      "failures": []
-    },
-    {
-      "elapsed_s": 33993.937999999995,
-      "seq": 10435,
-      "failures": []
-    },
-    {
-      "elapsed_s": 34053.985,
-      "seq": 10439,
-      "failures": []
-    },
-    {
-      "elapsed_s": 34114.047,
-      "seq": 10443,
-      "failures": []
-    },
-    {
-      "elapsed_s": 34174.11,
-      "seq": 10447,
-      "failures": []
-    },
-    {
-      "elapsed_s": 34234.172,
-      "seq": 10451,
-      "failures": []
-    },
-    {
-      "elapsed_s": 34294.235,
-      "seq": 10455,
-      "failures": []
-    },
-    {
-      "elapsed_s": 34354.297,
-      "seq": 10459,
-      "failures": []
-    },
-    {
-      "elapsed_s": 34414.344,
-      "seq": 10463,
-      "failures": []
-    },
-    {
-      "elapsed_s": 34474.407,
-      "seq": 10467,
-      "failures": []
-    },
-    {
-      "elapsed_s": 34534.469,
-      "seq": 10471,
-      "failures": []
-    },
-    {
-      "elapsed_s": 34594.515999999996,
-      "seq": 10475,
-      "failures": []
-    },
-    {
-      "elapsed_s": 34654.579,
-      "seq": 10479,
-      "failures": [
-        "overall is not OK",
-        "derived overall is not OK",
-        "derived faults are present or invalid"
-      ]
-    },
-    {
-      "elapsed_s": 34714.625,
-      "seq": 10483,
-      "failures": [
-        "overall is not OK",
-        "derived overall is not OK",
-        "derived faults are present or invalid"
-      ]
-    },
-    {
-      "elapsed_s": 34774.687999999995,
-      "seq": 10487,
-      "failures": [
-        "overall is not OK",
-        "derived overall is not OK",
-        "derived faults are present or invalid"
-      ]
-    },
-    {
-      "elapsed_s": 34834.735,
-      "seq": 10491,
-      "failures": [
-        "overall is not OK",
-        "derived overall is not OK",
-        "derived faults are present or invalid"
-      ]
-    },
-    {
-      "elapsed_s": 34894.797,
-      "seq": 10495,
-      "failures": []
-    },
-    {
-      "elapsed_s": 34954.844,
-      "seq": 10499,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35014.907,
-      "seq": 10503,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35074.969,
-      "seq": 10507,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35135.015999999996,
-      "seq": 10511,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35195.079,
-      "seq": 10515,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35255.140999999996,
-      "seq": 10519,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35315.219,
-      "seq": 10523,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35375.265999999996,
-      "seq": 10527,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35435.329,
-      "seq": 10531,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35495.390999999996,
-      "seq": 10535,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35555.437999999995,
-      "seq": 10539,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35615.5,
-      "seq": 10543,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35675.547,
-      "seq": 10547,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35735.61,
-      "seq": 10551,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35795.672,
-      "seq": 10555,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35855.719,
-      "seq": 10559,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35915.782,
-      "seq": 10563,
-      "failures": []
-    },
-    {
-      "elapsed_s": 35975.844,
-      "seq": 10567,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36035.890999999996,
-      "seq": 10571,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36095.937999999995,
-      "seq": 10575,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36156.0,
-      "seq": 10579,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36216.047,
-      "seq": 10583,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36276.11,
-      "seq": 10587,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36336.172,
-      "seq": 10591,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36396.235,
-      "seq": 10595,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36456.282,
-      "seq": 10599,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36516.329,
-      "seq": 10603,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36576.390999999996,
-      "seq": 10607,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36636.437999999995,
-      "seq": 10611,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36696.532,
-      "seq": 10615,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36756.594,
-      "seq": 10619,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36816.657,
-      "seq": 10623,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36876.704,
-      "seq": 10627,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36936.765999999996,
-      "seq": 10631,
-      "failures": []
-    },
-    {
-      "elapsed_s": 36996.922,
-      "seq": 10635,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37056.969,
-      "seq": 10639,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37117.032,
-      "seq": 10643,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37177.079,
-      "seq": 10647,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37237.157,
-      "seq": 10651,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37297.204,
-      "seq": 10655,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37357.265999999996,
-      "seq": 10659,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37417.312999999995,
-      "seq": 10663,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37477.375,
-      "seq": 10667,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37537.422,
-      "seq": 10671,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37597.485,
-      "seq": 10675,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37657.532,
-      "seq": 10679,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37717.594,
-      "seq": 10683,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37777.640999999996,
-      "seq": 10687,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37837.704,
-      "seq": 10691,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37897.75,
-      "seq": 10695,
-      "failures": []
-    },
-    {
-      "elapsed_s": 37957.812999999995,
-      "seq": 10699,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38017.875,
-      "seq": 10703,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38077.922,
-      "seq": 10707,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38137.985,
-      "seq": 10711,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38198.032,
-      "seq": 10715,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38258.094,
-      "seq": 10719,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38318.140999999996,
-      "seq": 10723,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38378.204,
-      "seq": 10727,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38438.282,
-      "seq": 10731,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38498.329,
-      "seq": 10735,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38558.390999999996,
-      "seq": 10739,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38618.437999999995,
-      "seq": 10743,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38678.5,
-      "seq": 10747,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38738.547,
-      "seq": 10751,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38798.594,
-      "seq": 10755,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38858.657,
-      "seq": 10759,
-      "failures": []
-    },
-    {
-      "elapsed_s": 38918.704,
-      "seq": 10763,
-      "failures": []
-    },
     {
       "elapsed_s": 38978.765999999996,
       "seq": 10767,
@@ -628,7 +177,674 @@
       "elapsed_s": 40900.640999999996,
       "seq": 10895,
       "failures": []
+    },
+    {
+      "elapsed_s": 40960.687999999995,
+      "seq": 10899,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41020.75,
+      "seq": 10903,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41080.844,
+      "seq": 10907,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41140.890999999996,
+      "seq": 10911,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41200.954,
+      "seq": 10915,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41261.0,
+      "seq": 10919,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41321.062999999995,
+      "seq": 10923,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41381.11,
+      "seq": 10927,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41441.172,
+      "seq": 10931,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41501.219,
+      "seq": 10935,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41561.282,
+      "seq": 10939,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41621.329,
+      "seq": 10943,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41681.390999999996,
+      "seq": 10947,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41741.437999999995,
+      "seq": 10951,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41801.5,
+      "seq": 10955,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41861.562999999995,
+      "seq": 10959,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41921.61,
+      "seq": 10963,
+      "failures": []
+    },
+    {
+      "elapsed_s": 41981.657,
+      "seq": 10967,
+      "failures": []
+    },
+    {
+      "elapsed_s": 42041.719,
+      "seq": 10971,
+      "failures": []
+    },
+    {
+      "elapsed_s": 42101.765999999996,
+      "seq": 10975,
+      "failures": []
+    },
+    {
+      "elapsed_s": 42161.812999999995,
+      "seq": 10979,
+      "failures": []
+    },
+    {
+      "elapsed_s": 42221.875,
+      "seq": 10983,
+      "failures": []
+    },
+    {
+      "elapsed_s": 42281.922,
+      "seq": 10987,
+      "failures": []
+    },
+    {
+      "elapsed_s": 42341.985,
+      "seq": 10991,
+      "failures": []
+    },
+    {
+      "elapsed_s": 42402.032,
+      "seq": 10995,
+      "failures": []
+    },
+    {
+      "elapsed_s": 42462.094,
+      "seq": 11000,
+      "failures": []
+    },
+    {
+      "elapsed_s": 42522.140999999996,
+      "seq": 11004,
+      "failures": []
+    },
+    {
+      "elapsed_s": 42582.187999999995,
+      "seq": 11008,
+      "failures": []
+    },
+    {
+      "elapsed_s": 42642.25,
+      "seq": 11012,
+      "failures": []
+    },
+    {
+      "elapsed_s": 42702.297,
+      "seq": 11016,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 42762.36,
+      "seq": 11020,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 42822.407,
+      "seq": 11024,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 42882.469,
+      "seq": 11028,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 42942.515999999996,
+      "seq": 11032,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43002.579,
+      "seq": 11036,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43062.672,
+      "seq": 11040,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43122.719,
+      "seq": 11044,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43182.782,
+      "seq": 11048,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43242.829,
+      "seq": 11052,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43302.875,
+      "seq": 11056,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43362.937999999995,
+      "seq": 11060,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43422.985,
+      "seq": 11064,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43483.062999999995,
+      "seq": 11068,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43543.11,
+      "seq": 11072,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43603.172,
+      "seq": 11076,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43663.235,
+      "seq": 11080,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43723.282,
+      "seq": 11084,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43783.344,
+      "seq": 11088,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43843.407,
+      "seq": 11092,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43903.469,
+      "seq": 11096,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 43963.515999999996,
+      "seq": 11100,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44023.579,
+      "seq": 11104,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44083.625,
+      "seq": 11108,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44143.719,
+      "seq": 11112,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44203.765999999996,
+      "seq": 11116,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44263.844,
+      "seq": 11120,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44323.907,
+      "seq": 11124,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44383.954,
+      "seq": 11128,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44444.0,
+      "seq": 11132,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44504.062999999995,
+      "seq": 11136,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44564.11,
+      "seq": 11140,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44624.172,
+      "seq": 11144,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44684.235,
+      "seq": 11148,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44744.297,
+      "seq": 11152,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44804.36,
+      "seq": 11156,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44864.407,
+      "seq": 11160,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44924.469,
+      "seq": 11164,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 44984.515999999996,
+      "seq": 11168,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45044.579,
+      "seq": 11172,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45104.640999999996,
+      "seq": 11176,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45164.687999999995,
+      "seq": 11180,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45224.75,
+      "seq": 11184,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45284.797,
+      "seq": 11188,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45344.875,
+      "seq": 11192,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45404.937999999995,
+      "seq": 11196,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45465.0,
+      "seq": 11200,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45525.079,
+      "seq": 11204,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45585.140999999996,
+      "seq": 11208,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45645.204,
+      "seq": 11212,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45705.25,
+      "seq": 11216,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45765.312999999995,
+      "seq": 11220,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45825.36,
+      "seq": 11224,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45885.437999999995,
+      "seq": 11228,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 45945.485,
+      "seq": 11232,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 46005.547,
+      "seq": 11236,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 46065.594,
+      "seq": 11240,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 46125.657,
+      "seq": 11244,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
     }
   ],
-  "snapshot_recorded_at": "2026-10-31T19:43:37.719255+00:00"
+  "snapshot_recorded_at": "2026-10-31T21:10:21.596007+00:00"
 }

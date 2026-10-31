@@ -17,7 +17,6 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -31,7 +30,8 @@ def _run(cmd: list[str], cwd: Path, timeout: int = 900) -> subprocess.CompletedP
     # The template locates the framework by walking up, which fails for a rehearsal outside the
     # repository; EIDOS_ROOT states it explicitly, exactly as a real external project would.
     env = dict(os.environ, EIDOS_ROOT=str(ROOT))
-    return subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, timeout=timeout, env=env)
+    from tools.bounded_process import run_tree
+    return run_tree(cmd,cwd=cwd,timeout=timeout,env=env)
 
 
 def _note(proc: subprocess.CompletedProcess, last: bool = True) -> str:
@@ -48,28 +48,27 @@ def main(argv: list[str] | None = None) -> int:
                     help="capabilities a consumer must demonstrate before a release")
     args = ap.parse_args(argv)
 
-    # Inside the repository and ignored by git: a rehearsal on another drive cannot be described
-    # relative to the registry, and an absolute root there would violate the project rule.
-    tmp = ROOT / "docs" / "status" / "_release_rehearsal"
-    shutil.rmtree(tmp, ignore_errors=True)
-    tmp.mkdir(parents=True)
-    project = tmp / "onboard_rehearsal"
+    # Own a unique workspace. Never remove a pre-existing workspace or registration:
+    # this invocation uses --no-register and therefore owns no registry entry.
+    from tools.owned_workspace import owned_workspace
     steps: list[tuple[str, bool, str]] = []
-    try:
+    with owned_workspace(ROOT/'docs/status',prefix='_release_rehearsal-',keep=args.keep) as tmp:
+        project = tmp / "onboard_rehearsal"
         copy = _run([sys.executable, "tools/bootstrap_project.py",
                      "--name", "onboard_rehearsal", "--dest", str(project), "--no-register"], ROOT, 120)
         steps.append(("scaffold from template", copy.returncode == 0, _note(copy, last=False)))
 
-        measure = _run([sys.executable, "build_evidence.py"], project, 900)
-        steps.append(("measure", measure.returncode == 0, _note(measure, last=False)))
+        if copy.returncode == 0:
+            measure = _run([sys.executable, "build_evidence.py"], project, 900)
+            steps.append(("measure", measure.returncode == 0, _note(measure, last=False)))
 
-        if measure.returncode == 0:
-            from framework.validity import ScientificValidityGate
-            gate = ScientificValidityGate(project, register=project / "analysis" / "CLAIMS.yaml",
-                                          document=project / "docs" / "REPORT.md")
-            result = gate.run()
-            findings = len((getattr(result, "details", {}) or {}).get("findings", []))
-            steps.append(("Gate S on the scaffold", result.passed, f"{findings} finding(s)"))
+            if measure.returncode == 0:
+                from framework.validity import ScientificValidityGate
+                gate = ScientificValidityGate(project, register=project / "analysis" / "CLAIMS.yaml",
+                                              document=project / "docs" / "REPORT.md")
+                result = gate.run()
+                findings = len((getattr(result, "details", {}) or {}).get("findings", []))
+                steps.append(("Gate S on the scaffold", result.passed, f"{findings} finding(s)"))
 
         reject = _run([sys.executable, "show_rejection.py"], TEMPLATE, 300)
         steps.append(("template rejects a lie (S9)", reject.returncode == 0, _note(reject)))
@@ -85,15 +84,8 @@ def main(argv: list[str] | None = None) -> int:
             demo_cov = int(data.get("demo") or 0)
         except (OSError, json.JSONDecodeError):
             pass
-        steps.append((f"demo coverage >= {args.min_coverage}", demo_cov >= args.min_coverage,
-                      f"{demo_cov} capabilities demonstrated"))
-    finally:
-        # A rehearsal must leave no registration behind: a registry entry pointing at a deleted
-        # directory makes every later load_projects() fail, which is how this was found.
-        shutil.rmtree(ROOT / "projects" / "onboard_rehearsal", ignore_errors=True)
-        if not args.keep:
-            shutil.rmtree(tmp, ignore_errors=True)
-
+        steps.append((f"demo coverage >= {args.min_coverage}", coverage.returncode == 0 and demo_cov >= args.min_coverage,
+                      f"{demo_cov} capabilities demonstrated; producer exit {coverage.returncode}"))
     for name, ok, note in steps:
         print(f"{'PASS' if ok else 'FAIL'}  {name:<28} {note[:90]}")
     failed = [n for n, ok, _ in steps if not ok]

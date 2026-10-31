@@ -52,9 +52,12 @@ def execute_tests(command: list[str]) -> tuple[subprocess.CompletedProcess, dict
         run=_run([*command,f'--junitxml={report}'],timeout=900)
         try:
             cases=list(ET.parse(report).getroot().iter('testcase'))
-            collection_skips=sum(1 for case in cases
-                                 if case.get('classname')=='' and case.find('skipped') is not None
-                                 and case.find('skipped').get('message')=='collection skipped')
+            collection_skips=0
+            for case in cases:
+                skipped=case.find('skipped')
+                if (case.get('classname')=='' and skipped is not None
+                        and skipped.get('message')=='collection skipped'):
+                    collection_skips+=1
             return run,{'reported_items':len(cases)-collection_skips,'collection_level_skips':collection_skips}
         except (OSError,ET.ParseError) as exc:
             return run,{'reported_items':None,'error':type(exc).__name__}
@@ -167,6 +170,59 @@ def measurement_failures(record: dict) -> list[str]:
     return failures
 
 
+def publish_record(record: dict) -> None:
+    from framework.artifacts import output_lock
+    with output_lock(ROOT/'docs/status/self-audit-publication'):
+        _publish_record(record)
+
+
+def _publish_record(record: dict) -> None:
+    """Publish measured JSON and headline documents; roll back if a write fails."""
+    from framework.artifacts import atomic_output
+    coverage=record.get('coverage_total')
+    if type(coverage) is not int or not 0<=coverage<=100:
+        raise ValueError('coverage was not measured as an integer percentage; prior records preserved')
+    collected=record['tests_collected'];passed=record['tests']['passed']
+    modules=record['stability']['execution']['collection_level_skips']
+    item_skips=record['tests']['skipped']-modules
+    if item_skips<0:raise ValueError('inconsistent item/module skip counts')
+    chains=record['chains']
+    health=ROOT/'docs/HEALTH.md'
+    text=health.read_text(encoding='utf-8')
+    replacements=[(r'\| unit tests \|[^\n]*',
+                   f'| unit tests | **{collected} collected**, {passed} passed; {item_skips} item skips, {modules} collection-level optional-module skips (historical separate CUDA qualification: 16 passed) | ✅ |'),
+                  (r'(\| coverage of `framework/` \| )\*\*\d+%\*\*',
+                   rf"\g<1>**{coverage}%**"),
+                  (r'(\| chain audit \| )\*\*[^\n]*?\*\*',
+                   rf"\g<1>**{chains['total']} chains: {chains['pass']} PASS, {chains['skip']} SKIP, {chains['fail']} FAIL/ERROR**")]
+    for pattern,replacement in replacements:
+        text,count=re.subn(pattern,replacement,text,count=1)
+        if count!=1:raise ValueError('health document has no measured headline marker')
+    outputs={OUT:(json.dumps(record,indent=2)+'\n').encode(),health:text.encode('utf-8')}
+    technical=ROOT/'Quarto_Centric_Local_Research_Pipeline_Technical_Framework.md'
+    if technical.is_file():
+        text=technical.read_text(encoding='utf-8')
+        summary=(f'<!-- self-audit:start -->\n本轮验收：{passed} passed、{item_skips} 个用例 skipped、'
+                 f'{modules} 个可选模块收集 skipped，框架源码覆盖率 {coverage}%，'
+                 f"{chains['total']} 条链为 {chains['pass']} PASS/{chains['skip']} SKIP/{chains['fail']} FAIL/ERROR。\n<!-- self-audit:end -->")
+        text,count=re.subn(r'<!-- self-audit:start -->.*?<!-- self-audit:end -->',lambda _:summary,text,count=1,flags=re.S)
+        if count!=1:raise ValueError('technical framework has no current self-audit markers')
+        outputs[technical]=text.encode('utf-8')
+    originals={p:p.read_bytes() if p.is_file() else None for p in outputs}
+    written=[]
+    try:
+        for path,body in outputs.items():
+            with atomic_output(path) as temporary:temporary.write_bytes(body)
+            written.append(path)
+    except BaseException:
+        for path in reversed(written):
+            body=originals[path]
+            if body is None:path.unlink(missing_ok=True)
+            else:
+                with atomic_output(path) as temporary:temporary.write_bytes(body)
+        raise
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--check", action="store_true",
@@ -218,9 +274,7 @@ def measure(args) -> int:
         print("no drift in the self-audit record")
         return 0
 
-    from framework.artifacts import atomic_output
-    with atomic_output(OUT) as temporary:
-        temporary.write_text(json.dumps(new, indent=2) + "\n", encoding="utf-8")
+    publish_record(new)
     print(f"wrote {OUT.relative_to(ROOT)}: {new['chains']} tests={new['tests_collected']} "
           f"gate_s={new['gate_s']['fixture_status']}")
     return 0

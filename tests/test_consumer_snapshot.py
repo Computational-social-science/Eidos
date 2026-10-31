@@ -39,6 +39,76 @@ def test_changed_declared_input_revokes_old_verdict(tmp_path, target):
     assert spec.name in snapshot_state(saved, {spec.name: spec}, tmp_path)["stale"]
 
 
+@pytest.mark.parametrize('command',[
+    ['python','gate.py'],['{python}','-I','-X','utf8','-W','ignore','gate.py'],
+    ['python3.12','-Xutf8','--','gate.py'],['gate.py'],
+    ['python','--check-hash-based-pycs','always','gate.py']])
+def test_changed_python_gate_entry_revokes_old_verdict(tmp_path,command):
+    from dataclasses import replace
+    from tools.consumer_snapshot import snapshot_state
+    spec=replace(consumer(tmp_path),gate_command=command)
+    gate=spec.root/'gate.py';gate.write_text('raise SystemExit(0)\n')
+    saved=snapshot(spec,tmp_path)
+    gate.write_text('raise SystemExit(1)\n')
+    assert spec.name in snapshot_state(saved,{spec.name:spec},tmp_path)['stale']
+
+
+@pytest.mark.parametrize('name',['helper.py','config.json','data.json'])
+def test_explicit_validator_input_change_revokes_old_verdict(tmp_path,name):
+    from dataclasses import replace
+    from tools.consumer_snapshot import snapshot_state
+    spec=replace(consumer(tmp_path),validity_inputs=[name])
+    path=spec.root/name;path.write_text('original')
+    saved=snapshot(spec,tmp_path);path.write_text('changed')
+    assert spec.name in snapshot_state(saved,{spec.name:spec},tmp_path)['stale']
+
+
+def test_external_gate_and_data_require_exact_permission_and_are_bound(tmp_path):
+    from dataclasses import replace
+    from tools.consumer_snapshot import capture_inputs
+    spec=replace(consumer(tmp_path),gate_command=['{python}','../external.py'],validity_inputs=['../data.json'])
+    for name in ('external.py','data.json'):(tmp_path/name).write_text('original')
+    assert capture_inputs(spec,tmp_path)['digest'] is None
+    allowed=replace(spec,validity_external_inputs=['../external.py','../data.json'])
+    before=capture_inputs(allowed,tmp_path)['digest'];assert before
+    (tmp_path/'external.py').write_text('changed')
+    assert capture_inputs(allowed,tmp_path)['digest']!=before
+
+
+def test_module_mode_requires_explicit_helper_inputs_and_does_not_hash_flags(tmp_path):
+    from dataclasses import replace
+    from tools.consumer_snapshot import capture_inputs
+    spec=replace(consumer(tmp_path),gate_command=['{python}','-m','project_gate'],validity_inputs=['project_gate.py'])
+    (spec.root/'project_gate.py').write_text('original')
+    before=capture_inputs(spec,tmp_path)['digest'];assert before
+    (spec.root/'project_gate.py').write_text('changed')
+    assert capture_inputs(spec,tmp_path)['digest']!=before
+
+
+@pytest.mark.parametrize('mode',['-m','-mproject_gate'])
+def test_module_mode_without_explicit_inputs_cannot_bind_a_verdict(tmp_path,mode):
+    from dataclasses import replace
+    from tools.consumer_snapshot import capture_inputs
+    spec=replace(consumer(tmp_path),gate_command=['{python}',mode,'project_gate','argument.py'])
+    result=capture_inputs(spec,tmp_path)
+    assert result['digest'] is None and 'requires explicit validity_inputs' in result['error']
+
+
+def test_compact_inline_mode_does_not_bind_script_looking_arguments(tmp_path):
+    from dataclasses import replace
+    from tools.consumer_snapshot import capture_inputs
+    spec=replace(consumer(tmp_path),gate_command=['{python}','-cprint(42)','../private.py'])
+    assert capture_inputs(spec,tmp_path)['digest']
+
+
+def test_unknown_python_options_fail_closed_instead_of_guessing_an_entry(tmp_path):
+    from dataclasses import replace
+    from tools.consumer_snapshot import capture_inputs
+    spec=replace(consumer(tmp_path),gate_command=['{python}','--future-option','value','gate.py'])
+    result=capture_inputs(spec,tmp_path)
+    assert result['digest'] is None and 'unknown Python gate option' in result['error']
+
+
 def test_registration_and_missing_checkout_cannot_reuse_pass(tmp_path):
     from dataclasses import replace
     from tools.consumer_snapshot import snapshot_state

@@ -50,3 +50,33 @@ unobservable services and unavailable transport; live Chrome checks at desktop
 and 390 px widths, consumer details, dependency-cell consistency and console
 errors. These checks do not replace a complete framework audit or a clean
 24-hour stability run.
+
+## Scheduler execution and tick failures (2026-11-01)
+
+New scheduler starts hold one OS lock for the loop lifetime and a separate lock
+for each tick. Concurrent ticks return 75 without changing the heartbeat; duplicate
+loop starts do no work. Workers use hidden, owned process trees. Timeouts are
+recorded as ERROR/124 and preserve failure history. Heartbeats publish atomically
+and identify the actual interpreter/PID. Structured audit verdicts preserve SKIP;
+a successful command exit alone cannot convert SKIP to PASS. Malformed or
+contradictory audit results are ERROR.
+
+`scheduler` measures heartbeat age. The separate `scheduler_failures` signal
+measures current-tick failed chains against zero, so a fresh heartbeat containing
+a timeout cannot hide behind old PASS traces. SKIP does not count as a failure.
+A later successful tick clears the current failure signal while cumulative
+failures remain recorded. These source changes do not prove deployment in old
+already-running processes; see the pending
+[runtime migration](MONITOR-RUNTIME-MIGRATION-2026-11-01.json).
+
+Package-presence probes inspect the selected interpreter without enabling a
+disabled user-site directory. Unusable measurements/references are UNOBSERVABLE;
+non-finite values are retained as diagnostic text and published as null, keeping
+the status API valid JSON. A sampler reads the running-marker age once so a
+concurrent audit completion cannot turn the second read into a None comparison.
+
+Before CURRENT publication, the complete status payload is normalized recursively,
+including legacy history, alarms and chain metadata. Non-finite numeric leaves
+become null and their paths/raw spellings are retained in json_normalization. The
+original history file remains unchanged by serving; this does not repair or
+reclassify old measurements. CURRENT uses atomic replacement and strict JSON.

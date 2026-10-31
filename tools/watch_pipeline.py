@@ -26,11 +26,13 @@ from __future__ import annotations
 import argparse
 import datetime
 import json
+import math
 import os
 import sys
 import time
 import urllib.request
 from pathlib import Path
+from typing import Any
 
 import chain_states
 import status_view
@@ -85,26 +87,38 @@ def age_hours(iso: str | None) -> float | None:
 
 
 def _has_module(package: str) -> tuple[bool, str]:
-    """Is the package importable from *this* process, and if not, say which one it is.
-
-    A service does not inherit the shell that launched it: started from a shell whose PYTHONPATH
-    pointed at another environment, the monitor reported dvc and mlflow missing while the same
-    interpreter found them in a terminal. The user site is where they live here, so it is added
-    before giving up, and the executable is recorded either way.
-    """
-    import importlib
-    import site
+    """Is the package visible to this interpreter without changing its import paths?"""
+    import importlib.util
     import sys
 
-    if importlib.util.find_spec(package):
-        return True, sys.executable
-    user_site = site.getusersitepackages()
-    if user_site and user_site not in sys.path:
-        sys.path.append(user_site)
-    importlib.invalidate_caches()
-    if importlib.util.find_spec(package):
-        return True, f"{sys.executable} (+ user site)"
+    try:
+        if importlib.util.find_spec(package):
+            return True, sys.executable
+    except (ImportError,ValueError):
+        pass
     return False, f"not importable by {sys.executable}"
+
+
+def scheduler_signals(beat: dict) -> dict:
+    """Freshness and last-tick failures are different measurements."""
+    if beat.get('epoch'):
+        age=(time.time()-float(beat['epoch']))/60.0
+        interval=float(beat.get('interval_min') or 10)
+        age_signal={'value':round(age,1),'reference':round(interval*3,1),
+                    'direction':'max','unit':'min','source':'docs/status/scheduler.json',
+                    'note':f"tick {beat.get('ticks',0)}"}
+    else:
+        age_signal={'value':None,'reference':30.0,'direction':'max','unit':'min',
+                    'source':'docs/status/scheduler.json','note':'no heartbeat recorded'}
+    failed=beat.get('failed')
+    if beat.get('epoch') and isinstance(failed,list):
+        count=len(failed);note=', '.join(map(str,failed))
+    else:
+        count=None;note='last-tick failures unobservable'
+    failure_signal={'value':count,'reference':0,
+                    'direction':'max','unit':'chains','source':'docs/status/scheduler.json',
+                    'note':note}
+    return {'scheduler':age_signal,'scheduler_failures':failure_signal}
 
 
 def measure() -> dict:
@@ -255,20 +269,9 @@ def measure() -> dict:
         "source": "registry and declared Gate S inputs; cached verdicts require matching hashes",
         "note": "reverification required: " + (", ".join(binding["stale"]) or "none")}
 
-    # The scheduler is a single point of silent failure: if the tick stops, every chain keeps
-    # its last verdict and the board stays green. Age of the heartbeat is the signal.
+    # A fresh heartbeat proves a tick happened, not that its chains succeeded.
     beat = read_json(STATUS / "scheduler.json", {}) or {}
-    if beat.get("epoch"):
-        age_min = (time.time() - float(beat["epoch"])) / 60.0
-        interval = float(beat.get("interval_min") or 10)
-        signals["scheduler"] = {
-            "value": round(age_min, 1), "reference": round(interval * 3, 1),
-            "direction": "max", "unit": "min", "source": "docs/status/scheduler.json",
-            "note": f"tick {beat.get('ticks', 0)}, {len(beat.get('failed') or [])} failing chain(s)"}
-    else:
-        signals["scheduler"] = {"value": None, "reference": 30.0, "direction": "max",
-                                "unit": "min", "source": "docs/status/scheduler.json",
-                                "note": "no heartbeat recorded"}
+    signals.update(scheduler_signals(beat))
 
     audit = read_json(ROOT / "docs" / "SELF_AUDIT.json", {}) or {}
     self_gate = ((audit.get("self_gate_s") or {}).get("status")
@@ -304,10 +307,17 @@ def measure() -> dict:
 
 def classify(signal: dict) -> tuple[str, float | None]:
     value, reference = signal.get("value"), signal.get("reference")
-    if value is None:
+    if value is None or reference is None:
         return "UNOBSERVABLE", None
-    error = float(reference) - float(value) if signal.get("direction") == "min" \
-        else float(value) - float(reference)
+    try:
+        value,reference=float(value),float(reference)
+    except (ValueError,TypeError,OverflowError):
+        return 'UNOBSERVABLE',None
+    if not math.isfinite(value) or not math.isfinite(reference):
+        return 'UNOBSERVABLE',None
+    error = reference-value if signal.get("direction") == "min" else value-reference
+    if not math.isfinite(error):
+        return 'UNOBSERVABLE',None
     ok = error <= 0
     return ("OK" if ok else "ALARM"), round(error, 2)
 
@@ -396,6 +406,24 @@ def _append_recovery(row: dict) -> None:
         handle.write(json.dumps(row) + chr(10))
 
 
+def _json_safe_payload(payload: dict) -> dict:
+    """Serve legacy non-finite history as gaps, retaining diagnostic paths/values."""
+    repairs: list[dict[str,str]]=[]
+    def clean(value: Any,path: str) -> Any:
+        if isinstance(value,float) and not math.isfinite(value):
+            repairs.append({'path':path,'raw':repr(value)})
+            return None
+        if isinstance(value,dict):
+            return {key:clean(child,path+'/'+str(key)) for key,child in value.items()}
+        if isinstance(value,list):
+            return [clean(child,path+'/'+str(i)) for i,child in enumerate(value)]
+        return value
+    safe: dict=clean(payload,'')
+    if repairs:
+        safe['json_normalization']=repairs
+    return safe
+
+
 def sample(append: bool = True) -> dict:
     signals = measure()
     # The chain audit refreshes docs/status/chains.json; it does not refresh
@@ -420,12 +448,25 @@ def sample(append: bool = True) -> dict:
     for name, signal in signals.items():
         state, error = classify(signal)
         states[name] = {**signal, "state": state, "error": error}
+        if state=='UNOBSERVABLE':
+            for key in ('value','reference'):
+                candidate=signal.get(key)
+                if candidate is None:
+                    continue
+                try:
+                    unusable=not math.isfinite(float(candidate))
+                except (ValueError,TypeError,OverflowError):
+                    unusable=True
+                if unusable:
+                    states[name][key]=None
+                    states[name].setdefault('measurement_error',{})[key]=repr(candidate)
         if state == "ALARM":
             worst = "ALARM"
         elif state == "UNOBSERVABLE" and worst == "OK":
             worst = "UNOBSERVABLE"
 
-    live = chain_states.running_age() is not None         and chain_states.running_age() < chain_states.RUNNING_TTL
+    running_age = chain_states.running_age()
+    live = running_age is not None and running_age < chain_states.RUNNING_TTL
     previous_chains = {}
     try:
         previous_rows = json.loads(chain_states.TIMELINE.read_text(encoding="utf-8"))
@@ -558,8 +599,10 @@ def sample(append: bool = True) -> dict:
         derived.setdefault("faults", []).append("verdict inconsistent: " + note)
         payload["overall"] = derived["overall"] = "ALARM"
 
-    CURRENT.parent.mkdir(parents=True, exist_ok=True)
-    CURRENT.write_text(json.dumps(payload, indent=2) + chr(10), encoding="utf-8")
+    payload=_json_safe_payload(payload)
+    from framework.artifacts import atomic_output
+    with atomic_output(CURRENT) as temporary:
+        temporary.write_text(json.dumps(payload,indent=2,allow_nan=False)+chr(10),encoding='utf-8')
     ALARMS.write_text(json.dumps(alarms, indent=2) + chr(10), encoding="utf-8")
     return payload
 

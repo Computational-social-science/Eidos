@@ -60,3 +60,10 @@ independent checkout before any build. Push the source and metadata commits
 together; the intermediate local source-preparation commit is not a published
 release. Local commit hooks continue to run the scientific, site and screenshot
 checks, while the complete release consistency check runs at the delivery step.
+
+A successful self-audit publication now synchronizes its measured test, skip,
+coverage and chain headlines with HEALTH and the marked current summary in the
+technical framework. Writes are serialized and rolled back on publication error.
+Unknown coverage is not formatted as a percentage. The check-only path does not publish these records or headline documents, so CI
+still detects their committed inconsistencies; measurement can write runtime/test
+artifacts.

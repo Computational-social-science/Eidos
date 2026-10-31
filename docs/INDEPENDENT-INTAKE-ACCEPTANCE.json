@@ -1,0 +1,98 @@
+{
+  "scope": "Same-host independent HPAF intake and input-binding acceptance only; no full scientific lifecycle, publication-quality delivery, novelty, generalization or new-machine qualification.",
+  "intake": {
+    "scope": "Fresh same-host producer/output-contract executions under the frozen v0.4.4 source; original inputs retained.",
+    "source_sha256": {
+      "D:\\2026-AI4S\\HPAF\\build_corpus_reports2.py": "29281aa2b8ac8380e7df7ff5e39bf425b39dbf89d8f34b2be0a8db1ed4052b2e",
+      "D:\\2026-AI4S\\HPAF\\Corpus\\advbench_llm_perturbed_1.json": "c798ec01659f2ebce1179d0289ac743658e5e333ea87ea79f267cc64735d41eb",
+      "D:\\2026-AI4S\\HPAF\\Corpus\\advbench_unicode_whitespace_perturbed.json": "e5ee74d0fa9cf5e911801d056f38e458947a87ef26a57d3063c0925580883834"
+    },
+    "runs": [
+      {
+        "case": "positive",
+        "status": "PASS",
+        "exit_code": 0,
+        "expected": [
+          "positive-reports/index.html",
+          "positive-reports/advbench_llm_perturbed_1.html",
+          "positive-reports/advbench_unicode_whitespace_perturbed.html"
+        ],
+        "present": [
+          "positive-reports/index.html",
+          "positive-reports/advbench_llm_perturbed_1.html",
+          "positive-reports/advbench_unicode_whitespace_perturbed.html"
+        ],
+        "diagnostic": ""
+      },
+      {
+        "case": "invalid_json",
+        "status": "FAIL",
+        "exit_code": 0,
+        "expected": [
+          "invalid_json-reports/index.html",
+          "invalid_json-reports/invalid.html"
+        ],
+        "present": [],
+        "diagnostic": "declared output missing after a successful run: invalid_json-reports/index.html, invalid_json-reports/invalid.html"
+      }
+    ],
+    "original_inputs_unchanged": true,
+    "raw_corpora_published": false
+  },
+  "binding_and_claim_controls": {
+    "scope": "Existing independent HPAF isolated intake: real reports, descriptive Gate S evidence and source/data cache invalidation; not complete research lifecycle, scientific novelty or publication acceptance.",
+    "records": 1033,
+    "per_corpus": {
+      "advbench_llm_perturbed_1.json": 513,
+      "advbench_unicode_whitespace_perturbed.json": 520
+    },
+    "descriptive_gate_s": "PASS",
+    "wrong_count_gate_s": "FAIL",
+    "wrong_count_findings": [
+      "[S3] H1: evidence says 1033 but docs/evidence.json/records holds 1034"
+    ],
+    "mutations": [
+      {
+        "input": "validator source",
+        "old_verdict_revoked": true
+      },
+      {
+        "input": "declared corpus",
+        "old_verdict_revoked": true
+      }
+    ],
+    "original_generator_sha256": "29281aa2b8ac8380e7df7ff5e39bf425b39dbf89d8f34b2be0a8db1ed4052b2e",
+    "generator_copy_sha256": "29281aa2b8ac8380e7df7ff5e39bf425b39dbf89d8f34b2be0a8db1ed4052b2e",
+    "raw_corpora_published": false
+  },
+  "overstatement_rejection": {
+    "status": "FAIL",
+    "findings": [
+      "[S4] H1: 'supported' requires a preregistered design, found 'exploratory'",
+      "[S4] H1: design is 'preregistered' but the register has no readable registered_at, so pre-registration is asserted, not evidenced"
+    ],
+    "correction": "Retain exploratory design and explicitly exploratory claim strength; do not invent preregistration."
+  },
+  "report_sha256": {
+    "advbench_llm_perturbed_1.html": "3271ecdcf71680501235692d0e3d13739694a862b59ac422dd43d602fc8a8827",
+    "advbench_unicode_whitespace_perturbed.html": "5fdd24dd7d0f79d55a81cd7287463b986ab62268c01c66382eb360d83f982ae9",
+    "index.html": "054353d6c7a616aa99d3898637fc21d8b22b18f6548d57a1aebe503dbfff5fa3"
+  },
+  "private_artifacts": "Isolated QA workspace on the original host; source/data identities recorded. Raw corpora and original HTML reports are not distributed by EIDOS.",
+  "public_regression": "tests/test_consumer_snapshot.py and tests/test_release_gate.py use isolated self-generated fixtures; they do not require or distribute the private corpora.",
+  "rechecked_at": "2026-10-31T21:00:33.635745+00:00",
+  "provenance": {
+    "eidos": "0.4.4",
+    "python": "3.12.4",
+    "interpreter": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+    "frozen_self_audit_input_state": {
+      "source_sha256": "f1f8b80131bddabb70e77c19fc0aaf7a635d4a5dbffdbfc93bb3a3a8f7378d7e",
+      "distribution_sha256": "54ab0d5d26b3a13d436a4d8f13cc02a0a269b11495863fd9be95377b23286b90"
+    },
+    "seed": null,
+    "seed_reason": "Deterministic existing-corpus enumeration; no randomized generation or model inference.",
+    "code_hash_policy": "Canonical framework/tools/tests/project metadata input identity is identical to the accepted frozen self-audit; external generator/data hashes are exact bytes.",
+    "binding_rechecked_at": "2026-10-31T21:10:21.397308+00:00",
+    "frozen_state_scope": "Gate S/input-binding recheck under these exact accepted source/environment identities; the fresh producer/output-contract run is separately retained under intake."
+  }
+}

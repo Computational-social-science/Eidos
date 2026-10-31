@@ -1,5 +1,5 @@
 {
-  "modules": 108,
+  "modules": 109,
   "hard": {
     "framework.executable_package": [
       "framework.artifacts"
@@ -152,6 +152,7 @@
     "tools.measure_sciencersi_load": [],
     "tools.monitor_supervisor": [],
     "tools.numerics_figure": [],
+    "tools.owned_workspace": [],
     "tools.pipeline_extras": [],
     "tools.pipeline_view": [],
     "tools.probes": [],
@@ -272,8 +273,14 @@
     "tools.record_self_audit": [
       "framework.artifacts"
     ],
+    "tools.refresh_chains": [
+      "framework.artifacts",
+      "tools.bounded_process"
+    ],
     "tools.release_gate": [
-      "framework.validity"
+      "framework.validity",
+      "tools.bounded_process",
+      "tools.owned_workspace"
     ],
     "tools.serve_model": [
       "framework.inference"
@@ -289,6 +296,7 @@
       "framework.provenance"
     ],
     "tools.watch_pipeline": [
+      "framework.artifacts",
       "framework.diagnosis",
       "framework.project",
       "framework.quarto_bridge",
@@ -354,6 +362,7 @@
     "tools.model_ab": [],
     "tools.monitor_supervisor": [],
     "tools.numerics_figure": [],
+    "tools.owned_workspace": [],
     "tools.pipeline_extras": [],
     "tools.pipeline_view": [],
     "tools.probe_s4": [],
@@ -362,7 +371,6 @@
     "tools.probe_s7_constrained": [],
     "tools.probes": [],
     "tools.publication": [],
-    "tools.refresh_chains": [],
     "tools.reproduction_check": [],
     "tools.s7_cases": [],
     "tools.s7_cases_holdout": [],
@@ -380,44 +388,45 @@
   },
   "fan_in": {
     "framework.decision": 4,
-    "framework.artifacts": 8,
+    "framework.artifacts": 10,
     "framework.subprocesses": 5,
     "framework.config": 1,
     "framework.verifiers.numerics": 3,
     "framework.executable_package": 1,
     "framework.surrogate": 3,
     "framework.verifiers.support": 1,
-    "framework.gates": 2,
     "framework.reproduction": 2,
     "framework.validity.lean_audit": 2,
+    "framework.gates": 2,
     "framework.verifiers.extract_s4": 1,
-    "framework.verifiers.citations": 2,
     "framework.verifiers.stats": 2,
+    "framework.verifiers.citations": 2,
     "framework.stable_numerics": 2,
     "framework.project": 10,
-    "framework.quarto_bridge": 3,
-    "framework.diagnosis": 2,
-    "framework.validity": 5,
-    "framework.surrogate.demo": 2,
-    "framework.tracking": 1,
     "framework.inference": 3,
+    "framework.tracking": 1,
+    "framework.validity": 5,
+    "framework.diagnosis": 2,
+    "framework.surrogate.demo": 2,
+    "framework.quarto_bridge": 3,
     "tools.consumer_snapshot": 6,
     "framework.provenance": 2,
     "tools.check_publication_record": 1,
     "framework.services": 2,
-    "tools.academic_case": 1,
-    "tools.site_documents": 1,
     "framework.updates": 3,
     "tools.build_pipeline": 1,
+    "tools.academic_case": 1,
     "tools.versioning": 1,
+    "tools.site_documents": 1,
     "framework.inference.llama_cpp": 5,
-    "tools.bounded_process": 2,
+    "tools.bounded_process": 4,
     "tools.watch_pipeline": 1,
     "framework.stable_numerics_torch": 1,
     "framework.model_ab": 1,
     "tools.publication": 1,
-    "tools.numerics_figure": 2,
     "tools.training_figure": 1,
+    "tools.numerics_figure": 2,
+    "tools.owned_workspace": 1,
     "framework.recovery": 2,
     "tools.probes": 1
   },

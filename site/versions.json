@@ -216,5 +216,24 @@
       "blind_spots_open": 0,
       "instruments": 6
     }
+  },
+  {
+    "version": "0.4.6",
+    "date": "2026-11-01",
+    "commit": "de15494",
+    "source_commit": "de15494",
+    "tag": "v0.4.6",
+    "summary": "Own SDK project-command lifetimes; qualify the installed wheel with Windows and offline Linux lifecycle controls; preserve research exit states and runtime migration limits",
+    "schema": 2,
+    "metrics": {
+      "tests": 752,
+      "coverage": 68,
+      "chains": 11,
+      "open_objections": 0,
+      "decision_ms": 182,
+      "blind_spots_found": 1,
+      "blind_spots_open": 0,
+      "instruments": 6
+    }
   }
 ]

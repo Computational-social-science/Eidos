@@ -277,6 +277,7 @@ def export_case(output: Path, data: dict | None = None) -> None:
     payloads["tools/numerics_case.py"] = Path(__file__).read_bytes()
     payloads["tools/numerics_figure.py"] = (ROOT / "tools/numerics_figure.py").read_bytes()
     payloads["tools/training_figure.py"] = (ROOT / "tools/training_figure.py").read_bytes()
+    payloads["tools/verify_barron_mcp.py"] = (ROOT / "tools/verify_barron_mcp.py").read_bytes()
     payloads["README.md"] += ("\nCPU verification of the saved training run:\n"
                               "uv run --no-sync python -m framework.project check softmax_training\n"
                               "\nExisting MCP/agent (optional dependency):\n"

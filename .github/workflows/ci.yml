@@ -132,6 +132,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       UV_PYTHON: '3.12'
+      EIDOS_AUTO_RECOVER: '0'
     needs: test
     steps:
       - uses: actions/checkout@v4
@@ -151,6 +152,9 @@ jobs:
         # Local pre-commit separately validates the committed Windows artifact and screenshots.
         run: |
           uv run --no-sync python tools/build_site.py
+          uv run --no-sync python tools/watch_pipeline.py
+          sleep 2
+          uv run --no-sync python tools/watch_pipeline.py
           uv run --no-sync python tools/dashboard.py
           uv run --no-sync python -m pytest -q tests/test_layout_guards.py
       - name: Page audits (layout, contrast, visual language, runtime)

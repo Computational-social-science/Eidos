@@ -17,10 +17,15 @@ change, update the copy and the hash together, and say so in the commit message.
 Re-run:
 
 ```bash
-.venv-repro/Scripts/python.exe reference/reproduction/barron2026/mcp/vendor/verify_mcp_server.py \
+uv run --no-sync python tools/verify_barron_mcp.py \
   --server reference/reproduction/barron2026/mcp/server.py \
   --expected reference/reproduction/barron2026/mcp/expected.json \
   --cases reference/reproduction/barron2026/mcp/cases.json \
   --require-all-tools --report reference/reproduction/barron2026/mcp/verify.json \
   --cwd reference/reproduction/barron2026/mcp
 ```
+
+The adapter leaves this vendored source unchanged. It uses a relative tolerance of 1e-14,
+with no absolute floor, for nonzero float64 smoke outputs that can differ by one ULP
+between Windows and Linux libm. Zero and discrete assertions remain exact; the report
+records this policy. The agent separately applies independent Decimal gradient qualification.

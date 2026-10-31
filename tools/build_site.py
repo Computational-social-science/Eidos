@@ -109,8 +109,11 @@ def registry() -> list[dict]:
                                  text=True, timeout=900)
             try:
                 row["gate_s"] = json.loads(run.stdout).get("status", "ERROR")
+                if run.returncode != {"PASS": 0, "FAIL": 1}.get(row["gate_s"]):
+                    row["gate_s"] = "ERROR"
             except json.JSONDecodeError:
                 row["gate_s"] = "ERROR"
+            row["checked_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
         rows.append(row)
     return rows
 
@@ -441,18 +444,18 @@ def adopt_rows(rows: list[dict]) -> str:
     def gs(value: str) -> str:
         return pill(value) if value in PILL else f"<span class='detail'>{value}</span>"
 
-    from framework.project import evidence_age_hours
+    from framework.project import consumer_freshness
 
     out = []
     for p in rows:
         verdict = p.get("gate_s", "—")
         note = ""
-        # A cached verdict is not a current one. Past 24 h the row shows STALE and the age, because
-        # "PASS" on its own claims a measurement that may be a week old.
-        age_h = evidence_age_hours(p.get("root_path") or p.get("root") or "")             if verdict in ("PASS", "FAIL") else None
-        if age_h is not None and age_h > 24.0:
+        freshness = consumer_freshness(p.get("root_path") or p.get("root") or "",
+                                      p.get("expected"), p.get("checked_at")) if verdict in ("PASS", "FAIL") else None
+        if freshness and freshness["stale"]:
             verdict = "STALE"
-            note = f" <span class='detail'>(was {p.get('gate_s')}) · evidence {age_h:.0f} h old</span>"
+            # Stable wording: a static page must not become a different artifact every hour.
+            note = f" <span class='detail'>(was {p.get('gate_s')}) · evidence or verification stale / absent</span>"
         elif p.get("expected") == "FAIL" and p.get("gate_s") == "FAIL":
             note = " <span class='detail'>(expected)</span>"
         out.append(

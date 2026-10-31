@@ -7,6 +7,11 @@
   "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
   "python_version": "3.12.4",
   "fastmcp": "4.0.3",
+  "numeric_assertion_policy": {
+    "relative_tolerance": 1e-14,
+    "absolute_tolerance": 0,
+    "zero_and_discrete": "exact"
+  },
   "expected": [
     "hard_cross_entropy",
     "log_softmax",

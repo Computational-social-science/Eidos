@@ -65,6 +65,7 @@ def test_export_contains_reproducible_downloads(tmp_path):
         assert {"README.md", "pyproject.toml", "uv.lock", "evidence.json"} <= names
         assert "framework/stable_numerics.py" in names
         assert "tools/numerics_case.py" in names
+        assert "tools/verify_barron_mcp.py" in names
         assert "reference/reproduction/barron2026/mcp/vendor/LICENSE" in names
         assert "projects/softmax_training/project.yaml" in names
         assert "tests/test_training_consumer.py" in names

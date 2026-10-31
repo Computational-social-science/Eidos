@@ -71,8 +71,19 @@ def test_demo_is_self_contained():
     assert "reports/numerics/evidence.json" in page
 
 
-def test_page_states_the_whole_framework_not_only_gate_s():
+def test_page_states_framework_and_current_consumer_verification(tmp_path):
     page = build_site.render(DATA).lower()
     for term in ("bootloops", "inspect", "deepeval", "promptfoo", "ragas", "startlux",
                  "mlflow", "dvc", "quarto", "bootstrap_project.sh", "cc by-nc"):
         assert term in page, f"missing positioning term: {term}"
+    from datetime import datetime, timezone, timedelta
+    import json
+    (tmp_path / 'docs').mkdir()
+    (tmp_path / 'docs/evidence.json').write_text(json.dumps({
+        'generated': (datetime.now(timezone.utc)-timedelta(hours=40)).isoformat()}))
+    row = {'name': 'prose_lie', 'root': str(tmp_path), 'gate': 'gate',
+           'available': True, 'expected': 'FAIL', 'gate_s': 'FAIL',
+           'checked_at': datetime.now(timezone.utc).isoformat()}
+    assert 'STALE' not in build_site.adopt_rows([row])
+    row.pop('checked_at')
+    assert 'STALE' in build_site.adopt_rows([row])

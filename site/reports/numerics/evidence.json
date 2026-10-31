@@ -11,7 +11,7 @@
     "source_sha256": {
       "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
       "framework/verifiers/numerics.py": "3422a047f11985a9541605011f83de2c5eeb7fe8d4c9376d2cf4d5d394ba2d9a",
-      "tools/numerics_case.py": "4565a33c4689c804a0cd83cba9e2f936af622ee0353f14f851f425bd290fb38b",
+      "tools/numerics_case.py": "9edd1a0e52959bd4213c81c04c7deb20ce009351788301f5e33728eaf0755a63",
       "tools/numerics_figure.py": "e1a35546a39779f9c2fd72377ccb83364caf012ecae101615ae38f10579d3ab0",
       "uv.lock": "e99760dc7a5756aa08ef06433caa81d66d559112d3f8a9401b15d2e15db96c5e"
     }

@@ -1,56 +1,56 @@
-# barron2026-softmax-fix — MCP server
+# barron2026-softmax-fix MCP server
 
-Four tools from Barron (2026), *A fix for softmax and cross-entropy* (arXiv:2610.31642), evaluated in
-float64 numpy: the paper's own listing is JAX, and the arithmetic is the same.
+Four existing tools implement the v3 numerical contract of *A Fix for Softmax and Cross-Entropy*
+(arXiv:2610.31642v3). This NumPy float32/float64 adapter qualifies bounded numerical kernels;
+it does not reproduce all paper training outcomes. The upstream listing uses JAX.
 
-## Install and launch
+## Environment and launch
+
+Use the project interpreter selected in AGENTS.md. Add `--extra agent` to the project's existing
+locked `uv sync` command; preserve its other selected extras and uv.lock. The historical
+`.venv-repro` remains separate and is not required by this NumPy implementation.
 
 ```bash
-uv pip install --python .venv-repro/Scripts/python.exe "fastmcp==4.0.3"
-.venv-repro/Scripts/python.exe reference/reproduction/barron2026/mcp/server.py
+uv run --no-sync python reference/reproduction/barron2026/mcp/server.py
 ```
 
-The server speaks MCP over stdio. `fastmcp==4.0.3` is the baseline the Paper2Agent skill names in
-`references/runtime.md`; `mcp` resolves to 2.3.0 with it.
+The server speaks MCP over stdio. The lock records FastMCP 4.0.3.
 
-## Tools
+## Tools and numerical scope
 
-| tool | arguments | returns |
+| Tool | Arguments | Result |
 |---|---|---|
-| `log_softmax` | `z: list[float]` | stabilised values, the naive evaluation, and `stable_minus_naive` |
-| `softmax` | `z: list[float]` | probabilities, their sum, `is_normalised` |
-| `hard_cross_entropy` | `z: list[float]`, `target: int` | loss, gradient, `grad_sum`, `grad_sum_is_zero` |
-| `soft_target_cross_entropy` | `student: list[float]`, `teacher: list[float]` | loss, gradient, `grad_sum_is_zero` |
+| `log_softmax` | `z`, optional `dtype` | Fixed logs, conventional comparison and difference |
+| `softmax` | `z`, optional `dtype` | Probabilities and normalization check |
+| `hard_cross_entropy` | `z`, `target`, optional `dtype` | Loss, fixed/standard gradients, relative zero-sum checks |
+| `soft_target_cross_entropy` | `student`, `teacher`, optional `teacher_kind`, `dtype` | Loss, gradient and cancellation contract |
 
-`grad_sum_is_zero` is not a fitted tolerance: it tests the sum against 8 ulp of the gradient's own
-scale, which is what a three-term float64 sum can accumulate.
+`dtype` is float32 or float64 (default float64). For the cancellation repair, explicitly pass
+`teacher_kind="logits"`. The default `probabilities` mode preserves legacy callers and cannot
+recover information already lost in rounded teacher probabilities. Inputs must be finite vectors
+with matching shapes where applicable. The zero-sum diagnostic uses a dtype-relative bound,
+with no absolute floor; it alone does not qualify a gradient.
 
-## Example
+For hard targets `[9, -9, -9]`, target 0, float64 loss is approximately 3.04599590255207e-8.
+At `[40, 0, 0]`, the conventional target derivative collapses to zero while the fixed derivative
+remains negative. Exact represented student/teacher logit equality produces a fixed zero gradient.
 
-```json
-{"tool": "hard_cross_entropy", "arguments": {"z": [9, -9, -9], "target": 0}}
-```
-
-returns `loss = 3.0459958111350716e-08` and a gradient whose sum is `8.9e-16` — zero to rounding,
-where the naive evaluation of the same expression collapses.
-
-## Verification
-
-Paper2Agent's own verifier, unmodified, with `--require-all-tools`:
+## Verification from the repository or source bundle root
 
 ```bash
-.venv-repro/Scripts/python.exe <Paper2Agent>/skills/paper2agent/paper2mcp/scripts/verify_mcp_server.py \
+uv run --no-sync python tools/verify_barron_mcp.py \
   --server reference/reproduction/barron2026/mcp/server.py \
   --expected reference/reproduction/barron2026/mcp/expected.json \
   --cases reference/reproduction/barron2026/mcp/cases.json \
-  --require-all-tools --report reference/reproduction/barron2026/mcp/verify.json
+  --require-all-tools --report reference/reproduction/barron2026/mcp/verify.json \
+  --cwd reference/reproduction/barron2026/mcp
+uv run --no-sync python reference/barron2026_agent/agent.py
 ```
 
-Result: `{"success": true, "mode": "calls", "cases_checked": 4}` — inventory matched, every tool
-answered, every asserted value matched.
-
-## What this package does not claim
-
-The paper's claim that the naive form returns *exactly* `0.0` on `z = [9, -9, -9]` is a property of
-its precision and backend. In float64 numpy the naive form returns `-3.0459959887707555e-08`, close to
-the stabilised value. The tools therefore return both numbers instead of asserting the collapse.
+The first command runs the unmodified vendored Paper2Agent verifier through a documented
+numeric assertion adapter: nonzero float64 outputs use relative tolerance 1e-14 and absolute
+tolerance 0; zero and discrete fields remain exact. This avoids rejecting a one-ULP Windows/Linux
+libm difference. The policy is recorded in the output. All seven filed calls must pass and all four
+tools must be covered. The second command independently qualifies numerical outputs against
+Decimal references, checks broken controls and runs Gate S. Scientific gradient tolerances are
+not replaced by the smoke comparison policy.

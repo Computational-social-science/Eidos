@@ -7,7 +7,7 @@ and re-checked by `--check` in CI; none is typed by hand.
 
 | dimension | measurement | verdict |
 |---|---|---|
-| unit tests | **531 collected**, 531 passed; 4 optional Torch modules skipped in project env (16 tests separately passed on CUDA Python) | ✅ |
+| unit tests | **551 collected**, 551 passed; 4 optional Torch modules skipped in project env (16 tests separately passed on CUDA Python) | ✅ |
 | coverage of `framework/` | **67%**, source-only scope including unexecuted modules; future no-regression by >1 point | measured |
 | chain audit | **11 chains: 10 PASS, 1 SKIP, 0 FAIL/ERROR** | ✅ |
 | Gate S on the reference fixture | PASS (valid register) and FAIL (mutated copy) | ✅ |
@@ -16,7 +16,7 @@ and re-checked by `--check` in CI; none is typed by hand.
 | consumers | `demo_onboarding`, `demo_quantitative`, `operator_calibration`, `null_study`, `prose_lie`, `barron2026_agent`, plus measured `softmax_training` and `softmax_matrix` (saved models and final gradient endpoints independently validated) | 8 |
 | render chain | html 19 KB, pdf 13 KB, docx 11 KB from one Quarto source (`docs/RENDER_CHECK.json`) | ✅ |
 | external contracts | Quarto 1.10.19 (`tools/quarto`, via `QUARTO_BIN`), DVC, MLflow, decision service, BootLoops | ✅ |
-| coupling | 0 import cycles, 0 absolute-path literals | ✅ |
+| coupling | 0 import cycles across 94 scanned modules; 5 path-pattern matches in documentation/regex, manually reviewed | measured heuristic |
 
 Additional instruments, each with its own evidence file:
 
@@ -45,7 +45,7 @@ framework coverage. It now uses `coverage run --source=framework`, including une
 framework modules. This changes the denominator; compare future records only within this scope.
 Scientific case scope and corrected failure paths: [quality review](QUALITY-2026-10-31.md).
 The Collapse/Cancellation case has 96 recorded cases, 12 qualification cases, two rejected
-negative controls, and the existing four-tool MCP/agent. Full paper training outcomes remain UNRUN.
+negative controls, and the existing four-tool MCP/agent. Full paper training outcomes remain unreproduced; the separately archived paired reconstruction and precision/epsilon matrix do not establish a paper MATCH.
 
 Measured: test count, coverage, chain verdicts, contract reachability, coupling, the Gate S
 fixture pair, and the local-operator recovery error.
@@ -60,7 +60,7 @@ layer is useful (no production consumer; the one exploration failed and is in
 1. **Single adopter.** Every claim about the framework's effect is a claim about
    keystroke-observatory.
 2. **Coverage is uneven.** `inference/__init__.py` (38%), `inference/gguf.py` (0%) and
-   `project.py` (56%) still leave substantial paths untested.
+   `project.py` (61%) still leave substantial paths untested.
 3. **The Lean chain is verified on two projects** (lean-nhb, atlas-lean), not on a project
    this framework gates.
 4. **Quarto is installed outside the repository** (`E:/2026-AI4S/tools/quarto`), reached
@@ -87,4 +87,6 @@ The watchdog now also compares the sample `seq` with the last one it saw, so a s
 rewriting the same payload is reported instead of looking alive.
 
 
-Matrix acceptance: 36 complete trajectories, 1,836 points, 36 independent final gradient reloads; CPU/Gate S acceptance PASS. Mixed outcomes are reported in [the matrix report](../site/reports/softmax-matrix/report.html). Strict 24h soak remains RUNNING with 9 observed failures as of 2026-10-31 21:09 Asia/Shanghai; current monitor recovered to OK. Snapshot: [observation record](SOAK-OBSERVATION-2026-10-31.json).
+Matrix acceptance: 36 complete trajectories, 1,836 points, 36 independent final gradient reloads; CPU/Gate S acceptance PASS. Mixed outcomes are reported in [the matrix report](../site/reports/softmax-matrix/report.html). Strict 24h soak remains RUNNING with 18 observed failures as of 2026-10-31 22:03 Asia/Shanghai; deployment transitions and the deliberate invalidation probe count as strict failures. Current monitor recovered to OK. Snapshot: [observation record](SOAK-OBSERVATION-2026-10-31.json).
+
+Consumer snapshot acceptance: changed declarations revoke cached verdicts, background checks preserve sampling, and timeout cleanup owns descendants. See [functional completeness](FUNCTIONAL_COMPLETENESS.md). Generic Docker/Binder packaging remains incomplete.

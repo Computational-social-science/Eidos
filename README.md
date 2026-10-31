@@ -24,7 +24,8 @@ finite-budget generalization benefit. bfloat16 remains unqualified.
 Quarto + BootLoops + complementary quality gates, including dependency governance
 
 One source → journal LaTeX/PDF + Word + interactive HTML + executable code,
-with quantitative and semantic quality gates enforced throughout.
+with quantitative gates and optional semantic evaluators. Unqualified model
+judgements do not decide scientific acceptance.
 
 ---
 
@@ -77,14 +78,14 @@ Eidos is the **global skeleton** every research project inherits. It provides:
 | Layer | Contents |
 |---|---|
 | **Delivery** | Quarto single source → PDF/LaTeX, DOCX, HTML, code artifacts |
-| **Quality gates** | BootLoops (quantitative) + Inspect / DeepEval / Promptfoo / Ragas (semantic) |
+| **Quality gates** | BootLoops and scientific validity gates; optional Inspect / DeepEval / Promptfoo / Ragas adapters need their tools and project-specific qualification |
 | **Orchestration** | Eleven chains in a registry (order, dependencies, spans, verdicts), a tiered scheduler and a 15 s sampler that derives one status and drives recovery. No agent graph — `docs/ORCHESTRATION.md` says what was removed and why |
 | **Tracking** | MLflow + DVC, optional extras |
 | **Diagnosis** | Structured failure reports with root cause, severity, suggested actions |
 | **Knowledge** | Agent skills for procedure, each project's `LESSONS` file for history — no vector store |
 | **Decision** | StartLux-Decision-4B-Q8_0: typed choice / yes-no / score with calibrated probabilities for routing, gate triage and failure classification |
 | **Inference** | Stage-aware scheduling for a 12 GB GPU: one large model resident at a time |
-| **Packaging** | One-click Docker/Binder executable package with full provenance |
+| **Packaging** | Verified reproduction ZIPs for measured cases; generic Docker/Binder templates require repair and clean-build acceptance |
 | **Verifiers (P0–P1)** | `proofpath` decides whether a cited work exists and whether it was retracted; `academic-research-kernel` recomputes p, d, power and CI. Both are model-free, both refuse a claim, and both write an artefact a gate can point at — `docs/VERIFIERS.md` |
 | **Reproduction** | A Paper2Agent delivery is accepted only under contract (paper skill + MCP component), and a cited method needs a run: `tools/reproduction_check.py` executes a spec and compares the number with the paper's, Gate S **S12** blocks a claim without `MATCH` — `docs/PAPER2AGENT.md` |
 | **Model verdicts** | No model gates anything. S4 design judgement measured **0.867** with structured input (bar 0.90), S7 support judgement **0.850** held out — both negative, both with named failure families, both kept out of the gate — `docs/MODEL_VERDICTS.md` |
@@ -248,15 +249,19 @@ maps pipeline stages to models:
 
 ## Reproducibility
 
-Every delivered package records: git commit, DVC data hashes, MLflow run IDs,
-gate logs (quantitative + semantic), Quarto `_freeze` cache, environment
-lockfile, and the executable environment (Docker/Binder).
+Research deliveries should declare required code/data/config/seed versions and
+gate records. Measured Softmax bundles bind source, protocol and artifacts;
+DVC/MLflow records apply to projects using those tools. Generic Docker/Binder
+packaging has not met executable-delivery acceptance. See the
+[functional completeness ledger](docs/FUNCTIONAL_COMPLETENESS.md) for scope and open work.
 
 ---
 
 ## Status and honest limits
 
-- **Tested:** `make test` → **301 tests pass**. They cover both directions of
+- **Tested:** current counts and framework-only coverage are produced in
+  [SELF_AUDIT.json](docs/SELF_AUDIT.json) and summarized in [HEALTH.md](docs/HEALTH.md).
+  Tests cover both directions of
   every gate (a gate that cannot fail is not a gate), direction-aware acceptance
   criteria, diagnosis severity/actions/redaction with gate details carried into
   the cause, BootLoops root resolution, the project registry's failure modes
@@ -277,10 +282,10 @@ lockfile, and the executable environment (Docker/Binder).
   "not stated" option. The confidence floor is *not* identified by this data (no answer
   was ever wrong, so precision is 1.0 at every floor); the probe prints that instead of
   inventing a threshold.
-- **Coupling measured, not asserted:** `make coupling` → 10 modules, **1** hard internal
-  edge (a tool importing a library), **0** import cycles, 9 of 64 public names consumed
-  (14 %). The coupling that does exist is contractual — BootLoops, Quarto, DVC, MLflow and
-  three local services — and `make audit` exercises it. See `docs/COUPLING.md`.
+- **Coupling measured:** the complete AST scan and its limits are recorded in
+  [COUPLING.md](docs/COUPLING.md) and [the graph](docs/_coupling.json).
+  Imports and external contracts are different boundaries; `make audit` exercises
+  the latter. The old ten-module snapshot is archived rather than presented as current.
 - **Contracts snapshotted:** `make contracts` records the identity of each external
   boundary (Quarto 1.10.19, DVC 3.67.1, MLflow 3.17.1, the decision model id, the BootLoops
   root, the runtimes); `make contracts-check` fails only when a boundary that answered

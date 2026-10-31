@@ -1,0 +1,26 @@
+{
+  "scope": "live declared registry mutation, automatic Gate S reverification, advancing sampler",
+  "accepted": true,
+  "observations": [
+    {
+      "seq": 9517,
+      "state": "OK",
+      "note": "reverification required: none",
+      "server_error": null
+    },
+    {
+      "seq": 9518,
+      "state": "UNOBSERVABLE",
+      "note": "reverification required: null_study, registry",
+      "server_error": null
+    },
+    {
+      "seq": 9519,
+      "state": "OK",
+      "note": "reverification required: none",
+      "server_error": null
+    }
+  ],
+  "recorded_at": "2026-10-31T14:03:47.276018+00:00",
+  "restoration": "Original registry bytes restored; final pipeline rebuilt after the probe."
+}

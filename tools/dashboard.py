@@ -722,7 +722,8 @@ def consumer_strip(pipeline: dict) -> str:
         st = "PASS" if as_expected else "FAIL"
         freshness = consumer_freshness(row.get("root") or "", want, row.get("checked_at"))
         age_h = freshness["age_h"]
-        if freshness["stale"]:
+        changed = name in pipeline.get("stale_consumers", [])
+        if freshness["stale"] or changed:
             st = "STALE"
         age = fmt_age(age_h * 3600.0) if age_h is not None else ""
         stale_attr = ' data-stale="1"' if st == "STALE" else ""
@@ -733,14 +734,18 @@ def consumer_strip(pipeline: dict) -> str:
         label = "Expected rejection" if want == "FAIL" and as_expected else "As expected" if as_expected else "Unexpected verdict"
         note = f"Gate S {got} · expected {want}"
         timing = f"{'Checked' if freshness['source'] == 'verification' else 'Evidence'} {age} ago" if age else "Freshness unavailable"
+        if changed:
+            label = "Reverification required"
+            timing = "Declared inputs changed; cached verdict withdrawn"
         description = f"{name} · {label} · {note} · {timing}"
+        meta = " · ".join(part for part in (tag, timing) if part)
         parts.append(
             f'<button type="button" class="node consumer consumer-card" data-consumer="{html.escape(name, quote=True)}"'
             f' data-description="{html.escape(description, quote=True)}"{stale_attr}'
             f' style="--consumer-state:{PALETTE[st]}" aria-label="{html.escape(description, quote=True)}">'
             f'<span class="consumer-head"><strong>{html.escape(name)}</strong><span class="consumer-state">{st}</span></span>'
             f'<span class="consumer-verdict">{html.escape(label)} · {html.escape(note)}</span>'
-            f'<span class="consumer-meta">{html.escape(tag)} · {html.escape(timing)}</span></button>')
+            f'<span class="consumer-meta">{html.escape(meta)}</span></button>')
     parts.append("</div>")
     return "".join(parts)
 
@@ -1047,6 +1052,11 @@ if (location.protocol.startsWith('http')) {
 
 def build() -> str:
     pipeline = load(PIPELINE, {}) or {}
+    from tools.consumer_snapshot import snapshot_state
+    try:
+        pipeline["stale_consumers"] = snapshot_state(pipeline, root=ROOT)["stale"]
+    except (OSError, ValueError, TypeError, KeyError):
+        pipeline["stale_consumers"] = [row.get("name") for row in pipeline.get("consumers", [])]
     status = load(STATUS / "current.json", {}) or {}
     timeline = load(STATUS / "timeline.json", []) or []
     if isinstance(status.get("timeline"), list) and status["timeline"]:

@@ -80,41 +80,18 @@ def chains() -> list[dict]:
 
 
 def registry() -> list[dict]:
-    rows = []
-    for spec in sorted((ROOT / "projects").glob("*/project.yaml")):
-        text = spec.read_text(encoding="utf-8")
-        name = re.search(r"^name:\s*(\S+)", text, re.M)
-        root = re.search(r"^root:\s*(\S+)", text, re.M)
-        gate = re.search(r"^gate_command:\s*(\[.*\])", text, re.M)
-        register = re.search(r"^validity_register:\s*(\S+)", text, re.M)
-        document = re.search(r'^validity_document:\s*"?([^"\n]+)"?', text, re.M)
-        expected = re.search(r'^expected_gate_s:\s*(\w+)', text, re.M)
-        root_path = (spec.parent / (root.group(1) if root else "")).resolve()
-        row = {"name": name.group(1) if name else spec.parent.name,
-               "root": root.group(1) if root else "?",
-               "root_path": str(root_path),
-               "gate": gate.group(1) if gate else "?",
-               "available": root_path.is_dir(),
-               "register": register.group(1) if register else None,
-               "document": document.group(1) if document else None,
-               "gate_s": "—",
-               "expected": expected.group(1).upper() if expected else None}
-        if row["available"] and row["register"] and row["document"]:
-            docs = [d.strip() for d in str(row["document"]).split(",") if d.strip()]
-            args = [sys.executable, "tools/audit_validity.py", "--project", str(root_path),
-                    "--register", row["register"]]
-            for doc in docs:
-                args += ["--document", doc]
-            run = subprocess.run(args + ["--json"], cwd=ROOT, capture_output=True,
-                                 text=True, timeout=900)
-            try:
-                row["gate_s"] = json.loads(run.stdout).get("status", "ERROR")
-                if run.returncode != {"PASS": 0, "FAIL": 1}.get(row["gate_s"]):
-                    row["gate_s"] = "ERROR"
-            except json.JSONDecodeError:
-                row["gate_s"] = "ERROR"
-            row["checked_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
-        rows.append(row)
+    from framework.project import load_projects
+    from tools.build_pipeline import consumers
+
+    specs = load_projects(ROOT / "projects", allow_missing=True)
+    rows = consumers(specs)
+    for row in rows:
+        spec = specs[row["name"]]
+        row["root_path"] = str(spec.root)
+        row["root"] = str(spec.root.relative_to(ROOT)) if spec.root.is_relative_to(ROOT) else str(spec.root)
+        row["gate"] = json.dumps(spec.gate_command)
+        row["register"] = spec.validity_register
+        row["document"] = spec.validity_document
     return rows
 
 

@@ -1,28 +1,101 @@
 {
-  "generated": "2026-10-31T13:08:17+00:00",
+  "generated": "2026-10-31T14:09:41+00:00",
   "coupling": {
     "nodes": [
+      "framework.config",
       "framework.decision",
       "framework.diagnosis",
       "framework.gates",
       "framework.inference",
+      "framework.inference.gguf",
+      "framework.inference.llama_cpp",
+      "framework.model_ab",
       "framework.project",
       "framework.quarto_bridge",
+      "framework.recovery",
+      "framework.reproduction",
+      "framework.services",
+      "framework.stable_numerics",
+      "framework.stable_numerics_torch",
       "framework.surrogate",
       "framework.surrogate.demo",
       "framework.tracking",
+      "framework.updates",
       "framework.validity",
       "framework.validity.lean_audit",
+      "framework.verifiers",
+      "framework.verifiers.citations",
+      "framework.verifiers.extract_s4",
+      "framework.verifiers.numerics",
+      "framework.verifiers.pointers",
+      "framework.verifiers.stats",
+      "framework.verifiers.support",
+      "tools.audit_chain_fixtures",
       "tools.audit_chains",
+      "tools.audit_contrast",
       "tools.audit_coupling",
+      "tools.audit_fixtures",
+      "tools.audit_layout",
       "tools.audit_lean_project",
+      "tools.audit_numerics",
+      "tools.audit_runtime",
+      "tools.audit_services",
+      "tools.audit_site",
+      "tools.audit_stray",
       "tools.audit_surrogate",
       "tools.audit_validity",
+      "tools.audit_verifiers",
+      "tools.audit_visual",
+      "tools.bootstrap_project",
+      "tools.bounded_process",
+      "tools.browser",
+      "tools.build_pipeline",
       "tools.build_site",
+      "tools.chain_states",
       "tools.check_render",
+      "tools.compile_s4_prompt",
+      "tools.consumer_snapshot",
       "tools.contract_snapshot",
+      "tools.dashboard",
+      "tools.dashboard_figure",
       "tools.decision_probe",
-      "tools.record_self_audit"
+      "tools.demo_coverage",
+      "tools.evolution",
+      "tools.export_langfuse",
+      "tools.fuzz_register",
+      "tools.grokking_analysis",
+      "tools.health",
+      "tools.measure_sciencersi_load",
+      "tools.model_ab",
+      "tools.monitor_supervisor",
+      "tools.numerics_case",
+      "tools.numerics_figure",
+      "tools.pipeline_extras",
+      "tools.pipeline_view",
+      "tools.probe_s4",
+      "tools.probe_s4_structured",
+      "tools.probe_s7",
+      "tools.probe_s7_constrained",
+      "tools.probes",
+      "tools.record_self_audit",
+      "tools.refresh_chains",
+      "tools.release_gate",
+      "tools.reproduction_check",
+      "tools.s7_cases",
+      "tools.s7_cases_holdout",
+      "tools.screens",
+      "tools.serve_model",
+      "tools.serve_site",
+      "tools.site_page",
+      "tools.soak_monitor",
+      "tools.status_view",
+      "tools.theme",
+      "tools.training_figure",
+      "tools.update_operator",
+      "tools.verify_barron_mcp",
+      "tools.watch_pipeline",
+      "tools.watchdog",
+      "tools.windows_job"
     ],
     "edges": [
       {
@@ -36,8 +109,38 @@
         "kind": "hard"
       },
       {
+        "source": "framework.verifiers",
+        "target": "framework.verifiers.citations",
+        "kind": "hard"
+      },
+      {
+        "source": "framework.verifiers",
+        "target": "framework.verifiers.stats",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.audit_chain_fixtures",
+        "target": "framework.project",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.audit_fixtures",
+        "target": "framework.validity",
+        "kind": "hard"
+      },
+      {
         "source": "tools.audit_lean_project",
         "target": "framework.validity.lean_audit",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.audit_numerics",
+        "target": "framework.verifiers.numerics",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.audit_services",
+        "target": "framework.services",
         "kind": "hard"
       },
       {
@@ -48,6 +151,16 @@
       {
         "source": "tools.audit_validity",
         "target": "framework.validity",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.audit_verifiers",
+        "target": "framework.verifiers.citations",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.audit_verifiers",
+        "target": "framework.verifiers.stats",
         "kind": "hard"
       },
       {
@@ -66,8 +179,78 @@
         "kind": "hard"
       },
       {
+        "source": "tools.compile_s4_prompt",
+        "target": "framework.inference.llama_cpp",
+        "kind": "hard"
+      },
+      {
         "source": "tools.decision_probe",
         "target": "framework.decision",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.fuzz_register",
+        "target": "framework.validity",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.model_ab",
+        "target": "framework.model_ab",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.numerics_case",
+        "target": "framework.stable_numerics",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.numerics_case",
+        "target": "framework.verifiers.numerics",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.probe_s4",
+        "target": "framework.inference.llama_cpp",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.probe_s4_structured",
+        "target": "framework.inference.llama_cpp",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.probe_s7",
+        "target": "framework.inference.llama_cpp",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.probe_s7_constrained",
+        "target": "framework.inference.llama_cpp",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.reproduction_check",
+        "target": "framework.reproduction",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.training_figure",
+        "target": "tools.numerics_figure",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.update_operator",
+        "target": "framework.updates",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.watch_pipeline",
+        "target": "framework.recovery",
+        "kind": "hard"
+      },
+      {
+        "source": "tools.watch_pipeline",
+        "target": "tools.probes",
         "kind": "hard"
       },
       {
@@ -76,8 +259,43 @@
         "kind": "soft"
       },
       {
+        "source": "framework.model_ab",
+        "target": "framework.decision",
+        "kind": "soft"
+      },
+      {
+        "source": "framework.project",
+        "target": "framework.config",
+        "kind": "soft"
+      },
+      {
+        "source": "framework.project",
+        "target": "framework.verifiers.numerics",
+        "kind": "soft"
+      },
+      {
+        "source": "framework.validity",
+        "target": "framework.reproduction",
+        "kind": "soft"
+      },
+      {
         "source": "framework.validity",
         "target": "framework.validity.lean_audit",
+        "kind": "soft"
+      },
+      {
+        "source": "framework.validity",
+        "target": "framework.verifiers.extract_s4",
+        "kind": "soft"
+      },
+      {
+        "source": "framework.validity",
+        "target": "framework.verifiers.support",
+        "kind": "soft"
+      },
+      {
+        "source": "framework.verifiers.numerics",
+        "target": "framework.stable_numerics",
         "kind": "soft"
       },
       {
@@ -124,18 +342,158 @@
         "source": "tools.audit_chains",
         "target": "framework.validity",
         "kind": "soft"
+      },
+      {
+        "source": "tools.audit_numerics",
+        "target": "framework.project",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.audit_validity",
+        "target": "framework.project",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.build_pipeline",
+        "target": "framework.project",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.build_pipeline",
+        "target": "tools.consumer_snapshot",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.build_site",
+        "target": "framework.project",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.build_site",
+        "target": "framework.updates",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.build_site",
+        "target": "tools.build_pipeline",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.consumer_snapshot",
+        "target": "framework.project",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.dashboard",
+        "target": "framework.project",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.dashboard",
+        "target": "tools.consumer_snapshot",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.dashboard",
+        "target": "tools.watch_pipeline",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.grokking_analysis",
+        "target": "framework.stable_numerics_torch",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.numerics_case",
+        "target": "tools.numerics_figure",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.numerics_case",
+        "target": "tools.training_figure",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.release_gate",
+        "target": "framework.validity",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.serve_model",
+        "target": "framework.inference",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.serve_site",
+        "target": "framework.project",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.serve_site",
+        "target": "framework.recovery",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.serve_site",
+        "target": "tools.bounded_process",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.serve_site",
+        "target": "tools.consumer_snapshot",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.watch_pipeline",
+        "target": "framework.diagnosis",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.watch_pipeline",
+        "target": "framework.project",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.watch_pipeline",
+        "target": "framework.quarto_bridge",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.watch_pipeline",
+        "target": "framework.recovery",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.watch_pipeline",
+        "target": "framework.services",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.watch_pipeline",
+        "target": "framework.updates",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.watch_pipeline",
+        "target": "tools.consumer_snapshot",
+        "kind": "soft"
       }
     ],
     "attrs": {
+      "framework.config": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 1
+      },
       "framework.decision": {
         "process": 0,
         "network": 2,
-        "fan_in": 3
+        "fan_in": 4
       },
       "framework.diagnosis": {
         "process": 0,
         "network": 0,
-        "fan_in": 1
+        "fan_in": 2
       },
       "framework.gates": {
         "process": 1,
@@ -145,17 +503,57 @@
       "framework.inference": {
         "process": 1,
         "network": 5,
+        "fan_in": 2
+      },
+      "framework.inference.gguf": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "framework.inference.llama_cpp": {
+        "process": 0,
+        "network": 2,
+        "fan_in": 5
+      },
+      "framework.model_ab": {
+        "process": 0,
+        "network": 0,
         "fan_in": 1
       },
       "framework.project": {
         "process": 1,
         "network": 0,
-        "fan_in": 1
+        "fan_in": 10
       },
       "framework.quarto_bridge": {
         "process": 1,
         "network": 0,
+        "fan_in": 3
+      },
+      "framework.recovery": {
+        "process": 1,
+        "network": 2,
         "fan_in": 2
+      },
+      "framework.reproduction": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 2
+      },
+      "framework.services": {
+        "process": 0,
+        "network": 2,
+        "fan_in": 2
+      },
+      "framework.stable_numerics": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 2
+      },
+      "framework.stable_numerics_torch": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 1
       },
       "framework.surrogate": {
         "process": 0,
@@ -172,18 +570,68 @@
         "network": 0,
         "fan_in": 1
       },
+      "framework.updates": {
+        "process": 1,
+        "network": 2,
+        "fan_in": 3
+      },
       "framework.validity": {
         "process": 0,
         "network": 0,
-        "fan_in": 2
+        "fan_in": 5
       },
       "framework.validity.lean_audit": {
         "process": 1,
         "network": 0,
         "fan_in": 2
       },
+      "framework.verifiers": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "framework.verifiers.citations": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 2
+      },
+      "framework.verifiers.extract_s4": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 1
+      },
+      "framework.verifiers.numerics": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 3
+      },
+      "framework.verifiers.pointers": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "framework.verifiers.stats": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 2
+      },
+      "framework.verifiers.support": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 1
+      },
+      "tools.audit_chain_fixtures": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
       "tools.audit_chains": {
         "process": 1,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.audit_contrast": {
+        "process": 0,
         "network": 0,
         "fan_in": 0
       },
@@ -192,7 +640,42 @@
         "network": 0,
         "fan_in": 0
       },
+      "tools.audit_fixtures": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.audit_layout": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
       "tools.audit_lean_project": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.audit_numerics": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.audit_runtime": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.audit_services": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.audit_site": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.audit_stray": {
         "process": 0,
         "network": 0,
         "fan_in": 0
@@ -207,8 +690,43 @@
         "network": 0,
         "fan_in": 0
       },
+      "tools.audit_verifiers": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.audit_visual": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.bootstrap_project": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.bounded_process": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 1
+      },
+      "tools.browser": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.build_pipeline": {
+        "process": 1,
+        "network": 1,
+        "fan_in": 1
+      },
       "tools.build_site": {
         "process": 1,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.chain_states": {
+        "process": 0,
         "network": 0,
         "fan_in": 0
       },
@@ -217,9 +735,29 @@
         "network": 0,
         "fan_in": 0
       },
+      "tools.compile_s4_prompt": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.consumer_snapshot": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 4
+      },
       "tools.contract_snapshot": {
         "process": 1,
         "network": 2,
+        "fan_in": 0
+      },
+      "tools.dashboard": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.dashboard_figure": {
+        "process": 0,
+        "network": 0,
         "fan_in": 0
       },
       "tools.decision_probe": {
@@ -227,7 +765,187 @@
         "network": 0,
         "fan_in": 0
       },
+      "tools.demo_coverage": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.evolution": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.export_langfuse": {
+        "process": 0,
+        "network": 2,
+        "fan_in": 0
+      },
+      "tools.fuzz_register": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.grokking_analysis": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.health": {
+        "process": 0,
+        "network": 2,
+        "fan_in": 0
+      },
+      "tools.measure_sciencersi_load": {
+        "process": 1,
+        "network": 1,
+        "fan_in": 0
+      },
+      "tools.model_ab": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.monitor_supervisor": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.numerics_case": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.numerics_figure": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 2
+      },
+      "tools.pipeline_extras": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.pipeline_view": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.probe_s4": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.probe_s4_structured": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.probe_s7": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.probe_s7_constrained": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.probes": {
+        "process": 0,
+        "network": 1,
+        "fan_in": 1
+      },
       "tools.record_self_audit": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.refresh_chains": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.release_gate": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.reproduction_check": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.s7_cases": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.s7_cases_holdout": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.screens": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.serve_model": {
+        "process": 1,
+        "network": 2,
+        "fan_in": 0
+      },
+      "tools.serve_site": {
+        "process": 1,
+        "network": 1,
+        "fan_in": 0
+      },
+      "tools.site_page": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.soak_monitor": {
+        "process": 0,
+        "network": 1,
+        "fan_in": 0
+      },
+      "tools.status_view": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.theme": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.training_figure": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 1
+      },
+      "tools.update_operator": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.verify_barron_mcp": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.watch_pipeline": {
+        "process": 0,
+        "network": 1,
+        "fan_in": 1
+      },
+      "tools.watchdog": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.windows_job": {
         "process": 1,
         "network": 0,
         "fan_in": 0
@@ -235,41 +953,135 @@
     },
     "cycles": [],
     "fan_in": {
-      "framework.decision": 3,
+      "framework.decision": 4,
+      "framework.verifiers.numerics": 3,
+      "framework.config": 1,
       "framework.surrogate": 3,
+      "framework.verifiers.support": 1,
       "framework.validity.lean_audit": 2,
+      "framework.reproduction": 2,
+      "framework.verifiers.extract_s4": 1,
       "framework.gates": 2,
-      "framework.validity": 2,
-      "framework.diagnosis": 1,
+      "framework.verifiers.stats": 2,
+      "framework.verifiers.citations": 2,
+      "framework.stable_numerics": 2,
+      "framework.project": 10,
+      "framework.tracking": 1,
+      "framework.validity": 5,
       "framework.surrogate.demo": 2,
-      "framework.inference": 1,
-      "framework.quarto_bridge": 2,
-      "framework.project": 1,
-      "framework.tracking": 1
+      "framework.diagnosis": 2,
+      "framework.quarto_bridge": 3,
+      "framework.inference": 2,
+      "framework.services": 2,
+      "tools.consumer_snapshot": 4,
+      "framework.updates": 3,
+      "tools.build_pipeline": 1,
+      "framework.inference.llama_cpp": 5,
+      "tools.watch_pipeline": 1,
+      "framework.stable_numerics_torch": 1,
+      "framework.model_ab": 1,
+      "tools.training_figure": 1,
+      "tools.numerics_figure": 2,
+      "tools.bounded_process": 1,
+      "framework.recovery": 2,
+      "tools.probes": 1
     },
-    "absolute_paths": 2,
+    "absolute_paths": 5,
     "levels": {
+      "framework.config": 0,
       "framework.decision": 0,
       "framework.diagnosis": 1,
       "framework.gates": 0,
       "framework.inference": 0,
-      "framework.project": 0,
+      "framework.inference.gguf": 0,
+      "framework.inference.llama_cpp": 0,
+      "framework.model_ab": 1,
+      "framework.stable_numerics": 0,
+      "framework.verifiers.numerics": 1,
+      "framework.project": 2,
       "framework.quarto_bridge": 0,
+      "framework.recovery": 0,
+      "framework.reproduction": 0,
+      "framework.services": 0,
+      "framework.stable_numerics_torch": 0,
       "framework.surrogate": 0,
       "framework.surrogate.demo": 1,
       "framework.tracking": 0,
+      "framework.updates": 0,
       "framework.validity.lean_audit": 0,
+      "framework.verifiers.support": 0,
+      "framework.verifiers.extract_s4": 0,
       "framework.validity": 1,
-      "tools.audit_chains": 2,
+      "framework.verifiers.stats": 0,
+      "framework.verifiers.citations": 0,
+      "framework.verifiers": 1,
+      "framework.verifiers.pointers": 0,
+      "tools.audit_chain_fixtures": 3,
+      "tools.audit_chains": 3,
+      "tools.audit_contrast": 0,
       "tools.audit_coupling": 0,
+      "tools.audit_fixtures": 2,
+      "tools.audit_layout": 0,
       "tools.audit_lean_project": 1,
+      "tools.audit_numerics": 3,
+      "tools.audit_runtime": 0,
+      "tools.audit_services": 1,
+      "tools.audit_site": 0,
+      "tools.audit_stray": 0,
       "tools.audit_surrogate": 1,
-      "tools.audit_validity": 2,
-      "tools.build_site": 2,
+      "tools.audit_validity": 3,
+      "tools.audit_verifiers": 1,
+      "tools.audit_visual": 0,
+      "tools.bootstrap_project": 0,
+      "tools.bounded_process": 0,
+      "tools.browser": 0,
+      "tools.consumer_snapshot": 3,
+      "tools.build_pipeline": 4,
+      "tools.build_site": 5,
+      "tools.chain_states": 0,
       "tools.check_render": 1,
+      "tools.compile_s4_prompt": 1,
       "tools.contract_snapshot": 0,
+      "tools.probes": 0,
+      "tools.watch_pipeline": 4,
+      "tools.dashboard": 5,
+      "tools.dashboard_figure": 0,
       "tools.decision_probe": 1,
-      "tools.record_self_audit": 0
+      "tools.demo_coverage": 0,
+      "tools.evolution": 0,
+      "tools.export_langfuse": 0,
+      "tools.fuzz_register": 2,
+      "tools.grokking_analysis": 1,
+      "tools.health": 0,
+      "tools.measure_sciencersi_load": 0,
+      "tools.model_ab": 2,
+      "tools.monitor_supervisor": 0,
+      "tools.numerics_figure": 0,
+      "tools.training_figure": 1,
+      "tools.numerics_case": 2,
+      "tools.pipeline_extras": 0,
+      "tools.pipeline_view": 0,
+      "tools.probe_s4": 1,
+      "tools.probe_s4_structured": 1,
+      "tools.probe_s7": 1,
+      "tools.probe_s7_constrained": 1,
+      "tools.record_self_audit": 0,
+      "tools.refresh_chains": 0,
+      "tools.release_gate": 2,
+      "tools.reproduction_check": 1,
+      "tools.s7_cases": 0,
+      "tools.s7_cases_holdout": 0,
+      "tools.screens": 0,
+      "tools.serve_model": 1,
+      "tools.serve_site": 4,
+      "tools.site_page": 0,
+      "tools.soak_monitor": 0,
+      "tools.status_view": 0,
+      "tools.theme": 0,
+      "tools.update_operator": 1,
+      "tools.verify_barron_mcp": 0,
+      "tools.watchdog": 0,
+      "tools.windows_job": 0
     }
   },
   "trace": {
@@ -509,9 +1321,10 @@
     "generated": "2026-10-31T11:43:41+00:00"
   },
   "self_audit": {
-    "gate_s": null,
+    "gate_s": "PASS",
+    "fixture_status": "PASS",
     "chains": 11,
-    "tests": null
+    "tests": 551
   },
   "consumers": [
     {
@@ -521,8 +1334,10 @@
       "gate_s": "PASS",
       "expected": "PASS",
       "generated": "2026-10-31T12:22:30+00:00",
+      "input_digest": "ca62531333f826a30444c91148cfbdecdf3e31caff0057d63a1021f055ad517c",
+      "input_error": null,
       "role": "paper-to-agent consumer (MCP tools from a converted paper, driven end to end)",
-      "checked_at": "2026-10-31T13:08:18+00:00",
+      "checked_at": "2026-10-31T14:09:41+00:00",
       "findings": []
     },
     {
@@ -532,6 +1347,8 @@
       "gate_s": "\u2014",
       "expected": "",
       "generated": null,
+      "input_digest": null,
+      "input_error": null,
       "role": ""
     },
     {
@@ -541,6 +1358,8 @@
       "gate_s": "\u2014",
       "expected": "",
       "generated": null,
+      "input_digest": null,
+      "input_error": null,
       "role": ""
     },
     {
@@ -550,6 +1369,8 @@
       "gate_s": "\u2014",
       "expected": "",
       "generated": null,
+      "input_digest": null,
+      "input_error": null,
       "role": ""
     },
     {
@@ -559,6 +1380,8 @@
       "gate_s": "\u2014",
       "expected": "",
       "generated": null,
+      "input_digest": null,
+      "input_error": null,
       "role": ""
     },
     {
@@ -568,8 +1391,10 @@
       "gate_s": "PASS",
       "expected": "PASS",
       "generated": "2026-10-31T07:37:00+00:00",
+      "input_digest": "d85c9d857f4058a994fd8c4eb7e463178a8f8f3e99ca88d12df10ae7f82b2c5a",
+      "input_error": null,
       "role": "DEMO (onboarding template, LLM consumer)",
-      "checked_at": "2026-10-31T13:08:18+00:00",
+      "checked_at": "2026-10-31T14:09:41+00:00",
       "findings": []
     },
     {
@@ -579,8 +1404,10 @@
       "gate_s": "PASS",
       "expected": "PASS",
       "generated": "2026-10-31T07:37:00+00:00",
+      "input_digest": "f4627ced8b8a5583d52d47bce81b870a2e3b4f1514c29038755dd97a04dbed82",
+      "input_error": null,
       "role": "DEMO (quantitative consumer, planted truth + render)",
-      "checked_at": "2026-10-31T13:08:18+00:00",
+      "checked_at": "2026-10-31T14:09:42+00:00",
       "findings": []
     },
     {
@@ -590,8 +1417,10 @@
       "gate_s": "FAIL",
       "expected": "FAIL",
       "generated": null,
+      "input_digest": "9d1a0eeafe7601bf50c17fe8c3a26c651a493cd32162e1c189e7589114791527",
+      "input_error": null,
       "role": "negative control (expected rejection)",
-      "checked_at": "2026-10-31T13:08:18+00:00",
+      "checked_at": "2026-10-31T14:09:42+00:00",
       "findings": [
         "[S3] N1: evidence says 0 but ../operator_calibration/docs/evidence.json/abstain_unanswerable holds 1.0"
       ]
@@ -603,8 +1432,10 @@
       "gate_s": "PASS",
       "expected": "PASS",
       "generated": "2026-10-31T07:37:12+00:00",
+      "input_digest": "8a571a6bb53cac1fb511498e48ce8f5f14cb3a5978cec11a9feefa70559dc369",
+      "input_error": null,
       "role": "LLM consumer (calibration of a typed decision operator)",
-      "checked_at": "2026-10-31T13:08:18+00:00",
+      "checked_at": "2026-10-31T14:09:42+00:00",
       "findings": []
     },
     {
@@ -614,8 +1445,10 @@
       "gate_s": "FAIL",
       "expected": "FAIL",
       "generated": null,
+      "input_digest": "67ffbab3739467816b0448672c0de3908cab05d8725c9792956490e3e030b5d3",
+      "input_error": null,
       "role": "negative control for S9 (prose contradicts its own evidence)",
-      "checked_at": "2026-10-31T13:08:18+00:00",
+      "checked_at": "2026-10-31T14:09:42+00:00",
       "findings": [
         "[S9] P1: the text states [19.0] but the evidence holds 1"
       ]
@@ -627,8 +1460,10 @@
       "gate_s": "PASS",
       "expected": "PASS",
       "generated": "2026-10-31T12:55:33.030708+00:00",
+      "input_digest": "bf69d21b7943424e99e07b717633cf96c1d01fbff3081c0ba4f12d2b0dbd74e9",
+      "input_error": null,
       "role": "measured paired loss-precision and epsilon reconstruction; all outcomes retained",
-      "checked_at": "2026-10-31T13:08:18+00:00",
+      "checked_at": "2026-10-31T14:09:42+00:00",
       "findings": []
     },
     {
@@ -638,11 +1473,18 @@
       "gate_s": "PASS",
       "expected": "PASS",
       "generated": "2026-10-31T09:18:54.095156+00:00",
+      "input_digest": "100d71140579846051d5555225c7f85f984096d3409ec60f23c65e2cf202c998",
+      "input_error": null,
       "role": "measured optimizer-level training consumer; adapted stationarity experiment",
-      "checked_at": "2026-10-31T13:08:19+00:00",
+      "checked_at": "2026-10-31T14:09:43+00:00",
       "findings": []
     }
   ],
+  "consumer_snapshot": {
+    "schema": 1,
+    "registry_digest": "06db170f8372397f316fef0d4e5a0d31f42e7de31ede793d4e5be2dd9d09c7c8",
+    "scope": "registry, framework Python sources, and declared Gate S file inputs"
+  },
   "chain_modules": {
     "registry": [
       "framework.project"

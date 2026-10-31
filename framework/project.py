@@ -69,6 +69,8 @@ class ProjectSpec:
     #: and the verdict the consumer is expected to produce (a negative control FAILs).
     validity_register: str = ""
     validity_document: str = ""
+    #: Exact outside-project inputs deliberately shared by a registered consumer.
+    validity_external_inputs: list[str] = dataclasses.field(default_factory=list)
     expected_gate_s: str = ""
     #: Project-level overrides of the global policy (configs/global/framework.yaml). The project
     #: states only what differs; `effective_config()` merges, and the global file is never edited.
@@ -171,6 +173,8 @@ def load_project(project_file: Path, allow_missing: bool = False) -> ProjectSpec
         role=str(data.get("role") or ""),
         validity_register=str(data.get("validity_register") or ""),
         validity_document=str(data.get("validity_document") or ""),
+        validity_external_inputs=_as_argv(data.get("validity_external_inputs"),
+                                         "validity_external_inputs", project_file),
         expected_gate_s=str(data.get("expected_gate_s") or ""),
         overrides=dict(data.get("overrides") or {}),
         available=available,

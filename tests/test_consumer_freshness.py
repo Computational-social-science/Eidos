@@ -38,9 +38,9 @@ def test_refresh_does_not_claim_success_when_registry_rebuild_failed(monkeypatch
     from tools import serve_site
     import framework.project as project
     spec=types.SimpleNamespace(available=True,gate_command=['python','gate.py'],root='missing',expected_gate_s='FAIL')
-    monkeypatch.setattr(project,'load_projects',lambda:{'negative':spec})
+    monkeypatch.setattr(project,'load_projects',lambda **kw:{'negative':spec})
     monkeypatch.setattr(project,'run_command',lambda *a,**k:types.SimpleNamespace(status='FAIL',stdout_tail='expected rejection'))
-    monkeypatch.setattr(serve_site.subprocess,'run',lambda *a,**k:subprocess.CompletedProcess(a,2,'','rebuild failed'))
+    monkeypatch.setattr(serve_site,'run_pipeline',lambda *a,**k:subprocess.CompletedProcess(a,2,'','rebuild failed'))
     assert serve_site.refresh_project('negative')['ok'] is False
 
 

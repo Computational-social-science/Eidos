@@ -50,7 +50,49 @@ PAGES = {"/": "dashboard.html", "/dashboard.html": "dashboard.html", "/index.htm
 def current_consumer_html() -> str:
     import dashboard
     pipeline = json.loads((ROOT / "docs/pipeline.json").read_text(encoding="utf-8"))
+    from tools.consumer_snapshot import snapshot_state
+    binding = snapshot_state(pipeline, root=ROOT)
+    pipeline["stale_consumers"] = binding["stale"]
+    queue_reconciliation(binding)
     return dashboard.consumer_strip(pipeline)
+
+
+PIPELINE_LOCK = threading.Lock()
+
+
+def run_pipeline(*, probe: bool = False):
+    from tools.bounded_process import run_tree
+    args = [sys.executable, str(ROOT / "tools/build_pipeline.py")]
+    if probe:
+        args.append("--probe")
+    return run_tree(args, cwd=ROOT, timeout=300)
+
+
+def queue_reconciliation(binding: dict, cooldown: float = 300) -> threading.Thread | None:
+    """Recheck changed declarations in the background, once, without blocking sampling."""
+    if not binding["stale"] or time.time() - STATE.get("last_reconcile", 0.0) < cooldown:
+        return None
+    if not PIPELINE_LOCK.acquire(blocking=False):
+        return None
+    STATE["last_reconcile"] = time.time()
+
+    def rebuild():
+        try:
+            STATE["reconcile_note"] = "reverification running"
+            run = run_pipeline()
+            STATE["reconcile_note"] = "reverification finished" if run.returncode == 0 else "reverification failed"
+        except (OSError, subprocess.SubprocessError) as exc:
+            STATE["reconcile_note"] = f"reverification failed: {type(exc).__name__}"
+        finally:
+            PIPELINE_LOCK.release()
+
+    worker = threading.Thread(target=rebuild, name="consumer-reverification", daemon=True)
+    try:
+        worker.start()
+    except RuntimeError:
+        PIPELINE_LOCK.release()
+        raise
+    return worker
 
 
 
@@ -169,10 +211,15 @@ def sampler(interval: float, page_interval: float) -> None:
             if time.time() - STATE.get("last_auto", 0.0) > 3600:
                 STATE["last_auto"] = time.time()
                 try:
-                    from framework.project import evidence_age_hours, load_projects
+                    from framework.project import consumer_freshness, load_projects
+                    pipeline = json.loads((ROOT / "docs/pipeline.json").read_text(encoding="utf-8"))
+                    checked = {row["name"]: row for row in pipeline.get("consumers", [])}
                     stale = []
-                    for spec in load_projects().values():
-                        age_h = evidence_age_hours(spec.root)
+                    for spec in load_projects(allow_missing=True).values():
+                        if not spec.available or spec.expected_gate_s.upper() not in ("PASS", "FAIL"):
+                            continue
+                        age_h = consumer_freshness(spec.root, spec.expected_gate_s,
+                            checked.get(spec.name, {}).get("checked_at"))["age_h"]
                         if age_h is not None and age_h > 24.0:
                             stale.append((age_h, spec.name))
                     if stale:
@@ -219,7 +266,7 @@ def refresh_project(name: str) -> dict:
     sys.path.insert(0, str(ROOT))
     from framework.project import evidence_age_hours, load_projects, run_command
 
-    spec = load_projects().get(name)
+    spec = load_projects(allow_missing=True).get(name)
     if spec is None:
         return {"ok": False, "error": f"no project named {name!r}"}
     if not spec.available:
@@ -236,8 +283,8 @@ def refresh_project(name: str) -> dict:
         # The dashboard reads docs/pipeline.json for Gate S verdicts; a new evidence file without a
         # rebuild would be measured against the old registry.
         try:
-            rebuilt = subprocess.run([sys.executable, str(ROOT / "tools" / "build_pipeline.py"), "--probe"],
-                           cwd=str(ROOT), capture_output=True, text=True, timeout=300)
+            with PIPELINE_LOCK:
+                rebuilt = run_pipeline(probe=True)
             if rebuilt.returncode != 0:
                 return {"ok": False, "status": run.status, "error": "gate ran, but registry rebuild failed"}
         except (OSError, subprocess.SubprocessError) as exc:

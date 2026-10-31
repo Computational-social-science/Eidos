@@ -1,5 +1,5 @@
 {
-  "modules": 21,
+  "modules": 94,
   "hard": {
     "framework.surrogate.demo": [
       "framework.surrogate"
@@ -7,14 +7,34 @@
     "framework.validity": [
       "framework.gates"
     ],
+    "framework.verifiers": [
+      "framework.verifiers.citations",
+      "framework.verifiers.stats"
+    ],
+    "tools.audit_chain_fixtures": [
+      "framework.project"
+    ],
+    "tools.audit_fixtures": [
+      "framework.validity"
+    ],
     "tools.audit_lean_project": [
       "framework.validity.lean_audit"
+    ],
+    "tools.audit_numerics": [
+      "framework.verifiers.numerics"
+    ],
+    "tools.audit_services": [
+      "framework.services"
     ],
     "tools.audit_surrogate": [
       "framework.surrogate"
     ],
     "tools.audit_validity": [
       "framework.validity"
+    ],
+    "tools.audit_verifiers": [
+      "framework.verifiers.citations",
+      "framework.verifiers.stats"
     ],
     "tools.build_site": [
       "framework.surrogate",
@@ -23,29 +43,135 @@
     "tools.check_render": [
       "framework.quarto_bridge"
     ],
+    "tools.compile_s4_prompt": [
+      "framework.inference.llama_cpp"
+    ],
     "tools.decision_probe": [
       "framework.decision"
     ],
+    "tools.fuzz_register": [
+      "framework.validity"
+    ],
+    "tools.model_ab": [
+      "framework.model_ab"
+    ],
+    "tools.numerics_case": [
+      "framework.stable_numerics",
+      "framework.verifiers.numerics"
+    ],
+    "tools.probe_s4": [
+      "framework.inference.llama_cpp"
+    ],
+    "tools.probe_s4_structured": [
+      "framework.inference.llama_cpp"
+    ],
+    "tools.probe_s7": [
+      "framework.inference.llama_cpp"
+    ],
+    "tools.probe_s7_constrained": [
+      "framework.inference.llama_cpp"
+    ],
+    "tools.reproduction_check": [
+      "framework.reproduction"
+    ],
+    "tools.training_figure": [
+      "tools.numerics_figure"
+    ],
+    "tools.update_operator": [
+      "framework.updates"
+    ],
+    "tools.watch_pipeline": [
+      "framework.recovery",
+      "tools.probes"
+    ],
+    "framework.config": [],
     "framework.decision": [],
     "framework.diagnosis": [],
     "framework.gates": [],
     "framework.inference": [],
+    "framework.inference.gguf": [],
+    "framework.inference.llama_cpp": [],
+    "framework.model_ab": [],
     "framework.project": [],
     "framework.quarto_bridge": [],
+    "framework.recovery": [],
+    "framework.reproduction": [],
+    "framework.services": [],
+    "framework.stable_numerics": [],
+    "framework.stable_numerics_torch": [],
     "framework.surrogate": [],
     "framework.tracking": [],
+    "framework.updates": [],
     "framework.validity.lean_audit": [],
+    "framework.verifiers.citations": [],
+    "framework.verifiers.extract_s4": [],
+    "framework.verifiers.numerics": [],
+    "framework.verifiers.pointers": [],
+    "framework.verifiers.stats": [],
+    "framework.verifiers.support": [],
     "tools.audit_chains": [],
+    "tools.audit_contrast": [],
     "tools.audit_coupling": [],
+    "tools.audit_layout": [],
+    "tools.audit_runtime": [],
+    "tools.audit_site": [],
+    "tools.audit_stray": [],
+    "tools.audit_visual": [],
+    "tools.bootstrap_project": [],
+    "tools.bounded_process": [],
+    "tools.browser": [],
+    "tools.build_pipeline": [],
+    "tools.chain_states": [],
+    "tools.consumer_snapshot": [],
     "tools.contract_snapshot": [],
-    "tools.record_self_audit": []
+    "tools.dashboard": [],
+    "tools.dashboard_figure": [],
+    "tools.demo_coverage": [],
+    "tools.evolution": [],
+    "tools.export_langfuse": [],
+    "tools.grokking_analysis": [],
+    "tools.health": [],
+    "tools.measure_sciencersi_load": [],
+    "tools.monitor_supervisor": [],
+    "tools.numerics_figure": [],
+    "tools.pipeline_extras": [],
+    "tools.pipeline_view": [],
+    "tools.probes": [],
+    "tools.record_self_audit": [],
+    "tools.refresh_chains": [],
+    "tools.release_gate": [],
+    "tools.s7_cases": [],
+    "tools.s7_cases_holdout": [],
+    "tools.screens": [],
+    "tools.serve_model": [],
+    "tools.serve_site": [],
+    "tools.site_page": [],
+    "tools.soak_monitor": [],
+    "tools.status_view": [],
+    "tools.theme": [],
+    "tools.verify_barron_mcp": [],
+    "tools.watchdog": [],
+    "tools.windows_job": []
   },
   "soft": {
     "framework.diagnosis": [
       "framework.decision"
     ],
+    "framework.model_ab": [
+      "framework.decision"
+    ],
+    "framework.project": [
+      "framework.config",
+      "framework.verifiers.numerics"
+    ],
     "framework.validity": [
-      "framework.validity.lean_audit"
+      "framework.reproduction",
+      "framework.validity.lean_audit",
+      "framework.verifiers.extract_s4",
+      "framework.verifiers.support"
+    ],
+    "framework.verifiers.numerics": [
+      "framework.stable_numerics"
     ],
     "tools.audit_chains": [
       "framework.decision",
@@ -58,37 +184,167 @@
       "framework.tracking",
       "framework.validity"
     ],
+    "tools.audit_numerics": [
+      "framework.project"
+    ],
+    "tools.audit_validity": [
+      "framework.project"
+    ],
+    "tools.build_pipeline": [
+      "framework.project",
+      "tools.consumer_snapshot"
+    ],
+    "tools.build_site": [
+      "framework.project",
+      "framework.updates",
+      "tools.build_pipeline"
+    ],
+    "tools.consumer_snapshot": [
+      "framework.project"
+    ],
+    "tools.dashboard": [
+      "framework.project",
+      "tools.consumer_snapshot",
+      "tools.watch_pipeline"
+    ],
+    "tools.grokking_analysis": [
+      "framework.stable_numerics_torch"
+    ],
+    "tools.numerics_case": [
+      "tools.numerics_figure",
+      "tools.training_figure"
+    ],
+    "tools.release_gate": [
+      "framework.validity"
+    ],
+    "tools.serve_model": [
+      "framework.inference"
+    ],
+    "tools.serve_site": [
+      "framework.project",
+      "framework.recovery",
+      "tools.bounded_process",
+      "tools.consumer_snapshot"
+    ],
+    "tools.watch_pipeline": [
+      "framework.diagnosis",
+      "framework.project",
+      "framework.quarto_bridge",
+      "framework.recovery",
+      "framework.services",
+      "framework.updates",
+      "tools.consumer_snapshot"
+    ],
+    "framework.config": [],
     "framework.decision": [],
     "framework.gates": [],
     "framework.inference": [],
-    "framework.project": [],
+    "framework.inference.gguf": [],
+    "framework.inference.llama_cpp": [],
     "framework.quarto_bridge": [],
+    "framework.recovery": [],
+    "framework.reproduction": [],
+    "framework.services": [],
+    "framework.stable_numerics": [],
+    "framework.stable_numerics_torch": [],
     "framework.surrogate": [],
     "framework.surrogate.demo": [],
     "framework.tracking": [],
+    "framework.updates": [],
     "framework.validity.lean_audit": [],
+    "framework.verifiers": [],
+    "framework.verifiers.citations": [],
+    "framework.verifiers.extract_s4": [],
+    "framework.verifiers.pointers": [],
+    "framework.verifiers.stats": [],
+    "framework.verifiers.support": [],
+    "tools.audit_chain_fixtures": [],
+    "tools.audit_contrast": [],
     "tools.audit_coupling": [],
+    "tools.audit_fixtures": [],
+    "tools.audit_layout": [],
     "tools.audit_lean_project": [],
+    "tools.audit_runtime": [],
+    "tools.audit_services": [],
+    "tools.audit_site": [],
+    "tools.audit_stray": [],
     "tools.audit_surrogate": [],
-    "tools.audit_validity": [],
-    "tools.build_site": [],
+    "tools.audit_verifiers": [],
+    "tools.audit_visual": [],
+    "tools.bootstrap_project": [],
+    "tools.bounded_process": [],
+    "tools.browser": [],
+    "tools.chain_states": [],
     "tools.check_render": [],
+    "tools.compile_s4_prompt": [],
     "tools.contract_snapshot": [],
+    "tools.dashboard_figure": [],
     "tools.decision_probe": [],
-    "tools.record_self_audit": []
+    "tools.demo_coverage": [],
+    "tools.evolution": [],
+    "tools.export_langfuse": [],
+    "tools.fuzz_register": [],
+    "tools.health": [],
+    "tools.measure_sciencersi_load": [],
+    "tools.model_ab": [],
+    "tools.monitor_supervisor": [],
+    "tools.numerics_figure": [],
+    "tools.pipeline_extras": [],
+    "tools.pipeline_view": [],
+    "tools.probe_s4": [],
+    "tools.probe_s4_structured": [],
+    "tools.probe_s7": [],
+    "tools.probe_s7_constrained": [],
+    "tools.probes": [],
+    "tools.record_self_audit": [],
+    "tools.refresh_chains": [],
+    "tools.reproduction_check": [],
+    "tools.s7_cases": [],
+    "tools.s7_cases_holdout": [],
+    "tools.screens": [],
+    "tools.site_page": [],
+    "tools.soak_monitor": [],
+    "tools.status_view": [],
+    "tools.theme": [],
+    "tools.training_figure": [],
+    "tools.update_operator": [],
+    "tools.verify_barron_mcp": [],
+    "tools.watchdog": [],
+    "tools.windows_job": []
   },
   "fan_in": {
-    "framework.decision": 3,
+    "framework.decision": 4,
+    "framework.verifiers.numerics": 3,
+    "framework.config": 1,
     "framework.surrogate": 3,
+    "framework.verifiers.support": 1,
     "framework.validity.lean_audit": 2,
+    "framework.reproduction": 2,
+    "framework.verifiers.extract_s4": 1,
     "framework.gates": 2,
-    "framework.validity": 2,
-    "framework.diagnosis": 1,
+    "framework.verifiers.stats": 2,
+    "framework.verifiers.citations": 2,
+    "framework.stable_numerics": 2,
+    "framework.project": 10,
+    "framework.tracking": 1,
+    "framework.validity": 5,
     "framework.surrogate.demo": 2,
-    "framework.inference": 1,
-    "framework.quarto_bridge": 2,
-    "framework.project": 1,
-    "framework.tracking": 1
+    "framework.diagnosis": 2,
+    "framework.quarto_bridge": 3,
+    "framework.inference": 2,
+    "framework.services": 2,
+    "tools.consumer_snapshot": 4,
+    "framework.updates": 3,
+    "tools.build_pipeline": 1,
+    "framework.inference.llama_cpp": 5,
+    "tools.watch_pipeline": 1,
+    "framework.stable_numerics_torch": 1,
+    "framework.model_ab": 1,
+    "tools.training_figure": 1,
+    "tools.numerics_figure": 2,
+    "tools.bounded_process": 1,
+    "framework.recovery": 2,
+    "tools.probes": 1
   },
   "cycles": [],
   "process": {
@@ -96,31 +352,522 @@
     "framework.inference": 1,
     "framework.project": 1,
     "framework.quarto_bridge": 1,
+    "framework.recovery": 1,
+    "framework.reproduction": 1,
     "framework.tracking": 1,
+    "framework.updates": 1,
     "framework.validity.lean_audit": 1,
+    "framework.verifiers.citations": 1,
     "tools.audit_chains": 1,
+    "tools.audit_site": 1,
+    "tools.bounded_process": 1,
+    "tools.build_pipeline": 1,
     "tools.build_site": 1,
     "tools.check_render": 1,
     "tools.contract_snapshot": 1,
-    "tools.record_self_audit": 1
+    "tools.evolution": 1,
+    "tools.measure_sciencersi_load": 1,
+    "tools.monitor_supervisor": 1,
+    "tools.numerics_case": 1,
+    "tools.record_self_audit": 1,
+    "tools.refresh_chains": 1,
+    "tools.release_gate": 1,
+    "tools.serve_model": 1,
+    "tools.serve_site": 1,
+    "tools.windows_job": 1
   },
   "network": {
     "framework.decision": 2,
     "framework.inference": 5,
-    "tools.contract_snapshot": 2
+    "framework.inference.llama_cpp": 2,
+    "framework.recovery": 2,
+    "framework.services": 2,
+    "framework.updates": 2,
+    "tools.build_pipeline": 1,
+    "tools.contract_snapshot": 2,
+    "tools.export_langfuse": 2,
+    "tools.health": 2,
+    "tools.measure_sciencersi_load": 1,
+    "tools.probes": 1,
+    "tools.serve_model": 2,
+    "tools.serve_site": 1,
+    "tools.soak_monitor": 1,
+    "tools.watch_pipeline": 1
   },
   "absolute_paths": {
+    "framework.recovery": 1,
     "tools.audit_coupling": 1,
-    "tools.build_site": 1
+    "tools.audit_stray": 1,
+    "tools.dashboard": 1,
+    "tools.watchdog": 1
   },
   "env_reads": {
     "framework.decision": 2,
     "framework.gates": 1,
-    "framework.inference": 1,
+    "framework.inference": 4,
+    "framework.inference.llama_cpp": 1,
+    "framework.model_ab": 1,
     "framework.quarto_bridge": 2,
+    "framework.recovery": 3,
+    "framework.updates": 6,
+    "tools.audit_site": 1,
+    "tools.build_pipeline": 2,
     "tools.build_site": 1,
     "tools.check_render": 1,
-    "tools.contract_snapshot": 4
+    "tools.contract_snapshot": 4,
+    "tools.export_langfuse": 3,
+    "tools.grokking_analysis": 1,
+    "tools.measure_sciencersi_load": 2,
+    "tools.monitor_supervisor": 1,
+    "tools.numerics_case": 1,
+    "tools.release_gate": 1,
+    "tools.serve_model": 4,
+    "tools.watch_pipeline": 3
   },
-  "symbols": {}
+  "symbols": {
+    "framework.config": {
+      "public": [
+        "DEFAULT_PATH",
+        "ROOT",
+        "deep_merge",
+        "effective",
+        "get",
+        "global_config",
+        "reset_cache"
+      ],
+      "used": [
+        "effective"
+      ]
+    },
+    "framework.decision": {
+      "public": [
+        "DEFAULT_TIMEOUT",
+        "DEFAULT_URL",
+        "Decision",
+        "DecisionClient",
+        "DecisionUnavailable",
+        "NONE_THRESHOLD"
+      ],
+      "used": [
+        "DecisionClient",
+        "DecisionUnavailable"
+      ]
+    },
+    "framework.diagnosis": {
+      "public": [
+        "DiagnosisReport",
+        "FailureCategory",
+        "FailureDiagnosis",
+        "FailureDiagnosisEngine",
+        "FailureSeverity",
+        "MONITOR_RULES",
+        "diagnose_gate_results",
+        "diagnose_pipeline_failure",
+        "refine_with_operator"
+      ],
+      "used": [
+        "FailureDiagnosisEngine",
+        "diagnose_gate_results"
+      ]
+    },
+    "framework.gates": {
+      "public": [
+        "AcceptanceGate",
+        "BaseGate",
+        "DeepEvalGate",
+        "GateRegistry",
+        "GateResult",
+        "IndependenceBookkeepingGate",
+        "InspectGate",
+        "PlantedTruthGate",
+        "PromptfooGate",
+        "ProseLintGate",
+        "RagasGate",
+        "RefCheckGate",
+        "TimingDisciplineGate",
+        "ToolMissing",
+        "ToolStewardshipGate",
+        "resolve_bootloops_root",
+        "run_quantitative_gates",
+        "run_semantic_gates"
+      ],
+      "used": [
+        "GateRegistry",
+        "GateResult",
+        "ToolMissing"
+      ]
+    },
+    "framework.inference": {
+      "public": [
+        "InferenceRequest",
+        "InferenceResult",
+        "InferenceScheduler",
+        "ModelManager",
+        "ModelProvider",
+        "ModelSize",
+        "ModelSpec",
+        "StageAwareScheduler",
+        "create_model_manager",
+        "create_scheduler",
+        "create_stage_scheduler",
+        "sciencersi_path"
+      ],
+      "used": [
+        "ModelManager",
+        "create_stage_scheduler"
+      ]
+    },
+    "framework.inference.gguf": {
+      "public": [
+        "GGUFError",
+        "MAGIC",
+        "_SCALARS",
+        "_STRLEN",
+        "_U32",
+        "file_type_label",
+        "read_header"
+      ],
+      "used": []
+    },
+    "framework.inference.llama_cpp": {
+      "public": [
+        "EmptyJudgement",
+        "JudgementUnavailable",
+        "LlamaCppClient"
+      ],
+      "used": [
+        "JudgementUnavailable",
+        "LlamaCppClient"
+      ]
+    },
+    "framework.model_ab": {
+      "public": [
+        "CONTEXT",
+        "OUT",
+        "ROOT",
+        "collect",
+        "compare",
+        "decide",
+        "main",
+        "run"
+      ],
+      "used": [
+        "main"
+      ]
+    },
+    "framework.project": {
+      "public": [
+        "DEFAULT_PROJECTS_DIR",
+        "ProjectRun",
+        "ProjectSpec",
+        "_COMMANDS",
+        "aggregate_consumer_freshness",
+        "consumer_freshness",
+        "evidence_age_hours",
+        "load_project",
+        "load_projects",
+        "main",
+        "run_command"
+      ],
+      "used": [
+        "aggregate_consumer_freshness",
+        "consumer_freshness",
+        "evidence_age_hours",
+        "load_project",
+        "load_projects",
+        "run_command"
+      ]
+    },
+    "framework.quarto_bridge": {
+      "public": [
+        "QuartoBridge",
+        "QuartoManuscriptBuilder"
+      ],
+      "used": [
+        "QuartoBridge"
+      ]
+    },
+    "framework.recovery": {
+      "public": [
+        "ACTIONS",
+        "COOLDOWN_S",
+        "ENDPOINTS",
+        "HEALTH",
+        "LOG",
+        "MAX_COOLDOWN_S",
+        "OWNER_HINTS",
+        "PORTS",
+        "ROOT",
+        "RecoveryPlan",
+        "STARTUP_WINDOW_S",
+        "STATE",
+        "command_line",
+        "execute",
+        "guard",
+        "log_terminal",
+        "plan",
+        "port_owner",
+        "preflight",
+        "process_name",
+        "verify"
+      ],
+      "used": []
+    },
+    "framework.reproduction": {
+      "public": [
+        "MATCH",
+        "MISMATCH",
+        "REQUIRED_MCP",
+        "REQUIRED_SKILL",
+        "UNRUN",
+        "check_delivery",
+        "compare",
+        "load",
+        "run_set",
+        "run_spec",
+        "write"
+      ],
+      "used": [
+        "MATCH",
+        "load"
+      ]
+    },
+    "framework.services": {
+      "public": [
+        "ALIVE",
+        "ENDPOINTS",
+        "answers",
+        "check",
+        "endpoints"
+      ],
+      "used": []
+    },
+    "framework.stable_numerics": {
+      "public": [
+        "hard_cross_entropy",
+        "log_softmax",
+        "logit_distillation",
+        "softmax"
+      ],
+      "used": []
+    },
+    "framework.stable_numerics_torch": {
+      "public": [
+        "hard_cross_entropy",
+        "log_softmax",
+        "logit_distillation",
+        "softmax"
+      ],
+      "used": [
+        "hard_cross_entropy"
+      ]
+    },
+    "framework.surrogate": {
+      "public": [
+        "BranchPoint",
+        "RandomFeatureOperator",
+        "continue_branch",
+        "fixed_point",
+        "rk4_step",
+        "spectral_radius"
+      ],
+      "used": [
+        "RandomFeatureOperator",
+        "continue_branch",
+        "fixed_point",
+        "rk4_step",
+        "spectral_radius"
+      ]
+    },
+    "framework.surrogate.demo": {
+      "public": [
+        "CHECK",
+        "DT",
+        "GRID",
+        "build_demo"
+      ],
+      "used": [
+        "build_demo"
+      ]
+    },
+    "framework.tracking": {
+      "public": [
+        "DVCDataVersioner",
+        "DVC_AVAILABLE",
+        "ExperimentRegistry",
+        "ExperimentRun",
+        "ExperimentTracker",
+        "MLFLOW_AVAILABLE",
+        "dvc_cmd",
+        "end_experiment",
+        "log_metrics",
+        "log_params",
+        "start_experiment"
+      ],
+      "used": [
+        "ExperimentTracker"
+      ]
+    },
+    "framework.updates": {
+      "public": [
+        "EVENTS",
+        "HTTP_TIMEOUT",
+        "LOCK",
+        "PROBES",
+        "QUARTO_FIXTURE",
+        "ROOT",
+        "SENSE",
+        "SENSE_EVERY",
+        "TRIES",
+        "TRY_TTL",
+        "apply",
+        "installed",
+        "latest",
+        "load_lock",
+        "passing_try",
+        "pinned",
+        "promote",
+        "report",
+        "resolve",
+        "rollback",
+        "save_lock",
+        "sense",
+        "sha256",
+        "spec_has_upstream",
+        "try_candidate"
+      ],
+      "used": []
+    },
+    "framework.validity": {
+      "public": [
+        "ALLOWED_DESIGN",
+        "ALLOWED_STRENGTH",
+        "Finding",
+        "MIN_SPAN_CHARS",
+        "REQUIRED_SCOPE",
+        "RegisterError",
+        "ScientificValidityGate",
+        "_NUMBER",
+        "_OF_PAIR",
+        "_PERCENT",
+        "_TAG",
+        "_WORD_NUMBER",
+        "json_pointer"
+      ],
+      "used": [
+        "ScientificValidityGate"
+      ]
+    },
+    "framework.validity.lean_audit": {
+      "public": [
+        "DEFAULT_AXIOMS",
+        "LeanAudit",
+        "_AXIOM_LINE",
+        "_CONTROL",
+        "_ERROR",
+        "_NO_AXIOM",
+        "_PROBE"
+      ],
+      "used": [
+        "LeanAudit"
+      ]
+    },
+    "framework.verifiers.citations": {
+      "public": [
+        "ARTEFACT",
+        "BLOCKED",
+        "CACHE",
+        "ROOT",
+        "UNAVAILABLE",
+        "VERIFIED",
+        "check",
+        "classify",
+        "resolve"
+      ],
+      "used": []
+    },
+    "framework.verifiers.extract_s4": {
+      "public": [
+        "ABSENT_POWER",
+        "ADJUSTED",
+        "ADJUSTED_INHERIT",
+        "CONFOUNDERS",
+        "DECLARED",
+        "NOT_DECLARED",
+        "NUMBER_WORDS",
+        "POWER",
+        "POWER_BEFORE",
+        "PREREG_ABSENT",
+        "PREREG_PRESENT",
+        "REQUIRED",
+        "REQUIRED_DEFAULT",
+        "complete",
+        "extract",
+        "verdict"
+      ],
+      "used": []
+    },
+    "framework.verifiers.numerics": {
+      "public": [
+        "OVERFLOW_INPUT",
+        "PAPER_INPUT",
+        "_SOFTMAX_HINTS",
+        "audit_source",
+        "consumer_preflight",
+        "kernel_regression_report",
+        "probe",
+        "probe_hard_cross_entropy",
+        "probe_logit_distillation",
+        "python_sources",
+        "reference_cross_entropy",
+        "reference_distillation",
+        "reference_log_softmax",
+        "summarise"
+      ],
+      "used": [
+        "consumer_preflight"
+      ]
+    },
+    "framework.verifiers.pointers": {
+      "public": [
+        "CATEGORIES",
+        "PointerError",
+        "S4_CHECK_STATUS",
+        "S4_VERDICTS",
+        "SEVERITIES",
+        "check_s4",
+        "check_s7",
+        "resolve",
+        "resolve_artefact",
+        "split_pointer"
+      ],
+      "used": []
+    },
+    "framework.verifiers.stats": {
+      "public": [
+        "ARTEFACT",
+        "REL_TOL",
+        "ROOT",
+        "check",
+        "recompute"
+      ],
+      "used": []
+    },
+    "framework.verifiers.support": {
+      "public": [
+        "NOT_SUPPORTED",
+        "ROOT",
+        "STORE",
+        "SUPPORTED",
+        "UNCHECKED",
+        "UNCLEAR",
+        "VERDICTS",
+        "load",
+        "passable",
+        "record",
+        "summary"
+      ],
+      "used": []
+    }
+  }
 }

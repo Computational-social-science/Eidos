@@ -1,6 +1,6 @@
 # Eidos：可复核科研流水线技术框架
 
-**实现基线：4.3.32；同步日期：2026-10-31（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证；本轮修改尚未提交或推送。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准。
+**实现基线：4.3.32；同步日期：2026-10-31（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
 
 旧 v4.1 设计原文已完整归档至 [历史设计](docs/archive/technical-framework-v4.1-2026-10-20.md)。原有“production-ready”“certified results”及代理图示不能作为当前能力证明。
 
@@ -140,7 +140,11 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 
 首页注册表使用同一新鲜度规则：实际 gate 检查必须与退出码一致，才记录本次核验；缺失时间仍为 STALE。静态过期文案不含逐小时变化的年龄，防止证据和状态均未改变时产生无意义的页面漂移。
 
-截至 2026-10-31 21:09（Asia/Shanghai），24 小时观察仍为 RUNNING，约 4.8 小时、288 次观测、9 次不满足严格判据：此前两次来自旧进程缓存模块不一致，新增七次来自新 consumer 已注册但 pipeline 快照尚未同步重建。重建快照后当前监控恢复 OK；失败记录保留，此轮严格连续观察不能宣称全通过。接入消费者须在验收后及时执行 `tools/build_pipeline.py --probe`，防止注册与观测快照悬空。见 [运行观察快照](docs/SOAK-OBSERVATION-2026-10-31.json)。
+截至 2026-10-31 22:03（Asia/Shanghai），24 小时观察仍为 RUNNING，约 5.7 小时、342 次观测、18 次不满足严格判据。失败包含此前旧进程缓存/快照悬空问题、本轮发布时的输入绑定切换及一次有意的在线失效探测；记录未重置。当前监控已恢复 OK，但不能宣称严格连续观察通过。输入绑定与自动复核已修复注册变更后沿用旧结论的问题；接入后仍可手动执行 `tools/build_pipeline.py --probe`。见 [运行观察快照](docs/SOAK-OBSERVATION-2026-10-31.json) 和 [在线变异验收](docs/CONSUMER-SNAPSHOT-ACCEPTANCE-2026-10-31.json)。
+
+新增输入绑定：Gate S 核验前后对注册配置、框架源码、主张、报告及声明证据计算哈希；核验过程中变化则不绑定旧结论。输入变化后，监控撤销缓存状态并显示 UNOBSERVABLE，受影响卡片显示 STALE；其他已确认失败仍保留告警。后台单任务自动复核，超时清理所属进程树，五分钟冷却后可重试；采样继续。JSON 原子替换防止读到半写入文件。预期失败消费者按真实复核时间参与每小时刷新选择，避免旧负对照证据垄断队列。该机制不是重跑训练或验证未声明的数据依赖。
+
+整体审查新增 [功能完备性清单](docs/FUNCTIONAL_COMPLETENESS.md)。通用 Docker/Binder 打包尚不完整：旧模板引用未复制的 requirements.txt，且缺少 pyproject.toml、uv.lock 和源码；已验证的案例 ZIP 不能替它证明“一键执行”。下一优先事项为修复通用打包、全新独立项目全流程验收及干净环境安装，不能因单个科学案例通过而宣称框架功能完备。
 
 ## 9. 未验证范围与下一步
 
@@ -160,4 +164,4 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 
 相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。
 
-本轮验收：531 passed、4 个可选 Torch 模块 skipped；CUDA 环境单独 16 passed，框架源码覆盖率 67%，11 条链为 10 PASS/1 SKIP。
+本轮验收：551 passed、4 个可选 Torch 模块 skipped，框架源码覆盖率 67%，11 条链为 10 PASS/1 SKIP。既有 CUDA 16 项已独立通过；本轮未修改数值后端。

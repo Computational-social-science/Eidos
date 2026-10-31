@@ -5,9 +5,9 @@
     "skip": 1,
     "fail": 0
   },
-  "tests_collected": 531,
+  "tests_collected": 551,
   "tests": {
-    "passed": 531,
+    "passed": 551,
     "failed": 0,
     "skipped": 4,
     "errors": 0

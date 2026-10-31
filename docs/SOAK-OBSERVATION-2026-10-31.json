@@ -1,35 +1,16 @@
 {
   "status": "RUNNING",
   "started_at": "2026-10-31T08:21:32.179711+00:00",
-  "elapsed_s": 17297.532,
-  "observations": 289,
-  "failure_count": 9,
-  "sequence_advances": 288,
+  "elapsed_s": 20480.532,
+  "observations": 342,
+  "failure_count": 18,
+  "sequence_advances": 341,
   "restart_events": 0,
   "scope": "periodic HTTP observations; no reboot or continuous-availability proof",
-  "recorded_at": "2026-10-31T13:10:11.236248+00:00",
+  "recorded_at": "2026-10-31T14:03:47.261006+00:00",
   "source": ".scratch/quality/soak-24h.json",
+  "observer_process_verified_running": true,
   "recent_failure_samples": [
-    {
-      "elapsed_s": 10390.719,
-      "seq": 8861,
-      "failures": [
-        "overall is not OK",
-        "derived overall is not OK",
-        "derived faults are present or invalid",
-        "server reports an error"
-      ]
-    },
-    {
-      "elapsed_s": 10450.782000000001,
-      "seq": 8865,
-      "failures": [
-        "overall is not OK",
-        "derived overall is not OK",
-        "derived faults are present or invalid",
-        "server reports an error"
-      ]
-    },
     {
       "elapsed_s": 16817.078999999998,
       "seq": 9290,
@@ -92,7 +73,88 @@
         "derived overall is not OK",
         "derived faults are present or invalid"
       ]
+    },
+    {
+      "elapsed_s": 19639.718999999997,
+      "seq": 9478,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 19699.782,
+      "seq": 9482,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 19759.828999999998,
+      "seq": 9486,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 19819.891000000003,
+      "seq": 9490,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 19879.938000000002,
+      "seq": 9494,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 19940.0,
+      "seq": 9498,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 20000.063000000002,
+      "seq": 9502,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 20060.11,
+      "seq": 9506,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 20240.313000000002,
+      "seq": 9518,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
     }
   ],
-  "interpretation": "Strict soak has not passed. Two earlier cached-module errors; seven subsequent new-consumer visibility alarms while registry and pipeline snapshot differed. Rebuilding the pipeline restored current health; no failure record was reset."
+  "qualification": "Not a clean strict 24-hour PASS. Includes pre-existing faults, rollout input-binding transitions and a deliberate live invalidation probe; no failures were reset."
 }

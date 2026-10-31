@@ -140,41 +140,61 @@ def chain_modules() -> dict[str, list[str]]:
     return mapping
 
 
-def consumers() -> list[dict]:
+def consumers(specs: dict | None = None) -> list[dict]:
     from framework.project import load_projects
+    from tools.consumer_snapshot import capture_inputs
 
     rows = []
-    for name, spec in sorted(load_projects().items()):
+    if specs is None:
+        specs = load_projects(allow_missing=True)
+    for name, spec in sorted(specs.items()):
+        before = capture_inputs(spec)
         row = {"name": name, "root": str(spec.root), "available": spec.available,
                "gate_s": "—", "expected": None, "generated": None,
+               "input_digest": None, "input_error": before["error"],
                # The role says what kind of evidence this project is: a measured LLM consumer,
                # a negative control, or a chain fixture. Without it four entries look identical.
                "role": (spec.role or "").strip()}
         register = getattr(spec, "validity_register", None)
         document = getattr(spec, "validity_document", None)
         row["expected"] = getattr(spec, "expected_gate_s", None)
-        if spec.available and register and document:
+        if spec.available and register and document and before["digest"]:
             docs = [d.strip() for d in str(document).split(",") if d.strip()]
             args = [sys.executable, "tools/audit_validity.py", "--project", str(spec.root),
                     "--register", register]
             for doc in docs:
                 args += ["--document", doc]
-            run = subprocess.run(args + ["--json"], cwd=ROOT, capture_output=True,
-                                 text=True, timeout=900)
             try:
+                run = subprocess.run(args + ["--json"], cwd=ROOT, capture_output=True,
+                                     text=True, encoding="utf-8", timeout=900)
                 checked = json.loads(run.stdout)
                 verdict = checked.get("status", "ERROR")
                 row["gate_s"] = verdict if ((verdict == "PASS" and run.returncode == 0)
                                               or (verdict == "FAIL" and run.returncode == 1)) else "ERROR"
                 row["checked_at"] = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
                 row["findings"] = checked.get("findings", [])
-            except json.JSONDecodeError:
+            except (OSError, subprocess.SubprocessError, ValueError, AttributeError):
                 row["gate_s"] = "ERROR"
+            after = capture_inputs(spec)
+            if not before["digest"] or before != after:
+                row["gate_s"] = "ERROR"
+                row["input_error"] = after["error"] or "inputs changed during verification"
+            else:
+                row["input_digest"] = before["digest"]
+        elif row["expected"]:
+            row["gate_s"] = "ERROR"
         evidence = Path(row["root"]) / "docs" / "evidence.json"
         payload = read_json(evidence, {}) if spec.available else {}
         row["generated"] = payload.get("generated") or payload.get("recorded_at") or payload.get("finished_at")
         rows.append(row)
     return rows
+
+
+def audit_summary(audit: dict) -> dict:
+    return {"gate_s": (audit.get("self_gate_s") or {}).get("status"),
+            "fixture_status": (audit.get("gate_s") or {}).get("fixture_status"),
+            "chains": (audit.get("chains") or {}).get("total"),
+            "tests": (audit.get("tests") or {}).get("passed")}
 
 
 def probe() -> dict:
@@ -219,6 +239,9 @@ def main(argv: list[str] | None = None) -> int:
     render = render if isinstance(render, dict) else {}
     audit = read_json(ROOT / "docs" / "SELF_AUDIT.json", {}) or {}
     audit = audit if isinstance(audit, dict) else {}
+    from framework.project import load_projects
+    from tools.consumer_snapshot import atomic_json, registry_digest, SCOPE
+    specs = load_projects(allow_missing=True)
 
     doc = {
         "generated": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
@@ -228,17 +251,15 @@ def main(argv: list[str] | None = None) -> int:
         "chains": [{"name": s["name"], "status": s["status"], "ms": s["duration_ms"],
                     "detail": s["attributes"]["detail"]} for s in traces.get("spans", [])],
         "render": render,
-        "self_audit": {"gate_s": (audit.get("gate_s") or {}).get("status"),
-                       "chains": (audit.get("chains") or {}).get("total"),
-                       "tests": (audit.get("tests") or {}).get("count")},
-        "consumers": consumers(),
+        "self_audit": audit_summary(audit),
+        "consumers": consumers(specs),
+        "consumer_snapshot": {"schema": 1, "registry_digest": registry_digest(specs), "scope": SCOPE},
         "chain_modules": chain_modules(),
         "layers": LAYERS,
         "health": probe() if args.probe else {},
     }
     out = Path(args.out)
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+    atomic_json(out, doc)
     print(f"chains {len(doc['chains'])}, modules {len(graph['nodes'])}, "
           f"edges {len(graph['edges'])}, consumers {len(doc['consumers'])}")
     print(f"wrote {out}")

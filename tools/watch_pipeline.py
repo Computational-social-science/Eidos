@@ -213,13 +213,19 @@ def measure() -> dict:
     try:
         sys.path.insert(0, str(ROOT))
         from framework.project import load_projects, consumer_freshness, aggregate_consumer_freshness
+        from tools.consumer_snapshot import snapshot_state
         pipeline = json.loads((ROOT / "docs/pipeline.json").read_text(encoding="utf-8"))
         checked = {r["name"]: r for r in pipeline.get("consumers", [])}
-        for spec in load_projects().values():
+        specs = load_projects(allow_missing=True)
+        binding = snapshot_state(pipeline, specs, ROOT)
+        for spec in specs.values():
             expected = str(spec.expected_gate_s or "").upper()
             if expected not in ("PASS", "FAIL"):
                 continue
             row = checked.get(spec.name, {})
+            if spec.name in binding["stale"]:
+                ages.append((spec.name, None))
+                continue
             freshness = consumer_freshness(spec.root, expected, row.get("checked_at"))
             ages.append((spec.name, freshness["age_h"]))
             if row.get("gate_s") != expected:
@@ -228,6 +234,7 @@ def measure() -> dict:
     except Exception as exc:  # preserve sampling, but expose the unobservable registry
         aggregate = {"age_h": None, "name": None, "stale": [], "unknown": [f"registry: {type(exc).__name__}"]}
         unexpected = ["registry unavailable"]
+        binding = {"stale": ["registry unavailable"]}
     if ages:
         age_h = aggregate["age_h"]
         signals["consumers"] = {
@@ -241,6 +248,12 @@ def measure() -> dict:
     signals["consumer_verdicts"] = {"value": len(unexpected), "reference": 0, "direction": "max",
         "unit": "projects", "source": "current Gate S verdict compared with each registered expectation",
         "note": "unexpected: " + (", ".join(unexpected) or "none")}
+    if binding["stale"] and not unexpected:
+        signals["consumer_verdicts"]["value"] = None
+    signals["consumer_snapshot"] = {"value": None if binding["stale"] else 0,
+        "reference": 0, "direction": "max", "unit": "snapshots",
+        "source": "registry and declared Gate S inputs; cached verdicts require matching hashes",
+        "note": "reverification required: " + (", ".join(binding["stale"]) or "none")}
 
     # The scheduler is a single point of silent failure: if the tick stops, every chain keeps
     # its last verdict and the board stays green. Age of the heartbeat is the signal.

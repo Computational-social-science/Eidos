@@ -53,15 +53,20 @@ a pin, a pin only moves on a passing try, and `apply` is the only command that i
 | Vector memory (`chromadb`) | removed | No project consumed it, and chromadb + sentence-transformers segfaulted in one process on this host (`docs/KNOWN_ISSUES.md` §1). Procedural knowledge lives in skills, history in each project's `LESSONS`. |
 | `requirements.txt` | deliberate | `pyproject.toml` declares dependencies and extras; `uv.lock` pins the resolved set. A `requirements.txt` beside them is a third copy that drifts — see below. |
 
-The first three are recorded here rather than deleted from history: a reader who finds
-`Quarto_Centric_Local_Research_Pipeline_Technical_Framework.md` (the original design note from
-before the first commit) will find LangGraph in it, and needs to know that page describes an
-intention, not the implementation.
+The original design is archived at `docs/archive/technical-framework-v4.1-2026-10-20.md`.
+The current technical framework describes the implementation. Open acceptance
+items are tracked in `docs/FUNCTIONAL_COMPLETENESS.md`.
+
+Consumer snapshots bind registry configuration, framework source and declared Gate S
+inputs. Changes withdraw cached verdicts and queue one background recheck while
+sampling continues. Missing bindings are UNOBSERVABLE; affected cards are STALE.
+This checks claim records, not a new training run. See the ledger for scope and
+retry/publication rules.
 
 ## Installing, and why there is no requirements.txt
 
 ```bash
-uv sync --extra tracking          # uses uv.lock: 294 packages, exact versions
+uv sync --frozen --extra dev --extra tracking --extra verifiers --extra browser
 # or, without uv:
 pip install -e ".[dev,tracking]"
 ```
@@ -76,7 +81,8 @@ uv export --no-hashes > requirements.txt     # a derived artefact, never edited 
 ```
 
 `make test` and the gates do not depend on either file: they run with whatever interpreter the
-caller provides, which is why CI tests 3.11 and 3.12 while this host runs 3.14.
+caller provides. CI tests 3.11 and 3.12; this host's project environment is 3.12.
+The separate CUDA research interpreter is 3.14 and is not interchangeable with it.
 
 ## If you are adding orchestration
 

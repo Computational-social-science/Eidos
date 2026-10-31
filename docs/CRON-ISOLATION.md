@@ -45,3 +45,26 @@ separately; this is not a real-time deadline guarantee, reboot/logon replay or a
 clean 24-hour stability test. A cached manual `ok` file alone does not prove the
 scheduler ran. The EIDOS monitor's overall verdict covers its named instruments;
 it currently does not substitute for inspecting external Hermes job state.
+
+## Windows Startup runtime selection
+
+The separate CMD monitor and Startup installer previously used `CALL monitor.env`.
+On this host, CMD returned exit 0 without loading its SET lines: CALL's script
+contract requires `.bat` or `.cmd`. This silently kept bootstrap/global Python even
+though monitor.env named the project interpreter. Both launchers now delegate to
+`tools/launch_runtime.py`, which uses the existing literal configuration parser,
+removes inherited Python import paths and launches isolated UTF-8 project Python
+without a console window. Missing configured Python fails; there is no silent
+fallback. All arguments and nonzero exit status are retained. Legacy
+`remove --check`/`remove --help` cannot invoke the installer.
+
+`scripts/eidos-monitor.cmd --check` is a bounded runtime-selection diagnostic;
+it does not start a service or alter Startup. The actual-host probe selected
+Python 3.12.4 with isolation, UTF-8 and console handle zero. Nine real-CMD fixture
+tests and 38 combined startup/cron/monitor tests passed. See
+[startup acceptance](STARTUP-RUNTIME-ACCEPTANCE-2026-11-01.json).
+Existing service/loop instances still require migration; the restart rejection
+and strict-soak history remain in the migration record. These diagnostics do not
+prove reboot/logon or clean 24-hour operation.
+
+Source: [Microsoft CALL contract](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/call).

@@ -114,11 +114,21 @@ was rejected by S4; the claim strength was corrected without inventing preregist
 [The intake record](INDEPENDENT-INTAKE-ACCEPTANCE.json) preserves identities and
 negative outcomes. Original code/data were unchanged. Raw corpora and the original
 HTML reports remain private to the host and are not distributed by EIDOS.
-This is independent intake and invalidation evidence, **not** complete scientific
-lifecycle acceptance, scientific novelty, new-machine installation or publication
-qualification. Reproducible generic delivery and journal-format review for this
-independent project remain open. The public regression suite uses its own isolated
-fixtures and does not depend on those private corpora.
+That initial record proves intake and invalidation only. A subsequent
+[metric-repair lifecycle](INDEPENDENT-LIFECYCLE-ACCEPTANCE.json) uses the actual
+original engine to expose a README/implementation mismatch: opcode-script cost is
+not guaranteed to equal the promised minimum Levenshtein distance. Two of 1,033
+pairs differ, with maximum excess 112 edits. The repaired dynamic program matches
+an independent C++ implementation; exhaustive edit graphs and broken controls
+qualify the bounded execution paths. Wrong evidence and missing outputs fail,
+while declared source/data changes withdraw cached verdicts.
+
+Both the private complete-file package and a separate 235-pair benign package
+have replayed in fresh same-host Windows environments. Only the benign package
+and aggregate private-file counts are public. See the [technical report](../site/reports/hpaf-metric/report.html).
+This closes the recorded same-host lifecycle example; it does not establish
+novel discovery, new-machine installation, Linux/Binder acceptance for this case,
+or independent outside adoption.
 
 ## Historical adopters and remaining acceptance
 
@@ -133,7 +143,9 @@ results and demonstrate change detection. See [functional completeness](FUNCTION
 
 The source fixes do not replace already running interpreter instances. On this
 host, the monitor and two old chain loops still use the earlier global Python;
-the configured launcher already selects project Python 3.12. Their controlled
+the corrected launcher now selects project Python 3.12 in an actual diagnostic.
+The previous CMD `CALL monitor.env` silently ignored its settings on this host;
+both CMD launchers now delegate to the stdlib configuration reader. Their controlled
 restart was rejected by automatic approval and was not retried through another
 termination path. [The migration record](MONITOR-RUNTIME-MIGRATION-2026-11-01.json)
 therefore remains PENDING. New starts enforce loop/tick ownership, but old

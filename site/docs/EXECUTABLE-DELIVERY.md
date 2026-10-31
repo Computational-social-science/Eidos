@@ -96,3 +96,22 @@ Sources for the installation mechanism:
 [uv Docker integration](https://docs.astral.sh/uv/guides/integration/docker/),
 [uv locking and syncing](https://docs.astral.sh/uv/concepts/projects/sync/),
 [Binder configuration](https://mybinder.readthedocs.io/en/latest/introduction.html).
+
+
+## Independent metric-repair delivery
+
+The [HPAF lifecycle acceptance](INDEPENDENT-LIFECYCLE-ACCEPTANCE.json) extends
+this contract beyond the numerical exporter probe. The new public package at
+`site/reports/hpaf-metric/reproduce.zip` contains 235 benign qualification pairs,
+source, protocol, exact dependency lock and rejection controls. A separate private
+package checks the original 1,033 pairs and is not distributed. Both were installed
+in fresh same-host Windows environments and replayed; modified inputs and repeated
+execution were refused. This case has no Linux/new-machine/Binder qualification.
+Its public archive and execution manifest hashes bind the accepted replay.
+
+Use a dedicated environment for this case. If `UV_PROJECT_ENVIRONMENT` is already
+set for EIDOS core, select a different new environment directory before syncing;
+do not replace the framework environment with the case's smaller dependency set.
+On this host use an NVMe environment, not a virtual environment on exFAT source.
+The package's Python execution does not require Quarto/TeX; manuscript rendering
+uses the repository's separate publication toolchain and is qualified separately.

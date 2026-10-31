@@ -1,0 +1,189 @@
+---
+title: An exact edit-rate repair in an independent forensic project
+lang: en
+date: '2026-11-01'
+format:
+  html:
+    embed-resources: true
+    toc: true
+    toc-depth: 2
+    include-in-header:
+    - text: '<style>
+
+        body{font-family:Georgia,"Times New Roman",serif;font-size:17px;line-height:1.85;color:#202124;background:#fff}
+
+        main.content{max-width:1000px;min-width:0;width:100%;margin:auto;padding:30px
+        24px}h1{font-size:30px;line-height:1.25;max-width:28ch}
+
+        h2{font-size:22px;line-height:1.4;margin:2em 0 .6em}h3{font-size:18px;margin:1.5em
+        0 .5em}
+
+        p,li{max-width:85ch;overflow-wrap:anywhere}a{color:#245c83}pre,code{font-family:Consolas,monospace;font-size:.85em}
+
+        table{display:block;overflow-x:auto;max-width:100%;font-size:14px;line-height:1.6;border-collapse:collapse;width:100%}th,td{padding:9px
+        10px;border-bottom:1px solid #ddd}
+
+        th{text-align:left;font-weight:bold}figure{margin:26px 0}figure img{width:100%;height:auto;background:white}
+
+        figcaption{font-size:14px;line-height:1.65;color:#343434;margin-top:12px}caption{caption-side:top;text-align:left}
+
+        pre{padding:14px;background:#f5f5f3;overflow:auto}#TOC{font-family:Arial,sans-serif;font-size:13px}
+
+        @media(max-width:600px){body{font-size:16px}main.content{padding:20px 16px}h1{font-size:25px}.cell-output-display{overflow:auto}}
+
+        @media print{#TOC,nav{display:none}body{font-size:12pt;color:black}}
+
+        </style>'
+  pdf:
+    documentclass: article
+    pdf-engine: lualatex
+    papersize: a4
+    geometry:
+    - left=13.5mm
+    - right=13.5mm
+    - top=22mm
+    - bottom=22mm
+    fontsize: 12pt
+    mainfont: Times New Roman
+    include-in-header:
+    - text: '\usepackage{setspace}
+
+        \doublespacing
+
+        \usepackage{lineno}
+
+        \linenumbers
+
+        \usepackage{caption}
+
+        \usepackage{needspace}
+
+        \captionsetup{labelformat=empty,font=normalsize,justification=raggedright,singlelinecheck=false}
+
+        \makeatletter
+
+        \renewcommand{\maketitle}{\begingroup\setlength{\parindent}{0pt}{\large\bfseries\@title\par}\vspace{0.4em}{\normalsize
+        Research validation report\par}{\normalsize\@date\par}\vspace{1em}\endgroup}
+
+        \makeatother'
+  docx:
+    reference-doc: reference.docx
+---
+
+
+## Abstract
+
+A metric can be executable and repeatable while measuring a different quantity
+from the one its documentation names. In an existing Unicode forensic project,
+an edit rate described as normalized Levenshtein distance used the cost of a
+`SequenceMatcher` alignment. A retrospective complete-file audit found two
+differences among 1,033 paired records; the largest excess was 112 unit edits.
+Separating visual alignment from minimum edit-distance calculation repaired the
+metric. An independent C++ implementation agreed with all repaired distances.
+Exhaustive edit graphs, deliberate wrong metrics and input-change controls bounded
+the acceptance claim. This case demonstrates a metric repair and an independently
+reusable verification path; it establishes neither attack success nor a new
+scientific discovery.
+
+## Metric contract and repair
+
+The original engine used `difflib.SequenceMatcher(None, source, target)` with
+default automatic-junk handling. Insertions and deletions contributed their run
+lengths; replacements contributed the larger run length. This defines a valid
+opcode-script cost, but Python explicitly does not guarantee minimal edits.
+The contract error lies in calling that cost Levenshtein distance.
+
+Keep the visual diff unchanged. Compute the quantitative numerator separately
+using the minimum number of unit-cost insertions, deletions and substitutions.
+The adapter supplies a two-row dynamic program. Preserve the original denominator:
+distance divided by `max(len(source), 1)`. The resulting rate is directional and
+can exceed one. Units are Unicode code points without Unicode normalization,
+not bytes or grapheme clusters. Similarity ratios remain separate outputs.
+
+## Methods: independent checks and controls
+
+The validator uses RapidFuzz 3.14.6's explicit C++ Levenshtein backend with
+weights `(1, 1, 1)` and no preprocessing. It does not import the producer's metric.
+An exhaustive breadth-first edit graph checks all 225 ordered pairs over
+alphabet {a, β} with lengths zero through three. The producer is executed on
+the same 225 pairs and ten additional benign/Unicode examples. An experimental unit
+here is one deterministic string-pair setting, not an independent random trial. These are finite
+qualification sets, not a proof over arbitrary strings.
+
+The graph rejects the legacy cost on 40 pairs and a zero-distance control on
+210 pairs. Separate acceptance tests reject legacy-as-exact results, wrong
+normalization, missing rows, Boolean distances, changed source, changed data,
+missing evidence and malformed/unpaired input. Source, configuration, lock and
+corpus hashes bind each execution. No seed applies to deterministic enumeration.
+
+## Complete-file results
+
+| Supplied corpus | Pairs | Legacy unequal | Max. excess | Repaired unequal |
+|:--|--:|--:|--:|--:|
+| LLM perturbations | 513 | 2 | 112 | 0 |
+| Unicode edits | 520 | 0 | 0 | 0 |
+
+: **Table 1.** Before/after comparison against independently calculated minimum
+edit distances. Counts describe every record in the two supplied files; records
+are not independent experimental replications. There is no significance test or
+population inference. Maximum excess is legacy cost minus minimum edit distance.
+
+::: {.content-visible when-format="pdf"}
+![**Figure 1 | Separate visual alignment from quantitative distance.** **a,** Complete-file joint counts of independently checked minimum edit distance and legacy opcode-script cost for 1,033 pairs. Marker area increases with pair count; the dashed line denotes equality. Two pairs differ and the maximum excess is 112 edits. **b,** In the public benign example aaa to abaa, inserting b once suffices, whereas the legacy alignment costs three edits. All repaired local distances match the independent C++ reference. No sampling, error bars or model inference apply.](figure-metric.pdf){width=100%}
+:::
+
+::: {.content-visible when-format="html"}
+![**Figure 1 | Separate visual alignment from quantitative distance.** **a,** Complete-file joint counts of independently checked minimum edit distance and legacy opcode-script cost for 1,033 pairs. Marker area increases with pair count; the dashed line denotes equality. Two pairs differ and the maximum excess is 112 edits. **b,** In the public benign example aaa to abaa, inserting b once suffices, whereas the legacy alignment costs three edits. All repaired local distances match the independent C++ reference. No sampling, error bars or model inference apply.](figure-metric.svg){width=100%}
+:::
+
+::: {.content-visible when-format="docx"}
+![**Figure 1 | Separate visual alignment from quantitative distance.** **a,** Complete-file joint counts of independently checked minimum edit distance and legacy opcode-script cost for 1,033 pairs. Marker area increases with pair count; the dashed line denotes equality. Two pairs differ and the maximum excess is 112 edits. **b,** In the public benign example aaa to abaa, inserting b once suffices, whereas the legacy alignment costs three edits. All repaired local distances match the independent C++ reference. No sampling, error bars or model inference apply.](figure-metric.png){width=100%}
+:::
+
+## Reproduction, provenance and limits
+
+Original HPAF source SHA-256: `29281aa2b8ac8380e7df7ff5e39bf425b39dbf89d8f34b2be0a8db1ed4052b2e`.
+The actual original `diff_runs` function was checked on all 1,033 records and
+matched the adapter's legacy numerator. Original code and data were unchanged.
+The private corpus hashes and public aggregate counts are in
+[the local audit record](local-audit.json). The original raw strings and original
+HTML reports are not distributed. Thus public replay independently reproduces
+the 235 benign qualification pairs, not the inaccessible private corpus.
+
+Use [the standalone case instructions](CASE.md) and [public reproduction bundle](reproduce.zip).
+Install from the included lock, run `eidos-reproduce.py` in a fresh copy and inspect
+its execution record. Required outputs, deliberate wrong evidence and input
+invalidation are separate from a successful process exit. A report or a green
+gate does not establish EIDOS completeness, scientific novelty or journal acceptance.
+
+## Data availability
+
+The public fixture, source, protocol, exact dependency lock and acceptance controls
+are distributed in `reproduce.zip`; only newly created benign strings enter it.
+Aggregate local-corpus evidence is provided in `local-audit.json`. Local original
+corpora remain private; their complete-file findings cannot be independently
+recomputed without authorized access. All unfavorable metric discrepancies remain
+in the aggregate record. Full local replay and public-fixture replay have distinct
+acceptance scopes.
+
+## Code availability
+
+The producer, independent validator, protocol, lock, controls and public fixtures
+are in `reproduce.zip` and the EIDOS repository. HPAF's original `README.md`, line
+48, supplies the metric promise; the preserved forensic engine supplies the old
+implementation. The adapter repairs the metric separately without overwriting
+that original project.
+
+## Reporting and submission metadata
+
+This technical validation report follows the shared manuscript and figure policy.
+Human authorship, affiliations, funding, contributions and competing interests
+remain to be completed before submission. Scientific and editorial review remain
+separate; `submission_ready` is false.
+
+## References
+
+1. Python Software Foundation. [difflib: SequenceMatcher contract](https://docs.python.org/3.12/library/difflib.html).
+2. RapidFuzz. [Levenshtein distance, version 3.14.6](https://rapidfuzz.github.io/RapidFuzz/Usage/distance/Levenshtein.html).
+3. Nature. [Research figure guide](https://research-figure-guide.nature.com/figures/building-and-exporting-figure-panels/).
+4. Nature. [Formatting guide](https://www.nature.com/nature/for-authors/formatting-guide).

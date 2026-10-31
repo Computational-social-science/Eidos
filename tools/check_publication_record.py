@@ -10,8 +10,10 @@ ROOT = Path(__file__).resolve().parents[1]
 def inputs(root: Path) -> list[Path]:
     files = [root/'tools'/name for name in ('publication.py','audit_publication.py','check_publication_record.py',
                                            'numerics_figure.py','training_figure.py')]
-    files += [root/'reference/softmax_matrix/report.py',root/'tools/numerics_case.py']
-    for name in ('numerics','softmax-matrix'):
+    files += [root/'reference/softmax_matrix/report.py',root/'tools/numerics_case.py',root/'reference/hpaf_metric/report.py']
+    files += [root/'reference/hpaf_metric/docs/local-audit.json']
+    files += [root/'site/reports/hpaf-metric'/name for name in ('local-audit.json','reproduce.zip','CASE.md')]
+    for name in ('numerics','softmax-matrix','hpaf-metric'):
         folder=root/'site/reports'/name
         files += [folder/f'report.{extension}' for extension in ('qmd','html','pdf','docx')]
         files += sorted(folder.rglob('*.svg'))

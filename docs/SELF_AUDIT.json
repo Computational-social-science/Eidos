@@ -5,9 +5,9 @@
     "skip": 1,
     "fail": 0
   },
-  "tests_collected": 701,
+  "tests_collected": 726,
   "tests": {
-    "passed": 701,
+    "passed": 726,
     "failed": 0,
     "skipped": 4,
     "errors": 0
@@ -15,22 +15,22 @@
   "stability": {
     "stable": true,
     "before": {
-      "source_sha256": "f1f8b80131bddabb70e77c19fc0aaf7a635d4a5dbffdbfc93bb3a3a8f7378d7e",
-      "distribution_sha256": "54ab0d5d26b3a13d436a4d8f13cc02a0a269b11495863fd9be95377b23286b90"
+      "source_sha256": "5c5847c938d6faba26155db648f1f79c5d54ee17ad0c569456c8d8dc4fc64bca",
+      "distribution_sha256": "9a0d8890fc42fec3e0034046bd10a4e5bdbdf6821fd6679b1963fc9d8ec35dc1"
     },
     "after": {
-      "source_sha256": "f1f8b80131bddabb70e77c19fc0aaf7a635d4a5dbffdbfc93bb3a3a8f7378d7e",
-      "distribution_sha256": "54ab0d5d26b3a13d436a4d8f13cc02a0a269b11495863fd9be95377b23286b90"
+      "source_sha256": "5c5847c938d6faba26155db648f1f79c5d54ee17ad0c569456c8d8dc4fc64bca",
+      "distribution_sha256": "9a0d8890fc42fec3e0034046bd10a4e5bdbdf6821fd6679b1963fc9d8ec35dc1"
     },
-    "collection_after": 701,
+    "collection_after": 726,
     "execution": {
-      "reported_items": 701,
+      "reported_items": 726,
       "collection_level_skips": 4
     },
     "deselection_detected": false,
-    "collected_ids": 701,
-    "unique_ids": 701,
-    "recollected_ids": 701,
+    "collected_ids": 726,
+    "unique_ids": 726,
+    "recollected_ids": 726,
     "scope": "Framework/tools/tests Python sources, project version/lock/README/claims, installed distribution names+versions, collected test IDs"
   },
   "skip_reasons": [

@@ -1,0 +1,28 @@
+{
+  "executable": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+  "python": "3.12.4",
+  "platform": "win32",
+  "isolated": true,
+  "utf8_mode": true,
+  "console_window": 0,
+  "pythonpath_present": false,
+  "pythonhome_present": false,
+  "bootstrap_python": "C:\\Python314\\python.exe",
+  "configured_python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+  "scope": "Runtime-selection probe only; no service started or Startup entry changed.",
+  "recorded_at": "2026-10-31T21:46:05.768613+00:00",
+  "services_started": false,
+  "existing_processes_stopped": false,
+  "configuration_changed": false,
+  "source_sha256": {
+    "tools\\launch_runtime.py": "49c9cfc147919c8eb65d246aa1ebdd57eb2945c155f7160edef0bb4a2e6357f0",
+    "scripts\\eidos-monitor.cmd": "729d5eab30f8d615a45b2b34f423765eddb86fdcc836604a18e57c1b23b72edb",
+    "scripts\\install-autostart.cmd": "c2b6b2bf65fad8d8e11fe7caa0df8ff1487b9dcc0adea07ba6c05412411858aa"
+  },
+  "defect": "CALL monitor.env returned exit 0 without executing its SET lines on this host; CMD CALL requires .bat/.cmd. Both monitor and installer silently selected bootstrap Python.",
+  "repair": "Stdlib literal configuration parser selects isolated hidden project Python; CMD forwards every argument and preserves exit status.",
+  "windows_launch_tests": 9,
+  "targeted_startup_cron_monitor_tests": 38,
+  "live_runtime_migration": "PENDING; diagnostics did not stop/start existing services.",
+  "call_documentation": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/call"
+}

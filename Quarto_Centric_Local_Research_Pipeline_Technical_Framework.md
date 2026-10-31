@@ -1,6 +1,6 @@
 # Eidos：可复核科研流水线技术框架
 
-**实现基线：0.4.4（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
+**实现基线：0.4.5（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
 
 运行部署边界：核查发现现存监控及两条旧链路循环仍使用全局 Python 3.14；本地启动配置已选择项目 Python 3.12，但受控停止/重启被自动审批以 blocked by policy 拒绝，未执行、未改道终止。新增调度循环源码已补 OS 生命周期锁、单次 tick 互斥、隐藏子进程树超时清理及原子心跳；这些规则不会追溯应用到旧进程。运行迁移仍为 PENDING，不能以网页可访问或源码测试通过替代实际部署验收。详见 docs/MONITOR-RUNTIME-MIGRATION-2026-11-01.json。
 
@@ -187,7 +187,7 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。
 
 <!-- self-audit:start -->
-本轮验收：701 passed、0 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 69%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
+本轮验收：726 passed、0 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 69%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
 <!-- self-audit:end -->
 
 既有 CUDA 16 项已独立通过；本轮未修改数值后端。
@@ -199,3 +199,46 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 实时轮询同步链路状态点、依赖单元格、模块列头、服务列头与状态点、时间及摘要，修复“左侧状态变化但矩阵仍保留旧颜色”的缺口。只有明确 OK 的服务显示绿色；缺失观测、异常状态、样本过期、序号倒退或 45 秒不递增、HTTP/解析/超时错误不能继续显示绿色 LIVE。数据保留时明确标注缓存。RUNNING 单独计数，不冒充完成。
 
 恢复流程保留自身快照时间；旧尝试或其他服务的终结记录不能验证新尝试，24 小时 healed 仅计入明确 recovered 且未声明失败的事件。历史能力账本显示记录日期与版本，不再以硬编码“四项仪器、零缺陷”暗示当前源码已验收。历史故障与当前活动故障、源文件年龄与服务健康分别说明。完整语义与验证范围见 [监控状态说明](docs/MONITOR-SEMANTICS.md)。本次界面相关回归检查与浏览器验收不替代 `docs/SELF_AUDIT.json` 的全项目审计或严格 24 小时稳定性验收。
+
+
+## 2026-11-01：独立指标修复闭环与 Windows 启动入口修复
+
+HPAF 原 README 第 48 行承诺 normalized Levenshtein distance，实际报告引擎的
+分子是 SequenceMatcher 编辑脚本成本，不保证为最短编辑距离。对两份现有文件
+共 1,033 对字符串逐项复核，旧指标有 2 项不一致，最大高估 112 次编辑。
+新适配器将可视化对齐和定量指标分开：分子使用单位代价动态规划最短距离，
+保留 max(len(source), 1) 分母。计量单位是未经归一化的 Unicode 码点；该比率
+具有方向性并可能超过 1，不能解释为字素距离、攻击成功率或总体效应。
+
+独立校验使用固定 RapidFuzz 3.14.6 的 C++ 后端，并以 225 组短字符串的穷举
+编辑图交叉核验；公共生产路径还包括 10 组良性边界样例。旧算法、全零指标、
+错误归一化、缺失行、布尔型距离、源码/数据变化、缺失输出均有拒绝控制。
+原始 HPAF 代码与语料保持原样。源码、协议、锁、数据在执行前后绑定；输出仅
+允许新建，禁止误覆盖输入或历史证据。Gate S 记录探索性结论，不伪造预注册。
+
+已分别在新建的同机 Windows 环境中安装锁定依赖并执行：私有包复核 1,033 对，
+公共包复核 235 对；重复执行和修改输入被拒绝。仅公开新造良性样例包与聚合
+结果，不公开私有语料。详见 docs/INDEPENDENT-LIFECYCLE-ACCEPTANCE.json、
+reference/hpaf_metric/CASE.md 及 site/reports/hpaf-metric/report.html。
+该范围不等于新机器、Linux/Binder、外部独立采用、科研新颖性或 EIDOS 功能完备。
+
+Windows 的两个 CMD 入口原先 CALL monitor.env，在本机返回 0 却没有加载 SET
+配置，导致静默沿用全局 Python。现通过 tools/launch_runtime.py 使用字面配置
+解析器，清除继承的 Python 导入路径，以隐藏、隔离、UTF-8 模式选择项目解释器；
+参数与失败退出码均保留。真实 --check 诊断选择 Python 3.12.4，窗口句柄为 0；
+9 项真实 CMD 回归及 38 项组合测试通过。remove --check/--help 不会触发卸载。
+原有服务进程尚未迁移，自动审批拒绝重启的记录和既有 soak 失败历史保留，
+不把诊断通过描述为服务迁移、登录重启或干净 24 小时验收。
+
+
+### 同轮发布前发现并修复的交付副作用
+
+真实提交钩子的 724 项回归曾出现 1 项失败：纯页面 render() 隐式导出科研报告，
+在直接 wb 覆盖训练 evidence.json 时触发 Windows Errno 22。该次提交被拒绝，
+没有跳过检查；具体 OS 错误根因未证实。现把纯渲染和 --check 与发布分离，
+正式构建显式导出一次，并共享同一份内存案例给页面；证据、QMD、CSV 及训练
+记录副本使用临时文件后原子替换，仍持原目录锁，不宣称整目录事务原子性。
+CSV/QMD 直接交付字节与 ZIP 内一致，修正 Windows 文本换行引起的漂移。
+新增两个回归先失败、修复后相关 17 项通过；最终完整自审为 726 passed、
+4 个可选模块收集跳过、框架覆盖率 69%、11 条链 10 PASS/1 SKIP。
+详见 docs/REPORT-PUBLICATION-ACCEPTANCE-2026-11-01.json。

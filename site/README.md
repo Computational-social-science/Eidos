@@ -1,6 +1,6 @@
 # EIDOS — scientific claims, executable evidence
 
-**Version 0.4.4** · initial development · local-first · MIT framework
+**Version 0.4.5** · initial development · local-first · MIT framework
 
 [![CI](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml/badge.svg)](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
 
@@ -64,8 +64,12 @@ Standalone case downloads:
 Both bundles contain checksums and reproduction instructions. The generic Python
 exporter has bounded Windows/offline-container acceptance; the case bundles and
 that acceptance do not qualify remote Binder or every project's runtime.
-A new-machine installation and an independent project's full lifecycle remain
-release acceptance work, tracked in the completeness ledger.
+A separate HPAF metric-repair lifecycle now has same-host fresh-environment replay:
+1,033 private pairs were independently checked, while the public package replays
+235 benign qualification pairs. See the [repair report](reports/hpaf-metric/report.html)
+and [lifecycle acceptance](docs/INDEPENDENT-LIFECYCLE-ACCEPTANCE.json).
+Private corpora are not distributed; public examples cannot reproduce those private
+findings without data access. New-machine installation remains open in the ledger.
 
 ## Reuse EIDOS for a project
 
@@ -140,6 +144,12 @@ hidden Windows subprocesses. The wrapper removes scheduler import paths from the
 whole checker tree and preserves captured errors and exit codes. See
 [runtime isolation and real scheduled acceptance](docs/CRON-ISOLATION.md);
 manual health checks alone are not scheduler qualification.
+
+The Windows monitor/Startup launchers now parse literal `monitor.env` settings
+instead of `CALL`ing a file CMD does not execute. `scripts/eidos-monitor.cmd --check`
+checks interpreter selection without starting services. The actual probe selected
+project Python 3.12 with no console window; existing global-Python processes have
+not been migrated. See [startup acceptance](docs/STARTUP-RUNTIME-ACCEPTANCE-2026-11-01.json).
 
 The chain audit runs eleven chains; a missing external checkout is a SKIP, not a pass.
 This framework audits itself using a valid-register fixture and a mutated control.

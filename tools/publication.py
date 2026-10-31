@@ -25,10 +25,10 @@ pre{padding:14px;background:#f5f5f3;overflow:auto}#TOC{font-family:Arial,sans-se
 '''
 
 
-def header(title: str) -> str:
+def header(title: str, *, date: str = '2026-10-31') -> str:
     import yaml
     config = {
-        'title': title, 'lang': 'en', 'date': '2026-10-31',
+        'title': title, 'lang': 'en', 'date': date,
         'format': {
             'html': {'embed-resources': True, 'toc': True, 'toc-depth': 2,
                      'include-in-header': [{'text': '<style>'+CSS+'</style>'}]},

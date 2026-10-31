@@ -8,7 +8,7 @@ reject unsupported claims → deliver → detect changes and revalidate.
 | Capability | Current evidence | Remaining acceptance |
 |---|---|---|
 | Environment | Project Python 3.12, frozen lock, Linux CI 3.11/3.12; `AGENTS.md` | Complete new-machine installation with external Quarto/TeX and optional GPU backend. Inventory alone is insufficient. |
-| Onboarding and registry | Safe bootstrap, isolated shell/registry tests; gate-stage required outputs; real independent HPAF intake and negative controls | A new independent project must execute the entire lifecycle, including deliberate wrong evidence and missing outputs. |
+| Onboarding and registry | Safe bootstrap, isolated shell/registry tests; gate-stage required outputs; real independent HPAF intake and negative controls | The HPAF metric-repair lifecycle now rejects wrong evidence, missing outputs and changed sources/data, with separate fresh Windows replays for 1,033 private and 235 public pairs. Unseen projects and outside adopters remain unqualified; see `docs/INDEPENDENT-LIFECYCLE-ACCEPTANCE.json`. |
 | Scientific gates | `framework/validity/`, fixtures, mutations, `docs/SELF_AUDIT.json` | Structured evidence checks do not establish scientific truth or novelty. Evaluate unseen false acceptances and independent adopters. |
 | Numerical capability | Decimal reference, actual CUDA tests, broken controls; `docs/CASE-SOFTMAX.md` | AMP/bfloat16, higher-order backward and other backends remain unqualified. Each needs independent references and broken controls. |
 | Research execution | Three-seed paired reconstruction, source/lock/data hashes and models; `docs/SOFTMAX-TRAINING-FOLLOWUP.md` | Full paper training results are not reproduced. Align input representation, initialization and architecture before attributing differences to the repair. |
@@ -18,8 +18,8 @@ reject unsupported claims → deliver → detect changes and revalidate.
 | Inference and decisions | Local contracts, GPU budget tests, typed operator calibration | Calibration is bounded. Model scientific judgements missed acceptance thresholds and remain outside scientific gates. See `docs/MODEL_VERDICTS.md`. |
 | Tracking and provenance | Optional DVC/MLflow chains and case-specific metadata | General deliveries need explicit required code/data/config/seed/checkpoint/run records, and must reject missing required provenance. Not every project uses both services. |
 | Reporting and visualization | Shared manuscript policy, Quarto HTML/PDF/DOCX, physical font/dimension/PDF/Word audits and artifact fingerprints; `docs/PUBLICATION-QUALITY.md` | Every changed layout requires complete PDF/Word page inspection. Human metadata and journal-specific scientific review remain necessary. |
-| Executable delivery | Explicit-manifest export, fresh Windows installation and offline Linux container replay; 12 numerical cases pass and 2 broken controls are rejected; exclusive execution ownership and atomic records | Same-host CPU acceptance uses an official ECR image override with pinned digest; default Docker Hub connectivity remains failed. Remote Binder, new-machine/Quarto/TeX/GPU qualification and lifecycle integration remain separate. See [delivery contract](EXECUTABLE-DELIVERY.md) and `docs/PACKAGE-ACCEPTANCE.json`. |
-| Knowledge transfer | Existing Paper2Agent/MCP, filed failures/findings and reusable numerical checks | Independent HPAF intake detects introduced bad input/evidence and source/data changes; complete transfer to a second research problem still requires independently usable delivery and scientific validation. Autonomous scientific self-improvement is not established. |
+| Executable delivery | Explicit-manifest export, fresh Windows installation and offline Linux container replay; 12 numerical cases pass and 2 broken controls are rejected; exclusive execution ownership and atomic records | Same-host CPU acceptance uses an official ECR image override with pinned digest; default Docker Hub connectivity remains failed. Independent HPAF lifecycle delivery now has same-host Windows replay; that case has no Linux/Binder qualification. Remote Binder and new-machine/Quarto/TeX/GPU qualification remain separate. See [delivery contract](EXECUTABLE-DELIVERY.md) and `docs/PACKAGE-ACCEPTANCE.json`. |
+| Knowledge transfer | Existing Paper2Agent/MCP, filed failures/findings and reusable numerical checks | Independent HPAF metric repair detects a real contract defect, validates the correction against C++ and exhaustive graphs, and delivers separately replayed public/private packages. This bounded transfer does not establish generality, novel discovery or autonomous scientific self-improvement. |
 | Release | Windows local suite, Linux CI, fixture/mutation/site hooks, versioned evidence | Validate source-archive installation and generic packaging; keep docs, exports, screenshots and CI tied to the release. |
 
 Report exporters now hold directory ownership through export and rendering;
@@ -65,8 +65,9 @@ the same rule so an old negative fixture cannot monopolize refreshes.
 2. Repair generic packaging: bounded file manifest, lock-based installation,
    explicit reproduction command and required provenance, then a clean build/run.
    External Binder availability must be assessed separately.
-3. Run an independently onboarded project end to end and reject injected wrong
-   evidence, missing output and stale snapshots.
+3. Extend the completed same-host HPAF metric lifecycle to unseen independent
+   adopters and new-machine replay; preserve wrong-evidence, missing-output and
+   stale-snapshot controls.
 4. Align the paper reconstruction before extending precision/tasks; register
    criteria before execution and retain unfavorable outcomes.
 5. Reassess every row against artifacts before declaring functional completeness.

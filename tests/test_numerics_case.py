@@ -61,6 +61,8 @@ def test_export_contains_reproducible_downloads(tmp_path):
     for name in ("evidence.json", "cases.csv", "report.qmd", "reproduce.zip"):
         assert (tmp_path / name).is_file()
     with zipfile.ZipFile(tmp_path / "reproduce.zip") as bundle:
+        assert bundle.read("cases.csv") == (tmp_path / "cases.csv").read_bytes()
+        assert bundle.read("report.qmd") == (tmp_path / "report.qmd").read_bytes()
         names = set(bundle.namelist())
         assert {"README.md", "pyproject.toml", "uv.lock", "evidence.json"} <= names
         assert "framework/stable_numerics.py" in names
@@ -70,6 +72,24 @@ def test_export_contains_reproducible_downloads(tmp_path):
         assert "projects/softmax_training/project.yaml" in names
         assert "tests/test_training_consumer.py" in names
         assert all(".venv" not in name for name in names)
+
+
+def test_training_copy_does_not_open_the_live_destination_for_truncation(tmp_path, monkeypatch):
+    from pathlib import Path
+    from tools.numerics_case import ROOT
+    data = build_case()
+    assert data["training"]["status"] == "PASS"
+    target = tmp_path / "training/evidence.json"
+    target.parent.mkdir()
+    target.write_bytes(b"previous complete evidence")
+    original_open = Path.open
+    def guarded(path, mode="r", *args, **kwargs):
+        if path == target and "w" in mode:
+            raise OSError(22, "destination cannot be truncated while observed")
+        return original_open(path, mode, *args, **kwargs)
+    monkeypatch.setattr(Path, "open", guarded)
+    export_case(tmp_path, data)
+    assert target.read_bytes() == (ROOT / "reference/softmax_training/docs/evidence.json").read_bytes()
 
 
 def test_bundle_command_rebuilds_all_displayed_cases(tmp_path):

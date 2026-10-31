@@ -2,6 +2,8 @@
 site/reports/**/report.qmd -text
 site/reports/**/report.html -text
 site/reports/**/*.svg -text
+site/reports/**/*.csv -text whitespace=cr-at-eol
+site/reports/numerics/**/*.json -text whitespace=cr-at-eol
 *.md text eol=lf
 *.yaml text eol=lf
 *.toml text eol=lf
@@ -10,6 +12,13 @@ site/reports/**/*.svg -text
 # Preserve byte-bound research artifacts across Windows/Linux checkouts.
 reference/softmax_*/checkpoints/* -text
 reference/softmax_*/docs/*.json -text whitespace=cr-at-eol
+reference/hpaf_metric/*.json -text whitespace=cr-at-eol
+reference/hpaf_metric/docs/*.json -text whitespace=cr-at-eol
+reference/hpaf_metric/uv.lock -text
+site/reports/hpaf-metric/*.json -text whitespace=cr-at-eol
+# Preserve the exact CMD bytes exercised by the Windows startup acceptance.
+scripts/eidos-monitor.cmd -text whitespace=cr-at-eol
+scripts/install-autostart.cmd -text whitespace=cr-at-eol
 lock/snapshots/uv/*.lock -text
 # Screenshot records bind to the generated page bytes.
 site/index.html -text whitespace=cr-at-eol
@@ -17,6 +26,7 @@ site/dashboard.html -text whitespace=cr-at-eol
 # Generated plotting paths and archived Markdown retain producer formatting.
 site/reports/numerics/** whitespace=-blank-at-eol,-blank-at-eof
 site/reports/softmax-matrix/** whitespace=-blank-at-eol,-blank-at-eof
+site/reports/hpaf-metric/** whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
 site/reports/softmax-matrix/*.json -text whitespace=cr-at-eol
 docs/archive/** whitespace=-blank-at-eol
 *.sh text eol=lf

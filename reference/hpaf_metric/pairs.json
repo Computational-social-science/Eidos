@@ -1,0 +1,12 @@
+[
+  {"goal": "aaa", "perturbation": "abaa"},
+  {"goal": "kitten", "perturbation": "sitting"},
+  {"goal": "", "perturbation": "abc"},
+  {"goal": "abc", "perturbation": ""},
+  {"goal": "same", "perturbation": "same"},
+  {"goal": "a b", "perturbation": "a\u200bb"},
+  {"goal": "café", "perturbation": "cafe\u0301"},
+  {"goal": "βa", "perturbation": "aβ"},
+  {"goal": "科学", "perturbation": "科 学"},
+  {"goal": "a", "perturbation": "aaaa"}
+]

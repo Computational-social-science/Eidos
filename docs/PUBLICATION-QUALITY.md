@@ -1,6 +1,6 @@
 # Scientific delivery quality
 
-The numerical and precision/epsilon reports use `tools/publication.py` as a shared
+The numerical, precision/epsilon and independent edit-metric reports use `tools/publication.py` as a shared
 production policy. HTML is a readable web report; PDF and Word are manuscript
 deliveries. A website screenshot is not a publication master.
 
@@ -8,7 +8,7 @@ deliveries. A website screenshot is not a publication master.
 
 The [Nature figure guide](https://research-figure-guide.nature.com/figures/building-and-exporting-figure-panels/)
 specifies 89 or 183 mm widths, height at most 170 mm, editable text and embedded
-standard fonts at 5–7 pt. The current four masters use 183 mm, Arial at 6–7 pt,
+standard fonts at 5–7 pt. The current five masters use 183 mm, Arial at 6–7 pt,
 embedded TrueType fonts, sequential panel letters, accessible colours and redundant
 line/marker encoding. SVG font checks use the physical viewport/viewBox scale;
 unsupported text transforms fail instead of borrowing a nominal CSS font size.
@@ -72,3 +72,13 @@ affiliations, contributions, funding and competing interests require the human
 research team's confirmation. They are not fabricated. The audit therefore keeps
 `submission_ready: false`. An unverified future report cannot inherit a previous
 report's PASS merely by importing its styles.
+
+Website `render()` and `build_site.py --check` do not publish scientific case
+artifacts. A normal build explicitly exports the measured case once and gives
+the same in-memory case to page rendering. Report data, QMD, CSV and copied
+training evidence are written to same-directory temporary files before atomic
+replacement. Direct QMD/CSV bytes equal their reproduction-bundle counterparts,
+including on Windows. Directory ownership remains separate from reader atomicity:
+the complete report directory is not one transactional snapshot. The observed
+Windows write failure and rejection regressions are retained in
+[the publication acceptance record](REPORT-PUBLICATION-ACCEPTANCE-2026-11-01.json).

@@ -43,6 +43,8 @@
   "all_recorded_old_processes_still_live": true,
   "migration_performed": false,
   "automatic_approval": "Process stop/restart command rejected with blocked by policy; no more specific reason was returned. No alternate termination path was attempted.",
-  "source_fix_scope": "New scheduler starts use loop/tick OS ownership and hidden bounded workers. Old already-running interpreter instances have not loaded those changes.",
-  "stability_scope": "Existing strict soak retains prior failures; no clean-24h or reboot/logon claim."
+  "source_fix_scope": "New starts now use literal monitor.env parsing, isolated hidden project Python and scheduler loop/tick ownership. Existing interpreter instances have not been migrated.",
+  "stability_scope": "Existing strict soak retains prior failures; no clean-24h or reboot/logon claim.",
+  "startup_selection_acceptance": "STARTUP-RUNTIME-ACCEPTANCE-2026-11-01.json",
+  "startup_probe_is_service_migration": false
 }

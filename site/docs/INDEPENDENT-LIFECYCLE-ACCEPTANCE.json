@@ -1,0 +1,171 @@
+{
+  "scope": "Same-host independent HPAF metric repair lifecycle. Public fixture and private-data replays are separate; no autonomous discovery, new-machine or paper-wide scientific claim.",
+  "recorded_at": "2026-10-31T22:02:01.579652+00:00",
+  "original_inputs_unchanged": true,
+  "original_engine": {
+    "source": "D:\\2026-AI4S\\HPAF\\build_corpus_reports2.py",
+    "source_sha256": "29281aa2b8ac8380e7df7ff5e39bf425b39dbf89d8f34b2be0a8db1ed4052b2e",
+    "actual_original_diff_runs_checked": 1033,
+    "all_legacy_costs_match": true,
+    "original_code_and_data_modified": false
+  },
+  "private_data_distributed": false,
+  "records": 1033,
+  "per_corpus": {
+    "advbench_llm_perturbed_1.json": {
+      "pairs": 513,
+      "legacy_mismatches": 2,
+      "maximum_overestimate": 112,
+      "underestimates": 0
+    },
+    "advbench_unicode_whitespace_perturbed.json": {
+      "pairs": 520,
+      "legacy_mismatches": 0,
+      "maximum_overestimate": 0,
+      "underestimates": 0
+    }
+  },
+  "gate_s": "PASS",
+  "wrong_evidence_gate_s": "FAIL",
+  "wrong_evidence_findings": {
+    "register": "analysis\\CLAIMS.yaml",
+    "claims": 1,
+    "formal_claims": 0,
+    "findings": [
+      "[S3] H2: evidence says True but results/verification.json/accepted holds False"
+    ],
+    "blocked": []
+  },
+  "missing_output": {
+    "status": "FAIL",
+    "exit_code": 0,
+    "stderr_tail": "declared output missing after a successful run: results/verification.json"
+  },
+  "mutations": [
+    {
+      "input": "run.py",
+      "cached_verdict_withdrawn": true,
+      "scientific_validator_status": "FAIL"
+    },
+    {
+      "input": "data/advbench_llm_perturbed_1.json",
+      "cached_verdict_withdrawn": true,
+      "scientific_validator_status": "FAIL"
+    }
+  ],
+  "replays": [
+    {
+      "kind": "public",
+      "scope": "fresh same-host Windows environment; offline research execution after locked dependency install",
+      "archive_sha256": "2d3c681dea7aea585426cd1955dda3f8e049744d1ecb8b4df9f756e5de463cbf",
+      "manifest_sha256": "191186c57e6038300131b4658b45780ff3c570af1bba23b6e156095e1627d880",
+      "fresh_python": "C:\\Users\\Administrator\\.cache\\eidos-metric-public-dyyz1x5r\\venv\\Scripts\\python.exe",
+      "install_exit": 0,
+      "replay_exit": 0,
+      "records": 235,
+      "reference": {
+        "ordered_pairs": 225,
+        "legacy_control_mismatches": 40,
+        "zero_control_mismatches": 210,
+        "graph_max_length": 3,
+        "graph_alphabet": "aβ",
+        "reference": "RapidFuzz C++ unit-cost Levenshtein",
+        "rapidfuzz": "3.14.6",
+        "backend": "rapidfuzz.distance.metrics_cpp"
+      },
+      "execution_record": {
+        "seed": null,
+        "seed_reason": "Deterministic complete enumeration; no sampling or model inference.",
+        "data_version": "benign-fixtures-v1",
+        "config_version": "metric-contract-v1",
+        "command": [
+          "python",
+          "run.py"
+        ],
+        "verify_command": [
+          "python",
+          "verify.py"
+        ],
+        "generated": "2026-10-31T22:01:56.055900+00:00",
+        "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+        "executable": "C:\\Users\\Administrator\\.cache\\eidos-metric-public-dyyz1x5r\\venv\\Scripts\\python.exe",
+        "outputs": {
+          "results/evidence.json": "6f4e988b8fb4fa13926619270c244832ef672fc2ba64a9f5aad29a02055e220c",
+          "results/verification.json": "804a7ebd9b36453d9b391a2b99bc44a806098386dab1b7e2493874c0b7a6fbed"
+        },
+        "manifest_sha256": "191186c57e6038300131b4658b45780ff3c570af1bba23b6e156095e1627d880",
+        "scope": "Declared commands and output integrity only; not independent scientific certification."
+      },
+      "reexecution_refused": true,
+      "changed_input_refused": true,
+      "acceptance_controls": {
+        "exit_code": 0,
+        "stderr": "test_all_short_graph_pairs_and_unicode_examples (__main__.MetricAcceptance.test_all_short_graph_pairs_and_unicode_examples) ... ok\ntest_boolean_distance_is_rejected (__main__.MetricAcceptance.test_boolean_distance_is_rejected) ... ok\ntest_changed_data_is_rejected (__main__.MetricAcceptance.test_changed_data_is_rejected) ... ok\ntest_changed_source_is_rejected (__main__.MetricAcceptance.test_changed_source_is_rejected) ... ok\ntest_legacy_implementation_is_rejected (__main__.MetricAcceptance.test_legacy_implementation_is_rejected) ... ok\ntest_malformed_or_unpaired_data_is_rejected (__main__.MetricAcceptance.test_malformed_or_unpaired_data_is_rejected) ... ok\ntest_missing_evidence_is_rejected (__main__.MetricAcceptance.test_missing_evidence_is_rejected) ... ok\ntest_missing_record_is_rejected (__main__.MetricAcceptance.test_missing_record_is_rejected) ... ok\ntest_production_cannot_overwrite_corpus_or_existing_result (__main__.MetricAcceptance.test_production_cannot_overwrite_corpus_or_existing_result) ... ok\ntest_production_refuses_hardlink_input_alias (__main__.MetricAcceptance.test_production_refuses_hardlink_input_alias) ... ok\ntest_source_change_during_production_is_rejected (__main__.MetricAcceptance.test_source_change_during_production_is_rejected) ... ok\ntest_verifier_cannot_overwrite_corpus_or_evidence (__main__.MetricAcceptance.test_verifier_cannot_overwrite_corpus_or_evidence) ... ok\ntest_wrong_normalization_is_rejected (__main__.MetricAcceptance.test_wrong_normalization_is_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 0.474s\n\nOK\n"
+      }
+    },
+    {
+      "kind": "private",
+      "scope": "fresh same-host Windows environment; offline research execution after locked dependency install",
+      "archive_sha256": "7f645f89efbe3d8bf6274ab261c8755a12d791729946aac8a833470ab4b9fd7d",
+      "manifest_sha256": "29c5dfa968e675e4ae3a1e08f895f88bb045c1b96ae5701d5f60168551124237",
+      "fresh_python": "C:\\Users\\Administrator\\.cache\\eidos-metric-private-r6tbc3t2\\venv\\Scripts\\python.exe",
+      "install_exit": 0,
+      "replay_exit": 0,
+      "records": 1033,
+      "reference": {
+        "ordered_pairs": 225,
+        "legacy_control_mismatches": 40,
+        "zero_control_mismatches": 210,
+        "graph_max_length": 3,
+        "graph_alphabet": "aβ",
+        "reference": "RapidFuzz C++ unit-cost Levenshtein",
+        "rapidfuzz": "3.14.6",
+        "backend": "rapidfuzz.distance.metrics_cpp"
+      },
+      "execution_record": {
+        "seed": null,
+        "seed_reason": "Deterministic complete enumeration; no sampling or model inference.",
+        "data_version": "private-corpus-content-hashes-in-manifest",
+        "config_version": "metric-contract-v1",
+        "command": [
+          "python",
+          "run.py",
+          "--corpus",
+          "data/advbench_llm_perturbed_1.json",
+          "--corpus",
+          "data/advbench_unicode_whitespace_perturbed.json"
+        ],
+        "verify_command": [
+          "python",
+          "verify.py",
+          "--corpus",
+          "data/advbench_llm_perturbed_1.json",
+          "--corpus",
+          "data/advbench_unicode_whitespace_perturbed.json"
+        ],
+        "generated": "2026-10-31T22:01:59.973864+00:00",
+        "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+        "executable": "C:\\Users\\Administrator\\.cache\\eidos-metric-private-r6tbc3t2\\venv\\Scripts\\python.exe",
+        "outputs": {
+          "results/evidence.json": "868e6c3c52af55041a8ee8ac84117253a67625db57be4e44b1a0aa311aafb7b9",
+          "results/verification.json": "a651bc6419dbb0128459860ce37fa0c6e775b6950cb4949e51fb10d20a8c70b7"
+        },
+        "manifest_sha256": "29c5dfa968e675e4ae3a1e08f895f88bb045c1b96ae5701d5f60168551124237",
+        "scope": "Declared commands and output integrity only; not independent scientific certification."
+      },
+      "reexecution_refused": true,
+      "changed_input_refused": true,
+      "acceptance_controls": {
+        "exit_code": 0,
+        "stderr": "test_all_short_graph_pairs_and_unicode_examples (__main__.MetricAcceptance.test_all_short_graph_pairs_and_unicode_examples) ... ok\ntest_boolean_distance_is_rejected (__main__.MetricAcceptance.test_boolean_distance_is_rejected) ... ok\ntest_changed_data_is_rejected (__main__.MetricAcceptance.test_changed_data_is_rejected) ... ok\ntest_changed_source_is_rejected (__main__.MetricAcceptance.test_changed_source_is_rejected) ... ok\ntest_legacy_implementation_is_rejected (__main__.MetricAcceptance.test_legacy_implementation_is_rejected) ... ok\ntest_malformed_or_unpaired_data_is_rejected (__main__.MetricAcceptance.test_malformed_or_unpaired_data_is_rejected) ... ok\ntest_missing_evidence_is_rejected (__main__.MetricAcceptance.test_missing_evidence_is_rejected) ... ok\ntest_missing_record_is_rejected (__main__.MetricAcceptance.test_missing_record_is_rejected) ... ok\ntest_production_cannot_overwrite_corpus_or_existing_result (__main__.MetricAcceptance.test_production_cannot_overwrite_corpus_or_existing_result) ... ok\ntest_production_refuses_hardlink_input_alias (__main__.MetricAcceptance.test_production_refuses_hardlink_input_alias) ... ok\ntest_source_change_during_production_is_rejected (__main__.MetricAcceptance.test_source_change_during_production_is_rejected) ... ok\ntest_verifier_cannot_overwrite_corpus_or_evidence (__main__.MetricAcceptance.test_verifier_cannot_overwrite_corpus_or_evidence) ... ok\ntest_wrong_normalization_is_rejected (__main__.MetricAcceptance.test_wrong_normalization_is_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 13 tests in 0.427s\n\nOK\n"
+      }
+    }
+  ],
+  "public_archive": "site/reports/hpaf-metric/reproduce.zip",
+  "public_archive_sha256": "2d3c681dea7aea585426cd1955dda3f8e049744d1ecb8b4df9f756e5de463cbf",
+  "scientific_limits": [
+    "Retrospective metric repair, not novelty or attack success.",
+    "Private results require authorized data access; public replay uses benign fixtures.",
+    "Same-host fresh environment, not new-machine, Linux or remote Binder acceptance."
+  ]
+}

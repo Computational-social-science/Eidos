@@ -1,0 +1,902 @@
+[
+  {
+    "goal": "",
+    "perturbation": ""
+  },
+  {
+    "goal": "",
+    "perturbation": "a"
+  },
+  {
+    "goal": "",
+    "perturbation": "β"
+  },
+  {
+    "goal": "",
+    "perturbation": "aa"
+  },
+  {
+    "goal": "",
+    "perturbation": "aβ"
+  },
+  {
+    "goal": "",
+    "perturbation": "βa"
+  },
+  {
+    "goal": "",
+    "perturbation": "ββ"
+  },
+  {
+    "goal": "",
+    "perturbation": "aaa"
+  },
+  {
+    "goal": "",
+    "perturbation": "aaβ"
+  },
+  {
+    "goal": "",
+    "perturbation": "aβa"
+  },
+  {
+    "goal": "",
+    "perturbation": "aββ"
+  },
+  {
+    "goal": "",
+    "perturbation": "βaa"
+  },
+  {
+    "goal": "",
+    "perturbation": "βaβ"
+  },
+  {
+    "goal": "",
+    "perturbation": "ββa"
+  },
+  {
+    "goal": "",
+    "perturbation": "βββ"
+  },
+  {
+    "goal": "a",
+    "perturbation": ""
+  },
+  {
+    "goal": "a",
+    "perturbation": "a"
+  },
+  {
+    "goal": "a",
+    "perturbation": "β"
+  },
+  {
+    "goal": "a",
+    "perturbation": "aa"
+  },
+  {
+    "goal": "a",
+    "perturbation": "aβ"
+  },
+  {
+    "goal": "a",
+    "perturbation": "βa"
+  },
+  {
+    "goal": "a",
+    "perturbation": "ββ"
+  },
+  {
+    "goal": "a",
+    "perturbation": "aaa"
+  },
+  {
+    "goal": "a",
+    "perturbation": "aaβ"
+  },
+  {
+    "goal": "a",
+    "perturbation": "aβa"
+  },
+  {
+    "goal": "a",
+    "perturbation": "aββ"
+  },
+  {
+    "goal": "a",
+    "perturbation": "βaa"
+  },
+  {
+    "goal": "a",
+    "perturbation": "βaβ"
+  },
+  {
+    "goal": "a",
+    "perturbation": "ββa"
+  },
+  {
+    "goal": "a",
+    "perturbation": "βββ"
+  },
+  {
+    "goal": "β",
+    "perturbation": ""
+  },
+  {
+    "goal": "β",
+    "perturbation": "a"
+  },
+  {
+    "goal": "β",
+    "perturbation": "β"
+  },
+  {
+    "goal": "β",
+    "perturbation": "aa"
+  },
+  {
+    "goal": "β",
+    "perturbation": "aβ"
+  },
+  {
+    "goal": "β",
+    "perturbation": "βa"
+  },
+  {
+    "goal": "β",
+    "perturbation": "ββ"
+  },
+  {
+    "goal": "β",
+    "perturbation": "aaa"
+  },
+  {
+    "goal": "β",
+    "perturbation": "aaβ"
+  },
+  {
+    "goal": "β",
+    "perturbation": "aβa"
+  },
+  {
+    "goal": "β",
+    "perturbation": "aββ"
+  },
+  {
+    "goal": "β",
+    "perturbation": "βaa"
+  },
+  {
+    "goal": "β",
+    "perturbation": "βaβ"
+  },
+  {
+    "goal": "β",
+    "perturbation": "ββa"
+  },
+  {
+    "goal": "β",
+    "perturbation": "βββ"
+  },
+  {
+    "goal": "aa",
+    "perturbation": ""
+  },
+  {
+    "goal": "aa",
+    "perturbation": "a"
+  },
+  {
+    "goal": "aa",
+    "perturbation": "β"
+  },
+  {
+    "goal": "aa",
+    "perturbation": "aa"
+  },
+  {
+    "goal": "aa",
+    "perturbation": "aβ"
+  },
+  {
+    "goal": "aa",
+    "perturbation": "βa"
+  },
+  {
+    "goal": "aa",
+    "perturbation": "ββ"
+  },
+  {
+    "goal": "aa",
+    "perturbation": "aaa"
+  },
+  {
+    "goal": "aa",
+    "perturbation": "aaβ"
+  },
+  {
+    "goal": "aa",
+    "perturbation": "aβa"
+  },
+  {
+    "goal": "aa",
+    "perturbation": "aββ"
+  },
+  {
+    "goal": "aa",
+    "perturbation": "βaa"
+  },
+  {
+    "goal": "aa",
+    "perturbation": "βaβ"
+  },
+  {
+    "goal": "aa",
+    "perturbation": "ββa"
+  },
+  {
+    "goal": "aa",
+    "perturbation": "βββ"
+  },
+  {
+    "goal": "aβ",
+    "perturbation": ""
+  },
+  {
+    "goal": "aβ",
+    "perturbation": "a"
+  },
+  {
+    "goal": "aβ",
+    "perturbation": "β"
+  },
+  {
+    "goal": "aβ",
+    "perturbation": "aa"
+  },
+  {
+    "goal": "aβ",
+    "perturbation": "aβ"
+  },
+  {
+    "goal": "aβ",
+    "perturbation": "βa"
+  },
+  {
+    "goal": "aβ",
+    "perturbation": "ββ"
+  },
+  {
+    "goal": "aβ",
+    "perturbation": "aaa"
+  },
+  {
+    "goal": "aβ",
+    "perturbation": "aaβ"
+  },
+  {
+    "goal": "aβ",
+    "perturbation": "aβa"
+  },
+  {
+    "goal": "aβ",
+    "perturbation": "aββ"
+  },
+  {
+    "goal": "aβ",
+    "perturbation": "βaa"
+  },
+  {
+    "goal": "aβ",
+    "perturbation": "βaβ"
+  },
+  {
+    "goal": "aβ",
+    "perturbation": "ββa"
+  },
+  {
+    "goal": "aβ",
+    "perturbation": "βββ"
+  },
+  {
+    "goal": "βa",
+    "perturbation": ""
+  },
+  {
+    "goal": "βa",
+    "perturbation": "a"
+  },
+  {
+    "goal": "βa",
+    "perturbation": "β"
+  },
+  {
+    "goal": "βa",
+    "perturbation": "aa"
+  },
+  {
+    "goal": "βa",
+    "perturbation": "aβ"
+  },
+  {
+    "goal": "βa",
+    "perturbation": "βa"
+  },
+  {
+    "goal": "βa",
+    "perturbation": "ββ"
+  },
+  {
+    "goal": "βa",
+    "perturbation": "aaa"
+  },
+  {
+    "goal": "βa",
+    "perturbation": "aaβ"
+  },
+  {
+    "goal": "βa",
+    "perturbation": "aβa"
+  },
+  {
+    "goal": "βa",
+    "perturbation": "aββ"
+  },
+  {
+    "goal": "βa",
+    "perturbation": "βaa"
+  },
+  {
+    "goal": "βa",
+    "perturbation": "βaβ"
+  },
+  {
+    "goal": "βa",
+    "perturbation": "ββa"
+  },
+  {
+    "goal": "βa",
+    "perturbation": "βββ"
+  },
+  {
+    "goal": "ββ",
+    "perturbation": ""
+  },
+  {
+    "goal": "ββ",
+    "perturbation": "a"
+  },
+  {
+    "goal": "ββ",
+    "perturbation": "β"
+  },
+  {
+    "goal": "ββ",
+    "perturbation": "aa"
+  },
+  {
+    "goal": "ββ",
+    "perturbation": "aβ"
+  },
+  {
+    "goal": "ββ",
+    "perturbation": "βa"
+  },
+  {
+    "goal": "ββ",
+    "perturbation": "ββ"
+  },
+  {
+    "goal": "ββ",
+    "perturbation": "aaa"
+  },
+  {
+    "goal": "ββ",
+    "perturbation": "aaβ"
+  },
+  {
+    "goal": "ββ",
+    "perturbation": "aβa"
+  },
+  {
+    "goal": "ββ",
+    "perturbation": "aββ"
+  },
+  {
+    "goal": "ββ",
+    "perturbation": "βaa"
+  },
+  {
+    "goal": "ββ",
+    "perturbation": "βaβ"
+  },
+  {
+    "goal": "ββ",
+    "perturbation": "ββa"
+  },
+  {
+    "goal": "ββ",
+    "perturbation": "βββ"
+  },
+  {
+    "goal": "aaa",
+    "perturbation": ""
+  },
+  {
+    "goal": "aaa",
+    "perturbation": "a"
+  },
+  {
+    "goal": "aaa",
+    "perturbation": "β"
+  },
+  {
+    "goal": "aaa",
+    "perturbation": "aa"
+  },
+  {
+    "goal": "aaa",
+    "perturbation": "aβ"
+  },
+  {
+    "goal": "aaa",
+    "perturbation": "βa"
+  },
+  {
+    "goal": "aaa",
+    "perturbation": "ββ"
+  },
+  {
+    "goal": "aaa",
+    "perturbation": "aaa"
+  },
+  {
+    "goal": "aaa",
+    "perturbation": "aaβ"
+  },
+  {
+    "goal": "aaa",
+    "perturbation": "aβa"
+  },
+  {
+    "goal": "aaa",
+    "perturbation": "aββ"
+  },
+  {
+    "goal": "aaa",
+    "perturbation": "βaa"
+  },
+  {
+    "goal": "aaa",
+    "perturbation": "βaβ"
+  },
+  {
+    "goal": "aaa",
+    "perturbation": "ββa"
+  },
+  {
+    "goal": "aaa",
+    "perturbation": "βββ"
+  },
+  {
+    "goal": "aaβ",
+    "perturbation": ""
+  },
+  {
+    "goal": "aaβ",
+    "perturbation": "a"
+  },
+  {
+    "goal": "aaβ",
+    "perturbation": "β"
+  },
+  {
+    "goal": "aaβ",
+    "perturbation": "aa"
+  },
+  {
+    "goal": "aaβ",
+    "perturbation": "aβ"
+  },
+  {
+    "goal": "aaβ",
+    "perturbation": "βa"
+  },
+  {
+    "goal": "aaβ",
+    "perturbation": "ββ"
+  },
+  {
+    "goal": "aaβ",
+    "perturbation": "aaa"
+  },
+  {
+    "goal": "aaβ",
+    "perturbation": "aaβ"
+  },
+  {
+    "goal": "aaβ",
+    "perturbation": "aβa"
+  },
+  {
+    "goal": "aaβ",
+    "perturbation": "aββ"
+  },
+  {
+    "goal": "aaβ",
+    "perturbation": "βaa"
+  },
+  {
+    "goal": "aaβ",
+    "perturbation": "βaβ"
+  },
+  {
+    "goal": "aaβ",
+    "perturbation": "ββa"
+  },
+  {
+    "goal": "aaβ",
+    "perturbation": "βββ"
+  },
+  {
+    "goal": "aβa",
+    "perturbation": ""
+  },
+  {
+    "goal": "aβa",
+    "perturbation": "a"
+  },
+  {
+    "goal": "aβa",
+    "perturbation": "β"
+  },
+  {
+    "goal": "aβa",
+    "perturbation": "aa"
+  },
+  {
+    "goal": "aβa",
+    "perturbation": "aβ"
+  },
+  {
+    "goal": "aβa",
+    "perturbation": "βa"
+  },
+  {
+    "goal": "aβa",
+    "perturbation": "ββ"
+  },
+  {
+    "goal": "aβa",
+    "perturbation": "aaa"
+  },
+  {
+    "goal": "aβa",
+    "perturbation": "aaβ"
+  },
+  {
+    "goal": "aβa",
+    "perturbation": "aβa"
+  },
+  {
+    "goal": "aβa",
+    "perturbation": "aββ"
+  },
+  {
+    "goal": "aβa",
+    "perturbation": "βaa"
+  },
+  {
+    "goal": "aβa",
+    "perturbation": "βaβ"
+  },
+  {
+    "goal": "aβa",
+    "perturbation": "ββa"
+  },
+  {
+    "goal": "aβa",
+    "perturbation": "βββ"
+  },
+  {
+    "goal": "aββ",
+    "perturbation": ""
+  },
+  {
+    "goal": "aββ",
+    "perturbation": "a"
+  },
+  {
+    "goal": "aββ",
+    "perturbation": "β"
+  },
+  {
+    "goal": "aββ",
+    "perturbation": "aa"
+  },
+  {
+    "goal": "aββ",
+    "perturbation": "aβ"
+  },
+  {
+    "goal": "aββ",
+    "perturbation": "βa"
+  },
+  {
+    "goal": "aββ",
+    "perturbation": "ββ"
+  },
+  {
+    "goal": "aββ",
+    "perturbation": "aaa"
+  },
+  {
+    "goal": "aββ",
+    "perturbation": "aaβ"
+  },
+  {
+    "goal": "aββ",
+    "perturbation": "aβa"
+  },
+  {
+    "goal": "aββ",
+    "perturbation": "aββ"
+  },
+  {
+    "goal": "aββ",
+    "perturbation": "βaa"
+  },
+  {
+    "goal": "aββ",
+    "perturbation": "βaβ"
+  },
+  {
+    "goal": "aββ",
+    "perturbation": "ββa"
+  },
+  {
+    "goal": "aββ",
+    "perturbation": "βββ"
+  },
+  {
+    "goal": "βaa",
+    "perturbation": ""
+  },
+  {
+    "goal": "βaa",
+    "perturbation": "a"
+  },
+  {
+    "goal": "βaa",
+    "perturbation": "β"
+  },
+  {
+    "goal": "βaa",
+    "perturbation": "aa"
+  },
+  {
+    "goal": "βaa",
+    "perturbation": "aβ"
+  },
+  {
+    "goal": "βaa",
+    "perturbation": "βa"
+  },
+  {
+    "goal": "βaa",
+    "perturbation": "ββ"
+  },
+  {
+    "goal": "βaa",
+    "perturbation": "aaa"
+  },
+  {
+    "goal": "βaa",
+    "perturbation": "aaβ"
+  },
+  {
+    "goal": "βaa",
+    "perturbation": "aβa"
+  },
+  {
+    "goal": "βaa",
+    "perturbation": "aββ"
+  },
+  {
+    "goal": "βaa",
+    "perturbation": "βaa"
+  },
+  {
+    "goal": "βaa",
+    "perturbation": "βaβ"
+  },
+  {
+    "goal": "βaa",
+    "perturbation": "ββa"
+  },
+  {
+    "goal": "βaa",
+    "perturbation": "βββ"
+  },
+  {
+    "goal": "βaβ",
+    "perturbation": ""
+  },
+  {
+    "goal": "βaβ",
+    "perturbation": "a"
+  },
+  {
+    "goal": "βaβ",
+    "perturbation": "β"
+  },
+  {
+    "goal": "βaβ",
+    "perturbation": "aa"
+  },
+  {
+    "goal": "βaβ",
+    "perturbation": "aβ"
+  },
+  {
+    "goal": "βaβ",
+    "perturbation": "βa"
+  },
+  {
+    "goal": "βaβ",
+    "perturbation": "ββ"
+  },
+  {
+    "goal": "βaβ",
+    "perturbation": "aaa"
+  },
+  {
+    "goal": "βaβ",
+    "perturbation": "aaβ"
+  },
+  {
+    "goal": "βaβ",
+    "perturbation": "aβa"
+  },
+  {
+    "goal": "βaβ",
+    "perturbation": "aββ"
+  },
+  {
+    "goal": "βaβ",
+    "perturbation": "βaa"
+  },
+  {
+    "goal": "βaβ",
+    "perturbation": "βaβ"
+  },
+  {
+    "goal": "βaβ",
+    "perturbation": "ββa"
+  },
+  {
+    "goal": "βaβ",
+    "perturbation": "βββ"
+  },
+  {
+    "goal": "ββa",
+    "perturbation": ""
+  },
+  {
+    "goal": "ββa",
+    "perturbation": "a"
+  },
+  {
+    "goal": "ββa",
+    "perturbation": "β"
+  },
+  {
+    "goal": "ββa",
+    "perturbation": "aa"
+  },
+  {
+    "goal": "ββa",
+    "perturbation": "aβ"
+  },
+  {
+    "goal": "ββa",
+    "perturbation": "βa"
+  },
+  {
+    "goal": "ββa",
+    "perturbation": "ββ"
+  },
+  {
+    "goal": "ββa",
+    "perturbation": "aaa"
+  },
+  {
+    "goal": "ββa",
+    "perturbation": "aaβ"
+  },
+  {
+    "goal": "ββa",
+    "perturbation": "aβa"
+  },
+  {
+    "goal": "ββa",
+    "perturbation": "aββ"
+  },
+  {
+    "goal": "ββa",
+    "perturbation": "βaa"
+  },
+  {
+    "goal": "ββa",
+    "perturbation": "βaβ"
+  },
+  {
+    "goal": "ββa",
+    "perturbation": "ββa"
+  },
+  {
+    "goal": "ββa",
+    "perturbation": "βββ"
+  },
+  {
+    "goal": "βββ",
+    "perturbation": ""
+  },
+  {
+    "goal": "βββ",
+    "perturbation": "a"
+  },
+  {
+    "goal": "βββ",
+    "perturbation": "β"
+  },
+  {
+    "goal": "βββ",
+    "perturbation": "aa"
+  },
+  {
+    "goal": "βββ",
+    "perturbation": "aβ"
+  },
+  {
+    "goal": "βββ",
+    "perturbation": "βa"
+  },
+  {
+    "goal": "βββ",
+    "perturbation": "ββ"
+  },
+  {
+    "goal": "βββ",
+    "perturbation": "aaa"
+  },
+  {
+    "goal": "βββ",
+    "perturbation": "aaβ"
+  },
+  {
+    "goal": "βββ",
+    "perturbation": "aβa"
+  },
+  {
+    "goal": "βββ",
+    "perturbation": "aββ"
+  },
+  {
+    "goal": "βββ",
+    "perturbation": "βaa"
+  },
+  {
+    "goal": "βββ",
+    "perturbation": "βaβ"
+  },
+  {
+    "goal": "βββ",
+    "perturbation": "ββa"
+  },
+  {
+    "goal": "βββ",
+    "perturbation": "βββ"
+  }
+]

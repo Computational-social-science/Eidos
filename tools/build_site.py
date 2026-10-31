@@ -513,9 +513,8 @@ def contract_strip(rows: list[dict]) -> str:
         for r in rows)
 
 
-def demo_payload() -> str:
-    data = build_case()
-    export_case(ROOT / "site/reports/numerics", data)
+def demo_payload(data: dict | None = None) -> str:
+    data = build_case() if data is None else data
     return json.dumps(data, allow_nan=False, separators=(",", ":"))
 
 
@@ -662,7 +661,7 @@ def render(data: dict) -> str:
         "inmax": f"{100 * (extra['inside_max'] or 0):.4f}%",
         "outmax": f"{100 * (extra['outside_max'] or 0):.2f}%",
         "grid": len(lab["rows"]),
-        "demo": demo_payload(),
+        "demo": demo_payload(data.get("demo_case")),
         "matrix_summary": load_matrix_summary(ROOT),
         "model_quality": model_quality(),
         "rail": site_page.rail(data["commit"], data["today"], version, nvers),
@@ -756,6 +755,9 @@ def _build(args) -> int:
         data["versions"] = len(record_release(data, args.summary))
     else:
         data["versions"] = len(versions())
+    data["demo_case"] = build_case()
+    if not args.check:
+        export_case(ROOT / "site/reports/numerics", data["demo_case"])
     page = render(data)
     if args.check:
         if not OUT.is_file():

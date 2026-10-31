@@ -41,6 +41,13 @@ def test_render_has_no_unsubstituted_tokens():
     assert not re.findall(r"__[A-Z_]+__", page), "a token survived substitution"
 
 
+def test_render_does_not_publish_or_overwrite_research_artifacts(monkeypatch):
+    def unexpected(*args, **kwargs):
+        raise AssertionError("pure page rendering attempted an artifact export")
+    monkeypatch.setattr(build_site, "export_case", unexpected)
+    assert '<script id="demo-data"' in build_site.render(DATA)
+
+
 def test_every_section_has_a_nav_entry_and_the_nav_resolves():
     import site_page
     page = build_site.render(DATA)

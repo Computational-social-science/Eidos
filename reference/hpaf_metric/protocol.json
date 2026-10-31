@@ -1,0 +1,12 @@
+{
+  "version": "metric-contract-v1",
+  "design": "Retrospective descriptive audit; not preregistered hypothesis testing.",
+  "unit": "Python Unicode code point, without Unicode normalization",
+  "edit_costs": {"insert": 1, "delete": 1, "substitute": 1},
+  "rate": "distance / max(len(source), 1); directional and potentially greater than one",
+  "acceptance": "Every candidate distance equals an independent C++ Levenshtein implementation; both implementations also equal exhaustive edit-graph distances on all 225 ordered short binary-Unicode pairs.",
+  "negative_controls": ["legacy SequenceMatcher opcode cost", "zero-distance implementation"],
+  "seed": null,
+  "seed_reason": "Deterministic complete enumeration; no sampling or model inference.",
+  "non_goals": ["attack success", "scientific novelty", "population inference", "grapheme distance", "journal acceptance"]
+}

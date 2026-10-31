@@ -1,0 +1,198 @@
+{
+  "generated": "2026-10-31T22:01:59.947359+00:00",
+  "accepted": true,
+  "evidence_sha256": "868e6c3c52af55041a8ee8ac84117253a67625db57be4e44b1a0aa311aafb7b9",
+  "records": 1033,
+  "per_corpus": {
+    "advbench_llm_perturbed_1.json": {
+      "pairs": 513,
+      "legacy_mismatches": 2,
+      "maximum_overestimate": 112,
+      "underestimates": 0
+    },
+    "advbench_unicode_whitespace_perturbed.json": {
+      "pairs": 520,
+      "legacy_mismatches": 0,
+      "maximum_overestimate": 0,
+      "underestimates": 0
+    }
+  },
+  "qualification": {
+    "ordered_pairs": 225,
+    "legacy_control_mismatches": 40,
+    "zero_control_mismatches": 210,
+    "graph_max_length": 3,
+    "graph_alphabet": "aβ",
+    "reference": "RapidFuzz C++ unit-cost Levenshtein",
+    "rapidfuzz": "3.14.6",
+    "backend": "rapidfuzz.distance.metrics_cpp"
+  },
+  "scope": "Complete supplied-file code-point edit metrics; not scientific novelty or model safety.",
+  "data_sha256": {
+    "advbench_llm_perturbed_1.json": "c798ec01659f2ebce1179d0289ac743658e5e333ea87ea79f267cc64735d41eb",
+    "advbench_unicode_whitespace_perturbed.json": "e5ee74d0fa9cf5e911801d056f38e458947a87ef26a57d3063c0925580883834"
+  },
+  "source_sha256": {
+    "run.py": "9b2a59098efe48482dd60545a1f0c68b08fb9749bdeacd83c8371bf1f5b721c0",
+    "verify.py": "a3dbbfbc1c14455153ef74bd34bcf88207e2560964d6fb764e0c447b93ec10d7",
+    "protocol.json": "ba4740cb8c875810407fcd4534a8ba63eacd949be3f23e8d27b770aa55a5d76a",
+    "pyproject.toml": "67cae4dbf6304a1d9304e078b41e8625876a706d0c6e23c2fee7c20d4561b701",
+    "uv.lock": "4abefe9634553013b4c082c578127a73de42e07340ddcfcb83a9562fec28664a"
+  },
+  "original_engine": {
+    "source": "D:\\2026-AI4S\\HPAF\\build_corpus_reports2.py",
+    "source_sha256": "29281aa2b8ac8380e7df7ff5e39bf425b39dbf89d8f34b2be0a8db1ed4052b2e",
+    "actual_original_diff_runs_checked": 1033,
+    "all_legacy_costs_match": true,
+    "original_code_and_data_modified": false
+  },
+  "private_evidence_distributed": false,
+  "joint_cost_counts": [
+    {
+      "exact": 1,
+      "legacy": 1,
+      "count": 520
+    },
+    {
+      "exact": 5,
+      "legacy": 5,
+      "count": 5
+    },
+    {
+      "exact": 6,
+      "legacy": 6,
+      "count": 3
+    },
+    {
+      "exact": 7,
+      "legacy": 7,
+      "count": 6
+    },
+    {
+      "exact": 8,
+      "legacy": 8,
+      "count": 14
+    },
+    {
+      "exact": 9,
+      "legacy": 9,
+      "count": 20
+    },
+    {
+      "exact": 10,
+      "legacy": 10,
+      "count": 26
+    },
+    {
+      "exact": 11,
+      "legacy": 11,
+      "count": 30
+    },
+    {
+      "exact": 12,
+      "legacy": 12,
+      "count": 48
+    },
+    {
+      "exact": 13,
+      "legacy": 13,
+      "count": 57
+    },
+    {
+      "exact": 14,
+      "legacy": 14,
+      "count": 59
+    },
+    {
+      "exact": 15,
+      "legacy": 15,
+      "count": 45
+    },
+    {
+      "exact": 16,
+      "legacy": 16,
+      "count": 46
+    },
+    {
+      "exact": 17,
+      "legacy": 17,
+      "count": 42
+    },
+    {
+      "exact": 18,
+      "legacy": 18,
+      "count": 31
+    },
+    {
+      "exact": 19,
+      "legacy": 19,
+      "count": 19
+    },
+    {
+      "exact": 20,
+      "legacy": 20,
+      "count": 17
+    },
+    {
+      "exact": 21,
+      "legacy": 21,
+      "count": 13
+    },
+    {
+      "exact": 22,
+      "legacy": 22,
+      "count": 4
+    },
+    {
+      "exact": 23,
+      "legacy": 23,
+      "count": 7
+    },
+    {
+      "exact": 24,
+      "legacy": 24,
+      "count": 6
+    },
+    {
+      "exact": 24,
+      "legacy": 47,
+      "count": 1
+    },
+    {
+      "exact": 25,
+      "legacy": 25,
+      "count": 3
+    },
+    {
+      "exact": 27,
+      "legacy": 27,
+      "count": 2
+    },
+    {
+      "exact": 28,
+      "legacy": 28,
+      "count": 2
+    },
+    {
+      "exact": 29,
+      "legacy": 29,
+      "count": 2
+    },
+    {
+      "exact": 30,
+      "legacy": 30,
+      "count": 2
+    },
+    {
+      "exact": 32,
+      "legacy": 32,
+      "count": 2
+    },
+    {
+      "exact": 44,
+      "legacy": 156,
+      "count": 1
+    }
+  ],
+  "public_replay_scope": "235 benign examples, including all 225 short-graph pairs; no private corpus text."
+}

@@ -11,7 +11,9 @@ sys.path.insert(0, str(ROOT / "tools"))
 from tools import serve_site
 
 
-def test_stalled_sampler_reaches_process_exit(monkeypatch):
+def test_stalled_sampler_reaches_process_exit(tmp_path, monkeypatch):
+    monkeypatch.setattr(serve_site, "ROOT", tmp_path)
+    (tmp_path / "docs/status").mkdir(parents=True)
     monkeypatch.setitem(serve_site.STATE, "sampled", 0.0)
     monkeypatch.setattr(serve_site.time, "time", lambda: 1000.0)
     monkeypatch.setattr(serve_site.time, "sleep", lambda _: None)
@@ -21,6 +23,7 @@ def test_stalled_sampler_reaches_process_exit(monkeypatch):
     with pytest.raises(SystemExit) as exc:
         serve_site.stall_watchdog(limit=1, check_every=0)
     assert exc.value.code == 3
+    assert "1000" in (tmp_path / "docs/status/serve.log").read_text(encoding="utf-8")
 
 
 def test_failed_reload_preserves_working_module(tmp_path, monkeypatch):

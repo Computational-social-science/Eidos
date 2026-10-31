@@ -1,0 +1,2369 @@
+{
+  "generated": "2026-10-31T22:01:55.783271+00:00",
+  "scope": "Retrospective complete-file metric audit; no attack or model evaluation.",
+  "python": "3.12.4",
+  "executable": "C:\\Users\\Administrator\\.cache\\eidos-metric-public-dyyz1x5r\\venv\\Scripts\\python.exe",
+  "source_sha256": {
+    "run.py": "9b2a59098efe48482dd60545a1f0c68b08fb9749bdeacd83c8371bf1f5b721c0",
+    "verify.py": "a3dbbfbc1c14455153ef74bd34bcf88207e2560964d6fb764e0c447b93ec10d7",
+    "protocol.json": "ba4740cb8c875810407fcd4534a8ba63eacd949be3f23e8d27b770aa55a5d76a",
+    "pyproject.toml": "67cae4dbf6304a1d9304e078b41e8625876a706d0c6e23c2fee7c20d4561b701",
+    "uv.lock": "4abefe9634553013b4c082c578127a73de42e07340ddcfcb83a9562fec28664a"
+  },
+  "data_sha256": {
+    "pairs.json": "67179dc83aded61267b4dc557eba3de931dc358b35cb059ac8597d2ab0149c82",
+    "short-graph.json": "a87086d5a46115f2b68dfb043501b51a385d517cdad10095492da2fc94ef223a"
+  },
+  "records": [
+    {
+      "corpus": "pairs.json",
+      "row": 0,
+      "source_length": 3,
+      "target_length": 4,
+      "legacy_cost": 3,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "pairs.json",
+      "row": 1,
+      "source_length": 6,
+      "target_length": 7,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "pairs.json",
+      "row": 2,
+      "source_length": 0,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 3.0,
+      "repaired_rate": 3.0
+    },
+    {
+      "corpus": "pairs.json",
+      "row": 3,
+      "source_length": 3,
+      "target_length": 0,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "pairs.json",
+      "row": 4,
+      "source_length": 4,
+      "target_length": 4,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    },
+    {
+      "corpus": "pairs.json",
+      "row": 5,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "pairs.json",
+      "row": 6,
+      "source_length": 4,
+      "target_length": 5,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "pairs.json",
+      "row": 7,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "pairs.json",
+      "row": 8,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "pairs.json",
+      "row": 9,
+      "source_length": 1,
+      "target_length": 4,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 3.0,
+      "repaired_rate": 3.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 0,
+      "source_length": 0,
+      "target_length": 0,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 1,
+      "source_length": 0,
+      "target_length": 1,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 2,
+      "source_length": 0,
+      "target_length": 1,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 3,
+      "source_length": 0,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 4,
+      "source_length": 0,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 5,
+      "source_length": 0,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 6,
+      "source_length": 0,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 7,
+      "source_length": 0,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 3.0,
+      "repaired_rate": 3.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 8,
+      "source_length": 0,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 3.0,
+      "repaired_rate": 3.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 9,
+      "source_length": 0,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 3.0,
+      "repaired_rate": 3.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 10,
+      "source_length": 0,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 3.0,
+      "repaired_rate": 3.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 11,
+      "source_length": 0,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 3.0,
+      "repaired_rate": 3.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 12,
+      "source_length": 0,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 3.0,
+      "repaired_rate": 3.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 13,
+      "source_length": 0,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 3.0,
+      "repaired_rate": 3.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 14,
+      "source_length": 0,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 3.0,
+      "repaired_rate": 3.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 15,
+      "source_length": 1,
+      "target_length": 0,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 16,
+      "source_length": 1,
+      "target_length": 1,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 17,
+      "source_length": 1,
+      "target_length": 1,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 18,
+      "source_length": 1,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 19,
+      "source_length": 1,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 20,
+      "source_length": 1,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 21,
+      "source_length": 1,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 22,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 23,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 24,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 25,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 26,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 27,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 28,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 29,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 3.0,
+      "repaired_rate": 3.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 30,
+      "source_length": 1,
+      "target_length": 0,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 31,
+      "source_length": 1,
+      "target_length": 1,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 32,
+      "source_length": 1,
+      "target_length": 1,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 33,
+      "source_length": 1,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 34,
+      "source_length": 1,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 35,
+      "source_length": 1,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 36,
+      "source_length": 1,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 37,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 3.0,
+      "repaired_rate": 3.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 38,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 39,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 40,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 41,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 42,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 43,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 44,
+      "source_length": 1,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 2.0,
+      "repaired_rate": 2.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 45,
+      "source_length": 2,
+      "target_length": 0,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 46,
+      "source_length": 2,
+      "target_length": 1,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 47,
+      "source_length": 2,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 48,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 49,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 50,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 51,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 52,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 53,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 54,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 55,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 56,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 57,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 58,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.5,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 59,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.5,
+      "repaired_rate": 1.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 60,
+      "source_length": 2,
+      "target_length": 0,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 61,
+      "source_length": 2,
+      "target_length": 1,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 62,
+      "source_length": 2,
+      "target_length": 1,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 63,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 64,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 65,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 66,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 67,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 68,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 69,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 70,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 71,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 72,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 73,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.5,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 74,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.5,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 75,
+      "source_length": 2,
+      "target_length": 0,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 76,
+      "source_length": 2,
+      "target_length": 1,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 77,
+      "source_length": 2,
+      "target_length": 1,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 78,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 79,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 80,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 81,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 82,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.5,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 83,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.5,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 84,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 85,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 86,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 87,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 88,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 89,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 90,
+      "source_length": 2,
+      "target_length": 0,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 91,
+      "source_length": 2,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 92,
+      "source_length": 2,
+      "target_length": 1,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 93,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 94,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 95,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 96,
+      "source_length": 2,
+      "target_length": 2,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 97,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.5,
+      "repaired_rate": 1.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 98,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.5,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 99,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 100,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 101,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 102,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 103,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 104,
+      "source_length": 2,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.5,
+      "repaired_rate": 0.5
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 105,
+      "source_length": 3,
+      "target_length": 0,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 106,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 107,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 108,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 109,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 110,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 111,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 112,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 113,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 114,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 115,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 116,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 117,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 118,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 4,
+      "distance": 2,
+      "legacy_rate": 1.3333333333333333,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 119,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 120,
+      "source_length": 3,
+      "target_length": 0,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 121,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 122,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 123,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 124,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 125,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 126,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 127,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 128,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 129,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 130,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 131,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 132,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 133,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 4,
+      "distance": 3,
+      "legacy_rate": 1.3333333333333333,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 134,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 4,
+      "distance": 2,
+      "legacy_rate": 1.3333333333333333,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 135,
+      "source_length": 3,
+      "target_length": 0,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 136,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 137,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 138,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 139,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 140,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 141,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 142,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 143,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 144,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 145,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 146,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 147,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 148,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 149,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 150,
+      "source_length": 3,
+      "target_length": 0,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 151,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 152,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 153,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 154,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 155,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 156,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 157,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 158,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 159,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 160,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 161,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 162,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 163,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 164,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 165,
+      "source_length": 3,
+      "target_length": 0,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 166,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 167,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 168,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 169,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 170,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 171,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 172,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 173,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 174,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 175,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 176,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 177,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 178,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 179,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 180,
+      "source_length": 3,
+      "target_length": 0,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 181,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 182,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 183,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 184,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 185,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 186,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 187,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 188,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 189,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 190,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 191,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 192,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 193,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 194,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 195,
+      "source_length": 3,
+      "target_length": 0,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 196,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 197,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 198,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 199,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 200,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 201,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 202,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 4,
+      "distance": 2,
+      "legacy_rate": 1.3333333333333333,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 203,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 4,
+      "distance": 3,
+      "legacy_rate": 1.3333333333333333,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 204,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 205,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 206,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 207,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 208,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 209,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 210,
+      "source_length": 3,
+      "target_length": 0,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 211,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 212,
+      "source_length": 3,
+      "target_length": 1,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 213,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 214,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 215,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 216,
+      "source_length": 3,
+      "target_length": 2,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 217,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 3,
+      "legacy_rate": 1.0,
+      "repaired_rate": 1.0
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 218,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 4,
+      "distance": 2,
+      "legacy_rate": 1.3333333333333333,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 219,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 3,
+      "distance": 2,
+      "legacy_rate": 1.0,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 220,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 221,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 2,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.6666666666666666
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 222,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 2,
+      "distance": 1,
+      "legacy_rate": 0.6666666666666666,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 223,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 1,
+      "distance": 1,
+      "legacy_rate": 0.3333333333333333,
+      "repaired_rate": 0.3333333333333333
+    },
+    {
+      "corpus": "short-graph.json",
+      "row": 224,
+      "source_length": 3,
+      "target_length": 3,
+      "legacy_cost": 0,
+      "distance": 0,
+      "legacy_rate": 0.0,
+      "repaired_rate": 0.0
+    }
+  ]
+}

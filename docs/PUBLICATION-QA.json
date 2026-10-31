@@ -3,17 +3,22 @@
   "submission_ready": false,
   "stable_inputs": true,
   "artifact_sha256": {
-    "tools/publication.py": "3d38c665c5fcf39fddc615ca2f8ea02640aac182d6dc9a00a0e035697eba6561",
-    "tools/audit_publication.py": "1c23a0ea8ca6b4037352eb5061880f3b38f03ec807c96d4c4e282fa19e3b14b9",
-    "tools/check_publication_record.py": "807daabe73163fc36c9e0be15d4e7c1b45456809ce0df619f23687e7b4669902",
+    "tools/publication.py": "9c6c3d8d4523aa0ed6950fe6302cfd18546a3237afa7dc047d5e894f8856387e",
+    "tools/audit_publication.py": "855cf4f58ac99a096b140716153d634437454376dbcb135f2d36ddcb42679c93",
+    "tools/check_publication_record.py": "0ac07a2968fb8e1d02c1a65cfb7c9e08127756330fcb3a31de176cf4c055b453",
     "tools/numerics_figure.py": "6315d4ce66d2aa67bfbdddf35014b4f7bc3ec4464818a6261e2ef1b1f4085d93",
     "tools/training_figure.py": "d0b12cef376b15faf64b8f08b5c7b9ffdd401911b6aaef3b1830e43e9d3485a1",
     "reference/softmax_matrix/report.py": "ffaba421f9e606e29252792553a36c38759398b6df1db8b1c7d25205a1aa81f0",
-    "tools/numerics_case.py": "203243cdb401936f4f0f2bebf94fb307e2b832939c0655dff2df80d1dc5798eb",
-    "site/reports/numerics/report.qmd": "eb58d6f5aba4ff77f29ee0663826ebf34c3b1e75711c30ce1cff92bd26e9b2db",
-    "site/reports/numerics/report.html": "092f81750848b4f71a154e0bcde38a9794fa4086e0c2a059fe453ecaa8de9ced",
-    "site/reports/numerics/report.pdf": "70c3e24e93df1a7dfc2ebbdefa5fdb10ab8fb71d77f56aab6cdf9046efc6bec9",
-    "site/reports/numerics/report.docx": "a63bac03b75a6846880373ea303e11d9b8e79fcaba66c31904dda3309043cd14",
+    "tools/numerics_case.py": "d723941e5547fb26f77d52dee135d8afc2b008bcb7b32d15d5e689fda1709f63",
+    "reference/hpaf_metric/report.py": "47049182b1788e623d2d8044acef95e4d7cf8cf7691a9c78242eb3b9c65d88c7",
+    "reference/hpaf_metric/docs/local-audit.json": "4ce9666e95d60419f3640b9855fa5ea12753acceb0c296d50c5c64bea8f97583",
+    "site/reports/hpaf-metric/local-audit.json": "4ce9666e95d60419f3640b9855fa5ea12753acceb0c296d50c5c64bea8f97583",
+    "site/reports/hpaf-metric/reproduce.zip": "2d3c681dea7aea585426cd1955dda3f8e049744d1ecb8b4df9f756e5de463cbf",
+    "site/reports/hpaf-metric/CASE.md": "15b6c9e55a42bb69003ee1bef54f14ac760e6bcd14eaa741c666b5224606b8c1",
+    "site/reports/numerics/report.qmd": "e8708f23e0e761554f7efcbdb31bdbc636ec3db71a83d8a07ffb2c84362619a1",
+    "site/reports/numerics/report.html": "10164d79e5037de09960887f395674908975ddcc62d66f4eca7842814894e7c2",
+    "site/reports/numerics/report.pdf": "0d5a8b91aa222bb31f01b073a1a576dca70b719b3e611693af5565199630462d",
+    "site/reports/numerics/report.docx": "003205d1f0c9457df15a280e9c61cdf311c2e3a1cd5809486ab12a6131e7d22c",
     "site/reports/numerics/figure-float32.svg": "3bbfdf9ced003d85562d83e7921195d9379c8cfb1ba25d115d2ce22bdff41123",
     "site/reports/numerics/figure-float64.svg": "23ff586c6be7b901a71b941e6f8cec3338b89957c10503d2c5774356b605b514",
     "site/reports/numerics/training/trajectory.svg": "f419e498499a80a19b01ef283220fbc72acd4ea29f33eda1e34dc40e0c2fa8fa",
@@ -22,10 +27,16 @@
     "site/reports/numerics/training/trajectory.pdf": "b10156bff73acca3710bf148219a4cfde03a0a9f81f154cdb46c4cb80537658d",
     "site/reports/softmax-matrix/report.qmd": "db31709ff43e1def2151cbc98879c69e0e0eb1a60f97f734c9f4feaec1cc6b5b",
     "site/reports/softmax-matrix/report.html": "0ae8fcf8e6ee98fdf20494f6d6723ed632eede80ee7f2f51cd6a21f78116265e",
-    "site/reports/softmax-matrix/report.pdf": "1d6b417ec0b57c34450c58614962aa4a2096be7612b74f2303688bb99fdc0084",
-    "site/reports/softmax-matrix/report.docx": "06bfe6b39838dafc935d71f65c8ce5ab3d6ba6c4f1294cf55b0474a9e29a6d37",
+    "site/reports/softmax-matrix/report.pdf": "ef15933a002a28134023b97aa501d68b61fd66471572ad33359589e8cb8bd6dd",
+    "site/reports/softmax-matrix/report.docx": "73cb0a71cd62116361d22b53b14f801d444f845222c3d3e6ea35fbfb40d3b224",
     "site/reports/softmax-matrix/accuracy-matrix.svg": "b1fcf3c93b36dc7b58151f7273072bc50f8610e63335f6ffdc9341076784d698",
-    "site/reports/softmax-matrix/accuracy-matrix.pdf": "c26e10cfb98d09b16b72fff1787227b59a605cdddb15d5bcaea0c9a4a09ae330"
+    "site/reports/softmax-matrix/accuracy-matrix.pdf": "c26e10cfb98d09b16b72fff1787227b59a605cdddb15d5bcaea0c9a4a09ae330",
+    "site/reports/hpaf-metric/report.qmd": "b7d1fdd7787151d33551d2657b9a21cdba549858ce5c031ed02e891c1037cfa4",
+    "site/reports/hpaf-metric/report.html": "94cf79abff6c8b93bab8a6c09b2dba0f4bd1a4b47b49ed390e97d34dd438aa7c",
+    "site/reports/hpaf-metric/report.pdf": "65912196f409720a75a3bf1ce592ef6f49092ccc92687d759f65238a1480a742",
+    "site/reports/hpaf-metric/report.docx": "a0e7912ca3e8565b26cefb6ae429fc24e87854c26b65199288a8577854356880",
+    "site/reports/hpaf-metric/figure-metric.svg": "e4e83f1c2f32e2b2c9e7829fd6c9f931ad6367bdc33f7a21bb7715a68db61000",
+    "site/reports/hpaf-metric/figure-metric.pdf": "8c8ed6f8bfcbe5272e045d93ebd5655fe85561e141d52113334b9e263321805c"
   },
   "hash_policy": "SHA-256; production Python canonical UTF-8/LF, delivered artifacts exact bytes preserved by Git -text.",
   "scope": "Measured technical production requirements; final page inspection and human submission metadata are separate.",
@@ -121,6 +132,28 @@
         "font_size_5_to_7_pt": true
       },
       "ok": true
+    },
+    {
+      "path": "site\\reports\\hpaf-metric\\figure-metric.svg",
+      "width_mm": 182.99999983055554,
+      "height_mm": 71.99999993333333,
+      "text_nodes": 39,
+      "font_names": [
+        "Arial"
+      ],
+      "font_range_pt": [
+        6.0,
+        7.0
+      ],
+      "checks": {
+        "width_89_or_183_mm": true,
+        "height_at_most_170_mm": true,
+        "editable_text": true,
+        "supported_text_geometry": true,
+        "standard_font": true,
+        "font_size_5_to_7_pt": true
+      },
+      "ok": true
     }
   ],
   "pdf_figure_fonts": [
@@ -154,6 +187,16 @@
       "no_type3_fonts": true,
       "font_table": [
         "/DZBSWO+ArialMT /CIDFontType2 embedded=True"
+      ]
+    },
+    {
+      "path": "site/reports/hpaf-metric/figure-metric.pdf",
+      "all_embedded": true,
+      "no_type3_fonts": true,
+      "font_table": [
+        "/CEBAPN+Arial-BoldMT /CIDFontType2 embedded=True",
+        "/CFUYZT+Arial-BoldMT /CIDFontType2 embedded=True",
+        "/LUOELY+ArialMT /CIDFontType2 embedded=True"
       ]
     }
   ],
@@ -214,6 +257,35 @@
         "/HXZLQF+TimesNewRomanPS-BoldMT /CIDFontType2 embedded=True",
         "/JVNESU+LMMono12-Regular /CIDFontType0 embedded=True",
         "/ZCGPUT+TimesNewRomanPS-ItalicMT /CIDFontType2 embedded=True"
+      ],
+      "ok": true
+    },
+    {
+      "path": "site/reports/hpaf-metric",
+      "pages": 4,
+      "checks": {
+        "Methods": true,
+        "Data availability": true,
+        "Code availability": true,
+        "References": true,
+        "experimental unit": true,
+        "pdf_fonts_embedded": true,
+        "no_type3_fonts": true,
+        "a4_pages": true,
+        "no_duplicate_caption_labels": true,
+        "figure_legends_under_300_words": true,
+        "word_line_numbers": true,
+        "word_12pt": true,
+        "word_double_spacing": true
+      },
+      "font_table": [
+        "/CEBAPN+Arial-BoldMT /CIDFontType2 embedded=True",
+        "/CFUYZT+Arial-BoldMT /CIDFontType2 embedded=True",
+        "/ESJKPQ+LMSans8-Regular /CIDFontType0 embedded=True",
+        "/LSQAVT+TimesNewRomanPSMT /CIDFontType2 embedded=True",
+        "/LUOELY+ArialMT /CIDFontType2 embedded=True",
+        "/NKHSTU+LMMono12-Regular /CIDFontType0 embedded=True",
+        "/NMPOYI+TimesNewRomanPS-BoldMT /CIDFontType2 embedded=True"
       ],
       "ok": true
     }

@@ -1,0 +1,29 @@
+scope_axes: [arithmetic, data, design, non_goals]
+scope:
+  arithmetic: [Unicode code points, unit insert/delete/substitute costs, no normalization]
+  data: [Every pair in the exact declared corpus files]
+  design: [Retrospective deterministic complete-file audit]
+  non_goals: [Attack success, scientific novelty, population inference, journal acceptance]
+claims:
+- id: H2
+  text: The repaired edit distances agree with the independently qualified reference for every supplied pair.
+  span: The repaired edit distances agree with the independently qualified reference for every supplied pair.
+  strength: exploratory
+  design: exploratory
+  evidence:
+    file: results/verification.json
+    pointer: /accepted
+    value: true
+  assumptions:
+  - The local runtime and declared reference implementation are trusted.
+  - This deterministic audit is bounded to the supplied files and finite qualification set.
+  - Public examples do not reproduce private-corpus findings without access to those data.
+  formal: false
+power:
+  not_applicable: Complete deterministic enumeration; no population hypothesis test.
+multiplicity:
+  not_applicable: One bounded equality claim; no significance testing.
+journal_fit:
+  file: docs/REVIEW.md
+  objections: 2
+  unresolved: 0

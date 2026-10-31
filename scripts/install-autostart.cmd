@@ -1,11 +1,9 @@
 @echo off
 setlocal
 cd /d "%~dp0.."
-if exist "%~dp0monitor.env" call "%~dp0monitor.env"
-if "%PYTHON%"=="" set PYTHON=python
-if /i "%~1"=="remove" (
-    "%PYTHON%" tools\install_autostart.py --remove
-) else (
-    "%PYTHON%" tools\install_autostart.py
-)
+set "PYTHONHOME="
+set "PYTHONPATH="
+set "PYTHONUTF8=1"
+if "%PYTHON%"=="" set "PYTHON=python"
+"%PYTHON%" "%~dp0..\tools\launch_runtime.py" install %*
 exit /b %ERRORLEVEL%

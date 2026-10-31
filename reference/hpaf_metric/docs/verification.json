@@ -1,0 +1,31 @@
+{
+  "generated": "2026-10-31T22:01:56.035897+00:00",
+  "accepted": true,
+  "evidence_sha256": "6f4e988b8fb4fa13926619270c244832ef672fc2ba64a9f5aad29a02055e220c",
+  "records": 235,
+  "per_corpus": {
+    "pairs.json": {
+      "pairs": 10,
+      "legacy_mismatches": 1,
+      "maximum_overestimate": 2,
+      "underestimates": 0
+    },
+    "short-graph.json": {
+      "pairs": 225,
+      "legacy_mismatches": 40,
+      "maximum_overestimate": 2,
+      "underestimates": 0
+    }
+  },
+  "qualification": {
+    "ordered_pairs": 225,
+    "legacy_control_mismatches": 40,
+    "zero_control_mismatches": 210,
+    "graph_max_length": 3,
+    "graph_alphabet": "aβ",
+    "reference": "RapidFuzz C++ unit-cost Levenshtein",
+    "rapidfuzz": "3.14.6",
+    "backend": "rapidfuzz.distance.metrics_cpp"
+  },
+  "scope": "Complete supplied-file code-point edit metrics; not scientific novelty or model safety."
+}

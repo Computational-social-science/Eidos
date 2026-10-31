@@ -1,0 +1,40 @@
+{
+  "recorded_at": "2026-10-31T22:30:45.112543+00:00",
+  "observed_failure": {
+    "stage": "pre-commit unit suite; commit refused",
+    "test": "tests/test_site.py::test_render_carries_captions_math_and_the_demo_data",
+    "error": "OSError errno 22 Invalid argument while directly opening site/reports/numerics/training/evidence.json for wb",
+    "suite": {
+      "passed": 723,
+      "failed": 1,
+      "collection_module_skips": 4
+    },
+    "os_root_cause": "Not established. No claim of a specific locking process or filesystem fault."
+  },
+  "repair": [
+    "Pure page rendering and check mode no longer publish research artifacts.",
+    "Normal build explicitly exports once and renders the same measured case.",
+    "Small case files and copied training evidence use same-directory temporary files plus atomic replacement.",
+    "Direct CSV/QMD bytes match the reproduction ZIP; scientific values unchanged."
+  ],
+  "regressions": {
+    "red": {
+      "failed": 2,
+      "tests": [
+        "pure renderer may not call export_case",
+        "live destination may not be opened for truncation"
+      ]
+    },
+    "green": {
+      "passed": 17,
+      "failed": 0,
+      "suite": "site, numerical case and artifact ownership"
+    }
+  },
+  "scope": "Deterministic rejection/IO-path tests and actual observed failure; not proof of whole-directory atomicity or clean 24-hour runtime.",
+  "logs_sha256": {
+    "v045-source-commit.log": "f905a3d8122b72f3b93837dc22b4f51ee506169713a1ed52a8d037311af67808",
+    "v045-export-red.log": "ddf3ed85fc6f20d828a8eb57240b1a46e87a4d1f7d6d01fce080f7b23add8c94",
+    "v045-export-green-final.log": "2526d26de8c96704acb9fa00d9a456502964b186b5a329a22b01d8c652664a50"
+  }
+}

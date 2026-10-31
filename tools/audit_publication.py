@@ -122,7 +122,7 @@ def main():
     args=parser.parse_args()
     sys.path.insert(0,str(ROOT))
     from framework.artifacts import output_lock
-    with output_lock(ROOT/'site/reports/numerics'), output_lock(ROOT/'site/reports/softmax-matrix'):
+    with output_lock(ROOT/'site/reports/numerics'), output_lock(ROOT/'site/reports/softmax-matrix'), output_lock(ROOT/'site/reports/hpaf-metric'):
         return audit(args.out)
 
 
@@ -132,9 +132,10 @@ def audit(output: Path) -> int:
     before=fingerprints()
     figures=[ROOT/'site/reports/numerics'/f'figure-{dtype}.svg' for dtype in ('float32','float64')]
     figures += [ROOT/'site/reports/numerics/training/trajectory.svg',ROOT/'site/reports/softmax-matrix/accuracy-matrix.svg']
+    figures += [ROOT/'site/reports/hpaf-metric/figure-metric.svg']
     svg=[svg_checks(p) for p in figures]
     fonts=[{'path':p.with_suffix('.pdf').relative_to(ROOT).as_posix(),**pdf_fonts(p.with_suffix('.pdf'))} for p in figures]
-    reports=[report_checks(ROOT/'site/reports'/name) for name in ('numerics','softmax-matrix')]
+    reports=[report_checks(ROOT/'site/reports'/name) for name in ('numerics','softmax-matrix','hpaf-metric')]
     ok=all(r['ok'] for r in [*svg,*reports]) and all(f['all_embedded'] and f['no_type3_fonts'] for f in fonts)
     after=fingerprints()
     stable=before==after

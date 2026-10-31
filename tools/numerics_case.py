@@ -261,12 +261,16 @@ def _export_case(output: Path, data: dict | None = None) -> None:
     data = build_case() if data is None else data
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
+    from framework.artifacts import atomic_output
+    def publish(name: Path, content: bytes) -> None:
+        with atomic_output(name) as temporary:
+            temporary.write_bytes(content)
     from tools.numerics_figure import render_figures
     render_figures(output, data)
     evidence = json.dumps(data, indent=2, allow_nan=False).encode("utf-8")
-    (output / "evidence.json").write_bytes(evidence)
-    (output / "report.qmd").write_text(_report_source(data), encoding="utf-8")
-    (output / "paper2agent.md").write_bytes((ROOT / "reference/barron2026_agent/docs/REPORT.md").read_bytes())
+    publish(output / "evidence.json", evidence)
+    publish(output / "report.qmd", _report_source(data).encode("utf-8"))
+    publish(output / "paper2agent.md", (ROOT / "reference/barron2026_agent/docs/REPORT.md").read_bytes())
     if data.get("training", {}).get("status") == "PASS":
         from tools.training_figure import render_training
         target = output / "training"
@@ -277,7 +281,7 @@ def _export_case(output: Path, data: dict | None = None) -> None:
         for origin, name in ((directory / "docs/evidence.json", "evidence.json"),
                              (directory / "protocol.json", "protocol.json"),
                              (directory / "docs/failed-batch-shape.zip", "failed-batch-shape.zip")):
-            (target / name).write_bytes(origin.read_bytes())
+            publish(target / name, origin.read_bytes())
     stream = io.StringIO(newline="")
     writer = csv.writer(stream)
     writer.writerow(["mechanism", "dtype", "input_parameter", "standard_target_gradient",
@@ -287,7 +291,7 @@ def _export_case(output: Path, data: dict | None = None) -> None:
             writer.writerow([mechanism, row["dtype"], row.get("margin", row.get("perturbation")),
                              row["standard_gradient"][0], row["fixed_gradient"][0], row["reference_gradient"][0],
                              row["standard_error"], row["fixed_error"]])
-    (output / "cases.csv").write_text(stream.getvalue(), encoding="utf-8")
+    publish(output / "cases.csv", stream.getvalue().encode("utf-8"))
     payloads = {"pyproject.toml": (ROOT / "pyproject.toml").read_bytes(), "uv.lock": (ROOT / "uv.lock").read_bytes(),
                 "evidence.json": evidence, "report.qmd": _report_source(data).encode("utf-8"),
                 "cases.csv": stream.getvalue().encode("utf-8"),
@@ -330,7 +334,6 @@ def _export_case(output: Path, data: dict | None = None) -> None:
                 payloads[path.relative_to(ROOT).as_posix()] = path.read_bytes()
     payloads["reference/reproduction/barron2026/specs.json"] = (ROOT / "reference/reproduction/barron2026/specs.json").read_bytes()
     checksums = {name: hashlib.sha256(content).hexdigest() for name, content in payloads.items()}
-    from framework.artifacts import atomic_output
     with atomic_output(output / "reproduce.zip") as temporary:
         with zipfile.ZipFile(temporary, "w", zipfile.ZIP_DEFLATED) as bundle:
             for name, content in payloads.items():

@@ -64,6 +64,10 @@ jobs:
             exit 1
           }
 
+      - name: Independent edit-metric repair and rejection controls
+        run: |
+          UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/eidos-metric-$UV_PYTHON" uv run --locked --project reference/hpaf_metric --python "$UV_PYTHON" python reference/hpaf_metric/acceptance.py
+
       # A red badge with no readable reason is a dead end for anyone who did not run it locally.
       # The tail of the run goes to the job summary, which is visible without authentication.
       - name: Test output

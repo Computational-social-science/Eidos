@@ -416,7 +416,12 @@ def sec_evidence(ctx: dict) -> str:
         <a href="reports/softmax-matrix/report.html">Every paired result, protocol &amp; reproduction bundle →</a></div><div>
         {measured}<p class="evidence-scope">{scope}</p></div></article>
     </div><p class="evidence-scope">These are distinct acceptance levels. Software tests support the framework's
-    operation; scientific conclusions require their own measurements, comparisons and controls.</p>'''
+    operation; scientific conclusions require their own measurements, comparisons and controls.</p>
+    <p class="evidence-scope">Independent transfer check:
+    <a href="reports/hpaf-metric/report.html">an exact edit-rate repair in HPAF →</a>
+    Two of 1,033 private string pairs expose a metric-contract mismatch. A separate
+    public package replays 235 benign qualification pairs; private corpora are not distributed.
+    This is a bounded metric-repair lifecycle, not an attack-success or novelty claim.</p>'''
     return sec("02", "evidence", "What the evidence supports",
                "A layered case study, including the outcomes that did not meet the scientific expectation.", body)
 

@@ -88,6 +88,7 @@ reference/reproduction/*/dist/
 
 # Scratch: the only place this project writes outside its tracked tree.
 .scratch/
+reference/hpaf_metric/results/
 .eidos-export-*.lock
 docs/status/watchdog_state.json
 docs/status/monitor.lock

@@ -267,3 +267,13 @@ def test_timeout_kills_a_real_descendant_not_only_its_parent(tmp_path):
     assert ready.exists(), "descendant must have actually started"
     time.sleep(1.5)
     assert not leaked.exists(), "descendant survived the timeout"
+
+
+def test_hidden_noninteractive_tree_preserves_both_output_streams(tmp_path):
+    import sys
+    from tools.bounded_process import run_tree
+    result=run_tree([sys.executable,'-c',"import sys; print('structured output'); print('diagnostic',file=sys.stderr)"],
+                    cwd=tmp_path,timeout=10)
+    assert result.returncode==0
+    assert result.stdout.strip()=='structured output'
+    assert result.stderr.strip()=='diagnostic'

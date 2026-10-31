@@ -1,4 +1,7 @@
 *.py text eol=lf
+site/reports/**/report.qmd -text
+site/reports/**/report.html -text
+site/reports/**/*.svg -text
 *.md text eol=lf
 *.yaml text eol=lf
 *.toml text eol=lf
@@ -7,6 +10,7 @@
 # Preserve byte-bound research artifacts across Windows/Linux checkouts.
 reference/softmax_*/checkpoints/* -text
 reference/softmax_*/docs/*.json -text whitespace=cr-at-eol
+lock/snapshots/uv/*.lock -text
 # Screenshot records bind to the generated page bytes.
 site/index.html -text whitespace=cr-at-eol
 site/dashboard.html -text whitespace=cr-at-eol

@@ -541,12 +541,7 @@ L 508.365354 145.752326
       </g>
      </g>
      <g id="text_31">
-      <!-- $\mathdefault{0}$ -->
-      <g style="fill: #111111" transform="translate(307.774873 147.936408)">
-       <text>
-        <tspan x="0" y="-0.6875" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</tspan>
-       </text>
-      </g>
+      <text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="311.134873" y="147.936408" transform="rotate(-0 311.134873 147.936408)">0e+00</text>
      </g>
     </g>
     <g id="ytick_10">
@@ -561,16 +556,7 @@ L 508.365354 130.840954
       </g>
      </g>
      <g id="text_32">
-      <!-- $\mathdefault{10^{-12}}$ -->
-      <g style="fill: #111111" transform="translate(297.094873 133.450954)">
-       <text>
-        <tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</tspan>
-        <tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</tspan>
-        <tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</tspan>
-        <tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">1</tspan>
-        <tspan x="11.516816" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">2</tspan>
-       </text>
-      </g>
+      <text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="311.134873" y="133.025036" transform="rotate(-0 311.134873 133.025036)">1e-12</text>
      </g>
     </g>
     <g id="ytick_11">
@@ -585,16 +571,7 @@ L 508.365354 117.420719
       </g>
      </g>
      <g id="text_33">
-      <!-- $\mathdefault{10^{-11}}$ -->
-      <g style="fill: #111111" transform="translate(297.394873 120.030719)">
-       <text>
-        <tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</tspan>
-        <tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</tspan>
-        <tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</tspan>
-        <tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">1</tspan>
-        <tspan x="11.516816" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">1</tspan>
-       </text>
-      </g>
+      <text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="311.134873" y="119.604801" transform="rotate(-0 311.134873 119.604801)">1e-11</text>
      </g>
     </g>
     <g id="ytick_12">
@@ -609,16 +586,7 @@ L 508.365354 104.000484
       </g>
      </g>
      <g id="text_34">
-      <!-- $\mathdefault{10^{-10}}$ -->
-      <g style="fill: #111111" transform="translate(297.094873 106.610484)">
-       <text>
-        <tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</tspan>
-        <tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</tspan>
-        <tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</tspan>
-        <tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">1</tspan>
-        <tspan x="11.516816" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">0</tspan>
-       </text>
-      </g>
+      <text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="311.134873" y="106.184566" transform="rotate(-0 311.134873 106.184566)">1e-10</text>
      </g>
     </g>
     <g id="ytick_13">
@@ -633,15 +601,7 @@ L 508.365354 90.580249
       </g>
      </g>
      <g id="text_35">
-      <!-- $\mathdefault{10^{-9}}$ -->
-      <g style="fill: #111111" transform="translate(299.434873 93.190249)">
-       <text>
-        <tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</tspan>
-        <tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</tspan>
-        <tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</tspan>
-        <tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">9</tspan>
-       </text>
-      </g>
+      <text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="311.134873" y="92.764331" transform="rotate(-0 311.134873 92.764331)">1e-09</text>
      </g>
     </g>
     <g id="ytick_14">
@@ -656,15 +616,7 @@ L 508.365354 77.160014
       </g>
      </g>
      <g id="text_36">
-      <!-- $\mathdefault{10^{-8}}$ -->
-      <g style="fill: #111111" transform="translate(299.434873 79.770014)">
-       <text>
-        <tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</tspan>
-        <tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</tspan>
-        <tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</tspan>
-        <tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">8</tspan>
-       </text>
-      </g>
+      <text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="311.134873" y="79.344096" transform="rotate(-0 311.134873 79.344096)">1e-08</text>
      </g>
     </g>
     <g id="ytick_15">
@@ -679,15 +631,7 @@ L 508.365354 63.739779
       </g>
      </g>
      <g id="text_37">
-      <!-- $\mathdefault{10^{-7}}$ -->
-      <g style="fill: #111111" transform="translate(299.434873 66.319779)">
-       <text>
-        <tspan x="0" y="-0.859375" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</tspan>
-        <tspan x="3.336914" y="-0.859375" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</tspan>
-        <tspan x="6.728242" y="-3.035937" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</tspan>
-        <tspan x="9.180977" y="-3.035937" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">7</tspan>
-       </text>
-      </g>
+      <text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="311.134873" y="65.923861" transform="rotate(-0 311.134873 65.923861)">1e-07</text>
      </g>
     </g>
     <g id="ytick_16">
@@ -702,19 +646,11 @@ L 508.365354 50.319544
       </g>
      </g>
      <g id="text_38">
-      <!-- $\mathdefault{10^{-6}}$ -->
-      <g style="fill: #111111" transform="translate(299.434873 52.929544)">
-       <text>
-        <tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</tspan>
-        <tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</tspan>
-        <tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</tspan>
-        <tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">6</tspan>
-       </text>
-      </g>
+      <text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="311.134873" y="52.503626" transform="rotate(-0 311.134873 52.503626)">1e-06</text>
      </g>
     </g>
     <g id="text_39">
-     <text style="font-size: 6.5px; font-family: 'Arial'; text-anchor: middle; fill: #111111" x="291.726826" y="95.244094" transform="rotate(-90 291.726826 95.244094)">Held-out KL (evaluated in float64)</text>
+     <text style="font-size: 6.5px; font-family: 'Arial'; text-anchor: middle; fill: #111111" x="288.916201" y="95.244094" transform="rotate(-90 288.916201 95.244094)">Held-out KL (evaluated in float64)</text>
     </g>
    </g>
    <g id="line2d_57">

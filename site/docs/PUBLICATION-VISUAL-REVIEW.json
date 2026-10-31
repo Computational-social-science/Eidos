@@ -1,0 +1,140 @@
+{
+  "generated": "2026-10-31T16:01:39.120272+00:00",
+  "assessor": "Codex visual inspection of every rendered page",
+  "scope": "Rendered PDF and Word pages only; web layout is a separate browser check. Manuscript spacing permits whitespace before intact figures/tables.",
+  "submission_ready": false,
+  "reports": [
+    {
+      "path": "site/reports/numerics/report.pdf",
+      "sha256": "d74537288f6fe30024fbebc4dfb6c2d63dac13183bce67a510a2e73dab67ce57",
+      "pages_inspected": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "renderer": "Poppler",
+      "page_png_sha256": [
+        "5a721d8c8fd6a3d94bcab23258f40790add2b7d7d586e0f37119d068c54b03c2",
+        "d536b1a6a89f7b271fc92b0ba09f0a3c7e9cb4c7d3a2e0d41f759d03bf35887b",
+        "7330dfc4b56904a66d0540d7fef5de8f3238c39410e1bba9c56242eefb53584d",
+        "36112ba1d8923ecfcec10ec2b1ffe23f6585dc6e3fbeb5211ffdf987c5842af9",
+        "1b7f9c95ac2ce92fd2b7f9b6bc12e7abbad1844d47140655dfda0fc0f55724a3",
+        "bd6926b80f8392ede3fcfb8d6c63d9fc0ba7b25b771ef3cbe8cd802b20eb6606",
+        "24ff6bdaa07a0c44ed082d597bafa57427592b3944003568befd45255cf183f7",
+        "0b573e692c9475cd69b1c9a44d24a1c909bfb1bc0b7a755db0f101760b523996"
+      ],
+      "outcome": "PASS",
+      "checked": [
+        "no text/figure overlap or clipping",
+        "legible plots and equations",
+        "complete short tables",
+        "figure with full legend",
+        "consistent type and line numbering",
+        "page numbers",
+        "all unfavorable outcomes retained"
+      ]
+    },
+    {
+      "path": "site/reports/numerics/report.docx",
+      "sha256": "b47c2fd76dddeaa8f6454b1b9bd186dad6a6f1927e643a79526a037e5b6d695e",
+      "pages_inspected": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "renderer": "Bundled render_docx.py PNG pipeline; native Microsoft Word read-only conversion adapter",
+      "page_png_sha256": [
+        "0dcd5ed98eb7c949f3024a07aa8d77035f5f33e67221fb367e9400b09f8fb2e0",
+        "e0c1346378df8f26a6702e26ebcf5d89c6328fdb295fa44b01de5e1e55983e82",
+        "8946a42950d26320a80d1ee961f599d7a9db9c27f856c0ec5a80e06044b472f4",
+        "485d553f9b0551d9df6a967100a216baad21a72cd6437af4e1989d30519e82b2",
+        "60daad8f065666a94411181e944267429d48c4e5a0607a74b29cf6f5376696cd",
+        "0a34d0446aff5cddea46960e72a3cd0b906f542c5efeaa20c588bc3ecb553214",
+        "074e610ad1a31061ae005fbbd5d047b029b775ba0ad05ce20bc5a3fb0fae0d94",
+        "28a98683e1b77adeb2f67f715ee8d08c4e9b66a43551c9ce7f0e8f3295aa4552"
+      ],
+      "outcome": "PASS",
+      "checked": [
+        "no text/figure overlap or clipping",
+        "legible plots and equations",
+        "complete short tables",
+        "figure with full legend",
+        "consistent type and line numbering",
+        "page numbers",
+        "all unfavorable outcomes retained"
+      ]
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.pdf",
+      "sha256": "2f0d7bd69f822d69c4268ab9a3b6a12521debe46f67a187afd5dbd7263f8de8b",
+      "pages_inspected": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "renderer": "Poppler",
+      "page_png_sha256": [
+        "d49e2576ea7c17c64114ab5227c193b5a57d8ce146f73659ea5e4e2b58a63823",
+        "5ee6e5dc094dbe163b78d88d39287c6ce28d06f9cf79c358dac1e6a6d1f0ad85",
+        "03db1841d6244ddd5d835a09658dda42771088a46c9697a5e59b4eba08821c2a",
+        "81fcf286ec87f50120b26fb795ef94bfc4690dcf046661073487938348c536f5",
+        "d911653e0e44f586dcf0862d815eacd3f310651d21f25a8c4f964d6cb66c97d9",
+        "8be7cd5d4c5d25e20da2aabdd656913d95925ad903fb2dceb31d55e0eea543cf"
+      ],
+      "outcome": "PASS",
+      "checked": [
+        "no text/figure overlap or clipping",
+        "legible plots and equations",
+        "complete short tables",
+        "figure with full legend",
+        "consistent type and line numbering",
+        "page numbers",
+        "all unfavorable outcomes retained"
+      ]
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.docx",
+      "sha256": "545da4d0ea52ac103163a7c22f8f12388e4e383140ef6842bfafe079a0c470db",
+      "pages_inspected": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "renderer": "Bundled render_docx.py PNG pipeline; native Microsoft Word read-only conversion adapter",
+      "page_png_sha256": [
+        "552012e4253fb06d93a66f02bcad4003264e8c03bfc51fc4de112d6f7c25a998",
+        "f117ca065013b2b8af627b9b73af6b46b83e8258130622f8f49003621ec5f86b",
+        "063fb55728bc9ad0413a74a3a1a84349eb7797c31c02c3be8cfbc6f057be0d3d",
+        "f6e0eb972ea245922c46dab77c0d64780f181f68076182f33b8d9356106c6187",
+        "679ef83127fcca7d9a34cc233e8759f79c1e4385ff120ec4898e17440f4cb2c3",
+        "2b869e086cc5de5a209bc115c0ab366e4069824731671c08c18e00296b08be42"
+      ],
+      "outcome": "PASS",
+      "checked": [
+        "no text/figure overlap or clipping",
+        "legible plots and equations",
+        "complete short tables",
+        "figure with full legend",
+        "consistent type and line numbering",
+        "page numbers",
+        "all unfavorable outcomes retained"
+      ]
+    }
+  ]
+}

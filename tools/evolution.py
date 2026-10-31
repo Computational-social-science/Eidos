@@ -84,7 +84,7 @@ def collect() -> dict:
         {"capability": "every Gate S check fires on a case built to trip it",
          "contradicted_by": "a check with no fixture, or a fixture rejected for the wrong reason",
          "result": f'{len(fixtures.get("fixtures") or [])} fixtures, '
-                   f'{len(covered)}/9 checks covered',
+                   f'{len(covered)}/{len(fixtures.get("required_checks") or []) or "unknown"} checks covered',
          "witness": "docs/FIXTURES.json"},
         {"capability": "the gate rejects wrong claims and accepts equivalent ones",
          "contradicted_by": "a wrong register accepted, or an equivalent one rejected",

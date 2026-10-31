@@ -1,6 +1,6 @@
 # Eidos：可复核科研流水线技术框架
 
-**实现基线：4.3.32；同步日期：2026-10-31（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
+**实现基线：0.4.1（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
 
 旧 v4.1 设计原文已完整归档至 [历史设计](docs/archive/technical-framework-v4.1-2026-10-20.md)。原有“production-ready”“certified results”及代理图示不能作为当前能力证明。
 
@@ -33,6 +33,10 @@ chain registry → scheduler → sampler → derived verdict → recovery / veri
 | 科研图件 | tools/numerics_figure.py、tools/training_figure.py | Python 生成可编辑矢量，浏览器只选择已记录数据 |
 
 模型仅用于路由和判断草稿。未达到验证门槛的模型判断不得成为科学验收。假设、关键设计和最终投稿继续遵守项目人工关口政策。
+
+**实际模型边界：ScienceRSI-8B（Qwen3 架构、Q4_K_M）才是 S4/S7 测评对象**，结构化设计判断为 13/15，留出支持判断为 17/20，均未获准承担科学裁决；不能将这些成绩归给 Llama/Qwen2.5/Gemma。StartLux-Decision-4B 只承担有界类型化路由/分诊，不能代替实验执行或科学门。2026-11-01 本机快照中 llama3.1:8b 与 qwen2.5:14b 缺失，gemma2:9b 已安装但未做 EIDOS 任务资格验收。
+
+StageAwareScheduler 明确候选不是已验收模型组：科学生成默认返回未就绪，只有显式 allow_unqualified_draft 才允许准备草稿；候选按替代关系选择一个，不再全部加载；未知阶段拒绝。experiment_execution 与 evaluation_gates 不加载 LLM。首页新增模型能力与科学权限分区，共源读取原测评记录，并显示快照时间。见 [任务质量与权限](docs/MODEL-TASK-QUALITY.md)。
 
 ## 3. 科学验收与自进化
 
@@ -107,6 +111,14 @@ Figure 1 联动 failure mode × dtype × 实测输入：a 为当前案例的有�
 
 ## 8. 单源交付、环境与运行
 
+报告生成器统一采用 tools/publication.py：HTML 保持可读的研究报告，PDF/Word 使用 A4、12 pt Times New Roman、双倍行距和连续行号。图表具有明确标题、完整图例、实验单位、统计边界、Methods、Data availability、Code availability 与来源。Word 保留页码、重复表头和行完整性；PDF 处理短表所需空间和重复编号。原始数据、失败及不利结果不为版式而改写。
+
+tools/audit_publication.py 按物理 viewport/viewBox 检查字号、尺寸、矢量文字、PDF 嵌入字体及 Word 样式，输出 docs/PUBLICATION-QA.json。tools/check_publication_record.py 核对交付物与生成器指纹；改变后旧记录失效。完整 PDF/Word 逐页图像检查独立记录，不能由模板导入或 PASS 标签替代。规范与边界见 [出版质量要求](docs/PUBLICATION-QUALITY.md)。作者、单位、贡献、基金及利益冲突须科研团队确认，submission_ready 保持 false。
+
+报告导出与渲染持有目录锁；同线程可重入、跨进程互斥，版本回滚共享同一所有权，ZIP 原子替换。此机制不宣称整个多文件目录对读者原子可见。仍串行执行会写入报告的验收。
+
+当前 0.4.1 属于开发期编号迁移，旧 v4.x 标签保留，不是通常 SemVer 单调升级。版本工具仅同步本地 editable 版本，历史实验锁按哈希原样归档；任何第三方依赖、来源、标记、哈希或字段类型改变均不能借版本迁移放行。源码、README、网站和发布记录须一致；具体顺序见 [发布流程](docs/RELEASES.md)。
+
 生成入口为 tools/build_site.py；禁止手改 site/index.html。tools/numerics_case.py --render 生成 HTML/PDF/DOCX，以及共用证据的 JSON/CSV、矢量图、训练轨迹、协议、失败档案和带校验和的源码包。包内保留原有 Agent/MCP 与训练模型；CPU 可复核已保存权重，重新训练须具备记录的 CUDA 环境。
 
 源码当前在 E:/2026-AI4S/Eidos，勿假定为会话的 D 盘目录。项目环境在 C:/Users/Administrator/.venvs/eidos-py312（Python 3.12.4），源码盘为 exFAT USB。声明 Python >=3.11；使用 uv.lock 的 locked sync，不做无目的升级。
@@ -164,4 +176,12 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 
 相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。
 
-本轮验收：551 passed、4 个可选 Torch 模块 skipped，框架源码覆盖率 67%，11 条链为 10 PASS/1 SKIP。既有 CUDA 16 项已独立通过；本轮未修改数值后端。
+本轮验收：626 passed、4 个可选 Torch 模块 skipped，框架源码覆盖率 68%，11 条链为 10 PASS/1 SKIP。既有 CUDA 16 项已独立通过；本轮未修改数值后端。
+
+## 10. 实时运行总览：视觉与状态语义复核（2026-11-01）
+
+`8765/` 保持原有深色科研仪表盘风格，首屏以链路、消费者、服务边界三组摘要组织信息；依赖矩阵与恢复图在区域内滚动，避免将字体缩小到不可读。消费者使用 MATCH / CONTROL OK / STALE 区分预期一致、负对照成功拒绝及缓存结论失效，原始 Gate S 判定仍同时展示。科研介绍与报告入口保持 `/index.html`。
+
+实时轮询同步链路状态点、依赖单元格、模块列头、服务列头与状态点、时间及摘要，修复“左侧状态变化但矩阵仍保留旧颜色”的缺口。只有明确 OK 的服务显示绿色；缺失观测、异常状态、样本过期、序号倒退或 45 秒不递增、HTTP/解析/超时错误不能继续显示绿色 LIVE。数据保留时明确标注缓存。RUNNING 单独计数，不冒充完成。
+
+恢复流程保留自身快照时间；旧尝试或其他服务的终结记录不能验证新尝试，24 小时 healed 仅计入明确 recovered 且未声明失败的事件。历史能力账本显示记录日期与版本，不再以硬编码“四项仪器、零缺陷”暗示当前源码已验收。历史故障与当前活动故障、源文件年龄与服务健康分别说明。完整语义与验证范围见 [监控状态说明](docs/MONITOR-SEMANTICS.md)。本次界面相关回归检查与浏览器验收不替代 `docs/SELF_AUDIT.json` 的全项目审计或严格 24 小时稳定性验收。

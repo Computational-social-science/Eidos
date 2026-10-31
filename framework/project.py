@@ -242,12 +242,13 @@ def run_command(spec: ProjectSpec, kind: str = "gate", timeout: int = 900) -> Pr
                               stderr_tail="required numerical preflight failed; project gate was not run",
                               numerics=numerical)
     try:
+        from framework.subprocesses import quiet_flags
         proc = subprocess.run(
             argv,
             cwd=str(spec.root),
             capture_output=True,
             text=True,
-            timeout=timeout,
+            timeout=timeout, creationflags=quiet_flags(),
             check=False,
             encoding="utf-8",
             errors="replace",

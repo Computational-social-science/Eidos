@@ -8,6 +8,7 @@ sees the duplicate because the parser does; runtime inspection cannot.
 """
 
 import ast
+import pytest
 from pathlib import Path
 
 import sys
@@ -50,3 +51,62 @@ def test_d1_is_no_longer_a_framework_model():
     assert "d1-3B-BF16" not in ModelManager.MODEL_REGISTRY
     for stage, models in StageAwareScheduler.STAGE_MODELS.items():
         assert "d1-3B-BF16" not in models, f"d1-3B-BF16 still routed at stage {stage!r}"
+
+
+class RecordingManager:
+    def __init__(self, success=()):
+        self.success=set(success)
+        self.calls=[]
+    def load_model(self, name):
+        self.calls.append(name)
+        return name in self.success
+
+
+def test_scientific_stages_cannot_borrow_readiness_from_unqualified_candidates():
+    manager=RecordingManager({'llama3.1:8b'})
+    scheduler=StageAwareScheduler(manager)
+    assert not scheduler.prepare_stage('hypothesis_generation')
+    assert manager.calls==[]
+    assert scheduler.describe_stage('hypothesis_generation')['task_qualification']=='UNQUALIFIED'
+
+
+def test_draft_preparation_stops_after_one_available_alternative():
+    manager=RecordingManager({'llama3.1:8b','qwen2.5:14b'})
+    scheduler=StageAwareScheduler(manager)
+    assert scheduler.prepare_stage('hypothesis_generation',allow_unqualified_draft=True)
+    assert manager.calls==['llama3.1:8b']
+    assert scheduler.describe_stage('hypothesis_generation')['scientific_authority'] is False
+
+
+def test_execution_and_scientific_gates_do_not_load_a_decision_model():
+    manager=RecordingManager()
+    scheduler=StageAwareScheduler(manager)
+    for stage in ('experiment_execution','evaluation_gates'):
+        assert scheduler.prepare_stage(stage)
+        assert scheduler.get_stage_models(stage)==[]
+    assert manager.calls==[]
+    with pytest.raises(ValueError):
+        scheduler.prepare_stage('misspelled_stage')
+    with pytest.raises(ValueError):
+        scheduler.cleanup_stage('misspelled_stage')
+    assert not scheduler.prepare_stage('hypothesis_generation',allow_unqualified_draft='false')
+
+
+def test_inference_audit_detects_full_decision_model_name_leaking_into_generation(monkeypatch):
+    from framework import inference
+    from tools import audit_chains
+    class Manager:
+        def __init__(self, config):
+            self.vram_budget=config['vram_budget_gb']
+        def can_load(self, name):
+            return self.vram_budget>=5
+    class LeakingScheduler:
+        def get_stage_models(self, stage):
+            if stage in ('experiment_execution','evaluation_gates'):
+                return []
+            return ['StartLux-Decision-4B-Q8_0']
+        def describe_stage(self, stage):
+            return {'task_qualification':'UNQUALIFIED'}
+    monkeypatch.setattr(inference,'ModelManager',Manager)
+    monkeypatch.setattr(inference,'create_stage_scheduler',lambda config:LeakingScheduler())
+    assert audit_chains.audit_inference()[0]=='FAIL'

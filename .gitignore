@@ -70,6 +70,12 @@ scripts/monitor.env
 
 # verifier outputs (regenerated, with fixtures committed instead)
 artifacts/
+!/artifacts/
+/artifacts/*
+!/artifacts/evaluation/
+/artifacts/evaluation/*
+!/artifacts/evaluation/s4_probe_structured.json
+!/artifacts/evaluation/s7_constrained_holdout.json
 # Fixture artefacts are part of the test inputs, not runtime output: the clean control cites a
 # reproduction record, and a clone without it fails S12. Everything else under artifacts/ stays out.
 !reference/fixtures/*/artifacts/
@@ -82,8 +88,10 @@ reference/reproduction/*/dist/
 
 # Scratch: the only place this project writes outside its tracked tree.
 .scratch/
+.eidos-export-*.lock
 docs/status/watchdog_state.json
 docs/status/monitor.lock
 docs/status/running.json
 docs/status/supervisor.out
 docs/status/_probe.py
+docs/status/cron-*.json

@@ -102,12 +102,50 @@ def worst(states):
     return max(states, key=lambda s: SEVERITY.get(s, 0)) if states else "IDLE"
 
 
+def display_chain_state(value: str) -> str:
+    return 'FAIL' if value == 'ERROR' else value if value in PALETTE else 'STALE'
+
+
 def hkt(ts: str) -> str:
     try:
         return (datetime.datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
                 .astimezone(HKT).strftime("%H:%M:%S"))
     except (ValueError, AttributeError):
         return "—"
+
+
+def observation_status(status: dict, now: float | None = None) -> dict:
+    """Presentation guard: missing/stale observations cannot advertise a live OK.
+
+    Keep the sampler's named faults, and also reject contradictions in its cached
+    summary. This does not run probes or change the sampler's evidence.
+    """
+    chains, signals = status.get('chains') or {}, status.get('signals') or {}
+    derived = status_view.derive(signals, chains)
+    faults = list(dict.fromkeys([*derived['faults'],
+                                *((status.get('derived') or {}).get('faults') or [])]))
+    for name, state in chains.items():
+        if state not in PALETTE:
+            faults.append(f'chain:{name} = {state or "UNOBSERVABLE"}')
+    for name, row in signals.items():
+        if not (row or {}).get('state'):
+            faults.append(f'{name} = UNOBSERVABLE')
+    if status.get('server_error'):
+        faults.append('sampler error: ' + str(status['server_error']))
+    if (status.get('consistency') or {}).get('ok') is False:
+        faults.append('sampler verdict consistency check failed')
+    declared = status.get('overall')
+    if declared in ('OK', 'ALARM') and declared != ('ALARM' if faults else 'OK'):
+        faults.append(f'declared overall {declared} contradicts observed state')
+    try:
+        age = (time.time() if now is None else now) - datetime.datetime.fromisoformat(
+            str(status.get('ts') or '').replace('Z', '+00:00')).timestamp()
+        fresh = -30 <= age <= 90 and not status.get('stale')
+    except (ValueError, TypeError):
+        fresh = False
+    observed = bool(chains or signals)
+    overall = 'ALARM' if faults else 'UNKNOWN' if not observed else 'STALE' if not fresh else 'OK'
+    return {**derived, 'overall': overall, 'faults': faults, 'fresh': fresh and observed}
 
 
 def fmt_age(seconds: float) -> str:
@@ -210,13 +248,13 @@ def strip(timeline, max_cols=MAX_COLS):
             widths = raw[i]
             if len(widths) == 2:
                 cells.append(f"<i class='sc' style='width:{widths[0]:.3f}%;"
-                             f"background:{PALETTE[state]}' "
+                             f"background:{PALETTE[display_chain_state(state)]}' "
                              f"title='{hkt(row['ts'])} · {state}'></i>")
                 cells.append(f"<i class='sc gap' style='width:{widths[1]:.3f}%' "
                              f"title='no samples for {deltas[i] / 60:.0f} min'></i>")
             else:
                 cells.append(f"<i class='sc' style='width:{widths[0]:.3f}%;"
-                             f"background:{PALETTE[state]}' "
+                             f"background:{PALETTE[display_chain_state(state)]}' "
                              f"title='{hkt(row['ts'])} · {state}'></i>")
         out.append(f"<div class='srow'><span class='sname'>{html.escape(chain)}</span>"
                    f"<span class='scells'>{''.join(cells)}</span></div>")
@@ -281,7 +319,8 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
         for module in mods or []:
             module_users.setdefault(module, []).append(chain)
     modules = sorted(module_users, key=lambda m: (-len(module_users[m]), m))
-    services = [s for s in SERVICE_LABEL if s in signals]
+    required_services = {s for module in modules for s in services_for_module(module)}
+    services = [s for s in SERVICE_LABEL if s in signals or s in required_services]
 
     layers = pipeline.get("layers") or []
     grouped, seen = [], set()
@@ -294,7 +333,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
     if rest:
         grouped.append(("Ungrouped", rest))
 
-    row_h, head_h, top = 20, 15, 48
+    row_h, head_h, top = 26, 20, 52
     label_w, col_w, gap = 300, 66, 18
     rows: list[dict] = []
     y = top
@@ -314,7 +353,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
     gut = 34                      # the return path lives in this gutter, outside the matrix
 
     meta = chain_meta or {}
-    svg = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
+    svg = [f"<svg class='assembly-matrix' viewBox='0 0 {width} {height}' width='100%' role='img' "
            f"aria-label='coupling matrix of chains, modules and services'>"]
     svg.append("<defs><marker id='ah' viewBox='0 0 10 10' refX='8.5' refY='5' markerWidth='4.6' "
                "markerHeight='4.6' orient='auto'><path d='M0 1 L9 5 L0 9 z' "
@@ -341,14 +380,14 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
         # bind to it, and the structure check counts it.
         # SKIP is not evidence of a problem: a chain nobody ran says nothing about the module.
         # Only verdicts count; if every user was skipped, the module says SKIP.
-        states = [chain_now.get(c, "IDLE") for c in module_users[module]]
+        states = [display_chain_state(chain_now.get(c, "IDLE")) for c in module_users[module]]
         judged = [st for st in states if st not in ("SKIP", "IDLE")]
-        mod_state = worst(judged) if judged else ("SKIP" if states else "IDLE")
+        mod_state = worst(judged) if judged else ("SKIP" if "SKIP" in states else "IDLE")
         svg.append(f"<g class='node module' data-module='{html.escape(module)}' "
                    f"data-users='{html.escape(','.join(module_users[module]))}' tabindex='0' "
                    f"role='button'><title>{html.escape(module)} · {mod_state} · used by "
                    f"{len(module_users[module])} chains</title>"
-                   f"<text x='{m_x + k * col_w}' y='30' font-size='10' "
+                   f"<text x='{m_x + k * col_w}' y='32' font-size='11' "
                    f"fill='{PALETTE.get(mod_state, '#98a2b3') if mod_state != 'PASS' else PALETTE['PASS']}' "
                    f"font-family='ui-monospace,Consolas,monospace'>"
                    f"{html.escape(name[:12])}</text></g>")
@@ -357,11 +396,14 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
         # here printed it twice.
         name = SERVICE_LABEL.get(service, service)
         short = name.split(" · ")[0]
+        service_state = (signals.get(service) or {}).get('state')
+        service_colour = PALETTE['PASS' if service_state == 'OK' else 'FAIL' if service_state == 'ALARM' else 'STALE']
         svg.append(f"<g class='node service' data-service='{html.escape(service)}' tabindex='0' "
                    f"role='button'><title>{html.escape(name)} · "
-                   f"{(signals.get(service) or {}).get('source', '')}</title>"
-                   f"<text x='{s_x + k * col_w}' y='30' font-size='10' "
-                   f"fill='{PALETTE['FAIL' if (signals.get(service) or {}).get('state') in ('ALARM', 'UNOBSERVABLE') else 'PASS']}' "
+                   f"{html.escape(str(service_state or 'UNOBSERVABLE'))} · "
+                   f"{html.escape(str((signals.get(service) or {}).get('source', '')))}</title>"
+                   f"<text x='{s_x + k * col_w}' y='32' font-size='11' "
+                   f"fill='{service_colour}' "
                    f"font-family='ui-monospace,Consolas,monospace'>"
                    f"{html.escape(short[:10])}</text></g>")
 
@@ -396,22 +438,23 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
             svg.append(f"<rect x='0' y='{row['y'] + 2}' width='{width}' height='{row_h - 4}' "
                        f"fill='rgba(255,255,255,0.018)'/>")
         chain = row["chain"]
-        state = chain_now.get(chain, "IDLE")
+        state = display_chain_state(chain_now.get(chain, "IDLE"))
         info = meta.get(chain) or {}
         age = info.get("age_s")
         y = row["y"]
         title = (f"{chain} · {state} · last {fmt_age(age) if age is not None else 'never'}"
                  f" · needs {info.get('requires', '—')} · {info.get('detail', 'no record')}")
         svg.append(
-            f"<g class='node chain' data-chain='{html.escape(chain)}' tabindex='0' role='button'>"
+            f"<g class='node chain' data-chain='{html.escape(chain)}' "
+            f"data-modules='{html.escape(','.join(chain_modules.get(chain) or []), quote=True)}' tabindex='0' role='button'>"
             f"<title>{html.escape(title)}</title>"
             # A dot, the same mark the legend shows and the cells use. A bar and a dot for
             # the same idea is two languages in one figure.
             f"<circle cx='7' cy='{y + row_h / 2:.1f}' r='3.4' "
             f"fill='{PALETTE.get(state, PALETTE['IDLE'])}'/>"
-            f"<text x='12' y='{y + row_h / 2 + 3.5}' font-size='11' fill='#e6e8eb'>"
+            f"<text x='15' y='{y + row_h / 2 + 3.5}' font-size='12.5' fill='#e6e8eb'>"
             f"{html.escape(chain)}</text>"
-            f"<text x='{label_w - 16}' y='{y + row_h / 2 + 3.5}' text-anchor='end' font-size='10' "
+            f"<text data-chain-age='{html.escape(chain)}' x='{label_w - 16}' y='{y + row_h / 2 + 3.5}' text-anchor='end' font-size='11' "
             f"fill='#7d8899' font-family='ui-monospace,Consolas,monospace'>"
             f"{html.escape(fmt_age(age) if age is not None else '—')}</text></g>")
 
@@ -420,29 +463,32 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
             if module not in used:
                 continue
             cx = m_x + k * col_w + col_w / 2 - 10
-            svg.append(f"<circle cx='{cx:.1f}' cy='{y + row_h / 2:.1f}' r='3.4' "
+            svg.append(f"<circle data-chain-state='{html.escape(chain)}' cx='{cx:.1f}' cy='{y + row_h / 2:.1f}' r='3.4' "
                        f"fill='{PALETTE.get(state, PALETTE['IDLE'])}' opacity='0.9'/>")
         for k, service in enumerate(services):
             if not any(service in services_for_module(m) for m in used):
                 continue
             cx = s_x + k * col_w + col_w / 2 - 10
-            up = (signals.get(service) or {}).get("state") not in ("ALARM", "UNOBSERVABLE")
-            svg.append(f"<circle cx='{cx:.1f}' cy='{y + row_h / 2:.1f}' r='3.4' "
-                       f"fill='{PALETTE['PASS' if up else 'FAIL']}' opacity='0.9'/>")
+            state = (signals.get(service) or {}).get("state")
+            colour = PALETTE['PASS' if state == 'OK' else 'FAIL' if state == 'ALARM' else 'STALE']
+            svg.append(f"<circle data-service-state='{html.escape(service)}' cx='{cx:.1f}' cy='{y + row_h / 2:.1f}' r='3.4' "
+                       f"fill='{colour}' opacity='0.9'/>")
     evo = evolution or {}
     open_defects = (evo.get("state") or {}).get("open_defects") or 0
     obs_y = matrix_bottom + 6
-    state = "PASS" if not open_defects else "FAIL"
+    instruments = len((evo.get('state') or {}).get('instruments') or [])
+    ledger_stamp = str(evo.get('asof') or 'unavailable')[:16]
     svg.append(
-        f"<g class='node instrument' data-instrument='instruments' tabindex='0' role='button'>"
-        f"<title>instruments · 4 · fixtures: every gate check trips · mutations: 0 open defects · "
-        f"runtime + layout: pages execute · probes: a dead half is named</title>"
+        f"<g class='instrument' data-instrument='instruments'>"
+        f"<title>Historical ledger · {instruments} instruments · {open_defects} recorded open defects · "
+        f"{html.escape(ledger_stamp)} · source version {html.escape(str(evo.get('version') or 'unknown'))}. "
+        f"This is not a live qualification of the current source.</title>"
         f"<rect x='0' y='{obs_y}' width='{width - 10}' height='{obs_h}' rx='4' fill='#15181d' "
         f"stroke='#2a3038'/>"
-        f"<rect x='0' y='{obs_y}' width='3' height='{obs_h}' fill='{PALETTE[state]}'/>"
+        f"<rect x='0' y='{obs_y}' width='3' height='{obs_h}' fill='#7d8899'/>"
         f"<text x='12' y='{obs_y + 18}' font-size='10' letter-spacing='0.1em' fill='#98a2b3' "
-        f"font-family='ui-monospace,Consolas,monospace'>INSTRUMENTS 4 · "
-        f"{'no open defects' if not open_defects else str(open_defects) + ' open defect(s)'}</text>"
+        f"font-family='ui-monospace,Consolas,monospace'>HISTORICAL LEDGER · {instruments} instruments · "
+        f"{html.escape(ledger_stamp)}</text>"
         f"</g>")
     svg.append("</g>")
     # Orthogonal return: out of the observer, down into the gutter, up it, and back into the
@@ -461,7 +507,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
     svg.append("</svg>")
 
     faults = [f"{c} = {chain_now[c]}" for c in chains
-              if chain_now.get(c) in ("FAIL", "ERROR")]
+              if chain_now.get(c) in ("FAIL", "ERROR", "STALE")]
     for service in services:
         if (signals.get(service) or {}).get("state") in ("ALARM", "UNOBSERVABLE"):
             faults.append(f"{service} = DOWN")
@@ -476,17 +522,27 @@ def operator_strip(status: dict, recoveries: list) -> str:
     """
     ts = status.get("ts") or ""
     try:
-        age = max(0.0, time.time() - datetime.datetime.fromisoformat(
-            str(ts).replace("Z", "+00:00")).timestamp())
+        age = time.time() - datetime.datetime.fromisoformat(
+            str(ts).replace("Z", "+00:00")).timestamp()
     except (ValueError, TypeError):
         age = None
-    sampled = "PASS" if age is not None and age < 90 else ("STALE" if age is not None else "IDLE")
+    sampled = ("PASS" if age is not None and -30 <= age < 90
+               and not status.get('stale') and not status.get('server_error')
+               else "STALE" if age is not None else "IDLE")
     # The log has two kinds of line: an attempt (ok, pid) and a terminal verdict (outcome).
     # Reading only the last line made "verified / recovered" — which carries no `ok` — paint the
     # repair red, and made a bare attempt paint it green before anything was verified.
     terminal = next((r for r in reversed(recoveries)
                      if r.get("phase") in ("verified", "failed", "gave_up")), None)
     attempt = next((r for r in reversed(recoveries) if r.get("phase") == "attempt"), None)
+    if terminal is not None and attempt is not None:
+        terminal_index = next(i for i in range(len(recoveries) - 1, -1, -1) if recoveries[i] is terminal)
+        attempt_index = next(i for i in range(len(recoveries) - 1, -1, -1) if recoveries[i] is attempt)
+        # A terminal event from an earlier attempt/service cannot verify a new one.
+        if (terminal_index < attempt_index or
+                (terminal.get('service') and attempt.get('service')
+                 and terminal['service'] != attempt['service'])):
+            terminal = None
     # The strip describes the *current* loop. An episode that ended "no effect" last night is history
     # once nothing is faulting: showing it as a red verify forever made a healthy board look broken,
     # which is the same false signal as a green board with a dead sampler.
@@ -527,7 +583,8 @@ def operator_strip(status: dict, recoveries: list) -> str:
             continue
         if when.timestamp() >= cutoff:
             recent.append(row)
-    healed = len([r for r in recent if r.get("phase") == "verified"])
+    healed = len([r for r in recent if r.get("phase") == "verified"
+                  and r.get("outcome") == "recovered" and r.get("ok") is not False])
 
     try:
         try:
@@ -543,32 +600,33 @@ def operator_strip(status: dict, recoveries: list) -> str:
         ("plan repair", plan_state, "recovery.plan"),
         ("execute", exec_state, "recovery.execute"),
         ("verify", verify_state, verify_note),
-        ("record", "PASS", f"{healed} healed · 24 h"),
+        ("record", "PASS" if recoveries else "IDLE",
+         f"{healed} healed · 24 h"),
     ]
     n = len(steps)
     box_w, gap = 168, 26
     width = n * box_w + (n - 1) * gap + 8
-    height = 46
-    parts = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
+    height = 76
+    parts = [f"<svg class='operator-matrix' viewBox='0 0 {width} {height}' width='100%' role='img' "
              f"aria-label='self-check and self-heal loop'>"]
     for k, (name, state, note) in enumerate(steps):
         x = 4 + k * (box_w + gap)
         parts.append(
             f"<g class='node operator' data-operator='{html.escape(name)}' tabindex='0' role='button'>"
             f"<title>{html.escape(name)} · {state} · {html.escape(note)}</title>"
-            f"<rect x='{x}' y='6' width='{box_w}' height='26' rx='4' "
+            f"<rect x='{x}' y='6' width='{box_w}' height='50' rx='4' "
             f"fill='{PALETTE.get(state, PALETTE['IDLE'])}' stroke='#0a0c0f'/>"
-            f"<text x='{x + 9}' y='23' font-size='10' fill='{INK.get(state, '#e6e8eb')}'>"
+            f"<text x='{x + 9}' y='25' font-size='11' fill='{INK.get(state, '#e6e8eb')}'>"
             f"{html.escape(name)}</text>"
-            f"<text x='{x + box_w - 8}' y='23' text-anchor='end' font-size='10' "
-            f"fill='{INK.get(state, '#e6e8eb')}' opacity='0.85'>{html.escape(note)}</text></g>")
+            f"<text x='{x + 9}' y='44' font-size='10' "
+            f"fill='{INK.get(state, '#e6e8eb')}'>{html.escape(note[:24])}</text></g>")
         if k < n - 1:
             ax = x + box_w
-            parts.append(f"<path d='M{ax + 3} 19 L{ax + gap - 3} 19' stroke='#96a3b5' "
+            parts.append(f"<path d='M{ax + 3} 31 L{ax + gap - 3} 31' stroke='#96a3b5' "
                          f"stroke-width='1.1' marker-end='url(#ah2)'/>")
     # the loop closes: a repair that verifies re-enters the sampler
-    parts.append(f"<path d='M{width - box_w / 2 - 4} 32 C{width - 40} 44, 40 44, "
-                 f"{box_w / 2 + 4} 32' fill='none' stroke='#a9b6c8' stroke-width='1.2' "
+    parts.append(f"<path d='M{width - box_w / 2 - 4} 56 C{width - 40} 72, 40 72, "
+                 f"{box_w / 2 + 4} 56' fill='none' stroke='#a9b6c8' stroke-width='1.2' "
                  f"opacity='0.85' stroke-dasharray='4 3' marker-end='url(#ah2)'/>")
     parts.append("<defs><marker id='ah2' viewBox='0 0 10 10' refX='8.5' refY='5' markerWidth='4' "
                  "markerHeight='4' orient='auto'><path d='M0 1 L9 5 L0 9 z' "
@@ -639,7 +697,7 @@ def evolution_loop(evo: dict) -> str:
         ("1 FIND", f"{instruments} instruments", "a mutation, a render, a dead endpoint", "PASS"),
         ("2 ENCODE", f"{fixtures} fixtures · {cases} cases", "fixture · mutation · transition rule",
          "PASS"),
-        ("3 ENFORCE", "6 checks before commit", "tests, fixtures, fuzz, chains, state, page",
+        ("3 ENFORCE", "repository checks", "the configured pre-commit checks; not a live verdict",
          "PASS"),
         ("4 RECORD", f"{instruments} capabilities", "each with the artefact that would refute it",
          "PASS"),
@@ -649,12 +707,12 @@ def evolution_loop(evo: dict) -> str:
     n = len(stages)
     box_w, gap, height = 214, 30, 66
     width = n * box_w + (n - 1) * gap + 8
-    parts = [f"<svg viewBox='0 0 {width} {height}' width='100%' role='img' "
+    parts = [f"<svg class='evolution-matrix' viewBox='0 0 {width} {height}' width='100%' role='img' "
              f"aria-label='feedback to evolution cycle'>"]
     for k, (title, count, note, st) in enumerate(stages):
         x = 4 + k * (box_w + gap)
         parts.append(
-            f"<g class='node stage' data-stage='{html.escape(title)}' tabindex='0' role='button'>"
+            f"<g class='stage' data-stage='{html.escape(title)}'>"
             f"<title>{html.escape(title)} · {html.escape(count)} · {html.escape(note)}</title>"
             # Stages are not health: a green box would say "passing", and a stage cannot pass.
             f"<rect x='{x}' y='4' width='{box_w}' height='44' rx='4' fill='#1b2027' "
@@ -737,13 +795,19 @@ def consumer_strip(pipeline: dict) -> str:
         if changed:
             label = "Reverification required"
             timing = "Declared inputs changed; cached verdict withdrawn"
+        elif st == "STALE":
+            label = "Reverification required"
+            timing += "; missing or expired freshness record"
+        if st == "STALE":
+            note = f"Cached Gate S {got} · expected {want}"
+        badge = "CONTROL OK" if st == "PASS" and want == "FAIL" else "MATCH" if st == "PASS" else st
         description = f"{name} · {label} · {note} · {timing}"
         meta = " · ".join(part for part in (tag, timing) if part)
         parts.append(
             f'<button type="button" class="node consumer consumer-card" data-consumer="{html.escape(name, quote=True)}"'
-            f' data-description="{html.escape(description, quote=True)}"{stale_attr}'
+            f' data-description="{html.escape(description, quote=True)}" data-state="{st}"{stale_attr}'
             f' style="--consumer-state:{PALETTE[st]}" aria-label="{html.escape(description, quote=True)}">'
-            f'<span class="consumer-head"><strong>{html.escape(name)}</strong><span class="consumer-state">{st}</span></span>'
+            f'<span class="consumer-head"><strong>{html.escape(name)}</strong><span class="consumer-state">{badge}</span></span>'
             f'<span class="consumer-verdict">{html.escape(label)} · {html.escape(note)}</span>'
             f'<span class="consumer-meta">{html.escape(meta)}</span></button>')
     parts.append("</div>")
@@ -760,6 +824,7 @@ CSS = """
 .consumer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .consumer-head strong{font-size:12.5px;font-weight:600;overflow-wrap:anywhere}
 .consumer-state{font-size:11px;color:var(--consumer-state);letter-spacing:.04em;white-space:nowrap}
+.consumer-card[data-state=PASS] .consumer-state{color:#6cbf6e}
 .consumer-verdict,.consumer-meta{font-size:12px;line-height:1.5;overflow-wrap:anywhere;color:#b7c0ce}
 .consumer-meta{color:#98a2b3}
 @media(max-width:1000px){.consumer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -767,7 +832,7 @@ CSS = """
 :root{--bg:#0e1013;--panel:#15181d;--line:#232830;--fg:#e6e8eb;--mut:#98a2b3;--dim:#7d8899;
   --accent:#5b8def;--ok:#57ab5a;--warn:#d29922;--bad:#e5534b}
 *{box-sizing:border-box}
-html{-webkit-font-smoothing:antialiased}
+html{-webkit-font-smoothing:antialiased;scroll-padding-top:64px}
 body{margin:0;font:12.5px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   color:var(--fg);background:var(--bg);letter-spacing:.005em}
 header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:7px 18px;
@@ -777,10 +842,11 @@ header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:7px 18px;
 .brand i{color:var(--accent);font-style:normal;margin-right:6px}
 .brand .ver{margin-left:7px;padding:1px 5px;border:1px solid var(--line);border-radius:4px;
   font:600 10px/1.5 ui-monospace,Consolas,monospace;color:var(--mut);letter-spacing:0}
-.pill{font:600 10.5px/1 inherit;letter-spacing:.08em;padding:5px 10px;border-radius:20px;
+.pill{font-size:11px;font-weight:600;line-height:1.5;letter-spacing:.08em;padding:5px 10px;border-radius:20px;
   border:1px solid var(--line);text-transform:uppercase}
-.pill.OK{color:#57ab5a;background:rgba(87,171,90,.1);border-color:rgba(87,171,90,.35)}
+.pill.OK{color:#6cbf6e;background:rgba(87,171,90,.1);border-color:rgba(87,171,90,.35)}
 .pill.ALARM{color:#ef6b62;background:rgba(229,83,75,.1);border-color:rgba(229,83,75,.35)}
+.pill.STALE,.pill.UNKNOWN{color:var(--warn);background:rgba(210,153,34,.08);border-color:rgba(210,153,34,.4)}
 .spacer{flex:1}
 .act{font-size:11px;font-weight:600;line-height:1;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);
   background:transparent;border:1px solid var(--line);border-radius:6px;padding:5px 9px;
@@ -790,19 +856,48 @@ header{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:7px 18px;
 .meta b{color:var(--mut);font-weight:600}
 #live{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#7d8899;
   display:inline-flex;align-items:center}
-#live.on{color:#57ab5a}#live.off{color:#d29922}
+#live.on{color:#6cbf6e}#live.off{color:#d29922}
 .live{width:7px;height:7px;border-radius:50%;background:#3fb950;display:inline-block;
   margin-right:7px;animation:beat 2.4s ease-in-out infinite;will-change:opacity}
 @keyframes beat{0%,100%{opacity:.35}50%{opacity:1}}
-main{max-width:1320px;margin:0 auto;padding:12px 18px 24px}
+main{max-width:1440px;margin:0 auto;padding:22px 18px 32px;min-width:0}
+.skip-link{position:absolute;left:-9999px}.skip-link:focus{left:12px;top:10px;z-index:50;background:var(--panel);padding:10px}
+a{color:#8ab4ff;text-decoration:none}a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.monitor-intro{display:flex;justify-content:space-between;gap:14px;align-items:start;margin-bottom:18px}
+.monitor-intro h1{font-size:15px;font-weight:600;margin:0 0 5px}
+.monitor-intro p{margin:0;color:var(--mut);max-width:80ch;font-size:12px}
+.monitor-intro nav{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12px;flex:none}
+.overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid #3a4048;
+  border-bottom:1px solid var(--line);margin-bottom:20px;background:var(--panel)}
+.overview article{padding:15px 18px;min-width:0;border-right:1px solid var(--line)}
+.overview article:last-child{border-right:0}
+.overview h2{font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--mut);margin:0 0 7px;font-weight:600}
+.overview strong{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;display:block;color:var(--fg)}
+.overview p{font-size:11px;color:var(--mut);margin:5px 0 0}
+.observation-note{font-size:11px;color:var(--mut);margin:8px 0 16px;overflow-wrap:anywhere}
+.matrix-scroll{overflow-x:auto;max-width:100%;overscroll-behavior-x:contain}
+.assembly-matrix{min-width:1280px;display:block}
+.operator-matrix{min-width:1140px;display:block}
+.evolution-matrix{min-width:1140px;display:block}
+.figure-note{font-size:11px;color:var(--mut);margin:8px 0 4px}
+.pipeline-steps{list-style:none;display:flex;flex-wrap:wrap;gap:6px 0;padding:0;margin:12px 0}
+.pipeline-steps li{font-size:12px;color:var(--mut)}
+.pipeline-steps li+li:before{content:'→';color:var(--dim);margin:0 12px}
+.pipeline-steps b{color:var(--fg);font-weight:400}
+.section-kicker{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.sample-unavailable .live{animation:none;background:var(--warn)}
+@media(max-width:680px){html{scroll-padding-top:112px}.monitor-intro{flex-direction:column}.overview{grid-template-columns:1fr}
+ .overview article{border-right:0;border-bottom:1px solid var(--line);padding:12px 14px}
+ .overview article:last-child{border-bottom:0}header .meta{flex-basis:100%;order:2}main{padding:16px 12px}}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;
   padding:11px 13px;margin-bottom:9px}
 .card h2{margin:0 0 8px;font-size:10px;letter-spacing:.13em;text-transform:uppercase;
-  color:var(--dim);font-weight:600}
+  color:var(--mut);font-weight:600}
 .grid{display:grid;grid-template-columns:1.9fr 1fr;gap:9px;align-items:start}
 .grid.one{grid-template-columns:1fr}
 @media (max-width:1000px){.grid{grid-template-columns:1fr}}
-.faults{font-size:12px;color:#d29922;margin-top:8px}
+.faults{font-size:12px;color:#d29922;margin-top:8px;overflow-wrap:anywhere}
 .faults b{color:#e5534b;letter-spacing:.1em;font-size:11px;margin-right:6px}
 svg text{font-variant-numeric:tabular-nums}
 svg .node{cursor:pointer}
@@ -815,10 +910,10 @@ svg .edge{transition:stroke .4s ease}
 .card code,.card pre{font-size:11px}
 .opwrap .hint{text-transform:none;letter-spacing:0;font-weight:400;color:var(--mut);
   margin-left:8px;font-size:10px}
-.opwrap{margin-top:10px;padding-top:9px;border-top:1px solid var(--line)}
+.opwrap{margin-top:18px;padding-top:15px;border-top:1px solid var(--line)}
 .opwrap h3{margin:0 0 6px;font:600 10px/1.4 -apple-system,"Segoe UI",Arial,sans-serif;
   letter-spacing:.11em;text-transform:uppercase;color:var(--dim);font-weight:600}
-.key{display:flex;gap:11px;font-size:10px;color:var(--dim);margin:0 0 7px;flex-wrap:wrap;
+.key{display:flex;gap:11px;font-size:11px;color:var(--mut);margin:0 0 12px;flex-wrap:wrap;
   letter-spacing:.04em;text-transform:uppercase}
 .key i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
 .key i.dotkey{display:none;border-left:7px solid #5b8def;border-top:4px solid transparent;
@@ -840,14 +935,14 @@ table.rank th{text-align:left;font:10px/1 -apple-system,sans-serif;letter-spacin
   text-transform:uppercase;color:#7d8899;padding:0 0 5px;font-weight:600}
 table.rank td{padding:3px 0;border-bottom:1px solid var(--line)}
 table.rank td.num{text-align:right;font-variant-numeric:tabular-nums}
-#pop{position:fixed;z-index:30;width:360px;max-height:60vh;overflow:auto;display:none;
+#pop{position:fixed;z-index:30;width:min(360px,calc(100vw - 24px));max-height:60vh;overflow:auto;display:none;
   background:#191d23;border:1px solid var(--line);border-radius:8px;padding:12px 14px;
   box-shadow:0 18px 40px -18px #000}
 #pop.on{display:block}
 #pop .t{font-weight:600;font-size:12.5px;margin-bottom:4px}
 #pop .d{color:var(--mut);font-size:11px;line-height:1.5}
 #pop .m{color:var(--dim);font-size:11px;margin-top:5px;font-family:ui-monospace,Menlo,monospace}
-#pop .x{float:right;cursor:pointer;color:var(--dim);font-size:15px;line-height:1}
+#pop .x{float:right;cursor:pointer;color:var(--mut);font-size:15px;line-height:1;background:none;border:0;padding:4px}
 @media (prefers-reduced-motion:reduce){
   .live{animation:none}
   svg .node rect{transition:none}
@@ -857,13 +952,18 @@ table.rank td.num{text-align:right;font-variant-numeric:tabular-nums}
 JS = """
 const PALETTE = __PALETTE__;
 const POLL_MS = 10000;
+const SAMPLE_TIMEOUT_MS = 45000;
+let lastSequence = null;
+let lastAdvanceAt = Date.now();
+let lastSectionsAt = 0;
+let pollTask = null;
 const popEl = () => document.getElementById('pop');
 const safeHTML = value => String(value ?? '').replace(/[&<>"']/g, c =>
   ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 function openPop(html, ev) {
   const box = popEl(); if (!box) return;
-  box.innerHTML = '<span class="x" id="popx">×</span>' + html;
+  box.innerHTML = '<button class="x" id="popx" aria-label="Close details">×</button>' + html;
   box.className = 'on';
   let x = (ev ? ev.clientX : window.innerWidth / 2) + 14;
   let y = (ev ? ev.clientY : 140) + 14;
@@ -899,9 +999,25 @@ document.querySelectorAll('g.node.chain').forEach(g => {
   g.addEventListener('blur', () => focusChain(null));
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') dismiss(); });
+document.addEventListener('keydown', e => {
+  const node = e.target.closest('g.node[role="button"]');
+  if (node && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault(); node.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+  }
+});
+function updateConsumerCounts() {
+  const cards = [...document.querySelectorAll('[data-consumer][data-state]')];
+  const matching = cards.filter(c => c.dataset.state === 'PASS').length;
+  const stale = cards.filter(c => c.dataset.state === 'STALE').length;
+  const failed = cards.filter(c => c.dataset.state === 'FAIL').length;
+  const summary = document.getElementById('consumer-summary');
+  const detail = document.getElementById('consumer-detail');
+  if (summary) summary.textContent = cards.length ? `${matching}/${cards.length} match expectation` : 'No judged consumers';
+  if (detail) detail.textContent = `${stale} stale · ${failed} unexpected · matching rejection is a successful control`;
+}
 function updateConsumers(markup) {
   const host = document.getElementById('consumer-cards');
-  if (!host || !markup || host.dataset.sig === markup) return;
+  if (!host || !markup || host.dataset.sig === markup) { updateConsumerCounts(); return; }
   const focused = document.activeElement?.dataset.consumer;
   const template = document.createElement('template');
   template.innerHTML = markup; // server-rendered, escaped consumer markup
@@ -909,6 +1025,7 @@ function updateConsumers(markup) {
   host.dataset.sig = markup;
   if (focused) Array.from(host.querySelectorAll('[data-consumer]'))
     .find(n => n.dataset.consumer === focused)?.focus();
+  updateConsumerCounts();
 }
 document.addEventListener('click', e => {
   const refresh = e.target.closest('[data-refresh]');
@@ -930,13 +1047,13 @@ document.addEventListener('click', e => {
   const btn = e.target.closest('[data-restart]');
   if (!btn) return;
   const service = btn.dataset.restart;
-  openPop('<div class="t">restarting ' + service + '…</div>', e);
+  openPop('<div class="t">restarting ' + safeHTML(service) + '…</div>', e);
   fetch('/api/restart/' + service, {method: 'POST'})
     .then(r => r.json())
-    .then(j => openPop('<div class="t">' + (j.ok ? 'spawned pid ' + j.pid : 'refused') +
-      '</div><div class="d">' + (j.error || j.description || 'the watcher confirms within one sample') +
+    .then(j => openPop('<div class="t">' + (j.ok ? 'spawned pid ' + safeHTML(j.pid) : 'refused') +
+      '</div><div class="d">' + safeHTML(j.error || j.description || 'the watcher confirms within one sample') +
       '</div>', e))
-    .catch(err => openPop('<div class="t">failed</div><div class="d">' + err + '</div>', e));
+    .catch(err => openPop('<div class="t">failed</div><div class="d">' + safeHTML(err) + '</div>', e));
 });
 document.addEventListener('click', e => {
   if (!e.target.closest('#pop')) dismiss();
@@ -975,46 +1092,111 @@ function hkt(ts) {
   } catch (e) { return '—'; }
 }
 
-async function poll() {
-  try {
-    const r = await fetch('/api/status', {cache: 'no-store'});
-    const d = await r.json();
-    const overall = (d.derived || {}).overall || d.overall || '—';
+function sampleView(d, now = Date.now()) {
+  const faults = [...((d.derived || {}).faults || [])];
+  const chains = d.chains || {};
+  const signals = d.signals || {};
+  Object.entries(chains).forEach(([name, state]) => {
+    if (state === 'FAIL' || !Object.hasOwn(PALETTE, state)) faults.push(`chain:${name} = ${state || 'UNOBSERVABLE'}`);
+    else if (state === 'STALE') faults.push(`chain:${name} = STALE`);
+  });
+  Object.entries(signals).forEach(([name, row]) => {
+    if (!row || row.state !== 'OK') faults.push(`${name} = ${row?.state || 'UNOBSERVABLE'}`);
+  });
+  if (d.server_error) faults.push('sampler error: ' + d.server_error);
+  if (d.consistency?.ok === false) faults.push('sampler verdict consistency check failed');
+  if (['OK','ALARM'].includes(d.overall) && d.overall !== (faults.length ? 'ALARM' : 'OK'))
+    faults.push('declared overall ' + d.overall + ' contradicts observed state');
+  const age = (now - Date.parse(d.ts)) / 1000;
+  const observed = Object.keys(chains).length + Object.keys(signals).length > 0;
+  const fresh = observed && Number.isFinite(age) && age >= -30 && age <= 90 && !d.stale && !d.server_error;
+  const overall = faults.length ? 'ALARM' : !observed ? 'UNKNOWN' : fresh ? 'OK' : 'STALE';
+  return {overall, fresh, faults: [...new Set(faults)]};
+}
+function chainState(value) { return value === 'ERROR' ? 'FAIL' : Object.hasOwn(PALETTE, value) ? value : 'STALE'; }
+function serviceState(value) { return value === 'OK' ? 'PASS' : value === 'ALARM' ? 'FAIL' : 'STALE'; }
+function ageText(seconds) {
+  if (!Number.isFinite(seconds)) return 'never';
+  if (seconds < 1) return 'now';
+  if (seconds < 90) return Math.round(seconds) + 's';
+  if (seconds < 5400) return Math.round(seconds / 60) + 'm';
+  return (seconds / 3600).toFixed(1) + 'h';
+}
+function applySample(d) {
+    const view = sampleView(d);
+    document.querySelectorAll('g.node.service').forEach(g => {
+      if (!(d.signals || {})[g.dataset.service]) view.faults.push(g.dataset.service + ' = UNOBSERVABLE');
+    });
+    if (view.faults.length && view.overall === 'OK') view.overall = 'ALARM';
+    const now = Date.now();
+    if (Number.isSafeInteger(d.seq) && d.seq > 0) {
+      if (lastSequence === null || d.seq > lastSequence) lastAdvanceAt = now;
+      else if (d.seq < lastSequence) {
+        view.fresh = false; view.faults.push('sample sequence moved backwards');
+      }
+      lastSequence = Math.max(lastSequence ?? d.seq, d.seq);
+    } else { view.fresh = false; view.faults.push('sample sequence unavailable'); }
+    if (now - lastAdvanceAt > SAMPLE_TIMEOUT_MS) {
+      view.fresh = false; view.faults.push('sample sequence has not advanced for 45 s');
+    }
+    const overall = view.faults.length && view.overall === 'OK' ? 'STALE' : view.overall;
     const pill = document.getElementById('ov');
     if (pill) {
       pill.textContent = overall;
-      pill.className = 'pill ' + (overall === 'OK' ? 'OK' : 'ALARM');
+      pill.className = 'pill ' + overall;
     }
     const meta = document.getElementById('meta');
     if (meta && d.ts) {
       meta.innerHTML = 'sampled <b>' + hkt(d.ts) + '</b> HKT · <b>' + (d.samples || 0) +
-        '</b> samples · run <b>' + (d.live_run ? 'in progress' : 'idle') + '</b>';
+        '</b> retained samples · seq <b>' + safeHTML(d.seq ?? '—') + '</b> · run <b>' +
+        (d.live_run ? 'in progress' : 'idle') + '</b>';
     }
     const fl = document.getElementById('faults');
-    if (fl && d.derived) {
-      const faults = d.derived.faults || [];
+    if (fl) {
+      const faults = view.faults;
       if (faults.length) {
-        fl.innerHTML = '<b>FAULT</b>' + faults.map(f => ' · ' + f).join('');
+        fl.innerHTML = '<b>FAULT</b>' + faults.map(f => ' · ' + safeHTML(f)).join('');
         fl.style.display = '';
       } else { fl.textContent = ''; fl.style.display = 'none'; }
     }
     updateConsumers(d.consumers_html);
     const chains = d.chains || {};
     document.querySelectorAll('g.node.chain').forEach(g => {
-      const st = chains[g.dataset.chain] || 'IDLE';
+      const name = g.dataset.chain;
+      const st = chainState(chains[name] ?? 'IDLE');
       const dot = g.querySelector('circle');
       if (dot) dot.setAttribute('fill', PALETTE[st] || PALETTE.IDLE);
+      const info = (d.chain_meta || {})[name] || {};
+      const title = g.querySelector('title');
+      if (title) title.textContent = `${name} · ${chains[name] ?? 'IDLE'} · last ${ageText(info.age_s)} · ${info.detail || 'no record'}`;
+      const age = g.querySelector('[data-chain-age]');
+      if (age) age.textContent = ageText(info.age_s);
     });
+    document.querySelectorAll('[data-chain-state]').forEach(dot =>
+      dot.setAttribute('fill', PALETTE[chainState(chains[dot.dataset.chainState] ?? 'IDLE')]));
+    const signals = d.signals || {};
+    document.querySelectorAll('g.node.service').forEach(g => {
+      const row = signals[g.dataset.service] || {};
+      const text = g.querySelector('text');
+      if (text) text.setAttribute('fill', PALETTE[serviceState(row.state)]);
+      const title = g.querySelector('title');
+      if (title) title.textContent = `${g.dataset.service} · ${row.state || 'UNOBSERVABLE'} · ${row.source || 'no observation'}`;
+    });
+    document.querySelectorAll('[data-service-state]').forEach(dot =>
+      dot.setAttribute('fill', PALETTE[serviceState((signals[dot.dataset.serviceState] || {}).state)]));
     // A column header carries its own state: the worst of the chains that use it. Without this
     // the header would keep whatever colour it had at build time while the rows moved.
     const rank = {FAIL: 0, STALE: 1, RUNNING: 2, SKIP: 3, PASS: 4, IDLE: 5};
     document.querySelectorAll('g.node.module').forEach(g => {
       const users = (g.dataset.users || '').split(',').filter(Boolean);
-      const judged = users.map(u => chains[u] || 'IDLE').filter(st => st !== 'SKIP' && st !== 'IDLE');
+      const states = users.map(u => chainState(chains[u] ?? 'IDLE'));
+      const judged = states.filter(st => st !== 'SKIP' && st !== 'IDLE');
       let worst = judged.length ? judged.sort((a, b) => (rank[a] ?? 9) - (rank[b] ?? 9))[0]
-                                : (users.length ? 'SKIP' : 'IDLE');
+                                : (states.includes('SKIP') ? 'SKIP' : 'IDLE');
       const t = g.querySelector('text');
       if (t) t.setAttribute('fill', PALETTE[worst] || PALETTE.IDLE);
+      const title = g.querySelector('title');
+      if (title) title.textContent = `${g.dataset.module} · ${worst} · used by ${users.length} chains`;
     });
     document.querySelectorAll('.edge').forEach(p => {
       const st = chains[p.dataset.from];
@@ -1025,15 +1207,64 @@ async function poll() {
       stripEl.innerHTML = d.strip_html;
       stripEl.dataset.sig = d.strip_html;
     }
+    const pass = Object.values(chains).filter(s => s === 'PASS').length;
+    const skip = Object.values(chains).filter(s => s === 'SKIP').length;
+    const running = Object.values(chains).filter(s => s === 'RUNNING').length;
+    document.getElementById('chain-summary').textContent = running ? `${running} running · ${pass} pass` : `${pass} pass · ${skip} skip`;
+    document.getElementById('chain-detail').textContent = `${Object.keys(chains).length} observed · ${skip} skip · ${Object.values(chains).filter(s => s === 'FAIL' || s === 'ERROR').length} failed · SKIP means unexercised`;
+    const boundaries = [...document.querySelectorAll('g.node.service')].map(g => g.dataset.service);
+    document.getElementById('boundary-summary').textContent = `${boundaries.filter(n => (signals[n] || {}).state === 'OK').length}/${boundaries.length} observed OK`;
     const live = document.getElementById('live');
     if (live) {
       const txt = document.getElementById('livetext');
-      if (txt) txt.textContent = d.stale ? 'snapshot' : 'live';
-      live.className = d.stale ? 'off' : 'on';
+      if (txt) txt.textContent = view.fresh ? 'live' : 'snapshot';
+      live.className = view.fresh ? 'on' : 'off';
     }
-  } catch (err) { /* keep the last sample on screen */ }
+    document.body.classList.toggle('sample-unavailable', !view.fresh);
+    document.getElementById('observation-note').textContent = view.fresh
+      ? `Live sample · ${hkt(d.ts)} HKT · seq ${d.seq} · polling every 10 s while visible; historical records retain their own timestamps.`
+      : 'Cached observation · freshness or sequence unconfirmed. ' + view.faults.join(' · ');
+}
+async function refreshSnapshots() {
+  if (Date.now() - lastSectionsAt < 60000) return;
+  const response = await fetch('/dashboard.html', {cache: 'no-store', signal: AbortSignal.timeout(8000)});
+  if (!response.ok) throw new Error('snapshot HTTP ' + response.status);
+  const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+  for (const id of ['operator-snapshot', 'evolution-snapshot', 'source-provenance', 'evidence-freshness', 'fault-ranking']) {
+    const source = doc.getElementById(id), host = document.getElementById(id);
+    if (source && host && !host.contains(document.activeElement)) host.innerHTML = source.innerHTML;
+  }
+  lastSectionsAt = Date.now();
+}
+function markUnavailable(error) {
+  document.body.classList.add('sample-unavailable');
+  const pill = document.getElementById('ov');
+  if (pill) { pill.textContent = 'UNAVAILABLE'; pill.className = 'pill UNKNOWN'; }
+  const live = document.getElementById('live');
+  if (live) live.className = 'off';
+  const txt = document.getElementById('livetext');
+  if (txt) txt.textContent = 'snapshot';
+  document.getElementById('observation-note').textContent = 'Connection unavailable · values remain cached. ' + String(error);
+}
+async function poll() {
+  if (pollTask) return pollTask;
+  pollTask = (async () => {
+    try {
+      const r = await fetch('/api/status', {cache: 'no-store', signal: AbortSignal.timeout(8000)});
+      if (!r.ok) throw new Error('status HTTP ' + r.status);
+      const d = await r.json();
+      if (!d || typeof d !== 'object' || Array.isArray(d)) throw new Error('invalid status payload');
+      applySample(d);
+      try { await refreshSnapshots(); } catch (error) {
+        const note = document.querySelector('#operator-snapshot .figure-note');
+        if (note) note.textContent = 'Snapshot refresh unavailable · this diagram is cached.';
+      }
+    } catch (err) { markUnavailable(err); }
+  })();
+  try { await pollTask; } finally { pollTask = null; }
 }
 
+updateConsumerCounts();
 if (location.protocol.startsWith('http')) {
   poll();
   let timer = null;
@@ -1068,8 +1299,16 @@ def build() -> str:
     for chain, mods in (pipeline.get("chain_modules") or {}).items():
         for module in mods or []:
             module_users.setdefault(module, []).append(chain)
-    derived = status.get("derived") or status_view.derive(signals, chain_now, module_users)
-    overall = derived.get("overall") or status.get("overall") or "—"
+    derived = observation_status(status)
+    for module in module_users:
+        for service in services_for_module(module):
+            if service not in signals:
+                derived['faults'].append(f'{service} = UNOBSERVABLE')
+    if derived['faults']:
+        derived['overall'] = 'ALARM'
+    overall = derived['overall']
+    # The operator strip reads the same guarded verdict as the header.
+    status = {**status, 'derived': derived}
     traces = load(ROOT / "docs" / "traces" / "latest.json", {}) or {}
     try:
         trace_ts = datetime.datetime.fromisoformat(
@@ -1109,17 +1348,23 @@ def build() -> str:
 
 
     fault_line = ("<div class='faults' id='faults' style='display:none'></div>" if not faults else
-                  "<div class='faults' id='faults'><b>FAULT</b>" + " · ".join(faults) + "</div>")
+                  "<div class='faults' id='faults'><b>FAULT</b>" + " · ".join(html.escape(str(f)) for f in faults) + "</div>")
 
-    if ranking:
-        grid_class, fault_card = "grid", (
-            "<section class='card'><h2>Faults — last 24 hours</h2>" +
-            ranking_table(ranking) + "</section>")
-    else:
-        grid_class, fault_card = "grid one", ""
+    grid_class = 'grid'
+    fault_card = ("<section class='card' id='fault-ranking'><h2>Fault incidents — last 24 hours</h2>" +
+                  (ranking_table(ranking) if ranking else "<p class='empty'>No recorded incidents in this window.</p>") +
+                  "<p class='figure-note'>Recorded history, not active faults. Episodes are separated by more than 10 minutes; up to six nodes shown.</p></section>")
 
     script = JS.replace("__PALETTE__", json.dumps(PALETTE))
     ok = overall == "OK"
+    boundary_names = [name for name in SERVICE_LABEL
+                      if name in signals or any(name in services_for_module(m) for m in module_users)]
+    boundaries_up = sum((signals.get(name) or {}).get('state') == 'OK' for name in boundary_names)
+    passed = sum(state == 'PASS' for state in chain_now.values())
+    skipped = sum(state == 'SKIP' for state in chain_now.values())
+    running = sum(state == 'RUNNING' for state in chain_now.values())
+    chain_summary = f'{running} running · {passed} pass' if running else f'{passed} pass · {skipped} skip'
+    ledger_stamp = html.escape(str(evolution.get('asof') or 'unavailable'))
 
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
@@ -1128,38 +1373,63 @@ def build() -> str:
 <title>Eidos v{html.escape(version_label() or '—')} — assembly and status</title>
 <style>{CSS}</style></head>
 <body>
+<a class="skip-link" href="#main">Skip to operations</a>
 <header>
   <span class="brand"><i>●</i>Eidos<span class="ver"> v{html.escape(version_label() or '—')}</span></span>
-  <span class="pill {'OK' if ok else 'ALARM'}" id="ov">{html.escape(str(overall))}</span>
+  <span class="pill {overall}" title="Observed operations only; not scientific acceptance" id="ov">{html.escape(str(overall))}</span>
   <span class="spacer"></span>
   <span class="meta" id="meta">sampled <b>{stamp}</b> HKT · <b>{status.get('samples', 0)}</b>
     samples · run <b>{'in progress' if status.get('live_run') else 'idle'}</b></span>
-  <span id="live" class="{'on' if ok else 'off'}"><i class="live"></i>
-    <span id="livetext">{'live' if ok else 'snapshot'}</span></span>
+  <span id="live" class="off"><i class="live"></i>
+    <span id="livetext">snapshot</span></span>
   <button class="act" onclick="location.reload()">refresh</button>
 </header>
-<main>
+<main id="main">
+  <div class="monitor-intro"><div><p class="section-kicker">EIDOS / OPERATIONS</p>
+    <h1>Research operations, with the evidence in view.</h1>
+    <p>Execution health, expected controls and evidence freshness. Operational OK does not establish scientific validity.</p></div>
+    <nav aria-label="Operations navigation"><a href="#consumers">Consumers</a><a href="#history">History</a>
+      <a href="/index.html">Research &amp; evidence ↗</a></nav></div>
+  <div class="overview" aria-label="Observed operation counts">
+    <article><h2>Execution chains</h2><strong id="chain-summary">{chain_summary}</strong>
+      <p id="chain-detail">{len(chain_now)} observed · SKIP means unexercised</p></article>
+    <article><h2>Consumer checks</h2><strong id="consumer-summary">Snapshot below</strong>
+      <p id="consumer-detail">Gate verdict compared with its declared expectation</p></article>
+    <article><h2>Service boundaries</h2><strong id="boundary-summary">{boundaries_up}/{len(boundary_names)} observed OK</strong>
+      <p>Reachability is separate from model capability</p></article>
+  </div>
+  <p id="observation-note" class="observation-note" role="status">Rendered snapshot · {stamp} HKT. Live connection awaiting verification.</p>
   <section class="card">
-    <h2>Framework self-audit — chains (run order) × modules × services, observed by four instruments</h2>
+    <h2>Framework self-audit — chains × modules × service boundaries</h2>
     <div class="key">{key}</div>
-    {svg}
-    <div class="opwrap"><h3>Project pipeline — bootstrap → measure → gates → Gate S → render → handoff</h3>
+    <div class="matrix-scroll" tabindex="0" role="region" aria-label="Scrollable dependency matrix">{svg}</div>
+    <p class="figure-note">Rows follow execution layers; dots mark dependencies. Scroll within the matrix for service columns.
+      Select a chain, module or service to inspect its recorded state.</p>
+    <div class="opwrap"><h3>Project pipeline · method, not a live progress indicator</h3>
+    <ol class="pipeline-steps" aria-label="Project method"><li><b>Bootstrap</b></li><li>Measure</li><li>Gates</li><li>Gate S</li><li>Render</li><li>Handoff</li></ol>
     <p class="mono" style="margin:0 0 6px;color:var(--mut)">The band below is that pipeline's
     output: each registered project, its verdict, and how old the evidence behind it is.</p></div>
-    <div class="opwrap"><h3>Consumers — what the framework does for a project
-      <span class="hint">green = verdict equals expectation, not “the project passed”
-      · capability coverage {cov}</span></h3>
+    <div class="opwrap" id="consumers"><h3>Consumers — what the framework does for a project</h3>
+      <p class="figure-note">MATCH = Gate S verdict equals expectation; CONTROL OK = a deliberate rejection.
+      STALE withdraws the cached verdict. Recorded consumer-demonstrated capability coverage: {cov}.
+      <a href="/docs/DEMO_COVERAGE.json">Inspect coverage record ↗</a></p>
     <div id="consumer-cards">{consumers}</div></div>
-    <div class="opwrap"><h3>Operators — self-check, then self-heal</h3>{operator}</div>
-    <div class="opwrap"><h3>Feedback → evolution — how a defect becomes a guard</h3>{evoloop}</div>
+    <div class="opwrap" id="operator-snapshot"><h3>Operators — self-check, then self-heal</h3>
+      <p class="figure-note">Rendered snapshot · {stamp} HKT · server snapshots requested every minute while visible.</p>
+      <p class="figure-note">Repair phases describe the latest logged attempt, not proof that a current fault has cleared.
+      With no active fault, repair stages are SKIP.</p>
+      <div class="matrix-scroll" tabindex="0" role="region" aria-label="Recovery snapshot">{operator}</div></div>
+    <div class="opwrap" id="evolution-snapshot"><h3>Feedback → evolution — how a defect becomes a guard</h3>
+      <p class="figure-note">Historical ledger · {ledger_stamp} · workflow stages carry no live PASS verdict.</p>
+      <div class="matrix-scroll" tabindex="0" role="region" aria-label="Evolution workflow">{evoloop}</div></div>
     {fault_line}
-    {provenance()}
+    <div id="source-provenance">{provenance()}<p class="figure-note">Source file ages; a quiet recovery log is not a failed service.</p></div>
   </section>
   <div class="{grid_class}">
-    <section class="card">
-      <h2>History — the same nodes over the last {MAX_COLS} samples</h2>
+    <section class="card" id="history">
+      <h2>History — observed state transitions</h2>
       <div id="strip">{strip(timeline)}</div>
-      {freshness()}
+      <div id="evidence-freshness">{freshness()}</div>
     </section>{fault_card}
   </div>
 </main>

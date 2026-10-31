@@ -17,6 +17,19 @@ defaults:
     shell: bash
 
 jobs:
+  release-integrity:
+    # Check committed artifacts before any build can replace them on the runner.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Source, documentation and release history agree
+        run: python tools/versioning.py --check
+      - name: Publication artifacts match their inspected fingerprints
+        run: python tools/check_publication_record.py
+
   test:
     runs-on: ubuntu-latest
     env:

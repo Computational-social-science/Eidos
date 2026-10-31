@@ -18,6 +18,12 @@ from reference.softmax_matrix.verify import validate, validate_final_check
 
 
 def build(output):
+    from framework.artifacts import output_lock
+    with output_lock(output):
+        return _build(output)
+
+
+def _build(output):
     p = json.loads((HERE / "protocol.json").read_text())
     r = json.loads((HERE / "docs/evidence.json").read_text())
     errors = validate(r, p)
@@ -102,22 +108,57 @@ def build(output):
               "Downloads: [trajectories](trajectories.csv), [paired endpoints](paired.csv), [protocol](protocol.json), [raw evidence](evidence.json), [final gradient audit](final-gradient-check.json), [source and checkpoints](reproduce.zip).", "",
               "Publication masters: [editable SVG](accuracy-matrix.svg), [PDF at 183 mm](accuracy-matrix.pdf).", "",
               "CPU acceptance: `python reference/softmax_matrix/verify.py`. Retraining needs the recorded CUDA runtime and a separately registered output location; the original producer refuses overwrite."]
-    (HERE / "docs/REPORT.md").write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+    from tools.publication import header as report_header, declarations, caption_tables, caption_figures
+    lines += ['', '## Methods', '', '### Study design and experimental units', '',
+              f"Modular addition modulo {p['modulus']} uses a {p['train_fraction']:.0%} training split. "
+              f"Three initialization/split seeds ({', '.join(map(str,p['seeds']))}) are reused across "
+              f"the loss-precision and epsilon conditions. Both arms in each pair copy identical initial weights. "
+              f"Every run uses {p['epochs']:,} epochs; checkpoints are logged every {p['log_interval']} epochs. "
+              "No seeds or cells are excluded and no favorable-outcome stopping rule is applied.", '',
+              '### Architecture, optimizer and precision', '',
+              f"A {p['layers']}-layer, {p['heads']}-head Transformer of width {p['width']} uses {p['activation']} "
+              f"and no LayerNorm. {p['optimizer']} uses learning rate {p['lr']:g}, betas {tuple(p['betas'])}, "
+              f"and weight decay {p['weight_decay']:g}. Parameters and model forward remain float32. "
+              "Only loss-entry logits switch between float32 and float64; the full protocol lists "
+              "input representation, attention, initialization and decay details that are not specified by the paper.", '',
+              '### Statistical analysis', '',
+              "An experimental unit is a seed-specific training run. The 18 condition-specific pairs share "
+              "three initialization/split seeds and must not be treated as 18 independent seed replicates. "
+              "All individual trajectories and final paired differences are reported. There is no significance "
+              "test, confidence interval or error bar; the study is descriptive and does not estimate a population effect.", '',
+              '### Independent checks and provenance', '',
+              "Raw model tensors and final held-out predictions are checked by an independent NumPy forward path. "
+              "Final gradients are independently reloaded on the recorded CUDA runtime; intermediate gradient "
+              "counts remain producer logs. Source, data, protocol, initial state, checkpoint and environment "
+              "hashes are verified. The original experimental lock is archived unchanged when the local "
+              "EIDOS release label changes; any dependency/source/marker/hash change still fails that equivalence check."]
+    (HERE / "docs/REPORT.md").write_text('\n'.join(lines)+declarations(), encoding='utf-8', newline='\n')
     with (output / "paired.csv").open("w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=list(paired[0])); writer.writeheader(); writer.writerows(paired)
-    header = "---\ntitle: 'Softmax: loss precision and epsilon matrix'\nlang: en\nformat:\n  html:\n    embed-resources: true\n  pdf:\n    pdf-engine: lualatex\n    geometry: margin=1in\n  docx: default\n---\n\n"
+    header = report_header('Precision and epsilon shape the outcome of a Softmax repair')
     pictures = """
 ::: {.content-visible when-format="pdf"}
-![All seeds and both repair arms across the supported matrix.](accuracy-matrix.pdf){width=100%}
+![Figure 1 | Held-out accuracy in every supported condition. a-c, float32 loss-entry logits; d-f, float64 loss-entry logits. Columns give epsilon 1e-8, 1e-12 and 1e-16. Every line is one seed-specific training run; markers distinguish three seeds, dashed lines standard CE and solid lines fixed CE. All model parameters and forward computations remain float32. Individual trajectories are shown without error bars or population inference.](accuracy-matrix.pdf){width=100%}
 :::
 ::: {.content-visible when-format="html"}
-![All seeds and both repair arms across the supported matrix.](accuracy-matrix.svg){width=100%}
+![Figure 1 | Every seed and repair arm. a-c, float32 loss-entry logits; d-f, float64 loss-entry logits. Columns give epsilon 1e-8, 1e-12 and 1e-16. Lines show individual trajectories; three seed markers, dashed standard CE and solid fixed CE. Model parameters and forward remain float32. No error bars or population inference.](accuracy-matrix.svg){width=100%}
 :::
 ::: {.content-visible when-format="docx"}
-![All seeds and both repair arms across the supported matrix.](accuracy-matrix.png){width=100%}
+![Figure 1 | Every seed and repair arm. a-c, float32 loss-entry logits; d-f, float64 loss-entry logits. Columns give epsilon 1e-8, 1e-12 and 1e-16. Lines show individual trajectories; three seed markers, dashed standard CE and solid fixed CE. Model parameters and forward remain float32. No error bars or population inference.](accuracy-matrix.png){width=100%}
 :::
 """
-    (output / "report.qmd").write_text(header + pictures + "\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+    body_lines=lines[2:]
+    first_table=next(i for i,line in enumerate(body_lines) if line.startswith('|'))
+    body=caption_tables('\n'.join(body_lines[:first_table])+'\n\n'+caption_figures(pictures)+'\n\n'+
+                        '\n'.join(body_lines[first_table:]),
+                        ['Table 1 | Every final paired held-out outcome. Delta is fixed minus standard in percentage points; all three seeds and all conditions are retained.'])
+    summary = ('## Summary\n\nA numerical repair and a downstream learning benefit require separate evidence. '
+               f'This registered local reconstruction retains {len(r["runs"])} complete trajectories and '
+               f'{len(paired)} paired endpoints. Fixed cross-entropy improves {wins} endpoints and reduces '
+               f'{losses}; {len(paired)-wins-losses} is tied. The tested repair removes recorded target-gradient '
+               'zeros within its qualified scope, while the specified training budget does not reproduce '
+               'the cited paper\'s generalisation result. All seeds, models and unfavorable outcomes are preserved.\n\n')
+    (output / "report.qmd").write_text(header + summary + '## Results\n\n' + body + declarations(), encoding="utf-8", newline="\n")
     for source, name in ((HERE / "protocol.json", "protocol.json"), (HERE / "docs/evidence.json", "evidence.json"),
                          (HERE / "docs/final-gradient-check.json", "final-gradient-check.json")):
         shutil.copyfile(source, output / name)
@@ -125,6 +166,12 @@ def build(output):
 
 
 def bundle(output):
+    from framework.artifacts import output_lock
+    with output_lock(output):
+        return _bundle(output)
+
+
+def _bundle(output):
     output = Path(output)
     files = {}
     for folder in (HERE, ROOT / "reference/softmax_grokking", ROOT / "framework"):
@@ -135,28 +182,42 @@ def bundle(output):
                  "reference/softmax_training/train.py", "reference/softmax_training/validate.py",
                  "tools/numerics_figure.py", "tests/test_softmax_matrix.py", "tests/test_softmax_matrix_torch.py"):
         files[name] = (ROOT / name).read_bytes()
+    files['tools/publication.py'] = (ROOT / 'tools/publication.py').read_bytes()
     files["SOURCE-README.md"] = (ROOT / "README.md").read_bytes()
+    for path in sorted((ROOT / "lock/snapshots/uv").glob("*.lock")):
+        files[path.relative_to(ROOT).as_posix()] = path.read_bytes()
     for path in ROOT.glob("LICENSE*"):
         if path.is_file(): files[path.name] = path.read_bytes()
     files["README.md"] = b"Eidos supported loss-precision matrix. Select a Python >=3.11 environment.\nuv sync --locked --extra dev --extra verifiers\nuv run --no-sync python reference/softmax_matrix/verify.py\nuv run --no-sync python -m pytest tests/test_softmax_matrix.py -q\nThe saved CPU acceptance does not rerun CUDA training. All models and original parent initial states are included.\n"
     files["checksums.json"] = json.dumps({n: hashlib.sha256(b).hexdigest() for n, b in files.items()}, indent=2).encode()
-    with zipfile.ZipFile(output / "reproduce.zip", "w", zipfile.ZIP_DEFLATED) as z:
-        for name, body in sorted(files.items()):
-            info = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0)); info.compress_type = zipfile.ZIP_DEFLATED
-            z.writestr(info, body)
+    from framework.artifacts import atomic_output
+    with atomic_output(output/'reproduce.zip') as temporary:
+        with zipfile.ZipFile(temporary, "w", zipfile.ZIP_DEFLATED) as z:
+            for name, body in sorted(files.items()):
+                info = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0)); info.compress_type = zipfile.ZIP_DEFLATED
+                z.writestr(info, body)
 
 
 def main():
     parser = argparse.ArgumentParser(); parser.add_argument("--render", action="store_true")
     args = parser.parse_args(); output = ROOT / "site/reports/softmax-matrix"
-    rows = build(output)
+    from framework.artifacts import output_lock
+    with output_lock(output):
+        return _deliver(args,output)
+
+
+def _deliver(args,output):
+    rows = _build(output)
     if args.render:
         import os
         quarto = os.environ.get("QUARTO_BIN") or shutil.which("quarto")
         if not quarto: raise RuntimeError("Quarto missing")
+        from tools.publication import reference_docx, finish_docx
+        reference_docx(output, quarto)
         for fmt in ("html", "pdf", "docx"):
             subprocess.run([quarto, "render", "report.qmd", "--to", fmt], cwd=output, check=True)
-    bundle(output)
+        finish_docx(output)
+    _bundle(output)
     print(json.dumps({"paired_cells": len(rows), "output": str(output)}))
 
 

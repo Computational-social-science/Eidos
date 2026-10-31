@@ -1,0 +1,221 @@
+{
+  "technical_checks_pass": true,
+  "submission_ready": false,
+  "stable_inputs": true,
+  "artifact_sha256": {
+    "tools/publication.py": "3d38c665c5fcf39fddc615ca2f8ea02640aac182d6dc9a00a0e035697eba6561",
+    "tools/audit_publication.py": "1c23a0ea8ca6b4037352eb5061880f3b38f03ec807c96d4c4e282fa19e3b14b9",
+    "tools/check_publication_record.py": "807daabe73163fc36c9e0be15d4e7c1b45456809ce0df619f23687e7b4669902",
+    "tools/numerics_figure.py": "6315d4ce66d2aa67bfbdddf35014b4f7bc3ec4464818a6261e2ef1b1f4085d93",
+    "tools/training_figure.py": "d0b12cef376b15faf64b8f08b5c7b9ffdd401911b6aaef3b1830e43e9d3485a1",
+    "reference/softmax_matrix/report.py": "ffaba421f9e606e29252792553a36c38759398b6df1db8b1c7d25205a1aa81f0",
+    "tools/numerics_case.py": "203243cdb401936f4f0f2bebf94fb307e2b832939c0655dff2df80d1dc5798eb",
+    "site/reports/numerics/report.qmd": "eeb9a4f647bd37262a2e5a3bfafc01c5662ff397ae7c9ea0537548ea7bb05774",
+    "site/reports/numerics/report.html": "8d4660c714582db5485575d11bf380708e084e22c2c01903babdb4c10ff74e22",
+    "site/reports/numerics/report.pdf": "d74537288f6fe30024fbebc4dfb6c2d63dac13183bce67a510a2e73dab67ce57",
+    "site/reports/numerics/report.docx": "b47c2fd76dddeaa8f6454b1b9bd186dad6a6f1927e643a79526a037e5b6d695e",
+    "site/reports/numerics/figure-float32.svg": "3bbfdf9ced003d85562d83e7921195d9379c8cfb1ba25d115d2ce22bdff41123",
+    "site/reports/numerics/figure-float64.svg": "23ff586c6be7b901a71b941e6f8cec3338b89957c10503d2c5774356b605b514",
+    "site/reports/numerics/training/trajectory.svg": "f419e498499a80a19b01ef283220fbc72acd4ea29f33eda1e34dc40e0c2fa8fa",
+    "site/reports/numerics/figure-float32.pdf": "5a6d95c785070e34437d664c882275ac8d601e008c9e40bd1d5ced8670974ebf",
+    "site/reports/numerics/figure-float64.pdf": "d4d1b6af71dde857961457faea19f8831d0c52cabfd2d1304532ec8e9130a555",
+    "site/reports/numerics/training/trajectory.pdf": "b10156bff73acca3710bf148219a4cfde03a0a9f81f154cdb46c4cb80537658d",
+    "site/reports/softmax-matrix/report.qmd": "db31709ff43e1def2151cbc98879c69e0e0eb1a60f97f734c9f4feaec1cc6b5b",
+    "site/reports/softmax-matrix/report.html": "0ae8fcf8e6ee98fdf20494f6d6723ed632eede80ee7f2f51cd6a21f78116265e",
+    "site/reports/softmax-matrix/report.pdf": "2f0d7bd69f822d69c4268ab9a3b6a12521debe46f67a187afd5dbd7263f8de8b",
+    "site/reports/softmax-matrix/report.docx": "545da4d0ea52ac103163a7c22f8f12388e4e383140ef6842bfafe079a0c470db",
+    "site/reports/softmax-matrix/accuracy-matrix.svg": "b1fcf3c93b36dc7b58151f7273072bc50f8610e63335f6ffdc9341076784d698",
+    "site/reports/softmax-matrix/accuracy-matrix.pdf": "c26e10cfb98d09b16b72fff1787227b59a605cdddb15d5bcaea0c9a4a09ae330"
+  },
+  "hash_policy": "SHA-256; production Python canonical UTF-8/LF, delivered artifacts exact bytes preserved by Git -text.",
+  "scope": "Measured technical production requirements; final page inspection and human submission metadata are separate.",
+  "guides": [
+    "https://research-figure-guide.nature.com/figures/building-and-exporting-figure-panels/",
+    "https://www.nature.com/nature/for-authors/formatting-guide"
+  ],
+  "figures": [
+    {
+      "path": "site\\reports\\numerics\\figure-float32.svg",
+      "width_mm": 182.99999983055554,
+      "height_mm": 131.99999987777775,
+      "text_nodes": 78,
+      "font_names": [
+        "Arial"
+      ],
+      "font_range_pt": [
+        5.999999999999999,
+        6.999999999999999
+      ],
+      "checks": {
+        "width_89_or_183_mm": true,
+        "height_at_most_170_mm": true,
+        "editable_text": true,
+        "supported_text_geometry": true,
+        "standard_font": true,
+        "font_size_5_to_7_pt": true
+      },
+      "ok": true
+    },
+    {
+      "path": "site\\reports\\numerics\\figure-float64.svg",
+      "width_mm": 182.99999983055554,
+      "height_mm": 131.99999987777775,
+      "text_nodes": 82,
+      "font_names": [
+        "Arial"
+      ],
+      "font_range_pt": [
+        5.999999999999999,
+        6.999999999999999
+      ],
+      "checks": {
+        "width_89_or_183_mm": true,
+        "height_at_most_170_mm": true,
+        "editable_text": true,
+        "supported_text_geometry": true,
+        "standard_font": true,
+        "font_size_5_to_7_pt": true
+      },
+      "ok": true
+    },
+    {
+      "path": "site\\reports\\numerics\\training\\trajectory.svg",
+      "width_mm": 182.99999983055554,
+      "height_mm": 70.00000005277778,
+      "text_nodes": 43,
+      "font_names": [
+        "Arial"
+      ],
+      "font_range_pt": [
+        6.0,
+        7.0
+      ],
+      "checks": {
+        "width_89_or_183_mm": true,
+        "height_at_most_170_mm": true,
+        "editable_text": true,
+        "supported_text_geometry": true,
+        "standard_font": true,
+        "font_size_5_to_7_pt": true
+      },
+      "ok": true
+    },
+    {
+      "path": "site\\reports\\softmax-matrix\\accuracy-matrix.svg",
+      "width_mm": 182.99999983055554,
+      "height_mm": 129.99999999722223,
+      "text_nodes": 32,
+      "font_names": [
+        "Arial"
+      ],
+      "font_range_pt": [
+        6.0,
+        7.0
+      ],
+      "checks": {
+        "width_89_or_183_mm": true,
+        "height_at_most_170_mm": true,
+        "editable_text": true,
+        "supported_text_geometry": true,
+        "standard_font": true,
+        "font_size_5_to_7_pt": true
+      },
+      "ok": true
+    }
+  ],
+  "pdf_figure_fonts": [
+    {
+      "path": "site/reports/numerics/figure-float32.pdf",
+      "all_embedded": true,
+      "no_type3_fonts": true,
+      "font_table": [
+        "/HDPNKT+ArialMT /CIDFontType2 embedded=True"
+      ]
+    },
+    {
+      "path": "site/reports/numerics/figure-float64.pdf",
+      "all_embedded": true,
+      "no_type3_fonts": true,
+      "font_table": [
+        "/CMMMMQ+ArialMT /CIDFontType2 embedded=True"
+      ]
+    },
+    {
+      "path": "site/reports/numerics/training/trajectory.pdf",
+      "all_embedded": true,
+      "no_type3_fonts": true,
+      "font_table": [
+        "/CIIXWM+ArialMT /CIDFontType2 embedded=True"
+      ]
+    },
+    {
+      "path": "site/reports/softmax-matrix/accuracy-matrix.pdf",
+      "all_embedded": true,
+      "no_type3_fonts": true,
+      "font_table": [
+        "/DZBSWO+ArialMT /CIDFontType2 embedded=True"
+      ]
+    }
+  ],
+  "reports": [
+    {
+      "path": "site/reports/numerics",
+      "pages": 8,
+      "checks": {
+        "Methods": true,
+        "Data availability": true,
+        "Code availability": true,
+        "References": true,
+        "experimental unit": true,
+        "pdf_fonts_embedded": true,
+        "no_type3_fonts": true,
+        "a4_pages": true,
+        "no_duplicate_caption_labels": true,
+        "figure_legends_under_300_words": true,
+        "word_line_numbers": true,
+        "word_12pt": true,
+        "word_double_spacing": true
+      },
+      "font_table": [
+        "/AXJNCL+LatinModernMath-Regular /CIDFontType0 embedded=True",
+        "/CIIXWM+ArialMT /CIDFontType2 embedded=True",
+        "/ESJKPQ+LMSans8-Regular /CIDFontType0 embedded=True",
+        "/HDPNKT+ArialMT /CIDFontType2 embedded=True",
+        "/LMJNGJ+TimesNewRomanPS-BoldMT /CIDFontType2 embedded=True",
+        "/PYCPEH+TimesNewRomanPSMT /CIDFontType2 embedded=True",
+        "/SHQSKA+LatinModernMath-Regular /CIDFontType0 embedded=True",
+        "/VXMDZF+LMMono12-Regular /CIDFontType0 embedded=True",
+        "/ZCGPUT+TimesNewRomanPS-ItalicMT /CIDFontType2 embedded=True"
+      ],
+      "ok": true
+    },
+    {
+      "path": "site/reports/softmax-matrix",
+      "pages": 6,
+      "checks": {
+        "Methods": true,
+        "Data availability": true,
+        "Code availability": true,
+        "References": true,
+        "experimental unit": true,
+        "pdf_fonts_embedded": true,
+        "no_type3_fonts": true,
+        "a4_pages": true,
+        "no_duplicate_caption_labels": true,
+        "figure_legends_under_300_words": true,
+        "word_line_numbers": true,
+        "word_12pt": true,
+        "word_double_spacing": true
+      },
+      "font_table": [
+        "/CVGPOV+TimesNewRomanPSMT /CIDFontType2 embedded=True",
+        "/DZBSWO+ArialMT /CIDFontType2 embedded=True",
+        "/ESJKPQ+LMSans8-Regular /CIDFontType0 embedded=True",
+        "/HXZLQF+TimesNewRomanPS-BoldMT /CIDFontType2 embedded=True",
+        "/JVNESU+LMMono12-Regular /CIDFontType0 embedded=True",
+        "/ZCGPUT+TimesNewRomanPS-ItalicMT /CIDFontType2 embedded=True"
+      ],
+      "ok": true
+    }
+  ]
+}

@@ -9,13 +9,14 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
+from matplotlib.ticker import FuncFormatter
 from matplotlib.lines import Line2D
 import numpy as np
 
 GUIDE = "https://research-figure-guide.nature.com/figures/building-and-exporting-figure-panels/"
 FONT = "Arial" if any(font.name == "Arial" for font in font_manager.fontManager.ttflist) else "DejaVu Sans"
 STANDARD, FIXED, REFERENCE = "#d55e00", "#0072b2", "#222222"
-STYLE = {"font.family": FONT, "font.size": 6.5, "axes.titlesize": 7,
+STYLE = {"font.family": FONT, "font.size": 6.5, "axes.titlesize": 7, "axes.formatter.use_mathtext": False,
          "mathtext.fontset": "custom", "mathtext.rm": FONT,
          "mathtext.it": f"{FONT}:italic", "mathtext.bf": f"{FONT}:bold",
          "axes.labelsize": 6.5, "xtick.labelsize": 6, "ytick.labelsize": 6,
@@ -83,6 +84,10 @@ def create_figure(data: dict, dtype: str):
             d.annotate("exact zero" if value == 0 else f"{value:.2e}", (index, value),
                        xytext=(0, 5), textcoords="offset points", ha="center", fontsize=6)
         for axis in axes.flat:
+            if axis.get_xscale() in ('log','symlog'):
+                axis.xaxis.set_major_formatter(FuncFormatter(lambda value, _: f'{value:.0e}'))
+            if axis.get_yscale() in ('log','symlog'):
+                axis.yaxis.set_major_formatter(FuncFormatter(lambda value, _: f'{value:.0e}'))
             axis.spines[["top", "right"]].set_visible(False)
             axis.tick_params(direction="out", length=2.5, width=.5)
             axis.set_title(axis.get_title(), loc="left", fontsize=7, pad=9)

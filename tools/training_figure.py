@@ -30,6 +30,8 @@ def render_training(output: Path, report: dict) -> None:
         axes[1].set(xlabel="Full-batch Adam step", ylabel="Held-out KL (evaluated in float64)",
                     title="b   Distribution drift")
         axes[1].set_yscale("symlog", linthresh=1e-12)
+        from matplotlib.ticker import FuncFormatter
+        axes[1].yaxis.set_major_formatter(FuncFormatter(lambda value, _: f'{value:.0e}'))
         for axis in axes:
             title = axis.get_title()
             axis.set_title("")

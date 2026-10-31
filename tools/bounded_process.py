@@ -14,6 +14,7 @@ def run_tree(args: list[str], *, cwd: Path, timeout: float) -> subprocess.Comple
         # Killing the helper therefore also kills tool/Lean/etc descendants.
         wrapper = Path(__file__).with_name("windows_job.py")
         return subprocess.run([sys.executable, str(wrapper), *args], cwd=cwd,
+                              stdin=subprocess.DEVNULL,
                               capture_output=True, text=True, encoding="utf-8",
                               errors="replace", timeout=timeout,
                               creationflags=subprocess.CREATE_NO_WINDOW)

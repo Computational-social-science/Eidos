@@ -12,14 +12,32 @@ It is intentionally the only writer of that file.
 from __future__ import annotations
 
 import argparse
+import hashlib
+import importlib.metadata
 import json
 import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs" / "SELF_AUDIT.json"
+
+
+def input_state() -> dict:
+    """Bound source/metadata and installed distribution identities, not GPU health."""
+    paths=[p for folder in ('framework','tools','tests') for p in (ROOT/folder).rglob('*.py')
+           if '__pycache__' not in p.parts]
+    paths += [ROOT/p for p in ('pyproject.toml','uv.lock','README.md','analysis/CLAIMS.yaml')]
+    digest=hashlib.sha256()
+    for path in sorted(paths):
+        body=path.read_bytes().decode('utf-8-sig').replace('\r\n','\n').encode('utf-8')
+        digest.update(path.relative_to(ROOT).as_posix().encode()+b'\0'+hashlib.sha256(body).digest())
+    packages=sorted((str(d.metadata.get('Name','')).lower(),d.version) for d in importlib.metadata.distributions())
+    return {'source_sha256':digest.hexdigest(),
+            'distribution_sha256':hashlib.sha256(json.dumps(packages).encode()).hexdigest()}
 
 
 def _run(cmd: list[str], timeout: int = 900) -> subprocess.CompletedProcess:
@@ -27,7 +45,23 @@ def _run(cmd: list[str], timeout: int = 900) -> subprocess.CompletedProcess:
                           encoding="utf-8", errors="replace")
 
 
+def execute_tests(command: list[str]) -> tuple[subprocess.CompletedProcess, dict]:
+    """Reconcile actual item reports, excluding module-level collection skips."""
+    with tempfile.TemporaryDirectory(prefix='eidos-self-audit-') as directory:
+        report=Path(directory)/'tests.xml'
+        run=_run([*command,f'--junitxml={report}'],timeout=900)
+        try:
+            cases=list(ET.parse(report).getroot().iter('testcase'))
+            collection_skips=sum(1 for case in cases
+                                 if case.get('classname')=='' and case.find('skipped') is not None
+                                 and case.find('skipped').get('message')=='collection skipped')
+            return run,{'reported_items':len(cases)-collection_skips,'collection_level_skips':collection_skips}
+        except (OSError,ET.ParseError) as exc:
+            return run,{'reported_items':None,'error':type(exc).__name__}
+
+
 def collect() -> dict:
+    before=input_state()
     chains = _run([sys.executable, "tools/audit_chains.py", "--json", "--ci"])
     if chains.returncode not in (0, 1):
         raise SystemExit(f"chain audit failed to run: {chains.stderr[-400:]}")
@@ -45,12 +79,12 @@ def collect() -> dict:
     # visible drift, and the gate only refuses a drop larger than one point.
     coverage_total = None
     if _run([sys.executable, "-m", "coverage", "--version"], timeout=120).returncode == 0:
-        executed = _run([sys.executable, "-m", "coverage", "run", "--source=framework", "-m", "pytest", "-q"], timeout=900)
+        executed,execution = execute_tests([sys.executable, "-m", "coverage", "run", "--source=framework", "-m", "pytest", "-q", "-rs"])
         report = _run([sys.executable, "-m", "coverage", "report"], timeout=300)
         m2 = re.search(r"TOTAL\s+\d+\s+\d+\s+(\d+)%", report.stdout)
         coverage_total = int(m2.group(1)) if m2 else None
     else:
-        executed = _run([sys.executable, "-m", "pytest", "-q"], timeout=900)
+        executed,execution = execute_tests([sys.executable, "-m", "pytest", "-q", "-rs"])
     test_output = executed.stdout + executed.stderr
     test_counts = {}
     for label in ("passed", "failed", "skipped", "errors"):
@@ -83,10 +117,28 @@ def collect() -> dict:
         if m2:
             open_objections = int(m2.group(1))
 
+    recollected=_run([sys.executable,'-m','pytest','--collect-only','-q'],timeout=300)
+    later=re.search(r'(\d+)\s+tests? collected',recollected.stdout+recollected.stderr)
+    later_count=int(later[1]) if later else None
+    node_ids=lambda run: sorted(line.strip() for line in run.stdout.splitlines() if line.startswith('tests/') and '::' in line)
+    after=input_state()
+    selected=node_ids(tests)
+    deselection=any('deselected' in (run.stdout+run.stderr) for run in (tests,executed,recollected))
+    stable=(before==after and type(collected) is int and collected>0
+            and len(selected)==collected and len(set(selected))==collected
+            and collected==later_count and selected==node_ids(recollected)
+            and execution['reported_items']==collected and not deselection)
+
     diagnostics = {name: (run.stdout + run.stderr)[-12000:] for name, run in
-                   (("tests", executed), ("test_collection", tests), ("chains", chains),
+                   (("tests", executed), ("test_collection", tests), ("test_collection_after",recollected), ("chains", chains),
                     ("gate_s", gate), ("self_gate_s", self_run)) if run.returncode != 0}
     return {"chains": counts, "tests_collected": collected, "tests": test_counts,
+            "stability":{'stable':stable,'before':before,'after':after,'collection_after':later_count,
+                         'execution':execution,'deselection_detected':deselection,
+                         'collected_ids':len(selected),'unique_ids':len(set(selected)),
+                         'recollected_ids':len(node_ids(recollected)),
+                         'scope':'Framework/tools/tests Python sources, project version/lock/README/claims, installed distribution names+versions, collected test IDs'},
+            "skip_reasons":[line for line in test_output.splitlines() if line.startswith('SKIPPED [')],
             "diagnostics": diagnostics,
             "coverage_total": coverage_total,
             "coverage_scope": "framework; unexecuted modules included; tests and tools excluded",
@@ -95,14 +147,14 @@ def collect() -> dict:
                             "open_objections": open_objections},
             "exit_codes": {"chains": chains.returncode, "gate_s": gate.returncode,
                            "self_gate_s": self_run.returncode,
-                           "test_collection": tests.returncode, "tests": executed.returncode}}
+                           "test_collection": tests.returncode, "test_collection_after":recollected.returncode, "tests": executed.returncode}}
 
 
 def measurement_failures(record: dict) -> list[str]:
     """A repeated failure is still a failure, even when the baseline contains it."""
     codes = record.get("exit_codes", {})
     failures = [f"{stage} exited {codes.get(stage)!r}"
-                for stage in ("chains", "test_collection", "tests", "gate_s", "self_gate_s")
+                for stage in ("chains", "test_collection", "test_collection_after", "tests", "gate_s", "self_gate_s")
                 if codes.get(stage) != 0]
     if record.get("chains", {}).get("fail", 0):
         failures.append("one or more chains failed")
@@ -110,6 +162,8 @@ def measurement_failures(record: dict) -> list[str]:
         failures.append("fixture Gate S did not pass")
     if record.get("self_gate_s", {}).get("status") != "PASS":
         failures.append("framework Gate S did not pass")
+    if (record.get('stability') or {}).get('stable') is not True:
+        failures.append('source, environment or collected tests changed during measurement')
     return failures
 
 
@@ -119,6 +173,14 @@ def main(argv: list[str] | None = None) -> int:
                     help="compare with the recorded file instead of writing it")
     args = ap.parse_args(argv)
 
+    sys.path.insert(0,str(ROOT))
+    from framework.artifacts import output_lock
+    with output_lock(OUT.with_suffix('')):
+        return measure(args)
+
+
+def measure(args) -> int:
+
     new = collect()
     failures = measurement_failures(new)
     if failures:
@@ -126,6 +188,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"[FAIL] {failure}")
         for stage, output in new.get("diagnostics", {}).items():
             print(f"--- {stage} diagnostic ---\n{output}")
+        print('Measurement stability: '+json.dumps(new.get('stability',{}),sort_keys=True))
         return 1
     if args.check:
         if not OUT.is_file():
@@ -155,8 +218,9 @@ def main(argv: list[str] | None = None) -> int:
         print("no drift in the self-audit record")
         return 0
 
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps(new, indent=2) + "\n", encoding="utf-8")
+    from framework.artifacts import atomic_output
+    with atomic_output(OUT) as temporary:
+        temporary.write_text(json.dumps(new, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {OUT.relative_to(ROOT)}: {new['chains']} tests={new['tests_collected']} "
           f"gate_s={new['gate_s']['fixture_status']}")
     return 0

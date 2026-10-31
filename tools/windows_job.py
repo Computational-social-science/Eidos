@@ -50,7 +50,9 @@ def main() -> int:
     handle = own_job()
     if len(sys.argv) < 2:
         return 2
-    result = subprocess.run(sys.argv[1:])
+    result = subprocess.run(sys.argv[1:], stdin=subprocess.DEVNULL,
+                            stdout=sys.stdout, stderr=sys.stderr,
+                            creationflags=subprocess.CREATE_NO_WINDOW)
     assert handle
     return result.returncode
 

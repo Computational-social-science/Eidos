@@ -1,0 +1,195 @@
+{
+  "ts": "2026-10-27T14:16:56+08:00",
+  "model": "ScienceRSI-8b.i1-Q4_K_M",
+  "mode": "category fixed by artefact; model answers support only",
+  "set": "20",
+  "n": 20,
+  "hits": 17,
+  "accuracy": 0.85,
+  "wilson95": [
+    0.64,
+    0.948
+  ],
+  "rows": [
+    {
+      "id": "H-01",
+      "planted": "statistics",
+      "supports": false,
+      "expected": false,
+      "ok": true,
+      "reason": "The p-value of 0.06 is not statistically significant at the conventional 0.05 threshold, contradicting the claim of 'significantly faster'.",
+      "restate": null
+    },
+    {
+      "id": "H-02",
+      "planted": "statistics",
+      "supports": true,
+      "expected": false,
+      "ok": false,
+      "reason": "The artefact indicates that three benchmarks were significant at p < 0.05, which supports the claim that the model is better on three benchmarks.",
+      "restate": null
+    },
+    {
+      "id": "H-03",
+      "planted": "statistics",
+      "supports": false,
+      "expected": false,
+      "ok": true,
+      "reason": "The p-value of 0.21 is not statistically significant, which weakens the claim that the interaction is real.",
+      "restate": null
+    },
+    {
+      "id": "H-04",
+      "planted": "support",
+      "supports": false,
+      "expected": false,
+      "ok": true,
+      "reason": "The artefact explicitly states that safety in pregnancy was not assessed, which directly contradicts the claim that the method is safe in pregnancy.",
+      "restate": null
+    },
+    {
+      "id": "H-05",
+      "planted": "support",
+      "supports": false,
+      "expected": false,
+      "ok": true,
+      "reason": "The cited source discusses latency and different hardware, which does not directly support the claim about throughput gain.",
+      "restate": null
+    },
+    {
+      "id": "H-06",
+      "planted": "support",
+      "supports": false,
+      "expected": false,
+      "ok": true,
+      "reason": "The artefact explicitly declines a causal reading, which contradicts the claim that the effect is causal.",
+      "restate": null
+    },
+    {
+      "id": "H-07",
+      "planted": "identification",
+      "supports": false,
+      "expected": false,
+      "ok": true,
+      "reason": "The citation record indicates the benchmark paper was withdrawn, which undermines the claim that the dataset is the standard benchmark.",
+      "restate": null
+    },
+    {
+      "id": "H-08",
+      "planted": "identification",
+      "supports": false,
+      "expected": false,
+      "ok": true,
+      "reason": "The citation record lacks authorship, date, and has a dead link, making it unreliable to support the claim that the metric is established.",
+      "restate": null
+    },
+    {
+      "id": "H-09",
+      "planted": "identification",
+      "supports": false,
+      "expected": false,
+      "ok": true,
+      "reason": "The citation record shows the technique was published in 2016, contradicting the claim that it originates in Jones 2019.",
+      "restate": null
+    },
+    {
+      "id": "H-10",
+      "planted": "design",
+      "supports": true,
+      "expected": false,
+      "ok": false,
+      "reason": "The study design record compares completers with dropouts, which directly supports the claim that the training helps by showing improved outcomes for those who completed all sessions.",
+      "restate": null
+    },
+    {
+      "id": "H-11",
+      "planted": "design",
+      "supports": false,
+      "expected": false,
+      "ok": true,
+      "reason": "The study design record does not isolate the tool's effect from the concurrent workflow change, making it unable to confirm the claim.",
+      "restate": null
+    },
+    {
+      "id": "H-12",
+      "planted": "design",
+      "supports": false,
+      "expected": false,
+      "ok": true,
+      "reason": "The study design record does not provide information on the actual agreement rate or reliability estimate, only that adjudicated labels are reported.",
+      "restate": null
+    },
+    {
+      "id": "H-13",
+      "planted": null,
+      "supports": true,
+      "expected": true,
+      "ok": true,
+      "reason": "The artefact provides the necessary pre-registration, sample size, and statistical estimate with interval that align with the claim.",
+      "restate": null
+    },
+    {
+      "id": "H-14",
+      "planted": null,
+      "supports": true,
+      "expected": true,
+      "ok": true,
+      "reason": "The artefact includes random sampling, a high response rate, and non-response analysis, which collectively support the claim that the sample is representative.",
+      "restate": null
+    },
+    {
+      "id": "H-15",
+      "planted": null,
+      "supports": true,
+      "expected": true,
+      "ok": true,
+      "reason": "The artefact includes a verbatim quote from the cited paper with page and section details, directly supporting the claim.",
+      "restate": null
+    },
+    {
+      "id": "H-16",
+      "planted": null,
+      "supports": false,
+      "expected": true,
+      "ok": false,
+      "reason": "The artefact does not provide direct evidence that the control is a true control; it only describes the experimental setup without confirming the validity of the control condition.",
+      "restate": null
+    },
+    {
+      "id": "H-17",
+      "planted": null,
+      "supports": true,
+      "expected": true,
+      "ok": true,
+      "reason": "The evidence shows retention and a statistically significant effect size at 6 months, supporting the claim that the effect persists at follow-up.",
+      "restate": null
+    },
+    {
+      "id": "H-18",
+      "planted": null,
+      "supports": true,
+      "expected": true,
+      "ok": true,
+      "reason": "The artefact demonstrates rigorous methodology with verified citations, pre-registered design, and comprehensive analysis, which supports the claim that the model comparison is fair.",
+      "restate": null
+    },
+    {
+      "id": "H-19",
+      "planted": null,
+      "supports": true,
+      "expected": true,
+      "ok": true,
+      "reason": "The artefact includes a validation study with convergent validity against established measures, which directly supports the claim that the measure is validated.",
+      "restate": null
+    },
+    {
+      "id": "H-20",
+      "planted": null,
+      "supports": true,
+      "expected": true,
+      "ok": true,
+      "reason": "The pre-registered analysis and alternative specifications provide transparency and reduce the risk of analytical artefacts, supporting the claim that the finding is not an artefact of the analysis.",
+      "restate": null
+    }
+  ]
+}

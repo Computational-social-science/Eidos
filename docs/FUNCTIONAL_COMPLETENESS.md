@@ -17,16 +17,16 @@ reject unsupported claims → deliver → detect changes and revalidate.
 | Scheduler and recovery | Heartbeat, lifetime lock, watchdog, transactional reload, attempt/verification separation | A clean 24-hour observation is still required. Prior failures remain recorded after recovery. Rechecking Gate S does not regenerate research evidence. |
 | Inference and decisions | Local contracts, GPU budget tests, typed operator calibration | Calibration is bounded. Model scientific judgements missed acceptance thresholds and remain outside scientific gates. See `docs/MODEL_VERDICTS.md`. |
 | Tracking and provenance | Optional DVC/MLflow chains and case-specific metadata | General deliveries need explicit required code/data/config/seed/checkpoint/run records, and must reject missing required provenance. Not every project uses both services. |
-| Reporting and visualization | Quarto HTML/PDF/DOCX, dark recorded-data figures, editable SVG/PDF masters and page guards | Journal-specific review remains necessary. Style checks do not constitute publication acceptance. |
+| Reporting and visualization | Shared manuscript policy, Quarto HTML/PDF/DOCX, physical font/dimension/PDF/Word audits and artifact fingerprints; `docs/PUBLICATION-QUALITY.md` | Every changed layout requires complete PDF/Word page inspection. Human metadata and journal-specific scientific review remain necessary. |
 | Executable delivery | Checksum-verified case ZIPs; independently checked matrix CPU extraction | Generic `QuartoBridge.build_executable_package()` is incomplete: Docker copies a missing root `requirements.txt`; copied directories omit `pyproject.toml`, `uv.lock` and framework sources; Binder attempts `pip install -e .` without them. Require repair and a clean build/run before claiming one-click execution. |
 | Knowledge transfer | Existing Paper2Agent/MCP, filed failures/findings and reusable numerical checks | Demonstrate transfer to a second independent research problem and detection of a newly introduced error. Autonomous scientific self-improvement is not established. |
 | Release | Windows local suite, Linux CI, fixture/mutation/site hooks, versioned evidence | Validate source-archive installation and generic packaging; keep docs, exports, screenshots and CI tied to the release. |
 
-Artifact publication also needs hardening: site tests/builds currently export the
-same numerical report paths. Concurrent invocations can collide while writing the
-ZIP or figures. Run export-producing checks sequentially until the report exporter
-has a directory-level ownership/atomic-publication contract. The atomic pipeline
-JSON fix does not certify those other exporters.
+Report exporters now hold directory ownership through export and rendering;
+release snapshot/rollback shares that ownership. Nested writes by the same owner
+are permitted, competing processes are excluded, and ZIP replacement is atomic.
+This does not make the entire multi-file directory atomic for readers. Continue
+to run export-producing checks sequentially, then audit the final delivered bytes.
 
 ## Consumer snapshot contract
 

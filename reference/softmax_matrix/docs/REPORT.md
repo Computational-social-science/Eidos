@@ -48,3 +48,49 @@ Downloads: [trajectories](trajectories.csv), [paired endpoints](paired.csv), [pr
 Publication masters: [editable SVG](accuracy-matrix.svg), [PDF at 183 mm](accuracy-matrix.pdf).
 
 CPU acceptance: `python reference/softmax_matrix/verify.py`. Retraining needs the recorded CUDA runtime and a separately registered output location; the original producer refuses overwrite.
+
+## Methods
+
+### Study design and experimental units
+
+Modular addition modulo 31 uses a 50% training split. Three initialization/split seeds (0, 1, 2) are reused across the loss-precision and epsilon conditions. Both arms in each pair copy identical initial weights. Every run uses 10,000 epochs; checkpoints are logged every 200 epochs. No seeds or cells are excluded and no favorable-outcome stopping rule is applied.
+
+### Architecture, optimizer and precision
+
+A 1-layer, 4-head Transformer of width 64 uses ReLU and no LayerNorm. AdamW uses learning rate 0.001, betas (0.9, 0.98), and weight decay 1. Parameters and model forward remain float32. Only loss-entry logits switch between float32 and float64; the full protocol lists input representation, attention, initialization and decay details that are not specified by the paper.
+
+### Statistical analysis
+
+An experimental unit is a seed-specific training run. The 18 condition-specific pairs share three initialization/split seeds and must not be treated as 18 independent seed replicates. All individual trajectories and final paired differences are reported. There is no significance test, confidence interval or error bar; the study is descriptive and does not estimate a population effect.
+
+### Independent checks and provenance
+
+Raw model tensors and final held-out predictions are checked by an independent NumPy forward path. Final gradients are independently reloaded on the recorded CUDA runtime; intermediate gradient counts remain producer logs. Source, data, protocol, initial state, checkpoint and environment hashes are verified. The original experimental lock is archived unchanged when the local EIDOS release label changes; any dependency/source/marker/hash change still fails that equivalence check.
+## Data availability
+
+Original protocols, raw measurements, seed/split identifiers and saved-model
+artifacts are available in [the evidence record](evidence.json) and
+[the checksummed reproduction bundle](reproduce.zip). Every specified outcome is retained. The repository records code, data
+and environment hashes; artifact acceptance can be rerun independently.
+
+## Code availability
+
+Source and tests are included in `reproduce.zip` and in the
+[EIDOS repository](https://github.com/Computational-social-science/Eidos).
+Follow the bundle README for CPU acceptance and the recorded runtime for retraining.
+The original numerical method is attributed to its authors in the references.
+
+## Reporting and submission metadata
+
+This is a technical validation report. Authors, affiliations, funding, author
+contributions and competing-interest declarations must be completed by the human
+research team before journal submission. No inferred personal or funding metadata
+has been supplied. Technical production follows the linked figure and manuscript
+guides; scientific suitability and editorial acceptance require separate review.
+
+## References
+
+1. Barron, J. T., Gnanapragasam, D. & Tschannen, M. *A Fix for Softmax and
+   Cross-Entropy*, version 3. [arXiv:2610.31642v3](https://arxiv.org/html/2610.31642v3).
+2. Nature. [Research figure guide](https://research-figure-guide.nature.com/figures/building-and-exporting-figure-panels/).
+3. Nature. [Formatting guide](https://www.nature.com/nature/for-authors/formatting-guide).

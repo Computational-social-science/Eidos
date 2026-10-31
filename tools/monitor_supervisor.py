@@ -73,13 +73,15 @@ def main() -> int:
     if not acquire():
         return 0
     python = os.environ.get("PYTHON") or sys.executable
+    # Keep both the service and all short-lived probes console-less on Windows.
+    flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
     print(f"supervisor {os.getpid()} using {python}", flush=True)
     try:
         while True:
             log = LOG.open("a", encoding="utf-8")
             started = time.time()
             code = subprocess.call([python, "tools/serve_site.py", "--port", "8765"],
-                                   cwd=ROOT, stdout=log, stderr=log, stdin=subprocess.DEVNULL)
+                                   cwd=ROOT, stdout=log, stderr=log, stdin=subprocess.DEVNULL, creationflags=flags)
             log.write(f"{time.strftime('%Y-%m-%d %H:%M:%S')} serve_site exited {code} "
                       f"after {time.time() - started:.0f}s; restarting in {RESTART_DELAY}s\n")
             log.close()

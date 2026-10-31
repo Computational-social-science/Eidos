@@ -301,14 +301,17 @@ def audit_inference():
     # Every judgement stage routes to the decision operator; no generative stage does.
     judgement = ("routing", "hypothesis_screening", "gate_triage", "failure_classification")
     wired = all("StartLux-Decision-4B-Q8_0" in scheduler.get_stage_models(s) for s in judgement)
-    leaked = any("StartLux" in scheduler.get_stage_models(s)
-                 for s in ("manuscript_drafting", "hypothesis_generation"))
-    if manager.vram_budget != 12 or not models or refuses or not admits or not wired or leaked:
+    leaked = any("StartLux" in model
+                 for s in ("manuscript_drafting", "hypothesis_generation")
+                 for model in scheduler.get_stage_models(s))
+    tools_only = all(not scheduler.get_stage_models(s) for s in ("experiment_execution", "evaluation_gates"))
+    unqualified = scheduler.describe_stage("evaluation")["task_qualification"] == "UNQUALIFIED"
+    if manager.vram_budget != 12 or not models or refuses or not admits or not wired or leaked or not tools_only or not unqualified:
         return "FAIL", (f"budget={manager.vram_budget}, models={models}, "
                         f"refuses@4GB={refuses}, admits@12GB={admits}, "
                         f"judgement_wired={wired}, leaked_into_generation={leaked}")
-    return "PASS", (f"12 GB budget enforced; 4 judgement stages -> StartLux; "
-                    f"generators unchanged; evaluation -> {len(models)} model(s)")
+    return "PASS", ("budget and routing contract checked; execution/gates use tools; "
+                    "scientific model stages remain UNQUALIFIED; StartLux is triage only")
 
 
 def _option(flag: str) -> str:

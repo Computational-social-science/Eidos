@@ -40,8 +40,9 @@ SNAPSHOT = ROOT / "artifacts" / "contracts.json"
 
 def _run(cmd: list[str], timeout: int = 20) -> tuple[int, str]:
     try:
+        from framework.subprocesses import quiet_flags
         proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout,
-                              encoding="utf-8", errors="replace")
+                              encoding="utf-8", errors="replace", creationflags=quiet_flags())
         text = (proc.stdout or proc.stderr).strip()
         return proc.returncode, (text.splitlines()[0] if text else "")
     except (OSError, subprocess.TimeoutExpired) as exc:

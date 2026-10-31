@@ -5,15 +5,42 @@
     "skip": 1,
     "fail": 0
   },
-  "tests_collected": 551,
+  "tests_collected": 626,
   "tests": {
-    "passed": 551,
+    "passed": 626,
     "failed": 0,
     "skipped": 4,
     "errors": 0
   },
+  "stability": {
+    "stable": true,
+    "before": {
+      "source_sha256": "4bd4d98528e0c76c85d95280a4b56e682aa7183a488074eb70d7a1d7c59c5d06",
+      "distribution_sha256": "1a0f6bacc37e5d8eddd1d34cee98f634cabbfc789e5dfb7ce782404b777c02aa"
+    },
+    "after": {
+      "source_sha256": "4bd4d98528e0c76c85d95280a4b56e682aa7183a488074eb70d7a1d7c59c5d06",
+      "distribution_sha256": "1a0f6bacc37e5d8eddd1d34cee98f634cabbfc789e5dfb7ce782404b777c02aa"
+    },
+    "collection_after": 626,
+    "execution": {
+      "reported_items": 626,
+      "collection_level_skips": 4
+    },
+    "deselection_detected": false,
+    "collected_ids": 626,
+    "unique_ids": 626,
+    "recollected_ids": 626,
+    "scope": "Framework/tools/tests Python sources, project version/lock/README/claims, installed distribution names+versions, collected test IDs"
+  },
+  "skip_reasons": [
+    "SKIPPED [1] tests\\test_grokking_torch.py:3: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_softmax_matrix_torch.py:4: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_softmax_training_torch.py:5: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_stable_numerics_torch.py:6: could not import 'torch': No module named 'torch'"
+  ],
   "diagnostics": {},
-  "coverage_total": 67,
+  "coverage_total": 68,
   "coverage_scope": "framework; unexecuted modules included; tests and tools excluded",
   "gate_s": {
     "fixture_status": "PASS"
@@ -28,6 +55,7 @@
     "gate_s": 0,
     "self_gate_s": 0,
     "test_collection": 0,
+    "test_collection_after": 0,
     "tests": 0
   }
 }

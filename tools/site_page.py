@@ -18,6 +18,7 @@ DEMO_JS = "\n".join((pathlib.Path(__file__).parent / name).read_text(encoding="u
                     for name in ("demo_js.js", "demo_charts.js"))
 
 CSS = theme.root_css() + """
+:root{--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:66px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -120,6 +121,7 @@ pre{background:var(--panel2);color:#e6e8eb;border:1px solid var(--line);padding:
   border-radius:8px;overflow-x:auto;font:11.8px/1.62 var(--mono);margin:0 0 10px}
 code{background:#1b2027;padding:1px 5px;border-radius:4px;font:12px var(--mono);color:#e6e8eb}
 pre code{background:none;padding:0;font-size:inherit}
+.decision-measurements code,.decision-measurements b{display:inline-block;max-width:100%;overflow-wrap:anywhere}
 .contracts{display:flex;flex-wrap:wrap;gap:6px;margin:0}
 .contract{font:600 11px/1 -apple-system,"Segoe UI",Arial,sans-serif;padding:6px 9px;
   border-radius:999px;border:1px solid var(--line);background:#191d23;color:var(--body)}
@@ -227,6 +229,52 @@ canvas{width:100%;height:auto;display:block;max-width:100%}
 @media(max-width:620px){.numerics-controls{display:grid;grid-template-columns:1fr 1fr}
   .numerics-controls>div:first-child{grid-column:1/-1}.numerics-controls>div{min-width:0}
   .numerics-intro p{min-width:0;flex-basis:100%}}
+/* Research brief: the scientific argument leads; implementation details remain inspectable. */
+.hero{padding:20px 0 24px;margin-bottom:28px}
+.hero-layout{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(230px,.85fr);gap:30px;align-items:start}
+.hero h1{font-size:clamp(26px,3.1vw,38px);line-height:1.13;letter-spacing:-.025em;max-width:24ch;margin:12px 0 16px}
+.hero .thesis{font-size:14px;line-height:1.75;max-width:67ch}
+.hero .subthesis{font-size:12px;line-height:1.75;margin-top:10px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:9px;margin:18px 0}
+.hero-actions a{padding:8px 12px;border:1px solid var(--line);border-radius:4px;font-size:12px;color:var(--fg)}
+.hero-actions a:first-child{border-color:#4265a1;background:#18243a}
+.hero-evidence{border-left:2px solid #9b7e4d;padding:4px 0 4px 18px;margin-top:9px;min-width:0}
+.hero-evidence .eyebrow{color:var(--mut);line-height:1.7}
+.hero-evidence h3{font-size:15px;line-height:1.5;margin:8px 0 14px}
+.hero-evidence dl{margin:0;display:grid;gap:9px}
+.hero-evidence dt{font-size:11px;color:var(--mut)}
+.hero-evidence dd{margin:1px 0 8px;font:600 23px/1.5 var(--mono);overflow-wrap:anywhere;color:var(--fg)}
+.hero-evidence dd.fixed-value{color:#7facff}
+.hero-evidence p{font-size:11px;color:var(--mut);margin-top:12px}
+.academic-proposition{font-size:15px;line-height:1.8;max-width:85ch;color:var(--body);margin-bottom:18px}
+.scientific-chain{list-style:none;padding:0;margin:18px 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line)}
+.scientific-chain li{padding:14px 16px 14px 0;min-width:0}
+.scientific-chain span{font:11px var(--mono);color:var(--dim);display:block;margin-bottom:8px}
+.scientific-chain strong{font-size:13px;color:var(--fg)}
+.scientific-chain p{font-size:12px;line-height:1.75;color:var(--mut);margin:7px 0}
+.evidence-ledger{border-top:1px solid var(--line);margin:18px 0}
+.evidence-row{display:grid;grid-template-columns:38px minmax(0,1fr) minmax(0,1.05fr);gap:15px;padding:20px 0;border-bottom:1px solid var(--line)}
+.evidence-level{font:11px var(--mono);color:var(--dim)}
+.evidence-row h3{font-size:14px;margin-bottom:8px}
+.evidence-row p{font-size:12px;line-height:1.8}
+.evidence-measure{color:var(--fg);font-size:18px;line-height:1.7;font-variant-numeric:tabular-nums;display:block;margin:1px 0 8px}
+.evidence-scope{color:var(--mut)}
+.research-agenda{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:18px 0}
+.research-agenda article{border-top:2px solid var(--line);padding-top:14px;min-width:0}
+.research-agenda h3{font-size:13px;line-height:1.6;margin-bottom:8px}
+.research-agenda p{font-size:12px;line-height:1.8;color:var(--mut)}
+.implementation-detail>summary{cursor:pointer;font-size:12px;color:var(--body);padding:10px 0}
+.implementation-detail[open]>summary{margin-bottom:12px}
+.implementation-detail:not([open])>:not(summary){display:none}
+.sec{margin-bottom:32px}
+.sec-h h2{font-size:12px;color:var(--body);letter-spacing:.08em}
+.lede{line-height:1.75;margin-bottom:15px}
+@media(max-width:800px){.hero-layout{grid-template-columns:1fr;gap:16px}.hero-evidence{max-width:100%}
+ .hero-evidence dl{grid-template-columns:1fr 1fr}.hero-evidence dd{font-size:20px}
+ .scientific-chain{grid-template-columns:repeat(2,minmax(0,1fr))}.research-agenda{grid-template-columns:1fr;gap:15px}}
+@media(max-width:560px){.evidence-row{grid-template-columns:25px minmax(0,1fr);gap:10px}
+ .evidence-row>div:last-child{grid-column:2}.hero-evidence dl{grid-template-columns:1fr}.hero h1{font-size:28px}}
+@media(max-width:620px){.top .hchip{display:none}.top-in{padding:10px 16px;gap:8px}}
 footer{margin-top:34px;padding-top:13px;border-top:1px solid var(--line);color:var(--dim);
   font-size:11px;line-height:1.7}
 @media print{
@@ -250,16 +298,18 @@ def stat(n: str, label: str, sub: str) -> str:
 
 
 def sec(num: str, ident: str, title: str, lede: str, body: str) -> str:
+    num = next((f"{i:02d}" for i, (key, _) in enumerate(RAIL, 1) if key == ident), num)
     return (f'<section class="sec" id="{ident}">'
             f'<div class="sec-h"><span class="num">{num}</span><h2>{title}'
             f'<a class="anchor" href="#{ident}" aria-label="permalink">¶</a></h2></div>'
             f'<p class="lede">{lede}</p>{body}</section>')
 
 
-RAIL = [("position", "Position"), ("pipeline", "The pipeline"),
-        ("architecture", "Architecture"), ("orchestration", "Orchestration"), ("gates", "Gates"),
-        ("state", "State"), ("monitor", "Monitor"), ("demo", "The demo"),
-        ("start", "Start"), ("limits", "Limits")]
+RAIL = [("position", "Academic proposition"), ("evidence", "Measured evidence"),
+        ("demo", "Softmax case study"), ("pipeline", "Research method"), ("models", "Model capability limits"), ("gates", "Validity checks"),
+        ("research", "Research agenda"), ("architecture", "Architecture"),
+        ("orchestration", "Orchestration"), ("state", "Verification ledger"),
+        ("monitor", "Live operations"), ("start", "Use & reproduce"), ("limits", "Scope & licence")]
 
 
 def rail(commit: str, date: str, version: str, nvers: int) -> str:
@@ -272,46 +322,127 @@ def rail(commit: str, date: str, version: str, nvers: int) -> str:
 
 
 def hero(ctx: dict) -> str:
+    data = _demo_data(ctx)
+    selected = next((r for r in data.get("collapse", []) if r["dtype"] == "float32" and r["margin"] == 18), None)
+    if (data.get('qualification') or {}).get('verdict') != 'PASS':
+        selected = None
+    before = _demo_number(selected["standard_gradient"][0]) if selected else "unavailable"
+    after = _demo_number(selected["fixed_gradient"][0]) if selected else "unavailable"
     return f'''<div class="hero">
-  <p class="eyebrow">Global reusable research pipeline</p>
-  <h1>A skeleton, not a paper factory.</h1>
-  <p class="thesis">One source → journal LaTeX/PDF + Word + interactive HTML + executable code,
-    with quantitative and semantic quality gates enforced throughout.</p>
-  <p class="subthesis">Every number below is computed at build time from an artefact this page
-    names; the page refuses to state a claim it cannot point at.</p>
+  <div class="hero-layout"><div>
+  <p class="eyebrow">EIDOS · research infrastructure · pre-release</p>
+  <h1>Make scientific claims answerable to evidence.</h1>
+  <p class="thesis">An executable research workflow connecting falsifiable claims, experiments,
+    independent checks and reproducible delivery. Numerical failures become tested safeguards
+    that subsequent projects can reuse.</p>
+  <p class="subthesis">The Softmax case traces a published repair from its mathematical mechanism
+    through actual backend checks to training outcomes. Each level earns its own conclusion.</p>
+  <div class="hero-actions"><a href="#demo">Explore the repair &amp; controls →</a>
+    <a href="#evidence">Read the measured evidence</a><a href="#start">Reproduce &amp; use</a></div>
+  </div><aside class="hero-evidence" aria-label="One measured numerical failure and repair">
+    <p class="eyebrow">One assumption, made testable</p><h3>A confident prediction can lose its target gradient.</h3>
+    <dl><div><dt>Standard · target gradient</dt><dd>{before}</dd></div>
+    <div><dt>Repaired · target gradient</dt><dd class="fixed-value">{after}</dd></div></dl>
+    <p>Measured float32 · logit gap 18.<br>Independent Decimal reference and broken controls.
+      <a href="#demo">Inspect the calculation ↗</a></p>
+  </aside></div>
   <div class="stats">
-    {stat(str(ctx["nchains"]), "chains", f'{ctx["npass"]} pass · {ctx["nskip"]} skip')}
-    {stat(str(ctx["ntests"]), "tests", f'coverage {ctx["cov"]}%')}
-    {stat(str(ctx["nadopt"]), "consumers", "2 must fail, on purpose")}
-    {stat(str(ctx["ncontracts"]), "contracts", "probed at build time")}
-    {stat(str(ctx["nclaims"]), "claims", f'{ctx["nres"]} objections, {ctx["nopen"]} open')}
+    {stat(str(len(data.get('collapse', []))+len(data.get('cancellation', []))), "numerical cases", "filed measurements")}
+    {stat(str(ctx["ntests"]), "framework tests", f'source coverage {ctx["cov"]}%')}
+    {stat(str(ctx["nchains"]), "execution chains", f'{ctx["npass"]} pass · {ctx["nskip"]} skip')}
   </div>
 </div>'''
 
 
 def sec_position() -> str:
-    body = f'''<div class="grid3">
-  <div class="card"><h3>It is a skeleton</h3>
-    <p>One clone, many projects. <code>bootstrap_project.sh</code> produces a project wired to
-    the same gates, the same provenance and the same rendering path. An existing repository is
-    registered by pointer — never moved, never copied.</p></div>
-  <div class="card"><h3>It is not a paper factory</h3>
-    <p>Nothing here decides what is true. It decides what may leave the pipeline: a result is
-    certified by gates, a claim by Gate S, and a judgement by a human gate when the operator's
-    confidence is below threshold.</p></div>
-  <div class="card"><h3>Knowledge has three homes</h3>
-    <p>Procedure → agent skills. Facts → agent memory. History → the project's own
-    <code>LESSONS</code> file. A framework vector store was built, never written to, and
-    deleted; the lesson is recorded, the code is not.</p></div>
-</div>'''
-    return sec("01", "position", "Position",
-               "What it is, what it is not, and where knowledge lives.", body)
+    body = '''<p class="academic-proposition">Scientific progress depends on knowing which assumptions
+    an experiment actually tested. EIDOS makes the path from a claim to its evidence explicit,
+    inspectable and capable of failing.</p>
+    <ol class="scientific-chain" aria-label="The executable scientific argument">
+      <li><span>01 · CLAIM</span><strong>State a falsifiable proposition</strong>
+        <p>Declare scope, assumptions, controls and the artifact that could refute it.</p></li>
+      <li><span>02 · MEASURE</span><strong>Execute the actual method</strong>
+        <p>Bind code, data, seeds, configuration and the backend that produced the result.</p></li>
+      <li><span>03 · CHALLENGE</span><strong>Check independently</strong>
+        <p>Use independent references, negative controls and artifact-bound verification.</p></li>
+      <li><span>04 · TRANSFER</span><strong>Keep a reusable safeguard</strong>
+        <p>Turn a diagnosed failure into a regression check and a qualified implementation.</p></li>
+    </ol>
+    <p>The methodological contribution is this executable connection between argument,
+    computation and reproducibility. Its effectiveness across research domains remains an
+    empirical question. The Softmax repair itself is the work of <b>Barron, Gnanapragasam
+    and Tschannen</b>; EIDOS implements and evaluates it through the existing Paper2Agent integration.</p>
+    <p><a href="https://arxiv.org/html/2610.31642v3">Original method · A Fix for Softmax and Cross-Entropy ↗</a>
+    · <a href="../docs/ACADEMIC_POSITIONING.md">Contribution, evidence &amp; scope</a></p>'''
+    return sec("01", "position", "Academic proposition",
+               "A scientific claim becomes useful when its evidence can be inspected and challenged.", body)
+
+
+def sec_evidence(ctx: dict) -> str:
+    data = _demo_data(ctx) if ctx.get('demo') else {}
+    count = len(data.get('collapse', []))+len(data.get('cancellation', []))
+    qualified = (data.get('qualification') or {}).get('verdict') == 'PASS'
+    kernel_measure = f'{count} recorded cases' if qualified else 'Reverification required'
+    kernel_scope = ('float32/float64 numerical kernels checked against independent Decimal arithmetic. '
+                    'Backend qualification is separate from a finite loss or a probability sum of one.' if qualified
+                    else 'A checked numerical conclusion is withheld until implementation qualification passes.')
+    trained = (data.get('training') or {}).get('status') == 'PASS'
+    training_measure = 'A checked stationary point' if trained else 'Reverification required'
+    training_scope = ('The bounded teacher–student case tests equality and parameter drift. '
+                      'Final saved states and negative outcomes are retained. It does not establish generalisation.' if trained
+                      else 'A stationary-point conclusion is withheld until the saved training artifacts pass acceptance.')
+    matrix = ctx.get('matrix_summary') or {'status':'UNVERIFIED'}
+    if matrix.get('status') == 'VERIFIED':
+        measured = (f"{matrix['runs']} trajectories · {matrix['pairs']} paired endpoints"
+                    f"<span class='evidence-measure'>{matrix['higher']} higher · {matrix['lower']} lower · {matrix['ties']} tie</span>")
+        scope = ('Fixed versus standard final held-out accuracy. Three seeds; all specified precision/epsilon cells retained. '
+                 'This is a bounded reconstruction, without a paper MATCH or a general superiority claim.')
+    else:
+        measured = '<span class="evidence-measure">Reverification required</span>'
+        scope = 'Matrix summary withheld because current artifact acceptance has not passed.'
+    body = f'''<div class="evidence-ledger">
+      <article class="evidence-row"><span class="evidence-level">L1</span><div>
+        <h3>Numerical mechanism</h3><p>Does the implementation preserve the derivative it is meant to compute?</p>
+        <a href="#demo">Explore repair, reference &amp; negative controls →</a></div><div>
+        <strong class="evidence-measure">{kernel_measure}</strong>
+        <p class="evidence-scope">{kernel_scope}</p></div></article>
+      <article class="evidence-row"><span class="evidence-level">L2</span><div>
+        <h3>Training behavior</h3><p>Does repairing the arithmetic change the system that uses it?</p>
+        <a href="reports/numerics/report.html">Teacher–student experiment &amp; saved models →</a></div><div>
+        <strong class="evidence-measure">{training_measure}</strong>
+        <p class="evidence-scope">{training_scope}</p></div></article>
+      <article class="evidence-row"><span class="evidence-level">L3</span><div>
+        <h3>Generalisation under a fixed budget</h3><p>Does numerical repair consistently improve the scientific endpoint?</p>
+        <a href="reports/softmax-matrix/report.html">Every paired result, protocol &amp; reproduction bundle →</a></div><div>
+        {measured}<p class="evidence-scope">{scope}</p></div></article>
+    </div><p class="evidence-scope">These are distinct acceptance levels. Software tests support the framework's
+    operation; scientific conclusions require their own measurements, comparisons and controls.</p>'''
+    return sec("02", "evidence", "What the evidence supports",
+               "A layered case study, including the outcomes that did not meet the scientific expectation.", body)
+
+
+def sec_research() -> str:
+    body = '''<div class="research-agenda">
+      <article><h3>Numerical assumptions as research objects</h3>
+        <p>Identify where finite-precision computation changes an intended mathematical property.
+        Qualify each new backend with independent references and broken controls.</p></article>
+      <article><h3>Mechanism versus downstream outcome</h3>
+        <p>Align the cited architecture and implementation, register discriminating ablations,
+        and retain all seeds to explain when a numerical repair changes learning.</p></article>
+      <article><h3>Transfer across scientific projects</h3>
+        <p>Test whether reusable checks catch new errors in independent AI4S projects.
+        Compare review and reproduction outcomes against an explicit baseline.</p></article>
+    </div><p>These are research questions for the next evaluation, with completion criteria in the
+    <a href="../docs/FUNCTIONAL_COMPLETENESS.md">functional completeness ledger</a>.
+    Broad improvements in research quality and autonomous scientific discovery have not been established.</p>'''
+    return sec("06", "research", "The research agenda",
+               "The current evidence defines the next experiments and the claims they must earn.", body)
 
 
 def sec_pipeline(fragment: str) -> str:
-    return sec("02", "pipeline", "The pipeline",
-               "Nine stages, each with a gate it cannot skip. The order is the point: a result is "
-               "certified before it is written, and written before it is packaged.", fragment)
+    return sec("02", "pipeline", "An executable research method",
+               "Problem formulation, registered evidence, independent checks and delivery. "
+               "Each required gate constrains the conclusion a project may report.", fragment)
 
 
 def sec_orchestration() -> str:
@@ -393,6 +524,55 @@ def fixture_table(fx: dict, rb: dict | None = None) -> str:
     <code>python tools/audit_fixtures.py</code></p>{extra}</div>'''
 
 
+def sec_models(ctx: dict) -> str:
+    evidence=ctx.get('model_quality') or {}
+    def ratio(key, count):
+        record=evidence.get(key) or {}
+        numerator,denominator=record.get(count),record.get('n')
+        if not isinstance(record.get('model'),str) or record['model'].removesuffix('.gguf') != 'ScienceRSI-8b.i1-Q4_K_M':
+            return 'unavailable'
+        if type(numerator) is not int or type(denominator) is not int or not 0<=numerator<=denominator or denominator<=0:
+            return 'unavailable'
+        return f'{numerator}/{denominator} ({100*numerator/denominator:.1f}%)'
+    s4,s7=ratio('s4','agree'),ratio('s7','hits')
+    inventory=evidence.get('inventory') or {}
+    observed=html.escape(str(inventory.get('observed_at') or 'unavailable'))
+    presence=[]
+    for entry in inventory.get('models') or []:
+        if not isinstance(entry,dict):
+            continue
+        state={True:'installed',False:'absent',None:'unknown'}.get(entry.get('installed'),'unknown')
+        presence.append(html.escape(str(entry.get('name','unknown')))+' — '+state)
+    presence_text='; '.join(presence) if presence else 'Host inventory unavailable'
+    body=f'''<div class="grid2">
+      <div class="card"><h3>ScienceRSI-8B · tested scientific judge candidate</h3>
+        <p><code>ScienceRSI-8b.i1-Q4_K_M</code>, Qwen3 architecture, 16,384-token deployed context.
+        Design-validity probe S4: <b>{s4}</b>. Held-out support probe S7: <b>{s7}</b>.</p>
+        <p><b>Not promoted to a scientific gate.</b> It can draft hypotheses or objections for review.
+        The measured failures include confounding, statistical misuse and selection bias.
+        These scores belong to ScienceRSI; they do not measure Llama, Qwen2.5 or Gemma.</p>
+        <p><a href="docs/MODEL_VERDICTS.md">Probe conditions, errors and uncertainty →</a></p></div>
+      <div class="card"><h3>StartLux-Decision-4B · bounded decision operator</h3>
+        <p>Typed routing and failure triage. A closed, constructed calibration task does not establish
+        scientific reasoning, experimental design or literature-gap discovery.</p>
+        <p><b>Experiment execution uses registered commands.</b> Scientific acceptance uses deterministic
+        numerical checks and project evidence. Model confidence does not replace either.</p>
+        <p><a href="docs/MODEL-TASK-QUALITY.md">Model roles and qualification limits →</a></p></div>
+      </div><div class="card" style="margin-top:10px"><h3>Readiness follows the task</h3>
+      <div class="tw"><table><caption>Model roles follow task evidence; stage readiness cannot award scientific PASS.</caption><thead><tr><th>Stage</th><th>Current authority and remaining qualification</th></tr></thead><tbody>
+        <tr><td>Hypothesis &amp; literature</td><td>Source-linked drafts; no task-qualified autonomous research reasoner. Novelty needs a literature comparison.</td></tr>
+        <tr><td>Experiment design</td><td>Draft controls, confounders and stopping rules; critical designs require human confirmation.</td></tr>
+        <tr><td>Execution</td><td>Registered Python/CUDA/tool commands with recorded inputs and outputs; StartLux can suggest routing.</td></tr>
+        <tr><td>Evaluation &amp; writing</td><td>Independent recomputation and bounded claims; models may draft, but cannot award scientific PASS.</td></tr>
+      </tbody></table></div>
+      <p>The legacy <code>llama3.1:8b</code>, <code>qwen2.5:14b</code> and <code>gemma2:9b</code>
+        entries are proposed alternatives, not a qualified model team.</p>
+      <p>Host snapshot {observed}: {presence_text}. No accepted EIDOS research-task evaluation exists for these candidates.
+        <a href="docs/MODEL_TASK_READINESS.json">Dated inventory and evidence pointers →</a></p></div>'''
+    return sec('', 'models', 'Model capability and scientific authority',
+               'An installed model, a reachable endpoint and a task-qualified researcher are different claims.',body)
+
+
 def sec_gates(ctx: dict) -> str:
     body = f'''<div class="grid2">
   <div class="card"><h3>Dual gates</h3>
@@ -418,11 +598,11 @@ def sec_gates(ctx: dict) -> str:
     allow-list, and a kernel control asserting <code>1 = 2</code> must fail.</caption>
     <thead><tr><th>target</th><th>theorem</th><th>verdict</th><th class="num">time</th></tr></thead>
     <tbody>{ctx["lean_rows"]}</tbody></table></div></div>
-  <div class="card"><h3>Decision layer, measured</h3>
+  <div class="card decision-measurements"><h3>Decision layer, measured</h3>
     <p>A typed operator returns <code>choice</code> / <code>yes-no</code> / <code>score</code>
-    with calibrated probabilities in one pass; prose stays with generators. Median
+    with probabilities in one pass; prose stays with generators. Median
     <b>{ctx["latency"]} ms</b> over HTTP for a two-question set.</p>
-    <p>Calibration, n=100. Accuracy <b>{ctx["acc"]}</b>; abstention <b>{ctx["abs_a"]}</b> vs
+    <p>Constructed calibration task, n=100. Accuracy <b>{ctx["acc"]}</b>; abstention <b>{ctx["abs_a"]}</b> vs
     <b>{ctx["abs_u"]}</b> on answerable vs unanswerable items (Fisher
     p = {ctx["fisher"]}). The confidence floor is <b>not identified</b>
     (<code>tau_identified = {ctx["tau"]}</code>; lowest confidence on a correct answer
@@ -511,10 +691,9 @@ def sec_state(ctx: dict) -> str:
   <h3>Consumers</h3>
   <p>A pointer, not a copy: the framework discovers each consumer, runs its gate and reports one
   verdict; every fixture keeps its own logic and evidence.</p>
-  <div class="tw"><table><caption>Three entries, each a different failure test: an LLM consumer whose claim is a
-  measured interval (must pass), a negative control whose claim is false (must be rejected by
-  S3), and a second control whose prose states a better number than its own evidence (must be
-  rejected by S9).</caption>
+  <div class="tw"><table><caption>Positive fixtures, deliberate negative controls, measured scientific
+  cases and execution-chain fixtures have different evidence roles. Matching an expected rejection
+  is a successful control.</caption>
   <thead><tr><th>project</th><th>root</th><th>registered gate</th><th>checkout</th>
   <th>Gate S</th></tr></thead><tbody>{ctx["consumers"]}</tbody></table></div>
 </div>
@@ -814,7 +993,8 @@ python tools/record_self_audit.py --check
 python tools/build_site.py --check
 
 # append this build to site/versions.json
-python tools/build_site.py --release
+python tools/build_site.py --bump patch --release --summary "Delivered capability"
+python tools/versioning.py --check
 
 # validate a project's claims
 python tools/audit_validity.py --project ../my_study</code></pre></div>
@@ -829,9 +1009,13 @@ def sec_limits() -> str:
     body = '''<div class="stack">
   <p><b>What is measured.</b> Tests, coverage, chain verdicts, Lean runs, decision calibration,
   and the demo's error against independent high-precision arithmetic.</p>
-  <p><b>What is not.</b> That the gates improve a project's science — that would need a control
-  group this programme does not have. That the interfaces generalise beyond three sealed
-  fixtures. That a project's PDF path works everywhere: Quarto is installed outside the
+  <p><b>Open scientific acceptance.</b> Controlled evidence that these gates improve research
+  quality across independent projects remains to be collected. The paired Softmax study
+  does not reproduce the paper's generalisation results. AMP/bfloat16 and higher-order
+  differentiation require separate qualification.</p>
+  <p><b>Open engineering acceptance.</b> Generic Docker/Binder packaging and concurrent report
+  publication need completion; a clean strict 24-hour stability run has not passed.
+  Quarto is installed outside the
   repository and reached through <code>QUARTO_BIN</code>, so a clone without that variable
   reports SKIP; TinyTeX is a separate install and its absence limits PDF rendering. Coverage is
   uneven; <code>framework/inference</code> is exercised mainly by chains.</p>
@@ -893,10 +1077,9 @@ def render(ctx: dict) -> str:
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
-<title>Eidos v{ctx["version"]} — a reusable research pipeline with dual gates</title>
-<meta name="description" content="Eidos is the reusable skeleton behind a research project: dual
-quality gates, a typed decision layer, provenance, and multi-format delivery. Every claim it
-makes is checked against an artefact.">
+<title>EIDOS v{ctx["version"]} — scientific claims, executable evidence</title>
+<meta name="description" content="Research infrastructure connecting falsifiable claims, experiments,
+independent verification and reproducible delivery. Explore the Softmax repair, controls and all paired outcomes.">
 <style>{CSS}</style>
 </head>
 <body>
@@ -904,20 +1087,23 @@ makes is checked against an artefact.">
 <header class="top"><div class="top-in">
   <span class="brand"><i>●</i>Eidos<span class="ver">v{ctx["version"]}</span></span>
   <span class="spacer"></span>
-  <span class="hchip ok">Gate S pass</span>
+  <span class="hchip">Research preview</span>
   <span class="hchip">{ctx["nchains"]} chains · {ctx["ntests"]} tests</span>
   <a class="cta" href="http://127.0.0.1:8765/">Monitor →</a>
 </div></header>
 <div class="shell">{ctx["rail"]}<main id="main">
 {hero(ctx)}
 {sec_position()}
+{sec_evidence(ctx)}
+{sec_demo(ctx)}
 {sec_pipeline(ctx["pipeline"])}
-{sec_architecture(ctx["stack"])}
-{sec_orchestration()}
+{sec_models(ctx)}
 {sec_gates(ctx)}
+{sec_research()}
+{sec_architecture('<details class="implementation-detail"><summary>Inspect the implementation layers</summary>'+ctx["stack"]+'</details>')}
+{sec_orchestration()}
 {sec_state(ctx)}
 {sec_monitor(ctx)}
-{sec_demo(ctx)}
 {sec_start()}
 {sec_limits()}
 <footer>Generated by <code>tools/build_site.py</code> from <code>{ctx["commit"]}</code> on

@@ -1,0 +1,45 @@
+{
+  "recorded": "2026-11-01T01:22:23+08:00",
+  "scope": "Operations dashboard only; presentation changes, no scientific experiment or service configuration changes",
+  "source_sha256": {
+    "tools/dashboard.py": "154bd0323a9396b2b273f7cc55f44cd5e1bc73790f921f02d2cd8a6535f693c6",
+    "tools/site_documents.py": "5fcb38a8c339854896fef2bafea7875d24fa3253da60aa9394a5c9982749c36e",
+    "tests/test_dashboard_presentation.py": "728b3ecbba1fbc5d1d90476501bfadb129701f7d9d10f4e6287b46e29b063870"
+  },
+  "tests": {
+    "command": "python -m pytest tests/test_dashboard_presentation.py tests/test_dashboard.py tests/test_consumer_snapshot.py -q -p no:cacheprovider",
+    "passed": 71,
+    "failed": 0
+  },
+  "browser": {
+    "source": "http://127.0.0.1:8765/",
+    "widths": [
+      390,
+      1138,
+      1440
+    ],
+    "whole_page_horizontal_overflow": false,
+    "minimum_consumer_text_px": 11,
+    "chain_dependency_cells_match": true,
+    "consumer_details": "PASS",
+    "keyboard_chain_details": "PASS",
+    "console_errors": [],
+    "captures": "docs/SCREENS.json dashboard entries; live HTTP captures, scale 1"
+  },
+  "live_observation": {
+    "seq": 10332,
+    "ts": "2026-10-31T17:22:13+00:00",
+    "overall": "OK",
+    "stale": false,
+    "sample_age_s": 9.3
+  },
+  "validation_limits": {
+    "full_site_screenshot_check": "FAIL: existing index.html source/screenshot record mismatch; dashboard entries verified",
+    "ruff": "not installed in project environment; AST syntax and relevant tests passed",
+    "long_term_stability": "not assessed by this UI review"
+  },
+  "documents": [
+    "docs/MONITOR-SEMANTICS.md",
+    "Quarto_Centric_Local_Research_Pipeline_Technical_Framework.md section 10"
+  ]
+}

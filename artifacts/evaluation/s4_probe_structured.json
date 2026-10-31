@@ -1,0 +1,100 @@
+{
+  "ts": "2026-10-27T00:25:47+08:00",
+  "model": "ScienceRSI-8b.i1-Q4_K_M.gguf",
+  "input": "structured fields (no prose)",
+  "n": 15,
+  "agree": 13,
+  "agreement": 0.867,
+  "rows": [
+    {
+      "id": "s4-01",
+      "expected": "FAIL",
+      "got": "FAIL",
+      "ok": true
+    },
+    {
+      "id": "s4-02",
+      "expected": "PASS",
+      "got": "PASS",
+      "ok": true
+    },
+    {
+      "id": "s4-03",
+      "expected": "WEAK_PASS",
+      "got": "WEAK_PASS",
+      "ok": true
+    },
+    {
+      "id": "s4-04",
+      "expected": "FAIL",
+      "got": "FAIL",
+      "ok": true
+    },
+    {
+      "id": "s4-05",
+      "expected": "FAIL",
+      "got": "FAIL",
+      "ok": true
+    },
+    {
+      "id": "s4-06",
+      "expected": "FAIL",
+      "got": "PASS",
+      "ok": false
+    },
+    {
+      "id": "s4-07",
+      "expected": "WEAK_PASS",
+      "got": "WEAK_PASS",
+      "ok": true
+    },
+    {
+      "id": "s4-08",
+      "expected": "FAIL",
+      "got": "WEAK_PASS",
+      "ok": false
+    },
+    {
+      "id": "s4-09",
+      "expected": "PASS",
+      "got": "PASS",
+      "ok": true
+    },
+    {
+      "id": "s4-10",
+      "expected": "PASS",
+      "got": "PASS",
+      "ok": true
+    },
+    {
+      "id": "s4-11",
+      "expected": "FAIL",
+      "got": "FAIL",
+      "ok": true
+    },
+    {
+      "id": "s4-12",
+      "expected": "PASS",
+      "got": "PASS",
+      "ok": true
+    },
+    {
+      "id": "s4-13",
+      "expected": "WEAK_PASS",
+      "got": "WEAK_PASS",
+      "ok": true
+    },
+    {
+      "id": "s4-14",
+      "expected": "FAIL",
+      "got": "FAIL",
+      "ok": true
+    },
+    {
+      "id": "s4-15",
+      "expected": "PASS",
+      "got": "PASS",
+      "ok": true
+    }
+  ]
+}

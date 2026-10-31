@@ -1,0 +1,57 @@
+{
+  "recorded_at": "2026-10-31T17:15:43.561741+00:00",
+  "scope": "Host-specific operational acceptance; not a reboot/logon or uninterrupted-availability test.",
+  "hidden_child_probe": {
+    "exit_code": 0,
+    "console_window": 0,
+    "stdout_parsed": true
+  },
+  "startup": {
+    "vbs_exists": true,
+    "legacy_cmd_exists": false,
+    "runner": "scripts/eidos-monitor.vbs",
+    "logon_replayed": false
+  },
+  "preserved_schedules": [
+    {
+      "name": "Eidos contract drift",
+      "schedule": {
+        "kind": "cron",
+        "expr": "15 7 * * *",
+        "display": "15 7 * * *"
+      },
+      "script": "eidos_contracts.py"
+    },
+    {
+      "name": "eidos-watchdog",
+      "schedule": {
+        "kind": "interval",
+        "minutes": 5,
+        "display": "every 5m"
+      },
+      "script": "eidos_watchdog.py"
+    }
+  ],
+  "shim_sha256": {
+    "eidos_watchdog.py": "9d0c5020c599c543b22af5e42911ab4ad43ab6a058fbbf166eb48489518e8e52",
+    "eidos_contracts.py": "2621f2a37b416d71f77606cea4a1dd83eba3274261baec1d26226d551032c92c"
+  },
+  "cron_records": {
+    "watchdog": {
+      "generated": "2026-10-31T16:00:08.325460+00:00",
+      "ok": true,
+      "exit_code": 0,
+      "error": null,
+      "findings": null
+    },
+    "contracts": {
+      "generated": "2026-10-31T16:03:26.771132+00:00",
+      "ok": true,
+      "exit_code": 0,
+      "error": null,
+      "findings": [
+        "mlflow.version: '3.17.1' -> '3.17.2'"
+      ]
+    }
+  }
+}

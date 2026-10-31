@@ -132,7 +132,8 @@ OWNER_HINTS = {
 def port_owner(port: int) -> int | None:
     """Which PID holds this listening port, if any."""
     try:
-        out = subprocess.run(["netstat", "-ano"], capture_output=True, timeout=10,
+        from framework.subprocesses import quiet_flags
+        out = subprocess.run(["netstat", "-ano"], capture_output=True, timeout=10, creationflags=quiet_flags(),
                              encoding="utf-8", errors="replace").stdout or ""
     except (OSError, subprocess.SubprocessError):
         return None
@@ -149,10 +150,11 @@ def port_owner(port: int) -> int | None:
 def command_line(pid: int) -> str:
     """The full command line, which is what distinguishes our python from someone else's."""
     try:
+        from framework.subprocesses import quiet_flags
         out = subprocess.run(
             ["powershell", "-NoProfile", "-Command",
              f"(Get-CimInstance Win32_Process -Filter \"ProcessId={pid}\").CommandLine"],
-            capture_output=True, timeout=15, encoding="utf-8", errors="replace").stdout or ""
+            capture_output=True, timeout=15, encoding="utf-8", errors="replace", creationflags=quiet_flags()).stdout or ""
         return out.strip()
     except (OSError, subprocess.SubprocessError):
         return ""
@@ -160,8 +162,9 @@ def command_line(pid: int) -> str:
 
 def process_name(pid: int) -> str:
     try:
+        from framework.subprocesses import quiet_flags
         out = subprocess.run(["tasklist", "/FI", f"PID eq {pid}", "/FO", "CSV", "/NH"],
-                             capture_output=True, timeout=10,
+                             capture_output=True, timeout=10, creationflags=quiet_flags(),
                              encoding="utf-8", errors="replace").stdout or ""
         first = out.strip().splitlines()[0] if out.strip() else ""
         return first.split(",")[0].strip('"') if first else ""

@@ -1,7 +1,8 @@
 {
-  "generated": "2026-10-31T14:09:41+00:00",
+  "generated": "2026-10-31T16:31:59+00:00",
   "coupling": {
     "nodes": [
+      "framework.artifacts",
       "framework.config",
       "framework.decision",
       "framework.diagnosis",
@@ -11,12 +12,14 @@
       "framework.inference.llama_cpp",
       "framework.model_ab",
       "framework.project",
+      "framework.provenance",
       "framework.quarto_bridge",
       "framework.recovery",
       "framework.reproduction",
       "framework.services",
       "framework.stable_numerics",
       "framework.stable_numerics_torch",
+      "framework.subprocesses",
       "framework.surrogate",
       "framework.surrogate.demo",
       "framework.tracking",
@@ -30,6 +33,7 @@
       "framework.verifiers.pointers",
       "framework.verifiers.stats",
       "framework.verifiers.support",
+      "tools.academic_case",
       "tools.audit_chain_fixtures",
       "tools.audit_chains",
       "tools.audit_contrast",
@@ -38,6 +42,7 @@
       "tools.audit_layout",
       "tools.audit_lean_project",
       "tools.audit_numerics",
+      "tools.audit_publication",
       "tools.audit_runtime",
       "tools.audit_services",
       "tools.audit_site",
@@ -52,10 +57,12 @@
       "tools.build_pipeline",
       "tools.build_site",
       "tools.chain_states",
+      "tools.check_publication_record",
       "tools.check_render",
       "tools.compile_s4_prompt",
       "tools.consumer_snapshot",
       "tools.contract_snapshot",
+      "tools.cron_entry",
       "tools.dashboard",
       "tools.dashboard_figure",
       "tools.decision_probe",
@@ -65,6 +72,8 @@
       "tools.fuzz_register",
       "tools.grokking_analysis",
       "tools.health",
+      "tools.install_autostart",
+      "tools.install_hermes_cron",
       "tools.measure_sciencersi_load",
       "tools.model_ab",
       "tools.monitor_supervisor",
@@ -77,6 +86,7 @@
       "tools.probe_s7",
       "tools.probe_s7_constrained",
       "tools.probes",
+      "tools.publication",
       "tools.record_self_audit",
       "tools.refresh_chains",
       "tools.release_gate",
@@ -86,6 +96,7 @@
       "tools.screens",
       "tools.serve_model",
       "tools.serve_site",
+      "tools.site_documents",
       "tools.site_page",
       "tools.soak_monitor",
       "tools.status_view",
@@ -93,6 +104,7 @@
       "tools.training_figure",
       "tools.update_operator",
       "tools.verify_barron_mcp",
+      "tools.versioning",
       "tools.watch_pipeline",
       "tools.watchdog",
       "tools.windows_job"
@@ -234,6 +246,11 @@
         "kind": "hard"
       },
       {
+        "source": "tools.site_documents",
+        "target": "framework.artifacts",
+        "kind": "hard"
+      },
+      {
         "source": "tools.training_figure",
         "target": "tools.numerics_figure",
         "kind": "hard"
@@ -259,6 +276,11 @@
         "kind": "soft"
       },
       {
+        "source": "framework.inference",
+        "target": "framework.subprocesses",
+        "kind": "soft"
+      },
+      {
         "source": "framework.model_ab",
         "target": "framework.decision",
         "kind": "soft"
@@ -270,7 +292,22 @@
       },
       {
         "source": "framework.project",
+        "target": "framework.subprocesses",
+        "kind": "soft"
+      },
+      {
+        "source": "framework.project",
         "target": "framework.verifiers.numerics",
+        "kind": "soft"
+      },
+      {
+        "source": "framework.quarto_bridge",
+        "target": "framework.subprocesses",
+        "kind": "soft"
+      },
+      {
+        "source": "framework.recovery",
+        "target": "framework.subprocesses",
         "kind": "soft"
       },
       {
@@ -349,6 +386,16 @@
         "kind": "soft"
       },
       {
+        "source": "tools.audit_publication",
+        "target": "framework.artifacts",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.audit_publication",
+        "target": "tools.check_publication_record",
+        "kind": "soft"
+      },
+      {
         "source": "tools.audit_validity",
         "target": "framework.project",
         "kind": "soft"
@@ -365,6 +412,11 @@
       },
       {
         "source": "tools.build_site",
+        "target": "framework.artifacts",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.build_site",
         "target": "framework.project",
         "kind": "soft"
       },
@@ -375,12 +427,42 @@
       },
       {
         "source": "tools.build_site",
+        "target": "tools.academic_case",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.build_site",
         "target": "tools.build_pipeline",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.build_site",
+        "target": "tools.site_documents",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.build_site",
+        "target": "tools.versioning",
         "kind": "soft"
       },
       {
         "source": "tools.consumer_snapshot",
         "target": "framework.project",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.contract_snapshot",
+        "target": "framework.subprocesses",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.cron_entry",
+        "target": "tools.bounded_process",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.cron_entry",
+        "target": "tools.consumer_snapshot",
         "kind": "soft"
       },
       {
@@ -404,8 +486,23 @@
         "kind": "soft"
       },
       {
+        "source": "tools.install_hermes_cron",
+        "target": "framework.artifacts",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.numerics_case",
+        "target": "framework.artifacts",
+        "kind": "soft"
+      },
+      {
         "source": "tools.numerics_case",
         "target": "tools.numerics_figure",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.numerics_case",
+        "target": "tools.publication",
         "kind": "soft"
       },
       {
@@ -441,6 +538,16 @@
       {
         "source": "tools.serve_site",
         "target": "tools.consumer_snapshot",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.versioning",
+        "target": "framework.artifacts",
+        "kind": "soft"
+      },
+      {
+        "source": "tools.versioning",
+        "target": "framework.provenance",
         "kind": "soft"
       },
       {
@@ -480,6 +587,11 @@
       }
     ],
     "attrs": {
+      "framework.artifacts": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 6
+      },
       "framework.config": {
         "process": 0,
         "network": 0,
@@ -525,6 +637,11 @@
         "network": 0,
         "fan_in": 10
       },
+      "framework.provenance": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 1
+      },
       "framework.quarto_bridge": {
         "process": 1,
         "network": 0,
@@ -554,6 +671,11 @@
         "process": 0,
         "network": 0,
         "fan_in": 1
+      },
+      "framework.subprocesses": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 5
       },
       "framework.surrogate": {
         "process": 0,
@@ -620,6 +742,11 @@
         "network": 0,
         "fan_in": 1
       },
+      "tools.academic_case": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 1
+      },
       "tools.audit_chain_fixtures": {
         "process": 0,
         "network": 0,
@@ -657,6 +784,11 @@
       },
       "tools.audit_numerics": {
         "process": 0,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.audit_publication": {
+        "process": 1,
         "network": 0,
         "fan_in": 0
       },
@@ -708,7 +840,7 @@
       "tools.bounded_process": {
         "process": 1,
         "network": 0,
-        "fan_in": 1
+        "fan_in": 2
       },
       "tools.browser": {
         "process": 0,
@@ -730,6 +862,11 @@
         "network": 0,
         "fan_in": 0
       },
+      "tools.check_publication_record": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 1
+      },
       "tools.check_render": {
         "process": 1,
         "network": 0,
@@ -743,11 +880,16 @@
       "tools.consumer_snapshot": {
         "process": 0,
         "network": 0,
-        "fan_in": 4
+        "fan_in": 5
       },
       "tools.contract_snapshot": {
         "process": 1,
         "network": 2,
+        "fan_in": 0
+      },
+      "tools.cron_entry": {
+        "process": 1,
+        "network": 0,
         "fan_in": 0
       },
       "tools.dashboard": {
@@ -793,6 +935,16 @@
       "tools.health": {
         "process": 0,
         "network": 2,
+        "fan_in": 0
+      },
+      "tools.install_autostart": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 0
+      },
+      "tools.install_hermes_cron": {
+        "process": 0,
+        "network": 0,
         "fan_in": 0
       },
       "tools.measure_sciencersi_load": {
@@ -855,6 +1007,11 @@
         "network": 1,
         "fan_in": 1
       },
+      "tools.publication": {
+        "process": 1,
+        "network": 0,
+        "fan_in": 1
+      },
       "tools.record_self_audit": {
         "process": 1,
         "network": 0,
@@ -900,6 +1057,11 @@
         "network": 1,
         "fan_in": 0
       },
+      "tools.site_documents": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 1
+      },
       "tools.site_page": {
         "process": 0,
         "network": 0,
@@ -935,6 +1097,11 @@
         "network": 0,
         "fan_in": 0
       },
+      "tools.versioning": {
+        "process": 0,
+        "network": 0,
+        "fan_in": 1
+      },
       "tools.watch_pipeline": {
         "process": 0,
         "network": 1,
@@ -954,53 +1121,64 @@
     "cycles": [],
     "fan_in": {
       "framework.decision": 4,
-      "framework.verifiers.numerics": 3,
+      "framework.subprocesses": 5,
       "framework.config": 1,
+      "framework.verifiers.numerics": 3,
       "framework.surrogate": 3,
       "framework.verifiers.support": 1,
-      "framework.validity.lean_audit": 2,
       "framework.reproduction": 2,
-      "framework.verifiers.extract_s4": 1,
       "framework.gates": 2,
+      "framework.validity.lean_audit": 2,
+      "framework.verifiers.extract_s4": 1,
       "framework.verifiers.stats": 2,
       "framework.verifiers.citations": 2,
       "framework.stable_numerics": 2,
       "framework.project": 10,
-      "framework.tracking": 1,
-      "framework.validity": 5,
       "framework.surrogate.demo": 2,
       "framework.diagnosis": 2,
-      "framework.quarto_bridge": 3,
+      "framework.tracking": 1,
+      "framework.validity": 5,
       "framework.inference": 2,
+      "framework.quarto_bridge": 3,
+      "framework.artifacts": 6,
+      "tools.check_publication_record": 1,
       "framework.services": 2,
-      "tools.consumer_snapshot": 4,
+      "tools.consumer_snapshot": 5,
+      "tools.site_documents": 1,
+      "tools.academic_case": 1,
+      "tools.versioning": 1,
       "framework.updates": 3,
       "tools.build_pipeline": 1,
       "framework.inference.llama_cpp": 5,
+      "tools.bounded_process": 2,
       "tools.watch_pipeline": 1,
       "framework.stable_numerics_torch": 1,
       "framework.model_ab": 1,
+      "tools.publication": 1,
       "tools.training_figure": 1,
       "tools.numerics_figure": 2,
-      "tools.bounded_process": 1,
       "framework.recovery": 2,
+      "framework.provenance": 1,
       "tools.probes": 1
     },
     "absolute_paths": 5,
     "levels": {
+      "framework.artifacts": 0,
       "framework.config": 0,
       "framework.decision": 0,
       "framework.diagnosis": 1,
       "framework.gates": 0,
-      "framework.inference": 0,
+      "framework.subprocesses": 0,
+      "framework.inference": 1,
       "framework.inference.gguf": 0,
       "framework.inference.llama_cpp": 0,
       "framework.model_ab": 1,
       "framework.stable_numerics": 0,
       "framework.verifiers.numerics": 1,
       "framework.project": 2,
-      "framework.quarto_bridge": 0,
-      "framework.recovery": 0,
+      "framework.provenance": 0,
+      "framework.quarto_bridge": 1,
+      "framework.recovery": 1,
       "framework.reproduction": 0,
       "framework.services": 0,
       "framework.stable_numerics_torch": 0,
@@ -1008,14 +1186,15 @@
       "framework.surrogate.demo": 1,
       "framework.tracking": 0,
       "framework.updates": 0,
-      "framework.validity.lean_audit": 0,
-      "framework.verifiers.support": 0,
       "framework.verifiers.extract_s4": 0,
+      "framework.verifiers.support": 0,
+      "framework.validity.lean_audit": 0,
       "framework.validity": 1,
-      "framework.verifiers.stats": 0,
       "framework.verifiers.citations": 0,
+      "framework.verifiers.stats": 0,
       "framework.verifiers": 1,
       "framework.verifiers.pointers": 0,
+      "tools.academic_case": 0,
       "tools.audit_chain_fixtures": 3,
       "tools.audit_chains": 3,
       "tools.audit_contrast": 0,
@@ -1024,6 +1203,8 @@
       "tools.audit_layout": 0,
       "tools.audit_lean_project": 1,
       "tools.audit_numerics": 3,
+      "tools.check_publication_record": 0,
+      "tools.audit_publication": 1,
       "tools.audit_runtime": 0,
       "tools.audit_services": 1,
       "tools.audit_site": 0,
@@ -1037,11 +1218,14 @@
       "tools.browser": 0,
       "tools.consumer_snapshot": 3,
       "tools.build_pipeline": 4,
+      "tools.versioning": 1,
+      "tools.site_documents": 1,
       "tools.build_site": 5,
       "tools.chain_states": 0,
-      "tools.check_render": 1,
+      "tools.check_render": 2,
       "tools.compile_s4_prompt": 1,
-      "tools.contract_snapshot": 0,
+      "tools.contract_snapshot": 1,
+      "tools.cron_entry": 4,
       "tools.probes": 0,
       "tools.watch_pipeline": 4,
       "tools.dashboard": 5,
@@ -1053,9 +1237,12 @@
       "tools.fuzz_register": 2,
       "tools.grokking_analysis": 1,
       "tools.health": 0,
+      "tools.install_autostart": 0,
+      "tools.install_hermes_cron": 1,
       "tools.measure_sciencersi_load": 0,
       "tools.model_ab": 2,
       "tools.monitor_supervisor": 0,
+      "tools.publication": 0,
       "tools.numerics_figure": 0,
       "tools.training_figure": 1,
       "tools.numerics_case": 2,
@@ -1072,7 +1259,7 @@
       "tools.s7_cases": 0,
       "tools.s7_cases_holdout": 0,
       "tools.screens": 0,
-      "tools.serve_model": 1,
+      "tools.serve_model": 2,
       "tools.serve_site": 4,
       "tools.site_page": 0,
       "tools.soak_monitor": 0,
@@ -1324,7 +1511,7 @@
     "gate_s": "PASS",
     "fixture_status": "PASS",
     "chains": 11,
-    "tests": 551
+    "tests": 592
   },
   "consumers": [
     {
@@ -1334,10 +1521,10 @@
       "gate_s": "PASS",
       "expected": "PASS",
       "generated": "2026-10-31T12:22:30+00:00",
-      "input_digest": "ca62531333f826a30444c91148cfbdecdf3e31caff0057d63a1021f055ad517c",
+      "input_digest": "6f59fc18b4a3aebd4aab425d6d41309a42abf16faa5fa621411b2ed566aa841e",
       "input_error": null,
       "role": "paper-to-agent consumer (MCP tools from a converted paper, driven end to end)",
-      "checked_at": "2026-10-31T14:09:41+00:00",
+      "checked_at": "2026-10-31T16:31:59+00:00",
       "findings": []
     },
     {
@@ -1391,10 +1578,10 @@
       "gate_s": "PASS",
       "expected": "PASS",
       "generated": "2026-10-31T07:37:00+00:00",
-      "input_digest": "d85c9d857f4058a994fd8c4eb7e463178a8f8f3e99ca88d12df10ae7f82b2c5a",
+      "input_digest": "45702b84ca899ef4bf4dc1e5d81c61c81d837f99954459f1b2e51baefb4b9c42",
       "input_error": null,
       "role": "DEMO (onboarding template, LLM consumer)",
-      "checked_at": "2026-10-31T14:09:41+00:00",
+      "checked_at": "2026-10-31T16:31:59+00:00",
       "findings": []
     },
     {
@@ -1404,10 +1591,10 @@
       "gate_s": "PASS",
       "expected": "PASS",
       "generated": "2026-10-31T07:37:00+00:00",
-      "input_digest": "f4627ced8b8a5583d52d47bce81b870a2e3b4f1514c29038755dd97a04dbed82",
+      "input_digest": "2a3d5723305b13b38321351769947be7a247b7efa4efb280e40f9e686db45eab",
       "input_error": null,
       "role": "DEMO (quantitative consumer, planted truth + render)",
-      "checked_at": "2026-10-31T14:09:42+00:00",
+      "checked_at": "2026-10-31T16:31:59+00:00",
       "findings": []
     },
     {
@@ -1417,10 +1604,10 @@
       "gate_s": "FAIL",
       "expected": "FAIL",
       "generated": null,
-      "input_digest": "9d1a0eeafe7601bf50c17fe8c3a26c651a493cd32162e1c189e7589114791527",
+      "input_digest": "37d9a28dd827084aaf2021d4222eb61ea25aab66bfeeddac552d4b539cf22932",
       "input_error": null,
       "role": "negative control (expected rejection)",
-      "checked_at": "2026-10-31T14:09:42+00:00",
+      "checked_at": "2026-10-31T16:31:59+00:00",
       "findings": [
         "[S3] N1: evidence says 0 but ../operator_calibration/docs/evidence.json/abstain_unanswerable holds 1.0"
       ]
@@ -1432,10 +1619,10 @@
       "gate_s": "PASS",
       "expected": "PASS",
       "generated": "2026-10-31T07:37:12+00:00",
-      "input_digest": "8a571a6bb53cac1fb511498e48ce8f5f14cb3a5978cec11a9feefa70559dc369",
+      "input_digest": "ce480e889e9a94af156574c78b708c8ccadd29f172554be2bec553739d23a873",
       "input_error": null,
       "role": "LLM consumer (calibration of a typed decision operator)",
-      "checked_at": "2026-10-31T14:09:42+00:00",
+      "checked_at": "2026-10-31T16:31:59+00:00",
       "findings": []
     },
     {
@@ -1445,10 +1632,10 @@
       "gate_s": "FAIL",
       "expected": "FAIL",
       "generated": null,
-      "input_digest": "67ffbab3739467816b0448672c0de3908cab05d8725c9792956490e3e030b5d3",
+      "input_digest": "b7ea0ac771b9d5ce029e2062d6df564fe69a793f99976e4ee6033a1a769de00b",
       "input_error": null,
       "role": "negative control for S9 (prose contradicts its own evidence)",
-      "checked_at": "2026-10-31T14:09:42+00:00",
+      "checked_at": "2026-10-31T16:32:00+00:00",
       "findings": [
         "[S9] P1: the text states [19.0] but the evidence holds 1"
       ]
@@ -1460,10 +1647,10 @@
       "gate_s": "PASS",
       "expected": "PASS",
       "generated": "2026-10-31T12:55:33.030708+00:00",
-      "input_digest": "bf69d21b7943424e99e07b717633cf96c1d01fbff3081c0ba4f12d2b0dbd74e9",
+      "input_digest": "dc5480e5f47213d0f24a5719c58df7b963b23faeced888283aa1e66f98b11ae7",
       "input_error": null,
       "role": "measured paired loss-precision and epsilon reconstruction; all outcomes retained",
-      "checked_at": "2026-10-31T14:09:42+00:00",
+      "checked_at": "2026-10-31T16:32:00+00:00",
       "findings": []
     },
     {
@@ -1473,10 +1660,10 @@
       "gate_s": "PASS",
       "expected": "PASS",
       "generated": "2026-10-31T09:18:54.095156+00:00",
-      "input_digest": "100d71140579846051d5555225c7f85f984096d3409ec60f23c65e2cf202c998",
+      "input_digest": "8524a103bdcbbb724fbeb510489e3e6cc5dce64f1a13c5df7f0a31b6c0aa9b29",
       "input_error": null,
       "role": "measured optimizer-level training consumer; adapted stationarity experiment",
-      "checked_at": "2026-10-31T14:09:43+00:00",
+      "checked_at": "2026-10-31T16:32:00+00:00",
       "findings": []
     }
   ],
@@ -1567,14 +1754,5 @@
       ]
     }
   ],
-  "health": {
-    "decision": {
-      "up": true,
-      "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
-    },
-    "runtime_18434": {
-      "up": true,
-      "note": "auth required"
-    }
-  }
+  "health": {}
 }

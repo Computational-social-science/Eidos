@@ -8,7 +8,7 @@ broken fixture, not a passing control.
 
     python tools/audit_fixtures.py
 
-Exit 0 means: S1-S9 each have a fixture that trips them, the clean fixture passes, and no
+Exit 0 means: S1-S12 each have a fixture that trips them, the clean fixture passes, and no
 fixture fails for a reason other than the one it was built for.
 """
 
@@ -23,7 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from framework.validity import ScientificValidityGate  # noqa: E402
+from framework.validity import ScientificValidityGate, CHECK_IDS  # noqa: E402
 
 FIXTURES = ROOT / "reference" / "fixtures"
 
@@ -39,6 +39,7 @@ EXPECTED = {
     "s7_no_referee": ("FAIL", "S7"),
     "s8_formal_lie": ("FAIL", "S8"),
     "s9_prose_number": ("FAIL", "S9"),
+    "s10_statistics_rejected": ("FAIL", "S10"),
     "s11_wrong_verdict": ("FAIL", "S11"),
     "s12_mismatch": ("FAIL", "S12"),
 }
@@ -72,7 +73,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"{name:<18} {want_verdict:<7} {'—':<7} {'—':<10} MISSING")
             continue
         verdict, checks, findings = run_one(name)
-        good = verdict == want_verdict and (want_check is None or want_check in checks)
+        good = verdict == want_verdict and checks == ({want_check} if want_check else set())
         covered |= checks
         record.append({"fixture": name, "expected": want_verdict, "actual": verdict,
                        "checks": sorted(checks), "ok": good})
@@ -85,14 +86,14 @@ def main(argv: list[str] | None = None) -> int:
                 for finding in findings[:4]:
                     print(f"    {finding}")
 
-    missing = set(f"S{i}" for i in range(1, 10)) - covered
+    missing = set(CHECK_IDS) - covered
     if missing:
         problems.append(f"no fixture trips {', '.join(sorted(missing))}")
 
     # A machine record: the page renders this table, so the showcase and the test are one
     # artefact rather than two that can drift.
     (ROOT / "docs" / "FIXTURES.json").write_text(
-        json.dumps({"fixtures": record, "covered": sorted(covered), "ok": not problems},
+        json.dumps({"fixtures": record, "covered": sorted(covered), "required_checks": list(CHECK_IDS), "ok": not problems},
                    indent=2), encoding="utf-8")
 
     print()

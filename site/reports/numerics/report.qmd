@@ -1,16 +1,78 @@
 ---
-title: "Softmax Collapse and Softmax Cancellation: Eidos validation"
-author: "Eidos numerical validation"
-date: "2026-10-31"
+title: Independent validation of Softmax numerical repairs
+lang: en
+date: '2026-10-31'
 format:
   html:
-    toc: true
     embed-resources: true
+    toc: true
+    toc-depth: 2
+    include-in-header:
+    - text: '<style>
+
+        body{font-family:Georgia,"Times New Roman",serif;font-size:17px;line-height:1.85;color:#202124;background:#fff}
+
+        main.content{max-width:1000px;min-width:0;width:100%;margin:auto;padding:30px
+        24px}h1{font-size:30px;line-height:1.25;max-width:28ch}
+
+        h2{font-size:22px;line-height:1.4;margin:2em 0 .6em}h3{font-size:18px;margin:1.5em
+        0 .5em}
+
+        p,li{max-width:85ch;overflow-wrap:anywhere}a{color:#245c83}pre,code{font-family:Consolas,monospace;font-size:.85em}
+
+        table{display:block;overflow-x:auto;max-width:100%;font-size:14px;line-height:1.6;border-collapse:collapse;width:100%}th,td{padding:9px
+        10px;border-bottom:1px solid #ddd}
+
+        th{text-align:left;font-weight:bold}figure{margin:26px 0}figure img{width:100%;height:auto;background:white}
+
+        figcaption{font-size:14px;line-height:1.65;color:#343434;margin-top:12px}caption{caption-side:top;text-align:left}
+
+        pre{padding:14px;background:#f5f5f3;overflow:auto}#TOC{font-family:Arial,sans-serif;font-size:13px}
+
+        @media(max-width:600px){body{font-size:16px}main.content{padding:20px 16px}h1{font-size:25px}.cell-output-display{overflow:auto}}
+
+        @media print{#TOC,nav{display:none}body{font-size:12pt;color:black}}
+
+        </style>'
   pdf:
     documentclass: article
-    geometry: margin=1in
-  docx: default
+    pdf-engine: lualatex
+    papersize: a4
+    geometry:
+    - left=13.5mm
+    - right=13.5mm
+    - top=22mm
+    - bottom=22mm
+    fontsize: 12pt
+    mainfont: Times New Roman
+    include-in-header:
+    - text: '\usepackage{setspace}
+
+        \doublespacing
+
+        \usepackage{lineno}
+
+        \linenumbers
+
+        \usepackage{caption}
+
+        \usepackage{needspace}
+
+        \captionsetup{labelformat=empty,font=normalsize,justification=raggedright,singlelinecheck=false}
+
+        \makeatletter
+
+        \renewcommand{\maketitle}{\begingroup\setlength{\parindent}{0pt}{\large\bfseries\@title\par}\vspace{0.4em}{\normalsize
+        Research validation report\par}{\normalsize\@date\par}\vspace{1em}\endgroup}
+
+        \makeatother'
+  docx:
+    reference-doc: reference.docx
 ---
+
+## Summary
+
+Softmax arithmetic can lose scientifically relevant derivatives while conventional stability checks still pass. We evaluate the published repairs [1] using independently defined high-precision references, deliberately broken controls and saved teacher–student models. The tested kernels preserve small target gradients and exact stationarity within the qualified input range. The training experiment separates numerical correctness from generalisation. This report records the repair, unfavorable outcomes and reproducible artifacts, with explicit limits on backend qualification and downstream claims.
 
 ## Scope and research gap
 
@@ -30,23 +92,37 @@ The fixed forward excludes exactly one argmax before `log1p`; the hard-target ba
 For distillation, the true gradient is student probability minus teacher probability. Near equal logits this subtraction loses relative accuracy; exact equality should yield zero.
 The repair uses centered logit differences, `expm1`/`log1p`, and a zero-sum correction, with the ordinary difference retained for the far branch (source Eqs. 8-9). Teacher logits are required for this contract; already-rounded probabilities cannot recover lost information.
 
-## Reproduction and independent verification
+## Methods
+
+### Numerical execution and independent references
 
 Backend: numpy 2.5.4. Decimal references use represented inputs and adaptive precision.
-Eidos 4.3.32; Python 3.12.4. No random seed applies to this deterministic grid.
+Eidos 0.4.1; Python 3.12.4. No random seed applies to this deterministic grid.
 Source and lock SHA-256 hashes are recorded in evidence.json; bundle checksums cover the shipped source.
 The browser selects recorded cases; it does not simulate float32 training.
 
+### Statistics and experimental units
+
+The 96 numerical cases are deterministic input settings, not 96 independent random replicates. No error bars, confidence intervals or significance tests are used for this grid. The teacher–student experiment reports every one of three declared seed pairs; an experimental unit is one trained model, and the paired arms share their initial teacher and split. Individual trajectories are shown.
+
+## Numerical results
+
 ::: {.content-visible when-format="pdf"}
-![Measured numerical mechanisms, float32.](figure-float32.pdf){width=100%}
+![**Figure 1 | Numerical repair in float32.** a, Target-gradient magnitude across the logit gap. b, Relative L2 gradient error against independent Decimal arithmetic. c, Relative error near the teacher, using represented logit differences. d, Absolute L2 error at exact teacher equality. Lines show deterministic cases; no error bars or random sampling apply. Exact zeros are labelled and excluded from logarithmic traces. All quantities are dimensionless.](figure-float32.pdf){width=100%}
 :::
 
 ::: {.content-visible when-format="html"}
-![Measured numerical mechanisms, float32.](figure-float32.svg){width=100%}
+![**Figure 1 | Numerical repair in float32.** a, Target-gradient magnitude. b, Relative L2 error against Decimal arithmetic. c, Relative error near the teacher using represented logit differences. d, Absolute L2 error at exact equality. Deterministic cases; no error bars. Exact zeros are labelled rather than given a positive floor. All quantities are dimensionless.](figure-float32.svg){width=100%}
 :::
 
 ::: {.content-visible when-format="docx"}
-![Measured numerical mechanisms, float32.](figure-float32.png){width=100%}
+![**Figure 1 | Numerical repair in float32.** a, Target-gradient magnitude. b, Relative L2 error against Decimal arithmetic. c, Relative error near the teacher using represented logit differences. d, Absolute L2 error at exact equality. Deterministic cases; no error bars. Exact zeros are labelled. All quantities are dimensionless.](figure-float32.png){width=100%}
+:::
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\Needspace{9\baselineskip}
+```
 :::
 
 | Input dtype | Dominant logit | Standard target gradient | Fixed target gradient | Fixed relative L2 error |
@@ -55,9 +131,18 @@ The browser selects recorded cases; it does not simulate float32 training.
 | float64 | 40 | 0.000000e+00 | -8.496709e-18 | 2.078e-17 |
 | float64 | 80 | 0.000000e+00 | -3.609703e-35 | 7.001e-17 |
 
+: **Table 1 | Selected collapse cases and dimensionless gradient errors.**
+
+
 ::: {.content-visible when-format="pdf"}
 ```{=latex}
 \newpage
+```
+:::
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\Needspace{10\baselineskip}
 ```
 :::
 
@@ -70,11 +155,20 @@ The browser selects recorded cases; it does not simulate float32 training.
 | float64 | 0.0e+00 | 0.000000e+00 | 2.775558e-17 | 0.000000e+00 |
 | float64 | 1.0e-07 | -1.000000e-07 | 3.861881e-17 | 7.080722e-25 |
 
+: **Table 2 | Requested and represented perturbations and absolute gradient errors.**
+
+
 ## Controls and acceptance
 
 Qualification: **PASS** on 12 cases.
 Both deliberately broken controls must be rejected: a lost target gradient and nonzero stationary gradient.
 Validation uses relative gradient errors, not an absolute tolerance floor.
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\Needspace{18\baselineskip}
+```
+:::
 
 ## What the Eidos pipeline demonstrates
 
@@ -86,6 +180,9 @@ Validation uses relative gradient errors, not an absolute tolerance floor.
 | Repeatable delivery | 82 collapse and 14 cancellation cases feed the site, JSON, CSV and this report |
 | Reuse | NumPy kernels, optional first-order Torch kernels and a numerical audit in CI |
 | Provenance | Locked dependencies, source SHA-256 and a checksummed source bundle |
+
+: **Table 3 | Pipeline stages and their acceptance evidence.**
+
 
 ## Reuse and limits
 
@@ -110,11 +207,20 @@ The ZIP includes source, lock, tests, evidence, and checksums. JSON and CSV expo
 A corrected mechanistic rerun uses trained modular-addition MLP teachers and three declared seeds.
 Both students start with identical represented logits; each runs 2000 full-batch Adam steps.
 
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\Needspace{10\baselineskip}
+```
+:::
+
 | Seed | Standard final parameter L2 displacement | Fixed final parameter L2 displacement | Teacher held-out accuracy (%) |
 |---|---:|---:|---:|
 | 0 | 0.17216121 | 0 | 0.07117 |
 | 1 | 0.15021692 | 0 | 0 |
 | 2 | 0.18160596 | 0 | 0 |
+
+: **Table 4 | Final displacement and teacher held-out accuracy for every seed pair.**
+
 
 All teachers reached 100% training accuracy but approximately 0-0.0712% held-out accuracy.
 This is a stationarity mechanism experiment, not evidence for generalisation or the full paper's training results.
@@ -122,14 +228,42 @@ Saved weights independently reproduce the primary endpoint. All seeds, split ide
 The first run failed because a full-batch teacher cache differed from a training-batch forward. The failed code, evidence and checkpoints are preserved; the corrected run asserts exact initial logit equality.
 
 ::: {.content-visible when-format="pdf"}
-![Every seed: standard drift versus fixed exact stationarity.](training/trajectory.pdf){width=100%}
+![**Figure 2 | Stationarity across all three seed pairs.** a, Parameter L2 displacement from the initial teacher. b, Held-out KL evaluated in float64. Every line is one paired training trajectory; all fixed trajectories coincide at zero. No error bars or population inference. The KL axis is symmetric log with a linear region within plus or minus 1e-12; signed numerical residuals are retained.](training/trajectory.pdf){width=100%}
 :::
 
 ::: {.content-visible when-format="html"}
-![Every seed: standard drift versus fixed exact stationarity.](training/trajectory.svg){width=100%}
+![**Figure 2 | All three paired seeds.** a, Parameter L2 displacement. b, Held-out KL in float64. Individual trajectories; fixed arms coincide at zero. No error bars. Symmetric-log KL axis, linear within plus or minus 1e-12; signed residuals are retained.](training/trajectory.svg){width=100%}
 :::
 
 ::: {.content-visible when-format="docx"}
-![Every seed: standard drift versus fixed exact stationarity.](training/trajectory.png){width=100%}
+![**Figure 2 | All three paired seeds.** a, Parameter L2 displacement. b, Held-out KL in float64. Individual trajectories; fixed arms coincide at zero. No error bars. Symmetric-log KL axis, linear within plus or minus 1e-12.](training/trajectory.png){width=100%}
 :::
 
+## Data availability
+
+Original protocols, raw measurements, seed/split identifiers and saved-model
+artifacts are available in [the evidence record](evidence.json) and
+[the checksummed reproduction bundle](reproduce.zip). Every specified outcome is retained. The repository records code, data
+and environment hashes; artifact acceptance can be rerun independently.
+
+## Code availability
+
+Source and tests are included in `reproduce.zip` and in the
+[EIDOS repository](https://github.com/Computational-social-science/Eidos).
+Follow the bundle README for CPU acceptance and the recorded runtime for retraining.
+The original numerical method is attributed to its authors in the references.
+
+## Reporting and submission metadata
+
+This is a technical validation report. Authors, affiliations, funding, author
+contributions and competing-interest declarations must be completed by the human
+research team before journal submission. No inferred personal or funding metadata
+has been supplied. Technical production follows the linked figure and manuscript
+guides; scientific suitability and editorial acceptance require separate review.
+
+## References
+
+1. Barron, J. T., Gnanapragasam, D. & Tschannen, M. *A Fix for Softmax and
+   Cross-Entropy*, version 3. [arXiv:2610.31642v3](https://arxiv.org/html/2610.31642v3).
+2. Nature. [Research figure guide](https://research-figure-guide.nature.com/figures/building-and-exporting-figure-panels/).
+3. Nature. [Formatting guide](https://www.nature.com/nature/for-authors/formatting-guide).

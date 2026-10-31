@@ -1,26 +1,80 @@
 ---
-title: 'Softmax: loss precision and epsilon matrix'
+title: Precision and epsilon shape the outcome of a Softmax repair
 lang: en
+date: '2026-10-31'
 format:
   html:
     embed-resources: true
+    toc: true
+    toc-depth: 2
+    include-in-header:
+    - text: '<style>
+
+        body{font-family:Georgia,"Times New Roman",serif;font-size:17px;line-height:1.85;color:#202124;background:#fff}
+
+        main.content{max-width:1000px;min-width:0;width:100%;margin:auto;padding:30px
+        24px}h1{font-size:30px;line-height:1.25;max-width:28ch}
+
+        h2{font-size:22px;line-height:1.4;margin:2em 0 .6em}h3{font-size:18px;margin:1.5em
+        0 .5em}
+
+        p,li{max-width:85ch;overflow-wrap:anywhere}a{color:#245c83}pre,code{font-family:Consolas,monospace;font-size:.85em}
+
+        table{display:block;overflow-x:auto;max-width:100%;font-size:14px;line-height:1.6;border-collapse:collapse;width:100%}th,td{padding:9px
+        10px;border-bottom:1px solid #ddd}
+
+        th{text-align:left;font-weight:bold}figure{margin:26px 0}figure img{width:100%;height:auto;background:white}
+
+        figcaption{font-size:14px;line-height:1.65;color:#343434;margin-top:12px}caption{caption-side:top;text-align:left}
+
+        pre{padding:14px;background:#f5f5f3;overflow:auto}#TOC{font-family:Arial,sans-serif;font-size:13px}
+
+        @media(max-width:600px){body{font-size:16px}main.content{padding:20px 16px}h1{font-size:25px}.cell-output-display{overflow:auto}}
+
+        @media print{#TOC,nav{display:none}body{font-size:12pt;color:black}}
+
+        </style>'
   pdf:
+    documentclass: article
     pdf-engine: lualatex
-    geometry: margin=1in
-  docx: default
+    papersize: a4
+    geometry:
+    - left=13.5mm
+    - right=13.5mm
+    - top=22mm
+    - bottom=22mm
+    fontsize: 12pt
+    mainfont: Times New Roman
+    include-in-header:
+    - text: '\usepackage{setspace}
+
+        \doublespacing
+
+        \usepackage{lineno}
+
+        \linenumbers
+
+        \usepackage{caption}
+
+        \usepackage{needspace}
+
+        \captionsetup{labelformat=empty,font=normalsize,justification=raggedright,singlelinecheck=false}
+
+        \makeatletter
+
+        \renewcommand{\maketitle}{\begingroup\setlength{\parindent}{0pt}{\large\bfseries\@title\par}\vspace{0.4em}{\normalsize
+        Research validation report\par}{\normalsize\@date\par}\vspace{1em}\endgroup}
+
+        \makeatother'
+  docx:
+    reference-doc: reference.docx
 ---
 
+## Summary
 
-::: {.content-visible when-format="pdf"}
-![All seeds and both repair arms across the supported matrix.](accuracy-matrix.pdf){width=100%}
-:::
-::: {.content-visible when-format="html"}
-![All seeds and both repair arms across the supported matrix.](accuracy-matrix.svg){width=100%}
-:::
-::: {.content-visible when-format="docx"}
-![All seeds and both repair arms across the supported matrix.](accuracy-matrix.png){width=100%}
-:::
-# Loss precision × epsilon: paired reconstruction
+A numerical repair and a downstream learning benefit require separate evidence. This registered local reconstruction retains 36 complete trajectories and 18 paired endpoints. Fixed cross-entropy improves 5 endpoints and reduces 12; 1 is tied. The tested repair removes recorded target-gradient zeros within its qualified scope, while the specified training budget does not reproduce the cited paper's generalisation result. All seeds, models and unfavorable outcomes are preserved.
+
+## Results
 
 All 36 specified training trajectories completed, with independently checked final models and gradient endpoints.
 
@@ -31,6 +85,25 @@ At the model interface, the fixed arm's maximum target-zero count is 0 across 91
 Locally registered follow-up; three seeds, float32 model/forward, two supported loss precisions and three epsilon values. Not an exact paper reproduction. bfloat16 remains UNQUALIFIED.
 
 All cells below are retained. Delta is fixed minus standard in percentage points; no population inference or significance test.
+
+
+
+::: {.content-visible when-format="pdf"}
+![**Figure 1 | Held-out accuracy in every supported condition.** a-c, float32 loss-entry logits; d-f, float64 loss-entry logits. Columns give epsilon 1e-8, 1e-12 and 1e-16. Every line is one seed-specific training run; markers distinguish three seeds, dashed lines standard CE and solid lines fixed CE. All model parameters and forward computations remain float32. Individual trajectories are shown without error bars or population inference.](accuracy-matrix.pdf){width=100%}
+:::
+::: {.content-visible when-format="html"}
+![**Figure 1 | Every seed and repair arm.** a-c, float32 loss-entry logits; d-f, float64 loss-entry logits. Columns give epsilon 1e-8, 1e-12 and 1e-16. Lines show individual trajectories; three seed markers, dashed standard CE and solid fixed CE. Model parameters and forward remain float32. No error bars or population inference.](accuracy-matrix.svg){width=100%}
+:::
+::: {.content-visible when-format="docx"}
+![**Figure 1 | Every seed and repair arm.** a-c, float32 loss-entry logits; d-f, float64 loss-entry logits. Columns give epsilon 1e-8, 1e-12 and 1e-16. Lines show individual trajectories; three seed markers, dashed standard CE and solid fixed CE. Model parameters and forward remain float32. No error bars or population inference.](accuracy-matrix.png){width=100%}
+:::
+
+
+::: {.content-visible when-format="pdf"}
+```{=latex}
+\clearpage
+```
+:::
 
 | Loss dtype | Epsilon | Seed | Standard test (%) | Fixed test (%) | Delta (pp) |
 |---|---:|---:|---:|---:|---:|
@@ -53,6 +126,9 @@ All cells below are retained. Delta is fixed minus standard in percentage points
 | float64 | 1e-16 | 1 | 13.306 | 11.642 | -1.663 |
 | float64 | 1e-16 | 2 | 4.990 | 4.574 | -0.416 |
 
+: **Table 1 | Every final paired held-out outcome.** Delta is fixed minus standard in percentage points; all three seeds and all conditions are retained.
+
+
 ## Evidence and limitations
 
 Six float32/epsilon=1e-8 final model hashes exactly replay the parent experiment. All cells reuse that parent's original initial models and splits.
@@ -70,3 +146,50 @@ Downloads: [trajectories](trajectories.csv), [paired endpoints](paired.csv), [pr
 Publication masters: [editable SVG](accuracy-matrix.svg), [PDF at 183 mm](accuracy-matrix.pdf).
 
 CPU acceptance: `python reference/softmax_matrix/verify.py`. Retraining needs the recorded CUDA runtime and a separately registered output location; the original producer refuses overwrite.
+
+## Methods
+
+### Study design and experimental units
+
+Modular addition modulo 31 uses a 50% training split. Three initialization/split seeds (0, 1, 2) are reused across the loss-precision and epsilon conditions. Both arms in each pair copy identical initial weights. Every run uses 10,000 epochs; checkpoints are logged every 200 epochs. No seeds or cells are excluded and no favorable-outcome stopping rule is applied.
+
+### Architecture, optimizer and precision
+
+A 1-layer, 4-head Transformer of width 64 uses ReLU and no LayerNorm. AdamW uses learning rate 0.001, betas (0.9, 0.98), and weight decay 1. Parameters and model forward remain float32. Only loss-entry logits switch between float32 and float64; the full protocol lists input representation, attention, initialization and decay details that are not specified by the paper.
+
+### Statistical analysis
+
+An experimental unit is a seed-specific training run. The 18 condition-specific pairs share three initialization/split seeds and must not be treated as 18 independent seed replicates. All individual trajectories and final paired differences are reported. There is no significance test, confidence interval or error bar; the study is descriptive and does not estimate a population effect.
+
+### Independent checks and provenance
+
+Raw model tensors and final held-out predictions are checked by an independent NumPy forward path. Final gradients are independently reloaded on the recorded CUDA runtime; intermediate gradient counts remain producer logs. Source, data, protocol, initial state, checkpoint and environment hashes are verified. The original experimental lock is archived unchanged when the local EIDOS release label changes; any dependency/source/marker/hash change still fails that equivalence check.
+
+## Data availability
+
+Original protocols, raw measurements, seed/split identifiers and saved-model
+artifacts are available in [the evidence record](evidence.json) and
+[the checksummed reproduction bundle](reproduce.zip). Every specified outcome is retained. The repository records code, data
+and environment hashes; artifact acceptance can be rerun independently.
+
+## Code availability
+
+Source and tests are included in `reproduce.zip` and in the
+[EIDOS repository](https://github.com/Computational-social-science/Eidos).
+Follow the bundle README for CPU acceptance and the recorded runtime for retraining.
+The original numerical method is attributed to its authors in the references.
+
+## Reporting and submission metadata
+
+This is a technical validation report. Authors, affiliations, funding, author
+contributions and competing-interest declarations must be completed by the human
+research team before journal submission. No inferred personal or funding metadata
+has been supplied. Technical production follows the linked figure and manuscript
+guides; scientific suitability and editorial acceptance require separate review.
+
+## References
+
+1. Barron, J. T., Gnanapragasam, D. & Tschannen, M. *A Fix for Softmax and
+   Cross-Entropy*, version 3. [arXiv:2610.31642v3](https://arxiv.org/html/2610.31642v3).
+2. Nature. [Research figure guide](https://research-figure-guide.nature.com/figures/building-and-exporting-figure-panels/).
+3. Nature. [Formatting guide](https://www.nature.com/nature/for-authors/formatting-guide).

@@ -150,10 +150,14 @@ def build_case() -> dict:
 
 
 def _report_source(data: dict) -> str:
-    lines = ["---", 'title: "Softmax Collapse and Softmax Cancellation: Eidos validation"',
-             'author: "Eidos numerical validation"', 'date: "2026-10-31"', "format:",
-             "  html:", "    toc: true", "    embed-resources: true", "  pdf:",
-             "    documentclass: article", "    geometry: margin=1in", "  docx: default", "---", "",
+    from tools.publication import header, declarations, caption_tables, caption_figures
+    lines = ["## Summary", "",
+             "Softmax arithmetic can lose scientifically relevant derivatives while conventional stability checks still pass. "
+             "We evaluate the published repairs [1] using independently defined high-precision references, deliberately broken "
+             "controls and saved teacher–student models. The tested kernels preserve small target gradients and exact "
+             "stationarity within the qualified input range. The training experiment separates numerical correctness "
+             "from generalisation. This report records the repair, unfavorable outcomes and reproducible artifacts, "
+             "with explicit limits on backend qualification and downstream claims.", "",
              "## Scope and research gap", "",
              f"Source: [A Fix for Softmax and Cross-Entropy, v3]({PAPER}).",
              "This reproduces published numerical mechanisms and repairs the existing Paper2Agent integration.",
@@ -166,17 +170,23 @@ def _report_source(data: dict) -> str:
              "The fixed forward excludes exactly one argmax before `log1p`; the hard-target backward computes the target derivative as the negative sum of the other derivatives (source Eqs. 5-7).", "",
              "For distillation, the true gradient is student probability minus teacher probability. Near equal logits this subtraction loses relative accuracy; exact equality should yield zero.",
              "The repair uses centered logit differences, `expm1`/`log1p`, and a zero-sum correction, with the ordinary difference retained for the far branch (source Eqs. 8-9). Teacher logits are required for this contract; already-rounded probabilities cannot recover lost information.", "",
-             "## Reproduction and independent verification", "",
+             "## Methods", "", "### Numerical execution and independent references", "",
              f"Backend: {data['backend']}. Decimal references use represented inputs and adaptive precision.",
              f"Eidos {data['provenance']['eidos']}; Python {data['provenance']['python']}. No random seed applies to this deterministic grid.",
              "Source and lock SHA-256 hashes are recorded in evidence.json; bundle checksums cover the shipped source.",
              "The browser selects recorded cases; it does not simulate float32 training.", "",
+             "### Statistics and experimental units", "",
+             "The 96 numerical cases are deterministic input settings, not 96 independent random replicates. "
+             "No error bars, confidence intervals or significance tests are used for this grid. The teacher–student "
+             "experiment reports every one of three declared seed pairs; an experimental unit is one trained model, "
+             "and the paired arms share their initial teacher and split. Individual trajectories are shown.", "",
+             "## Numerical results", "",
              '::: {.content-visible when-format="pdf"}',
-             '![Measured numerical mechanisms, float32.](figure-float32.pdf){width=100%}', ':::', '',
+             '![Figure 1 | Numerical repair in float32. a, Target-gradient magnitude across the logit gap. b, Relative L2 gradient error against independent Decimal arithmetic. c, Relative error near the teacher, using represented logit differences. d, Absolute L2 error at exact teacher equality. Lines show deterministic cases; no error bars or random sampling apply. Exact zeros are labelled and excluded from logarithmic traces. All quantities are dimensionless.](figure-float32.pdf){width=100%}', ':::', '',
              '::: {.content-visible when-format="html"}',
-             '![Measured numerical mechanisms, float32.](figure-float32.svg){width=100%}', ':::', '',
+             '![Figure 1 | Numerical repair in float32. a, Target-gradient magnitude. b, Relative L2 error against Decimal arithmetic. c, Relative error near the teacher using represented logit differences. d, Absolute L2 error at exact equality. Deterministic cases; no error bars. Exact zeros are labelled rather than given a positive floor. All quantities are dimensionless.](figure-float32.svg){width=100%}', ':::', '',
              '::: {.content-visible when-format="docx"}',
-             '![Measured numerical mechanisms, float32.](figure-float32.png){width=100%}', ':::', '',
+             '![Figure 1 | Numerical repair in float32. a, Target-gradient magnitude. b, Relative L2 error against Decimal arithmetic. c, Relative error near the teacher using represented logit differences. d, Absolute L2 error at exact equality. Deterministic cases; no error bars. Exact zeros are labelled. All quantities are dimensionless.](figure-float32.png){width=100%}', ':::', '',
              "| Input dtype | Dominant logit | Standard target gradient | Fixed target gradient | Fixed relative L2 error |",
              "|---|---:|---:|---:|---:|"]
     for dtype, margin in (("float32", 18), ("float64", 40), ("float64", 80)):
@@ -227,15 +237,26 @@ def _report_source(data: dict) -> str:
                   "Saved weights independently reproduce the primary endpoint. All seeds, split identities, protocol and model checkpoints are included in the source bundle.",
                   "The first run failed because a full-batch teacher cache differed from a training-batch forward. The failed code, evidence and checkpoints are preserved; the corrected run asserts exact initial logit equality.", "",
                   '::: {.content-visible when-format="pdf"}',
-                  '![Every seed: standard drift versus fixed exact stationarity.](training/trajectory.pdf){width=100%}', ':::', '',
+                  '![Figure 2 | Stationarity across all three seed pairs. a, Parameter L2 displacement from the initial teacher. b, Held-out KL evaluated in float64. Every line is one paired training trajectory; all fixed trajectories coincide at zero. No error bars or population inference. The KL axis is symmetric log with a linear region within plus or minus 1e-12; signed numerical residuals are retained.](training/trajectory.pdf){width=100%}', ':::', '',
                   '::: {.content-visible when-format="html"}',
-                  '![Every seed: standard drift versus fixed exact stationarity.](training/trajectory.svg){width=100%}', ':::', '',
+                  '![Figure 2 | All three paired seeds. a, Parameter L2 displacement. b, Held-out KL in float64. Individual trajectories; fixed arms coincide at zero. No error bars. Symmetric-log KL axis, linear within plus or minus 1e-12; signed residuals are retained.](training/trajectory.svg){width=100%}', ':::', '',
                   '::: {.content-visible when-format="docx"}',
-                  '![Every seed: standard drift versus fixed exact stationarity.](training/trajectory.png){width=100%}', ':::', '']
-    return "\n".join(lines) + "\n"
+                  '![Figure 2 | All three paired seeds. a, Parameter L2 displacement. b, Held-out KL in float64. Individual trajectories; fixed arms coincide at zero. No error bars. Symmetric-log KL axis, linear within plus or minus 1e-12.](training/trajectory.png){width=100%}', ':::', '']
+    captions = ['Table 1 | Selected collapse cases and dimensionless gradient errors.',
+                'Table 2 | Requested and represented perturbations and absolute gradient errors.',
+                'Table 3 | Pipeline stages and their acceptance evidence.']
+    if training.get('status') == 'PASS':
+        captions.append('Table 4 | Final displacement and teacher held-out accuracy for every seed pair.')
+    return header('Independent validation of Softmax numerical repairs') + caption_figures(caption_tables('\n'.join(lines), captions)) + declarations()
 
 
 def export_case(output: Path, data: dict | None = None) -> None:
+    from framework.artifacts import output_lock
+    with output_lock(output):
+        _export_case(output, data)
+
+
+def _export_case(output: Path, data: dict | None = None) -> None:
     """Export evidence, a single-source report and a self-contained source bundle."""
     data = build_case() if data is None else data
     output = Path(output)
@@ -277,6 +298,7 @@ def export_case(output: Path, data: dict | None = None) -> None:
     payloads["tools/numerics_case.py"] = Path(__file__).read_bytes()
     payloads["tools/numerics_figure.py"] = (ROOT / "tools/numerics_figure.py").read_bytes()
     payloads["tools/training_figure.py"] = (ROOT / "tools/training_figure.py").read_bytes()
+    payloads["tools/publication.py"] = (ROOT / "tools/publication.py").read_bytes()
     payloads["tools/verify_barron_mcp.py"] = (ROOT / "tools/verify_barron_mcp.py").read_bytes()
     payloads["README.md"] += ("\nCPU verification of the saved training run:\n"
                               "uv run --no-sync python -m framework.project check softmax_training\n"
@@ -308,10 +330,12 @@ def export_case(output: Path, data: dict | None = None) -> None:
                 payloads[path.relative_to(ROOT).as_posix()] = path.read_bytes()
     payloads["reference/reproduction/barron2026/specs.json"] = (ROOT / "reference/reproduction/barron2026/specs.json").read_bytes()
     checksums = {name: hashlib.sha256(content).hexdigest() for name, content in payloads.items()}
-    with zipfile.ZipFile(output / "reproduce.zip", "w", zipfile.ZIP_DEFLATED) as bundle:
-        for name, content in payloads.items():
-            bundle.writestr(name, content)
-        bundle.writestr("checksums.json", json.dumps(checksums, indent=2))
+    from framework.artifacts import atomic_output
+    with atomic_output(output / "reproduce.zip") as temporary:
+        with zipfile.ZipFile(temporary, "w", zipfile.ZIP_DEFLATED) as bundle:
+            for name, content in payloads.items():
+                bundle.writestr(name, content)
+            bundle.writestr("checksums.json", json.dumps(checksums, indent=2))
 
 
 def main(argv=None) -> int:
@@ -319,18 +343,27 @@ def main(argv=None) -> int:
     parser.add_argument("--out", type=Path, default=ROOT / "site/reports/numerics")
     parser.add_argument("--render", action="store_true", help="also render HTML, PDF and DOCX with Quarto")
     args = parser.parse_args(argv)
+    from framework.artifacts import output_lock
+    with output_lock(args.out):
+        return _deliver(args)
+
+
+def _deliver(args) -> int:
     data = build_case()
-    export_case(args.out, data)
+    _export_case(args.out, data)
     if args.render:
         quarto = os.environ.get("QUARTO_BIN") or shutil.which("quarto")
         if not quarto:
             print("ERROR: Quarto is required for --render; configure QUARTO_BIN")
             return 2
+        from tools.publication import reference_docx, finish_docx
+        reference_docx(args.out, quarto)
         for target in ("html", "pdf", "docx"):
             result = subprocess.run([quarto, "render", "report.qmd", "--to", target], cwd=args.out)
             if result.returncode or not (args.out / f"report.{target}").is_file():
                 print(f"ERROR: {target} report delivery failed")
                 return 2
+        finish_docx(args.out)
     print(f"{data['qualification']['verdict']}: {len(data['collapse'])} collapse and "
           f"{len(data['cancellation'])} cancellation cases exported to {args.out}")
     training_ok = data.get("training", {}).get("status") not in ("FAIL", "ERROR")

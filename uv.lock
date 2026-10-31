@@ -1679,7 +1679,7 @@ wheels = [
 
 [[package]]
 name = "eidos"
-version = "4.3.32"
+version = "0.4.1"
 source = { editable = "." }
 dependencies = [
     { name = "matplotlib" },

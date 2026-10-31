@@ -136,16 +136,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_11">
-      
-      <ns0:g style="fill: #111111" transform="translate(34.427717 149.484385)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">3</ns0:tspan>
-        <ns0:tspan x="11.516816" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">4</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="149.058467" transform="rotate(-0 48.467717 149.058467)">1e-34</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_2">
@@ -158,16 +149,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_12">
-      
-      <ns0:g style="fill: #111111" transform="translate(34.427717 137.164116)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">3</ns0:tspan>
-        <ns0:tspan x="11.516816" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="136.738198" transform="rotate(-0 48.467717 136.738198)">1e-30</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_3">
@@ -180,16 +162,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_13">
-      
-      <ns0:g style="fill: #111111" transform="translate(34.427717 124.843847)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">2</ns0:tspan>
-        <ns0:tspan x="11.516816" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">6</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="124.417929" transform="rotate(-0 48.467717 124.417929)">1e-26</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_4">
@@ -202,16 +175,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_14">
-      
-      <ns0:g style="fill: #111111" transform="translate(34.427717 112.523578)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">2</ns0:tspan>
-        <ns0:tspan x="11.516816" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">2</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="112.09766" transform="rotate(-0 48.467717 112.09766)">1e-22</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_5">
@@ -224,16 +188,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_15">
-      
-      <ns0:g style="fill: #111111" transform="translate(34.427717 100.203308)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="11.516816" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">8</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="99.77739" transform="rotate(-0 48.467717 99.77739)">1e-18</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_6">
@@ -246,16 +201,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_16">
-      
-      <ns0:g style="fill: #111111" transform="translate(34.427717 87.883039)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="11.516816" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">4</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="87.457121" transform="rotate(-0 48.467717 87.457121)">1e-14</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_7">
@@ -268,16 +214,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_17">
-      
-      <ns0:g style="fill: #111111" transform="translate(34.427717 75.56277)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="11.516816" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="75.136852" transform="rotate(-0 48.467717 75.136852)">1e-10</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_8">
@@ -290,15 +227,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_18">
-      
-      <ns0:g style="fill: #111111" transform="translate(36.767717 63.242501)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">6</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="62.816583" transform="rotate(-0 48.467717 62.816583)">1e-06</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_9">
@@ -311,19 +240,11 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_19">
-      
-      <ns0:g style="fill: #111111" transform="translate(36.767717 50.922231)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">2</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="50.496313" transform="rotate(-0 48.467717 50.496313)">1e-02</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="text_20">
-     <ns0:text style="font-size: 6.5px; font-family: 'Arial'; text-anchor: middle; fill: #111111" x="29.05967" y="95.465936" transform="rotate(-90 29.05967 95.465936)">|Target gradient|</ns0:text>
+     <ns0:text style="font-size: 6.5px; font-family: 'Arial'; text-anchor: middle; fill: #111111" x="27.755607" y="95.465936" transform="rotate(-90 27.755607 95.465936)">|Target gradient|</ns0:text>
     </ns0:g>
    </ns0:g>
    <ns0:g id="line2d_28">
@@ -461,15 +382,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_33">
-      
-      <ns0:g style="fill: #111111" transform="translate(296.692005 145.02962)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">8</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="308.392005" y="144.603702" transform="rotate(-0 308.392005 144.603702)">1e-08</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_11">
@@ -482,15 +395,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_34">
-      
-      <ns0:g style="fill: #111111" transform="translate(296.692005 132.395256)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.859375" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.859375" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-3.035937" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-3.035937" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">7</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="308.392005" y="131.999338" transform="rotate(-0 308.392005 131.999338)">1e-07</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_12">
@@ -503,15 +408,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_35">
-      
-      <ns0:g style="fill: #111111" transform="translate(296.692005 119.820892)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">6</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="308.392005" y="119.394974" transform="rotate(-0 308.392005 119.394974)">1e-06</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_13">
@@ -524,15 +421,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_36">
-      
-      <ns0:g style="fill: #111111" transform="translate(296.692005 107.186529)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.859375" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.859375" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-3.035937" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-3.035937" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">5</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="308.392005" y="106.790611" transform="rotate(-0 308.392005 106.790611)">1e-05</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_14">
@@ -545,15 +434,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_37">
-      
-      <ns0:g style="fill: #111111" transform="translate(296.692005 94.612165)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.815625" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.815625" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.992188" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.992188" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">4</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="308.392005" y="94.186247" transform="rotate(-0 308.392005 94.186247)">1e-04</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_15">
@@ -566,15 +447,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_38">
-      
-      <ns0:g style="fill: #111111" transform="translate(296.692005 82.007801)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">3</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="308.392005" y="81.581883" transform="rotate(-0 308.392005 81.581883)">1e-03</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_16">
@@ -587,15 +460,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_39">
-      
-      <ns0:g style="fill: #111111" transform="translate(296.692005 69.403438)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">2</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="308.392005" y="68.97752" transform="rotate(-0 308.392005 68.97752)">1e-02</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_17">
@@ -608,15 +473,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_40">
-      
-      <ns0:g style="fill: #111111" transform="translate(296.692005 56.799074)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="308.392005" y="56.373156" transform="rotate(-0 308.392005 56.373156)">1e-01</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_18">
@@ -629,14 +486,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_41">
-      
-      <ns0:g style="fill: #111111" transform="translate(299.152005 44.19471)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="308.392005" y="43.768792" transform="rotate(-0 308.392005 43.768792)">1e+00</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_19">
@@ -1154,7 +1004,7 @@
      </ns0:g>
     </ns0:g>
     <ns0:g id="text_42">
-     <ns0:text style="font-size: 6.5px; font-family: 'Arial'; text-anchor: middle; fill: #111111" x="291.323958" y="95.465936" transform="rotate(-90 291.323958 95.465936)">Relative gradient error (L2)</ns0:text>
+     <ns0:text style="font-size: 6.5px; font-family: 'Arial'; text-anchor: middle; fill: #111111" x="286.173333" y="95.465936" transform="rotate(-90 286.173333 95.465936)">Relative gradient error (L2)</ns0:text>
     </ns0:g>
    </ns0:g>
    <ns0:g id="line2d_131">
@@ -1185,15 +1035,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_44">
-      
-      <ns0:g style="fill: #111111" transform="translate(239.378797 342.303307)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.859375" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.859375" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-3.035937" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-3.035937" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">7</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: middle; fill: #111111" x="245.228797" y="341.511471" transform="rotate(-0 245.228797 341.511471)">1e-07</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="xtick_20">
@@ -1203,15 +1045,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_45">
-      
-      <ns0:g style="fill: #111111" transform="translate(193.36957 342.363307)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">6</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: middle; fill: #111111" x="199.21957" y="341.511471" transform="rotate(-0 199.21957 341.511471)">1e-06</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="xtick_21">
@@ -1221,15 +1055,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_46">
-      
-      <ns0:g style="fill: #111111" transform="translate(147.360342 342.303307)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.859375" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.859375" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-3.035937" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-3.035937" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">5</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: middle; fill: #111111" x="153.210342" y="341.511471" transform="rotate(-0 153.210342 341.511471)">1e-05</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="xtick_22">
@@ -1239,15 +1065,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_47">
-      
-      <ns0:g style="fill: #111111" transform="translate(101.351115 342.363307)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.815625" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.815625" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.992188" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.992188" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">4</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: middle; fill: #111111" x="107.201115" y="341.511471" transform="rotate(-0 107.201115 341.511471)">1e-04</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="xtick_23">
@@ -1257,15 +1075,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_48">
-      
-      <ns0:g style="fill: #111111" transform="translate(55.341888 342.363307)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">3</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: middle; fill: #111111" x="61.191888" y="341.511471" transform="rotate(-0 61.191888 341.511471)">1e-03</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="xtick_24">
@@ -1503,7 +1313,7 @@
      </ns0:g>
     </ns0:g>
     <ns0:g id="text_49">
-     <ns0:text style="font-size: 6.5px; font-family: 'Arial'; text-anchor: middle; fill: #111111" x="151.454391" y="352.35818" transform="rotate(-0 151.454391 352.35818)">Represented student–teacher logit gap (max norm)</ns0:text>
+     <ns0:text style="font-size: 6.5px; font-family: 'Arial'; text-anchor: middle; fill: #111111" x="151.454391" y="351.506344" transform="rotate(-0 151.454391 351.506344)">Represented student–teacher logit gap (max norm)</ns0:text>
     </ns0:g>
    </ns0:g>
    <ns0:g id="matplotlib.axis_6">
@@ -1517,15 +1327,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_50">
-      
-      <ns0:g style="fill: #111111" transform="translate(36.767717 323.157272)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.859375" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.859375" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-3.035937" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-3.035937" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">7</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="322.761354" transform="rotate(-0 48.467717 322.761354)">1e-07</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_93">
@@ -1538,15 +1340,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_51">
-      
-      <ns0:g style="fill: #111111" transform="translate(36.767717 308.661711)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">6</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="308.235793" transform="rotate(-0 48.467717 308.235793)">1e-06</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_94">
@@ -1559,15 +1353,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_52">
-      
-      <ns0:g style="fill: #111111" transform="translate(36.767717 294.10615)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.859375" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.859375" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-3.035937" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-3.035937" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">5</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="293.710232" transform="rotate(-0 48.467717 293.710232)">1e-05</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_95">
@@ -1580,15 +1366,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_53">
-      
-      <ns0:g style="fill: #111111" transform="translate(36.767717 279.610589)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.815625" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.815625" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.992188" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.992188" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">4</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="279.184671" transform="rotate(-0 48.467717 279.184671)">1e-04</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_96">
@@ -1601,15 +1379,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_54">
-      
-      <ns0:g style="fill: #111111" transform="translate(36.767717 265.085028)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">3</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="264.65911" transform="rotate(-0 48.467717 264.65911)">1e-03</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_97">
@@ -1622,15 +1392,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_55">
-      
-      <ns0:g style="fill: #111111" transform="translate(36.767717 250.559467)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">2</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="250.133549" transform="rotate(-0 48.467717 250.133549)">1e-02</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_98">
@@ -1643,15 +1405,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_56">
-      
-      <ns0:g style="fill: #111111" transform="translate(36.767717 236.033906)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">−</ns0:tspan>
-        <ns0:tspan x="9.180977" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="235.607988" transform="rotate(-0 48.467717 235.607988)">1e-01</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_99">
@@ -1664,14 +1418,7 @@
       </ns0:g>
      </ns0:g>
      <ns0:g id="text_57">
-      
-      <ns0:g style="fill: #111111" transform="translate(39.227717 221.508345)">
-       <ns0:text>
-        <ns0:tspan x="0" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">1</ns0:tspan>
-        <ns0:tspan x="3.336914" y="-0.804688" style="font-size: 6px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-        <ns0:tspan x="6.728242" y="-2.98125" style="font-size: 4.2px; font-family: 'Arial'; fill: #111111">0</ns0:tspan>
-       </ns0:text>
-      </ns0:g>
+      <ns0:text style="font-size: 6px; font-family: 'Arial'; text-anchor: end; fill: #111111" x="48.467717" y="221.082427" transform="rotate(-0 48.467717 221.082427)">1e+00</ns0:text>
      </ns0:g>
     </ns0:g>
     <ns0:g id="ytick_100">
@@ -2123,7 +1870,7 @@
      </ns0:g>
     </ns0:g>
     <ns0:g id="text_58">
-     <ns0:text style="font-size: 6.5px; font-family: 'Arial'; text-anchor: middle; fill: #111111" x="31.39967" y="273.094694" transform="rotate(-90 31.39967 273.094694)">Relative gradient error (L2)</ns0:text>
+     <ns0:text style="font-size: 6.5px; font-family: 'Arial'; text-anchor: middle; fill: #111111" x="26.249045" y="273.094694" transform="rotate(-90 26.249045 273.094694)">Relative gradient error (L2)</ns0:text>
     </ns0:g>
    </ns0:g>
    <ns0:g id="line2d_251">

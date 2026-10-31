@@ -89,6 +89,15 @@
       "ok": true
     },
     {
+      "fixture": "s10_statistics_rejected",
+      "expected": "FAIL",
+      "actual": "FAIL",
+      "checks": [
+        "S10"
+      ],
+      "ok": true
+    },
+    {
       "fixture": "s11_wrong_verdict",
       "expected": "FAIL",
       "actual": "FAIL",
@@ -109,6 +118,7 @@
   ],
   "covered": [
     "S1",
+    "S10",
     "S11",
     "S12",
     "S2",
@@ -119,6 +129,20 @@
     "S7",
     "S8",
     "S9"
+  ],
+  "required_checks": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S7",
+    "S8",
+    "S9",
+    "S10",
+    "S11",
+    "S12"
   ],
   "ok": true
 }

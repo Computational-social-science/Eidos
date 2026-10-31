@@ -73,6 +73,7 @@ ALLOWED_STRENGTH = {"supported", "tentative", "exploratory"}
 ALLOWED_DESIGN = {"preregistered", "observational", "exploratory"}
 REQUIRED_SCOPE = ("corpus", "task", "models", "writing_system", "genre")
 MIN_SPAN_CHARS = 12
+CHECK_IDS = tuple(f"S{i}" for i in range(1, 13))
 
 _TAG = re.compile(r"<[^>]+>")
 

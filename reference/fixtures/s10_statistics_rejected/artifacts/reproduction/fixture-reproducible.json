@@ -1,0 +1,15 @@
+{
+  "paper": "fixture-reproducible",
+  "verdict": "MATCH",
+  "expected": 0.927,
+  "observed": 0.927,
+  "delta": 0.0,
+  "tool": "stub",
+  "command": [
+    "python",
+    "reference/reproduction/repro_stub.py",
+    "0.927"
+  ],
+  "ts": "2026-10-27T00:00:00+00:00",
+  "registered_at": "2026-10-26T00:00:00+00:00"
+}

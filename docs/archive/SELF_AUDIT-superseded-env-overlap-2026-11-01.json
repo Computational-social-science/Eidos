@@ -1,0 +1,33 @@
+{
+  "chains": {
+    "total": 11,
+    "pass": 10,
+    "skip": 1,
+    "fail": 0
+  },
+  "tests_collected": 598,
+  "tests": {
+    "passed": 594,
+    "failed": 0,
+    "skipped": 9,
+    "errors": 0
+  },
+  "diagnostics": {},
+  "coverage_total": 68,
+  "coverage_scope": "framework; unexecuted modules included; tests and tools excluded",
+  "gate_s": {
+    "fixture_status": "PASS"
+  },
+  "self_gate_s": {
+    "status": "PASS",
+    "findings": [],
+    "open_objections": 0
+  },
+  "exit_codes": {
+    "chains": 0,
+    "gate_s": 0,
+    "self_gate_s": 0,
+    "test_collection": 0,
+    "tests": 0
+  }
+}

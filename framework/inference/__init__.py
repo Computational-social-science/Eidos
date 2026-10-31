@@ -174,8 +174,9 @@ class ModelManager:
     def _check_ollama(self) -> bool:
         """Check if Ollama is available"""
         try:
+            from framework.subprocesses import quiet_flags
             result = subprocess.run(
-                ["ollama", "list"], capture_output=True, text=True, timeout=10
+                ["ollama", "list"], capture_output=True, text=True, timeout=10, creationflags=quiet_flags()
             )
             return result.returncode == 0
         except Exception:
@@ -621,7 +622,7 @@ class StageAwareScheduler:
         "hypothesis_generation": ["llama3.1:8b", "qwen2.5:14b"],
         "literature_review": ["llama3.1:8b", "qwen2.5:14b"],
         "experiment_design": ["qwen2.5:14b", "gemma2:9b"],
-        "experiment_execution": ["StartLux-Decision-4B-Q8_0"],
+        "experiment_execution": [],  # registered commands, not a decision model
         "evaluation": ["llama3.1:8b", "qwen2.5:14b"],
         "manuscript_drafting": ["llama3.1:8b", "qwen2.5:14b"],
         # Decision stages: typed, calibrated answers, one forward pass each.
@@ -629,41 +630,68 @@ class StageAwareScheduler:
         "hypothesis_screening": ["StartLux-Decision-4B-Q8_0"],
         "gate_triage": ["StartLux-Decision-4B-Q8_0"],
         "failure_classification": ["StartLux-Decision-4B-Q8_0"],
-        "evaluation_gates": ["StartLux-Decision-4B-Q8_0"],
+        "evaluation_gates": [],  # deterministic verifiers, never an LLM verdict
     }
+
+    DRAFT_STAGES = frozenset({"hypothesis_generation", "literature_review", "experiment_design",
+                              "evaluation", "manuscript_drafting"})
+    TOOL_STAGES = frozenset({"experiment_execution", "evaluation_gates"})
     
     def __init__(self, model_manager: ModelManager):
         self.model_manager = model_manager
+        self.prepared_models: Dict[str, str] = {}
+
+    @classmethod
+    def describe_stage(cls, stage: str) -> Dict[str, Any]:
+        if stage not in cls.STAGE_MODELS:
+            raise ValueError(f"Unknown inference stage: {stage}")
+        role = ("draft_only" if stage in cls.DRAFT_STAGES else
+                "registered_tools" if stage in cls.TOOL_STAGES else "bounded_triage")
+        return {"stage": stage, "role": role, "candidates": list(cls.STAGE_MODELS[stage]),
+                "scientific_authority": False,
+                "task_qualification": "UNQUALIFIED" if stage in cls.DRAFT_STAGES else "not_scientific_adjudication"}
     
-    def prepare_stage(self, stage: str) -> bool:
-        """Pre-load models for a pipeline stage"""
-        models = self.STAGE_MODELS.get(stage, [])
+    def prepare_stage(self, stage: str, *, allow_unqualified_draft: bool = False) -> bool:
+        """Prepare one candidate; a successful load is not task qualification.
+
+        Scientific generation has no accepted task qualification yet. Callers may
+        explicitly request an unqualified draft, but cannot obtain research authority
+        from this readiness boolean. Experiments and gates use their own tools.
+        True for a tool stage means no LLM is required; it does not verify or run
+        the registered experiment or scientific gate.
+        """
+        self.describe_stage(stage)  # unknown names must not silently succeed
+        if stage in self.DRAFT_STAGES and allow_unqualified_draft is not True:
+            self.prepared_models.pop(stage, None)
+            return False
+        models = self.get_stage_models(stage)
         if not models:
-            return True
-        
-        print(f"Preparing stage '{stage}' with models: {models}")
-        
-        # Load all required models
+            return stage in self.TOOL_STAGES
+        # These are alternatives. Loading every candidate conflicts with the
+        # one-resident-model budget and does not constitute independent review.
         for model in models:
-            if not self.model_manager.load_model(model):
-                print(f"Warning: Failed to load {model} for stage {stage}")
-                return False
-        
-        return True
+            if self.model_manager.load_model(model):
+                self.prepared_models[stage] = model
+                return True
+        self.prepared_models.pop(stage, None)
+        return False
     
     def cleanup_stage(self, stage: str, keep_for_next: List[str] = None) -> None:
         """Clean up models after stage, keeping ones needed for next stage"""
+        stage_models = set(self.get_stage_models(stage))
         keep = set(keep_for_next or [])
         current_models = set(self.model_manager.loaded_models.keys())
-        stage_models = set(self.STAGE_MODELS.get(stage, []))
         
         to_unload = current_models & stage_models - keep
         for model in to_unload:
             self.model_manager.unload_model(model)
+        self.prepared_models.pop(stage, None)
     
     def get_stage_models(self, stage: str) -> List[str]:
-        """Get models required for a stage"""
-        return self.STAGE_MODELS.get(stage, [])
+        """Return proposed alternatives, not an installed/qualified model list."""
+        if stage not in self.STAGE_MODELS:
+            raise ValueError(f"Unknown inference stage: {stage}")
+        return list(self.STAGE_MODELS[stage])
 
 
 # Convenience functions

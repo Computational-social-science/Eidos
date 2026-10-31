@@ -1,0 +1,150 @@
+{
+  "observed_at": "2026-10-31T16:31:55.354025+00:00",
+  "source": "Ollama /api/tags; read-only, no model loaded",
+  "inventory_error": null,
+  "models": [
+    {
+      "name": "llama3.1:8b",
+      "installed": false,
+      "digest": null,
+      "task_qualification": "UNQUALIFIED",
+      "scope": "No accepted EIDOS research-task evaluation for this exact model/quantization."
+    },
+    {
+      "name": "qwen2.5:14b",
+      "installed": false,
+      "digest": null,
+      "task_qualification": "UNQUALIFIED",
+      "scope": "No accepted EIDOS research-task evaluation for this exact model/quantization."
+    },
+    {
+      "name": "gemma2:9b",
+      "installed": true,
+      "digest": "ff02c3702f322b9e075e9568332d96c0a7028002f1a5a056e0a6784320a4db0b",
+      "task_qualification": "UNQUALIFIED",
+      "scope": "No accepted EIDOS research-task evaluation for this exact model/quantization."
+    }
+  ],
+  "evidence": {
+    "sciencersi_s4": {
+      "path": "artifacts/evaluation/s4_probe_structured.json",
+      "sha256": "ffd25a876fb69921aeae9f93d5bb059e0a45907fd5d4847ee15cc04712b78db4",
+      "status": "historical measured record; not rerun by this inventory snapshot"
+    },
+    "sciencersi_s7_holdout": {
+      "path": "artifacts/evaluation/s7_constrained_holdout.json",
+      "sha256": "af65e5827f903d8e35b384abec3b08ebd25e295e81e444e520448f0015857f92",
+      "status": "historical measured record; not rerun by this inventory snapshot"
+    },
+    "startlux_calibration": {
+      "path": "artifacts/decision_calibration_100.json",
+      "sha256": "7de22e0249c843a853db30c2cae7184a4adcbacfde65bfaa4989269de7a787c0",
+      "status": "historical measured record; not rerun by this inventory snapshot"
+    }
+  },
+  "hash_policy": "Evidence JSON canonical UTF-8/LF SHA-256; no measurement rerun.",
+  "stages": [
+    {
+      "stage": "hypothesis_generation",
+      "role": "draft_only",
+      "candidates": [
+        "llama3.1:8b",
+        "qwen2.5:14b"
+      ],
+      "scientific_authority": false,
+      "task_qualification": "UNQUALIFIED"
+    },
+    {
+      "stage": "literature_review",
+      "role": "draft_only",
+      "candidates": [
+        "llama3.1:8b",
+        "qwen2.5:14b"
+      ],
+      "scientific_authority": false,
+      "task_qualification": "UNQUALIFIED"
+    },
+    {
+      "stage": "experiment_design",
+      "role": "draft_only",
+      "candidates": [
+        "qwen2.5:14b",
+        "gemma2:9b"
+      ],
+      "scientific_authority": false,
+      "task_qualification": "UNQUALIFIED"
+    },
+    {
+      "stage": "experiment_execution",
+      "role": "registered_tools",
+      "candidates": [],
+      "scientific_authority": false,
+      "task_qualification": "not_scientific_adjudication"
+    },
+    {
+      "stage": "evaluation",
+      "role": "draft_only",
+      "candidates": [
+        "llama3.1:8b",
+        "qwen2.5:14b"
+      ],
+      "scientific_authority": false,
+      "task_qualification": "UNQUALIFIED"
+    },
+    {
+      "stage": "manuscript_drafting",
+      "role": "draft_only",
+      "candidates": [
+        "llama3.1:8b",
+        "qwen2.5:14b"
+      ],
+      "scientific_authority": false,
+      "task_qualification": "UNQUALIFIED"
+    },
+    {
+      "stage": "routing",
+      "role": "bounded_triage",
+      "candidates": [
+        "StartLux-Decision-4B-Q8_0"
+      ],
+      "scientific_authority": false,
+      "task_qualification": "not_scientific_adjudication"
+    },
+    {
+      "stage": "hypothesis_screening",
+      "role": "bounded_triage",
+      "candidates": [
+        "StartLux-Decision-4B-Q8_0"
+      ],
+      "scientific_authority": false,
+      "task_qualification": "not_scientific_adjudication"
+    },
+    {
+      "stage": "gate_triage",
+      "role": "bounded_triage",
+      "candidates": [
+        "StartLux-Decision-4B-Q8_0"
+      ],
+      "scientific_authority": false,
+      "task_qualification": "not_scientific_adjudication"
+    },
+    {
+      "stage": "failure_classification",
+      "role": "bounded_triage",
+      "candidates": [
+        "StartLux-Decision-4B-Q8_0"
+      ],
+      "scientific_authority": false,
+      "task_qualification": "not_scientific_adjudication"
+    },
+    {
+      "stage": "evaluation_gates",
+      "role": "registered_tools",
+      "candidates": [],
+      "scientific_authority": false,
+      "task_qualification": "not_scientific_adjudication"
+    }
+  ],
+  "scientific_reasoner_qualified": false,
+  "scope": "Model presence is a dated observation, not availability, deployment identity or scientific task acceptance."
+}

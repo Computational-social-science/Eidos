@@ -8,7 +8,7 @@
 
 framework:
   name: "Eidos"
-  description: "Deterministic gates first; a model judges only what the verifiers let through"
+  description: "Deterministic scientific gates; models draft or triage within evaluated scope"
   status: "pre-release"        # measured state, not a promise: docs/HEALTH.md
 
   hardware:
@@ -154,7 +154,7 @@ framework:
         vram_gb: 6.2           # 6.2 GiB incremental, against 8.1 GiB at 40960
         note: "the reduction saved 2.05 GiB: the 40960 KV cache was bigger than the estimate"
         mutex_with: ["StartLux-Decision-4B-Q8_0"]
-        used_for: ["S4", "S7", "hypothesis draft", "diagnosis"]
+        used_for: ["S4/S7 draft probes (not gates)", "hypothesis draft", "diagnosis"]
       - name: "StartLux-Decision-4B-Q8_0"
         provider: "startlux"
         quant: "q8_0"

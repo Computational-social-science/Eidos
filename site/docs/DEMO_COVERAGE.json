@@ -1,0 +1,80 @@
+{
+  "rows": [
+    {
+      "capability": "a project measures itself and registers a claim",
+      "proof": "demo_onboarding gate verdict equals expectation",
+      "self_test": true,
+      "in_demo": true
+    },
+    {
+      "capability": "a live LLM consumer produces evidence with an interval",
+      "proof": "operator_calibration gate PASS with its own evidence.json",
+      "self_test": true,
+      "in_demo": true
+    },
+    {
+      "capability": "a false claim is rejected by Gate S",
+      "proof": "null_study and prose_lie both FAIL as declared",
+      "self_test": true,
+      "in_demo": true
+    },
+    {
+      "capability": "a gate that exits 0 without its artefact is refused",
+      "proof": "chain_no_output must FAIL",
+      "self_test": true,
+      "in_demo": true
+    },
+    {
+      "capability": "a missing tool is SKIP, not PASS",
+      "proof": "chain_tool_missing must SKIP",
+      "self_test": true,
+      "in_demo": false
+    },
+    {
+      "capability": "quantitative acceptance thresholds with an explicit direction",
+      "proof": "a consumer runs a BootLoops acceptance gate and records its rows",
+      "self_test": true,
+      "in_demo": true
+    },
+    {
+      "capability": "a result document renders from source",
+      "proof": "demo_quantitative writes docs/results.html through Quarto",
+      "self_test": true,
+      "in_demo": true
+    },
+    {
+      "capability": "one source renders to html, pdf and docx",
+      "proof": "docs/RENDER_CHECK.json lists three formats",
+      "self_test": true,
+      "in_demo": false
+    },
+    {
+      "capability": "experiment tracking (mlflow + dvc) is part of the chain",
+      "proof": "the tracking chain passes with its own run id",
+      "self_test": true,
+      "in_demo": false
+    },
+    {
+      "capability": "the framework refuses wrong and accepts equivalent evidence",
+      "proof": "docs/FUZZ.json: blind_spots 0, over_rejections 0",
+      "self_test": true,
+      "in_demo": false
+    },
+    {
+      "capability": "a service is up only if every endpoint answers",
+      "proof": "tools/audit_services.py reports a named silent half",
+      "self_test": true,
+      "in_demo": false
+    }
+  ],
+  "self_test": 11,
+  "demo": 6,
+  "gaps": [
+    "a missing tool is SKIP, not PASS",
+    "one source renders to html, pdf and docx",
+    "experiment tracking (mlflow + dvc) is part of the chain",
+    "the framework refuses wrong and accepts equivalent evidence",
+    "a service is up only if every endpoint answers"
+  ],
+  "total": 11
+}

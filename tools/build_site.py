@@ -49,22 +49,8 @@ MAX_VERSIONS = 50
 
 # --------------------------------------------------------------------------- data
 def bump(kind: str) -> str:
-    """Raise the one version number that matters, in the one place it lives."""
-    path = ROOT / "pyproject.toml"
-    text = path.read_text(encoding="utf-8")
-    current = re.search(r'(?m)^version\s*=\s*"([^"]+)"', text)
-    if not current:
-        raise SystemExit("pyproject.toml has no [project] version")
-    major, minor, patch = (int(x) for x in current.group(1).split(".")[:3])
-    if kind == "major":
-        major, minor, patch = major + 1, 0, 0
-    elif kind == "minor":
-        minor, patch = minor + 1, 0
-    else:
-        patch += 1
-    new = f"{major}.{minor}.{patch}"
-    path.write_text(text.replace(current.group(0), f'version = "{new}"', 1), encoding="utf-8")
-    return new
+    from tools.versioning import bump as coherent_bump
+    return coherent_bump(kind, ROOT)
 
 
 def meta() -> dict:
@@ -135,6 +121,22 @@ def decision() -> dict:
             "fisher_p": calib.get("fisher_p"),
             "tau_identified": calib.get("tau_identified"),
             "min_conf": calib.get("min_confidence_correct")}
+
+
+def model_quality() -> dict:
+    """Read task-specific probe evidence; presence never promotes a model."""
+    paths = {'s4':'artifacts/evaluation/s4_probe_structured.json',
+             's7':'artifacts/evaluation/s7_constrained_holdout.json',
+             'decision':'artifacts/decision_calibration_100.json',
+             'inventory':'docs/MODEL_TASK_READINESS.json'}
+    records = {}
+    for key,name in paths.items():
+        try:
+            value=json.loads((ROOT/name).read_text(encoding='utf-8'))
+            records[key]=value if isinstance(value,dict) else {}
+        except (OSError,ValueError):
+            records[key]={}
+    return records
 
 
 def extrapolation() -> dict:
@@ -619,6 +621,7 @@ def render(data: dict) -> str:
     contracts = data.get("contracts", [])
     version = data["meta"]["version"]
     nvers = data.get("versions", 0)
+    from tools.academic_case import load_matrix_summary
 
     ctx = {
         "version": version,
@@ -660,6 +663,8 @@ def render(data: dict) -> str:
         "outmax": f"{100 * (extra['outside_max'] or 0):.2f}%",
         "grid": len(lab["rows"]),
         "demo": demo_payload(),
+        "matrix_summary": load_matrix_summary(ROOT),
+        "model_quality": model_quality(),
         "rail": site_page.rail(data["commit"], data["today"], version, nvers),
         "deps": deps_table(),
         "monitor": monitor_snapshot(data),
@@ -676,7 +681,7 @@ def versions() -> list[dict]:
         return []
 
 
-def record_release(data: dict) -> list[dict]:
+def record_release(data: dict, summary: str = "") -> list[dict]:
     """Append this build to the release history.
 
     Only called with --release: a build on every save would make the history noise, and
@@ -685,6 +690,8 @@ def record_release(data: dict) -> list[dict]:
     audit = data["audit"]
     entry = {"version": data["meta"]["version"], "date": data["today"],
              "commit": data["commit"],
+             "source_commit": data["commit"], "tag": "v" + data["meta"]["version"],
+             "summary": summary, "schema": 2,
              "metrics": {"tests": audit.get("tests_collected"),
                          "coverage": audit.get("coverage_total"),
                          "chains": len(data["chains"]),
@@ -705,14 +712,10 @@ def record_release(data: dict) -> list[dict]:
         print("[FAIL] release refused: the framework could not onboard a new project", file=sys.stderr)
         raise SystemExit(1)
 
-    history = versions()
-    if history and history[-1].get("commit") == entry["commit"]:
-        history[-1] = entry          # same commit rebuilt: replace, do not duplicate
-    else:
-        history.append(entry)
-    history = history[-MAX_VERSIONS:]
+    from tools.versioning import append_release, atomic_bytes
+    history = append_release(versions(), entry)
     VERSIONS.parent.mkdir(parents=True, exist_ok=True)
-    VERSIONS.write_text(json.dumps(history, indent=2) + "\n", encoding="utf-8")
+    atomic_bytes(VERSIONS, (json.dumps(history, indent=2) + "\n").encode())
     return history
 
 
@@ -723,13 +726,34 @@ def main(argv: list[str] | None = None) -> int:
                     help="raise the version in pyproject.toml before building")
     ap.add_argument("--release", action="store_true",
                     help="append this build to site/versions.json")
+    ap.add_argument("--summary", default="", help="delivered capability recorded in release history")
+    ap.add_argument("--set-version", default="", help="explicit version-scheme migration")
     args = ap.parse_args(argv)
+    if args.release and not args.summary.strip():
+        ap.error("--release requires --summary describing the deliverable")
+    if args.check and (args.bump or args.release or args.set_version):
+        ap.error("--check cannot mutate a version or release record")
+    if args.set_version and args.bump:
+        ap.error("choose --set-version or --bump")
+    from framework.artifacts import output_lock
+    with output_lock(ROOT/'site'):
+        if args.set_version or args.bump or args.release:
+            from tools.versioning import release_transaction
+            with release_transaction(ROOT):
+                return _build(args)
+        return _build(args)
+
+
+def _build(args) -> int:
+    if args.set_version:
+        from tools.versioning import set_version
+        print(f"version -> {set_version(args.set_version, ROOT)}")
     if args.bump:
         print(f"version -> {bump(args.bump)}")
 
     data = collect()
     if args.release:
-        data["versions"] = len(record_release(data))
+        data["versions"] = len(record_release(data, args.summary))
     else:
         data["versions"] = len(versions())
     page = render(data)
@@ -756,6 +780,8 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(page, encoding="utf-8")
+    from tools.site_documents import publish
+    publish(ROOT)
     print(f"wrote {OUT.relative_to(ROOT)}: {len(page) // 1024} KB")
     return 0
 

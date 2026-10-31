@@ -1,16 +1,16 @@
 # Coupling audit — current scope
 
-Measured 2026-10-31 by `python tools/audit_coupling.py --symbols --json docs/_coupling.json`.
+Measured 2026-11-01 by `python tools/audit_coupling.py --symbols --json docs/_coupling.json`.
 The previous ten-module baseline is preserved in [the archive](archive/coupling-baseline-2026-10-20.md).
 Its statements about no framework imports and no repository commits describe an earlier state.
 
 | Measure | Current value |
 |---|---|
-| scanned modules (`framework/**`, `tools/*.py`) | 94 |
-| module-scope internal edges | 31 |
-| function-scope internal edges | 45 |
+| scanned modules (`framework/**`, `tools/*.py`) | 107 |
+| module-scope internal edges | 33 |
+| function-scope internal edges | 66 |
 | import cycles | 0 |
-| public names / names imported elsewhere in the scanned sources | 259 / 33 |
+| public names / names imported elsewhere in the scanned sources | 265 / 39 |
 | path-pattern matches | 5 |
 
 Source: [_coupling.json](_coupling.json). Imports found by AST are structural evidence,
@@ -27,5 +27,5 @@ runtime dependencies. Do not label the unclassified heuristic count as a portabi
 certificate. Other platform assumptions still require clean-environment execution.
 
 The monitor's chain/module matrix is a different projection: it shows imports used
-by registered chain functions, not all 94 scanned modules. Generic executable-package
+by registered chain functions, not all 107 scanned modules. Generic executable-package
 portability remains open in [functional completeness](FUNCTIONAL_COMPLETENESS.md).

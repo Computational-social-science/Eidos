@@ -41,8 +41,9 @@ class QuartoBridge:
         """
         for candidate in self._quarto_candidates():
             try:
+                from framework.subprocesses import quiet_flags
                 result = subprocess.run([candidate, "--version"],
-                                        capture_output=True, text=True, timeout=30)
+                                        capture_output=True, text=True, timeout=30, creationflags=quiet_flags())
             except (OSError, subprocess.TimeoutExpired):
                 continue
             if result.returncode == 0:
@@ -92,6 +93,7 @@ class QuartoBridge:
             return {"success": False, "error": f"Manuscript not found: {manuscript_file}"}
         
         formats = ["pdf", "docx", "html"] if format == "all" else [format]
+        from framework.subprocesses import quiet_flags
         results = {}
         
         for fmt in formats:
@@ -102,7 +104,7 @@ class QuartoBridge:
             try:
                 result = subprocess.run(
                     cmd, cwd=self.manuscript_dir,
-                    capture_output=True, text=True, timeout=300
+                    capture_output=True, text=True, timeout=300, creationflags=quiet_flags()
                 )
                 results[fmt] = {
                     "success": result.returncode == 0,
@@ -162,8 +164,9 @@ exec(open('{figure_script}').read())
         
         try:
             cmd = [self.quarto_cmd or "quarto", "render", str(temp_qmd)]
+            from framework.subprocesses import quiet_flags
             result = subprocess.run(
-                cmd, cwd=figure_dir, capture_output=True, text=True, timeout=120
+                cmd, cwd=figure_dir, capture_output=True, text=True, timeout=120, creationflags=quiet_flags()
             )
             return {
                 "success": result.returncode == 0,

@@ -5,15 +5,15 @@
   "scope": "Published numerical kernels and a separately qualified adapted optimizer-stationarity experiment; not paper-wide training, grokking or generalisation.",
   "provenance": {
     "python": "3.12.4",
-    "eidos": "4.3.32",
+    "eidos": "0.4.1",
     "seed": null,
     "data": "deterministic logit grids, no sampled or external dataset",
     "source_sha256": {
       "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
       "framework/verifiers/numerics.py": "3422a047f11985a9541605011f83de2c5eeb7fe8d4c9376d2cf4d5d394ba2d9a",
-      "tools/numerics_case.py": "9edd1a0e52959bd4213c81c04c7deb20ce009351788301f5e33728eaf0755a63",
-      "tools/numerics_figure.py": "e1a35546a39779f9c2fd72377ccb83364caf012ecae101615ae38f10579d3ab0",
-      "uv.lock": "e99760dc7a5756aa08ef06433caa81d66d559112d3f8a9401b15d2e15db96c5e"
+      "tools/numerics_case.py": "203243cdb401936f4f0f2bebf94fb307e2b832939c0655dff2df80d1dc5798eb",
+      "tools/numerics_figure.py": "6315d4ce66d2aa67bfbdddf35014b4f7bc3ec4464818a6261e2ef1b1f4085d93",
+      "uv.lock": "16108177f202df0326974891c3f645f1a063c922e3765fb6b8b9593f2fa49070"
     }
   },
   "qualification": {

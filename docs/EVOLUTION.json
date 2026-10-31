@@ -1,6 +1,6 @@
 {
-  "asof": "2026-10-31T22:09:41+08:00",
-  "version": "4.3.32",
+  "asof": "2026-11-01T01:28:36+08:00",
+  "version": "0.4.1",
   "state": {
     "chains": {
       "total": 11,
@@ -8,13 +8,13 @@
       "skip": 1,
       "fail": 0
     },
-    "tests": 551,
-    "coverage": 67,
+    "tests": 626,
+    "coverage": 68,
     "instruments": [
       {
         "capability": "every Gate S check fires on a case built to trip it",
         "contradicted_by": "a check with no fixture, or a fixture rejected for the wrong reason",
-        "result": "12 fixtures, 11/9 checks covered",
+        "result": "13 fixtures, 12/12 checks covered",
         "witness": "docs/FIXTURES.json"
       },
       {
@@ -51,7 +51,7 @@
     "open_defects": 0
   },
   "evolution": {
-    "mutation_runs": 203,
+    "mutation_runs": 215,
     "runs_with_a_blind_spot": 1,
     "blind_spots_found": 1,
     "blind_spots_open": 0,

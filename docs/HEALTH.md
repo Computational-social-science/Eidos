@@ -7,8 +7,8 @@ and re-checked by `--check` in CI; none is typed by hand.
 
 | dimension | measurement | verdict |
 |---|---|---|
-| unit tests | **551 collected**, 551 passed; 4 optional Torch modules skipped in project env (16 tests separately passed on CUDA Python) | ✅ |
-| coverage of `framework/` | **67%**, source-only scope including unexecuted modules; future no-regression by >1 point | measured |
+| unit tests | **626 collected**, 626 passed; 4 optional Torch modules skipped in project env (16 tests separately passed on CUDA Python) | ✅ |
+| coverage of `framework/` | **68%**, source-only scope including unexecuted modules; future no-regression by >1 point | measured |
 | chain audit | **11 chains: 10 PASS, 1 SKIP, 0 FAIL/ERROR** | ✅ |
 | Gate S on the reference fixture | PASS (valid register) and FAIL (mutated copy) | ✅ |
 | Gate S on Eidos itself | **PASS — 8 objections, 0 open** (consumers are sealed fixtures) | ✅ |
@@ -16,7 +16,7 @@ and re-checked by `--check` in CI; none is typed by hand.
 | consumers | `demo_onboarding`, `demo_quantitative`, `operator_calibration`, `null_study`, `prose_lie`, `barron2026_agent`, plus measured `softmax_training` and `softmax_matrix` (saved models and final gradient endpoints independently validated) | 8 |
 | render chain | html 19 KB, pdf 13 KB, docx 11 KB from one Quarto source (`docs/RENDER_CHECK.json`) | ✅ |
 | external contracts | Quarto 1.10.19 (`tools/quarto`, via `QUARTO_BIN`), DVC, MLflow, decision service, BootLoops | ✅ |
-| coupling | 0 import cycles across 94 scanned modules; 5 path-pattern matches in documentation/regex, manually reviewed | measured heuristic |
+| coupling | 0 import cycles across 107 scanned modules; 5 path-pattern matches in documentation/regex, manually reviewed | measured heuristic |
 
 Additional instruments, each with its own evidence file:
 
@@ -90,3 +90,5 @@ rewriting the same payload is reported instead of looking alive.
 Matrix acceptance: 36 complete trajectories, 1,836 points, 36 independent final gradient reloads; CPU/Gate S acceptance PASS. Mixed outcomes are reported in [the matrix report](../site/reports/softmax-matrix/report.html). Strict 24h soak remains RUNNING with 18 observed failures as of 2026-10-31 22:03 Asia/Shanghai; deployment transitions and the deliberate invalidation probe count as strict failures. Current monitor recovered to OK. Snapshot: [observation record](SOAK-OBSERVATION-2026-10-31.json).
 
 Consumer snapshot acceptance: changed declarations revoke cached verdicts, background checks preserve sampling, and timeout cleanup owns descendants. See [functional completeness](FUNCTIONAL_COMPLETENESS.md). Generic Docker/Binder packaging remains incomplete.
+
+Release observation on 2026-11-01: strict soak remains RUNNING after 547 observations, with 43 failures retained. This is not a clean 24-hour acceptance. See [dated snapshot](SOAK-OBSERVATION-2026-11-01.json).

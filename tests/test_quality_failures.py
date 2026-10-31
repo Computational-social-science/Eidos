@@ -18,12 +18,13 @@ def _record():
         "coverage_total": 75,
         "gate_s": {"fixture_status": "PASS"},
         "self_gate_s": {"status": "PASS", "open_objections": 0},
+        "stability": {"stable":True},
         "exit_codes": {"chains": 0, "gate_s": 0, "self_gate_s": 0,
-                       "tests": 0, "test_collection": 0},
+                       "tests": 0, "test_collection": 0,"test_collection_after":0},
     }
 
 
-@pytest.mark.parametrize("stage", ["tests", "test_collection", "gate_s", "self_gate_s", "chains"])
+@pytest.mark.parametrize("stage", ["tests", "test_collection", "test_collection_after", "gate_s", "self_gate_s", "chains"])
 def test_failed_measurement_cannot_pass_an_unchanged_baseline(tmp_path, monkeypatch, stage):
     record = _record()
     record["exit_codes"][stage] = 1
@@ -43,6 +44,15 @@ def test_failed_measurement_does_not_overwrite_last_record(tmp_path, monkeypatch
     monkeypatch.setattr(record_self_audit, "collect", lambda: record)
     assert record_self_audit.main([]) == 1
     assert out.read_text(encoding="utf-8") == "last good evidence"
+
+
+def test_environment_or_source_change_cannot_publish_an_otherwise_green_audit(tmp_path,monkeypatch):
+    record=_record();record['stability']['stable']=False
+    out=tmp_path/'record.json';out.write_text('last accepted record')
+    monkeypatch.setattr(record_self_audit,'OUT',out)
+    monkeypatch.setattr(record_self_audit,'collect',lambda:record)
+    assert record_self_audit.main([])==1
+    assert out.read_text()=='last accepted record'
 
 
 def test_self_audit_records_actual_test_exit_and_counts(monkeypatch):
@@ -88,6 +98,31 @@ def test_self_audit_counts_singular_and_plural_errors(monkeypatch, summary, expe
     record = record_self_audit.collect()
     assert record["tests"]["errors"] == expected
     assert record["exit_codes"]["tests"] == (1 if expected else 0)
+
+
+@pytest.mark.parametrize('deselected',[False,True])
+def test_full_audit_requires_exact_collection_and_actual_item_reports(monkeypatch,deselected):
+    def run(cmd,timeout=900):
+        if '--collect-only' in cmd:
+            count=2 if deselected else 3
+            ids='\n'.join(f'tests/test_example.py::test_{i}' for i in range(count))
+            summary='2/3 tests collected (1 deselected)' if deselected else '3 tests collected'
+            return subprocess.CompletedProcess(cmd,0,ids+'\n'+summary,'')
+        if '--version' in cmd:
+            return subprocess.CompletedProcess(cmd,1,'','')
+        if 'pytest' in cmd:
+            count=2 if deselected else 3
+            path=Path(next(x.split('=',1)[1] for x in cmd if x.startswith('--junitxml=')))
+            cases=''.join(f'<testcase classname="tests.test_example" name="test_{i}"/>' for i in range(count))
+            path.write_text('<testsuites><testsuite>'+cases+'<testcase classname="" name="tests.torch"><skipped message="collection skipped"/></testcase></testsuite></testsuites>')
+            return subprocess.CompletedProcess(cmd,0,f'{count} passed, 1 skipped'+(', 1 deselected' if deselected else ''),'')
+        if 'tools/audit_chains.py' in cmd:
+            return subprocess.CompletedProcess(cmd,0,'[{"status":"PASS"}]','')
+        return subprocess.CompletedProcess(cmd,0,'{"status":"PASS","findings":[]}','')
+    monkeypatch.setattr(record_self_audit,'_run',run)
+    record=record_self_audit.collect()
+    assert record['stability']['stable'] is (not deselected)
+    assert bool(record_self_audit.measurement_failures(record)) is deselected
 
 
 @pytest.fixture

@@ -17,6 +17,7 @@ from reference.softmax_matrix.run import SOURCES
 from reference.softmax_grokking.common import digest, source_digest, load_weights, dataset, numpy_forward, classification_metrics, json_digest
 from reference.softmax_grokking.verify import validate as validate_parent, state_hash
 from reference.softmax_training.validate import qualified_backend
+from framework.provenance import historical_lock_matches
 
 
 def expected_cells(p):
@@ -91,7 +92,9 @@ def validate(r, p, base=HERE):
         if set(r.get("source_sha256", {})) != set(SOURCES):
             errors.append("source inventory mismatch")
         for name in SOURCES:
-            if r.get("source_sha256", {}).get(name) != source_digest(ROOT / name):
+            recorded = r.get("source_sha256", {}).get(name)
+            matches = historical_lock_matches(ROOT, recorded) if name == "uv.lock" else recorded == source_digest(ROOT / name)
+            if not matches:
                 errors.append("source mismatch: " + name)
         parent_path = ROOT / p["parent"]
         parent = json.loads(parent_path.read_text())

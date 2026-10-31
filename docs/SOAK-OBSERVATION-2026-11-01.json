@@ -1,0 +1,654 @@
+{
+  "status": "RUNNING",
+  "url": "http://127.0.0.1:8765/api/status",
+  "started_at": "2026-10-31T08:21:32.179711+00:00",
+  "requested_duration_s": 86400.0,
+  "interval_s": 60.0,
+  "max_age_s": 45.0,
+  "restart_policy": "sequence regression fails the strict soak",
+  "scope": "periodic HTTP observations; no reboot or continuous-availability proof",
+  "elapsed_s": 32792.657,
+  "observations": 547,
+  "failure_count": 43,
+  "sequence_advances": 546,
+  "restart_events": 0,
+  "recent_samples": [
+    {
+      "elapsed_s": 25645.593999999997,
+      "seq": 9878,
+      "failures": []
+    },
+    {
+      "elapsed_s": 25705.640999999996,
+      "seq": 9882,
+      "failures": []
+    },
+    {
+      "elapsed_s": 25765.718999999997,
+      "seq": 9886,
+      "failures": []
+    },
+    {
+      "elapsed_s": 25825.782,
+      "seq": 9890,
+      "failures": []
+    },
+    {
+      "elapsed_s": 25885.828999999998,
+      "seq": 9894,
+      "failures": []
+    },
+    {
+      "elapsed_s": 25945.890999999996,
+      "seq": 9898,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26005.937999999995,
+      "seq": 9902,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26066.0,
+      "seq": 9906,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26126.047,
+      "seq": 9910,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26186.140999999996,
+      "seq": 9914,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26246.203999999998,
+      "seq": 9918,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26306.25,
+      "seq": 9922,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26366.312999999995,
+      "seq": 9926,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26426.36,
+      "seq": 9930,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 26486.407,
+      "seq": 9934,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26546.468999999997,
+      "seq": 9938,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26606.547,
+      "seq": 9942,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26666.625,
+      "seq": 9946,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26726.687999999995,
+      "seq": 9950,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26786.735,
+      "seq": 9954,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26846.797,
+      "seq": 9958,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26906.875,
+      "seq": 9962,
+      "failures": []
+    },
+    {
+      "elapsed_s": 26966.922,
+      "seq": 9966,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27026.985,
+      "seq": 9970,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27087.047,
+      "seq": 9974,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27147.093999999997,
+      "seq": 9978,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27207.157,
+      "seq": 9982,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27267.203999999998,
+      "seq": 9986,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27327.265999999996,
+      "seq": 9990,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27387.343999999997,
+      "seq": 9994,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27447.390999999996,
+      "seq": 9998,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27507.453999999998,
+      "seq": 10002,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27567.5,
+      "seq": 10006,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27627.562999999995,
+      "seq": 10010,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27687.61,
+      "seq": 10014,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27747.687999999995,
+      "seq": 10018,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27807.75,
+      "seq": 10022,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27867.797,
+      "seq": 10027,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27927.890999999996,
+      "seq": 10031,
+      "failures": []
+    },
+    {
+      "elapsed_s": 27987.953999999998,
+      "seq": 10035,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28048.0,
+      "seq": 10039,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28108.062999999995,
+      "seq": 10043,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28168.125,
+      "seq": 10047,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28228.187999999995,
+      "seq": 10051,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28288.235,
+      "seq": 10055,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28348.297,
+      "seq": 10059,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28408.343999999997,
+      "seq": 10063,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28468.407,
+      "seq": 10067,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28528.453999999998,
+      "seq": 10071,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28588.515999999996,
+      "seq": 10075,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28648.578999999998,
+      "seq": 10079,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28708.640999999996,
+      "seq": 10083,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28768.703999999998,
+      "seq": 10087,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28828.765999999996,
+      "seq": 10091,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28888.828999999998,
+      "seq": 10095,
+      "failures": []
+    },
+    {
+      "elapsed_s": 28948.890999999996,
+      "seq": 10099,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 29008.937999999995,
+      "seq": 10103,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 29069.0,
+      "seq": 10107,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 29129.047,
+      "seq": 10111,
+      "failures": []
+    },
+    {
+      "elapsed_s": 29189.125,
+      "seq": 10115,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 29249.187999999995,
+      "seq": 10119,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 29309.265999999996,
+      "seq": 10123,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 29369.312999999995,
+      "seq": 10127,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 29429.375,
+      "seq": 10131,
+      "failures": [
+        "overall is not OK",
+        "derived overall is not OK",
+        "derived faults are present or invalid"
+      ]
+    },
+    {
+      "elapsed_s": 29489.485,
+      "seq": 10135,
+      "failures": []
+    },
+    {
+      "elapsed_s": 29549.532,
+      "seq": 10139,
+      "failures": []
+    },
+    {
+      "elapsed_s": 29609.593999999997,
+      "seq": 10143,
+      "failures": []
+    },
+    {
+      "elapsed_s": 29669.657,
+      "seq": 10147,
+      "failures": []
+    },
+    {
+      "elapsed_s": 29729.718999999997,
+      "seq": 10151,
+      "failures": []
+    },
+    {
+      "elapsed_s": 29789.765999999996,
+      "seq": 10155,
+      "failures": []
+    },
+    {
+      "elapsed_s": 29849.828999999998,
+      "seq": 10159,
+      "failures": []
+    },
+    {
+      "elapsed_s": 29909.890999999996,
+      "seq": 10163,
+      "failures": []
+    },
+    {
+      "elapsed_s": 29969.937999999995,
+      "seq": 10167,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30030.0,
+      "seq": 10171,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30090.062999999995,
+      "seq": 10175,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30150.125,
+      "seq": 10179,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30210.172,
+      "seq": 10183,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30270.235,
+      "seq": 10187,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30330.282,
+      "seq": 10191,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30390.343999999997,
+      "seq": 10195,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30450.390999999996,
+      "seq": 10199,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30510.453999999998,
+      "seq": 10203,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30570.5,
+      "seq": 10207,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30630.562999999995,
+      "seq": 10211,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30690.625,
+      "seq": 10215,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30750.687999999995,
+      "seq": 10219,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30810.735,
+      "seq": 10223,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30870.797,
+      "seq": 10227,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30930.86,
+      "seq": 10231,
+      "failures": []
+    },
+    {
+      "elapsed_s": 30990.907,
+      "seq": 10235,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31050.985,
+      "seq": 10239,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31111.032,
+      "seq": 10243,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31171.093999999997,
+      "seq": 10247,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31231.157,
+      "seq": 10251,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31291.203999999998,
+      "seq": 10255,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31351.265999999996,
+      "seq": 10259,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31411.312999999995,
+      "seq": 10263,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31471.375,
+      "seq": 10267,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31531.453999999998,
+      "seq": 10271,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31591.515999999996,
+      "seq": 10275,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31651.562999999995,
+      "seq": 10279,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31711.625,
+      "seq": 10283,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31771.672,
+      "seq": 10287,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31831.735,
+      "seq": 10291,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31891.797,
+      "seq": 10295,
+      "failures": []
+    },
+    {
+      "elapsed_s": 31951.86,
+      "seq": 10299,
+      "failures": []
+    },
+    {
+      "elapsed_s": 32011.922,
+      "seq": 10303,
+      "failures": []
+    },
+    {
+      "elapsed_s": 32071.968999999997,
+      "seq": 10307,
+      "failures": []
+    },
+    {
+      "elapsed_s": 32132.032,
+      "seq": 10311,
+      "failures": []
+    },
+    {
+      "elapsed_s": 32192.093999999997,
+      "seq": 10315,
+      "failures": []
+    },
+    {
+      "elapsed_s": 32252.140999999996,
+      "seq": 10319,
+      "failures": []
+    },
+    {
+      "elapsed_s": 32312.203999999998,
+      "seq": 10323,
+      "failures": []
+    },
+    {
+      "elapsed_s": 32372.265999999996,
+      "seq": 10327,
+      "failures": []
+    },
+    {
+      "elapsed_s": 32432.312999999995,
+      "seq": 10331,
+      "failures": []
+    },
+    {
+      "elapsed_s": 32492.375,
+      "seq": 10335,
+      "failures": []
+    },
+    {
+      "elapsed_s": 32552.437999999995,
+      "seq": 10339,
+      "failures": []
+    },
+    {
+      "elapsed_s": 32612.485,
+      "seq": 10343,
+      "failures": []
+    },
+    {
+      "elapsed_s": 32672.547,
+      "seq": 10347,
+      "failures": []
+    },
+    {
+      "elapsed_s": 32732.593999999997,
+      "seq": 10351,
+      "failures": []
+    },
+    {
+      "elapsed_s": 32792.657,
+      "seq": 10355,
+      "failures": []
+    }
+  ],
+  "snapshot_recorded_at": "2026-10-31T17:28:31.277807+00:00"
+}

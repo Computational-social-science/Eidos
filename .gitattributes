@@ -15,6 +15,7 @@ reference/softmax_*/docs/*.json -text whitespace=cr-at-eol
 reference/hpaf_metric/*.json -text whitespace=cr-at-eol
 reference/hpaf_metric/docs/*.json -text whitespace=cr-at-eol
 reference/hpaf_metric/uv.lock -text
+reference/sdk_process_acceptance/*.whl -text
 site/reports/hpaf-metric/*.json -text whitespace=cr-at-eol
 # Preserve the exact CMD bytes exercised by the Windows startup acceptance.
 scripts/eidos-monitor.cmd -text whitespace=cr-at-eol

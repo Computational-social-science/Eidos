@@ -5,42 +5,43 @@
     "skip": 1,
     "fail": 0
   },
-  "tests_collected": 726,
+  "tests_collected": 752,
   "tests": {
-    "passed": 726,
+    "passed": 751,
     "failed": 0,
-    "skipped": 4,
+    "skipped": 5,
     "errors": 0
   },
   "stability": {
     "stable": true,
     "before": {
-      "source_sha256": "5c5847c938d6faba26155db648f1f79c5d54ee17ad0c569456c8d8dc4fc64bca",
-      "distribution_sha256": "9a0d8890fc42fec3e0034046bd10a4e5bdbdf6821fd6679b1963fc9d8ec35dc1"
+      "source_sha256": "539f4b7556774ba58e22b3fa7123fdbf17cf742fdb7481fed8b8089fada574e8",
+      "distribution_sha256": "7359fb445678f1b91f0602fa2ff21ac814b44412b1c64795b23473555179c503"
     },
     "after": {
-      "source_sha256": "5c5847c938d6faba26155db648f1f79c5d54ee17ad0c569456c8d8dc4fc64bca",
-      "distribution_sha256": "9a0d8890fc42fec3e0034046bd10a4e5bdbdf6821fd6679b1963fc9d8ec35dc1"
+      "source_sha256": "539f4b7556774ba58e22b3fa7123fdbf17cf742fdb7481fed8b8089fada574e8",
+      "distribution_sha256": "7359fb445678f1b91f0602fa2ff21ac814b44412b1c64795b23473555179c503"
     },
-    "collection_after": 726,
+    "collection_after": 752,
     "execution": {
-      "reported_items": 726,
+      "reported_items": 752,
       "collection_level_skips": 4
     },
     "deselection_detected": false,
-    "collected_ids": 726,
-    "unique_ids": 726,
-    "recollected_ids": 726,
+    "collected_ids": 752,
+    "unique_ids": 752,
+    "recollected_ids": 752,
     "scope": "Framework/tools/tests Python sources, project version/lock/README/claims, installed distribution names+versions, collected test IDs"
   },
   "skip_reasons": [
     "SKIPPED [1] tests\\test_grokking_torch.py:3: could not import 'torch': No module named 'torch'",
     "SKIPPED [1] tests\\test_softmax_matrix_torch.py:4: could not import 'torch': No module named 'torch'",
     "SKIPPED [1] tests\\test_softmax_training_torch.py:5: could not import 'torch': No module named 'torch'",
-    "SKIPPED [1] tests\\test_stable_numerics_torch.py:6: could not import 'torch': No module named 'torch'"
+    "SKIPPED [1] tests\\test_stable_numerics_torch.py:6: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_process_nested_lifecycle.py:19: POSIX delayed cleanup handoff"
   ],
   "diagnostics": {},
-  "coverage_total": 69,
+  "coverage_total": 68,
   "coverage_scope": "framework; unexecuted modules included; tests and tools excluded",
   "gate_s": {
     "fixture_status": "PASS"

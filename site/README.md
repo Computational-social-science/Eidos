@@ -1,6 +1,6 @@
 # EIDOS — scientific claims, executable evidence
 
-**Version 0.4.5** · initial development · local-first · MIT framework
+**Version 0.4.6** · initial development · local-first · MIT framework
 
 [![CI](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml/badge.svg)](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
 
@@ -93,6 +93,15 @@ Cached scientific verdicts bind the Python gate entry and explicitly declared
 validator/data/configuration inputs. Declare imported helpers and module entry
 files in `validity_inputs`; this is not automatic dependency discovery. See the
 [integration contract and independent intake evidence](docs/PROJECT_INTEGRATION.md).
+
+Project `gate`, `test` and `render` commands now share an SDK-owned execution
+lifetime. Timeouts and normal completion close inherited workers; nested SDK
+calls retain outer cancellation. Windows uses Jobs, while the qualified Linux
+path uses process groups and an owner-pipe guardian. Helpers ship in the wheel,
+so an installed project does not require this repository's `tools/` directory.
+See [execution scope and installed-wheel acceptance](docs/SDK-EXECUTION.md).
+Scientific worker exits, containment failures and unavailable executables remain
+different outcomes. This does not qualify every other direct SDK subprocess call.
 
 The reusable research contract is:
 

@@ -23,7 +23,9 @@ def configured_python(tmp_path_factory):
 @pytest.fixture
 def project(tmp_path,configured_python):
     root=tmp_path/'research project & 科学'
-    for name in ('tools','scripts'):(root/name).mkdir(parents=True,exist_ok=True)
+    for name in ('tools','scripts','framework'):(root/name).mkdir(parents=True,exist_ok=True)
+    for name in ('_process_tree.py','_windows_job.py','_posix_job.py'):
+        shutil.copy2(ROOT/'framework'/name,root/'framework'/name)
     for name in ('cron_entry.py','bounded_process.py','windows_job.py','launch_runtime.py'):
         if (ROOT/'tools'/name).is_file():shutil.copy2(ROOT/'tools'/name,root/'tools'/name)
     for name in ('eidos-monitor.cmd','install-autostart.cmd'):

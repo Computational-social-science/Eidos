@@ -10,19 +10,19 @@
   "bootstrap_python": "C:\\Python314\\python.exe",
   "configured_python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
   "scope": "Runtime-selection probe only; no service started or Startup entry changed.",
-  "recorded_at": "2026-10-31T21:46:05.768613+00:00",
+  "recorded_at": "2026-10-31T23:39:54.335405+00:00",
   "services_started": false,
   "existing_processes_stopped": false,
   "configuration_changed": false,
   "source_sha256": {
-    "tools\\launch_runtime.py": "49c9cfc147919c8eb65d246aa1ebdd57eb2945c155f7160edef0bb4a2e6357f0",
-    "scripts\\eidos-monitor.cmd": "729d5eab30f8d615a45b2b34f423765eddb86fdcc836604a18e57c1b23b72edb",
-    "scripts\\install-autostart.cmd": "c2b6b2bf65fad8d8e11fe7caa0df8ff1487b9dcc0adea07ba6c05412411858aa"
+    "tools/launch_runtime.py": "49c9cfc147919c8eb65d246aa1ebdd57eb2945c155f7160edef0bb4a2e6357f0",
+    "tools/cron_entry.py": "51e58842d9e945cfd1a53dea73e7f9468380aa8ab777f85f35ed126eedf061b6",
+    "tools/bounded_process.py": "b05e71b7b1e7177d313fcb4ea9de21a9918312bceb72e9888bc14b087c4c5fab",
+    "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+    "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+    "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+    "scripts/eidos-monitor.cmd": "729d5eab30f8d615a45b2b34f423765eddb86fdcc836604a18e57c1b23b72edb",
+    "scripts/install-autostart.cmd": "c2b6b2bf65fad8d8e11fe7caa0df8ff1487b9dcc0adea07ba6c05412411858aa"
   },
-  "defect": "CALL monitor.env returned exit 0 without executing its SET lines on this host; CMD CALL requires .bat/.cmd. Both monitor and installer silently selected bootstrap Python.",
-  "repair": "Stdlib literal configuration parser selects isolated hidden project Python; CMD forwards every argument and preserves exit status.",
-  "windows_launch_tests": 9,
-  "targeted_startup_cron_monitor_tests": 38,
-  "live_runtime_migration": "PENDING; diagnostics did not stop/start existing services.",
-  "call_documentation": "https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/call"
+  "runtime_migration": "PENDING; this diagnostic does not migrate old service/loop instances."
 }

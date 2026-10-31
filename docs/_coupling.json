@@ -1,5 +1,5 @@
 {
-  "modules": 110,
+  "modules": 113,
   "hard": {
     "framework.executable_package": [
       "framework.artifacts"
@@ -93,6 +93,9 @@
       "framework.recovery",
       "tools.probes"
     ],
+    "framework._posix_job": [],
+    "framework._process_tree": [],
+    "framework._windows_job": [],
     "framework.artifacts": [],
     "framework.config": [],
     "framework.decision": [],
@@ -306,6 +309,9 @@
       "framework.updates",
       "tools.consumer_snapshot"
     ],
+    "framework._posix_job": [],
+    "framework._process_tree": [],
+    "framework._windows_job": [],
     "framework.artifacts": [],
     "framework.config": [],
     "framework.decision": [],
@@ -396,30 +402,30 @@
     "framework.verifiers.numerics": 3,
     "framework.executable_package": 1,
     "framework.surrogate": 3,
-    "framework.verifiers.extract_s4": 1,
-    "framework.reproduction": 2,
-    "framework.verifiers.support": 1,
-    "framework.gates": 2,
     "framework.validity.lean_audit": 2,
-    "framework.verifiers.stats": 2,
+    "framework.verifiers.support": 1,
+    "framework.verifiers.extract_s4": 1,
+    "framework.gates": 2,
+    "framework.reproduction": 2,
     "framework.verifiers.citations": 2,
+    "framework.verifiers.stats": 2,
     "framework.stable_numerics": 2,
     "framework.project": 10,
-    "framework.tracking": 1,
-    "framework.diagnosis": 2,
     "framework.quarto_bridge": 3,
-    "framework.inference": 3,
-    "framework.validity": 5,
     "framework.surrogate.demo": 2,
+    "framework.diagnosis": 2,
+    "framework.validity": 5,
+    "framework.inference": 3,
+    "framework.tracking": 1,
     "framework.provenance": 2,
     "tools.consumer_snapshot": 6,
     "tools.check_publication_record": 1,
     "framework.services": 2,
     "tools.site_documents": 1,
-    "tools.versioning": 1,
-    "framework.updates": 3,
     "tools.academic_case": 1,
+    "framework.updates": 3,
     "tools.build_pipeline": 1,
+    "tools.versioning": 1,
     "framework.inference.llama_cpp": 5,
     "tools.bounded_process": 4,
     "tools.watch_pipeline": 1,
@@ -434,6 +440,9 @@
   },
   "cycles": [],
   "process": {
+    "framework._posix_job": 1,
+    "framework._process_tree": 1,
+    "framework._windows_job": 1,
     "framework.gates": 1,
     "framework.inference": 1,
     "framework.project": 1,
@@ -448,7 +457,6 @@
     "tools.audit_chains": 1,
     "tools.audit_publication": 1,
     "tools.audit_site": 1,
-    "tools.bounded_process": 1,
     "tools.build_pipeline": 1,
     "tools.build_site": 1,
     "tools.check_render": 1,
@@ -465,8 +473,7 @@
     "tools.refresh_chains": 1,
     "tools.release_gate": 1,
     "tools.serve_model": 1,
-    "tools.serve_site": 1,
-    "tools.windows_job": 1
+    "tools.serve_site": 1
   },
   "network": {
     "framework.decision": 2,
@@ -522,6 +529,27 @@
     "tools.watch_pipeline": 3
   },
   "symbols": {
+    "framework._posix_job": {
+      "public": [
+        "main"
+      ],
+      "used": []
+    },
+    "framework._process_tree": {
+      "public": [
+        "ProcessContainmentError",
+        "run_tree",
+        "validate_timeout"
+      ],
+      "used": []
+    },
+    "framework._windows_job": {
+      "public": [
+        "main",
+        "own_job"
+      ],
+      "used": []
+    },
     "framework.artifacts": {
       "public": [
         "atomic_output",

@@ -122,6 +122,14 @@ def _as_argv(value: Any, field: str, where: Path) -> list[str]:
     return [str(v) for v in value]
 
 
+def _validate_exit_statuses(value: Any) -> None:
+    if (not isinstance(value, dict) or any(
+            type(code) is not int or not 2 <= code <= 255 or code in (124, 127)
+            or not isinstance(state, str) or state not in {"OPEN", "REFUSED", "SKIP", "ERROR"}
+            for code, state in value.items())):
+        raise ValueError("invalid exit_statuses; controlled nonzero research states only")
+
+
 def load_project(project_file: Path, allow_missing: bool = False) -> ProjectSpec:
     """Load and validate one project.yaml.
 
@@ -136,11 +144,7 @@ def load_project(project_file: Path, allow_missing: bool = False) -> ProjectSpec
         raise ValueError(f"{project_file}: expected a mapping at the top level")
     data: dict[str, Any] = raw
     exit_statuses = data.get("exit_statuses", {})
-    if (not isinstance(exit_statuses, dict) or any(
-            type(code) is not int or code in (0, 1, 124, 127) or
-            state not in {"OPEN", "REFUSED", "SKIP", "ERROR"}
-            for code, state in exit_statuses.items())):
-        raise ValueError(f"{project_file}: invalid exit_statuses; nonzero research states only")
+    _validate_exit_statuses(exit_statuses)
 
     root_raw = data.get("root")
     if not root_raw:
@@ -233,6 +237,9 @@ def run_command(spec: ProjectSpec, kind: str = "gate", timeout: int = 900) -> Pr
     declared = getattr(spec, _COMMANDS[kind])
     if not declared:
         raise ValueError(f"project {spec.name!r} declares no {kind}_command in project.yaml")
+    from framework import subprocesses as processes
+    processes.validate_timeout(timeout)
+    _validate_exit_statuses(spec.exit_statuses)
 
     started = time.monotonic()
     argv = _materialise(declared)
@@ -244,18 +251,9 @@ def run_command(spec: ProjectSpec, kind: str = "gate", timeout: int = 900) -> Pr
             return ProjectRun(spec.name, "FAIL", 1, round(time.monotonic() - started, 2), argv,
                               stderr_tail="required numerical preflight failed; project gate was not run",
                               numerics=numerical)
+    forced_status = None
     try:
-        from framework.subprocesses import quiet_flags
-        proc = subprocess.run(
-            argv,
-            cwd=str(spec.root),
-            capture_output=True,
-            text=True,
-            timeout=timeout, creationflags=quiet_flags(),
-            check=False,
-            encoding="utf-8",
-            errors="replace",
-        )
+        proc = processes.run_tree(argv, cwd=spec.root, timeout=timeout)
         exit_code = proc.returncode
         stdout, stderr = proc.stdout or "", proc.stderr or ""
     except subprocess.TimeoutExpired as exc:
@@ -267,15 +265,28 @@ def run_command(spec: ProjectSpec, kind: str = "gate", timeout: int = 900) -> Pr
             stdout = out
         else:
             stdout = ""
-        stderr = f"timed out after {timeout}s"
-    except OSError as exc:
+        diagnostic = exc.stderr.decode("utf-8", "replace") if isinstance(exc.stderr, bytes) else (exc.stderr or "")
+        stderr = diagnostic.rstrip() + f"\ntimed out after {timeout}s"
+        forced_status = "ERROR"
+    except processes.ProcessContainmentError as exc:
+        exit_code = 125
+        stdout, stderr = "", f"{type(exc).__name__}: {exc}"
+        forced_status = "ERROR"
+    except FileNotFoundError as exc:
         exit_code = 127
         stdout, stderr = "", f"{type(exc).__name__}: {exc}"
+        forced_status = "SKIP"
+    except OSError as exc:
+        exit_code = 126
+        stdout, stderr = "", f"{type(exc).__name__}: {exc}"
+        forced_status = "ERROR"
 
     # A declared binary that does not exist has not judged the artefact. The vocabulary is
     # keystroke-observatory's and it is deliberate: SKIP means "no verdict", and a missing
     # tool that reports FAIL trains a reader to ignore the gate.
-    if exit_code == 127:
+    if forced_status is not None:
+        status = forced_status
+    elif exit_code == 127:
         status = "SKIP"
     elif exit_code == 0:
         status = "PASS"

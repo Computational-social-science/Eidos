@@ -1,12 +1,12 @@
 {
-  "generated": "2026-10-31T22:37:04.195345+00:00",
-  "assessor": "Codex: every one of 36 final PDF/Word pages compared pixel-for-pixel to the fully inspected pre-atomic-export proof; all identical.",
+  "generated": "2026-10-31T23:48:06.844840+00:00",
+  "assessor": "Codex: all 36 final PDF/Word pages compared pixel-for-pixel to inspected v0.4.5 baseline; both changed version-glyph pages manually inspected.",
   "scope": "Rendered PDF and Word pages only; web layout is a separate browser check. Manuscript spacing permits whitespace before intact figures/tables.",
   "submission_ready": false,
   "reports": [
     {
       "path": "site/reports/numerics/report.pdf",
-      "sha256": "0d5a8b91aa222bb31f01b073a1a576dca70b719b3e611693af5565199630462d",
+      "sha256": "98fff7f07865c795302bc6ac06d9573a09a72527a23ecacadd2d58af0b170f92",
       "pages_inspected": [
         1,
         2,
@@ -20,7 +20,7 @@
       "renderer": "Poppler",
       "page_png_sha256": [
         "5a721d8c8fd6a3d94bcab23258f40790add2b7d7d586e0f37119d068c54b03c2",
-        "828984f286ec336330e09f8230b049ff465b0f4f4980d215307d21bac86ffac3",
+        "c7f5f1375125d43cde5cd36a0773a814e54289a9b0fa19c4cc45567ca31bd57f",
         "7330dfc4b56904a66d0540d7fef5de8f3238c39410e1bba9c56242eefb53584d",
         "36112ba1d8923ecfcec10ec2b1ffe23f6585dc6e3fbeb5211ffdf987c5842af9",
         "1b7f9c95ac2ce92fd2b7f9b6bc12e7abbad1844d47140655dfda0fc0f55724a3",
@@ -41,7 +41,7 @@
     },
     {
       "path": "site/reports/numerics/report.docx",
-      "sha256": "003205d1f0c9457df15a280e9c61cdf311c2e3a1cd5809486ab12a6131e7d22c",
+      "sha256": "61c4f5e0674e0c03d530cc291b41b657bde045c8cdcf61c46886e9a73df150a4",
       "pages_inspected": [
         1,
         2,
@@ -55,7 +55,7 @@
       "renderer": "Bundled render_docx.py PNG pipeline; native Microsoft Word read-only conversion adapter",
       "page_png_sha256": [
         "0dcd5ed98eb7c949f3024a07aa8d77035f5f33e67221fb367e9400b09f8fb2e0",
-        "74025576300cdcb10fdf722949f46f035d4ea953868214dbb09dec8b472cf936",
+        "0ac9ff61262d05dbb0dccfe8e64cfc5a9d0c79bd3241e71173d2ad01abb1e33f",
         "8946a42950d26320a80d1ee961f599d7a9db9c27f856c0ec5a80e06044b472f4",
         "485d553f9b0551d9df6a967100a216baad21a72cd6437af4e1989d30519e82b2",
         "60daad8f065666a94411181e944267429d48c4e5a0607a74b29cf6f5376696cd",
@@ -76,7 +76,7 @@
     },
     {
       "path": "site/reports/softmax-matrix/report.pdf",
-      "sha256": "ef15933a002a28134023b97aa501d68b61fd66471572ad33359589e8cb8bd6dd",
+      "sha256": "754e98bd5042d5cb6d9147a9e072dbc392354c9f99d9a3f4fd8a989ea6da8f79",
       "pages_inspected": [
         1,
         2,
@@ -107,7 +107,7 @@
     },
     {
       "path": "site/reports/softmax-matrix/report.docx",
-      "sha256": "73cb0a71cd62116361d22b53b14f801d444f845222c3d3e6ea35fbfb40d3b224",
+      "sha256": "d7716b13866fff86179aacbbf203a20985df2a1d2ecf3e364f9886a92d578b01",
       "pages_inspected": [
         1,
         2,
@@ -138,7 +138,7 @@
     },
     {
       "path": "site/reports/hpaf-metric/report.pdf",
-      "sha256": "65912196f409720a75a3bf1ce592ef6f49092ccc92687d759f65238a1480a742",
+      "sha256": "ebc02e895bfe6f4b8dab18786062fa4d3a36ec34dee84b4554fac04c8b161ccd",
       "pages_inspected": [
         1,
         2,
@@ -154,17 +154,18 @@
       ],
       "outcome": "PASS",
       "checked": [
-        "all page contents and margins inspected",
-        "no clipping or overlap",
-        "whole readable table with short corpus labels",
-        "figure/legend remain together",
-        "before/after quantities, provenance and private/public scope",
-        "line numbering and page numbers"
+        "no text/figure overlap or clipping",
+        "legible plots and equations",
+        "complete short tables",
+        "figure with full legend",
+        "consistent type and line numbering",
+        "page numbers",
+        "all unfavorable outcomes retained"
       ]
     },
     {
       "path": "site/reports/hpaf-metric/report.docx",
-      "sha256": "a0e7912ca3e8565b26cefb6ae429fc24e87854c26b65199288a8577854356880",
+      "sha256": "238f816a731d525945dbb5e142949b8dd367d6e42812373f1d3ebf35580d7eaa",
       "pages_inspected": [
         1,
         2,
@@ -180,244 +181,283 @@
       ],
       "outcome": "PASS",
       "checked": [
-        "all page contents and margins inspected",
-        "no clipping or overlap",
-        "whole readable table with short corpus labels",
-        "figure/legend remain together",
-        "before/after quantities, provenance and private/public scope",
-        "line numbering and page numbers"
+        "no text/figure overlap or clipping",
+        "legible plots and equations",
+        "complete short tables",
+        "figure with full legend",
+        "consistent type and line numbering",
+        "page numbers",
+        "all unfavorable outcomes retained"
       ]
     }
   ],
+  "baseline_tag": "v0.4.5",
   "page_comparison": [
     {
       "path": "site/reports/numerics/report.pdf",
       "page": 1,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/numerics/report.pdf",
       "page": 2,
-      "pixel_identical": true
+      "pixel_identical": false,
+      "difference_bbox": [
+        851,
+        413,
+        860,
+        428
+      ],
+      "changed_region_review": "Manually inspected full page: Eidos 0.4.6 version glyph, no clipping, overlap or reflow"
     },
     {
       "path": "site/reports/numerics/report.pdf",
       "page": 3,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/numerics/report.pdf",
       "page": 4,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/numerics/report.pdf",
       "page": 5,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/numerics/report.pdf",
       "page": 6,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/numerics/report.pdf",
       "page": 7,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/numerics/report.pdf",
       "page": 8,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/numerics/report.docx",
       "page": 1,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/numerics/report.docx",
       "page": 2,
-      "pixel_identical": true
+      "pixel_identical": false,
+      "difference_bbox": [
+        1237,
+        675,
+        1250,
+        696
+      ],
+      "changed_region_review": "Manually inspected full page: Eidos 0.4.6 version glyph, no clipping, overlap or reflow"
     },
     {
       "path": "site/reports/numerics/report.docx",
       "page": 3,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/numerics/report.docx",
       "page": 4,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/numerics/report.docx",
       "page": 5,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/numerics/report.docx",
       "page": 6,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/numerics/report.docx",
       "page": 7,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/numerics/report.docx",
       "page": 8,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/softmax-matrix/report.pdf",
       "page": 1,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/softmax-matrix/report.pdf",
       "page": 2,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/softmax-matrix/report.pdf",
       "page": 3,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/softmax-matrix/report.pdf",
       "page": 4,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/softmax-matrix/report.pdf",
       "page": 5,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/softmax-matrix/report.pdf",
       "page": 6,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/softmax-matrix/report.docx",
       "page": 1,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/softmax-matrix/report.docx",
       "page": 2,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/softmax-matrix/report.docx",
       "page": 3,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/softmax-matrix/report.docx",
       "page": 4,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/softmax-matrix/report.docx",
       "page": 5,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/softmax-matrix/report.docx",
       "page": 6,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/hpaf-metric/report.pdf",
       "page": 1,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/hpaf-metric/report.pdf",
       "page": 2,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/hpaf-metric/report.pdf",
       "page": 3,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/hpaf-metric/report.pdf",
       "page": 4,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/hpaf-metric/report.docx",
       "page": 1,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/hpaf-metric/report.docx",
       "page": 2,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/hpaf-metric/report.docx",
       "page": 3,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/hpaf-metric/report.docx",
       "page": 4,
-      "pixel_identical": true
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     }
   ],
-  "identical_pages": 36,
-  "total_delivered_pages": 36,
-  "manual_pages_this_release": 10,
-  "independent_report_browser": {
-    "artifact": "site/reports/hpaf-metric/report.html",
-    "artifact_sha256": "94cf79abff6c8b93bab8a6c09b2dba0f4bd1a4b47b49ed390e97d34dd438aa7c",
-    "viewports": [
-      {
-        "width": 1440,
-        "http": 200,
-        "page_errors": [],
-        "viewport": 1440,
-        "page": 1440,
-        "images": [
-          {
-            "loaded": true,
-            "width": 751
-          }
-        ],
-        "links": [
-          "local-audit.json",
-          "CASE.md",
-          "reproduce.zip"
-        ]
-      },
-      {
-        "width": 390,
-        "http": 200,
-        "page_errors": [],
-        "viewport": 390,
-        "page": 390,
-        "images": [
-          {
-            "loaded": true,
-            "width": 310
-          }
-        ],
-        "links": [
-          "local-audit.json",
-          "CASE.md",
-          "reproduce.zip"
-        ]
-      }
-    ],
-    "scope": "Local HTTP, loaded image and all three downloads, no page errors or horizontal overflow."
-  },
-  "baseline_description": "Fully inspected local v0.4.5 pre-atomic-export proof, not a published tag.",
-  "baseline_record_sha256": "81ce5c4f84c99f99e553893a18efdaecc2f30641e9f6fe09d6567f3586d9791e",
-  "manual_inspection_scope": "Prior accepted proof: 8 new HPAF pages and 2 prior-case version-glyph pages manually inspected; other 26 pages pixel-equivalent to inspected v0.4.4. Final 36 pages equivalent to that proof."
+  "identical_pages": 34,
+  "manual_pages_this_release": 2,
+  "baseline_record_sha256": "475a8644b924d76146dfc511a835dedc418272a0fcb321d9d29c5d0f3120633e",
+  "manual_inspection_scope": "2 numerics page-2 version-glyph changes; the other 34 pages pixel-identical to accepted v0.4.5 proof."
 }

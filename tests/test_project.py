@@ -190,10 +190,10 @@ def test_materialise_leaves_other_arguments_untouched():
     assert _materialise(["{python}", "-m", "pytest"]) == [sys.executable, "-m", "pytest"]
 
 
-@pytest.mark.parametrize("code, expected", [(3, "OPEN"), (4, "REFUSED"), (5, "SKIP")])
+@pytest.mark.parametrize("code, expected", [(3, "OPEN"), (4, "REFUSED"), (5, "SKIP"), (125, "OPEN")])
 def test_explicit_research_exit_vocabulary_is_preserved(tmp_path, code, expected):
     projects = _make_project(tmp_path, gate_body=f"raise SystemExit({code})",
-                             extra='exit_statuses: {3: OPEN, 4: REFUSED, 5: SKIP}')
+                             extra='exit_statuses: {3: OPEN, 4: REFUSED, 5: SKIP, 125: OPEN}')
     spec = load_project(projects / "demo" / "project.yaml")
     result = run_command(spec)
     assert result.status == expected

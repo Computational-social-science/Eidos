@@ -1,6 +1,6 @@
 # Eidos：可复核科研流水线技术框架
 
-**实现基线：0.4.5（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
+**实现基线：0.4.6（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
 
 运行部署边界：核查发现现存监控及两条旧链路循环仍使用全局 Python 3.14；本地启动配置已选择项目 Python 3.12，但受控停止/重启被自动审批以 blocked by policy 拒绝，未执行、未改道终止。新增调度循环源码已补 OS 生命周期锁、单次 tick 互斥、隐藏子进程树超时清理及原子心跳；这些规则不会追溯应用到旧进程。运行迁移仍为 PENDING，不能以网页可访问或源码测试通过替代实际部署验收。详见 docs/MONITOR-RUNTIME-MIGRATION-2026-11-01.json。
 
@@ -187,7 +187,7 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。
 
 <!-- self-audit:start -->
-本轮验收：726 passed、0 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 69%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
+本轮验收：751 passed、1 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 68%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
 <!-- self-audit:end -->
 
 既有 CUDA 16 项已独立通过；本轮未修改数值后端。
@@ -242,3 +242,24 @@ CSV/QMD 直接交付字节与 ZIP 内一致，修正 Windows 文本换行引起�
 新增两个回归先失败、修复后相关 17 项通过；最终完整自审为 726 passed、
 4 个可选模块收集跳过、框架覆盖率 69%、11 条链 10 PASS/1 SKIP。
 详见 docs/REPORT-PUBLICATION-ACCEPTANCE-2026-11-01.json。
+
+
+## 2026-11-01：项目命令的可安装 SDK 生命周期
+
+framework.project.run_command 的 gate/test/render 统一使用 SDK 内置的进程边界，
+实现和 Windows/Linux helper 随 wheel 交付，不依赖源码 tools 目录。Windows
+以 Job 管理继承后代；Linux 以独立 guardian、进程组及 owner pipe 连接嵌套
+SDK 生命周期。普通根进程退出与输出管道 EOF 分离；正常完成也由 guardian
+自行关组，不把清理交回可能被外层终止的 caller。控制通道与科研 stdout 分开，
+保留目标真实退出码；超时、containment、权限错误不能冒充科研 OPEN/PASS。
+
+旧代码的 10 项生命周期拒绝测试失败；进一步通过真实 Linux 候选 wheel 发现
+并复现嵌套脱离、正常退出交接两个漏洞，再用 owner EOF 和 guardian 自行关组
+修复。最终安装包验收分别在新 Windows 环境、断网 Linux 容器中执行；后者
+复用已有 CPU 依赖环境，不等于全新 Linux 依赖安装或新机器验收。Scope 与
+摘要见 docs/SDK-EXECUTION.md、docs/SDK-PROCESS-ACCEPTANCE.json。
+
+该边界针对受信任的短任务，非恶意代码沙箱或硬实时/内存限制。QuartoBridge、
+reproduction、tracking、updates、形式/引用检查与 inference 的直接 subprocess
+入口尚需逐项迁移和实测，不能把项目 runner 通过推断为整个 SDK 全部通过。
+已有 monitor/loop 迁移、登录重启与干净 24 小时观察仍待完成，历史失败不重置。

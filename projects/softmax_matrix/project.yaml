@@ -1,0 +1,11 @@
+name: softmax_matrix
+root: ../../reference/softmax_matrix
+role: measured paired loss-precision and epsilon reconstruction; all outcomes retained
+gate_command: ["{python}", "gate.py"]
+test_command: ["{python}", "verify.py"]
+expects: [docs/evidence.json, docs/final-gradient-check.json, docs/gate_evidence.json]
+validity_register: analysis/CLAIMS.yaml
+validity_document: docs/REPORT.md
+expected_gate_s: PASS
+numerics: required
+reports: [docs/REPORT.md]

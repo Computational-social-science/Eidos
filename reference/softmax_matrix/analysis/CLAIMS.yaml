@@ -1,0 +1,47 @@
+scope_axes:
+- model
+- arithmetic
+- data
+- design
+- non_goals
+scope:
+  model:
+  - one-layer four-head width64 ReLU Transformer without LayerNorm
+  arithmetic:
+  - FP32 model forward; float32 or float64 loss logits; first-order CUDA autograd
+  data:
+  - modular addition mod31; same parent splits and initial models; seeds0,1,2
+  design:
+  - locally registered prospective follow-up; 36 complete paired trajectories
+  non_goals:
+  - bf16 or AMP qualification
+  - exact paper reproduction
+  - universal superiority
+  - significance testing
+claims:
+- id: M1
+  text: All 36 specified training trajectories completed, with independently checked
+    final models and gradient endpoints.
+  span: All 36 specified training trajectories completed, with independently checked
+    final models and gradient endpoints.
+  strength: tentative
+  design: observational
+  evidence:
+    file: docs/gate_evidence.json
+    pointer: /complete_and_checked
+    value: true
+  assumptions:
+  - Local runtime and recorded execution are trusted; no cryptographic remote attestation.
+  - This register defines a bounded acceptance claim; no claim is accepted until its
+    evidence passes.
+  - Only final gradient endpoints are independently reloaded; intermediate counts
+    are producer-recorded.
+  formal: false
+power:
+  not_applicable: descriptive paired three-seed reconstruction; no population inference
+multiplicity:
+  not_applicable: one completion claim; no significance testing or selected-seed inference
+journal_fit:
+  file: docs/REFEREE_SIM.md
+  objections: 3
+  unresolved: 0

@@ -95,7 +95,7 @@ loss.backward()
 
 ## 7. Nature 图件技术规范
 
-依据 [Nature 官方图件指南](https://research-figure-guide.nature.com/figures/building-and-exporting-figure-panels/) 与 [最终提交要求](https://www.nature.com/nature/for-authors/final-submission)：主图宽 183 mm，内核图高 132 mm、训练图高 70 mm，低于 170 mm。图内字号 6–7 pt，本机使用 Arial；PDF 嵌入 TrueType/Type42，SVG 保留可编辑文字，主图不栅格化。
+依据 [Nature 官方图件指南](https://research-figure-guide.nature.com/figures/building-and-exporting-figure-panels/) 与 [最终提交要求](https://www.nature.com/nature/for-authors/final-submission)：主图宽 183 mm，内核图高 132 mm、平稳点训练图高 70 mm、精度矩阵图高 130 mm，低于 170 mm。图内字号 6–7 pt，本机使用 Arial；PDF 嵌入 TrueType/Type42，SVG 保留可编辑文字，主图不栅格化。
 
 白底出版画布使用蓝/朱红/黑配合实/虚/点线，黑色高对比文字；面板依次 a–d。真实零值在对数轴外标记，不制造正数地板。训练 KL 的 symlog 线性区明确标注。确定性网格无统计误差条；训练展示全部种子。PNG 仅用于 Word 和预览。
 
@@ -140,7 +140,7 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 
 首页注册表使用同一新鲜度规则：实际 gate 检查必须与退出码一致，才记录本次核验；缺失时间仍为 STALE。静态过期文案不含逐小时变化的年龄，防止证据和状态均未改变时产生无意义的页面漂移。
 
-2026-10-31 的 24 小时观察已记录两次失败，日志显示开发期间旧进程加载的新 dashboard 找不到旧缓存 project 模块中的 `consumer_freshness`。监督进程重启后恢复；失败记录保留，此轮严格连续观察不能宣称全通过。
+截至 2026-10-31 21:09（Asia/Shanghai），24 小时观察仍为 RUNNING，约 4.8 小时、288 次观测、9 次不满足严格判据：此前两次来自旧进程缓存模块不一致，新增七次来自新 consumer 已注册但 pipeline 快照尚未同步重建。重建快照后当前监控恢复 OK；失败记录保留，此轮严格连续观察不能宣称全通过。接入消费者须在验收后及时执行 `tools/build_pipeline.py --probe`，防止注册与观测快照悬空。见 [运行观察快照](docs/SOAK-OBSERVATION-2026-10-31.json)。
 
 ## 9. 未验证范围与下一步
 
@@ -150,6 +150,14 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 
 验收器核对源/协议/运行时/划分/完整模型清单、原始张量、独立最终准确率、margin、CE、蒸馏位移及父实验重放。此前“删掉产物清单仍可通过”的漏洞有真实报告变异测试覆盖。单独分析脚本 `tools/grokking_analysis.py` 补测最终检查点 target 梯度为零的比例，绑定模型、实验与分析代码哈希；不冒充未记录的梯度时间轨迹。这些跟进结果独立归档，主页 Figure 2 仍明确展示原 MLP 平稳点案例。
 
-下一阶段登记完整 dtype × epsilon 参数矩阵和跨种子设计，核对原论文未明确的实现选择，再判断泛化结果的可迁移性；保留所有阶段的成功、阴性与失败证据。新科学主张仍须文献对照、可证伪假设和独立数据支持。当前全量本地验收为 527 passed、3 个可选 Torch 模块 skipped；CUDA 环境另有 12 passed，框架源码覆盖率 67%，11 条链为 10 PASS/1 SKIP。
+本轮已完成受支持精度矩阵：损失入口 float32/float64 × epsilon={1e-8,1e-12,1e-16} × 三种子 × 标准/修复，共 36 条 10,000 epoch 轨迹、1,836 个记录点、72 个最终模型文件。模型前向及参数始终为 FP32；不能把损失入口精度与整个模型精度混淆。bf16 尚未资格化，不计入已完成范围。协议在执行前本地登记，来源、锁文件、初始模型与划分均绑定哈希；六条 FP32/epsilon=1e-8 基线与父实验最终模型逐位相同。
+
+最终权重经 NumPy 独立前向复核；36 个最终梯度端点从原训练顺序的 480 样本批次在记录的 CUDA 环境重新加载验证，检查 loss/model 两接口、有限值及严格无绝对地板的损失比较。中间零梯度计数是生产程序记录，不能称为独立重放的整条梯度轨迹。变异测试拒绝删组合、删产物、错误父哈希和伪造零 CE/损失。新消费者 `softmax_matrix` 要求实验验收和最终梯度重检同时通过后，才能进入 Gate S。
+
+结果：修复版在 18 组配对中 5 组 held-out 更高、12 组更低、1 组相同；最高最终 held-out 为 79.210%，未复现论文表格的高泛化。修复版 918 个记录点的模型入口 target 零梯度计数均为 0，标准版最多 243/480。因此本地证据支持已测数值机制的修复，不能支持固定预算下普遍泛化提升。所有结果均保留，不挑选有利种子。完整 [矩阵报告](site/reports/softmax-matrix/report.html)、[配对 CSV](site/reports/softmax-matrix/paired.csv)、协议、原始记录、出版矢量图和独立复现包共源交付。
+
+下一阶段优先核对原论文/引用实现的输入表示、初始化等未对齐细节，并登记能区分架构差异与数值机制的消融；不能先把实现差异归因于修复方法。此后再单独资格化 bf16、扩充种子和任务。新科学主张仍须文献对照、可证伪假设和独立数据支持。
 
 相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。
+
+本轮验收：531 passed、4 个可选 Torch 模块 skipped；CUDA 环境单独 16 passed，框架源码覆盖率 67%，11 条链为 10 PASS/1 SKIP。

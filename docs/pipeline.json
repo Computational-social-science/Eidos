@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-31T11:35:33+00:00",
+  "generated": "2026-10-31T13:08:17+00:00",
   "coupling": {
     "nodes": [
       "framework.decision",
@@ -506,7 +506,7 @@
         "reported": true
       }
     },
-    "generated": "2026-10-31T08:35:05+00:00"
+    "generated": "2026-10-31T11:43:41+00:00"
   },
   "self_audit": {
     "gate_s": null,
@@ -520,9 +520,9 @@
       "available": true,
       "gate_s": "PASS",
       "expected": "PASS",
-      "generated": "2026-10-31T08:15:57+00:00",
+      "generated": "2026-10-31T12:22:30+00:00",
       "role": "paper-to-agent consumer (MCP tools from a converted paper, driven end to end)",
-      "checked_at": "2026-10-31T11:35:33+00:00",
+      "checked_at": "2026-10-31T13:08:18+00:00",
       "findings": []
     },
     {
@@ -569,7 +569,7 @@
       "expected": "PASS",
       "generated": "2026-10-31T07:37:00+00:00",
       "role": "DEMO (onboarding template, LLM consumer)",
-      "checked_at": "2026-10-31T11:35:33+00:00",
+      "checked_at": "2026-10-31T13:08:18+00:00",
       "findings": []
     },
     {
@@ -580,7 +580,7 @@
       "expected": "PASS",
       "generated": "2026-10-31T07:37:00+00:00",
       "role": "DEMO (quantitative consumer, planted truth + render)",
-      "checked_at": "2026-10-31T11:35:33+00:00",
+      "checked_at": "2026-10-31T13:08:18+00:00",
       "findings": []
     },
     {
@@ -591,7 +591,7 @@
       "expected": "FAIL",
       "generated": null,
       "role": "negative control (expected rejection)",
-      "checked_at": "2026-10-31T11:35:33+00:00",
+      "checked_at": "2026-10-31T13:08:18+00:00",
       "findings": [
         "[S3] N1: evidence says 0 but ../operator_calibration/docs/evidence.json/abstain_unanswerable holds 1.0"
       ]
@@ -604,7 +604,7 @@
       "expected": "PASS",
       "generated": "2026-10-31T07:37:12+00:00",
       "role": "LLM consumer (calibration of a typed decision operator)",
-      "checked_at": "2026-10-31T11:35:33+00:00",
+      "checked_at": "2026-10-31T13:08:18+00:00",
       "findings": []
     },
     {
@@ -615,10 +615,21 @@
       "expected": "FAIL",
       "generated": null,
       "role": "negative control for S9 (prose contradicts its own evidence)",
-      "checked_at": "2026-10-31T11:35:33+00:00",
+      "checked_at": "2026-10-31T13:08:18+00:00",
       "findings": [
         "[S9] P1: the text states [19.0] but the evidence holds 1"
       ]
+    },
+    {
+      "name": "softmax_matrix",
+      "root": "E:\\2026-AI4S\\Eidos\\reference\\softmax_matrix",
+      "available": true,
+      "gate_s": "PASS",
+      "expected": "PASS",
+      "generated": "2026-10-31T12:55:33.030708+00:00",
+      "role": "measured paired loss-precision and epsilon reconstruction; all outcomes retained",
+      "checked_at": "2026-10-31T13:08:18+00:00",
+      "findings": []
     },
     {
       "name": "softmax_training",
@@ -628,7 +639,7 @@
       "expected": "PASS",
       "generated": "2026-10-31T09:18:54.095156+00:00",
       "role": "measured optimizer-level training consumer; adapted stationarity experiment",
-      "checked_at": "2026-10-31T11:35:34+00:00",
+      "checked_at": "2026-10-31T13:08:19+00:00",
       "findings": []
     }
   ],

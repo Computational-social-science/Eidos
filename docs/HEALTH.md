@@ -7,13 +7,13 @@ and re-checked by `--check` in CI; none is typed by hand.
 
 | dimension | measurement | verdict |
 |---|---|---|
-| unit tests | **527 collected**, 527 passed; 3 optional Torch modules skipped in project env (12 tests separately passed on CUDA Python) | ✅ |
+| unit tests | **531 collected**, 531 passed; 4 optional Torch modules skipped in project env (16 tests separately passed on CUDA Python) | ✅ |
 | coverage of `framework/` | **67%**, source-only scope including unexecuted modules; future no-regression by >1 point | measured |
 | chain audit | **11 chains: 10 PASS, 1 SKIP, 0 FAIL/ERROR** | ✅ |
 | Gate S on the reference fixture | PASS (valid register) and FAIL (mutated copy) | ✅ |
 | Gate S on Eidos itself | **PASS — 8 objections, 0 open** (consumers are sealed fixtures) | ✅ |
 | CI (GitHub Actions) | locked installs; local checks and remote CI are separate. See the [workflow runs](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml) for the commit being assessed | live result |
-| consumers | `demo_onboarding`, `demo_quantitative`, `operator_calibration`, `null_study`, `prose_lie`, `barron2026_agent`, plus measured `softmax_training` (saved weights and splits independently validated) | 7 |
+| consumers | `demo_onboarding`, `demo_quantitative`, `operator_calibration`, `null_study`, `prose_lie`, `barron2026_agent`, plus measured `softmax_training` and `softmax_matrix` (saved models and final gradient endpoints independently validated) | 8 |
 | render chain | html 19 KB, pdf 13 KB, docx 11 KB from one Quarto source (`docs/RENDER_CHECK.json`) | ✅ |
 | external contracts | Quarto 1.10.19 (`tools/quarto`, via `QUARTO_BIN`), DVC, MLflow, decision service, BootLoops | ✅ |
 | coupling | 0 import cycles, 0 absolute-path literals | ✅ |
@@ -86,3 +86,5 @@ sent StartLux prompts into ScienceRSI and killed the desktop runtime; the proced
 The watchdog now also compares the sample `seq` with the last one it saw, so a sampler that keeps
 rewriting the same payload is reported instead of looking alive.
 
+
+Matrix acceptance: 36 complete trajectories, 1,836 points, 36 independent final gradient reloads; CPU/Gate S acceptance PASS. Mixed outcomes are reported in [the matrix report](../site/reports/softmax-matrix/report.html). Strict 24h soak remains RUNNING with 9 observed failures as of 2026-10-31 21:09 Asia/Shanghai; current monitor recovered to OK. Snapshot: [observation record](SOAK-OBSERVATION-2026-10-31.json).

@@ -617,6 +617,8 @@ def sec_demo(ctx: dict) -> str:
     links = "".join(f'<a href="{html.escape(data["downloads"][key], quote=True)}"'
                     f'{" download" if key != "report" else ""}>{label}</a>'
                     for key, label in download_labels if key in data["downloads"])
+    if (pathlib.Path(__file__).resolve().parents[1] / "site/reports/softmax-matrix/report.html").is_file():
+        links += '<a href="reports/softmax-matrix/report.html">Precision × ε follow-up · all paired outcomes</a>'
     verdict = html.escape(data["qualification"]["verdict"])
     figure = '''<figure class="numerics-publication" aria-labelledby="numerics-figure-caption">
     <div class="numerics-legend" aria-label="Series legend"><span class="standard">Standard · before repair</span>

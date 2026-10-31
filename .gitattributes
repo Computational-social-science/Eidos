@@ -12,5 +12,7 @@ site/index.html -text whitespace=cr-at-eol
 site/dashboard.html -text whitespace=cr-at-eol
 # Generated plotting paths and archived Markdown retain producer formatting.
 site/reports/numerics/** whitespace=-blank-at-eol,-blank-at-eof
+site/reports/softmax-matrix/** whitespace=-blank-at-eol,-blank-at-eof
+site/reports/softmax-matrix/*.json -text whitespace=cr-at-eol
 docs/archive/** whitespace=-blank-at-eol
 *.sh text eol=lf

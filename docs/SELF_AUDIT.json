@@ -5,11 +5,11 @@
     "skip": 1,
     "fail": 0
   },
-  "tests_collected": 527,
+  "tests_collected": 531,
   "tests": {
-    "passed": 527,
+    "passed": 531,
     "failed": 0,
-    "skipped": 3,
+    "skipped": 4,
     "errors": 0
   },
   "diagnostics": {},

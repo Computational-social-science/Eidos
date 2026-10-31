@@ -1,6 +1,6 @@
 # Eidos — Global Reusable Research Pipeline Framework
 
-**Gate S self-audit: PASS** — 8 objections, 0 open. Six fixture consumers: four that must pass (`operator_calibration`, `demo_onboarding`, `demo_quantitative`, `barron2026_agent`) and two controls that must be rejected (`null_study`, `prose_lie`), plus four chain fixtures. Record: `docs/SELF_AUDIT.json`; scope: `docs/HEALTH.md`.
+**Gate S self-audit: PASS** — 8 objections, 0 open. Six fixture consumers: four that must pass (`operator_calibration`, `demo_onboarding`, `demo_quantitative`, `barron2026_agent`) and two controls that must be rejected (`null_study`, `prose_lie`), plus two measured consumers (`softmax_training`, `softmax_matrix`) and four chain fixtures. Record: `docs/SELF_AUDIT.json`; scope: `docs/HEALTH.md`.
 
 [![ci](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml/badge.svg)](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
 [![Gate S](https://img.shields.io/badge/Gate%20S-self--audit-PASS-2f7d32)](docs/SELF_AUDIT.json)
@@ -16,6 +16,10 @@ The dark, responsive figures link mode/precision/input and seed/endpoint/step se
 filed evidence. Separate editable SVG/PDF print masters retain publication dimensions.
 [Transformer follow-up](docs/SOFTMAX-TRAINING-FOLLOWUP.md) archives the three-seed reconstruction
 and explicitly exploratory extension, including unfavorable outcomes and checkpoint-bound validation.
+The [supported precision/epsilon matrix](site/reports/softmax-matrix/report.html) adds 36 complete
+paired trajectories and independent final gradient checks. At 10,000 epochs, fixed CE improves
+5 of 18 paired endpoints and reduces 12 (one tie); numerical repair does not establish a uniform
+finite-budget generalization benefit. bfloat16 remains unqualified.
 
 Quarto + BootLoops + complementary quality gates, including dependency governance
 

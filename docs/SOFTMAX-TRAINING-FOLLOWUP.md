@@ -53,3 +53,7 @@ At those three exact initial teachers, the standard distillation path moves the 
 The extension replays all six parent trajectories to epoch 10,000 with exactly matching model state hashes, then continues with the same optimizer in the producer. Original optimizer moments were not separately saved or independently verified.
 
 The homepage Figure 2 remains the independently qualified MLP stationarity case; these follow-up studies are archived separately and are not silently substituted into its curves. Publication and broader claims require a separate review of the paper reconstruction choices.
+
+## Supported precision/epsilon matrix
+
+The separately registered 36-run follow-up is now available in [the complete matrix report](../site/reports/softmax-matrix/report.html). All 18 paired endpoints are retained: fixed CE is higher in 5, lower in 12, tied in 1. Six baseline states exactly replay this parent study. The numerical repair is supported in the measured gradient diagnostics; this reconstruction does not establish a uniform finite-budget generalization benefit or reproduce the paper table. Inspect the disclosed implementation choices before attributing the discrepancy to a scientific mechanism.

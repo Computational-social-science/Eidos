@@ -1,0 +1,65 @@
+{
+  "study_id": "softmax-loss-precision-epsilon-matrix-v1",
+  "registered_at": "2026-10-31T12:37:46.995102+00:00",
+  "registration": "prospective local follow-up informed by prior three-seed results; not an external preregistration",
+  "paper": "https://arxiv.org/html/2610.31642v3",
+  "scope": "complete supported-loss-precision x epsilon x three-seed paired reconstruction; not a full paper reproduction",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "modulus": 31,
+  "train_fraction": 0.5,
+  "width": 64,
+  "heads": 4,
+  "layers": 1,
+  "activation": "ReLU",
+  "layer_norm": false,
+  "epochs": 10000,
+  "log_interval": 200,
+  "optimizer": "AdamW",
+  "lr": 0.001,
+  "betas": [
+    0.9,
+    0.98
+  ],
+  "weight_decay": 1.0,
+  "device": "cuda",
+  "implementation_choices_not_specified_by_paper": {
+    "input": "two tokens [a,b], shared token embedding, learned two-position embedding, read last position",
+    "attention": "causal, manual scaled dot product, biases enabled, no dropout",
+    "feedforward_multiplier": 4,
+    "initialization": "PyTorch defaults for embedding/linear; position normal std 0.02",
+    "decay": "all parameters, including biases and embeddings"
+  },
+  "pairing": "standard and fixed arms copy identical initial weights and use the same split",
+  "primary_endpoints": [
+    "all paired final held-out accuracies",
+    "all final mean margins",
+    "target-gradient zero counts at both loss and float32 model interfaces at each logged training step"
+  ],
+  "acceptance": "exact 36-cell inventory, all 10000 epochs, every checkpoint, finite metrics and valid raw model tensors; no superiority threshold",
+  "analysis": "all cells and seeds retained; paired descriptive differences; no p-value or universal superiority claim; no early stopping or extending after inspecting outcomes",
+  "parent": "reference/softmax_grokking/docs/evidence.json",
+  "model_dtype": "float32",
+  "loss_dtypes": [
+    "float32",
+    "float64"
+  ],
+  "unqualified_loss_dtypes": [
+    "bfloat16"
+  ],
+  "epsilons": [
+    1e-08,
+    1e-12,
+    1e-16
+  ],
+  "arms": [
+    "standard",
+    "fixed"
+  ],
+  "precision_contract": "model parameters and forward remain float32; only the logits entering CE are cast to the selected loss dtype; autograd casts loss derivatives back to model float32",
+  "initialization": "reuse every original seed initial model and split; all cells paired; never start from a trained checkpoint",
+  "baseline_check": "fp32 epsilon=1e-8 final state must equal its original parent state for every seed and arm"
+}

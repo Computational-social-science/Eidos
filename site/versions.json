@@ -121,5 +121,24 @@
       "blind_spots_open": 0,
       "instruments": 6
     }
+  },
+  {
+    "version": "0.4.1",
+    "date": "2026-11-01",
+    "commit": "e5e8ec4",
+    "source_commit": "e5e8ec4",
+    "tag": "v0.4.1",
+    "summary": "Publish the initial-development research framework: repaired Softmax case, inspected reports, model authority limits, quiet operations and release integrity",
+    "schema": 2,
+    "metrics": {
+      "tests": 626,
+      "coverage": 68,
+      "chains": 11,
+      "open_objections": 0,
+      "decision_ms": 182,
+      "blind_spots_found": 1,
+      "blind_spots_open": 0,
+      "instruments": 6
+    }
   }
 ]

@@ -107,9 +107,8 @@ jobs:
           uv run --no-sync python tools/audit_chain_fixtures.py
 
       - name: Site gate (no browser here)
-        # --no-build: the pages embed host facts (tool versions, the dependency table's date), so
-        # rebuilding them on a runner produces a different file by construction. CI audits the
-        # committed artefact; the local hook audits a rebuild.
+        # Audit the page already rendered by this runner above. Host facts and libm results
+        # legitimately differ from the Windows build; source and checks stay on the same host.
         run: uv run --no-sync python tools/audit_site.py --skip-browser --no-build
       - name: Local neural operator (planted fixed point + control)
         run: |
@@ -148,7 +147,12 @@ jobs:
           uv sync --locked --python "$UV_PYTHON" --extra dev --extra browser
           uv run --no-sync python -m playwright install --with-deps chromium
       - name: Layout guards (paint order, clipping, hit-test)
-        run: uv run --no-sync python -m pytest -q tests/test_layout_guards.py
+        # The following audits compare a rebuild, so generate on this runner first.
+        # Local pre-commit separately validates the committed Windows artifact and screenshots.
+        run: |
+          uv run --no-sync python tools/build_site.py
+          uv run --no-sync python tools/dashboard.py
+          uv run --no-sync python -m pytest -q tests/test_layout_guards.py
       - name: Page audits (layout, contrast, visual language, runtime)
         run: |
           uv run --no-sync python tools/audit_site.py --no-build 2>&1 | tee /tmp/site.log || {
@@ -178,13 +182,16 @@ jobs:
         run: |
           uv lock --check --python "$UV_PYTHON"
           uv sync --locked --python "$UV_PYTHON" --extra dev --extra agent
-      - name: Paper2Agent verifier (vendored, unmodified)
-        run: >
-          uv run --no-sync python reference/reproduction/barron2026/mcp/vendor/verify_mcp_server.py
-          --server reference/reproduction/barron2026/mcp/server.py
-          --expected reference/reproduction/barron2026/mcp/expected.json
-          --cases reference/reproduction/barron2026/mcp/cases.json
-          --require-all-tools --report "$RUNNER_TEMP/verify.json"
-          --cwd reference/reproduction/barron2026/mcp
+      - name: Paper2Agent verifier (unchanged vendor, typed numeric assertions)
+        run: |
+          uv run --no-sync python tools/verify_barron_mcp.py \
+            --server reference/reproduction/barron2026/mcp/server.py \
+            --expected reference/reproduction/barron2026/mcp/expected.json \
+            --cases reference/reproduction/barron2026/mcp/cases.json \
+            --require-all-tools --report "$RUNNER_TEMP/verify.json" \
+            --cwd reference/reproduction/barron2026/mcp || {
+              cat "$RUNNER_TEMP/verify.json"
+              exit 1
+            }
       - name: Agent end to end, judged by Gate S
         run: uv run --no-sync python reference/barron2026_agent/agent.py

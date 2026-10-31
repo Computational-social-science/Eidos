@@ -113,6 +113,8 @@ Figure 1 联动 failure mode × dtype × 实测输入：a 为当前案例的有�
 
 Git 对源代码采用 LF；对绑定原始 SHA256 的训练证据、检查点和截图所绑定的生成页面保留原始字节，防止 Windows/Linux 换行转换破坏验收。提交前从 Git index 导出独立副本，重新运行模型和分析证据验收；只在原工作区通过不足以证明克隆后可复核。
 
+首轮远端 CI 暴露两项跨平台验收问题：Linux/Windows 的 NumPy `log1p` 结果相差 1 ULP，原 MCP 烟雾测试却要求实数逐位相同；浏览器任务用 Windows 生成的页面做 Linux 重建一致性比较。现保留 vendor 验证器原文，由 `tools/verify_barron_mcp.py` 为非零 float64 输出采用 1e−14 相对容差、绝对容差 0，精确零与离散字段保持精确断言，报告写明策略。独立梯度资格及负对照标准不变。Linux 同版 NumPy 已复核七个案例；CI 浏览器先在 runner 生成页面，再完整执行布局、对比度、运行与源一致性检查，本地提交钩子仍核验交付页面与截图。
+
 本次训练使用 py -3.14：Python 3.14.3、Torch 2.13.0+cu126、NumPy 2.4.1、CUDA 12.6、RTX 4070，关闭 TF32并启用确定性算法。主项目环境不强制安装 Torch，可选模块 SKIP 与 GPU 环境的单独 PASS 分别记录；.venv-repro 保留给原有论文 JAX 消费者。
 
 ```text

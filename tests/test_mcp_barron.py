@@ -59,7 +59,7 @@ def test_the_paper_arithmetic_holds():
     assert soft["grad_sum_is_zero"] is True
 
 
-def test_declared_mcp_cases_match_the_current_tools_exactly():
+def test_declared_mcp_cases_match_typed_numeric_contract():
     pytest.importorskip("fastmcp")
     import importlib.util
 
@@ -67,10 +67,16 @@ def test_declared_mcp_cases_match_the_current_tools_exactly():
     server = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(server)
     cases = json.loads((MCP / "cases.json").read_text(encoding="utf-8"))
+    from tools.verify_barron_mcp import check_subset
+    import math
+    check_subset(math.nextafter(1.0, 2.0), 1.0)
+    for observed, expected in ((1.01, 1.0), (1e-30, 0.0), (float('nan'), 1.0), (1, True)):
+        with pytest.raises(ValueError):
+            check_subset(observed, expected)
     for case in cases:
         observed = getattr(server, case["tool"])(**case["arguments"])
         for field, expected in case["expected_subset"].items():
-            assert observed[field] == expected, (case["name"], field, observed[field], expected)
+            check_subset(observed[field], expected, case["name"] + "." + field)
 
 
 def test_logit_soft_target_cases_match_independent_decimal_oracle():

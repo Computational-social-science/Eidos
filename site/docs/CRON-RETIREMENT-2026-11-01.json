@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-11-01T03:32:15.228018+00:00",
+  "removed_job_ids": [
+    "af4ae1129d9c",
+    "d61994a076b9"
+  ],
+  "removed_jobs": [
+    "eidos-watchdog",
+    "Eidos contract drift"
+  ],
+  "managed_cli_removal": true,
+  "active_executions_before_removal": 0,
+  "private_backup_completed": true,
+  "jobs_before_sha256": "8011d4a94b2b3545ccbcfe912b7642c96e200fcf00c271020822e58dd3b85677",
+  "execution_rows_preserved": 993,
+  "remaining_unrelated_jobs": 1,
+  "scope": "Removed Eidos Hermes schedules only. Existing resident service/loop processes not stopped or reloaded.",
+  "core_functions_removed": [],
+  "preserved": [
+    "resident monitoring",
+    "internal chain checks",
+    "diagnosis",
+    "bounded recovery",
+    "explicit refresh and recovery controls",
+    "existing Startup entry",
+    "failure history"
+  ],
+  "limits": [
+    "No resident process was stopped or migrated.",
+    "External schedule deletion does not stop existing chain loops.",
+    "This receipt does not qualify reboot, live recovery or clean long-running health."
+  ]
+}

@@ -34,12 +34,11 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-import chain_states
-import status_view
-
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(ROOT))
+import chain_states  # noqa: E402
+import status_view  # noqa: E402
 from framework import recovery  # noqa: E402  (the single writer for recovery rows)
 
 STATUS = ROOT / "docs" / "status"
@@ -357,30 +356,26 @@ def maybe_auto_recover(states: dict) -> dict:
     """
     if os.environ.get("EIDOS_AUTO_RECOVER", "1") == "0":
         return states
-    state = read_json(RECOVERY_STATE, {}) or {}
+    with recovery.state_transaction(RECOVERY_STATE) as state:
+        return _recover(states, state)
+
+
+def _recover(states: dict, state: dict) -> dict:
     now = time.time()
-    changed = False
     for name, row in states.items():
         entry = state.setdefault(name, {"streak": 0, "last_attempt": 0.0,
                                         "attempts": 0, "pending": False})
         ok = row.get("state") == "OK"
         if entry.get("pending"):
             if ok:
-                recovery.log_terminal(name, "recovered")
-                entry.update(pending=False, attempts=0, streak=0)
-                changed = True
-            elif now - entry.get("last_attempt", 0) > 60:
-                recovery.log_terminal(name, "no effect", ok=False)
-                entry.update(pending=False)
-                changed = True
+                recovery.finish_attempt(name, entry.get("attempt_id"), True, path=RECOVERY_STATE)
+            elif now - entry.get("last_attempt", 0) >= recovery.verification_timeout(name):
+                recovery.finish_attempt(name, entry.get("attempt_id"), False, path=RECOVERY_STATE)
             continue
         if ok:
-            if entry.get("streak"):
-                entry["streak"] = 0
-                changed = True
+            entry.update(streak=0, attempts=0, in_flight=False, failures=0)
             continue
         entry["streak"] = int(entry.get("streak", 0)) + 1
-        changed = True
         plan_row = row.get("recovery") or {}
         if (entry["streak"] >= STREAK_NEEDED and plan_row.get("available")
                 and now - entry.get("last_attempt", 0) > COOLDOWN_S
@@ -388,22 +383,12 @@ def maybe_auto_recover(states: dict) -> dict:
             from framework import recovery as recovery_mod
             plan = recovery_mod.plan(name)
             result = recovery_mod.execute(plan)
-            entry.update(last_attempt=now, pending=True, streak=0,
-                         attempts=int(entry.get("attempts", 0)) + 1)
-            _append_recovery({"ts": now_iso(), "service": name, "phase": "attempt",
-                              "action": plan.description, "ok": result.get("ok"),
-                              "pid": result.get("pid"), "error": result.get("error")})
-            row["recovery_auto"] = {"attempted": True, "result": result}
-    if changed:
-        STATUS.mkdir(parents=True, exist_ok=True)
-        RECOVERY_STATE.write_text(json.dumps(state, indent=1) + chr(10), encoding="utf-8")
+            # execute owns durable launch reservations and the budget. A cooldown,
+            # held port or healthy preflight is not a new launch attempt.
+            if not result.get("skipped"):
+                entry["pending"] = bool(result.get("ok"))
+            row["recovery_auto"] = {"attempted": bool(result.get("attempted")), "result": result}
     return states
-
-
-def _append_recovery(row: dict) -> None:
-    STATUS.mkdir(parents=True, exist_ok=True)
-    with RECOVERIES.open("a", encoding="utf-8") as handle:
-        handle.write(json.dumps(row) + chr(10))
 
 
 def _json_safe_payload(payload: dict) -> dict:

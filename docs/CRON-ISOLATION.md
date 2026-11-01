@@ -1,5 +1,11 @@
 # Scheduler runtime isolation
 
+Current policy: the two external Eidos Hermes jobs were removed on 2026-11-01,
+with backups and 993 execution-history rows retained. Core resident self-check
+and bounded self-healing remain available. The scheduled observations below are
+historical qualification, not active schedules. See [current policy](SCHEDULING-POLICY.md)
+and [retirement](CRON-RETIREMENT-2026-11-01.json).
+
 The EIDOS Hermes watchdog failed in the real scheduler while direct project-Python
 checks succeeded. The scheduler overlays its workspace and dependency environment
 on `PYTHONPATH`; its regular `tools` package shadows EIDOS's tools namespace.

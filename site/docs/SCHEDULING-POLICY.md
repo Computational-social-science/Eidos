@@ -1,29 +1,37 @@
 # Scheduling and duplicate-work policy
 
-2026-11-01: the user requested immediate consolidation. Automatic health checks
-remain useful; research execution is not a periodic heartbeat.
+2026-11-01, updated after the user's decision: remove Eidos external CRON,
+run research on demand, retain observational monitoring and core self-check /
+self-healing. This supersedes the v0.4.8 policy retaining two Hermes jobs.
 
 | Work | Owner and trigger |
 |---|---|
 | Live sampling and dashboard | One resident monitor, existing Startup entry; require fresh samples and advancing sequence. |
-| Independent watchdog | Existing Hermes script job, nominally every five minutes; no LLM, incident/recovery notices. |
-| Contract drift | Existing Hermes script job, daily 07:15; also run explicitly after environment changes. |
-| Small subsystem smoke checks | One owned chain loop; bounded fixture checks, not full report builds or training. |
+| Health detection and recovery | Resident monitor and supervisor; sustained faults, declared actions, ownership, cooldown, bounded attempts and measured verification. No external CRON is required. |
+| Contract drift | Explicit checks after environment/toolchain changes; the previous daily Hermes schedule is removed. |
+| Small subsystem smoke checks | Keep internal chain checking available. New-start source enforces ownership; two legacy loops remain pending consolidation. Bounded fixture checks are distinct from full report builds or training. |
 | Claim verification | Changed declared inputs or explicit refresh; reuse a matching input-bound verdict for at most 24 hours. |
 | Experiments, full suites and report builds | Explicit project commands, source/data workflows or CI; age alone must not execute a consumer gate. |
 
 ## Applied configuration
 
-Both existing Eidos Hermes jobs retain their IDs, schedules, scripts and history.
-They already used `no_agent=true`; both now pin the project interpreter and working
-directory, with catch-up disabled. Missed checks do not replay as a burst after
-downtime. Managed CLI updates followed a local configuration backup. Unrelated
-Hermes, Windows and Startup tasks remain intact. No duplicate Codex automation
-was found or created. Failure history was not reset.
+Removed `af4ae1129d9c` (`eidos-watchdog`) and `d61994a076b9`
+(`Eidos contract drift`) using the managed Hermes CLI. Both definitions and
+selected job outputs/notepads/execution records were backed up first; no run was
+active. The live execution database still contains their 993 historical rows.
+One unrelated Hermes job is unchanged. No Startup entry or resident process was
+removed. See [the retirement record](CRON-RETIREMENT-2026-11-01.json).
+
+The web page primarily observes state; the retained internal control loop can
+perform known, bounded repairs. Explicit refresh and recovery controls remain
+available. This policy does not turn off `maybe_auto_recover`, diagnosis, the
+sampler stall watchdog or supervisor restart. External schedule deletion also
+does not stop already running chain loops. Script shims and the isolation parser
+remain compatibility resources; no new schedule is installed by this change.
 
 ## Source changes and runtime limits
 
-The cron wrapper separates `execution_ok` from `ok` (health). A completed negative
+The retained optional cron wrapper separates `execution_ok` from `ok` (health). A completed negative
 watchdog check retains `execution_ok=true`, `ok=false`, its negative child exit and
 causes. A scheduler-completed check therefore does not mean a healthy system.
 Unchanged incident ages are quiet; new causes and recovery notify. Invalid JSON,
@@ -44,6 +52,30 @@ killed, restarted or migrated. New-start ownership guards do not consolidate old
 instances retroactively. Runtime migration, reboot/logon and a clean 24-hour
 observation remain pending.
 
+## Core function preservation: development qualification
+
+The current source repair preserves three consecutive fault samples, a base
+ten-minute retry interval, the launcher's exponential failure cooldown and at most
+three automatic launch attempts per unresolved incident. A refused/healthy
+preflight is not a launch and does not consume its budget. Only a measured healthy
+observation resets that incident budget. Unknown actions remain unavailable.
+
+Automatic/manual paths share state ownership. Launch intent is atomically saved
+before starting a process; a later publication failure retains that reservation.
+Corrupt or invalid state is preserved and reported rather than reset. The runtime
+startup observation window is 300 seconds (90 seconds for other service checks),
+with in-flight launch protection at least as long. Successful process creation is
+an attempt, never sufficient proof of repair. Terminal records require observed
+health or an explicit failed outcome; log write failures are visible.
+An attempt token prevents concurrent observers from settling a launch twice.
+Journal records have stable event IDs and atomic publication; after a state-commit
+failure, retry reuses the first recorded terminal outcome. State and log are still
+separate files, not one atomic reader snapshot or a power-loss guarantee.
+
+These are controlled source-level tests, not a live-service fault-injection,
+installed-wheel, reboot or clean-soak certificate. The immutable v0.4.8 assets do
+not contain later development changes. See [the focused receipt](CORE-RECOVERY-ACCEPTANCE.json).
+
 ## Other chain findings
 
 | Finding | Correction or remaining work |
@@ -54,7 +86,7 @@ observation remain pending.
 | Evidence age triggered arbitrary gates | Removed; stale evidence remains visible and explicit project execution remains available. |
 | Handwritten MATCH test fixtures no longer met S12 | Execute controlled stubs in disposable copies, preserving original templates. Research receipts get no legacy exemption. |
 | Other subprocess callers retain incomplete lifetimes | Pipeline verification, tracking, contract probes, formal/citation and update probes still need caller-specific qualification. |
-| Multiple CLI audit writers can touch aggregate files | Scheduled tick ownership is qualified; complete cross-CLI writer ownership still needs a concurrency test. |
+| Multiple CLI audit writers can touch aggregate files | Current source uses per-target cross-process locks, process-local serialization, owner-specific marker cleanup and atomic JSON writes; controlled overlapping-CLI tests preserve earlier FAIL rows and reject a busy second run without work. Legacy writers that do not use this protocol remain pending migration. |
 
 See [orchestration](ORCHESTRATION.md), [runtime isolation](CRON-ISOLATION.md) and
 [functional acceptance](FUNCTIONAL_COMPLETENESS.md). This is not a clean runtime

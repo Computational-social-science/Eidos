@@ -155,11 +155,14 @@ Consumer checks bind registry/configuration, gate source and declared file input
 Unknown or changed inputs revoke cached conclusions. Negative controls succeed by
 being rejected, while their original evidence stays intact.
 
-Existing Hermes EIDOS jobs use an isolated project interpreter, explicit UTF-8 and
-hidden Windows subprocesses. The wrapper removes scheduler import paths from the
-whole checker tree and preserves captured errors and exit codes. See
-[runtime isolation and real scheduled acceptance](docs/CRON-ISOLATION.md);
-manual health checks alone are not scheduler qualification.
+The two external Eidos Hermes CRON jobs were removed on 2026-11-01 after a local
+backup; execution history was retained. Research runs on demand. The resident
+monitor, internal checks, explicit refresh and bounded recovery remain available:
+removing a schedule must not remove detection or repair. See the
+[current scheduling policy](docs/SCHEDULING-POLICY.md) and
+[retirement record](docs/CRON-RETIREMENT-2026-11-01.json).
+The earlier [scheduler-isolation acceptance](docs/CRON-ISOLATION.md) is historical,
+not evidence of an active external schedule.
 
 The Windows monitor/Startup launchers now parse literal `monitor.env` settings
 instead of `CALL`ing a file CMD does not execute. `scripts/eidos-monitor.cmd --check`

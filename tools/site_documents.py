@@ -19,6 +19,7 @@ PUBLIC = ('ACADEMIC_POSITIONING.md','FUNCTIONAL_COMPLETENESS.md','HEALTH.md','SE
           'archive/sdk-process-acceptance-v0.4.6.json','archive/sdk-process-acceptance-v0.4.7.json',
           'archive/startup-runtime-acceptance-v0.4.7.json',
           'SCHEDULING-POLICY.md','SCHEDULING-ACCEPTANCE-2026-11-01.json',
+          'CRON-RETIREMENT-2026-11-01.json','CORE-RECOVERY-ACCEPTANCE.json',
           'REPRODUCTION-INTEGRITY.md','REPRODUCTION-ACCEPTANCE.json')
 
 PUBLIC_ASSETS = ('docs/screens/web/index-top.webp',

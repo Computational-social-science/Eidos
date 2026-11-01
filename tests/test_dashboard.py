@@ -136,6 +136,8 @@ def test_auto_recovery_waits_for_a_sustained_fault(monkeypatch, tmp_path):
     monkeypatch.setenv("EIDOS_AUTO_RECOVER", "1")
     calls = []
     import framework.recovery as rec
+    monkeypatch.setattr(rec, "STATE", tmp_path / "rs.json")
+    monkeypatch.setattr(rec, "LOG", tmp_path / "rec.jsonl")
     monkeypatch.setattr(rec, "execute", lambda p: (calls.append(p.service), {"ok": True, "pid": 1})[1])
 
     states = {"runtime_18434": {"state": "ALARM",

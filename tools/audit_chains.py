@@ -21,6 +21,10 @@ USAGE
 from __future__ import annotations
 
 import argparse
+from contextlib import ExitStack, nullcontext, redirect_stdout
+from contextvars import ContextVar
+import math
+import threading
 import importlib.util
 import json
 import shutil
@@ -35,25 +39,16 @@ from typing import Callable
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-RESULTS: list[dict] = []
+_OPTIONS = ContextVar("audit_options", default=None)
+_EXECUTION_LOCK = threading.Lock()
 
 
-def _marker(name: str):
-    """The state machine needs to know a run is in flight, not just that one finished."""
-    sys.path.insert(0, str(ROOT / "tools"))
-    import chain_states
-    getattr(chain_states, name)()
+def _option(flag: str):
+    options = _OPTIONS.get()
+    return getattr(options, flag.lstrip("-").replace("-", "_"), "") if options else ""
 
 
-def _option(flag: str) -> str:
-    if flag in sys.argv:
-        index = sys.argv.index(flag)
-        if index + 1 < len(sys.argv):
-            return sys.argv[index + 1]
-    return ""
-
-
-CHAINS: list[tuple[str, Callable, str]] = []
+CHAINS: list[tuple[str, Callable, str, tuple]] = []
 
 
 def chain(name: str, requires: str = "", deps: tuple = ()) -> Callable:
@@ -69,22 +64,19 @@ def chain(name: str, requires: str = "", deps: tuple = ()) -> Callable:
     return deco
 
 
-STRICT_REGISTRY = True
-
-
 @chain("registry", "nothing")
 def audit_registry():
     from framework.project import load_projects
     # In CI the external checkouts are absent by design: a pointer that resolves to
     # nothing is "not exercised", not "broken". Locally it is still an error, because a
     # detached checkout must not pass as if the project had been audited.
-    specs = load_projects(allow_missing=not STRICT_REGISTRY)
+    specs = load_projects(allow_missing=bool(_option("--ci")))
     if not specs:
         return "FAIL", "no project registered"
     missing = [s.name for s in specs.values() if not s.available]
     detail = f"{len(specs)} project(s): " + ", ".join(
         f"{s.name}{'' if s.available else ' [MISSING]'}" for s in specs.values())
-    if missing and not STRICT_REGISTRY:
+    if missing and _option("--ci"):
         # Projects are pointers, deliberately not copies. A CI checkout has none of
         # them, so an absent root is "not exercised", not "broken".
         return "SKIP", detail + " (external checkouts absent)"
@@ -314,13 +306,6 @@ def audit_inference():
                     "scientific model stages remain UNQUALIFIED; StartLux is triage only")
 
 
-def _option(flag: str) -> str:
-    if flag in sys.argv:
-        index = sys.argv.index(flag)
-        if index + 1 < len(sys.argv):
-            return sys.argv[index + 1]
-    return ""
-
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="exercise every Eidos chain")
@@ -336,26 +321,121 @@ def main(argv: list[str] | None = None) -> int:
                     help="write a Langfuse-shaped trace (spans with start/end/status) here")
     ap.add_argument("--only", default="",
                     help="run one chain by name (the monitor refreshes a single node)")
+    ap.add_argument("--status-dir", type=Path, default=ROOT/"docs/status",
+                    help="owned chain records and marker directory")
+    ap.add_argument("--lock-timeout", type=float, default=120.0,
+                    help="maximum seconds to wait for another audit; zero refuses immediately")
     args = ap.parse_args(argv)
-
-    global STRICT_REGISTRY
-    STRICT_REGISTRY = not args.ci
-    _marker("mark_running")
-
-    selected = [row for row in CHAINS
-                if not args.only or row[0] == args.only or row[0].startswith(args.only)]
+    if not math.isfinite(args.lock_timeout) or args.lock_timeout < 0:
+        ap.error("--lock-timeout must be finite and nonnegative")
+    selected = [row for row in CHAINS if not args.only or row[0] == args.only]
     if args.only and not selected:
-        print(f"no chain matches {args.only!r}; known: {[row[0] for row in CHAINS]}",
-              file=sys.stderr)
+        selected = [row for row in CHAINS if row[0].startswith(args.only)]
+        if len(selected) != 1:
+            print(f"unknown or ambiguous chain {args.only!r}; known: {[row[0] for row in CHAINS]}",file=sys.stderr)
+            return 2
+    if not selected or len({row[0] for row in CHAINS}) != len(CHAINS):
+        print("chain registry is empty or contains duplicate names",file=sys.stderr)
         return 2
+    if _OPTIONS.get() is not None:
+        print("nested audit is busy; no work started",file=sys.stderr)
+        return 75
+    if not _EXECUTION_LOCK.acquire(timeout=args.lock_timeout):
+        print("audit is busy in this process; no work started",file=sys.stderr)
+        return 75
+    try:
+        return _owned(args,selected)
+    finally:
+        _EXECUTION_LOCK.release()
 
+
+def _unique_pairs(items):
+    value = {}
+    for key,item in items:
+        if key in value:
+            raise ValueError("duplicate state field: "+key)
+        value[key] = item
+    return value
+
+
+def _load_state(path):
+    if not path.exists():
+        return {}
+    value = json.loads(path.read_text(encoding="utf-8"),object_pairs_hook=_unique_pairs)
+    json.dumps(value,allow_nan=False)
+    if not isinstance(value,dict) or not isinstance(value.get("chains"),dict):
+        raise ValueError("existing chain state requires a chains mapping")
+    for row in value["chains"].values():
+        if not isinstance(row,dict) or row.get("status") not in {"PASS","SKIP","FAIL","ERROR"}:
+            raise ValueError("invalid previous chain result")
+        stamp = row.get("ts")
+        if type(stamp) not in (int,float) or not math.isfinite(stamp) or stamp < 0:
+            raise ValueError("invalid previous chain timestamp")
+    return value
+
+
+def _owned(args,selected):
+    status_dir = args.status_dir.resolve()
+    state_path = status_dir/"chains.json"
+    marker_path = status_dir/"running.json"
+    trace_path = Path(args.spans).resolve() if args.spans else None
+    if trace_path is not None and (
+            trace_path.name.casefold() in {"chains.json","running.json","scheduler.json"}
+            or trace_path.name.casefold().startswith(".eidos-export-")
+            or trace_path.suffix.lower() != ".json"):
+        print("trace must be a JSON trace, not a reserved state or lock path",file=sys.stderr)
+        return 2
+    if trace_path in (state_path, marker_path):
+        print("trace must not overwrite a state or marker file",file=sys.stderr)
+        return 2
+    from framework.artifacts import output_lock
+    from tools import chain_states
+    with ExitStack() as ownership:
+        targets = [state_path,marker_path] + ([trace_path] if trace_path else [])
+        resources = [path.parent/("audit-target-"+path.name) for path in targets]
+        try:
+            for resource in sorted(set(resources)):
+                ownership.enter_context(output_lock(resource,timeout=args.lock_timeout))
+        except TimeoutError:
+            print("audit is busy; no chain ran or evidence was refreshed",file=sys.stderr)
+            return 75
+        try:
+            previous = _load_state(state_path)
+            if trace_path is not None and trace_path.exists():
+                trace = json.loads(trace_path.read_text(encoding="utf-8"),object_pairs_hook=_unique_pairs)
+                json.dumps(trace,allow_nan=False)
+                if (not isinstance(trace,dict) or not isinstance(trace.get("trace"),dict)
+                        or trace["trace"].get("name") != "eidos.chains"
+                        or not isinstance(trace.get("spans"),list)):
+                    raise ValueError("existing trace target is not an Eidos chain trace")
+        except (OSError,ValueError,TypeError,OverflowError) as exc:
+            print("previous evidence is unreadable; preserved: "+str(exc),file=sys.stderr)
+            return 2
+        token = _OPTIONS.set(args)
+        owner = None
+        try:
+            owner = chain_states.mark_running(path=marker_path)
+            return _execute(args,selected,state_path,trace_path,previous)
+        finally:
+            try:
+                if owner is not None:
+                    chain_states.clear_running(path=marker_path,owner=owner)
+            finally:
+                _OPTIONS.reset(token)
+
+
+def _execute(args,selected,state_path,trace_path,previous) -> int:
+    results = []
     for name, fn, requires, deps in selected:
         started = time.time()
         try:
-            status, detail = fn()
+            with redirect_stdout(sys.stderr) if args.json else nullcontext():
+                status, detail = fn()
+            if status not in {"PASS","SKIP","FAIL","ERROR"}:
+                raise ValueError("unknown chain verdict")
         except ImportError as exc:
             status, detail = "SKIP", f"optional dependency missing: {exc}"
-        except Exception as exc:  # noqa: BLE001 - a crash is the finding
+        except (Exception, SystemExit) as exc:  # a chain must return a verdict, not exit the audit
             status = "ERROR"
             detail = f"{type(exc).__name__}: {exc}"
             if args.verbose:
@@ -368,67 +448,60 @@ def main(argv: list[str] | None = None) -> int:
                   if (shutil.which(dep[4:]) is None if dep.startswith("bin:")
                       else importlib.util.find_spec(dep) is None)]
         missing = absent if status != "PASS" else []
-        RESULTS.append({"chain": name, "status": status, "detail": str(detail),
+        results.append({"chain": name, "status": status, "detail": str(detail),
                         "requires": requires, "deps": list(deps), "missing": missing,
                         "start_ts": started, "end_ts": ended,
                         "ms": round((ended - started) * 1000, 1)})
 
     # Per-chain state with its own timestamp: the monitor needs to know when THIS chain
     # last ran, not when the trace file was last touched.
-    state_path = ROOT / "docs" / "status" / "chains.json"
-    try:
-        previous = json.loads(state_path.read_text(encoding="utf-8")) if state_path.exists() else {}
-    except (OSError, json.JSONDecodeError):
-        previous = {}
     merged = dict(previous.get("chains") or {})
-    for row in RESULTS:
+    for row in results:
         merged[row["chain"]] = {"status": row["status"], "ts": row["end_ts"],
                                 "ms": row["ms"], "requires": row["requires"],
                                 "deps": row.get("deps") or [],
                                 "missing": row.get("missing") or [],
                                 "detail": row["detail"][:240]}
-    state_path.parent.mkdir(parents=True, exist_ok=True)
-    state_path.write_text(json.dumps({"ts": max(r["end_ts"] for r in RESULTS),
-                                      "chains": merged}, indent=2), encoding="utf-8")
+    from framework.artifacts import atomic_output
+    with atomic_output(state_path) as temporary:
+        temporary.write_text(json.dumps({"ts": max(r["end_ts"] for r in results),
+                                         "chains": merged}, indent=2),encoding="utf-8")
 
-    width = max(len(r["chain"]) for r in RESULTS) if RESULTS else 10
-    _marker("clear_running")
+    width = max(len(r["chain"]) for r in results) if results else 10
 
     if args.spans:
-        started = min(r["start_ts"] for r in RESULTS)
-        ended = max(r["end_ts"] for r in RESULTS)
+        started = min(r["start_ts"] for r in results)
+        ended = max(r["end_ts"] for r in results)
         doc = {
             "trace": {"id": uuid.uuid4().hex, "name": "eidos.chains",
                       "start_ts": started, "end_ts": ended,
                       "duration_ms": round((ended - started) * 1000, 1),
                       "status": "OK" if not any(
-                          r["status"] in ("FAIL", "ERROR") for r in RESULTS) else "ERROR",
-                      "attributes": {"chains": len(RESULTS)}},
+                          r["status"] in ("FAIL", "ERROR") for r in results) else "ERROR",
+                      "attributes": {"chains": len(results)}},
             "spans": [{"id": uuid.uuid4().hex, "name": r["chain"],
                        "start_ts": r["start_ts"], "end_ts": r["end_ts"],
                        "duration_ms": r["ms"], "status": r["status"],
                        "attributes": {"detail": r["detail"], "requires": r["requires"]}}
-                      for r in RESULTS],
+                      for r in results],
         }
-        Path(args.spans).parent.mkdir(parents=True, exist_ok=True)
-        Path(args.spans).write_text(json.dumps(doc, indent=2) + chr(10), encoding="utf-8")
+        with atomic_output(trace_path) as temporary:
+            temporary.write_text(json.dumps(doc,indent=2)+"\n",encoding="utf-8")
 
     if args.json:
-        print(json.dumps(RESULTS, indent=2))
+        print(json.dumps(results, indent=2))
     else:
-        for row in RESULTS:
+        for row in results:
             print(f"{row['status']:<5} {row['chain']:<{width}}  {row['detail']}")
 
-    bad = [r for r in RESULTS if r["status"] in ("FAIL", "ERROR")]
+    bad = [r for r in results if r["status"] in ("FAIL", "ERROR")]
     if not args.json:
-        passed = sum(1 for r in RESULTS if r["status"] == "PASS")
-        skipped = sum(1 for r in RESULTS if r["status"] == "SKIP")
+        passed = sum(1 for r in results if r["status"] == "PASS")
+        skipped = sum(1 for r in results if r["status"] == "SKIP")
         # A SKIP is not evidence, and calling the run "8/8 healthy" would hide that.
         print(f"\n{passed} PASS, {skipped} SKIP, {len(bad)} FAIL/ERROR")
     return 1 if bad else 0
 
 
-# Decorated functions run at import, before argparse sees --json; that is why the
-# table is printed in main() from RESULTS rather than inside each audit.
 if __name__ == "__main__":
     raise SystemExit(main())

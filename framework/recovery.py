@@ -16,7 +16,10 @@ no automation, because it hides the cause behind a green light.
 from __future__ import annotations
 
 import datetime
+from contextlib import contextmanager
+from contextvars import ContextVar
 import json
+import math
 import os
 import re
 import shutil
@@ -25,6 +28,7 @@ import sys
 import time
 import urllib.error
 import urllib.request
+import uuid
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -48,18 +52,87 @@ LOG = ROOT / "docs" / "status" / "recoveries.jsonl"
 COOLDOWN_S = 600          # between attempts, per service
 STARTUP_WINDOW_S = 240    # a launcher needs time to load a 4B model before it is "failing"
 MAX_COOLDOWN_S = 3600
+_ACTIVE_STATE = ContextVar("recovery_state", default=None)
 
 
-def _read_state() -> dict:
+def _unique_fields(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("duplicate recovery field: " + key)
+        result[key] = value
+    return result
+
+
+def _validate_state(state: dict) -> None:
+    json.dumps(state, allow_nan=False)
+    if not isinstance(state, dict) or any(not isinstance(row, dict) for row in state.values()):
+        raise ValueError("recovery state must map services to state rows")
+    for row in state.values():
+        for key in ("attempts", "failures", "streak"):
+            if key in row and (type(row[key]) is not int or row[key] < 0):
+                raise ValueError("invalid recovery counter: " + key)
+        for key in ("last_attempt", "verified_at"):
+            if key in row and (type(row[key]) not in (int, float) or row[key] < 0 or not math.isfinite(row[key])):
+                raise ValueError("invalid recovery timestamp: " + key)
+        for key in ("in_flight", "pending", "ok"):
+            if key in row and type(row[key]) is not bool:
+                raise ValueError("invalid recovery flag: " + key)
+        if "attempt_id" in row and (not isinstance(row["attempt_id"], str) or not row["attempt_id"]):
+            raise ValueError("invalid recovery attempt identity")
+
+
+def _read_state(path: Path | None = None) -> dict:
+    path = Path(path if path is not None else STATE).resolve()
+    active = _ACTIVE_STATE.get()
+    if active is not None and active[0] == path:
+        return active[1]
     try:
-        return json.loads(STATE.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
+        state = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_unique_fields)
+    except FileNotFoundError:
         return {}
+    _validate_state(state)
+    return state
 
 
-def _write_state(state: dict) -> None:
-    STATE.parent.mkdir(parents=True, exist_ok=True)
-    STATE.write_text(json.dumps(state, indent=2, sort_keys=True), encoding="utf-8")
+def _write_state(state: dict, path: Path | None = None) -> None:
+    from .artifacts import atomic_output
+    path = Path(path if path is not None else STATE)
+    _validate_state(state)
+    text = json.dumps(state, indent=2, sort_keys=True, allow_nan=False)
+    with atomic_output(path) as temporary:
+        temporary.write_text(text + "\n", encoding="utf-8")
+
+
+@contextmanager
+def state_transaction(path: Path | None = None):
+    """One state owner for automatic/manual recovery; nested notes share its rows.
+
+    Existing invalid state is preserved and reported, never reset into a new restart
+    budget. This protocol coordinates updated callers, not legacy loaded processes.
+    """
+    from .artifacts import output_lock
+    path = Path(path if path is not None else STATE).resolve()
+    active = _ACTIVE_STATE.get()
+    if active is not None and active[0] == path:
+        yield active[1]
+        return
+    with output_lock(path.parent / ("recovery-state-" + path.name), timeout=10):
+        state = _read_state(path)
+        token = _ACTIVE_STATE.set((path, state))
+        try:
+            yield state
+            _write_state(state, path)
+        finally:
+            _ACTIVE_STATE.reset(token)
+
+
+def _checkpoint_state() -> None:
+    """Publish launch intent under ownership before an irreversible process start."""
+    active = _ACTIVE_STATE.get()
+    if active is None:
+        raise RuntimeError("a recovery checkpoint requires state ownership")
+    _write_state(active[1], active[0])
 
 
 def guard(service: str) -> tuple[bool, str]:
@@ -71,7 +144,7 @@ def guard(service: str) -> tuple[bool, str]:
     """
     row = _read_state().get(service) or {}
     since = time.time() - float(row.get("last_attempt") or 0)
-    if row.get("in_flight") and since < STARTUP_WINDOW_S:
+    if row.get("in_flight") and since < max(STARTUP_WINDOW_S, verification_timeout(service)):
         return False, f"a start is in flight ({since:.0f}s ago); waiting it out"
     if row.get("failures") and since < min(COOLDOWN_S * 2 ** min(row["failures"], 3), MAX_COOLDOWN_S):
         wait = min(COOLDOWN_S * 2 ** min(row["failures"], 3), MAX_COOLDOWN_S) - since
@@ -79,7 +152,7 @@ def guard(service: str) -> tuple[bool, str]:
     return True, ""
 
 
-def _log(service: str, action: str, phase: str, ok: bool, **fields) -> None:
+def _log(service: str, action: str, phase: str, ok: bool, **fields) -> dict:
     """One line per decision, in the schema watch_pipeline already writes.
 
     Same file, same keys (`phase`, `ok`, `error`), so an automatic repair and a manual one are
@@ -94,12 +167,28 @@ def _log(service: str, action: str, phase: str, ok: bool, **fields) -> None:
     row = {"ts": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
            "service": service, "phase": phase, "action": action, "ok": bool(ok), "error": None}
     row.update({k: v for k, v in fields.items() if v is not None})
-    try:
-        LOG.parent.mkdir(parents=True, exist_ok=True)
-        with LOG.open("a", encoding="utf-8") as fh:
-            fh.write(json.dumps(row, ensure_ascii=False) + "\n")
-    except OSError:
-        pass
+    if row.get("attempt_id") and phase in {"attempt", "verified", "failed", "gave_up"}:
+        row["event_id"] = service + ":" + row["attempt_id"] + (":attempt" if phase == "attempt" else ":terminal")
+    from .artifacts import atomic_output, output_lock
+    path = Path(LOG).resolve()
+    with output_lock(path.parent / ("recovery-log-" + path.name), timeout=10):
+        try:
+            previous = path.read_bytes()
+        except FileNotFoundError:
+            previous = b""
+        if previous and not previous.endswith(b"\n"):
+            raise ValueError("incomplete recovery journal; preserved")
+        for line in previous.splitlines():
+            event = json.loads(line, object_pairs_hook=_unique_fields)
+            json.dumps(event, allow_nan=False)
+            if not isinstance(event, dict):
+                raise ValueError("invalid recovery journal row; preserved")
+            if row.get("event_id") and event.get("event_id") == row["event_id"]:
+                return event  # first observed terminal survives a failed state commit
+        encoded = (json.dumps(row, ensure_ascii=False, allow_nan=False) + "\n").encode("utf-8")
+        with atomic_output(path) as temporary:
+            temporary.write_bytes(previous + encoded)
+    return row
 
 
 def log_terminal(service: str, outcome: str, ok: bool | None = None) -> None:
@@ -108,12 +197,30 @@ def log_terminal(service: str, outcome: str, ok: bool | None = None) -> None:
          outcome=outcome)
 
 
+def finish_attempt(service: str, attempt_id: str | None, healthy: bool,
+                   *, path: Path | None = None, **fields) -> bool:
+    """Settle the same launch once, even when manual and automatic observers overlap."""
+    with state_transaction(path) as state:
+        row = state.setdefault(service, {})
+        if row.get("attempt_id") != attempt_id:
+            return False  # a newer launch owns the service now
+        if attempt_id is not None and not row.get("pending"):
+            return False  # the other observer already settled this launch
+        event = _log(service, "verify", "verified" if healthy else "failed", healthy,
+                     outcome="recovered" if healthy else "no effect", attempt_id=attempt_id, **fields)
+        healthy = event["ok"]  # replay a prior durable event if its state commit failed
+        row.update(in_flight=False, pending=False, ok=healthy)
+        if healthy:
+            row.update(attempts=0, streak=0, failures=0, verified_at=time.time())
+        else:
+            row["failures"] = int(row.get("failures", 0)) + 1
+        return True
+
+
 def _note(service: str, **fields) -> None:
-    state = _read_state()
-    row = state.get(service) or {}
-    row.update(fields)
-    state[service] = row
-    _write_state(state)
+    with state_transaction() as state:
+        row = state.setdefault(service, {})
+        row.update(fields)
 
 
 PORTS = {
@@ -274,6 +381,11 @@ def plan(service: str) -> RecoveryPlan:
 
 def execute(plan_: RecoveryPlan) -> dict:
     """Run a plan. Returns what happened, never raises for an expected failure."""
+    with state_transaction():
+        return _execute(plan_)
+
+
+def _execute(plan_: RecoveryPlan) -> dict:
     if not plan_.available:
         return {"ok": False, "error": plan_.reason}
     # Ask the machine before asking the launcher: is this already alive, and is the port
@@ -308,7 +420,7 @@ def execute(plan_: RecoveryPlan) -> dict:
         # not, the launcher must run: it is idempotent and starts only what is missing.
         row = (_read_state().get(plan_.service) or {})
         since = time.time() - float(row.get("last_attempt") or 0)
-        if row.get("in_flight") and since < STARTUP_WINDOW_S:
+        if row.get("in_flight") and since < max(STARTUP_WINDOW_S, verification_timeout(plan_.service)):
             _log(plan_.service, plan_.action, "skipped", True,
                  reason=f"a start is in flight ({since:.0f}s ago)")
             return {"ok": True, "skipped": True, "service": plan_.service,
@@ -318,7 +430,10 @@ def execute(plan_: RecoveryPlan) -> dict:
     if not allowed:
         _log(plan_.service, plan_.action, "skipped", False, reason=why)
         return {"ok": False, "skipped": True, "service": plan_.service, "reason": why}
-    _note(plan_.service, last_attempt=time.time(), in_flight=True)
+    row = _read_state().get(plan_.service) or {}
+    _note(plan_.service, last_attempt=time.time(), in_flight=True, pending=True, streak=0,
+          attempts=int(row.get("attempts", 0)) + 1, attempt_id=uuid.uuid4().hex)
+    _checkpoint_state()  # if this fails, Popen must not run; later failures retain intent
 
     spec = ACTIONS[plan_.service]
     base = (ROOT.parent if spec.get("root") == "repo"
@@ -347,21 +462,29 @@ def execute(plan_: RecoveryPlan) -> dict:
             proc = subprocess.Popen(cmd, cwd=cwd, stdout=log, stderr=log, close_fds=True,
                                     creationflags=flags or 0)
     except OSError as exc:
-        _note(plan_.service, in_flight=False, ok=False,
+        _note(plan_.service, in_flight=False, pending=False, ok=False,
               failures=int((_read_state().get(plan_.service) or {}).get("failures", 0)) + 1,
               error=str(exc))
-        return {"ok": False, "error": str(exc)}
-    _log(plan_.service, plan_.action, "attempt", True, pid=proc.pid)
-    return {"ok": True, "pid": proc.pid, "service": plan_.service,
+        _log(plan_.service, plan_.action, "failed", False, outcome="launch failed", error=str(exc),
+             attempt_id=_read_state()[plan_.service]["attempt_id"])
+        return {"ok": False, "attempted": True, "error": str(exc)}
+    _log(plan_.service, plan_.action, "attempt", True, pid=proc.pid,
+         attempt_id=_read_state()[plan_.service]["attempt_id"])
+    return {"ok": True, "attempted": True, "pid": proc.pid, "service": plan_.service,
             "action": plan_.action, "description": plan_.description}
+
+
+def verification_timeout(service: str) -> float:
+    """The automatic observer and explicit verification use the same startup window."""
+    return 300.0 if service == "runtime_18434" else 90.0
 
 
 def verify(service: str, timeout: float | None = None, interval: float = 3.0) -> dict:
     """Wait for the boundary to answer. A restart is only a repair if the probe agrees."""
     # Loading a 4B GGUF on a busy GPU can take minutes; 90 s was short enough that a healthy start
     # was recorded as "no effect" and retried, which is how duplicates were born.
-    timeout = float(timeout if timeout is not None
-                    else 300.0 if service == "runtime_18434" else 90.0)
+    timeout = float(timeout if timeout is not None else verification_timeout(service))
+    attempt_id = (_read_state().get(service) or {}).get("attempt_id")
     urls = ENDPOINTS.get(service) or ((HEALTH.get(service),) if HEALTH.get(service) else ())
     if not urls:
         return {"verified": False, "error": f"no health endpoint declared for {service}"}
@@ -374,19 +497,16 @@ def verify(service: str, timeout: float | None = None, interval: float = 3.0) ->
             if missing:
                 last = "silent: " + ", ".join(missing)
             else:                                   # every endpoint, not just the front door
-                    _note(service, in_flight=False, ok=True, failures=0, verified_at=time.time())
-                    _log(service, "verify", "verified", True,
-                         seconds=round(timeout - (deadline - time.time()), 1), url=url)
+                    recorded = finish_attempt(service, attempt_id, True,
+                        seconds=round(timeout - (deadline - time.time()), 1), url=url)
                     return {"verified": True, "url": url,
+                            "recorded": recorded,
                             "seconds": round(timeout - (deadline - time.time()), 1)}
         except (urllib.error.URLError, OSError) as exc:
             last = str(exc)
         time.sleep(interval)
-    row = (_read_state().get(service) or {})
-    _note(service, in_flight=False, ok=False,
-          failures=int(row.get("failures", 0)) + 1, last_error=last)
-    _log(service, "verify", "failed", False, error=last[:200], waited=timeout, url=url)
-    return {"verified": False, "url": url, "error": last, "waited": timeout}
+    recorded = finish_attempt(service, attempt_id, False, error=last[:200], waited=timeout, url=url)
+    return {"verified": False, "url": url, "error": last, "waited": timeout, "recorded": recorded}
 
 
 if __name__ == "__main__":

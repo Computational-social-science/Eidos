@@ -30,6 +30,8 @@ from __future__ import annotations
 import datetime
 import json
 import time
+import uuid
+import os
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -73,15 +75,27 @@ def transition(before: str, after: str) -> str:
     return "STALE"
 
 
-def mark_running(label: str = "audit_chains") -> None:
-    STATUS.mkdir(parents=True, exist_ok=True)
-    RUNNING.write_text(json.dumps({"label": label, "started": time.time(),
-                                   "started_iso": now_iso()}), encoding="utf-8")
+def mark_running(label: str = "audit_chains", *, path: Path | None = None) -> str:
+    from framework.artifacts import atomic_output
+    owner = uuid.uuid4().hex
+    with atomic_output(path or RUNNING) as temporary:
+        temporary.write_text(json.dumps({"label": label, "started": time.time(),
+                                        "started_iso": now_iso(), "owner": owner,
+                                        "pid": os.getpid()}),encoding="utf-8")
+    return owner
 
 
-def clear_running() -> None:
+def clear_running(*, path: Path | None = None, owner: str | None = None) -> None:
+    path = path or RUNNING
     try:
-        RUNNING.unlink()
+        if owner is not None:
+            try:
+                value = json.loads(path.read_text(encoding="utf-8"))
+                if not isinstance(value,dict) or value.get('owner') != owner:
+                    return
+            except (OSError,ValueError):
+                return
+        path.unlink()
     except FileNotFoundError:
         pass
 

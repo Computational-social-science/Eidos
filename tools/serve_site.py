@@ -373,7 +373,8 @@ class Handler(SimpleHTTPRequestHandler):
             return
         result = recovery.execute(plan_)
         if result.get("ok") and not result.get("skipped"):
-            result["verify"] = recovery.verify(name, timeout=120)
+            result["verify"] = recovery.verify(name)
+            result["ok"] = bool(result["verify"].get("verified"))
         self._send(result, status=202)
 
 

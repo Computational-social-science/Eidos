@@ -36,6 +36,13 @@ for three samples triggers one attempt, which is logged as an attempt (a process
 separately, as a terminal row (the repair held). Those are different claims and are stored as
 different rows.
 
+External Eidos Hermes CRON was retired on 2026-11-01; this does not remove the
+sampler, internal chain checking, supervisor or controlled recovery. Research
+execution remains on demand. Current source serializes automatic/manual recovery,
+saves launch intent before process creation and verifies terminal outcomes;
+already loaded legacy processes still require separate migration. See the
+[scheduling policy](SCHEDULING-POLICY.md) for the applied change and limits.
+
 **The decision operator** (`framework/decision.py`) answers typed questions — choice, yes/no,
 score — from a local StartLux model. If the service is unreachable it raises
 `DecisionUnavailable`; it never falls back to a regex or a general model's guess under the name

@@ -66,6 +66,20 @@ jobs:
             exit 1
           }
 
+      - name: RSI development oracle and restricted-expression controls
+        run: |
+          uv run --no-sync python -m pytest reference/rsi_bootstrap -q --junitxml="$RUNNER_TEMP/rsi-development.xml"
+          uv run --no-sync python reference/rsi_bootstrap/grader.py --output "$RUNNER_TEMP/rsi-development.json"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rsi-development-${{ matrix.python-version }}
+          path: |
+            ${{ runner.temp }}/rsi-development.xml
+            ${{ runner.temp }}/rsi-development.json
+          if-no-files-found: warn
+
       - name: Independent edit-metric repair and rejection controls
         run: |
           UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/eidos-metric-$UV_PYTHON" uv run --locked --project reference/hpaf_metric --python "$UV_PYTHON" python reference/hpaf_metric/acceptance.py

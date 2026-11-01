@@ -372,3 +372,11 @@ package; its explicit scoped tests and source-bound receipt provide that limited
 development evidence. A closed scalar expression interpreter adds 23 adversarial
 controls, with 45 combined scoped tests passing. C0 is specified but not implemented; model comparison,
 sealed access separation and recursive-procedure gains remain unmeasured.
+
+The subsequent [C0 core checkpoint](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-C0-CORE-2026-11-01.md)
+implements single-request proposal parsing, actual expression execution and
+development-only retention, with 60 scoped tests and explicit adverse records.
+CI now runs the case-specific suite on Python 3.11/3.12 and exports fresh
+evidence. Test transports do not attest model execution. The owned model
+controller, complete runtime/resource deadlines and live trial remain pending;
+this is a partial C0 implementation and does not establish scientific RSI.

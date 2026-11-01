@@ -1,4 +1,5 @@
 *.py text eol=lf
+.github/workflows/*.yml text eol=lf
 site/reports/**/report.qmd -text
 site/reports/**/report.html -text
 site/reports/**/*.svg -text

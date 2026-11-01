@@ -10,6 +10,11 @@ scientific_rsi: not_demonstrated
 
 # RSI optimization: first executed work package
 
+Subsequent progress: the [C0 proposal core and CI checkpoint](RSI-C0-CORE-2026-11-01.md)
+adds single-request proposal/evaluation logic and automatic CI coverage. The
+owned model runtime and real model trial remain pending; the historical results
+below retain their original scope.
+
 The [optimization roadmap](RSI-OPTIMIZATION-PLAN.md) has entered execution.
 The first deliverable is a calibrated public numerical evaluator and a concrete
 seed-procedure specification. This does not complete P1, implement C0 or

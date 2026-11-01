@@ -292,5 +292,24 @@
       "blind_spots_open": 0,
       "instruments": 6
     }
+  },
+  {
+    "version": "0.4.10",
+    "date": "2026-11-01",
+    "commit": "d0bed11",
+    "source_commit": "d0bed11",
+    "tag": "v0.4.10",
+    "summary": "Isolate tracking writes and verify data content; repair consumer clocks, external-directory attribution and layout measurement; record bounded local-model evidence.",
+    "schema": 2,
+    "metrics": {
+      "tests": 1112,
+      "coverage": 75,
+      "chains": 11,
+      "open_objections": 0,
+      "decision_ms": 182,
+      "blind_spots_found": 1,
+      "blind_spots_open": 0,
+      "instruments": 6
+    }
   }
 ]

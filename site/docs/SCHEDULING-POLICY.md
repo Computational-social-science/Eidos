@@ -96,3 +96,31 @@ legacy services or qualify model restarts. See [recovery acceptance](RECOVERY-AC
 See [orchestration](ORCHESTRATION.md), [runtime isolation](CRON-ISOLATION.md) and
 [functional acceptance](FUNCTIONAL_COMPLETENESS.md). This is not a clean runtime
 acceptance certificate.
+
+
+## Observed interruption and subsequent check, 2026-11-01
+
+At 20:56:04 UTC+8, legacy scheduler tick 1013 recorded `demo (NO)` exiting
+with 3221225786 (0xC000013A), and the instrument correctly raised ALARM.
+Microsoft identifies that status as STATUS_CONTROL_C_EXIT; the code alone does
+not identify the actor or mechanism that interrupted this child. See the
+[NTSTATUS reference](https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-erref/596a1078-e883-4972-9bbc-49e60bebca55).
+
+The per-chain record subsequently contains an actual PASS at 21:05:43 with
+91 points and maximum relative error 0.0002%. The heartbeat observed at 21:06:04
+(tick 1015) is idle: `due=[]`, `ran=[]`, `failed=[]`. It is not itself execution
+evidence. Later advancing instrument samples returned OK; `failures_total=9`
+and the alarm history were retained. Producer identity is not present in this
+legacy per-chain record, so the passing run is not attributed to a particular
+resident scheduler. No alarm reset or service restart was performed.
+
+A separate owned, read-only project-environment replay also produced 91/91 valid
+points (seed 0, NumPy 2.5.4, maximum relative error 2e-6). A fresh isolated `-I`
+process using the legacy executable lacked NumPy; that controlled profile does
+not reproduce the resident processes' import environment and does not establish
+the cause of their interruption. Neither result is a new scientific experiment.
+
+Both previously identified global-Python 3.14 loops remain alive. Source locks
+and hidden child containment do not retroactively apply to them. Runtime
+migration remains PENDING under the previously documented automatic approval
+rejection; this observation is not a clean-24-hour or deployment certificate.

@@ -1,6 +1,6 @@
 # Eidos：可复核科研流水线技术框架
 
-**实现基线：0.4.6（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
+**实现基线：0.4.7（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
 
 运行部署边界：核查发现现存监控及两条旧链路循环仍使用全局 Python 3.14；本地启动配置已选择项目 Python 3.12，但受控停止/重启被自动审批以 blocked by policy 拒绝，未执行、未改道终止。新增调度循环源码已补 OS 生命周期锁、单次 tick 互斥、隐藏子进程树超时清理及原子心跳；这些规则不会追溯应用到旧进程。运行迁移仍为 PENDING，不能以网页可访问或源码测试通过替代实际部署验收。详见 docs/MONITOR-RUNTIME-MIGRATION-2026-11-01.json。
 
@@ -187,7 +187,7 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。
 
 <!-- self-audit:start -->
-本轮验收：751 passed、1 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 68%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
+本轮验收：785 passed、1 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 71%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
 <!-- self-audit:end -->
 
 既有 CUDA 16 项已独立通过；本轮未修改数值后端。
@@ -263,3 +263,13 @@ SDK 生命周期。普通根进程退出与输出管道 EOF 分离；正常完�
 reproduction、tracking、updates、形式/引用检查与 inference 的直接 subprocess
 入口尚需逐项迁移和实测，不能把项目 runner 通过推断为整个 SDK 全部通过。
 已有 monitor/loop 迁移、登录重启与干净 24 小时观察仍待完成，历史失败不重置。
+
+## 2026-11-01：直接 SDK 文稿与图形交付闭环（0.4.7）
+
+QuartoBridge 原先只看进程退出码，受控 CLI 可在不生成任何文件时令 PDF、DOCX、HTML 三项均返回成功；它返回 outputs 目录，实际文件却落入 manuscript。新增缺陷控制先记录 10 项失败，再修复真正的产物交付边界。
+
+当前渲染分别使用全新的暂存目录，核对所需格式、直接本地 HTML 资源、PDF 的 Poppler 解析结果及 DOCX 主文档关系/内容类型，再持有输出锁发布。每个文件原子替换；收据最后写入。发布前再次检查声明输入和已复制文件摘要；缺格式、损坏文件、输入变化、同名收据资源、路径冲突或发布异常均拒绝，回滚本次输出并保留用户输入编辑。读取方仍须验证收据，不能将逐文件替换理解为任意读者的文件系统快照。
+
+图形入口改为有界的受信 Python/Matplotlib 单图执行，支持 SVG/PNG/PDF、零参数脚本与正常整数零退出，拒绝无图/多图/非整数退出对象。figure_inputs 可声明数据与辅助代码，执行后及发布前均复核摘要。文稿构建器正确处理自定义目录、安全 YAML 元数据、矩形表格、表头分隔行、单元格转义和引用块。
+
+PDF 校验使用明确的外部 Poppler 契约；缺工具拒绝。原数值研究锁、权重和证据保持原有冻结状态。安装包验证区分受控 CLI/真实 Matplotlib 与可选的真实 Quarto/TeX，明确要求三种物理主文件并独立重算输入输出摘要。详见 [交付契约](docs/QUARTO-DELIVERY.md)。这不是科学内容、NATURE 投稿接受、新机器或运行中服务迁移的证明。其他直接 SDK 子进程调用仍须逐项验收。

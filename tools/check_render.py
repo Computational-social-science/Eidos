@@ -65,33 +65,49 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--out", default="docs/RENDER_CHECK.json")
     args = ap.parse_args(argv)
 
-    workdir = Path(tempfile.mkdtemp(prefix="eidos-render-",
-                                    dir=os.environ.get("TMPDIR") or None))
+    workdir = Path(
+        tempfile.mkdtemp(prefix="eidos-render-", dir=os.environ.get("TMPDIR") or None)
+    )
     manuscript = workdir / "manuscript"
     manuscript.mkdir(parents=True)
     (manuscript / "index.qmd").write_text(QMD, encoding="utf-8")
 
-    bridge = QuartoBridge({"project_root": str(workdir),
-                           "manuscript_dir": "manuscript",
-                           "output_dir": "outputs"})
+    bridge = QuartoBridge(
+        {
+            "project_root": str(workdir),
+            "manuscript_dir": "manuscript",
+            "output_dir": "outputs",
+        }
+    )
     if not bridge.quarto_available:
         payload = {"ok": False, "reason": "quarto not found", "formats": {}}
     else:
         result = bridge.render(format="all")
         formats = {}
         for fmt, ext in (("html", ".html"), ("pdf", ".pdf"), ("docx", ".docx")):
-            target = manuscript / f"index{ext}"
+            row = result.get("formats", {}).get(fmt, {})
+            target = (
+                Path(row["path"])
+                if row.get("published") and row.get("path")
+                else workdir / "missing-output"
+            )
             size = target.stat().st_size if target.exists() else 0
-            formats[fmt] = {"ok": size > 1024,
-                            "bytes": size,
-                            "reported": bool(result.get("formats", {}).get(fmt, {})
-                                             .get("success"))}
-        payload = {"ok": all(f["ok"] for f in formats.values()) and bool(formats),
-                   "quarto": tool_version([bridge.quarto_cmd] if bridge.quarto_cmd else []),
-                   "pdflatex": tool_version(["pdflatex", "--version"]),
-                   "formats": formats,
-                   "generated": datetime.datetime.now(datetime.timezone.utc)
-                   .isoformat(timespec="seconds")}
+            formats[fmt] = {
+                "ok": size > 1024 and row.get("success") is True,
+                "bytes": size,
+                "reported": bool(result.get("formats", {}).get(fmt, {}).get("success")),
+            }
+        payload = {
+            "ok": all(f["ok"] for f in formats.values()) and bool(formats),
+            "quarto": tool_version(
+                [bridge.quarto_cmd, "--version"] if bridge.quarto_cmd else []
+            ),
+            "pdflatex": tool_version(["pdflatex", "--version"]),
+            "formats": formats,
+            "generated": datetime.datetime.now(datetime.timezone.utc).isoformat(
+                timespec="seconds"
+            ),
+        }
 
     out = ROOT / args.out
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -101,9 +117,13 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(payload))
     else:
         print(f"quarto   : {payload.get('quarto')}")
-        print(f"pdflatex : {payload.get('pdflatex') or 'not on PATH (Quarto may still find TinyTeX)'}")
+        print(
+            f"pdflatex : {payload.get('pdflatex') or 'not on PATH (Quarto may still find TinyTeX)'}"
+        )
         for fmt, row in payload.get("formats", {}).items():
-            print(f"{'PASS' if row['ok'] else 'FAIL'}  {fmt:5s} {row['bytes']:>9,} bytes")
+            print(
+                f"{'PASS' if row['ok'] else 'FAIL'}  {fmt:5s} {row['bytes']:>9,} bytes"
+            )
         print(f"{'PASS' if payload['ok'] else 'FAIL'}  wrote {out}")
     return 0 if payload["ok"] else 1
 

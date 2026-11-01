@@ -55,6 +55,8 @@ jobs:
           uv sync --locked --python "$UV_PYTHON" --extra dev --extra tracking --extra verifiers
       - name: Unit tests
         run: |
+          command -v pdfinfo >/dev/null || { sudo apt-get update -qq; sudo apt-get install -y poppler-utils; }
+          pdfinfo -v
           set -o pipefail
           uv run --no-sync python -m pytest -q 2>&1 | tee /tmp/pytest.log || {
             # Annotations are readable without a token; a red X with no reason is not.
@@ -102,7 +104,10 @@ jobs:
       - name: Exercise every chain
         run: uv run --no-sync python tools/audit_chains.py --ci
       - name: Self-audit record (no drift, no new objection)
-        run: uv run --no-sync python tools/record_self_audit.py --check
+        run: |
+          command -v pdfinfo >/dev/null || { sudo apt-get update -qq; sudo apt-get install -y poppler-utils; }
+          pdfinfo -v
+          uv run --no-sync python tools/record_self_audit.py --check
       - name: Delivery page builds from artefacts
         run: |
           uv run --no-sync python tools/build_site.py

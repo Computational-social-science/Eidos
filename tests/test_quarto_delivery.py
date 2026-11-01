@@ -1,0 +1,383 @@
+"""Direct SDK render delivery must reject vacuous/stale/partial output."""
+
+from __future__ import annotations
+import hashlib
+import json
+import sys
+from pathlib import Path
+import pytest
+from framework.quarto_bridge import QuartoBridge, QuartoManuscriptBuilder
+
+from reference.quarto_delivery_acceptance.check import DRIVER
+
+
+@pytest.fixture
+def bridge(tmp_path, monkeypatch):
+    manuscript = tmp_path / "manuscript"
+    manuscript.mkdir()
+    (manuscript / "index.qmd").write_text("# Controlled manuscript\n", encoding="utf-8")
+    (manuscript / "render").write_text(DRIVER, encoding="utf-8")
+    (manuscript / "mode").write_text("good")
+
+    def checked(self):
+        self.quarto_cmd = sys.executable
+        self.quarto_version = "fixture"
+        return True
+
+    monkeypatch.setattr(QuartoBridge, "_check_quarto", checked)
+    return QuartoBridge({"project_root": tmp_path})
+
+
+@pytest.mark.parametrize(
+    "mode", ["none", "partial", "corrupt", "mutate", "missing-resource"]
+)
+def test_false_render_is_refused_and_previous_delivery_preserved(bridge, mode):
+    (bridge.manuscript_dir / "mode").write_text(mode)
+    old = bridge.output_dir / "index.html"
+    old.write_text("previous accepted output")
+    unrelated = bridge.output_dir / "private-note.txt"
+    unrelated.write_text("preserve")
+    result = bridge.render("all")
+    assert result["success"] is False, result
+    assert old.read_text() == "previous accepted output"
+    assert unrelated.read_text() == "preserve"
+    assert not (bridge.output_dir / "render-manifest.json").exists()
+
+
+def test_success_returns_published_paths_and_hashes_with_resources(bridge):
+    result = bridge.render("all")
+    assert result["success"] is True, result
+    assert Path(result["output_dir"]) == bridge.output_dir
+    manifest = json.loads((bridge.output_dir / "render-manifest.json").read_text())
+    assert set(result["formats"]) == {"html", "pdf", "docx"}
+    for fmt, row in result["formats"].items():
+        path = Path(row["path"])
+        assert path == bridge.output_dir / ("index." + fmt)
+        assert row["sha256"] == hashlib.sha256(path.read_bytes()).hexdigest()
+    assert (bridge.output_dir / "index_files/plot.svg").is_file()
+    for name, digest in manifest["outputs"].items():
+        assert (
+            hashlib.sha256((bridge.output_dir / name).read_bytes()).hexdigest()
+            == digest
+        )
+    assert manifest["inputs"]["manuscript/index.qmd"]
+
+
+@pytest.mark.parametrize("fmt", ["", "../pdf", "png", "ALL"])
+def test_invalid_format_rejected_before_launch(bridge, fmt):
+    with pytest.raises(ValueError):
+        bridge.render(fmt)
+
+
+def test_builder_uses_custom_manuscript_directory_and_safe_metadata(
+    tmp_path, monkeypatch
+):
+    builder = QuartoManuscriptBuilder(tmp_path / "paper with spaces")
+    builder.set_metadata(title="Value: with\na newline", author=["A: B"])
+    builder.add_section("Result", "A controlled result.")
+    seen = {}
+
+    def render(self, **kwargs):
+        seen["manuscript"] = self.manuscript_dir
+        return {"success": True}
+
+    monkeypatch.setattr(QuartoBridge, "_check_quarto", lambda self: False)
+    monkeypatch.setattr(QuartoBridge, "render", render)
+    assert builder.render("html")["success"]
+    assert seen["manuscript"] == builder.manuscript_dir.resolve()
+    import yaml
+
+    qmd = (builder.manuscript_dir / "index.qmd").read_text(encoding="utf-8")
+    assert yaml.safe_load(qmd.split("---", 2)[1])["title"] == "Value: with\na newline"
+    assert "::: {#refs}" in qmd
+
+
+def test_publication_cannot_overwrite_a_declared_input(bridge):
+    old = bridge.output_dir / "index.html"
+    old.write_text("declared data input")
+    bridge.config["render_inputs"] = ["outputs/index.html"]
+    result = bridge.render("html")
+    assert result["success"] is False, result
+    assert old.read_text() == "declared data input"
+    assert "overwrite a declared input" in result["error"]
+
+
+def test_reserved_receipt_resource_is_refused(bridge):
+    driver = bridge.manuscript_dir / "render"
+    driver.write_text(
+        driver.read_text()
+        + '\n(folder/"render-manifest.json").write_text("pretend resource")\n'
+    )
+    previous = bridge.output_dir / "render-manifest.json"
+    previous.write_text("previous receipt")
+    result = bridge.render("html")
+    assert result["success"] is False, result
+    assert previous.read_text() == "previous receipt"
+    assert not (bridge.output_dir / "index.html").exists()
+
+
+def test_publish_failure_restores_existing_files_and_receipt(bridge, monkeypatch):
+    from contextlib import contextmanager
+    from framework.quarto_bridge import _delivery
+
+    old = bridge.output_dir / "index.html"
+    old.write_text("previous output")
+    receipt = bridge.output_dir / "render-manifest.json"
+    receipt.write_text("previous receipt")
+    original = _delivery.atomic_output
+
+    @contextmanager
+    def fail_receipt(path):
+        if path == receipt:
+            raise PermissionError("controlled publication failure")
+        with original(path) as temporary:
+            yield temporary
+
+    monkeypatch.setattr(_delivery, "atomic_output", fail_receipt)
+    result = bridge.render("html")
+    assert result["success"] is False, result
+    assert (
+        old.read_text() == "previous output"
+        and receipt.read_text() == "previous receipt"
+    )
+    assert not (bridge.output_dir / "index_files/plot.svg").exists()
+
+
+def test_empty_pdf_and_docx_shells_are_rejected(tmp_path):
+    import zipfile
+    from framework.quarto_bridge import _delivery
+
+    pdf = tmp_path / "fake.pdf"
+    pdf.write_bytes(b"%PDF-1.4\nxref\nstartxref\n9\n%%EOF\n")
+    with pytest.raises(ValueError):
+        _delivery.validate(pdf, "pdf", tmp_path)
+    docx = tmp_path / "fake.docx"
+    with zipfile.ZipFile(docx, "w") as z:
+        z.writestr(
+            "[Content_Types].xml",
+            '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"/>',
+        )
+        z.writestr(
+            "_rels/.rels",
+            '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"/>',
+        )
+        z.writestr(
+            "word/document.xml",
+            '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"/>',
+        )
+    with pytest.raises(ValueError):
+        _delivery.validate(docx, "docx", tmp_path)
+
+
+@pytest.mark.parametrize(
+    "ending", ["", "raise SystemExit(0)", "raise SystemExit(None)"]
+)
+def test_real_figure_script_accepts_zero_argument_cli_and_normal_exit(bridge, ending):
+    script = bridge.project_root / "plot with spaces.py"
+    script.write_text(
+        "import argparse\nargparse.ArgumentParser().parse_args()\nimport matplotlib.pyplot as plt\nplt.plot([0,1],[0,1])\n"
+        + ending
+        + "\n"
+    )
+    result = bridge.render_figure(script, "svg")
+    assert result["success"] is True, result
+    assert Path(result["path"]).is_file()
+    assert (
+        result["sha256"]
+        == hashlib.sha256(Path(result["path"]).read_bytes()).hexdigest()
+    )
+
+
+@pytest.mark.parametrize(
+    "body",
+    [
+        "raise SystemExit(3)",
+        "pass",
+        "import matplotlib.pyplot as p; p.figure(); p.figure()",
+    ],
+)
+def test_incomplete_or_failed_figure_is_refused(bridge, body):
+    script = bridge.project_root / "bad-plot.py"
+    script.write_text(body)
+    result = bridge.render_figure(script, "svg")
+    assert result["success"] is False, result
+    assert not (bridge.output_dir / "figures/bad-plot.svg").exists()
+
+
+@pytest.mark.parametrize("fmt", ["pdf", "png"])
+def test_real_figure_format_envelope_and_hash(bridge, fmt):
+    script = bridge.project_root / "plot.py"
+    script.write_text("import matplotlib.pyplot as p; p.plot([0,1],[1,0])")
+    result = bridge.render_figure(script, fmt)
+    assert result["success"] is True, result
+    assert (
+        result["sha256"]
+        == hashlib.sha256(Path(result["path"]).read_bytes()).hexdigest()
+    )
+
+
+def test_wrong_tool_version_is_not_quarto(tmp_path, monkeypatch):
+    monkeypatch.setattr(
+        QuartoBridge, "_quarto_candidates", lambda self: iter([sys.executable])
+    )
+    result = QuartoBridge({"project_root": tmp_path})
+    assert result.quarto_available is False and result.quarto_cmd is None
+
+
+@pytest.mark.parametrize(
+    "part,replacement",
+    [
+        ("_rels/.rels", ("<Relationship ", "<Foo ")),
+        ("[Content_Types].xml", ("<Override ", "<Foo ")),
+    ],
+)
+def test_docx_namespace_child_tags_must_be_valid(bridge, part, replacement):
+    import zipfile
+    from framework.quarto_bridge import _delivery
+
+    result = bridge.render("docx")
+    assert result["success"], result
+    target = Path(result["formats"]["docx"]["path"])
+    with zipfile.ZipFile(target) as z:
+        members = {name: z.read(name) for name in z.namelist()}
+    before, after = replacement
+    members[part] = members[part].replace(before.encode(), after.encode())
+    with zipfile.ZipFile(target, "w") as z:
+        for name, body in members.items():
+            z.writestr(name, body)
+    with pytest.raises(ValueError):
+        _delivery.validate(target, "docx", target.parent)
+
+
+def test_input_edit_during_publication_rolls_back_outputs_and_preserves_edit(
+    bridge, monkeypatch
+):
+    from framework.quarto_bridge import _delivery
+
+    old = bridge.output_dir / "index.html"
+    old.write_text("previous output")
+    original = _delivery.shutil.copyfile
+    edited = False
+
+    def edit(source, target, *args, **kwargs):
+        nonlocal edited
+        done = original(source, target, *args, **kwargs)
+        if not edited and Path(source).name == "index.html":
+            edited = True
+            (bridge.manuscript_dir / "index.qmd").write_text("concurrent user edit")
+        return done
+
+    monkeypatch.setattr(_delivery.shutil, "copyfile", edit)
+    result = bridge.render("html")
+    assert result["success"] is False, result
+    assert old.read_text() == "previous output"
+    assert (bridge.manuscript_dir / "index.qmd").read_text() == "concurrent user edit"
+    assert not (bridge.output_dir / "render-manifest.json").exists()
+
+
+def test_concurrent_projects_publish_complete_receipt_under_one_lock(bridge, tmp_path):
+    from concurrent.futures import ThreadPoolExecutor
+
+    second = tmp_path / "second project"
+    manuscript = second / "manuscript"
+    manuscript.mkdir(parents=True)
+    (manuscript / "index.qmd").write_text("# Other project")
+    (manuscript / "mode").write_text("good")
+    (manuscript / "render").write_text(DRIVER.replace("Fixture", "Other"))
+    other = QuartoBridge({"project_root": second, "output_dir": str(bridge.output_dir)})
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        outcomes = list(pool.map(lambda item: item.render("html"), [bridge, other]))
+    assert all(r["success"] for r in outcomes), outcomes
+    receipt = json.loads((bridge.output_dir / "render-manifest.json").read_text())
+    for name, digest in receipt["outputs"].items():
+        assert (
+            hashlib.sha256((bridge.output_dir / name).read_bytes()).hexdigest()
+            == digest
+        )
+    assert receipt["inputs"]["manuscript/index.qmd"] in {
+        hashlib.sha256((b.manuscript_dir / "index.qmd").read_bytes()).hexdigest()
+        for b in [bridge, other]
+    }
+
+
+def test_render_timeout_preserves_both_streams_and_removes_descendants(bridge):
+    import time
+
+    driver = bridge.manuscript_dir / "render"
+    driver.write_text(
+        'import subprocess,sys,time\nsubprocess.Popen([sys.executable,"-c", "import time;from pathlib import Path;time.sleep(1.5);Path(\\"late\\").touch() "])\nprint("stdout-before-timeout",flush=True)\nprint("stderr-before-timeout",file=sys.stderr,flush=True)\ntime.sleep(6)\n'
+    )
+    bridge.timeout = 0.8
+    result = bridge.render("html")
+    assert result["success"] is False, result
+    row = result["formats"]["html"]
+    assert (
+        row["exit_code"] == 124
+        and "stdout-before-timeout" in row["stdout"]
+        and "stderr-before-timeout" in row["stderr"]
+    ), result
+    time.sleep(1.7)
+    assert not (bridge.manuscript_dir / "late").exists()
+
+
+@pytest.mark.parametrize("exit_object", ["0.0", "__import__('numpy').int64(0)"])
+def test_non_integer_zero_exit_object_is_a_failed_figure(bridge, exit_object):
+    script = bridge.project_root / "noninteger-exit.py"
+    script.write_text(
+        "import matplotlib.pyplot as p; p.plot([0,1],[1,0]); raise SystemExit("
+        + exit_object
+        + ")"
+    )
+    result = bridge.render_figure(script, "svg")
+    assert result["success"] is False and result["exit_code"] == 1, result
+    assert not (bridge.output_dir / "figures/noninteger-exit.svg").exists()
+
+
+def test_builder_table_is_rectangular_and_keeps_literal_cells(tmp_path):
+    builder = QuartoManuscriptBuilder(tmp_path)
+    builder.add_table("A table", [[1, "a|b"], [2, "line\nbreak"], [3, r"$\alpha$"]])
+    text = builder.build().read_text(encoding="utf-8")
+    assert "| --- | --- |" in text
+    assert "a\\|b" in text and "line<br>break" in text
+    assert r"$\alpha$" in text and r"$\\alpha$" not in text
+    with pytest.raises(ValueError):
+        builder.add_table("Ragged", [[1, 2], [3]])
+    with pytest.raises(ValueError):
+        builder.add_table("Headers", [[1, 2]], headers=["Only one"])
+
+
+def test_figure_declared_data_is_bound_and_mutation_preserves_previous_plot(bridge):
+    data = bridge.project_root / "points.csv"
+    data.write_text("0,1")
+    script = bridge.project_root / "data-plot.py"
+    body = (
+        "from pathlib import Path\nimport matplotlib.pyplot as p\np.plot([0,1],[1,0])\n"
+    )
+    script.write_text(body)
+    bridge.config["figure_inputs"] = ["points.csv"]
+    good = bridge.render_figure(script, "svg")
+    assert good["success"], good
+    target = Path(good["path"])
+    before = target.read_bytes()
+    receipt = json.loads(target.with_name(target.name + ".json").read_text())
+    assert (
+        receipt["inputs"]["points.csv"] == hashlib.sha256(data.read_bytes()).hexdigest()
+    )
+    script.write_text(body + 'Path("points.csv").write_text("new data")\n')
+    failed = bridge.render_figure(script, "svg")
+    assert failed["success"] is False, failed
+    assert target.read_bytes() == before and data.read_text() == "new data"
+
+
+def test_installed_acceptance_rejects_self_consistent_missing_formats(bridge):
+    from reference.quarto_delivery_acceptance.check import checked_outputs
+
+    result = bridge.render("all")
+    assert result["success"], result
+    result["formats"] = {"html": result["formats"]["html"]}
+    path = Path(result["manifest"])
+    receipt = json.loads(path.read_text())
+    receipt["formats"] = ["html"]
+    path.write_text(json.dumps(receipt))
+    with pytest.raises(AssertionError):
+        checked_outputs(bridge, result)

@@ -14,12 +14,16 @@ PUBLIC = ('ACADEMIC_POSITIONING.md','FUNCTIONAL_COMPLETENESS.md','HEALTH.md','SE
           'INDEPENDENT-INTAKE-ACCEPTANCE.json','MONITOR-RUNTIME-MIGRATION-2026-11-01.json',
           'INDEPENDENT-LIFECYCLE-ACCEPTANCE.json','STARTUP-RUNTIME-ACCEPTANCE-2026-11-01.json',
           '_coupling.json','REPORT-PUBLICATION-ACCEPTANCE-2026-11-01.json',
-          'SDK-EXECUTION.md','SDK-PROCESS-ACCEPTANCE.json')
+          'SDK-EXECUTION.md','SDK-PROCESS-ACCEPTANCE.json',
+          'QUARTO-DELIVERY.md','QUARTO-DELIVERY-ACCEPTANCE.json',
+          'archive/sdk-process-acceptance-v0.4.6.json')
 
 PUBLIC_ASSETS = ('docs/screens/web/index-top.webp',
                  'reference/package_delivery_acceptance/package.zip',
                  'reference/sdk_process_acceptance/eidos-0.4.6-py3-none-any.whl',
-                 'reference/sdk_process_acceptance/check.py')
+                 'reference/sdk_process_acceptance/eidos-0.4.7-py3-none-any.whl',
+                 'reference/sdk_process_acceptance/check.py',
+                 'reference/quarto_delivery_acceptance/check.py')
 
 
 def publish(root: Path):

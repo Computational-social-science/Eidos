@@ -1,6 +1,6 @@
 # EIDOS — scientific claims, executable evidence
 
-**Version 0.4.6** · initial development · local-first · MIT framework
+**Version 0.4.7** · initial development · local-first · MIT framework
 
 [![CI](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml/badge.svg)](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
 
@@ -102,6 +102,13 @@ so an installed project does not require this repository's `tools/` directory.
 See [execution scope and installed-wheel acceptance](docs/SDK-EXECUTION.md).
 Scientific worker exits, containment failures and unavailable executables remain
 different outcomes. This does not qualify every other direct SDK subprocess call.
+
+Direct Quarto manuscript/figure delivery now stages fresh artifacts, checks the
+requested formats and declared inputs, and publishes a checksum receipt only
+after the batch is complete. Failed rendering/publication preserves the previous
+delivery. PDF validation requires Poppler `pdfinfo`; manuscript PDF also needs
+Quarto and TeX. See the [delivery contract](docs/QUARTO-DELIVERY.md) for artifact
+paths, explicit resource inventories, figures and qualification limits.
 
 The reusable research contract is:
 

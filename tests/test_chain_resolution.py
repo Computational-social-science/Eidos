@@ -39,6 +39,10 @@ def test_tracker_without_dvc_still_constructs(tmp_path, monkeypatch):
 def test_quarto_honours_quarto_bin(monkeypatch):
     """QUARTO_BIN is the first candidate; the probe must store what answered."""
     monkeypatch.setenv("QUARTO_BIN", sys.executable)
+    import subprocess
+    from framework import subprocesses
+    monkeypatch.setattr(subprocesses, "run_tree", lambda *a, **kw:
+                        subprocess.CompletedProcess(a[0], 0, "1.10.19\n", ""))
     bridge = quarto_bridge.QuartoBridge({"project_root": "."})
     assert bridge.quarto_available is True
     assert bridge.quarto_cmd == sys.executable

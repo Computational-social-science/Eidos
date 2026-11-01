@@ -31,9 +31,12 @@ def test_dvc_cmd_prefers_the_executable(monkeypatch):
 
 
 def test_quarto_bridge_uses_quarto_bin_when_it_answers(monkeypatch, tmp_path):
-    # `python --version` answers with exit code 0, so the interpreter is a stand-in for a
-    # working executable without installing Quarto.
+    # Exit zero alone is not a successful Quarto version probe.
+    from framework import subprocesses
+    import subprocess
     monkeypatch.setenv("QUARTO_BIN", sys.executable)
+    monkeypatch.setattr(subprocesses, "run_tree", lambda *a, **kw:
+                        subprocess.CompletedProcess(a[0], 0, "1.10.19\n", ""))
     bridge = QuartoBridge({"project_root": str(tmp_path)})
     assert bridge.quarto_available is True
     assert bridge.quarto_cmd == sys.executable

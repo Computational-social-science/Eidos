@@ -53,12 +53,12 @@ missing executables. Windows also checks its actual console-window handle. Linux
 adds a delayed-cleanup handoff control. Two private broken candidate wheels first
 reproduced nested and handoff leaks; the final wheel rejects both. Only the fixed
 wheel is distributed. Download the
-[fixed wheel](../reference/sdk_process_acceptance/eidos-0.4.6-py3-none-any.whl) and
+[fixed wheel](../reference/sdk_process_acceptance/eidos-0.4.7-py3-none-any.whl) and
 [standalone checker](../reference/sdk_process_acceptance/check.py).
 Reproduce with a fresh environment and the checked driver:
 
 ```sh
-python -m pip install eidos-0.4.6-py3-none-any.whl
+python -m pip install eidos-0.4.7-py3-none-any.whl
 python -I -X utf8 reference/sdk_process_acceptance/check.py
 ```
 
@@ -71,7 +71,9 @@ or clean-24-hour stability, or establish scientific truth.
 ## Remaining callers
 
 This change qualifies the project-command entry and its shared primitive.
-Direct subprocess paths in QuartoBridge, reproduction, tracking, update governance,
+Quarto manuscript/figure calls now use this primitive and require fresh artifacts;
+see the [direct delivery contract](QUARTO-DELIVERY.md). Direct subprocess paths in
+reproduction, tracking, update governance,
 formal/citation checkers and inference still require caller-specific migration and
 failure-path acceptance. A project command encloses ordinary children it launches;
 that does not make a direct Python call to another SDK entry automatically bounded.

@@ -15,3 +15,14 @@ were admissible, and both failed all 23 joint numerical points. The
 `c0-decoder-probe-v1/` and `c0-decoder-probe-v2/` directories preserve the failed
 2/3 and successful 3/3 structural controls respectively. Control probes do not
 qualify numerical correctness. None of these records establishes RSI.
+
+The [configured CPU runtime record](../../../docs/RSI-LOCAL-RUNTIME-2026-11-02.md)
+adds `c0-local-cpu-v1/`. Unlike the historical single-use scripts, its new public
+runner accepts configured engine/model paths. The archived configuration still
+describes this particular host: use the [guide](../LOCAL-RUNTIME.md) for a fresh
+configuration. Its runtime passed but its program failed all 23 joint points.
+The `source/` tree preserves 20 bound inputs using `.snapshot` filenames to keep
+historical tests out of pytest collection; raw bytes and hashes are unchanged.
+`test-only/` contains an auxiliary
+synthetic server fixture that was not the real model provider. The archived
+snapshot is execution evidence, not a standalone installer or a redistributed model.

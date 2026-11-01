@@ -110,6 +110,12 @@ structurally admissible programs; both failed all 23 joint numerical development
 points. The current next step is a local method-retrieval and feedback experiment,
 not further format-only work. See the [component assembly selection](RSI-COMPONENT-ASSEMBLY-2026-11-02.md).
 
+A [configured local CPU CLI](RSI-LOCAL-RUNTIME-2026-11-02.md) now supplies a
+source-checkout prerequisite for that experiment. Its first real ScienceRSI
+trial met runtime acceptance and rejected the 0/23 candidate, with 124 scoped
+tests passing. This is not clean-machine/GPU portability, an installed-wheel
+runtime, sealed acceptance or improvement of the improver.
+
 ## 3. Why extended development left important defects
 
 These are evidence-backed failure patterns, not an attribution of every defect

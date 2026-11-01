@@ -34,6 +34,10 @@ Thumbs.db
 
 # Scratch
 *.log
+# Explicitly archived trial logs are evidence, unlike mutable runtime logs.
+!reference/rsi_bootstrap/recorded_trials/**/server.log
+!reference/rsi_bootstrap/recorded_trials/**/controller.log
+!reference/rsi_bootstrap/recorded_trials/**/evaluation.log
 tmp/
 .pytest_cache/
 

@@ -15,6 +15,13 @@ The next intervention is grounded method retrieval and bounded counterexample
 feedback under a new protocol. The [component plan](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-COMPONENT-ASSEMBLY-2026-11-02.md)
 requires local, keyless operation without Gemini or paid services.
 
+The [configured CPU CLI trial](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-LOCAL-RUNTIME-2026-11-02.md)
+then completed one real ScienceRSI proposal with no GPU requirement. Runtime,
+service preservation, source/environment bindings and cleanup passed; the new
+program again failed all 23 joint points. This is a different execution profile,
+not a CPU/GPU throughput or model-ranking experiment. No scientific authority
+or recursive-improvement result follows.
+
 EIDOS has no task-qualified autonomous research reasoner. The legacy stage/model
 table was a proposed routing list, not an executed capability measurement. Model
 presence, endpoint health, general benchmarks and task acceptance are different

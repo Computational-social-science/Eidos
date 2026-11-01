@@ -1,0 +1,36 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n \"program\": {\n\"loss\": {\n\"op\": \"where\",\n\"args\": [\n{\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 100}]},\n{\n\"op\": \"log\",\n\"args\": [\n{\n\"op\": \"sub\",\n\"args\": [\n{\"input\": \"x\"},\n{\"const\": 1}\n]\n}\n]\n},\n{\n\"op\": \"log\",\n\"args\": [\n{\"op\": \"expm1\", \"args\": [{\"input\": \"x\"}]}\n]\n}\n]\n},\n\"gradient\": {\n\"op\": \"where\",\n\"args\": [\n{\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 100}]},\n{\n\"op\": \"div\",\n\"args\": [\n{\"op\": \"exp\", \"args\": [{\"input\": \"x\"}]},\n{\n\"op\": \"exp\",\n\"args\": [{\"input\": \"x\"}]\n}\n]\n},\n{\n\"op\": \"div\",\n\"args\": [\n{\"op\": \"exp\", \"args\": [{\"input\": \"x\"}]},\n{\n\"op\": \"expm1\",\n\"args\": [{\"input\": \"x\"}]\n}\n]\n}\n]\n}\n},\n\"explanation\": \"The function f(x) = log(1 - exp(-x)) can lose significant digits for small x due to cancellation. For x near 0, 1 - exp(-x) is a\" \n}"
+      }
+    }
+  ],
+  "created": 1793555537,
+  "model": "eidos-local-76b9685dfda944ac9fea0685c74fd3b6",
+  "system_fingerprint": "b10964-b29c606e2",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 301,
+    "prompt_tokens": 263,
+    "total_tokens": 564,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "id": "chatcmpl-8NtzpJXtgkveoI24HuOXHxWNr0ixkY1a",
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 263,
+    "prompt_ms": 3444.707,
+    "prompt_per_token_ms": 13.09774524714829,
+    "prompt_per_second": 76.34901894413662,
+    "predicted_n": 301,
+    "predicted_ms": 34115.9,
+    "predicted_per_token_ms": 113.71966666666667,
+    "predicted_per_second": 8.79355373887249
+  }
+}

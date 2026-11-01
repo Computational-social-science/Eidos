@@ -1,0 +1,541 @@
+{
+  "schema": "eidos.c0.configured-cpu-study.v1",
+  "scope": "One same-host source-checkout CPU trial; no installed-wheel/new-machine/Linux model qualification",
+  "runtime_accepted": true,
+  "candidate_status": "DEVELOPMENT_NONCONFORMING",
+  "conforming_points": 0,
+  "total_points": 23,
+  "scientific_promotion": false,
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "sealed_evaluation": "NOT_RUN",
+  "run_id": "76b9685dfda944ac9fea0685c74fd3b6",
+  "protocol_sha256": "4b28c9e7f045d3e9385af036c0fd6651c5158fb7685d41e29ce96d8b18d3849d",
+  "config_sha256": "50b9e5524d4d36b35b8aeb8c4b15b06e8aa4e5efe0d387150f4c72adfaa90e88",
+  "runtime": {
+    "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+    "version": "3.12.4",
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.27891-SP0",
+    "numpy": "2.5.4",
+    "psutil": "7.2.2",
+    "device_profile": "CPU"
+  },
+  "model": {
+    "path": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\models\\ScienceRSI-8b.i1-Q4_K_M.gguf",
+    "bytes": 5027784544,
+    "sha256": "a7e1cdab380e52ef55dfe249f634262052c171bdd4b606b7530637398852b7ad"
+  },
+  "engine": {
+    "path": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+    "sha256": "aa2e1f5c67be55f11be26ae58d643a545ca07c6de498f6f870330ac2f4dfec73"
+  },
+  "load_seconds": 3.422000000005937,
+  "request_seconds": 37.57799999999406,
+  "wall_seconds": 53.13999999999942,
+  "target_usage": {
+    "completion_tokens": 301,
+    "prompt_tokens": 263,
+    "total_tokens": 564,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "target_finish_reason": "stop",
+  "protected_observations": 25,
+  "ram_samples": 90,
+  "minimum_available_mib": 71849.5546875,
+  "peak_owned_tree_rss_mib": 8618.1953125,
+  "raw_response": "{\n \"program\": {\n\"loss\": {\n\"op\": \"where\",\n\"args\": [\n{\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 100}]},\n{\n\"op\": \"log\",\n\"args\": [\n{\n\"op\": \"sub\",\n\"args\": [\n{\"input\": \"x\"},\n{\"const\": 1}\n]\n}\n]\n},\n{\n\"op\": \"log\",\n\"args\": [\n{\"op\": \"expm1\", \"args\": [{\"input\": \"x\"}]}\n]\n}\n]\n},\n\"gradient\": {\n\"op\": \"where\",\n\"args\": [\n{\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 100}]},\n{\n\"op\": \"div\",\n\"args\": [\n{\"op\": \"exp\", \"args\": [{\"input\": \"x\"}]},\n{\n\"op\": \"exp\",\n\"args\": [{\"input\": \"x\"}]\n}\n]\n},\n{\n\"op\": \"div\",\n\"args\": [\n{\"op\": \"exp\", \"args\": [{\"input\": \"x\"}]},\n{\n\"op\": \"expm1\",\n\"args\": [{\"input\": \"x\"}]\n}\n]\n}\n]\n}\n},\n\"explanation\": \"The function f(x) = log(1 - exp(-x)) can lose significant digits for small x due to cancellation. For x near 0, 1 - exp(-x) is a\" \n}",
+  "core_result": {
+    "schema": "eidos.rsi.c0.development-core.v1",
+    "observed_at": "2026-11-01T17:52:18.420940+00:00",
+    "status": "DEVELOPMENT_NONCONFORMING",
+    "source_before": {
+      "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference/rsi_bootstrap/local_runtime.py": "a6c994622fc82431479ddd92efa7c6400a8cff74c5e1a775e4165be9c598c3d0",
+      "reference/rsi_bootstrap/local_worker.py": "de126968750e0886096e501ba3e010c1e222d1e543db84e1954007ac528f5f69",
+      "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference/rsi_bootstrap/test_local_runtime.py": "c1a5d18a305461eaaabbcf0967e72cd72693d2cdf63543b5d774f221078f0f25",
+      "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+    },
+    "prompt": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n",
+    "raw_response": "{\n \"program\": {\n\"loss\": {\n\"op\": \"where\",\n\"args\": [\n{\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 100}]},\n{\n\"op\": \"log\",\n\"args\": [\n{\n\"op\": \"sub\",\n\"args\": [\n{\"input\": \"x\"},\n{\"const\": 1}\n]\n}\n]\n},\n{\n\"op\": \"log\",\n\"args\": [\n{\"op\": \"expm1\", \"args\": [{\"input\": \"x\"}]}\n]\n}\n]\n},\n\"gradient\": {\n\"op\": \"where\",\n\"args\": [\n{\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 100}]},\n{\n\"op\": \"div\",\n\"args\": [\n{\"op\": \"exp\", \"args\": [{\"input\": \"x\"}]},\n{\n\"op\": \"exp\",\n\"args\": [{\"input\": \"x\"}]\n}\n]\n},\n{\n\"op\": \"div\",\n\"args\": [\n{\"op\": \"exp\", \"args\": [{\"input\": \"x\"}]},\n{\n\"op\": \"expm1\",\n\"args\": [{\"input\": \"x\"}]\n}\n]\n}\n]\n}\n},\n\"explanation\": \"The function f(x) = log(1 - exp(-x)) can lose significant digits for small x due to cancellation. For x near 0, 1 - exp(-x) is a\" \n}",
+    "points": [
+      {
+        "case": "float32-small-0",
+        "dtype": "float32",
+        "represented_input": 1.0000000031710769e-30,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-small-1",
+        "dtype": "float32",
+        "represented_input": 9.999999960041972e-13,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-small-2",
+        "dtype": "float32",
+        "represented_input": 9.99999993922529e-09,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-small-3",
+        "dtype": "float32",
+        "represented_input": 9.999999747378752e-06,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-small-4",
+        "dtype": "float32",
+        "represented_input": 0.10000000149011612,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-cutoff-below",
+        "dtype": "float32",
+        "represented_input": 0.6931471228599548,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-cutoff-above",
+        "dtype": "float32",
+        "represented_input": 0.6931472420692444,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-x-1",
+        "dtype": "float32",
+        "represented_input": 1.0,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "-inf",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-x-20",
+        "dtype": "float32",
+        "represented_input": 20.0,
+        "passed": false,
+        "loss_relative_error": 1428539290.4723322,
+        "gradient_relative_error": 485165193.4097903,
+        "reason": "relative error",
+        "actual_outputs": [
+          2.944438934326172,
+          1.0
+        ]
+      },
+      {
+        "case": "float32-x-50",
+        "dtype": "float32",
+        "represented_input": 50.0,
+        "passed": false,
+        "loss_relative_error": 2.0177941667476635e+22,
+        "gradient_relative_error": 5.184705528587072e+21,
+        "reason": "relative error",
+        "actual_outputs": [
+          3.891820192337036,
+          1.0
+        ]
+      },
+      {
+        "case": "float32-x-80",
+        "dtype": "float32",
+        "represented_input": 80.0,
+        "passed": false,
+        "loss_relative_error": 2.420945977910135e+35,
+        "gradient_relative_error": 5.54062238439351e+34,
+        "reason": "relative error",
+        "actual_outputs": [
+          4.369447708129883,
+          1.0
+        ]
+      },
+      {
+        "case": "float64-small-0",
+        "dtype": "float64",
+        "represented_input": 1e-100,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-small-1",
+        "dtype": "float64",
+        "represented_input": 1e-16,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-small-2",
+        "dtype": "float64",
+        "represented_input": 1e-12,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-small-3",
+        "dtype": "float64",
+        "represented_input": 1e-08,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-small-4",
+        "dtype": "float64",
+        "represented_input": 0.1,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-cutoff-below",
+        "dtype": "float64",
+        "represented_input": 0.6931471805599452,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-cutoff-above",
+        "dtype": "float64",
+        "represented_input": 0.6931471805599454,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-x-1",
+        "dtype": "float64",
+        "represented_input": 1.0,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "-inf",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-x-20",
+        "dtype": "float64",
+        "represented_input": 20.0,
+        "passed": false,
+        "loss_relative_error": 1428539312.22727,
+        "gradient_relative_error": 485165193.4097903,
+        "reason": "relative error",
+        "actual_outputs": [
+          2.9444389791664403,
+          1.0
+        ]
+      },
+      {
+        "case": "float64-x-50",
+        "dtype": "float64",
+        "represented_input": 50.0,
+        "passed": false,
+        "loss_relative_error": 2.017794221588155e+22,
+        "gradient_relative_error": 5.184705528587072e+21,
+        "reason": "relative error",
+        "actual_outputs": [
+          3.8918202981106265,
+          1.0
+        ]
+      },
+      {
+        "case": "float64-x-80",
+        "dtype": "float64",
+        "represented_input": 80.0,
+        "passed": false,
+        "loss_relative_error": 2.4209460578818932e+35,
+        "gradient_relative_error": 5.54062238439351e+34,
+        "reason": "relative error",
+        "actual_outputs": [
+          4.3694478524670215,
+          1.0
+        ]
+      },
+      {
+        "case": "float64-x-600",
+        "dtype": "float64",
+        "represented_input": 600.0,
+        "passed": false,
+        "loss_relative_error": 2.2638121805579639e+263,
+        "gradient_relative_error": 3.7730203009299397e+260,
+        "reason": "relative error",
+        "actual_outputs": [
+          600.0,
+          1.0
+        ]
+      }
+    ],
+    "retained_for_development": false,
+    "scientific_promotion": false,
+    "model_execution_attested": false,
+    "sealed_evaluation": "NOT_RUN",
+    "scientific_rsi": "NOT_DEMONSTRATED",
+    "provider_calls": 1,
+    "response_characters": 748,
+    "explanation": "The function f(x) = log(1 - exp(-x)) can lose significant digits for small x due to cancellation. For x near 0, 1 - exp(-x) is a",
+    "baseline_conforming_points": 8,
+    "candidate_conforming_points": 0,
+    "wall_seconds": 0.0629999999946449,
+    "source_after": {
+      "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference/rsi_bootstrap/local_runtime.py": "a6c994622fc82431479ddd92efa7c6400a8cff74c5e1a775e4165be9c598c3d0",
+      "reference/rsi_bootstrap/local_worker.py": "de126968750e0886096e501ba3e010c1e222d1e543db84e1954007ac528f5f69",
+      "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference/rsi_bootstrap/test_local_runtime.py": "c1a5d18a305461eaaabbcf0967e72cd72693d2cdf63543b5d774f221078f0f25",
+      "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+    },
+    "run_id": "76b9685dfda944ac9fea0685c74fd3b6",
+    "protocol_sha256": "4b28c9e7f045d3e9385af036c0fd6651c5158fb7685d41e29ce96d8b18d3849d",
+    "evaluator_runtime": {
+      "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+      "version": "3.12.4",
+      "implementation": "CPython",
+      "platform": "Windows-11-10.0.27891-SP0",
+      "numpy": "2.5.4",
+      "psutil": "7.2.2",
+      "device_profile": "CPU"
+    },
+    "recorded_response_sha256": "b29c78f84abbc17c9b87f627edc107afed2ddce8a3110b1098bc676b993d4366",
+    "transport_scope": "Recorded-response evaluation; controller separately observes the owned provider"
+  },
+  "outer_shell_observation": {
+    "exit_code": 1,
+    "scope": "Tool PowerShell wrapper exit; direct native CLI exit was not separately captured. JSON runtime acceptance and mathematical failure are retained."
+  },
+  "archive": [
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/protocol.json",
+      "sha256": "4b28c9e7f045d3e9385af036c0fd6651c5158fb7685d41e29ce96d8b18d3849d"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/result.json",
+      "sha256": "5cf0b8390b57bb0082a344bfa40ba4afb28110e3f0d3a71e6d45e16ca29a7ab3"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/outcome.json",
+      "sha256": "ebe78b0b811751b80c06b0518e8f5aad9d1574a7daeac8dc08f4033e3efea904"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/core.json",
+      "sha256": "2a111e218b691c02aeef090ad3b238c8457dfa7163e126f21ee1cb61a782a548"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/response.json",
+      "sha256": "b29c78f84abbc17c9b87f627edc107afed2ddce8a3110b1098bc676b993d4366"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/owner.json",
+      "sha256": "9c2d1c4c65db2e1641da32c6033ac92bc1a7ebea756fbd24f7f8c51cfe50fead"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/server.log",
+      "sha256": "bed32edb38bf88fcdeb0a2d33ae1fbab3c1ed430c0f17846a8d14b4019b6c18f"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/controller.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/evaluation.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/config.json",
+      "sha256": "50b9e5524d4d36b35b8aeb8c4b15b06e8aa4e5efe0d387150f4c72adfaa90e88"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/prepared-protocol-v2.json",
+      "sha256": "a76043aa783baa43624690147b332af9863b964cd7a096164218205b4398d6cc"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/.Codex/evals/rsi-bootstrap-foundation.md.snapshot",
+      "sha256": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/.Codex/evals/rsi-local-runtime.md.snapshot",
+      "sha256": "7484d6baac249592276b99ff2eccea3479d9bf8de5ba88f8762c66927712843e"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/framework/_posix_job.py.snapshot",
+      "sha256": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/framework/_process_tree.py.snapshot",
+      "sha256": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/framework/_windows_job.py.snapshot",
+      "sha256": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/framework/artifacts.py.snapshot",
+      "sha256": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/framework/subprocesses.py.snapshot",
+      "sha256": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/pyproject.toml.snapshot",
+      "sha256": "d6fffb2f31b4c3c6564d19e48d16b02a37da8fc5b47640aeb579313b27ad92c6"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/reference/rsi_bootstrap/C0-SPEC.md.snapshot",
+      "sha256": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/reference/rsi_bootstrap/c0.py.snapshot",
+      "sha256": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/reference/rsi_bootstrap/expressions.py.snapshot",
+      "sha256": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/reference/rsi_bootstrap/grader.py.snapshot",
+      "sha256": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/reference/rsi_bootstrap/local_runtime.py.snapshot",
+      "sha256": "a6c994622fc82431479ddd92efa7c6400a8cff74c5e1a775e4165be9c598c3d0"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/reference/rsi_bootstrap/local_worker.py.snapshot",
+      "sha256": "de126968750e0886096e501ba3e010c1e222d1e543db84e1954007ac528f5f69"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/reference/rsi_bootstrap/recorded_trials/c0-decoder-probe-v2/grammar.gbnf.snapshot",
+      "sha256": "486a35b4173159a863bab020df4e5562a5d6bc670ec1029060a963d41fb0a4e0"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/reference/rsi_bootstrap/test_c0.py.snapshot",
+      "sha256": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/reference/rsi_bootstrap/test_expressions.py.snapshot",
+      "sha256": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/reference/rsi_bootstrap/test_grader.py.snapshot",
+      "sha256": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/reference/rsi_bootstrap/test_local_runtime.py.snapshot",
+      "sha256": "c1a5d18a305461eaaabbcf0967e72cd72693d2cdf63543b5d774f221078f0f25"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/source/uv.lock.snapshot",
+      "sha256": "6c279354f73273f54427205ec0e00d3f7ce3cd7382c5378121262cac0ddeedd3"
+    },
+    {
+      "path": "reference/rsi_bootstrap/recorded_trials/c0-local-cpu-v1/test-only/runtime_controls/server.py.snapshot",
+      "sha256": "2d6e7da4cdf3024c125688f79d470a2e92c771ad2a6eeeecb881e786a136cb75"
+    }
+  ]
+}

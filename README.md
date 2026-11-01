@@ -21,6 +21,10 @@ the website; current execution state belongs in the monitor.
 and no Gemini API, paid provider or mandatory service key. Existing CPU case
 replay does not require a model service. The portable RSI runtime is still under
 development; see the [component selection and acceptance plan](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-COMPONENT-ASSEMBLY-2026-11-02.md).
+The new [configured local C0 CLI](https://github.com/Computational-social-science/Eidos/blob/main/reference/rsi_bootstrap/LOCAL-RUNTIME.md)
+has one same-host CPU execution with runtime acceptance; its candidate failed
+the numerical task. It is a source-checkout work package, not a qualified RSI
+runtime or an addition to the published v0.4.10 wheel.
 
 ## What has been demonstrated
 

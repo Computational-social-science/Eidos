@@ -404,3 +404,16 @@ credential. ERA is a search reference requiring a local adapter, not an accepted
 Gemini-dependent runtime. Component installation and known-method reuse do not
 constitute scientific RSI. Self-check, bounded self-healing and monitoring remain
 required; no new CRON loop is introduced by this selection.
+
+The [configured local CPU runtime](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-LOCAL-RUNTIME-2026-11-02.md)
+replaces hard-coded single-use controllers with a source-checkout CLI and explicit
+engine/model configuration. Its first actual ScienceRSI trial met runtime,
+declared-service preservation, input/environment identity and owned cleanup
+acceptance in 53.140 seconds; the program failed all 23 joint numerical points
+and was not retained. The scoped suite has 124 passing tests, including synthetic
+slow-response, stale-evidence and resource/cleanup controls. No synthetic provider
+is counted as inference. The [usage contract](https://github.com/Computational-social-science/Eidos/blob/main/reference/rsi_bootstrap/LOCAL-RUNTIME.md)
+requires no paid provider or GPU, distinguishes runtime from task acceptance and
+states the remaining clean-machine, installed-wheel, Linux-model, GPU and RSI
+gaps. Same-oracle parent replay checks receipt consistency; it does not add an
+independent scientific authority.

@@ -1,11 +1,15 @@
 # RSI bootstrap: development evaluator foundation
 
-Latest checkpoint: the [decoder study](../../docs/RSI-C0-DECODER-STUDY-2026-11-02.md)
-obtained admissible programs from two real local models; both failed all 23 joint
-numerical points. The prior v1 responses were rejected before numerical grading.
-Exact runtime sources and backend controls are archived under `recorded_trials/`.
+Latest checkpoint: the [configured local CPU runtime](LOCAL-RUNTIME.md) completed
+its first actual CLI trial with preserved declared services and a cleaned-up
+owned model; the ScienceRSI program failed all 23 joint numerical points.
+The preceding [decoder study](../../docs/RSI-C0-DECODER-STUDY-2026-11-02.md)
+also produced two admissible but numerically nonconforming programs. Earlier v1
+responses were rejected before grading. Exact sources and responses are archived
+under `recorded_trials/`.
 The frozen C0 specification and early foundation records retain their historical
-scope; a portable configured model runtime and RSI acceptance remain open.
+scope; the configured CPU source-checkout path now has same-host acceptance,
+while clean-machine/GPU portability and RSI acceptance remain open.
 
 This work package calibrates an executable evaluator before attempting a
 model-generated numerical repair. It implements part of P0/P1 of the
@@ -51,12 +55,14 @@ model competence, transfer or RSI. The source and positive repair are external
 development, not outputs of EIDOS self-improvement.
 
 The historical [C0 contract](C0-SPEC.md) precedes the implemented proposal core
-and same-host trials. A portable local runtime and independent sealed-task access
-remain pending before a recursive campaign.
+and same-host trials. The configured CPU runtime has a new explicit profile;
+broader runtime qualification and independent sealed-task access remain pending
+before a recursive campaign.
 
 The closed expression interpreter in `expressions.py` enforces the proposed
 scalar operator/type/size/depth/node limits. Its adversarial tests include
 duplicate/nonfinite JSON, unsupported operations, incorrect types, invalid
 unselected branches and budget overflows. This is a development prerequisite
-for model programs; the recorded model runners are host-specific and the sealed
-boundary remains unimplemented.
+for model programs. Historical recorded runners remain host-specific; the new
+configured CPU path is documented separately. The sealed boundary remains
+unimplemented.

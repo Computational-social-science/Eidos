@@ -1,0 +1,11 @@
+{
+  "schema": "eidos.c0.local-outcome.v1",
+  "run_id": "76b9685dfda944ac9fea0685c74fd3b6",
+  "protocol_sha256": "4b28c9e7f045d3e9385af036c0fd6651c5158fb7685d41e29ce96d8b18d3849d",
+  "runtime_accepted": true,
+  "scientific_promotion": false,
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "status": "COMPLETE",
+  "controller_exit_code": 0,
+  "candidate_status": "DEVELOPMENT_NONCONFORMING"
+}

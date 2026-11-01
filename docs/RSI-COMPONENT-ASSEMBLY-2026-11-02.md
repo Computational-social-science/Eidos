@@ -4,6 +4,11 @@ Status: evidence-backed selection and integration proposal, 2026-11-02.
 No new framework, weights, paid service or full literature store was installed
 for this assessment. Repository inspection is not runtime qualification.
 
+Subsequent implementation checkpoint: the [configured CPU C0 runtime](RSI-LOCAL-RUNTIME-2026-11-02.md)
+now has one actual same-host source-checkout execution. Its runtime passed and
+its numerical candidate conformed at 0/23 points. Retrieval, feedback-search, new-machine
+qualification and RSI remain pending; this is not an upstream framework install.
+
 ## Decision
 
 Use a small composition: **existing Paper2Agent artifacts + source-grounded

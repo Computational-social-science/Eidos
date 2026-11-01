@@ -35,6 +35,11 @@ now supplies a concrete, keyless reproduction command: the preserved proposal
 remains 0/23, while a separately attributed known-method program passes 23/23.
 This source-checkout tool avoids formula-to-program translation by a model;
 autonomous tool selection and recursive improvement remain unqualified.
+The subsequent [offline Linux acceptance](https://github.com/Computational-social-science/Eidos/blob/main/docs/METHOD-OFFLINE-PORTABILITY-2026-11-02.md)
+ran that source tool in a fresh NumPy+pip environment with runtime networking
+disabled, retaining 0/23 for the old proposal and 23/23 for the separate tool.
+The public image/wheel bootstrap is explicitly pinned; independent-machine,
+installed EIDOS-wheel and live-model tool-selection acceptance remain open.
 
 ## What has been demonstrated
 

@@ -1,0 +1,1 @@
+{"python": "3.12.16", "numpy": "2.5.4", "executable": "/tmp/eidos-method-91nxdnj5/venv/bin/python", "prefix": "/tmp/eidos-method-91nxdnj5/venv", "base_prefix": "/usr/local", "user_site_enabled": false, "distributions": [{"name": "numpy", "version": "2.5.4"}, {"name": "pip", "version": "25.0.1"}]}

@@ -1,0 +1,161 @@
+"""One owned offline-container qualification; no model/service manipulation."""
+from pathlib import Path
+from datetime import datetime, timezone
+import json
+import math
+import sys
+import time
+import uuid
+
+ROOT=Path.cwd().resolve();sys.path.insert(0,str(ROOT))
+from framework.subprocesses import run_tree
+from reference.method_portability import check,prepare
+from reference.numerical_method_tools import runner
+
+AUDIT=ROOT/'.scratch/quality/method-offline-v1'
+CACHE=Path('C:/Users/Administrator/.cache/eidos-method-offline-v1').resolve()
+INPUT=CACHE/'input';OUTPUT=CACHE/'output'
+OWNER=uuid.uuid4().hex;NAME='eidos-method-offline-'+OWNER[:16]
+CIDFILE=AUDIT/'container.cid'
+if (AUDIT/'controller-plan.json').exists() or INPUT.exists() or OUTPUT.exists():
+    raise RuntimeError('This attempt already has execution/preparation state; inspect it rather than restarting')
+
+qualification_paths=[Path(__file__).resolve(),ROOT/'.Codex/evals/method-offline-portability.md',
+                     *sorted((ROOT/'reference/method_portability').glob('*.py')),
+                     ROOT/'framework/subprocesses.py',ROOT/'framework/_windows_job.py',
+                     ROOT/'framework/_process_tree.py',ROOT/'framework/_posix_job.py']
+qualification_sources={str(path.relative_to(ROOT)).replace('\\','/'):check.hash_file(path) for path in qualification_paths}
+wheel=prepare.select_wheel(ROOT/'uv.lock')
+manifest=prepare.run(CACHE/wheel['filename'],INPUT)
+PIN=check.hash_file(INPUT/'input.json');OUTPUT.mkdir(exist_ok=False)
+command=['create','--pull','never','--platform','linux/amd64','--name',NAME,'--cidfile',str(CIDFILE),
+         '--label','eidos.owner='+OWNER,'--label','eidos.input-sha256='+PIN,
+         '--network','none','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges',
+         '--memory','2147483648','--cpus','2','--pids-limit','128','--init','--stop-timeout','5',
+         '--tmpfs','/tmp:'+check.TMPFS,
+         '--mount','type=bind,src='+INPUT.as_posix()+',dst=/input,readonly',
+         '--mount','type=bind,src='+OUTPUT.as_posix()+',dst=/out',check.IMAGE,
+         'python','-I','/input/check.py','--input','/input','--sha256',PIN,'--output','/out']
+plan={'schema':'eidos.method-offline-controller-plan.v1','owner':OWNER,'name':NAME,'input_sha256':PIN,
+      'image':check.IMAGE,'create_command':['docker',*command],'input_path':str(INPUT),'output_path':str(OUTPUT),
+      'qualification_sources':qualification_sources,'method_sources':manifest['sources'],
+      'started_at':datetime.now(timezone.utc).isoformat(),'new_model_inference':False}
+(AUDIT/'controller-plan.json').write_bytes(check.encoded(plan))
+result={'schema':'eidos.method-offline-controller-result.v1','owner':OWNER,'input_sha256':PIN,
+        'status':'INCOMPLETE','runtime_accepted':False,'calls':[],'new_model_inference':False,
+        'scientific_rsi':'NOT_DEMONSTRATED','scientific_promotion':False,'cleanup':{'removed':False}}
+begun=time.perf_counter();cid=None
+
+
+def dc(args,timeout=20,expected=0,persist=None):
+    started=time.perf_counter()
+    observation={'command':['docker',*args],'status':'RUNNING','exit_code':None}
+    result['calls'].append(observation)
+    try:
+        child=run_tree(['docker',*args],cwd=ROOT,timeout=timeout)
+    except Exception as error:
+        observation.update(status='ERROR',error_type=type(error).__name__,wall_seconds=time.perf_counter()-started)
+        raise
+    observation.update(status='COMPLETE',exit_code=child.returncode,wall_seconds=time.perf_counter()-started)
+    if persist:
+        (AUDIT/(persist+'.stdout.log')).write_text(child.stdout,encoding='utf-8')
+        (AUDIT/(persist+'.stderr.log')).write_text(child.stderr,encoding='utf-8')
+    if expected is not None and child.returncode!=expected:raise RuntimeError('Docker command refused: '+args[0])
+    return child
+
+
+def inspect(target):
+    return json.loads(dc(['container','inspect',target]).stdout)[0]
+
+
+def projected(item):
+    config=item['Config']
+    host_fields=('NetworkMode','ReadonlyRootfs','Privileged','Memory','NanoCpus','PidsLimit','Init','CapDrop',
+                 'CapAdd','SecurityOpt','Tmpfs','AutoRemove','PortBindings','PidMode','IpcMode','UsernsMode',
+                 'RestartPolicy','DeviceRequests')
+    return {**{key:item[key] for key in ('Id','Name','Image','State','Mounts','NetworkSettings')},
+            'HostConfig':{key:item['HostConfig'].get(key) for key in host_fields},
+            'Config':{key:config.get(key) for key in ('Image','Cmd','User')} |
+                     {'Labels':{key:config.get('Labels',{}).get(key) for key in ('eidos.owner','eidos.input-sha256')}} |
+                     {'EnvironmentNames':sorted(value.split('=',1)[0] for value in config.get('Env',[]))}}
+
+
+try:
+    image=json.loads(dc(['image','inspect',check.IMAGE]).stdout)[0]
+    image_id=check.validate_image(image)
+    result['image']={key:image[key] for key in ('Id','RepoDigests','Os','Architecture')}
+    result['docker_version']=dc(['version','--format','{{.Client.Version}}|{{.Server.Version}}']).stdout.strip()
+    created=dc(command,persist='create')
+    cid=created.stdout.strip()
+    if not check.SHA.fullmatch(cid) or CIDFILE.read_text().strip()!=cid:raise RuntimeError('Docker create identity differs')
+    before=inspect(cid);check.assert_owned(before,cid,OWNER)
+    result['before_start']=projected(before)
+    check.validate_container(before,cid,OWNER,PIN,INPUT,OUTPUT,image_id)
+    (AUDIT/'controller-state.json').write_bytes(check.encoded({'phase':'CREATED','cid':cid,'owner':OWNER,'input_sha256':PIN}))
+    dc(['start',cid],persist='start')
+    print(json.dumps({'phase':'STARTED','cid':cid,'owner':OWNER,'input_sha256':PIN}),flush=True)
+    (AUDIT/'controller-state.json').write_bytes(check.encoded({'phase':'STARTED','cid':cid,'owner':OWNER,'input_sha256':PIN}))
+    waited=dc(['wait',cid],timeout=240,persist='wait')
+    after=inspect(cid);check.assert_owned(after,cid,OWNER)
+    result['after_exit']=projected(after)
+    check.validate_container(after,cid,OWNER,PIN,INPUT,OUTPUT,image_id)
+    logs=dc(['logs',cid],persist='container')
+    state=after['State']
+    if (waited.stdout.strip()!='0' or type(state['ExitCode']) is not int or state['ExitCode']!=0
+            or state['Running'] is not False or state['OOMKilled'] is not False or state['Dead'] is not False
+            or state['Error']):raise RuntimeError('Container did not exit successfully')
+    raw=(OUTPUT/'linux-result.json').read_bytes();actual=check.strict_json(raw)
+    if (actual['status']!='COMPLETE' or actual['runtime_accepted'] is not True or actual['input_sha256']!=PIN
+            or actual['input_run_id']!=manifest['run_id'] or actual['source_sha256']!=manifest['sources']
+            or actual['new_model_inference'] is not False or actual['scientific_promotion'] is not False
+            or actual['scientific_rsi']!='NOT_DEMONSTRATED' or actual['sealed_evaluation']!='NOT_RUN'):
+        raise RuntimeError('Worker receipt contradicts its frozen protocol')
+    step_names=['venv','install','environment','wrong-pin','execute','verify','bind']
+    if [step['name'] for step in actual['steps']]!=step_names:raise RuntimeError('Actual command inventory differs')
+    for step in actual['steps']:
+        expected_exit=1 if step['name']=='wrong-pin' else 0
+        if (step['status']!='COMPLETE' or type(step['exit_code']) is not int or step['exit_code']!=expected_exit
+                or step['expected_exit_code']!=expected_exit or type(step['wall_seconds']) not in (int,float)
+                or not math.isfinite(step['wall_seconds']) or step['wall_seconds']<0):raise RuntimeError('Command outcome/cost differs')
+        for channel in ('stdout','stderr'):
+            if check.hash_file(OUTPUT/(step['name']+'.'+channel+'.log'))!=step[channel+'_sha256']:
+                raise RuntimeError('Command log no longer binds its observed execution')
+    if check.inventory(OUTPUT)!=set(actual['files'])|{'linux-result.json'}:raise RuntimeError('Output inventory differs')
+    for name,digest in actual['files'].items():
+        check.safe_relative(name)
+        if check.hash_file(OUTPUT/name)!=digest:raise RuntimeError('Output digest differs')
+    check.validate_execution(OUTPUT/'execution',manifest,actual['reader_binding'])
+    check.read_input(INPUT,PIN)
+    if manifest['sources']!=runner.source_snapshot():raise RuntimeError('Source changed after preparation')
+    if any(check.hash_file(ROOT/name)!=digest for name,digest in qualification_sources.items()):
+        raise RuntimeError('Qualification source changed during execution')
+    status=check.strict_json(logs.stdout.encode())
+    if (status['status']!='COMPLETE' or status['runtime_accepted'] is not True
+            or status['execution_run_id']!=actual['execution_run_id'] or status['error_type'] is not None):
+        raise RuntimeError('Container stdout disagrees with its receipt')
+    result.update(status='COMPLETE',runtime_accepted=True,worker_sha256=check.sha(raw),
+                  execution_run_id=actual['execution_run_id'],proposal=actual['proposal'],tool=actual['tool'])
+except Exception as error:
+    result.update(status='ERROR',error_type=type(error).__name__,error=str(error),runtime_accepted=False)
+finally:
+    try:
+        if cid is None and CIDFILE.exists():cid=CIDFILE.read_text().strip()
+        if cid is not None:
+            owned=inspect(cid);check.assert_owned(owned,cid,OWNER)
+            if owned['State']['Running']:
+                dc(['stop','--time','5',cid],timeout=20,persist='stop')
+                owned=inspect(cid);check.assert_owned(owned,cid,OWNER)
+            if owned['State']['Running']:raise RuntimeError('Owned container is still running')
+            dc(['rm',cid],persist='remove')
+            missing=dc(['container','inspect',cid],expected=None,persist='removed-check')
+            if (missing.returncode!=1 or json.loads(missing.stdout)!=[]
+                    or not any(marker in missing.stderr.lower() for marker in ('no such container','no such object'))
+                    or cid not in missing.stderr):raise RuntimeError('Owned container absence is not authoritatively established')
+            result['cleanup']={'removed':True,'cid':cid,'inspection_exit_code':missing.returncode}
+    except Exception as error:
+        result.update(status='ERROR',runtime_accepted=False,cleanup_error_type=type(error).__name__,cleanup_error=str(error))
+    result['wall_seconds']=time.perf_counter()-begun
+    (AUDIT/'controller-result.json').write_bytes(check.encoded(result))
+    (AUDIT/'controller-state.json').write_bytes(check.encoded({'phase':result['status'],'cid':cid,'owner':OWNER,'cleanup':result['cleanup']}))
+print(json.dumps({key:result.get(key) for key in ('status','runtime_accepted','execution_run_id','cleanup','error_type','error')}),flush=True)
+raise SystemExit(0 if result['runtime_accepted'] else 1)

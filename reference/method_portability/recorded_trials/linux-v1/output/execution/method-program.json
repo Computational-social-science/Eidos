@@ -1,0 +1,123 @@
+{
+  "method": {
+    "id": "log1mexp-v1",
+    "version": 1,
+    "task": "log1mexp-loss-and-first-derivative",
+    "domain": "Positive finite scalar float32/float64 with normal-range loss and first derivative; public 23-point domain only is qualified here.",
+    "loss": "where(x <= log(2), log(-expm1(-x)), log1p(-exp(-x)))",
+    "gradient": "exp(-x)/(-expm1(-x))",
+    "source_urls": [
+      "https://search.r-project.org/CRAN/refmans/Rmpfr/html/log1mexp.html"
+    ],
+    "checked_on": "2026-11-02",
+    "derivative_attribution": "Analytically derived by the external maintainer workflow from f(x)=log(1-exp(-x)); not automatic differentiation, an upstream derivative implementation or a local-model discovery.",
+    "origin_card_id": "log1mexp-piecewise",
+    "origin_card_sha256": "1707a0262fc323e8621db794a1d86180f6c9a7dcb748631dcffe601d9037e0d3"
+  },
+  "origin": "external_known_method_tool",
+  "program": {
+    "loss": {
+      "op": "where",
+      "args": [
+        {
+          "op": "le",
+          "args": [
+            {
+              "input": "x"
+            },
+            {
+              "op": "log",
+              "args": [
+                {
+                  "const": 2
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "op": "log",
+          "args": [
+            {
+              "op": "neg",
+              "args": [
+                {
+                  "op": "expm1",
+                  "args": [
+                    {
+                      "op": "neg",
+                      "args": [
+                        {
+                          "input": "x"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "op": "log1p",
+          "args": [
+            {
+              "op": "neg",
+              "args": [
+                {
+                  "op": "exp",
+                  "args": [
+                    {
+                      "op": "neg",
+                      "args": [
+                        {
+                          "input": "x"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "gradient": {
+      "op": "div",
+      "args": [
+        {
+          "op": "exp",
+          "args": [
+            {
+              "op": "neg",
+              "args": [
+                {
+                  "input": "x"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "op": "neg",
+          "args": [
+            {
+              "op": "expm1",
+              "args": [
+                {
+                  "op": "neg",
+                  "args": [
+                    {
+                      "input": "x"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

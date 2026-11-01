@@ -1,0 +1,430 @@
+{
+  "schema": "eidos.method-offline-controller-result.v1",
+  "owner": "e83183a6d350479cbe201799e12664a5",
+  "input_sha256": "592b231d548d0d103f5aa50c830fc3b891a086b95f4429cb4bc639e95a7597b8",
+  "status": "COMPLETE",
+  "runtime_accepted": true,
+  "calls": [
+    {
+      "command": [
+        "docker",
+        "image",
+        "inspect",
+        "public.ecr.aws/docker/library/python@sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337"
+      ],
+      "status": "COMPLETE",
+      "exit_code": 0,
+      "wall_seconds": 0.27596729999640957
+    },
+    {
+      "command": [
+        "docker",
+        "version",
+        "--format",
+        "{{.Client.Version}}|{{.Server.Version}}"
+      ],
+      "status": "COMPLETE",
+      "exit_code": 0,
+      "wall_seconds": 0.2873046000022441
+    },
+    {
+      "command": [
+        "docker",
+        "create",
+        "--pull",
+        "never",
+        "--platform",
+        "linux/amd64",
+        "--name",
+        "eidos-method-offline-e83183a6d350479c",
+        "--cidfile",
+        "E:\\2026-AI4S\\Eidos\\.scratch\\quality\\method-offline-v1\\container.cid",
+        "--label",
+        "eidos.owner=e83183a6d350479cbe201799e12664a5",
+        "--label",
+        "eidos.input-sha256=592b231d548d0d103f5aa50c830fc3b891a086b95f4429cb4bc639e95a7597b8",
+        "--network",
+        "none",
+        "--read-only",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--memory",
+        "2147483648",
+        "--cpus",
+        "2",
+        "--pids-limit",
+        "128",
+        "--init",
+        "--stop-timeout",
+        "5",
+        "--tmpfs",
+        "/tmp:rw,exec,nosuid,nodev,size=1073741824,mode=1777",
+        "--mount",
+        "type=bind,src=C:/Users/Administrator/.cache/eidos-method-offline-v1/input,dst=/input,readonly",
+        "--mount",
+        "type=bind,src=C:/Users/Administrator/.cache/eidos-method-offline-v1/output,dst=/out",
+        "public.ecr.aws/docker/library/python@sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+        "python",
+        "-I",
+        "/input/check.py",
+        "--input",
+        "/input",
+        "--sha256",
+        "592b231d548d0d103f5aa50c830fc3b891a086b95f4429cb4bc639e95a7597b8",
+        "--output",
+        "/out"
+      ],
+      "status": "COMPLETE",
+      "exit_code": 0,
+      "wall_seconds": 1.828539100009948
+    },
+    {
+      "command": [
+        "docker",
+        "container",
+        "inspect",
+        "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1"
+      ],
+      "status": "COMPLETE",
+      "exit_code": 0,
+      "wall_seconds": 0.28179539999109693
+    },
+    {
+      "command": [
+        "docker",
+        "start",
+        "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1"
+      ],
+      "status": "COMPLETE",
+      "exit_code": 0,
+      "wall_seconds": 2.2100515000056475
+    },
+    {
+      "command": [
+        "docker",
+        "wait",
+        "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1"
+      ],
+      "status": "COMPLETE",
+      "exit_code": 0,
+      "wall_seconds": 17.11004050000338
+    },
+    {
+      "command": [
+        "docker",
+        "container",
+        "inspect",
+        "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1"
+      ],
+      "status": "COMPLETE",
+      "exit_code": 0,
+      "wall_seconds": 0.328934199991636
+    },
+    {
+      "command": [
+        "docker",
+        "logs",
+        "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1"
+      ],
+      "status": "COMPLETE",
+      "exit_code": 0,
+      "wall_seconds": 0.25542550001409836
+    },
+    {
+      "command": [
+        "docker",
+        "container",
+        "inspect",
+        "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1"
+      ],
+      "status": "COMPLETE",
+      "exit_code": 0,
+      "wall_seconds": 0.3325872999848798
+    },
+    {
+      "command": [
+        "docker",
+        "rm",
+        "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1"
+      ],
+      "status": "COMPLETE",
+      "exit_code": 0,
+      "wall_seconds": 0.9773202999786008
+    },
+    {
+      "command": [
+        "docker",
+        "container",
+        "inspect",
+        "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1"
+      ],
+      "status": "COMPLETE",
+      "exit_code": 1,
+      "wall_seconds": 0.3176697999879252
+    }
+  ],
+  "new_model_inference": false,
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "scientific_promotion": false,
+  "cleanup": {
+    "removed": true,
+    "cid": "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1",
+    "inspection_exit_code": 1
+  },
+  "image": {
+    "Id": "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+    "RepoDigests": [
+      "public.ecr.aws/docker/library/python@sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337"
+    ],
+    "Os": "linux",
+    "Architecture": "amd64"
+  },
+  "docker_version": "29.9.2|29.9.2",
+  "before_start": {
+    "Id": "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1",
+    "Name": "/eidos-method-offline-e83183a6d350479c",
+    "Image": "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+    "State": {
+      "Status": "created",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "0001-01-01T00:00:00Z",
+      "FinishedAt": "0001-01-01T00:00:00Z"
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:/Users/Administrator/.cache/eidos-method-offline-v1/input",
+        "Destination": "/input",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:/Users/Administrator/.cache/eidos-method-offline-v1/output",
+        "Destination": "/out",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      }
+    ],
+    "NetworkSettings": {
+      "SandboxID": "",
+      "SandboxKey": "",
+      "Ports": {},
+      "Networks": {
+        "none": {
+          "IPAMConfig": null,
+          "Links": null,
+          "Aliases": null,
+          "DriverOpts": null,
+          "GwPriority": 0,
+          "NetworkID": "",
+          "EndpointID": "",
+          "Gateway": "",
+          "IPAddress": "",
+          "MacAddress": "",
+          "IPPrefixLen": 0,
+          "IPv6Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "DNSNames": null
+        }
+      }
+    },
+    "HostConfig": {
+      "NetworkMode": "none",
+      "ReadonlyRootfs": true,
+      "Privileged": false,
+      "Memory": 2147483648,
+      "NanoCpus": 2000000000,
+      "PidsLimit": 128,
+      "Init": true,
+      "CapDrop": [
+        "ALL"
+      ],
+      "CapAdd": null,
+      "SecurityOpt": [
+        "no-new-privileges"
+      ],
+      "Tmpfs": {
+        "/tmp": "rw,exec,nosuid,nodev,size=1073741824,mode=1777"
+      },
+      "AutoRemove": false,
+      "PortBindings": {},
+      "PidMode": "",
+      "IpcMode": "private",
+      "UsernsMode": "",
+      "RestartPolicy": {
+        "Name": "no",
+        "MaximumRetryCount": 0
+      },
+      "DeviceRequests": null
+    },
+    "Config": {
+      "Image": "public.ecr.aws/docker/library/python@sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+      "Cmd": [
+        "python",
+        "-I",
+        "/input/check.py",
+        "--input",
+        "/input",
+        "--sha256",
+        "592b231d548d0d103f5aa50c830fc3b891a086b95f4429cb4bc639e95a7597b8",
+        "--output",
+        "/out"
+      ],
+      "User": "",
+      "Labels": {
+        "eidos.owner": "e83183a6d350479cbe201799e12664a5",
+        "eidos.input-sha256": "592b231d548d0d103f5aa50c830fc3b891a086b95f4429cb4bc639e95a7597b8"
+      },
+      "EnvironmentNames": [
+        "GPG_KEY",
+        "LANG",
+        "PATH",
+        "PYTHON_SHA256",
+        "PYTHON_VERSION"
+      ]
+    }
+  },
+  "after_exit": {
+    "Id": "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1",
+    "Name": "/eidos-method-offline-e83183a6d350479c",
+    "Image": "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+    "State": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-11-01T20:49:35.915698941Z",
+      "FinishedAt": "2026-11-01T20:49:53.802592025Z"
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:/Users/Administrator/.cache/eidos-method-offline-v1/input",
+        "Destination": "/input",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:/Users/Administrator/.cache/eidos-method-offline-v1/output",
+        "Destination": "/out",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      }
+    ],
+    "NetworkSettings": {
+      "SandboxID": "",
+      "SandboxKey": "",
+      "Ports": {},
+      "Networks": {
+        "none": {
+          "IPAMConfig": null,
+          "Links": null,
+          "Aliases": null,
+          "DriverOpts": null,
+          "GwPriority": 0,
+          "NetworkID": "2a29292d2f76079efd4cc10da267ea58dd177bf45ebd93b1f2ee8c2d56e54a55",
+          "EndpointID": "",
+          "Gateway": "",
+          "IPAddress": "",
+          "MacAddress": "",
+          "IPPrefixLen": 0,
+          "IPv6Gateway": "",
+          "GlobalIPv6Address": "",
+          "GlobalIPv6PrefixLen": 0,
+          "DNSNames": null
+        }
+      }
+    },
+    "HostConfig": {
+      "NetworkMode": "none",
+      "ReadonlyRootfs": true,
+      "Privileged": false,
+      "Memory": 2147483648,
+      "NanoCpus": 2000000000,
+      "PidsLimit": 128,
+      "Init": true,
+      "CapDrop": [
+        "ALL"
+      ],
+      "CapAdd": null,
+      "SecurityOpt": [
+        "no-new-privileges"
+      ],
+      "Tmpfs": {
+        "/tmp": "rw,exec,nosuid,nodev,size=1073741824,mode=1777"
+      },
+      "AutoRemove": false,
+      "PortBindings": {},
+      "PidMode": "",
+      "IpcMode": "private",
+      "UsernsMode": "",
+      "RestartPolicy": {
+        "Name": "no",
+        "MaximumRetryCount": 0
+      },
+      "DeviceRequests": null
+    },
+    "Config": {
+      "Image": "public.ecr.aws/docker/library/python@sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+      "Cmd": [
+        "python",
+        "-I",
+        "/input/check.py",
+        "--input",
+        "/input",
+        "--sha256",
+        "592b231d548d0d103f5aa50c830fc3b891a086b95f4429cb4bc639e95a7597b8",
+        "--output",
+        "/out"
+      ],
+      "User": "",
+      "Labels": {
+        "eidos.owner": "e83183a6d350479cbe201799e12664a5",
+        "eidos.input-sha256": "592b231d548d0d103f5aa50c830fc3b891a086b95f4429cb4bc639e95a7597b8"
+      },
+      "EnvironmentNames": [
+        "GPG_KEY",
+        "LANG",
+        "PATH",
+        "PYTHON_SHA256",
+        "PYTHON_VERSION"
+      ]
+    }
+  },
+  "worker_sha256": "b8e7ea5989c19fa0613201d73c76875c18fa97829d984b65a7901a503711c55d",
+  "execution_run_id": "ebf98abb717545adabcb2fa226de8595",
+  "proposal": {
+    "status": "DEVELOPMENT_NONCONFORMING",
+    "points_evaluated": 23,
+    "joint_points": 0,
+    "accepted": false
+  },
+  "tool": {
+    "status": "DEVELOPMENT_CONFORMING",
+    "points_evaluated": 23,
+    "joint_points": 23,
+    "accepted": true
+  },
+  "wall_seconds": 24.34962500000256
+}

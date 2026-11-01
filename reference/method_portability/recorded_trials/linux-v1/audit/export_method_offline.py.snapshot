@@ -1,0 +1,167 @@
+"""Validate and archive the one observed offline Linux run, without rerunning it."""
+from pathlib import Path
+import json
+import math
+import sys
+
+ROOT=Path.cwd().resolve();sys.path.insert(0,str(ROOT))
+from reference.method_portability import check
+from reference.numerical_method_tools import runner
+
+AUDIT=ROOT/'.scratch/quality/method-offline-v1'
+CACHE=Path('C:/Users/Administrator/.cache/eidos-method-offline-v1')
+INPUT=CACHE/'input';OUTPUT=CACHE/'output'
+EXPECTED_INPUT='592b231d548d0d103f5aa50c830fc3b891a086b95f4429cb4bc639e95a7597b8'
+EXPECTED_WORKER='b8e7ea5989c19fa0613201d73c76875c18fa97829d984b65a7901a503711c55d'
+EXPECTED_CONTROLLER='f5b562dc91a7a65295d90830a56725154b30e04e08175c707b4e95f034007d23'
+EXPECTED_PLAN='3c0de75882363e999bf944dd8792d880ff2b4516d43d18a53002de80d86ee27c'
+EXPECTED_RUN='ebf98abb717545adabcb2fa226de8595'
+ARCHIVE=ROOT/'reference/method_portability/recorded_trials/linux-v1'
+QUALIFICATION_INVENTORY={'.scratch/quality/qualify_method_linux.py','.Codex/evals/method-offline-portability.md',
+    'reference/method_portability/check.py','reference/method_portability/prepare.py',
+    'reference/method_portability/test_protocol.py','framework/subprocesses.py','framework/_windows_job.py',
+    'framework/_process_tree.py','framework/_posix_job.py'}
+
+
+def require(value,reason):
+    if not value:raise RuntimeError(reason)
+
+
+manifest=check.read_input(INPUT,EXPECTED_INPUT)
+audit_raw={name:(AUDIT/name).read_bytes() for name in check.inventory(AUDIT)}
+output_raw={name:(OUTPUT/name).read_bytes() for name in check.inventory(OUTPUT)}
+require(check.sha(audit_raw['controller-result.json'])==EXPECTED_CONTROLLER,'Different controller receipt')
+require(check.sha(audit_raw['controller-plan.json'])==EXPECTED_PLAN,'Different pre-execution plan')
+require(check.sha(output_raw['linux-result.json'])==EXPECTED_WORKER,'Different worker receipt')
+controller=check.strict_json(audit_raw['controller-result.json'])
+plan=check.strict_json(audit_raw['controller-plan.json'])
+require(set(plan['qualification_sources'])==QUALIFICATION_INVENTORY,'Qualification source inventory differs')
+worker=check.strict_json(output_raw['linux-result.json'])
+require(controller['status']=='COMPLETE' and controller['runtime_accepted'] is True
+        and worker['status']=='COMPLETE' and worker['runtime_accepted'] is True
+        and controller['input_sha256']==worker['input_sha256']==plan['input_sha256']==EXPECTED_INPUT
+        and controller['worker_sha256']==EXPECTED_WORKER
+        and controller['execution_run_id']==worker['execution_run_id']==EXPECTED_RUN,
+        'Controller/worker/input identities disagree')
+for item in (controller,worker):
+    require(item['new_model_inference'] is False and item['scientific_promotion'] is False
+            and item['scientific_rsi']=='NOT_DEMONSTRATED','Unexpected scientific authority')
+require(controller['cleanup']['removed'] is True and controller['cleanup']['inspection_exit_code']==1,
+        'Owned container cleanup was not established')
+cid=controller['cleanup']['cid'];owner=controller['owner']
+require(plan['owner']==owner and plan['name']==controller['before_start']['Name'].lstrip('/'),
+        'Ownership plan and actual container differ')
+require(check.strict_json(audit_raw['removed-check.stdout.log'])==[]
+        and cid in audit_raw['removed-check.stderr.log'].decode()
+        and any(marker in audit_raw['removed-check.stderr.log'].decode().lower()
+                for marker in ('no such container','no such object')),'Absence observation is missing')
+for phase in ('create','start','remove'):
+    require(audit_raw[phase+'.stdout.log'].decode().strip()==cid,'Owned lifecycle identity differs')
+require(audit_raw['wait.stdout.log'].strip()==b'0','Container did not report exit zero')
+for key in ('before_start','after_exit'):
+    check.validate_container(controller[key],cid,owner,EXPECTED_INPUT,INPUT,OUTPUT,controller['image']['Id'])
+require(check.IMAGE in controller['image']['RepoDigests'] and controller['image']['Os']=='linux'
+        and controller['image']['Architecture']=='amd64','Public image provenance differs')
+require(worker['input_run_id']==manifest['run_id'] and worker['source_sha256']==manifest['sources']
+        and manifest['sources']==runner.source_snapshot(),'Frozen method source differs')
+require(set(output_raw)==set(worker['files'])|{'linux-result.json'},'Output inventory differs')
+for name,digest in worker['files'].items():
+    require(check.sha(output_raw[name])==digest,'Worker payload changed after qualification')
+for name,digest in plan['qualification_sources'].items():
+    check.safe_relative(name)
+    source=(ROOT/name).resolve(strict=True)
+    require(source.is_relative_to(ROOT),'Qualification source escaped the project')
+    require(check.hash_file(source)==digest,'Qualification source changed')
+record=check.validate_execution(OUTPUT/'execution',manifest,worker['reader_binding'])
+require(check.same(worker['proposal'],record['proposal']) and check.same(worker['tool'],record['tool']),
+        'Aggregate score contradicts its underlying execution')
+require(check.same(check.strict_json(output_raw['bind.stdout.log']),worker['reader_binding']),
+        'Fresh reader memory binding differs from the observed output')
+expected_cli={'run_id':EXPECTED_RUN,'proposal':record['proposal'],'tool':record['tool'],
+              'new_model_inference':False,'scientific_rsi':'NOT_DEMONSTRATED'}
+for name in ('execute','verify'):
+    require(check.same(check.strict_json(output_raw[name+'.stdout.log']),expected_cli),'Actual CLI summary differs')
+require([step['name'] for step in worker['steps']]==['venv','install','environment','wrong-pin','execute','verify','bind'],
+        'Command order/inventory differs')
+for step in worker['steps']:
+    require(step['status']=='COMPLETE' and type(step['exit_code']) is int
+            and step['exit_code']==(1 if step['name']=='wrong-pin' else 0),'Command outcome differs')
+    for channel in ('stdout','stderr'):
+        require(check.sha(output_raw[step['name']+'.'+channel+'.log'])==step[channel+'_sha256'],
+                'Command log does not bind its actual observation')
+require([item['name'] for item in worker['environment']['distributions']]==['numpy','pip']
+        and worker['environment']['numpy']==manifest['wheel']['version']
+        and worker['environment']['python']==check.TARGET['python']
+        and worker['environment']['prefix']!=worker['environment']['base_prefix']
+        and worker['environment']['user_site_enabled'] is False,'Clean environment scope differs')
+require(worker['network_probe']['connected'] is False,'Network probe was unexpectedly connected')
+
+pending=[];archived=[]
+
+
+def queue(data,name):
+    check.safe_relative(name.as_posix())
+    target=(ARCHIVE/name).resolve()
+    require(target.is_relative_to(ARCHIVE.resolve()),'Archive destination escaped its namespace')
+    require(not target.exists() or target.read_bytes()==data,'Immutable archive already differs')
+    pending.append((target,data));archived.append({'path':target.relative_to(ROOT).as_posix(),'sha256':check.sha(data)})
+
+
+for name,data in sorted(output_raw.items()):queue(data,Path('output')/name)
+for name,data in sorted(audit_raw.items()):queue(data,Path('controller')/name)
+input_raw={name:(INPUT/name).read_bytes() for name in ('input.json','source.zip','requirements.txt','check.py')}
+for name,data in input_raw.items():queue(data,Path('input')/(name+'.snapshot' if name.endswith('.py') else name))
+qualification=[]
+for name,digest in plan['qualification_sources'].items():
+    data=(ROOT/name).read_bytes();require(check.sha(data)==digest,'Qualification snapshot differs')
+    archive_name=Path('audit/controller.py.snapshot') if name.startswith('.scratch/') else Path('qualification')/(name+'.snapshot')
+    queue(data,archive_name)
+    qualification.append({'source':name,'archive':(ARCHIVE/archive_name).relative_to(ROOT).as_posix(),'sha256':digest})
+queue(Path(__file__).read_bytes(),Path('audit/export_method_offline.py.snapshot'))
+bootstrap=check.strict_json(audit_raw['bootstrap.json'])
+require(type(bootstrap['exit_code']) is int and bootstrap['exit_code']==0
+        and check.same(bootstrap['wheel'],manifest['wheel']) and bootstrap['actual_sha256']==manifest['wheel']['sha256']
+        and bootstrap['actual_bytes']==manifest['wheel']['size'],'Bootstrap pin differs')
+for duration in [worker['wall_seconds'],controller['wall_seconds'],bootstrap['wall_seconds'],
+                 *(step['wall_seconds'] for step in worker['steps'])]:
+    require(type(duration) in (int,float) and math.isfinite(duration) and duration>=0,'Invalid measured duration')
+require(worker['wall_seconds']>=sum(step['wall_seconds'] for step in worker['steps'])
+        and controller['wall_seconds']>=worker['wall_seconds'],'Nested measured durations contradict their scopes')
+study={'schema':'eidos.method-offline-study.v1','scope':'Same-host Linux container source replay with a fresh NumPy-only research environment',
+       'status':'COMPLETE','runtime_accepted':True,'new_model_inference':False,'scientific_promotion':False,
+       'scientific_rsi':'NOT_DEMONSTRATED','sealed_evaluation':'NOT_RUN','execution_run_id':EXPECTED_RUN,
+       'input_sha256':EXPECTED_INPUT,'worker_sha256':EXPECTED_WORKER,'controller_sha256':EXPECTED_CONTROLLER,
+       'plan_sha256':EXPECTED_PLAN,
+       'image':controller['image'],'docker_version':controller['docker_version'],
+       'container':{'id':cid,'owner':owner,'before_start':controller['before_start'],
+                    'after_exit':controller['after_exit'],'cleanup':controller['cleanup']},
+       'source_count':len(manifest['sources']),'qualification_sources':qualification,
+       'environment':worker['environment'],'network_probe':worker['network_probe'],
+       'proposal':worker['proposal'],'tool':worker['tool'],'steps':worker['steps'],
+       'bootstrap':bootstrap,'worker_seconds':worker['wall_seconds'],'controller_seconds':controller['wall_seconds'],
+       'controller_timing_scope':'After input preparation/plan through owned-container cleanup; excludes public wheel bootstrap',
+       'omitted_large_input':{'reason':'Wheel not redistributed; download the exact public locked bytes before offline execution',
+                              **manifest['wheel']},'archive':archived,
+       'limits':['Same physical host and trusted Docker daemon/kernel; not independent-machine or hostile-OS attestation',
+                 'Bootstrap downloads precede network isolation; no claim of a cold offline bootstrap',
+                 'One known public function and preserved response, not fresh model inference, novelty, transfer or RSI',
+                 'Source replay only; no installed Eidos wheel/new release, GPU/vector/AMP/higher-order qualification',
+                 'Temporary tmpfs/ephemeral container; no power-loss or persistence guarantee']}
+# Bracket all captured data again before any archive publication.
+check.read_input(INPUT,EXPECTED_INPUT)
+require(check.inventory(OUTPUT)==set(output_raw) and check.inventory(AUDIT)==set(audit_raw),'Artifact inventory changed')
+require(all(check.hash_file(OUTPUT/name)==check.sha(data) for name,data in output_raw.items()),'Output changed during export')
+require(all(check.hash_file(AUDIT/name)==check.sha(data) for name,data in audit_raw.items()),'Controller evidence changed during export')
+require(all((INPUT/name).read_bytes()==data for name,data in input_raw.items()),'Input changed during export')
+require(manifest['sources']==runner.source_snapshot(),'Method source changed during export')
+require(all(check.hash_file(ROOT/name)==digest for name,digest in plan['qualification_sources'].items()),
+        'Qualification source changed during export')
+require(len({item['path'] for item in archived})==len(archived),'Archive names collide')
+for target,data in pending:
+    target.parent.mkdir(parents=True,exist_ok=True)
+    if target.exists():require(target.read_bytes()==data,'Archive changed during publication')
+    else:
+        with target.open('xb') as stream:stream.write(data)
+(ROOT/'docs/METHOD-OFFLINE-PORTABILITY-2026-11-02.json').write_bytes(check.encoded(study))
+print(json.dumps({'runtime_accepted':True,'proposal':study['proposal'],'tool':study['tool'],
+                  'archive_files':len(archived),'wheel_included':False}))

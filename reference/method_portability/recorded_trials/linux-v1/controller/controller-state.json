@@ -1,0 +1,10 @@
+{
+  "phase": "COMPLETE",
+  "cid": "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1",
+  "owner": "e83183a6d350479cbe201799e12664a5",
+  "cleanup": {
+    "removed": true,
+    "cid": "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1",
+    "inspection_exit_code": 1
+  }
+}

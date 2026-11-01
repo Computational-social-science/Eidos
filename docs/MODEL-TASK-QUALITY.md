@@ -40,6 +40,13 @@ qualifies bounded deterministic formula translation/execution, not model
 competence, autonomous tool selection or an improvement procedure. The source
 prototype has 68 controls; the combined RSI/compiler suite passed 248 tests.
 
+The subsequent [offline Linux replay](https://github.com/Computational-social-science/Eidos/blob/main/docs/METHOD-OFFLINE-PORTABILITY-2026-11-02.md)
+qualified this source tool in a fresh NumPy+pip venv with runtime networking
+disabled and a real wrong-pin rejection control. The original proposal remains
+0/23; the separately attributed tool remains 23/23. This adds no new model trial,
+selection authority or RSI evidence. Public bootstrap and same-host container
+scope are explicit; the combined control suite now passes 304 cases.
+
 EIDOS has no task-qualified autonomous research reasoner. The legacy stage/model
 table was a proposed routing list, not an executed capability measurement. Model
 presence, endpoint health, general benchmarks and task acceptance are different

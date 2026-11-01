@@ -134,6 +134,14 @@ automatic differentiation occurred. Next qualify bounded local tool selection
 and assistance attribution, then the anti-stagnation feedback policy. This is
 not a new installed-wheel capability or EIDOS-generated C1/C2.
 
+The [offline Linux source replay](METHOD-OFFLINE-PORTABILITY-2026-11-02.md)
+has now completed in a fresh NumPy+pip venv, using a public pinned image/wheel,
+network-disabled execution and an actual wrong-input-pin control. All expected
+CLI/reader outcomes and owned cleanup were checked, with 304 combined controls.
+This closes the tool's same-host Linux source-execution gap. It does not qualify
+the generative model runtime, an installed EIDOS wheel, an independent machine
+or RSI; those remain separate work items.
+
 ## 3. Why extended development left important defects
 
 These are evidence-backed failure patterns, not an attribution of every defect

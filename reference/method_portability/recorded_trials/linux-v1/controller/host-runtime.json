@@ -1,0 +1,8 @@
+{
+  "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+  "executable": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+  "platform": "Windows-11-10.0.27891-SP0",
+  "numpy": "2.5.4",
+  "packaging": "26.3",
+  "seed": "not applicable; deterministic preparation/replay, random owner IDs only"
+}

@@ -440,3 +440,16 @@ Whole-core typed receipt comparison and beginning/end source/input/output
 stability checks close detected evidence-coherence defects. The tool is a
 source-checkout prototype: live-model method selection, installed-wheel/new-machine
 acceptance, general symbolic derivation, sealed transfer and RSI remain open.
+
+The subsequent [offline Linux tool acceptance](https://github.com/Computational-social-science/Eidos/blob/main/docs/METHOD-OFFLINE-PORTABILITY-2026-11-02.md)
+executed the actual recorded-response CLI, wrong-pin negative control and fresh
+readers in a new venv containing NumPy 2.5.4 and pip 25.0.1 only. The owned container
+used a public digest-pinned Python 3.12.16 image, disabled runtime networking,
+read-only root/input, bounded resources and private tmpfs. Parent inspections,
+verified in-memory artifact handoff, source/input/output hashes and explicit
+missing-container cleanup observations passed; 304 scoped controls passed before
+execution. Original proposal 0/23 and separate external tool 23/23 remain distinct.
+Initial public wheel/image bootstrap is outside the offline claim. This qualifies
+same-host Linux source replay, with 79 archived evidence files and no new model
+inference, resident-service restart or CRON. Independent-machine/installed-wheel
+acceptance, generative model portability, live tool choice and RSI remain open.

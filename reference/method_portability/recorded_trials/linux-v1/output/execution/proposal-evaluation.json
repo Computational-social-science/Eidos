@@ -1,0 +1,688 @@
+{
+  "core": {
+    "schema": "eidos.rsi.c0.development-core.v1",
+    "observed_at": "2026-11-01T20:49:44.362545+00:00",
+    "status": "DEVELOPMENT_NONCONFORMING",
+    "source_before": {
+      "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference/rsi_bootstrap/local_runtime.py": "400e0331ee91c42f38a5a6075ba307762c83c8a2f12cad01bf710a3e541a80cb",
+      "reference/rsi_bootstrap/local_worker.py": "f15b7a6dd2fcb8539c44c70efddc49aacb5dfb6c4ef252f185e9dab48210406e",
+      "reference/rsi_bootstrap/method_campaign.py": "1f0c53ab3800f3574c7039004856c6a8d308fd47992aeb3f6f49a1d2bb0285dc",
+      "reference/rsi_bootstrap/request_context.py": "ebb79063566730521f6c4872d07e4a8ae6a27f2710107b08955ad4bb5055b74c",
+      "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference/rsi_bootstrap/test_local_runtime.py": "c1a5d18a305461eaaabbcf0967e72cd72693d2cdf63543b5d774f221078f0f25",
+      "reference/rsi_bootstrap/test_method_campaign.py": "2f925e9c4b07a38eafe290eb53b669ca454f29d9ef101992a9a35fc8333b24c5",
+      "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+    },
+    "prompt": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n",
+    "raw_response": "{\n \"program\": {\n\"loss\": {\n\"op\": \"where\",\n\"args\": [\n{\n\"op\": \"le\",\n\"args\": [\n{\"input\": \"x\"},\n{\"const\": 0.6931471805599453}\n]\n},\n{\n\"op\": \"log\",\n\"args\": [\n{\n\"op\": \"neg\",\n\"args\": [\n{\n\"op\": \"expm1\",\n\"args\": [\n{\n\"op\": \"neg\",\n\"args\": [\n{\"input\": \"x\"}\n]\n}\n]\n}\n]\n}\n]\n},\n{\n\"op\": \"log1p\",\n\"args\": [\n{\n\"op\": \"neg\",\n\"args\": [\n{\n\"op\": \"exp\",\n\"args\": [\n{\n\"op\": \"neg\",\n\"args\": [\n{\"input\": \"x\"}\n]\n}\n]\n}\n]\n}\n]\n}\n]\n},\n\"gradient\": {\n\"op\": \"where\",\n\"args\": [\n{\n\"op\": \"le\",\n\"args\": [\n{\"input\": \"x\"},\n{\"const\": 0.6931471805599453}\n]\n},\n{\n\"op\": \"div\",\n\"args\": [\n{\n\"op\": \"exp\",\n\"args\": [\n{\n\"input\": \"x\"\n}\n]\n},\n{\n\"op\": \"neg\",\n\"args\": [\n{\n\"const\": 1\n}\n]\n}\n]\n},\n{\n\"op\": \"div\",\n\"args\": [\n{\n\"op\": \"exp\",\n\"args\": [\n{\n\"input\": \"x\"\n}\n]\n},\n{\n\"op\": \"neg\",\n\"args\": [\n{\n\"const\": 1\n}\n]\n}\n]\n}\n]\n}\n},\n\"explanation\": \"The proposed repair uses Macherl s piecewise method for log(1-exp(-x)) to avoid loss of significant digits. For x 0.693147180559\" \n}",
+    "points": [
+      {
+        "case": "float32-small-0",
+        "dtype": "float32",
+        "represented_input": 1.0000000031710769e-30,
+        "passed": false,
+        "loss_relative_error": 1.2681199929677224e-10,
+        "gradient_relative_error": 1.0,
+        "reason": "relative error",
+        "actual_outputs": [
+          -69.07755279541016,
+          -1.0
+        ]
+      },
+      {
+        "case": "float32-small-1",
+        "dtype": "float32",
+        "represented_input": 9.999999960041972e-13,
+        "passed": false,
+        "loss_relative_error": 1.3742124708259266e-08,
+        "gradient_relative_error": 1.000000000001,
+        "reason": "relative error",
+        "actual_outputs": [
+          -27.63102149963379,
+          -1.0
+        ]
+      },
+      {
+        "case": "float32-small-2",
+        "dtype": "float32",
+        "represented_input": 9.99999993922529e-09,
+        "passed": false,
+        "loss_relative_error": 1.32853951600674e-08,
+        "gradient_relative_error": 1.00000001,
+        "reason": "relative error",
+        "actual_outputs": [
+          -18.42068099975586,
+          -1.0
+        ]
+      },
+      {
+        "case": "float32-small-3",
+        "dtype": "float32",
+        "represented_input": 9.999999747378752e-06,
+        "passed": false,
+        "loss_relative_error": 3.2991434462980414e-08,
+        "gradient_relative_error": 1.000010000149884,
+        "reason": "relative error",
+        "actual_outputs": [
+          -11.512930870056152,
+          -1.0000100135803223
+        ]
+      },
+      {
+        "case": "float32-small-4",
+        "dtype": "float32",
+        "represented_input": 0.10000000149011612,
+        "passed": false,
+        "loss_relative_error": 4.810561254730654e-08,
+        "gradient_relative_error": 1.1162318468601085,
+        "reason": "relative error",
+        "actual_outputs": [
+          -2.352168560028076,
+          -1.1051709651947021
+        ]
+      },
+      {
+        "case": "float32-cutoff-below",
+        "dtype": "float32",
+        "represented_input": 0.6931471228599548,
+        "passed": false,
+        "loss_relative_error": 5.495665365686568e-09,
+        "gradient_relative_error": 2.999999649990769,
+        "reason": "relative error",
+        "actual_outputs": [
+          -0.6931472420692444,
+          -1.9999998807907104
+        ]
+      },
+      {
+        "case": "float32-cutoff-above",
+        "dtype": "float32",
+        "represented_input": 0.6931472420692444,
+        "passed": false,
+        "loss_relative_error": 5.495665655711309e-09,
+        "gradient_relative_error": 3.000000246037204,
+        "reason": "relative error",
+        "actual_outputs": [
+          -0.6931471228599548,
+          -2.0
+        ]
+      },
+      {
+        "case": "float32-x-1",
+        "dtype": "float32",
+        "represented_input": 1.0,
+        "passed": false,
+        "loss_relative_error": 6.341415988593187e-08,
+        "gradient_relative_error": 5.6707745383005,
+        "reason": "relative error",
+        "actual_outputs": [
+          -0.4586751163005829,
+          -2.7182819843292236
+        ]
+      },
+      {
+        "case": "float32-x-20",
+        "dtype": "float32",
+        "represented_input": 20.0,
+        "passed": false,
+        "loss_relative_error": 3.279960020038934e-08,
+        "gradient_relative_error": 2.353852763415079e+17,
+        "reason": "relative error",
+        "actual_outputs": [
+          -2.06115369216775e-09,
+          -485165216.0
+        ]
+      },
+      {
+        "case": "float32-x-50",
+        "dtype": "float32",
+        "represented_input": 50.0,
+        "passed": false,
+        "loss_relative_error": 2.3533285418565336e-08,
+        "gradient_relative_error": 2.688117105045413e+43,
+        "reason": "relative error",
+        "actual_outputs": [
+          -1.9287498933537385e-22,
+          -5.184705457665547e+21
+        ]
+      },
+      {
+        "case": "float32-x-80",
+        "dtype": "float32",
+        "represented_input": 80.0,
+        "passed": false,
+        "loss_relative_error": 4.6669985540386757e-08,
+        "gradient_relative_error": 3.069849696207404e+69,
+        "reason": "relative error",
+        "actual_outputs": [
+          -1.8048514720778033e-35,
+          -5.540622484676759e+34
+        ]
+      },
+      {
+        "case": "float64-small-0",
+        "dtype": "float64",
+        "represented_input": 1e-100,
+        "passed": false,
+        "loss_relative_error": 4.807385026031791e-17,
+        "gradient_relative_error": 1.0,
+        "reason": "relative error",
+        "actual_outputs": [
+          -230.25850929940458,
+          -1.0
+        ]
+      },
+      {
+        "case": "float64-small-1",
+        "dtype": "float64",
+        "represented_input": 1e-16,
+        "passed": false,
+        "loss_relative_error": 9.235021743842541e-17,
+        "gradient_relative_error": 1.0,
+        "reason": "relative error",
+        "actual_outputs": [
+          -36.841361487904734,
+          -1.0
+        ]
+      },
+      {
+        "case": "float64-small-2",
+        "dtype": "float64",
+        "represented_input": 1e-12,
+        "passed": false,
+        "loss_relative_error": 1.2772185310188677e-18,
+        "gradient_relative_error": 1.000000000001,
+        "reason": "relative error",
+        "actual_outputs": [
+          -27.631021115929048,
+          -1.000000000001
+        ]
+      },
+      {
+        "case": "float64-small-3",
+        "dtype": "float64",
+        "represented_input": 1e-08,
+        "passed": false,
+        "loss_relative_error": 7.477018012949381e-17,
+        "gradient_relative_error": 1.0000000100000002,
+        "reason": "relative error",
+        "actual_outputs": [
+          -18.420680748952364,
+          -1.00000001
+        ]
+      },
+      {
+        "case": "float64-small-4",
+        "dtype": "float64",
+        "represented_input": 0.1,
+        "passed": false,
+        "loss_relative_error": 1.5674043417414208e-17,
+        "gradient_relative_error": 1.1162318400845221,
+        "reason": "relative error",
+        "actual_outputs": [
+          -2.3521684610440907,
+          -1.1051709180756477
+        ]
+      },
+      {
+        "case": "float64-cutoff-below",
+        "dtype": "float64",
+        "represented_input": 0.6931471805599452,
+        "passed": false,
+        "loss_relative_error": 6.691354675850816e-17,
+        "gradient_relative_error": 2.999999999999999,
+        "reason": "relative error",
+        "actual_outputs": [
+          -0.6931471805599454,
+          -1.9999999999999998
+        ]
+      },
+      {
+        "case": "float64-cutoff-above",
+        "dtype": "float64",
+        "represented_input": 0.6931471805599454,
+        "passed": false,
+        "loss_relative_error": 6.691354675850817e-17,
+        "gradient_relative_error": 3.0000000000000004,
+        "reason": "relative error",
+        "actual_outputs": [
+          -0.6931471805599452,
+          -2.0
+        ]
+      },
+      {
+        "case": "float64-x-1",
+        "dtype": "float64",
+        "represented_input": 1.0,
+        "passed": false,
+        "loss_relative_error": 8.147941016993912e-17,
+        "gradient_relative_error": 5.670774270471605,
+        "reason": "relative error",
+        "actual_outputs": [
+          -0.45867514538708193,
+          -2.718281828459045
+        ]
+      },
+      {
+        "case": "float64-x-20",
+        "dtype": "float64",
+        "represented_input": 20.0,
+        "passed": false,
+        "loss_relative_error": 1.1168369270701502e-17,
+        "gradient_relative_error": 2.353852663518548e+17,
+        "reason": "relative error",
+        "actual_outputs": [
+          -2.061153624562735e-09,
+          -485165195.4097903
+        ]
+      },
+      {
+        "case": "float64-x-50",
+        "dtype": "float64",
+        "represented_input": 50.0,
+        "passed": false,
+        "loss_relative_error": 1.9466451342602354e-17,
+        "gradient_relative_error": 2.688117141816135e+43,
+        "reason": "relative error",
+        "actual_outputs": [
+          -1.9287498479639178e-22,
+          -5.184705528587072e+21
+        ]
+      },
+      {
+        "case": "float64-x-80",
+        "dtype": "float64",
+        "represented_input": 80.0,
+        "passed": false,
+        "loss_relative_error": 7.00146489005354e-17,
+        "gradient_relative_error": 3.0698496406442424e+69,
+        "reason": "relative error",
+        "actual_outputs": [
+          -1.8048513878454153e-35,
+          -5.54062238439351e+34
+        ]
+      },
+      {
+        "case": "float64-x-600",
+        "dtype": "float64",
+        "represented_input": 600.0,
+        "passed": false,
+        "loss_relative_error": 2.406184391638477e-17,
+        "gradient_relative_error": null,
+        "reason": "relative error",
+        "diagnostic_range_error": [
+          "gradient_relative_error"
+        ],
+        "actual_outputs": [
+          -2.6503965530043108e-261,
+          -3.7730203009299397e+260
+        ]
+      }
+    ],
+    "retained_for_development": false,
+    "scientific_promotion": false,
+    "model_execution_attested": false,
+    "sealed_evaluation": "NOT_RUN",
+    "scientific_rsi": "NOT_DEMONSTRATED",
+    "provider_calls": 1,
+    "response_characters": 908,
+    "explanation": "The proposed repair uses Macherl s piecewise method for log(1-exp(-x)) to avoid loss of significant digits. For x 0.693147180559",
+    "baseline_conforming_points": 8,
+    "candidate_conforming_points": 0,
+    "wall_seconds": 0.05132642399985343,
+    "source_after": {
+      "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference/rsi_bootstrap/local_runtime.py": "400e0331ee91c42f38a5a6075ba307762c83c8a2f12cad01bf710a3e541a80cb",
+      "reference/rsi_bootstrap/local_worker.py": "f15b7a6dd2fcb8539c44c70efddc49aacb5dfb6c4ef252f185e9dab48210406e",
+      "reference/rsi_bootstrap/method_campaign.py": "1f0c53ab3800f3574c7039004856c6a8d308fd47992aeb3f6f49a1d2bb0285dc",
+      "reference/rsi_bootstrap/request_context.py": "ebb79063566730521f6c4872d07e4a8ae6a27f2710107b08955ad4bb5055b74c",
+      "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference/rsi_bootstrap/test_local_runtime.py": "c1a5d18a305461eaaabbcf0967e72cd72693d2cdf63543b5d774f221078f0f25",
+      "reference/rsi_bootstrap/test_method_campaign.py": "2f925e9c4b07a38eafe290eb53b669ca454f29d9ef101992a9a35fc8333b24c5",
+      "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+    }
+  },
+  "sign_checks": [
+    {
+      "case": "float32-small-0",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float32-small-1",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float32-small-2",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float32-small-3",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float32-small-4",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float32-cutoff-below",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float32-cutoff-above",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float32-x-1",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float32-x-20",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float32-x-50",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float32-x-80",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float64-small-0",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float64-small-1",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float64-small-2",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float64-small-3",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float64-small-4",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float64-cutoff-below",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float64-cutoff-above",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float64-x-1",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float64-x-20",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float64-x-50",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float64-x-80",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": false
+    },
+    {
+      "case": "float64-x-600",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": false
+    }
+  ],
+  "reference_convergence": [
+    {
+      "case": "float32-small-0",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-small-1",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-small-2",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-small-3",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-small-4",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-cutoff-below",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-cutoff-above",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-x-1",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-x-20",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-x-50",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-x-80",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-small-0",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-small-1",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-small-2",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-small-3",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-small-4",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-cutoff-below",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-cutoff-above",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-x-1",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-x-20",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-x-50",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-x-80",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-x-600",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    }
+  ],
+  "summary": {
+    "status": "DEVELOPMENT_NONCONFORMING",
+    "points_evaluated": 23,
+    "joint_points": 0,
+    "accepted": false
+  }
+}

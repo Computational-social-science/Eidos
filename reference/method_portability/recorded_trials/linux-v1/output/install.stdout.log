@@ -1,0 +1,4 @@
+Looking in links: /input/wheels
+Processing /input/wheels/numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (from -r /input/requirements.txt (line 1))
+Installing collected packages: numpy
+Successfully installed numpy-2.5.4

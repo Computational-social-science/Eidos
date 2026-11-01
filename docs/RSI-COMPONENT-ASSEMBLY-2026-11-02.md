@@ -20,6 +20,13 @@ tool program at 23/23, with preserved attribution and fresh-reader acceptance.
 It requires no new dependency or model inference. Live-model tool choice,
 framework/wheel promotion, sealed transfer and RSI still need qualification.
 
+The [offline Linux replay](METHOD-OFFLINE-PORTABILITY-2026-11-02.md) now confirms
+this known-method source tool in a fresh NumPy+pip environment, with runtime
+networking disabled. Public bootstrap is pinned separately. Same-host container
+execution does not close independent-machine, installed-wheel or live-model
+qualification, and no additional model inference or upstream system installation
+occurred.
+
 ## Decision
 
 Use a small composition: **existing Paper2Agent artifacts + source-grounded

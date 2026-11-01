@@ -1,0 +1,866 @@
+{
+  "schema": "eidos.method-offline-study.v1",
+  "scope": "Same-host Linux container source replay with a fresh NumPy-only research environment",
+  "status": "COMPLETE",
+  "runtime_accepted": true,
+  "new_model_inference": false,
+  "scientific_promotion": false,
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "sealed_evaluation": "NOT_RUN",
+  "execution_run_id": "ebf98abb717545adabcb2fa226de8595",
+  "input_sha256": "592b231d548d0d103f5aa50c830fc3b891a086b95f4429cb4bc639e95a7597b8",
+  "worker_sha256": "b8e7ea5989c19fa0613201d73c76875c18fa97829d984b65a7901a503711c55d",
+  "controller_sha256": "f5b562dc91a7a65295d90830a56725154b30e04e08175c707b4e95f034007d23",
+  "plan_sha256": "3c0de75882363e999bf944dd8792d880ff2b4516d43d18a53002de80d86ee27c",
+  "image": {
+    "Id": "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+    "RepoDigests": [
+      "public.ecr.aws/docker/library/python@sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337"
+    ],
+    "Os": "linux",
+    "Architecture": "amd64"
+  },
+  "docker_version": "29.9.2|29.9.2",
+  "container": {
+    "id": "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1",
+    "owner": "e83183a6d350479cbe201799e12664a5",
+    "before_start": {
+      "Id": "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1",
+      "Name": "/eidos-method-offline-e83183a6d350479c",
+      "Image": "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+      "State": {
+        "Status": "created",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "0001-01-01T00:00:00Z",
+        "FinishedAt": "0001-01-01T00:00:00Z"
+      },
+      "Mounts": [
+        {
+          "Type": "bind",
+          "Source": "C:/Users/Administrator/.cache/eidos-method-offline-v1/input",
+          "Destination": "/input",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "C:/Users/Administrator/.cache/eidos-method-offline-v1/output",
+          "Destination": "/out",
+          "Mode": "",
+          "RW": true,
+          "Propagation": "rprivate"
+        }
+      ],
+      "NetworkSettings": {
+        "SandboxID": "",
+        "SandboxKey": "",
+        "Ports": {},
+        "Networks": {
+          "none": {
+            "IPAMConfig": null,
+            "Links": null,
+            "Aliases": null,
+            "DriverOpts": null,
+            "GwPriority": 0,
+            "NetworkID": "",
+            "EndpointID": "",
+            "Gateway": "",
+            "IPAddress": "",
+            "MacAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "DNSNames": null
+          }
+        }
+      },
+      "HostConfig": {
+        "NetworkMode": "none",
+        "ReadonlyRootfs": true,
+        "Privileged": false,
+        "Memory": 2147483648,
+        "NanoCpus": 2000000000,
+        "PidsLimit": 128,
+        "Init": true,
+        "CapDrop": [
+          "ALL"
+        ],
+        "CapAdd": null,
+        "SecurityOpt": [
+          "no-new-privileges"
+        ],
+        "Tmpfs": {
+          "/tmp": "rw,exec,nosuid,nodev,size=1073741824,mode=1777"
+        },
+        "AutoRemove": false,
+        "PortBindings": {},
+        "PidMode": "",
+        "IpcMode": "private",
+        "UsernsMode": "",
+        "RestartPolicy": {
+          "Name": "no",
+          "MaximumRetryCount": 0
+        },
+        "DeviceRequests": null
+      },
+      "Config": {
+        "Image": "public.ecr.aws/docker/library/python@sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+        "Cmd": [
+          "python",
+          "-I",
+          "/input/check.py",
+          "--input",
+          "/input",
+          "--sha256",
+          "592b231d548d0d103f5aa50c830fc3b891a086b95f4429cb4bc639e95a7597b8",
+          "--output",
+          "/out"
+        ],
+        "User": "",
+        "Labels": {
+          "eidos.owner": "e83183a6d350479cbe201799e12664a5",
+          "eidos.input-sha256": "592b231d548d0d103f5aa50c830fc3b891a086b95f4429cb4bc639e95a7597b8"
+        },
+        "EnvironmentNames": [
+          "GPG_KEY",
+          "LANG",
+          "PATH",
+          "PYTHON_SHA256",
+          "PYTHON_VERSION"
+        ]
+      }
+    },
+    "after_exit": {
+      "Id": "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1",
+      "Name": "/eidos-method-offline-e83183a6d350479c",
+      "Image": "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+      "State": {
+        "Status": "exited",
+        "Running": false,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 0,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-11-01T20:49:35.915698941Z",
+        "FinishedAt": "2026-11-01T20:49:53.802592025Z"
+      },
+      "Mounts": [
+        {
+          "Type": "bind",
+          "Source": "C:/Users/Administrator/.cache/eidos-method-offline-v1/input",
+          "Destination": "/input",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "C:/Users/Administrator/.cache/eidos-method-offline-v1/output",
+          "Destination": "/out",
+          "Mode": "",
+          "RW": true,
+          "Propagation": "rprivate"
+        }
+      ],
+      "NetworkSettings": {
+        "SandboxID": "",
+        "SandboxKey": "",
+        "Ports": {},
+        "Networks": {
+          "none": {
+            "IPAMConfig": null,
+            "Links": null,
+            "Aliases": null,
+            "DriverOpts": null,
+            "GwPriority": 0,
+            "NetworkID": "2a29292d2f76079efd4cc10da267ea58dd177bf45ebd93b1f2ee8c2d56e54a55",
+            "EndpointID": "",
+            "Gateway": "",
+            "IPAddress": "",
+            "MacAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "DNSNames": null
+          }
+        }
+      },
+      "HostConfig": {
+        "NetworkMode": "none",
+        "ReadonlyRootfs": true,
+        "Privileged": false,
+        "Memory": 2147483648,
+        "NanoCpus": 2000000000,
+        "PidsLimit": 128,
+        "Init": true,
+        "CapDrop": [
+          "ALL"
+        ],
+        "CapAdd": null,
+        "SecurityOpt": [
+          "no-new-privileges"
+        ],
+        "Tmpfs": {
+          "/tmp": "rw,exec,nosuid,nodev,size=1073741824,mode=1777"
+        },
+        "AutoRemove": false,
+        "PortBindings": {},
+        "PidMode": "",
+        "IpcMode": "private",
+        "UsernsMode": "",
+        "RestartPolicy": {
+          "Name": "no",
+          "MaximumRetryCount": 0
+        },
+        "DeviceRequests": null
+      },
+      "Config": {
+        "Image": "public.ecr.aws/docker/library/python@sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+        "Cmd": [
+          "python",
+          "-I",
+          "/input/check.py",
+          "--input",
+          "/input",
+          "--sha256",
+          "592b231d548d0d103f5aa50c830fc3b891a086b95f4429cb4bc639e95a7597b8",
+          "--output",
+          "/out"
+        ],
+        "User": "",
+        "Labels": {
+          "eidos.owner": "e83183a6d350479cbe201799e12664a5",
+          "eidos.input-sha256": "592b231d548d0d103f5aa50c830fc3b891a086b95f4429cb4bc639e95a7597b8"
+        },
+        "EnvironmentNames": [
+          "GPG_KEY",
+          "LANG",
+          "PATH",
+          "PYTHON_SHA256",
+          "PYTHON_VERSION"
+        ]
+      }
+    },
+    "cleanup": {
+      "removed": true,
+      "cid": "4ab68d1e35c8e305361ed64475ca7e6f815331a0f33a94fc47f1c0089dc768a1",
+      "inspection_exit_code": 1
+    }
+  },
+  "source_count": 25,
+  "qualification_sources": [
+    {
+      "source": ".scratch/quality/qualify_method_linux.py",
+      "archive": "reference/method_portability/recorded_trials/linux-v1/audit/controller.py.snapshot",
+      "sha256": "45ae9ece895c6053fa6464b6b8fbf9ae28cee27e95c666a1a7a5d7616e303624"
+    },
+    {
+      "source": ".Codex/evals/method-offline-portability.md",
+      "archive": "reference/method_portability/recorded_trials/linux-v1/qualification/.Codex/evals/method-offline-portability.md.snapshot",
+      "sha256": "e94d7c467c4819b33300d16118cae5a5daa4124e9cd6d2aaedec8c66a5a3f988"
+    },
+    {
+      "source": "reference/method_portability/check.py",
+      "archive": "reference/method_portability/recorded_trials/linux-v1/qualification/reference/method_portability/check.py.snapshot",
+      "sha256": "cc91f4d0ea75b00349c2e04566fc3856f0e8f17628d32dfc3d50e0db72a11952"
+    },
+    {
+      "source": "reference/method_portability/prepare.py",
+      "archive": "reference/method_portability/recorded_trials/linux-v1/qualification/reference/method_portability/prepare.py.snapshot",
+      "sha256": "222376bd2abba6a1a8cd5ad298744166b7c160c8ce43206161c77004a759125e"
+    },
+    {
+      "source": "reference/method_portability/test_protocol.py",
+      "archive": "reference/method_portability/recorded_trials/linux-v1/qualification/reference/method_portability/test_protocol.py.snapshot",
+      "sha256": "25560524e29c67d0685721092331c5f27df3b4b5307db4b804369aaa7b03eef6"
+    },
+    {
+      "source": "framework/subprocesses.py",
+      "archive": "reference/method_portability/recorded_trials/linux-v1/qualification/framework/subprocesses.py.snapshot",
+      "sha256": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6"
+    },
+    {
+      "source": "framework/_windows_job.py",
+      "archive": "reference/method_portability/recorded_trials/linux-v1/qualification/framework/_windows_job.py.snapshot",
+      "sha256": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5"
+    },
+    {
+      "source": "framework/_process_tree.py",
+      "archive": "reference/method_portability/recorded_trials/linux-v1/qualification/framework/_process_tree.py.snapshot",
+      "sha256": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a"
+    },
+    {
+      "source": "framework/_posix_job.py",
+      "archive": "reference/method_portability/recorded_trials/linux-v1/qualification/framework/_posix_job.py.snapshot",
+      "sha256": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b"
+    }
+  ],
+  "environment": {
+    "python": "3.12.16",
+    "numpy": "2.5.4",
+    "executable": "/tmp/eidos-method-91nxdnj5/venv/bin/python",
+    "prefix": "/tmp/eidos-method-91nxdnj5/venv",
+    "base_prefix": "/usr/local",
+    "user_site_enabled": false,
+    "distributions": [
+      {
+        "name": "numpy",
+        "version": "2.5.4"
+      },
+      {
+        "name": "pip",
+        "version": "25.0.1"
+      }
+    ]
+  },
+  "network_probe": {
+    "connected": false,
+    "error_type": "OSError",
+    "errno": 101
+  },
+  "proposal": {
+    "status": "DEVELOPMENT_NONCONFORMING",
+    "points_evaluated": 23,
+    "joint_points": 0,
+    "accepted": false
+  },
+  "tool": {
+    "status": "DEVELOPMENT_CONFORMING",
+    "points_evaluated": 23,
+    "joint_points": 23,
+    "accepted": true
+  },
+  "steps": [
+    {
+      "name": "venv",
+      "command": [
+        "/usr/local/bin/python",
+        "-I",
+        "-m",
+        "venv",
+        "/tmp/eidos-method-91nxdnj5/venv"
+      ],
+      "status": "COMPLETE",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "wall_seconds": 2.8359796759905294,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "install",
+      "command": [
+        "/tmp/eidos-method-91nxdnj5/venv/bin/python",
+        "-I",
+        "-m",
+        "pip",
+        "--isolated",
+        "--disable-pip-version-check",
+        "install",
+        "--no-index",
+        "--no-deps",
+        "--require-hashes",
+        "--no-cache-dir",
+        "--only-binary",
+        ":all:",
+        "--find-links",
+        "/input/wheels",
+        "-r",
+        "/input/requirements.txt"
+      ],
+      "status": "COMPLETE",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "wall_seconds": 2.0919575830048416,
+      "stdout_sha256": "8ac2a9fd60b622a37d2f3a2b0224ed98570588aa48a3a2c11a7d596fd42a9d09",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "environment",
+      "command": [
+        "/tmp/eidos-method-91nxdnj5/venv/bin/python",
+        "-I",
+        "-B",
+        "/tmp/eidos-method-91nxdnj5/entry.py",
+        "/tmp/eidos-method-91nxdnj5/source",
+        "/input/input.json",
+        "environment"
+      ],
+      "status": "COMPLETE",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "wall_seconds": 0.3485811770078726,
+      "stdout_sha256": "3f5ea997728020d8b26206b4a4e52162c1e3a7a4d735db3f91620ea18b1a27df",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "wrong-pin",
+      "command": [
+        "/tmp/eidos-method-91nxdnj5/venv/bin/python",
+        "-I",
+        "-B",
+        "/tmp/eidos-method-91nxdnj5/entry.py",
+        "/tmp/eidos-method-91nxdnj5/source",
+        "/input/input.json",
+        "execute",
+        "--response",
+        "/tmp/eidos-method-91nxdnj5/source/reference/rsi_bootstrap/recorded_trials/rsi-retrieval-feedback-v1/retrieval-feedback-1/response.json",
+        "--method",
+        "log1mexp-v1",
+        "--sha256",
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "--output",
+        "/out/rejected"
+      ],
+      "status": "COMPLETE",
+      "expected_exit_code": 1,
+      "exit_code": 1,
+      "wall_seconds": 0.27888017101213336,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "47afac7f774d88c6a950cddac981983e8514fe72dbb5e92bdda2514aca58228c"
+    },
+    {
+      "name": "execute",
+      "command": [
+        "/tmp/eidos-method-91nxdnj5/venv/bin/python",
+        "-I",
+        "-B",
+        "/tmp/eidos-method-91nxdnj5/entry.py",
+        "/tmp/eidos-method-91nxdnj5/source",
+        "/input/input.json",
+        "execute",
+        "--response",
+        "/tmp/eidos-method-91nxdnj5/source/reference/rsi_bootstrap/recorded_trials/rsi-retrieval-feedback-v1/retrieval-feedback-1/response.json",
+        "--method",
+        "log1mexp-v1",
+        "--sha256",
+        "173cbf478e059a16fb9fe8ed2b5f4ba5213b4f034240c47b6c9154e10999e13a",
+        "--output",
+        "/out/execution"
+      ],
+      "status": "COMPLETE",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "wall_seconds": 1.9227627880172804,
+      "stdout_sha256": "0846584e5f56da4b89eb94729f6329551a7f901e6e4a482032854155c8e92862",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "verify",
+      "command": [
+        "/tmp/eidos-method-91nxdnj5/venv/bin/python",
+        "-I",
+        "-B",
+        "/tmp/eidos-method-91nxdnj5/entry.py",
+        "/tmp/eidos-method-91nxdnj5/source",
+        "/input/input.json",
+        "verify",
+        "--verify",
+        "/out/execution"
+      ],
+      "status": "COMPLETE",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "wall_seconds": 2.4110291230026633,
+      "stdout_sha256": "0846584e5f56da4b89eb94729f6329551a7f901e6e4a482032854155c8e92862",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "bind",
+      "command": [
+        "/tmp/eidos-method-91nxdnj5/venv/bin/python",
+        "-I",
+        "-B",
+        "/tmp/eidos-method-91nxdnj5/entry.py",
+        "/tmp/eidos-method-91nxdnj5/source",
+        "/input/input.json",
+        "bind",
+        "/out/execution"
+      ],
+      "status": "COMPLETE",
+      "expected_exit_code": 0,
+      "exit_code": 0,
+      "wall_seconds": 3.0206787920033094,
+      "stdout_sha256": "16331ef8494d510127c0fffd2180a4a76f7e5efe109df268d3c3095b1f9870af",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "bootstrap": {
+    "scope": "Public pinned dependency bootstrap BEFORE offline execution",
+    "wheel": {
+      "version": "2.5.4",
+      "filename": "numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/43/a3/c799c62e19c337e6d3770b08e475887fb30ce8477d3c09efca6b2f0228a6/numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "fbde6962867ee75b48b0ee29b2b9372ec5d617799dbaf38e82dc0596f2f7738a",
+      "size": 16727283
+    },
+    "command": [
+      "curl.exe",
+      "--fail",
+      "--silent",
+      "--show-error",
+      "--location",
+      "--proto",
+      "=https",
+      "--max-time",
+      "120",
+      "--output",
+      "C:\\Users\\Administrator\\.cache\\eidos-method-offline-v1\\numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "https://files.pythonhosted.org/packages/43/a3/c799c62e19c337e6d3770b08e475887fb30ce8477d3c09efca6b2f0228a6/numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 13.220616500009783,
+    "actual_bytes": 16727283,
+    "actual_sha256": "fbde6962867ee75b48b0ee29b2b9372ec5d617799dbaf38e82dc0596f2f7738a",
+    "new_model_inference": false
+  },
+  "worker_seconds": 14.264731086004758,
+  "controller_seconds": 24.34962500000256,
+  "controller_timing_scope": "After input preparation/plan through owned-container cleanup; excludes public wheel bootstrap",
+  "omitted_large_input": {
+    "reason": "Wheel not redistributed; download the exact public locked bytes before offline execution",
+    "version": "2.5.4",
+    "filename": "numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+    "url": "https://files.pythonhosted.org/packages/43/a3/c799c62e19c337e6d3770b08e475887fb30ce8477d3c09efca6b2f0228a6/numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+    "sha256": "fbde6962867ee75b48b0ee29b2b9372ec5d617799dbaf38e82dc0596f2f7738a",
+    "size": 16727283
+  },
+  "archive": [
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/bind.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/bind.stdout.log",
+      "sha256": "16331ef8494d510127c0fffd2180a4a76f7e5efe109df268d3c3095b1f9870af"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/environment.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/environment.stdout.log",
+      "sha256": "3f5ea997728020d8b26206b4a4e52162c1e3a7a4d735db3f91620ea18b1a27df"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execute.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execute.stdout.log",
+      "sha256": "0846584e5f56da4b89eb94729f6329551a7f901e6e4a482032854155c8e92862"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/method-program.json",
+      "sha256": "f52a14f5dffa20c1ad7c0ab64c6d62580aa809fe5890fde05cc88caf204b4d60"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/proposal-evaluation.json",
+      "sha256": "468ecc18914c8e9aeac236cdb35adcd03db8a346774edf206237329376d09a49"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/record.json",
+      "sha256": "92f8ee3d55ca30fc733d69bdf50980df8e27dd35c29fe59350fdadef742e9402"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/response.json",
+      "sha256": "173cbf478e059a16fb9fe8ed2b5f4ba5213b4f034240c47b6c9154e10999e13a"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/.Codex/evals/numerical-method-compiler.md.snapshot",
+      "sha256": "0fafe4117cdbc34eb8108b595f0e5de4fb137202492f20130f427b74427ece42"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/.Codex/evals/rsi-bootstrap-foundation.md.snapshot",
+      "sha256": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/.github/workflows/ci.yml.snapshot",
+      "sha256": "6d742b81553db1bac31731cbe72739195dc151e1e46128363e8973b8eba0d7c5"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/pyproject.toml.snapshot",
+      "sha256": "d6fffb2f31b4c3c6564d19e48d16b02a37da8fc5b47640aeb579313b27ad92c6"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/numerical_method_tools/__main__.py.snapshot",
+      "sha256": "7d00b899062b2fdacb75c3b70778148ce9e28efb7b6e3a485a7a0279492e2b43"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/numerical_method_tools/catalog.json.snapshot",
+      "sha256": "253fb66dbd984f498a4ea135010b21d290f254bdcb894df3ca4bac179ee5f056"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/numerical_method_tools/compiler.py.snapshot",
+      "sha256": "b3127aa9252b675efbe5220ff3178afae0b52fafbe5191aa604fe94b573c8a87"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/numerical_method_tools/runner.py.snapshot",
+      "sha256": "78b08b3c3dd2db4e989dc9408b84450538ea08802e55ef093509120cfccb0124"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/numerical_method_tools/test_compiler.py.snapshot",
+      "sha256": "21d862593a5774f88f55e97880d02eb17cf43a6e7cf8baf3dc515650cf13a881"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/numerical_method_tools/test_runner.py.snapshot",
+      "sha256": "e1d5514fe642724c8d2ed7d243f8e1118c9f5e8d014999451880a187c7623aa9"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/rsi_bootstrap/C0-SPEC.md.snapshot",
+      "sha256": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/rsi_bootstrap/c0.py.snapshot",
+      "sha256": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/rsi_bootstrap/expressions.py.snapshot",
+      "sha256": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/rsi_bootstrap/grader.py.snapshot",
+      "sha256": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/rsi_bootstrap/local_runtime.py.snapshot",
+      "sha256": "400e0331ee91c42f38a5a6075ba307762c83c8a2f12cad01bf710a3e541a80cb"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/rsi_bootstrap/local_worker.py.snapshot",
+      "sha256": "f15b7a6dd2fcb8539c44c70efddc49aacb5dfb6c4ef252f185e9dab48210406e"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/rsi_bootstrap/method_campaign.py.snapshot",
+      "sha256": "1f0c53ab3800f3574c7039004856c6a8d308fd47992aeb3f6f49a1d2bb0285dc"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/rsi_bootstrap/methods/cards.json.snapshot",
+      "sha256": "416057a0382d9193941e4965d0935dfed61645c82ce7ef1ca4ac84f7dbe6657f"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/rsi_bootstrap/request_context.py.snapshot",
+      "sha256": "ebb79063566730521f6c4872d07e4a8ae6a27f2710107b08955ad4bb5055b74c"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/rsi_bootstrap/test_c0.py.snapshot",
+      "sha256": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/rsi_bootstrap/test_expressions.py.snapshot",
+      "sha256": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/rsi_bootstrap/test_grader.py.snapshot",
+      "sha256": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/rsi_bootstrap/test_local_runtime.py.snapshot",
+      "sha256": "c1a5d18a305461eaaabbcf0967e72cd72693d2cdf63543b5d774f221078f0f25"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/reference/rsi_bootstrap/test_method_campaign.py.snapshot",
+      "sha256": "2f925e9c4b07a38eafe290eb53b669ca454f29d9ef101992a9a35fc8333b24c5"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/source/uv.lock.snapshot",
+      "sha256": "6c279354f73273f54427205ec0e00d3f7ce3cd7382c5378121262cac0ddeedd3"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/execution/tool-evaluation.json",
+      "sha256": "472037b35155df7de9d8333b16b1816be34870ea2918e1e2a807359c50dbe373"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/install.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/install.stdout.log",
+      "sha256": "8ac2a9fd60b622a37d2f3a2b0224ed98570588aa48a3a2c11a7d596fd42a9d09"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/linux-result.json",
+      "sha256": "b8e7ea5989c19fa0613201d73c76875c18fa97829d984b65a7901a503711c55d"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/progress.json",
+      "sha256": "7952dacf36da441bbc1542c842385e500f92dd4d0a730ecd0bc1d84882739924"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/venv.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/venv.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/verify.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/verify.stdout.log",
+      "sha256": "0846584e5f56da4b89eb94729f6329551a7f901e6e4a482032854155c8e92862"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/wrong-pin.stderr.log",
+      "sha256": "47afac7f774d88c6a950cddac981983e8514fe72dbb5e92bdda2514aca58228c"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/output/wrong-pin.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/bootstrap.json",
+      "sha256": "234f867d9140ffb268f3b2fc22096b9feeeabfec4524b767fff8cf818d561f6d"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/bootstrap.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/container.cid",
+      "sha256": "3d59e26b8eaa1158edce4366acd8941b7e8465c98d027999ac1af47c987c513e"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/container.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/container.stdout.log",
+      "sha256": "b4b895cada92caedcb055d05dfd26db7cd7ae9788d27df72c57a265c1753779c"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/controller-plan.json",
+      "sha256": "3c0de75882363e999bf944dd8792d880ff2b4516d43d18a53002de80d86ee27c"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/controller-result.json",
+      "sha256": "f5b562dc91a7a65295d90830a56725154b30e04e08175c707b4e95f034007d23"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/controller-state.json",
+      "sha256": "3b2a6b3dd1721e02137f2e82a5f3e87453853ed726c67dc60de581f31894d5d2"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/create.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/create.stdout.log",
+      "sha256": "494753addf3975c54d29ad0977c47b935ae60d691786988799606ab63c340b3e"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/host-runtime.json",
+      "sha256": "dc2508394e4f7b42414cb9f55824cdc673cb6ea82d4c7c4517446e0df9b68ef9"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/remove.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/remove.stdout.log",
+      "sha256": "494753addf3975c54d29ad0977c47b935ae60d691786988799606ab63c340b3e"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/removed-check.stderr.log",
+      "sha256": "eafb95956d9e955f1fd4fe402a507c13f07bd6d71b9d4023962d336831007288"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/removed-check.stdout.log",
+      "sha256": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/start.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/start.stdout.log",
+      "sha256": "494753addf3975c54d29ad0977c47b935ae60d691786988799606ab63c340b3e"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/wait.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/controller/wait.stdout.log",
+      "sha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/input/input.json",
+      "sha256": "592b231d548d0d103f5aa50c830fc3b891a086b95f4429cb4bc639e95a7597b8"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/input/source.zip",
+      "sha256": "10b5cd54b412d0700b6f5efc88f92c5a0a4d91f403ab6aadee53c7b852f53fc8"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/input/requirements.txt",
+      "sha256": "48550c5a6cd2c3b98720d6527d8d13ee9c74cd430b2f431a897d1e69dbeaaf8b"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/input/check.py.snapshot",
+      "sha256": "cc91f4d0ea75b00349c2e04566fc3856f0e8f17628d32dfc3d50e0db72a11952"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/audit/controller.py.snapshot",
+      "sha256": "45ae9ece895c6053fa6464b6b8fbf9ae28cee27e95c666a1a7a5d7616e303624"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/qualification/.Codex/evals/method-offline-portability.md.snapshot",
+      "sha256": "e94d7c467c4819b33300d16118cae5a5daa4124e9cd6d2aaedec8c66a5a3f988"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/qualification/reference/method_portability/check.py.snapshot",
+      "sha256": "cc91f4d0ea75b00349c2e04566fc3856f0e8f17628d32dfc3d50e0db72a11952"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/qualification/reference/method_portability/prepare.py.snapshot",
+      "sha256": "222376bd2abba6a1a8cd5ad298744166b7c160c8ce43206161c77004a759125e"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/qualification/reference/method_portability/test_protocol.py.snapshot",
+      "sha256": "25560524e29c67d0685721092331c5f27df3b4b5307db4b804369aaa7b03eef6"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/qualification/framework/subprocesses.py.snapshot",
+      "sha256": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/qualification/framework/_windows_job.py.snapshot",
+      "sha256": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/qualification/framework/_process_tree.py.snapshot",
+      "sha256": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/qualification/framework/_posix_job.py.snapshot",
+      "sha256": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b"
+    },
+    {
+      "path": "reference/method_portability/recorded_trials/linux-v1/audit/export_method_offline.py.snapshot",
+      "sha256": "8b9fe1cbdb8f3e10d2a9fbee66f25bff399188907d521f20693c646b3255c269"
+    }
+  ],
+  "limits": [
+    "Same physical host and trusted Docker daemon/kernel; not independent-machine or hostile-OS attestation",
+    "Bootstrap downloads precede network isolation; no claim of a cold offline bootstrap",
+    "One known public function and preserved response, not fresh model inference, novelty, transfer or RSI",
+    "Source replay only; no installed Eidos wheel/new release, GPU/vector/AMP/higher-order qualification",
+    "Temporary tmpfs/ephemeral container; no power-loss or persistence guarantee"
+  ]
+}

@@ -380,3 +380,12 @@ CI now runs the case-specific suite on Python 3.11/3.12 and exports fresh
 evidence. Test transports do not attest model execution. The owned model
 controller, complete runtime/resource deadlines and live trial remain pending;
 this is a partial C0 implementation and does not establish scientific RSI.
+
+The [first real local-model trials](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-C0-MODEL-TRIALS-2026-11-01.md)
+then completed the owned same-host inference/evaluation path without observed
+service regression. Both candidate responses were invalid: Qwen 27B exhausted
+768 tokens and had invalid operator arity; ScienceRSI returned duplicate and
+incomplete fields. Neither reached numerical grading or promotion. Raw responses,
+protocol/source bindings and executed runtime sources are retained. The next
+priority is structured-output reliability, followed by numerical qualification;
+these one-task failures do not establish general model incapability or RSI.

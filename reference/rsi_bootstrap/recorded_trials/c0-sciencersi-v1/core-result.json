@@ -1,0 +1,40 @@
+{
+  "schema": "eidos.rsi.c0.development-core.v1",
+  "observed_at": "2026-11-01T15:35:15.856015+00:00",
+  "status": "INVALID_RESPONSE",
+  "source_before": {
+    "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+    "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+    "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+    "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+    "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+    "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+    "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+    ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+  },
+  "prompt": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n",
+  "raw_response": "{\n  \"program\": {\n    \"op\": \"where\",\n    \"args\": [\n      {\n        \"op\": \"le\",\n        \"args\": [\n          {\"input\": \"x\"},\n          {\"const\": 100}\n        ]\n      },\n      {\n        \"op\": \"log\",\n        \"args\": [\n          {\n            \"op\": \"sub\",\n            \"args\": [\n              {\"const\": 1},\n              {\n                \"op\": \"exp\",\n                \"args\": [\n                  {\n                    \"op\": \"neg\",\n                    \"args\": [\n                     ]\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      ],\n      \"op\": \"log\",\n      \"args\": [\n        {\n          \"op\": \"sub\",\n          \"args\": [\n            {\"const\": 1},\n            {\n              \"op\": \"exp\",\n              \"args\": [\n                {\n                  \"op\": \"neg\",\n                  \"args\": [\n                    {\"input\": \"x\"}\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  }",
+  "points": [],
+  "retained_for_development": false,
+  "scientific_promotion": false,
+  "model_execution_attested": false,
+  "sealed_evaluation": "NOT_RUN",
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "provider_calls": 1,
+  "response_characters": 996,
+  "wall_seconds": 0.0,
+  "source_after": {
+    "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+    "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+    "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+    "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+    "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+    "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+    "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+    ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+  },
+  "run_id": "aab0174809364b199e91e3280add3436",
+  "recorded_response_sha256": "eef64a7fa48ddba0a74c02f7fedbd1127163d7560c593666eafee4c5073b2a03",
+  "protocol_sha256": "a93d0e8e04482b9ed3c7d4b09e40c54c4a52211dfd4d08c084091678af493dab",
+  "transport_scope": "Replay of one recorded real-model response; outer controller attests inference separately"
+}

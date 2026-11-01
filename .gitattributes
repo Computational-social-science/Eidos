@@ -1,5 +1,6 @@
 *.py text eol=lf
 .github/workflows/*.yml text eol=lf
+reference/rsi_bootstrap/recorded_trials/** -text whitespace=cr-at-eol
 site/reports/**/report.qmd -text
 site/reports/**/report.html -text
 site/reports/**/*.svg -text

@@ -1,5 +1,11 @@
 # RSI bootstrap: development evaluator foundation
 
+Latest checkpoint: [two real local-model trials](../../docs/RSI-C0-MODEL-TRIALS-2026-11-01.md)
+completed same-host runtime checks; both responses were rejected before numerical
+grading. The exact runtime sources are archived under `recorded_trials/`.
+The frozen C0 specification and early foundation records retain their historical
+scope; a portable configured model runtime and RSI acceptance remain open.
+
 This work package calibrates an executable evaluator before attempting a
 model-generated numerical repair. It implements part of P0/P1 of the
 [RSI roadmap](../../docs/RSI-OPTIMIZATION-PLAN.md).

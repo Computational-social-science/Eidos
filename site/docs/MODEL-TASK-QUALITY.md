@@ -1,5 +1,12 @@
 # Model quality and task authority
 
+The [first real C0 program-generation trials](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-C0-MODEL-TRIALS-2026-11-01.md)
+completed with preserved services, but both Qwen 27B and ScienceRSI returned
+inadmissible responses. Qwen hit the output limit and also generated invalid
+operator arity; ScienceRSI emitted duplicate/incomplete fields. Neither reached
+numerical grading or earned authority. These are one-task development results,
+not general model-accuracy estimates; the short S4 results retain their narrower scope.
+
 EIDOS has no task-qualified autonomous research reasoner. The legacy stage/model
 table was a proposed routing list, not an executed capability measurement. Model
 presence, endpoint health, general benchmarks and task acceptance are different

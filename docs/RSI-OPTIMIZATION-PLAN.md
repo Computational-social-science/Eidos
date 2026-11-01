@@ -101,6 +101,10 @@ specification. See the [dated execution record](RSI-EXECUTION-2026-11-01.md)
 for measured results and remaining gates; no model or sealed-task result is
 implied by this checkpoint.
 
+Subsequent [real-model development trials](RSI-C0-MODEL-TRIALS-2026-11-01.md)
+completed runtime checks but rejected both responses before numerical grading.
+Structured-output reliability is the next measured bottleneck; no promotion followed.
+
 ## 3. Why extended development left important defects
 
 These are evidence-backed failure patterns, not an attribution of every defect

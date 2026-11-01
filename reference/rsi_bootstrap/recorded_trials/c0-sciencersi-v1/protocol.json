@@ -1,0 +1,54 @@
+{
+  "server": {
+    "path": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+    "sha256": "aa2e1f5c67be55f11be26ae58d643a545ca07c6de498f6f870330ac2f4dfec73"
+  },
+  "model": {
+    "path": "C:/Users/Administrator/AppData/Local/hermes/models/ScienceRSI-8b.i1-Q4_K_M.gguf",
+    "bytes": 5027784544,
+    "sha256": "a7e1cdab380e52ef55dfe249f634262052c171bdd4b606b7530637398852b7ad"
+  },
+  "nvidia_smi": "C:\\Windows\\System32\\DriverStore\\FileRepository\\nv_dispsi.inf_amd64_ccd7fbb71bb72370\\nvidia-smi.exe",
+  "resource_policy": {
+    "minimum_free_before_mib": 3584,
+    "minimum_free_during_mib": 1792,
+    "maximum_increment_mib": 1536,
+    "gpu_layers": 1,
+    "context": 4096,
+    "threads": 12,
+    "cpu_kv": true,
+    "op_offload": false,
+    "load_timeout_seconds": 150,
+    "request_timeout_seconds": 480,
+    "total_timeout_seconds": 900,
+    "evaluator_timeout_seconds": 30
+  },
+  "inference": {
+    "temperature": 0,
+    "seed": 19,
+    "max_tokens": 768,
+    "thinking": false,
+    "attempts_per_case": 1
+  },
+  "kind": "eidos.c0.public-development-trial.v1",
+  "frozen_at": "2026-11-01T15:30:45.522763+00:00",
+  "cases": [
+    {
+      "id": "c0-log1mexp"
+    }
+  ],
+  "system": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n",
+  "scientific_authority": false,
+  "promotion": false,
+  "source_sha256_lf": {
+    "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+    "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+    "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+    "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+    "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+    "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+    "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+    ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f",
+    ".scratch/quality/c0_science_evaluate.py": "ccbd5bfd47bcabd82d572f5907bd753256dc4ff828b8b2c3463b75f21cc94a37"
+  }
+}

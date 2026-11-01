@@ -1,0 +1,36 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n  \"program\": {\n    \"op\": \"where\",\n    \"args\": [\n      {\n        \"op\": \"le\",\n        \"args\": [\n          {\"input\": \"x\"},\n          {\"const\": 100}\n        ]\n      },\n      {\n        \"op\": \"log\",\n        \"args\": [\n          {\n            \"op\": \"sub\",\n            \"args\": [\n              {\"const\": 1},\n              {\n                \"op\": \"exp\",\n                \"args\": [\n                  {\n                    \"op\": \"neg\",\n                    \"args\": [\n                     ]\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      ],\n      \"op\": \"log\",\n      \"args\": [\n        {\n          \"op\": \"sub\",\n          \"args\": [\n            {\"const\": 1},\n            {\n              \"op\": \"exp\",\n              \"args\": [\n                {\n                  \"op\": \"neg\",\n                  \"args\": [\n                    {\"input\": \"x\"}\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  }"
+      }
+    }
+  ],
+  "created": 1793547315,
+  "model": "eidos-c0-sciencersi-aab0174809364b199e91e3280add3436",
+  "system_fingerprint": "b10964-b29c606e2",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 222,
+    "prompt_tokens": 263,
+    "total_tokens": 485,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "id": "chatcmpl-PNTaJUYuzTRQ8fAz1LP8HGYOnPNTkYiX",
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 263,
+    "prompt_ms": 4731.306,
+    "prompt_per_token_ms": 17.989756653992394,
+    "prompt_per_second": 55.58718882270562,
+    "predicted_n": 222,
+    "predicted_ms": 25230.963,
+    "predicted_per_token_ms": 114.16725339366516,
+    "predicted_per_second": 8.759079072804317
+  }
+}

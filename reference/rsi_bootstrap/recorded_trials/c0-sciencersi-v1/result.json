@@ -1,0 +1,843 @@
+{
+  "kind": "eidos.c0.sciencersi.development-trial-result",
+  "generated": "2026-11-01T15:34:40.055919+00:00",
+  "run_id": "aab0174809364b199e91e3280add3436",
+  "protocol_sha256": "a93d0e8e04482b9ed3c7d4b09e40c54c4a52211dfd4d08c084091678af493dab",
+  "protocol": {
+    "server": {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+      "sha256": "aa2e1f5c67be55f11be26ae58d643a545ca07c6de498f6f870330ac2f4dfec73"
+    },
+    "model": {
+      "path": "C:/Users/Administrator/AppData/Local/hermes/models/ScienceRSI-8b.i1-Q4_K_M.gguf",
+      "bytes": 5027784544,
+      "sha256": "a7e1cdab380e52ef55dfe249f634262052c171bdd4b606b7530637398852b7ad"
+    },
+    "nvidia_smi": "C:\\Windows\\System32\\DriverStore\\FileRepository\\nv_dispsi.inf_amd64_ccd7fbb71bb72370\\nvidia-smi.exe",
+    "resource_policy": {
+      "minimum_free_before_mib": 3584,
+      "minimum_free_during_mib": 1792,
+      "maximum_increment_mib": 1536,
+      "gpu_layers": 1,
+      "context": 4096,
+      "threads": 12,
+      "cpu_kv": true,
+      "op_offload": false,
+      "load_timeout_seconds": 150,
+      "request_timeout_seconds": 480,
+      "total_timeout_seconds": 900,
+      "evaluator_timeout_seconds": 30
+    },
+    "inference": {
+      "temperature": 0,
+      "seed": 19,
+      "max_tokens": 768,
+      "thinking": false,
+      "attempts_per_case": 1
+    },
+    "kind": "eidos.c0.public-development-trial.v1",
+    "frozen_at": "2026-11-01T15:30:45.522763+00:00",
+    "cases": [
+      {
+        "id": "c0-log1mexp"
+      }
+    ],
+    "system": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n",
+    "scientific_authority": false,
+    "promotion": false,
+    "source_sha256_lf": {
+      "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f",
+      ".scratch/quality/c0_science_evaluate.py": "ccbd5bfd47bcabd82d572f5907bd753256dc4ff828b8b2c3463b75f21cc94a37"
+    }
+  },
+  "rows": [
+    {
+      "id": "c0-log1mexp",
+      "correct": false,
+      "core_status": "INVALID_RESPONSE",
+      "seconds": 29.968999999997322
+    }
+  ],
+  "status": "COMPLETE",
+  "scientific_authority": false,
+  "promotion": false,
+  "controller_sha256_lf": "f77a17731aa643c2845a17f4e53ff91e90ba1f389a178d46bf4b15dcb1fee387",
+  "gpu_initial": {
+    "ts": "2026-11-01T15:34:40.103431+00:00",
+    "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+    "total_mib": 12282.0,
+    "used_mib": 7208.0,
+    "free_mib": 4803.0,
+    "utilization_percent": 0.0
+  },
+  "existing_service_before": {
+    "pid": 45096,
+    "created": 1793431917.66907,
+    "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+    "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+    "context": 16384
+  },
+  "gpu_before": {
+    "ts": "2026-11-01T15:34:42.908270+00:00",
+    "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+    "total_mib": 12282.0,
+    "used_mib": 7231.0,
+    "free_mib": 4780.0,
+    "utilization_percent": 11.0
+  },
+  "command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+    "-m",
+    "C:\\Users\\Administrator\\AppData\\Local\\hermes\\models\\ScienceRSI-8b.i1-Q4_K_M.gguf",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "53574",
+    "--alias",
+    "eidos-c0-sciencersi-aab0174809364b199e91e3280add3436",
+    "-c",
+    "4096",
+    "-ngl",
+    "1",
+    "-t",
+    "12",
+    "-tb",
+    "12",
+    "-np",
+    "1",
+    "-b",
+    "256",
+    "-ub",
+    "128",
+    "--no-kv-offload",
+    "--no-op-offload",
+    "--no-mmproj",
+    "--no-webui",
+    "--reasoning",
+    "off",
+    "--reasoning-budget",
+    "0",
+    "--flash-attn",
+    "on"
+  ],
+  "owned_server_pid": 47648,
+  "identity_response": {
+    "models": [
+      {
+        "name": "eidos-c0-sciencersi-aab0174809364b199e91e3280add3436",
+        "model": "eidos-c0-sciencersi-aab0174809364b199e91e3280add3436",
+        "modified_at": "",
+        "size": "",
+        "digest": "",
+        "type": "model",
+        "description": "",
+        "tags": [
+          ""
+        ],
+        "capabilities": [
+          "completion"
+        ],
+        "parameters": "",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "",
+          "families": [
+            ""
+          ],
+          "parameter_size": "",
+          "quantization_level": ""
+        }
+      }
+    ],
+    "object": "list",
+    "data": [
+      {
+        "id": "eidos-c0-sciencersi-aab0174809364b199e91e3280add3436",
+        "aliases": [
+          "eidos-c0-sciencersi-aab0174809364b199e91e3280add3436"
+        ],
+        "tags": [],
+        "object": "model",
+        "created": 1793547285,
+        "owned_by": "llamacpp",
+        "meta": {
+          "vocab_type": true,
+          "n_vocab": 151936,
+          "n_ctx": 4096,
+          "n_ctx_train": 40960,
+          "n_embd": 4096,
+          "n_params": 8190735360,
+          "size": 5021827072,
+          "ftype": "Q4_K - Medium"
+        }
+      }
+    ]
+  },
+  "load_seconds": 2.577999999994063,
+  "model_response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "{\n  \"program\": {\n    \"op\": \"where\",\n    \"args\": [\n      {\n        \"op\": \"le\",\n        \"args\": [\n          {\"input\": \"x\"},\n          {\"const\": 100}\n        ]\n      },\n      {\n        \"op\": \"log\",\n        \"args\": [\n          {\n            \"op\": \"sub\",\n            \"args\": [\n              {\"const\": 1},\n              {\n                \"op\": \"exp\",\n                \"args\": [\n                  {\n                    \"op\": \"neg\",\n                    \"args\": [\n                     ]\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      ],\n      \"op\": \"log\",\n      \"args\": [\n        {\n          \"op\": \"sub\",\n          \"args\": [\n            {\"const\": 1},\n            {\n              \"op\": \"exp\",\n              \"args\": [\n                {\n                  \"op\": \"neg\",\n                  \"args\": [\n                    {\"input\": \"x\"}\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  }"
+        }
+      }
+    ],
+    "created": 1793547315,
+    "model": "eidos-c0-sciencersi-aab0174809364b199e91e3280add3436",
+    "system_fingerprint": "b10964-b29c606e2",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 222,
+      "prompt_tokens": 263,
+      "total_tokens": 485,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "id": "chatcmpl-PNTaJUYuzTRQ8fAz1LP8HGYOnPNTkYiX",
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 263,
+      "prompt_ms": 4731.306,
+      "prompt_per_token_ms": 17.989756653992394,
+      "prompt_per_second": 55.58718882270562,
+      "predicted_n": 222,
+      "predicted_ms": 25230.963,
+      "predicted_per_token_ms": 114.16725339366516,
+      "predicted_per_second": 8.759079072804317
+    }
+  },
+  "request": {
+    "model": "eidos-c0-sciencersi-aab0174809364b199e91e3280add3436",
+    "temperature": 0,
+    "top_p": 0.9,
+    "seed": 19,
+    "max_tokens": 768,
+    "stream": false,
+    "response_format": {
+      "type": "json_object"
+    },
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n"
+      }
+    ]
+  },
+  "core": {
+    "schema": "eidos.rsi.c0.development-core.v1",
+    "observed_at": "2026-11-01T15:35:15.856015+00:00",
+    "status": "INVALID_RESPONSE",
+    "source_before": {
+      "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+    },
+    "prompt": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n",
+    "raw_response": "{\n  \"program\": {\n    \"op\": \"where\",\n    \"args\": [\n      {\n        \"op\": \"le\",\n        \"args\": [\n          {\"input\": \"x\"},\n          {\"const\": 100}\n        ]\n      },\n      {\n        \"op\": \"log\",\n        \"args\": [\n          {\n            \"op\": \"sub\",\n            \"args\": [\n              {\"const\": 1},\n              {\n                \"op\": \"exp\",\n                \"args\": [\n                  {\n                    \"op\": \"neg\",\n                    \"args\": [\n                     ]\n                    }\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      ],\n      \"op\": \"log\",\n      \"args\": [\n        {\n          \"op\": \"sub\",\n          \"args\": [\n            {\"const\": 1},\n            {\n              \"op\": \"exp\",\n              \"args\": [\n                {\n                  \"op\": \"neg\",\n                  \"args\": [\n                    {\"input\": \"x\"}\n                  ]\n                }\n              ]\n            }\n          ]\n        }\n      ]\n    }\n  }",
+    "points": [],
+    "retained_for_development": false,
+    "scientific_promotion": false,
+    "model_execution_attested": false,
+    "sealed_evaluation": "NOT_RUN",
+    "scientific_rsi": "NOT_DEMONSTRATED",
+    "provider_calls": 1,
+    "response_characters": 996,
+    "wall_seconds": 0.0,
+    "source_after": {
+      "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+    },
+    "run_id": "aab0174809364b199e91e3280add3436",
+    "recorded_response_sha256": "eef64a7fa48ddba0a74c02f7fedbd1127163d7560c593666eafee4c5073b2a03",
+    "protocol_sha256": "a93d0e8e04482b9ed3c7d4b09e40c54c4a52211dfd4d08c084091678af493dab",
+    "transport_scope": "Replay of one recorded real-model response; outer controller attests inference separately"
+  },
+  "actual_model_inference": true,
+  "monitor_stopped": true,
+  "resource_errors": [],
+  "sampling_errors": [],
+  "gpu_samples": [
+    {
+      "ts": "2026-11-01T15:34:40.103431+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7208.0,
+      "free_mib": 4803.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T15:34:42.908270+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7231.0,
+      "free_mib": 4780.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T15:34:42.958282+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7233.0,
+      "free_mib": 4778.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T15:34:43.534741+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7371.0,
+      "free_mib": 4640.0,
+      "utilization_percent": 36.0
+    },
+    {
+      "ts": "2026-11-01T15:34:44.096472+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7857.0,
+      "free_mib": 4154.0,
+      "utilization_percent": 7.0
+    },
+    {
+      "ts": "2026-11-01T15:34:44.673700+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7840.0,
+      "free_mib": 4171.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T15:34:45.250093+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7832.0,
+      "free_mib": 4179.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T15:34:45.830313+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7833.0,
+      "free_mib": 4178.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T15:34:46.405016+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7833.0,
+      "free_mib": 4178.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T15:34:46.982123+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7830.0,
+      "free_mib": 4181.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T15:34:47.557423+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7834.0,
+      "free_mib": 4177.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T15:34:48.134145+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7834.0,
+      "free_mib": 4177.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T15:34:48.728375+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7869.0,
+      "free_mib": 4142.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T15:34:49.301878+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7860.0,
+      "free_mib": 4151.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T15:34:49.876819+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7863.0,
+      "free_mib": 4148.0,
+      "utilization_percent": 6.0
+    },
+    {
+      "ts": "2026-11-01T15:34:50.469231+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7864.0,
+      "free_mib": 4147.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T15:34:51.070023+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7840.0,
+      "free_mib": 4171.0,
+      "utilization_percent": 47.0
+    },
+    {
+      "ts": "2026-11-01T15:34:51.663813+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7840.0,
+      "free_mib": 4171.0,
+      "utilization_percent": 23.0
+    },
+    {
+      "ts": "2026-11-01T15:34:52.254295+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7840.0,
+      "free_mib": 4171.0,
+      "utilization_percent": 22.0
+    },
+    {
+      "ts": "2026-11-01T15:34:52.834555+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7840.0,
+      "free_mib": 4171.0,
+      "utilization_percent": 53.0
+    },
+    {
+      "ts": "2026-11-01T15:34:53.438808+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7837.0,
+      "free_mib": 4174.0,
+      "utilization_percent": 27.0
+    },
+    {
+      "ts": "2026-11-01T15:34:54.064623+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7835.0,
+      "free_mib": 4176.0,
+      "utilization_percent": 20.0
+    },
+    {
+      "ts": "2026-11-01T15:34:54.653685+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7828.0,
+      "free_mib": 4183.0,
+      "utilization_percent": 23.0
+    },
+    {
+      "ts": "2026-11-01T15:34:55.240189+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7844.0,
+      "free_mib": 4167.0,
+      "utilization_percent": 50.0
+    },
+    {
+      "ts": "2026-11-01T15:34:55.821891+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7846.0,
+      "free_mib": 4165.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T15:34:56.423094+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7841.0,
+      "free_mib": 4170.0,
+      "utilization_percent": 16.0
+    },
+    {
+      "ts": "2026-11-01T15:34:57.024658+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7841.0,
+      "free_mib": 4170.0,
+      "utilization_percent": 14.0
+    },
+    {
+      "ts": "2026-11-01T15:34:57.611627+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7841.0,
+      "free_mib": 4170.0,
+      "utilization_percent": 23.0
+    },
+    {
+      "ts": "2026-11-01T15:34:58.211257+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7840.0,
+      "free_mib": 4171.0,
+      "utilization_percent": 22.0
+    },
+    {
+      "ts": "2026-11-01T15:34:58.812339+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7839.0,
+      "free_mib": 4172.0,
+      "utilization_percent": 26.0
+    },
+    {
+      "ts": "2026-11-01T15:34:59.407388+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7839.0,
+      "free_mib": 4172.0,
+      "utilization_percent": 22.0
+    },
+    {
+      "ts": "2026-11-01T15:34:59.996525+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7850.0,
+      "free_mib": 4161.0,
+      "utilization_percent": 29.0
+    },
+    {
+      "ts": "2026-11-01T15:35:00.590364+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7850.0,
+      "free_mib": 4161.0,
+      "utilization_percent": 26.0
+    },
+    {
+      "ts": "2026-11-01T15:35:01.173243+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7848.0,
+      "free_mib": 4163.0,
+      "utilization_percent": 30.0
+    },
+    {
+      "ts": "2026-11-01T15:35:01.756210+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7839.0,
+      "free_mib": 4172.0,
+      "utilization_percent": 56.0
+    },
+    {
+      "ts": "2026-11-01T15:35:02.350829+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7840.0,
+      "free_mib": 4171.0,
+      "utilization_percent": 23.0
+    },
+    {
+      "ts": "2026-11-01T15:35:02.941109+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7840.0,
+      "free_mib": 4171.0,
+      "utilization_percent": 24.0
+    },
+    {
+      "ts": "2026-11-01T15:35:03.528801+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7840.0,
+      "free_mib": 4171.0,
+      "utilization_percent": 24.0
+    },
+    {
+      "ts": "2026-11-01T15:35:04.117234+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7838.0,
+      "free_mib": 4173.0,
+      "utilization_percent": 25.0
+    },
+    {
+      "ts": "2026-11-01T15:35:04.752948+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7838.0,
+      "free_mib": 4173.0,
+      "utilization_percent": 43.0
+    },
+    {
+      "ts": "2026-11-01T15:35:05.347024+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7838.0,
+      "free_mib": 4173.0,
+      "utilization_percent": 24.0
+    },
+    {
+      "ts": "2026-11-01T15:35:05.926672+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7840.0,
+      "free_mib": 4171.0,
+      "utilization_percent": 44.0
+    },
+    {
+      "ts": "2026-11-01T15:35:06.518094+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7843.0,
+      "free_mib": 4168.0,
+      "utilization_percent": 49.0
+    },
+    {
+      "ts": "2026-11-01T15:35:07.115899+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7846.0,
+      "free_mib": 4165.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T15:35:07.724034+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7847.0,
+      "free_mib": 4164.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T15:35:08.317829+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7846.0,
+      "free_mib": 4165.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T15:35:08.911008+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7846.0,
+      "free_mib": 4165.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T15:35:09.510166+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7848.0,
+      "free_mib": 4163.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T15:35:10.147042+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7850.0,
+      "free_mib": 4161.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T15:35:10.747576+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7850.0,
+      "free_mib": 4161.0,
+      "utilization_percent": 16.0
+    },
+    {
+      "ts": "2026-11-01T15:35:11.340193+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7837.0,
+      "free_mib": 4174.0,
+      "utilization_percent": 20.0
+    },
+    {
+      "ts": "2026-11-01T15:35:11.948693+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7837.0,
+      "free_mib": 4174.0,
+      "utilization_percent": 5.0
+    },
+    {
+      "ts": "2026-11-01T15:35:12.541904+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7831.0,
+      "free_mib": 4180.0,
+      "utilization_percent": 6.0
+    },
+    {
+      "ts": "2026-11-01T15:35:13.154804+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7851.0,
+      "free_mib": 4160.0,
+      "utilization_percent": 25.0
+    },
+    {
+      "ts": "2026-11-01T15:35:13.759979+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7851.0,
+      "free_mib": 4160.0,
+      "utilization_percent": 26.0
+    },
+    {
+      "ts": "2026-11-01T15:35:14.366151+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7851.0,
+      "free_mib": 4160.0,
+      "utilization_percent": 5.0
+    },
+    {
+      "ts": "2026-11-01T15:35:14.948893+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7851.0,
+      "free_mib": 4160.0,
+      "utilization_percent": 7.0
+    },
+    {
+      "ts": "2026-11-01T15:35:15.575796+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7863.0,
+      "free_mib": 4148.0,
+      "utilization_percent": 23.0
+    }
+  ],
+  "existing_service_continuity": [
+    {
+      "ts": "2026-11-01T15:34:42.965386+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T15:34:48.142334+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T15:34:53.464532+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T15:34:58.818339+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T15:35:04.155124+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T15:35:09.542034+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T15:35:14.993065+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    }
+  ],
+  "correct": 0,
+  "completed_cases": 1,
+  "owned_server_exit_code": 1,
+  "existing_service_after": {
+    "pid": 45096,
+    "created": 1793431917.66907,
+    "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+    "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+    "context": 16384
+  },
+  "existing_service_preserved": true,
+  "model_sha256_after": "a7e1cdab380e52ef55dfe249f634262052c171bdd4b606b7530637398852b7ad",
+  "finished": "2026-11-01T15:35:19.138566+00:00"
+}

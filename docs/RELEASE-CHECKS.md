@@ -42,6 +42,37 @@ Windows path-mangling predicate. Nonblocking opening and regular-file descriptor
 checks prevent FIFO markers from hanging the check. The original generic-name
 detector remains.
 
+## Layout-check measurement repair
+
+The complete browser gate caught an apparent `PASS`/clock-note collision at
+1100px and 1280px. A screenshot and browser line-fragment coordinates showed
+that the text did not collide: a wrapped inline span's union rectangle included
+empty space occupied by the preceding badge. The first diagnosis was corrected
+before publication. Changing page styling merely to silence that report would
+not repair the measuring instrument.
+
+The probe now reads HTML text nodes and their individual Range fragments,
+including direct text in parents that also contain markup. This also closes a
+real missed-collision case in the former leaf-element-only scan. Hit testing
+uses each fragment and walks the front-to-back element stack, preserving opaque
+parent/child, image and transparent-top-layer rejection controls. A transparent
+positioned box alone is not a visual cover. Existing SVG paint-order, clipping,
+overflow and card checks remain active.
+
+Eleven actual CLI controls pass, including the original three SVG/overlay
+controls. The clean wrapped-note and real mixed-parent collision controls both
+fail on the preceding implementation. Font-leading rectangles from the same
+text node are not compared against themselves; this inter-node guard does not
+certify internal glyph/line spacing. Hit-stack samples and conservative media
+rectangles are not a full CSS compositing or per-pixel alpha proof. Complete
+page inspection and the separate publication artifact checks remain necessary.
+
+Run the fast focused controls and complete browser gate before the expensive
+final source audit when changing a page or its measuring instruments. Freeze
+source after those checks, then bind the final audit, staged artifacts, version
+history, exact-commit CI and release assets. An unpublished local candidate may
+be rebuilt after a failed check; published historical tags and assets stay intact.
+
 This check does not replace full tests, chain checks, numerical acceptance,
 installed-package replay, artifact inspection or exact-commit CI. Source
 qualification, installed-wheel qualification and live process migration retain

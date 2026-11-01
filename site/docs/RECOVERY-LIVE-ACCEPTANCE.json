@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "kind": "eidos.paired-disposable-recovery-acceptance",
-  "generated": "2026-11-01T11:58:36.938954+00:00",
+  "generated": "2026-11-01T12:53:16.617889+00:00",
   "status": "PASS",
   "source_before_commit": "c12acdd617f1bac1d2449d2cb98dc7b085a5e404",
   "method": "Original c12acdd measurements retained under an unchanged checker; same thirteen controls replayed on candidate source with actual private HTTP services.",

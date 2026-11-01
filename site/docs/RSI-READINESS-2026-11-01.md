@@ -73,6 +73,12 @@ a test suite that shares the assumptions of its implementation. Review approval
 must therefore be supplemented by independent references, deliberately broken
 controls, held-out tasks and real user-path execution.
 
+The release layout gate supplied another concrete example: an inline element's
+union rectangle falsely reported a collision, while the old leaf-only scan
+missed genuine parent text collisions. Screenshot/fragment evidence corrected
+the diagnosis, and controlled visible/occluded cases checked the repair. This
+is bounded software-instrument improvement, not autonomous scientific discovery.
+
 Development also expanded across environment tooling, agents, scientific cases,
 delivery and presentation before the central research mission was qualified.
 Repeated long regression runs cannot substitute for deciding which capability

@@ -5,9 +5,9 @@
     "skip": 1,
     "fail": 0
   },
-  "tests_collected": 1104,
+  "tests_collected": 1112,
   "tests": {
-    "passed": 1102,
+    "passed": 1110,
     "failed": 0,
     "skipped": 6,
     "errors": 0
@@ -15,22 +15,22 @@
   "stability": {
     "stable": true,
     "before": {
-      "source_sha256": "569b8a6f3ef218a9ac23a51b88ff007bfcf0d1380fd0df5df522cf84a1de9e8a",
+      "source_sha256": "d898210228141784602eed244130f26a815ea8f5380a889dc0105cbcb81ad05b",
       "distribution_sha256": "bd1d8885d95bc93a4da5535014836f668273b310fbeb6100fb1b3bb03b0e22ed"
     },
     "after": {
-      "source_sha256": "569b8a6f3ef218a9ac23a51b88ff007bfcf0d1380fd0df5df522cf84a1de9e8a",
+      "source_sha256": "d898210228141784602eed244130f26a815ea8f5380a889dc0105cbcb81ad05b",
       "distribution_sha256": "bd1d8885d95bc93a4da5535014836f668273b310fbeb6100fb1b3bb03b0e22ed"
     },
-    "collection_after": 1104,
+    "collection_after": 1112,
     "execution": {
-      "reported_items": 1104,
+      "reported_items": 1112,
       "collection_level_skips": 4
     },
     "deselection_detected": false,
-    "collected_ids": 1104,
-    "unique_ids": 1104,
-    "recollected_ids": 1104,
+    "collected_ids": 1112,
+    "unique_ids": 1112,
+    "recollected_ids": 1112,
     "scope": "Framework/tools/tests Python sources, project version/lock/README/claims, installed distribution names+versions, collected test IDs"
   },
   "skip_reasons": [

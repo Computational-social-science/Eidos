@@ -1,9 +1,9 @@
 {
   "schema": 3,
-  "recorded_at": "2026-11-01T11:58:36.938954+00:00",
+  "recorded_at": "2026-11-01T12:53:16.617889+00:00",
   "status": "CONTROLLED_SOURCE_AND_DISPOSABLE_SERVICE_TESTS_PASS",
   "version": "0.4.10",
-  "tests_passed": 1102,
+  "tests_passed": 1110,
   "scope": "Full current source suite and same-host actual disposable-service recovery; no legacy/model-service migration.",
   "source_sha256_lf": {
     "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
@@ -28,9 +28,9 @@
     "tests/test_consumer_observation.py": "261095948a6271776b477b0a402ec3b4255af84f7b64536d65ce11a9dca7dec0"
   },
   "full_self_audit": {
-    "tests_collected": 1104,
+    "tests_collected": 1112,
     "tests": {
-      "passed": 1102,
+      "passed": 1110,
       "failed": 0,
       "skipped": 6,
       "errors": 0
@@ -43,11 +43,11 @@
       "fail": 0
     },
     "source_stable": true,
-    "receipt_sha256": "e2bf889c1d8b03b0b68ae029ae10fc30e9e972410f7e10533bf900d59d0d0070"
+    "receipt_sha256": "9e0930f618f18f3ca06fdd21d9cc6fc617a2feb598b611b62d7eea4eedc0dfdd"
   },
   "paired_live_record": {
     "path": "docs/RECOVERY-LIVE-ACCEPTANCE.json",
-    "sha256": "2090684fa20d78d400cc9e1aa47a4522a28b825ee7cc85184f7a5c3728655bb4",
+    "sha256": "a5b32d97f3fcab33a5e2c3a3f47d20939329161ef5de816d587aa1f27a14b143",
     "before_source_commit": "c12acdd617f1bac1d2449d2cb98dc7b085a5e404",
     "after_controls_per_platform": 13,
     "failure_optimization_controls_per_platform": 6

@@ -2,7 +2,7 @@
   "schema": 1,
   "kind": "eidos.consumer-verification-clock-acceptance",
   "version": "0.4.10",
-  "generated": "2026-11-01T11:58:38.189185+00:00",
+  "generated": "2026-11-01T12:53:17.550600+00:00",
   "status": "CONTROLLED_AND_LIVE_OBSERVATIONS_PASS",
   "scope": "Operational Gate S verification age and rendered state; not a new experiment or time-dependent data freshness certificate.",
   "comparison": {
@@ -240,9 +240,9 @@
   },
   "full_source_audit": {
     "path": "docs/SELF_AUDIT.json",
-    "sha256": "e2bf889c1d8b03b0b68ae029ae10fc30e9e972410f7e10533bf900d59d0d0070",
+    "sha256": "9e0930f618f18f3ca06fdd21d9cc6fc617a2feb598b611b62d7eea4eedc0dfdd",
     "tests": {
-      "passed": 1102,
+      "passed": 1110,
       "failed": 0,
       "skipped": 6,
       "errors": 0

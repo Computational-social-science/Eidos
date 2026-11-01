@@ -191,7 +191,7 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。
 
 <!-- self-audit:start -->
-本轮验收：1102 passed、2 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 75%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
+本轮验收：1110 passed、2 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 75%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
 <!-- self-audit:end -->
 
 既有 CUDA 16 项已独立通过；本轮未修改数值后端。

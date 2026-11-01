@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "kind": "eidos.tracking-integrity-acceptance",
-  "generated": "2026-11-01T11:58:36.938954+00:00",
+  "generated": "2026-11-01T12:53:16.617889+00:00",
   "status": "PASS",
   "version": "0.4.10",
   "release_qualification": "Candidate; exact final commit CI must be checked before tagging.",
@@ -2701,9 +2701,9 @@
   },
   "full_source_audit": {
     "path": "docs/SELF_AUDIT.json",
-    "sha256": "e2bf889c1d8b03b0b68ae029ae10fc30e9e972410f7e10533bf900d59d0d0070",
+    "sha256": "9e0930f618f18f3ca06fdd21d9cc6fc617a2feb598b611b62d7eea4eedc0dfdd",
     "tests": {
-      "passed": 1102,
+      "passed": 1110,
       "failed": 0,
       "skipped": 6,
       "errors": 0

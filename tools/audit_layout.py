@@ -22,22 +22,30 @@ PROBE = """() => {
     const r = el.getBoundingClientRect();
     return r.width > 1 && r.height > 1;
   };
-  const leaves = [];
-  document.querySelectorAll('body *').forEach(el => {
-    if (el.tagName === 'text') {
-      if (visible(el) && (el.textContent || '').trim()) leaves.push(el);
-      return;
+  // Inline elements can wrap around an earlier label. Their union bounding box
+  // includes empty space and can falsely intersect that label. Measure actual
+  // line fragments, including direct text in parents that also contain markup.
+  const fragments = [];
+  let owner = 0;
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  while (walker.nextNode()) {
+    const node = walker.currentNode, el = node.parentElement;
+    const text = (node.textContent || '').trim();
+    if (!el || !text || el.closest('svg,script,style,noscript,template') || !visible(el)) continue;
+    const range = document.createRange();
+    range.selectNodeContents(node);
+    const id = ++owner;
+    for (const rect of range.getClientRects()) {
+      if (rect.width > 1 && rect.height > 1) fragments.push({el, rect, text, owner: id});
     }
-    if (el.closest('svg')) return;          // svg text is handled above
-    if (el.children.length) return;         // containers do not own text boxes
-    if (!(el.textContent || '').trim()) return;
-    if (!visible(el)) return;
-    leaves.push(el);
-  });
-  const texts = leaves.map(el => {
+  }
+  const texts = [...document.querySelectorAll('svg text')].filter(el =>
+    visible(el) && (el.textContent || '').trim()).map(el => {
     const r = el.getBoundingClientRect();
     return {t: (el.textContent || '').trim().slice(0, 26), x: r.x, y: r.y, w: r.width, h: r.height};
   });
+  for (const {rect: r, text, owner} of fragments)
+    texts.push({t: text.slice(0, 26), x: r.x, y: r.y, w: r.width, h: r.height, owner});
   const over = [];
   document.querySelectorAll('body *').forEach(el => {
     const st = getComputedStyle(el);
@@ -82,30 +90,49 @@ PROBE = """() => {
     }
   });
   // HTML occlusion: absolute panels, negative margins and overlays cover text without any
-  // bounding-box intersection. Hit-testing the centre is what the reader's eye is doing.
+  // bounding-box intersection. Hit-test each text fragment, not empty space in
+  // a wrapped element's union rectangle.
   const obscured = [];
-  leaves.forEach(el => {
-    if (el.closest('svg')) return;
-    const r = el.getBoundingClientRect();
+  const alphaCache = new Map();
+  const colorProbe = document.createElement('canvas');
+  colorProbe.width = colorProbe.height = 1;
+  const colors = colorProbe.getContext('2d', {willReadFrequently: true});
+  const canPaintOverText = (el, st) => {
+    if (+st.opacity < 0.9) return false;
+    // Replaced media can paint without a CSS background. Retain conservative
+    // rectangle-based detection; this is not a per-pixel media alpha oracle.
+    if (['IMG','VIDEO','CANVAS','IFRAME','OBJECT','EMBED','SVG'].includes(el.tagName.toUpperCase())) return true;
+    if (st.backgroundImage !== 'none') return true;
+    if (!colors) throw new Error('Cannot inspect background opacity');
+    if (!alphaCache.has(st.backgroundColor)) {
+      colors.clearRect(0, 0, 1, 1);
+      colors.fillStyle = st.backgroundColor;
+      colors.fillRect(0, 0, 1, 1);
+      alphaCache.set(st.backgroundColor, colors.getImageData(0, 0, 1, 1).data[3] / 255);
+    }
+    return alphaCache.get(st.backgroundColor) >= 0.9;
+  };
+  fragments.forEach(({el, rect: r, text}) => {
     // Off-screen text (a skip link parked at left:-9999px) is not covered by anything; clamping
     // its centre into the viewport would invent an overlay that is not there.
     if (r.right < 1 || r.left > window.innerWidth - 1 || r.bottom < 1 || r.top > window.innerHeight - 1)
       return;
     const cx = Math.min(Math.max(r.x + r.width / 2, 1), window.innerWidth - 2);
     const cy = Math.min(Math.max(r.y + r.height / 2, 1), window.innerHeight - 2);
-    const top = document.elementFromPoint(cx, cy);
-    if (!top || top === el || el.contains(top) || top.contains(el)) return;
-    const st = getComputedStyle(top);
-    if (st.visibility === 'hidden' || st.display === 'none') return;
-    // A cell or a wrapper with a transparent background and static position is layout, not an
-    // overlay; only a painted, positioned box hides what is under it.
-    const painted = st.backgroundColor && st.backgroundColor !== 'rgba(0, 0, 0, 0)';
-    if (!painted && st.position === 'static') return;
-    // A mark smaller than the text it sits beside is an icon, not a cover.
-    const tr = top.getBoundingClientRect();
-    if (tr.width * tr.height < r.width * r.height) return;
-    obscured.push({t: (el.textContent || '').trim().slice(0, 26),
-                   by: (top.tagName + (top.className ? '.' + top.className : '')).slice(0, 30)});
+    // A transparent hit-test layer can sit above a genuinely painted cover.
+    // Inspect front-to-back until reaching this text's own paint context.
+    for (const top of document.elementsFromPoint(cx, cy)) {
+      if (top === el || top.contains(el)) break;
+      const st = getComputedStyle(top);
+      if (st.visibility === 'hidden' || st.display === 'none') continue;
+      if (!canPaintOverText(top, st)) continue;
+      // A mark smaller than the text it sits beside is an icon, not a cover.
+      const tr = top.getBoundingClientRect();
+      if (tr.width * tr.height < r.width * r.height) continue;
+      obscured.push({t: text.slice(0, 26),
+                     by: (top.tagName + (top.className ? '.' + top.className : '')).slice(0, 30)});
+      break;
+    }
   });
   const clipped = [];
   document.querySelectorAll('svg text').forEach(t => {
@@ -140,6 +167,12 @@ def audit(width: int) -> list[str]:
     for i in range(len(boxes)):
         for j in range(i + 1, len(boxes)):
             a, b = boxes[i], boxes[j]
+            # Range rectangles include font leading. Tight lines of the same
+            # text node can intersect without colliding glyphs. As before, this
+            # guard checks collisions between distinct text owners, not internal
+            # glyph/line layout within a single text node.
+            if a.get("owner") is not None and a["owner"] == b.get("owner"):
+                continue
             if (a["x"] < b["x"] + b["w"] and b["x"] < a["x"] + a["w"]
                     and a["y"] < b["y"] + b["h"] and b["y"] < a["y"] + a["h"]):
                 findings.append(f"{width}px: text overlap {a['t']!r} / {b['t']!r}")

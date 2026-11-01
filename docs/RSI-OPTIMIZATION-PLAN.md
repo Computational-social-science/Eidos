@@ -470,3 +470,46 @@ assuming all phases have finished:
 The architecture and gates in this document are EIDOS-specific proposals
 informed by these precedents and the local evidence. They are not a claim of
 consensus that two generations prove RSI or that bootstrap alone creates it.
+
+## 12. Installed tool milestone and the next bounded experiment
+
+The v0.4.11 numerical-program SDK is now an executed implementation milestone,
+not only a source-checkout prototype. Its
+[contract](NUMERICAL-PROGRAMS.md) and
+[installed receipt](NUMERICAL-PROGRAMS-ACCEPTANCE.json) bind the actual wheel,
+all 45 framework modules, normal core dependencies and fresh Windows/offline
+Linux measurements. The public controls comprise 23 log1mexp and 16 softplus
+points, explicit wrong-gradient rejection and parser/execution boundaries.
+The restored full research environment records 1,194 passing tests, six explicit
+skips, no failures/errors and 75% framework coverage. Release publication, actual
+installed capabilities and resident-process deployment retain separate records.
+
+This closes a reusable execution gap. It does not close the seed-competence or
+RSI gap: the original local-model proposal still failed 0/23 joint controls,
+while the external known method and explicitly supplied derivative passed.
+Compilation, correct forward values and a large test count do not establish
+scientific reasoning or an improved improvement procedure.
+
+The next useful experiment should connect local proposal, explicitly attributed
+tools, the installed compiler and independent acceptance in one finite campaign.
+Before inference, freeze the task split, source cards, candidate language,
+per-arm call/token/time limits, permitted assistance and promotion rules. Reuse
+the current task only as development evidence. An independent evaluator must
+control sealed tasks and references outside the candidate's visible files and
+tool responses. Compare matched budgets and retain every failure and resource
+abort; do not silently relabel external repairs as model discoveries.
+
+Differentiation is a candidate tool improvement because the measured failure
+was in the supplied gradient. Qualify it separately before adding it to the
+campaign: preserve stable expm1/log1p forms when lowering derivative expressions,
+handle piecewise domains and nondifferentiable boundaries explicitly, and check
+the result against independent high-precision references without an absolute
+gradient floor. A symbolic or automatic derivative is not its own scientific
+oracle. Selection of an existing free implementation should follow a small
+compatibility experiment, rather than adding another untested agent framework.
+
+Keep all execution local and keyless. Preserve the currently accepted numerical,
+delivery, tracking, self-check and bounded recovery contracts. Only after a real
+candidate completes the full chain should the project attempt sealed transfer,
+then a second improvement generation under the original RSI gates. The broader
+functional-completeness and RSI objectives remain open.

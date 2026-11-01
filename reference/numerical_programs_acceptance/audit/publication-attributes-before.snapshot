@@ -1,0 +1,60 @@
+*.py text eol=lf
+.github/workflows/*.yml text eol=lf
+reference/rsi_bootstrap/recorded_trials/** -text whitespace=cr-at-eol
+reference/numerical_method_tools/recorded_trials/** -text whitespace=cr-at-eol
+reference/method_portability/recorded_trials/** -text whitespace=cr-at-eol
+reference/numerical_programs_acceptance/recorded_trials/** -text whitespace=cr-at-eol
+docs/archive/*-v0.4.10.json -text whitespace=cr-at-eol
+site/docs/archive/*-v0.4.10.json -text whitespace=cr-at-eol
+docs/NUMERICAL-PROGRAMS-ACCEPTANCE.json -text whitespace=cr-at-eol
+site/docs/NUMERICAL-PROGRAMS-ACCEPTANCE.json -text whitespace=cr-at-eol
+site/reports/**/report.qmd -text
+site/reports/**/report.html -text
+site/reports/**/*.svg -text
+site/reports/**/*.csv -text whitespace=cr-at-eol
+site/reports/numerics/**/*.json -text whitespace=cr-at-eol
+*.md text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.sh text eol=lf
+docs/archive/self-audit-v0.4.9.json -text whitespace=cr-at-eol
+docs/archive/core-recovery-acceptance-v0.4.9.json -text whitespace=cr-at-eol
+docs/archive/recovery-live-acceptance-v0.4.9.json -text whitespace=cr-at-eol
+site/docs/archive/self-audit-v0.4.9.json -text whitespace=cr-at-eol
+site/docs/archive/core-recovery-acceptance-v0.4.9.json -text whitespace=cr-at-eol
+site/docs/archive/recovery-live-acceptance-v0.4.9.json -text whitespace=cr-at-eol
+.githooks/* text eol=lf
+# Preserve byte-bound research artifacts across Windows/Linux checkouts.
+reference/softmax_*/checkpoints/* -text
+reference/softmax_*/docs/*.json -text whitespace=cr-at-eol
+reference/hpaf_metric/*.json -text whitespace=cr-at-eol
+reference/hpaf_metric/docs/*.json -text whitespace=cr-at-eol
+reference/hpaf_metric/uv.lock -text
+reference/sdk_process_acceptance/*.whl -text
+site/reports/hpaf-metric/*.json -text whitespace=cr-at-eol
+# Preserve the exact CMD bytes exercised by the Windows startup acceptance.
+scripts/eidos-monitor.cmd -text whitespace=cr-at-eol
+scripts/install-autostart.cmd -text whitespace=cr-at-eol
+lock/snapshots/uv/*.lock -text
+# Screenshot records bind to the generated page bytes.
+site/index.html -text whitespace=cr-at-eol
+site/dashboard.html -text whitespace=cr-at-eol
+# Generated plotting paths and archived Markdown retain producer formatting.
+site/reports/numerics/** whitespace=-blank-at-eol,-blank-at-eof
+site/reports/softmax-matrix/** whitespace=-blank-at-eol,-blank-at-eof
+site/reports/hpaf-metric/** whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+site/reports/softmax-matrix/*.json -text whitespace=cr-at-eol
+site/reports/softmax-matrix/*.lock -text
+docs/archive/** whitespace=-blank-at-eol
+# These receipts bind one another by exact byte digest.
+docs/SELF_AUDIT.json -text whitespace=cr-at-eol
+docs/CORE-RECOVERY-ACCEPTANCE.json -text whitespace=cr-at-eol
+docs/RECOVERY-LIVE-ACCEPTANCE.json -text whitespace=cr-at-eol
+docs/TRACKING-ACCEPTANCE.json -text whitespace=cr-at-eol
+docs/CONSUMER-OBSERVATION-ACCEPTANCE.json -text whitespace=cr-at-eol
+site/docs/SELF_AUDIT.json -text whitespace=cr-at-eol
+site/docs/CORE-RECOVERY-ACCEPTANCE.json -text whitespace=cr-at-eol
+site/docs/RECOVERY-LIVE-ACCEPTANCE.json -text whitespace=cr-at-eol
+site/docs/TRACKING-ACCEPTANCE.json -text whitespace=cr-at-eol
+site/docs/CONSUMER-OBSERVATION-ACCEPTANCE.json -text whitespace=cr-at-eol
+*.sh text eol=lf

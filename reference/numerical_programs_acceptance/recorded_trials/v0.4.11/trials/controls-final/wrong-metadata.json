@@ -1,0 +1,11 @@
+{
+  "kind": "eidos.installed-tracking-acceptance",
+  "schema": 1,
+  "generated": "2026-11-01T22:04:06.350875+00:00",
+  "platform": "win32",
+  "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\tracking venv\\Scripts\\python.exe",
+  "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+  "optimization_level": 0,
+  "status": "FAIL",
+  "error": "ValueError: Wheel METADATA identity differs"
+}

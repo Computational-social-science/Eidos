@@ -3,6 +3,13 @@
 reference/rsi_bootstrap/recorded_trials/** -text whitespace=cr-at-eol
 reference/numerical_method_tools/recorded_trials/** -text whitespace=cr-at-eol
 reference/method_portability/recorded_trials/** -text whitespace=cr-at-eol
+reference/numerical_programs_acceptance/recorded_trials/** -text whitespace=cr-at-eol
+reference/numerical_programs_acceptance/recorded_trials/**/*.log whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+reference/numerical_programs_acceptance/audit/** -text whitespace=cr-at-eol
+docs/archive/*-v0.4.10.json -text whitespace=cr-at-eol
+site/docs/archive/*-v0.4.10.json -text whitespace=cr-at-eol
+docs/NUMERICAL-PROGRAMS-ACCEPTANCE.json -text whitespace=cr-at-eol
+site/docs/NUMERICAL-PROGRAMS-ACCEPTANCE.json -text whitespace=cr-at-eol
 site/reports/**/report.qmd -text
 site/reports/**/report.html -text
 site/reports/**/*.svg -text

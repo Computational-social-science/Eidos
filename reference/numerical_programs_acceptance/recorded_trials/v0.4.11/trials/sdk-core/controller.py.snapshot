@@ -1,0 +1,134 @@
+"""Owned offline candidate containers, bounded waits, inspect and exact cleanup."""
+import argparse
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import uuid
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--kind',choices=['public-core','sdk-core','tracking','recovery'],required=True)
+parser.add_argument('--image')
+parser.add_argument('--attempt',type=int,default=1)
+args = parser.parse_args()
+root = Path.cwd().resolve()
+cache = Path('C:/Users/Administrator/.cache/eidos-sdk-v411')
+if args.attempt<1:raise RuntimeError('Attempt must be positive')
+folder = cache/(args.kind if args.attempt==1 else args.kind+'-'+str(args.attempt))
+folder.mkdir(exist_ok=False)
+owner = uuid.uuid4().hex
+name = 'eidos-v411-'+args.kind+'-'+owner[:10]
+images = {'public-core':'public.ecr.aws/docker/library/python@sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337',
+          'sdk-core':'sha256:bc384f41896ee75c8001a4a17a4830869b6b9b47a23dfd5df038384f2bc755be',
+          'tracking':'sha256:8f137816f3f718fbc84d0e37ff07b3b25690d981ed0658a27a88977a58ee93ec',
+          'recovery':'sha256:8f137816f3f718fbc84d0e37ff07b3b25690d981ed0658a27a88977a58ee93ec'}
+image = args.image or images[args.kind]
+controller = Path(__file__).read_bytes()
+
+def input_inventory():
+    return {p.relative_to(cache/'input').as_posix():hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in sorted((cache/'input').rglob('*')) if p.is_file()}
+
+input_before=input_inventory()
+
+def call(argv, timeout=30):
+    return subprocess.run(argv,capture_output=True,text=True,encoding='utf-8',timeout=timeout,
+        creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
+
+def checked(argv, timeout=30):
+    run=call(argv,timeout)
+    if run.returncode:
+        raise RuntimeError(str(argv[:3])+': '+run.stderr[-1800:])
+    return run.stdout.strip()
+
+image_id=json.loads(checked(['docker','image','inspect',image]))[0]['Id']
+command=['python','-I','/input/bootstrap.py']
+mounts=['--mount','type=bind,source='+str(cache/'input')+',target=/input,readonly',
+        '--mount','type=bind,source='+str(folder)+',target=/out']
+if args.kind=='public-core':
+    command += ['--only-numerical']
+if args.kind in {'tracking','recovery'}:
+    mounts += ['--mount','type=bind,source='+str(root)+',target=/source,readonly']
+    command=['/opt/tracking/bin/python','-I','/input/tracking-bootstrap.py'] if args.kind=='tracking' else [
+        '/opt/tracking/bin/python','/source/reference/recovery_acceptance/check.py','--out','/out/recovery.json']
+cid=None
+record={'kind':args.kind,'owner':owner,'image_reference':image,'image_id':image_id,
+        'started':datetime.now(timezone.utc).isoformat(),'command':command,'status':'FAIL',
+        'controller_sha256':hashlib.sha256(controller).hexdigest(),'input_sha256':input_before,
+        'attempt':args.attempt}
+
+def inspect_owned():
+    data=json.loads(checked(['docker','container','inspect',cid]))[0]
+    if data['Id']!=cid or data['Config']['Labels'].get('eidos.v411.owner')!=owner or data['Image']!=image_id:
+        raise RuntimeError('Owned container identity differs; no cleanup authorized')
+    return data
+
+def public_state(data):
+    return {k:data[k] for k in ('Id','Image','State','Mounts')} | {
+        'network':data['HostConfig']['NetworkMode'],'readonly_rootfs':data['HostConfig']['ReadonlyRootfs'],
+        'tmpfs':data['HostConfig']['Tmpfs'],'command':data['Config']['Cmd'],
+        'cap_drop':data['HostConfig']['CapDrop'],'security_opt':data['HostConfig']['SecurityOpt']}
+
+def finish_container():
+    """Log failures must never skip cleanup of a container whose owner is verified."""
+    try:
+        inspect_owned()
+    except Exception as exc:
+        record.update(status='FAIL',cleanup_verified=False,cleanup_error=str(exc))
+        return
+    try:
+        logs=call(['docker','logs',cid])
+        if logs.returncode:
+            raise RuntimeError('Docker logs failed')
+        (folder/'stdout.log').write_text(logs.stdout,encoding='utf-8')
+        (folder/'stderr.log').write_text(logs.stderr,encoding='utf-8')
+    except Exception as exc:
+        record.update(status='FAIL',log_error=type(exc).__name__+': '+str(exc))
+    try:
+        # Recheck immediately before destructive cleanup; force is only for this exact owned ID.
+        inspect_owned()
+        checked(['docker','rm','--force',cid])
+        removed=call(['docker','container','inspect',cid])
+        record['cleanup_verified']=removed.returncode!=0 and (
+            'no such container' in removed.stderr.lower())
+        if not record['cleanup_verified']:
+            raise RuntimeError('Removal not proven')
+    except Exception as exc:
+        record.update(status='FAIL',cleanup_verified=False,cleanup_error=type(exc).__name__+': '+str(exc))
+
+try:
+    cid=checked(['docker','create','--name',name,'--label','eidos.v411.owner='+owner,
+        '--network','none','--read-only','--init','--memory','3g','--cpus','2','--pids-limit','256',
+        '--cap-drop','ALL','--security-opt','no-new-privileges',
+        '--tmpfs','/tmp:rw,exec,nosuid,nodev,size=2147483648,mode=1777',
+        '--tmpfs','/root/.cache:rw,nosuid,nodev,size=536870912,mode=1777',
+        '--env','PYTHONUTF8=1','--env','MLFLOW_DISABLE_AGENT_HINT=1',
+        '--env','OPENBLAS_NUM_THREADS=1','--env','OMP_NUM_THREADS=1',
+        '--workdir','/tmp',*mounts,image,*command])
+    before=inspect_owned()
+    if before['HostConfig']['NetworkMode']!='none' or not before['HostConfig']['ReadonlyRootfs']:
+        raise RuntimeError('Offline/read-only policy differs')
+    record['before']=public_state(before)
+    checked(['docker','start',cid])
+    exit_code=int(checked(['docker','wait',cid],timeout=1000 if args.kind=='tracking' else 240))
+    after=inspect_owned()
+    record['after']=public_state(after)
+    if exit_code!=0 or after['State']['ExitCode']!=0 or after['HostConfig']['NetworkMode']!='none':
+        raise RuntimeError('Candidate worker failed: '+str(exit_code))
+    record['status']='PASS'
+except Exception as exc:
+    record['error']=type(exc).__name__+': '+str(exc)
+finally:
+    if cid:
+        finish_container()
+    record['finished']=datetime.now(timezone.utc).isoformat()
+    if Path(__file__).read_bytes()!=controller:
+        record.update(status='FAIL',controller_changed=True)
+    if input_before!=input_inventory():
+        record.update(status='FAIL',input_changed=True)
+    (folder/'execution.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8')
+print(json.dumps({'kind':args.kind,'status':record['status'],'out':str(folder),
+                  'cleanup_verified':record.get('cleanup_verified'),'error':record.get('error')}))
+raise SystemExit(0 if record['status']=='PASS' else 1)

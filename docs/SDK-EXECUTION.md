@@ -53,12 +53,12 @@ missing executables. Windows also checks its actual console-window handle. Linux
 adds a delayed-cleanup handoff control. Two private broken candidate wheels first
 reproduced nested and handoff leaks; the final wheel rejects both. Only the fixed
 wheel is distributed. Download the
-[fixed wheel](../reference/sdk_process_acceptance/eidos-0.4.10-py3-none-any.whl) and
+[fixed wheel](../reference/sdk_process_acceptance/eidos-0.4.11-py3-none-any.whl) and
 [standalone checker](../reference/sdk_process_acceptance/check.py).
 Reproduce with a fresh environment and the checked driver:
 
 ```sh
-python -m pip install eidos-0.4.10-py3-none-any.whl
+python -m pip install eidos-0.4.11-py3-none-any.whl
 python -I -X utf8 reference/sdk_process_acceptance/check.py
 ```
 

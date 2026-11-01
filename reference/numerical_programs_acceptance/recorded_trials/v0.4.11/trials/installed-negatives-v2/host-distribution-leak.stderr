@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "C:\Users\Administrator\.cache\eidos-sdk-v411\input\numerical-check.py", line 241, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\Administrator\.cache\eidos-sdk-v411\input\numerical-check.py", line 223, in main
+    before = identity(args.wheel, args.expected_version)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\.cache\eidos-sdk-v411\input\numerical-check.py", line 90, in identity
+    require(all(Path(d.locate_file('')).resolve().is_relative_to(prefix) for d in packages.values()),
+  File "C:\Users\Administrator\.cache\eidos-sdk-v411\input\numerical-check.py", line 32, in require
+    raise RuntimeError(message)
+RuntimeError: Host distributions leaked into the virtual environment

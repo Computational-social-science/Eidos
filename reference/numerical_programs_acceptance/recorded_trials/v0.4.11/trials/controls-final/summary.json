@@ -1,0 +1,33 @@
+[
+  {
+    "case": "runtime-failure",
+    "exit_code": 1,
+    "expected_outcome": true,
+    "receipt_status": "FAIL",
+    "prior_pass_retained_as_history": false,
+    "receipt_sha256": "def76bc98210ae6b36400d16110e9ac664140937b79d49cc6883b2981ff11c57"
+  },
+  {
+    "case": "-O",
+    "exit_code": 1,
+    "expected_outcome": true,
+    "receipt_status": "PASS",
+    "prior_pass_retained_as_history": true,
+    "receipt_sha256": "555e3b70fb135a3e9a22446312a146e6e3119faf327613684a730e81842d0760"
+  },
+  {
+    "case": "-OO",
+    "exit_code": 1,
+    "expected_outcome": true,
+    "receipt_status": "PASS",
+    "prior_pass_retained_as_history": true,
+    "receipt_sha256": "555e3b70fb135a3e9a22446312a146e6e3119faf327613684a730e81842d0760"
+  },
+  {
+    "case": "same-code-wrong-metadata",
+    "exit_code": 1,
+    "expected_outcome": true,
+    "receipt_status": "FAIL",
+    "receipt_sha256": "41854dd1b2deeb5083d17443a6acbac9a4be7fc208fa3c7b0bf255de5be63a35"
+  }
+]

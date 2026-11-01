@@ -1,0 +1,36 @@
+from pathlib import Path
+import shutil
+
+root = Path.cwd()
+cache = Path('C:/Users/Administrator/.cache/eidos-sdk-v411')
+folder = cache/'input'
+folder.mkdir(exist_ok=False)
+mapping = {'reference/sdk_process_acceptance/check.py':'sdk-check.py',
+    'reference/quarto_delivery_acceptance/check.py':'quarto-check.py',
+    'reference/reproduction_acceptance/check.py':'reproduction-check.py',
+    'reference/numerical_programs_acceptance/check.py':'numerical-check.py',
+    'reference/sdk_process_acceptance/eidos-0.4.11-py3-none-any.whl':'eidos-0.4.11-py3-none-any.whl',
+    '.scratch/quality/v411-core-requirements.txt':'core.txt'}
+for source, target in mapping.items():
+    shutil.copyfile(root/source, folder/target)
+shutil.copytree(cache/'linux-wheels',folder/'wheels')
+body = (root/'.scratch/quality/sdk-v410-input/run.py').read_text()
+body = body.replace('0.4.10','0.4.11').replace(" and len(expected)==41",'')
+body = body.replace("parser.add_argument('--real-quarto', action='store_true')",
+    "parser.add_argument('--real-quarto', action='store_true')\nparser.add_argument('--only-numerical', action='store_true')")
+body = body.replace("for case, filename in [('sdk','sdk-check.py'),('quarto','quarto-check.py'),('reproduction','reproduction-check.py')]:",
+    "for case, filename in ([] if args.only_numerical else [('sdk','sdk-check.py'),('quarto','quarto-check.py'),('reproduction','reproduction-check.py')]):")
+body += '''
+completed=run([args.python,'-I',str(base/'numerical-check.py'),'--wheel',str(wheel),'--expected-version','0.4.11'])
+numerical=json.loads(completed.stdout)
+require(numerical['status']=='PASS' and numerical['sdk_version']=='0.4.11','Numerical installed qualification failed')
+require(numerical['source_sha256_canonical_lf']==identity['modules'],'Numerical/full-wheel inventory differs')
+(args.out/'numerical.json').write_text(completed.stdout,encoding='utf-8')
+(args.out/'numerical.stderr').write_text(completed.stderr,encoding='utf-8')
+for mode in ('-O','-OO'):
+    result=subprocess.run([args.python,'-I',mode,str(base/'numerical-check.py'),'--wheel',str(wheel),'--expected-version','0.4.11'],cwd=outside,env=env,capture_output=True,text=True,timeout=15)
+    require(result.returncode!=0 and not result.stdout.strip() and 'Qualification requires' in result.stderr,'Numerical optimized mode falsely qualified')
+print('numerical: 23 log1mexp +16 softplus +12 refusals and wrong-gradient/buffer/underflow controls PASS',flush=True)
+'''
+(folder/'run.py').write_text(body,encoding='utf-8')
+print(folder)

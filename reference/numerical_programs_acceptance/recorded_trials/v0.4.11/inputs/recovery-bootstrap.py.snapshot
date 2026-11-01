@@ -1,0 +1,7 @@
+import subprocess
+import sys
+
+subprocess.run([sys.executable,'/source/reference/recovery_acceptance/check.py',
+                '--out','/out/recovery.json'],check=True)
+subprocess.run([sys.executable,'/input/recovery-negative.py','--source','/source',
+                '--positive','/out/recovery.json','--out','/out/recovery-controls'],check=True)

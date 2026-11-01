@@ -1,0 +1,81 @@
+"""Installed-wheel qualification from outside the source checkout."""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import zipfile
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--python', default=sys.executable)
+parser.add_argument('--out', type=Path, required=True)
+parser.add_argument('--install', action='store_true')
+parser.add_argument('--real-quarto', action='store_true')
+parser.add_argument('--only-numerical', action='store_true')
+args = parser.parse_args()
+base = Path(__file__).resolve().parent
+wheel = base/'eidos-0.4.11-py3-none-any.whl'
+args.out.mkdir(parents=True, exist_ok=False)
+outside = args.out/'outside-checkout'
+outside.mkdir()
+env = {key:value for key,value in os.environ.items() if key not in {'PYTHONPATH','PYTHONHOME'}}
+env.update(PYTHONNOUSERSITE='1', PYTHONUTF8='1')
+
+def require(ok, message):
+    if not ok: raise RuntimeError(message)
+
+def run(command, timeout=300):
+    result=subprocess.run(command,cwd=outside,env=env,capture_output=True,text=True,encoding='utf-8',timeout=timeout)
+    require(result.returncode==0, 'Command failed: '+repr(command)+'\n'+result.stdout[-1500:]+'\n'+result.stderr[-2000:])
+    return result
+
+if args.install:
+    installed=run(['uv','pip','install','--python',args.python,'--no-deps','--no-index',str(wheel)])
+    (args.out/'install.log').write_text(installed.stdout+installed.stderr,encoding='utf-8')
+
+inventory=run([args.python,'-I','-X','utf8','-c',
+    "from pathlib import Path;import framework.project as sdk,hashlib,json,sys;from importlib.metadata import version;"
+    "p=Path(sdk.__file__).parent;print(json.dumps({'sdk_version':version('eidos'),'prefix':sys.prefix,"
+    "'modules':{'framework/'+x.relative_to(p).as_posix():hashlib.sha256(x.read_text(encoding='utf-8-sig').encode()).hexdigest() for x in sorted(p.rglob('*.py'))}}))"])
+identity=json.loads(inventory.stdout)
+require(identity['sdk_version']=='0.4.11','Wrong installed version')
+with zipfile.ZipFile(wheel) as archive:
+    expected={name:hashlib.sha256(archive.read(name).decode('utf-8-sig').replace('\r\n','\n').encode()).hexdigest()
+              for name in archive.namelist() if name.startswith('framework/') and name.endswith('.py')}
+require(identity['modules']==expected,'Installed module/wheel mismatch')
+(args.out/'inventory.json').write_text(json.dumps(identity,indent=2)+'\n',encoding='utf-8')
+controls={}
+for case, filename in ([] if args.only_numerical else [('sdk','sdk-check.py'),('quarto','quarto-check.py'),('reproduction','reproduction-check.py')]):
+    extra=['--real-quarto'] if case=='quarto' and args.real_quarto else []
+    completed=run([args.python,'-I','-X','utf8',str(base/filename),*extra])
+    result=json.loads(completed.stdout)
+    require(result['sdk_version']=='0.4.11' and type(result['optimization_level']) is int and result['optimization_level']==0,'Invalid version/optimization')
+    require(Path(result['installed_module']).resolve().is_relative_to(Path(identity['prefix']).resolve()),'Checkout leaked into acceptance')
+    result['source_sha256_canonical_lf']=identity['modules']
+    require(all(row.get('accepted') is True or (row.get('expected_outcome') is True and not row.get('negative_control')) for row in result['cases']),'A control failed')
+    expected_count=6 if case=='sdk' else 16 if case=='quarto' and args.real_quarto else 15 if case=='quarto' else 18
+    require(len(result['cases'])==expected_count,'Control inventory changed')
+    if case=='reproduction': require(result['oracle_comparisons']==512,'Missing Decimal oracle comparisons')
+    (args.out/(case+'.json')).write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+    (args.out/(case+'.stderr')).write_text(completed.stderr,encoding='utf-8')
+    controls[case]=[]
+    for mode in ('-O','-OO'):
+        rejected=subprocess.run([args.python,'-I',mode,'-X','utf8',str(base/filename),*extra],cwd=outside,env=env,capture_output=True,text=True,encoding='utf-8',timeout=15)
+        require(rejected.returncode!=0 and not rejected.stdout.strip() and 'Qualification requires' in rejected.stderr,'Optimized mode falsely qualified')
+        controls[case].append({'mode':mode,'exit_code':rejected.returncode,'stdout_empty':True,'rejected':True,'message':rejected.stderr.strip().splitlines()[-1]})
+    print(case,expected_count,'controls PASS',flush=True)
+(args.out/'optimization.json').write_text(json.dumps(controls,indent=2)+'\n',encoding='utf-8')
+print('Installed SDK module inventory:',len(expected),flush=True)
+
+completed=run([args.python,'-I',str(base/'numerical-check.py'),'--wheel',str(wheel),'--expected-version','0.4.11'])
+numerical=json.loads(completed.stdout)
+require(numerical['status']=='PASS' and numerical['sdk_version']=='0.4.11','Numerical installed qualification failed')
+require(numerical['source_sha256_canonical_lf']==identity['modules'],'Numerical/full-wheel inventory differs')
+(args.out/'numerical.json').write_text(completed.stdout,encoding='utf-8')
+(args.out/'numerical.stderr').write_text(completed.stderr,encoding='utf-8')
+for mode in ('-O','-OO'):
+    result=subprocess.run([args.python,'-I',mode,str(base/'numerical-check.py'),'--wheel',str(wheel),'--expected-version','0.4.11'],cwd=outside,env=env,capture_output=True,text=True,timeout=15)
+    require(result.returncode!=0 and not result.stdout.strip() and 'Qualification requires' in result.stderr,'Numerical optimized mode falsely qualified')
+print('numerical: 23 log1mexp +16 softplus +12 refusals and wrong-gradient/buffer/underflow controls PASS',flush=True)

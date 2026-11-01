@@ -1,0 +1,15 @@
+{
+  "observed": "2026-11-01T22:15:27.035050+00:00",
+  "container_id": "56ebe7925a466ba9f0c7bbd624421202fe76a03ef91d0d0ee271cd52d747553c",
+  "command": [
+    "docker",
+    "container",
+    "inspect",
+    "56ebe7925a466ba9f0c7bbd624421202fe76a03ef91d0d0ee271cd52d747553c"
+  ],
+  "exit_code": 1,
+  "stderr": "Error response from daemon: No such container: 56ebe7925a466ba9f0c7bbd624421202fe76a03ef91d0d0ee271cd52d747553c\n",
+  "absence_confirmed_later": true,
+  "original_record_remains": "FAIL",
+  "limit": "Later absence does not rewrite or qualify the original conservative controller FAIL."
+}

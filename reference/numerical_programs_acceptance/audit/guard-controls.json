@@ -1,0 +1,24 @@
+{
+  "rejected": 19,
+  "controls": [
+    "Windows receipt in Linux slot",
+    "optimization_level=True",
+    "optimization_level=1",
+    "wheel_sha256=0000000000000000000000000000000000000000000000000000000000000000",
+    "duplicate log1mexp",
+    "duplicate softplus",
+    "duplicate refusals",
+    "boolean point",
+    "mode boolean exit",
+    "missing empty stdout",
+    "duplicate installed negative",
+    "wrong input wheel",
+    "wrong input driver",
+    "wrong command",
+    "writable input mount",
+    "boolean worker exit",
+    "OOM worker",
+    "changed self-audit bytes",
+    "changed source at final publication"
+  ]
+}

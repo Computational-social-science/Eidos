@@ -239,7 +239,7 @@
     "log_sha256": "ea962b9603e50079693e503ab28e9a08f0674955f1b644251dad797f1da7c24d"
   },
   "full_source_audit": {
-    "path": "docs/SELF_AUDIT.json",
+    "path": "docs/archive/self-audit-v0.4.10.json",
     "sha256": "9e0930f618f18f3ca06fdd21d9cc6fc617a2feb598b611b62d7eea4eedc0dfdd",
     "tests": {
       "passed": 1110,
@@ -282,5 +282,49 @@
     "Bounded same-host observations; not a clean24h or reboot/logon certificate.",
     "The legacy interpreter/process migration remains separate; the live clock repair is not that migration.",
     "Fresh verification does not renew underlying measurements or establish scientific correctness."
-  ]
+  ],
+  "lineage": {
+    "historical_record_git": "v0.4.10:docs/CONSUMER-OBSERVATION-ACCEPTANCE.json",
+    "historical_record_sha256": "3cfcd51b26e0fb061fe1660e25d07a8b48d010089b11038c62721949f2a2aaf3",
+    "historical_controls_and_live_samples_unchanged": true,
+    "note": "The original version, generated time and paired live evidence remain historical; their source-audit path now resolves to its immutable archive."
+  },
+  "current_source_regression": {
+    "version": "0.4.11",
+    "path": "docs/SELF_AUDIT.json",
+    "sha256": "9b2393b11cb87f7d54bcac9a55fb5725c6bfd3c620e8e96ea4cc349331d88d1a",
+    "tests": {
+      "passed": 1194,
+      "failed": 0,
+      "skipped": 6,
+      "errors": 0
+    },
+    "stable": true,
+    "scope": "Full current suite; observation source files above remain unchanged. This does not redate the historical focused test or live measurements."
+  },
+  "current_read_only_observation": {
+    "recorded_at": "2026-11-01T22:26:40.100808+00:00",
+    "endpoint": "http://127.0.0.1:8765/api/status",
+    "samples": [
+      {
+        "seq": 17296,
+        "ts": "2026-11-01T22:26:12+00:00",
+        "overall": "OK",
+        "stale": false,
+        "sample_age_s": 7.3,
+        "consumers_state": "OK"
+      },
+      {
+        "seq": 17297,
+        "ts": "2026-11-01T22:26:27+00:00",
+        "overall": "OK",
+        "stale": false,
+        "sample_age_s": 12.3,
+        "consumers_state": "OK"
+      }
+    ],
+    "service_stop_or_restart": false,
+    "manual_module_reload": false,
+    "scope": "Two advancing fresh OK samples from the existing monitor; no new process migration, reboot/logon or clean24h acceptance."
+  }
 }

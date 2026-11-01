@@ -1,13 +1,13 @@
 {
-  "generated": "2026-11-01T09:08:07.823863+00:00",
-  "assessor": "Codex: exact pixel comparison of all 36 pages to inspected v0.4.9 baseline; manual full-page review of all six changed pages.",
+  "generated": "2026-11-01T22:09:31.037294+00:00",
+  "assessor": "Codex: all 36 pages compared pixel-for-pixel with the inspected v0.4.10 baseline; both changed PDF/Word pages visually inspected in full.",
   "scope": "Rendered PDF and Word pages only; web layout is a separate browser check. Manuscript spacing permits whitespace before intact figures/tables.",
   "submission_ready": false,
-  "baseline_tag": "v0.4.9",
+  "baseline_tag": "v0.4.10",
   "reports": [
     {
       "path": "site/reports/numerics/report.pdf",
-      "sha256": "42ad65c0d228b1aa52df88a096d45ceed539058818ecaed2c9753920a78a66fa",
+      "sha256": "38d43391b3b652127fa0b34be27e3f58c3eee3c56ec16aac593c7fa8a4b41884",
       "pages_inspected": [
         1,
         2,
@@ -21,7 +21,7 @@
       "renderer": "Poppler",
       "page_png_sha256": [
         "5a721d8c8fd6a3d94bcab23258f40790add2b7d7d586e0f37119d068c54b03c2",
-        "dbeacedf597d1c2d2dc86bc89f989553730539b012dcc78eb984e0aaef7528cf",
+        "c1a9b7b1a1fc742f7f495f3013849949db782a330cbafc180ecb059e37286f93",
         "7330dfc4b56904a66d0540d7fef5de8f3238c39410e1bba9c56242eefb53584d",
         "36112ba1d8923ecfcec10ec2b1ffe23f6585dc6e3fbeb5211ffdf987c5842af9",
         "1b7f9c95ac2ce92fd2b7f9b6bc12e7abbad1844d47140655dfda0fc0f55724a3",
@@ -42,7 +42,7 @@
     },
     {
       "path": "site/reports/numerics/report.docx",
-      "sha256": "870424c25d212cd384119672d900be95429b9baeca63910df2d1ef2e3a126f5e",
+      "sha256": "cc4fdb03a502c5b1c007bb04acfc754f24a7c9b3b56ff3dee61bb11bfbb5b39e",
       "pages_inspected": [
         1,
         2,
@@ -56,7 +56,7 @@
       "renderer": "Bundled render_docx.py PNG pipeline; native Microsoft Word read-only conversion adapter",
       "page_png_sha256": [
         "0dcd5ed98eb7c949f3024a07aa8d77035f5f33e67221fb367e9400b09f8fb2e0",
-        "be2f14e59ab9ae71413b06c0a1b802d0f84b08a25244f76b03f7612fec10f9d7",
+        "c2d48c7ecf64838f4f50d276850c828c1ad7bc57ad7492893ad15e74c8567ec2",
         "8946a42950d26320a80d1ee961f599d7a9db9c27f856c0ec5a80e06044b472f4",
         "485d553f9b0551d9df6a967100a216baad21a72cd6437af4e1989d30519e82b2",
         "60daad8f065666a94411181e944267429d48c4e5a0607a74b29cf6f5376696cd",
@@ -77,7 +77,7 @@
     },
     {
       "path": "site/reports/softmax-matrix/report.pdf",
-      "sha256": "f4cd87975fa9b1ef3dc05f1b5e4820a7cfef2ff1928c7a085d558792d2b22a16",
+      "sha256": "8ba60f4b18c44d41355bc3ff885e736160b7bdce203ce351ae152268abae8218",
       "pages_inspected": [
         1,
         2,
@@ -108,7 +108,7 @@
     },
     {
       "path": "site/reports/softmax-matrix/report.docx",
-      "sha256": "8d75a962822cfc8fdb49de22d6c8f1fb4a32f506f144d1b1b82884a6bd7ed9ef",
+      "sha256": "ba60dc5dcac4763413c9d6c9bf90dd0c6a84e9961388b084cd5cd295e9a55588",
       "pages_inspected": [
         1,
         2,
@@ -205,12 +205,12 @@
       "page": 2,
       "pixel_identical": false,
       "difference_bbox": [
-        63,
+        159,
         413,
-        927,
-        551
+        922,
+        432
       ],
-      "changed_region_review": "Full page visually inspected: v0.4.10 version line remains readable with valid line wrapping."
+      "changed_region_review": "Full page visually inspected: Eidos 0.4.11 version line is legible, with valid wrapping and no overlap or clipping."
     },
     {
       "path": "site/reports/numerics/report.pdf",
@@ -266,12 +266,12 @@
       "page": 2,
       "pixel_identical": false,
       "difference_bbox": [
-        1237,
+        1251,
         675,
-        1272,
-        700
+        1264,
+        696
       ],
-      "changed_region_review": "Full page visually inspected: v0.4.10 version line remains readable with valid line wrapping."
+      "changed_region_review": "Full page visually inspected: Eidos 0.4.11 version line is legible, with valid wrapping and no overlap or clipping."
     },
     {
       "path": "site/reports/numerics/report.docx",
@@ -346,26 +346,16 @@
     {
       "path": "site/reports/softmax-matrix/report.pdf",
       "page": 5,
-      "pixel_identical": false,
-      "difference_bbox": [
-        36,
-        403,
-        929,
-        1293
-      ],
-      "changed_region_review": "Full page visually inspected: original experiment lock and scoped frozen-resolution attestation text, line numbering and references remain readable; no overlap or clipping."
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/softmax-matrix/report.pdf",
       "page": 6,
-      "pixel_identical": false,
-      "difference_bbox": [
-        36,
-        116,
-        47,
-        296
-      ],
-      "changed_region_review": "Full page visually inspected: original experiment lock and scoped frozen-resolution attestation text, line numbering and references remain readable; no overlap or clipping."
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/softmax-matrix/report.docx",
@@ -398,26 +388,16 @@
     {
       "path": "site/reports/softmax-matrix/report.docx",
       "page": 5,
-      "pixel_identical": false,
-      "difference_bbox": [
-        39,
-        1634,
-        1273,
-        1792
-      ],
-      "changed_region_review": "Full page visually inspected: original experiment lock and scoped frozen-resolution attestation text, line numbering and references remain readable; no overlap or clipping."
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/softmax-matrix/report.docx",
       "page": 6,
-      "pixel_identical": false,
-      "difference_bbox": [
-        39,
-        154,
-        67,
-        1436
-      ],
-      "changed_region_review": "Full page visually inspected: original experiment lock and scoped frozen-resolution attestation text, line numbering and references remain readable; no overlap or clipping."
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
     },
     {
       "path": "site/reports/hpaf-metric/report.pdf",
@@ -476,5 +456,5 @@
       "changed_region_review": null
     }
   ],
-  "identical_pages": 30
+  "identical_pages": 34
 }

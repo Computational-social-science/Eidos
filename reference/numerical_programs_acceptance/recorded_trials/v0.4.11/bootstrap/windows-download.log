@@ -1,0 +1,45 @@
+Ignoring contourpy: markers 'python_full_version < "3.12"' don't match your environment
+Ignoring numpy: markers 'python_full_version < "3.12"' don't match your environment
+Collecting contourpy==1.4.0 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 77))
+  Using cached contourpy-1.4.0-cp312-cp312-win_amd64.whl (234 kB)
+Collecting cycler==0.12.1 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 149))
+  Using cached cycler-0.12.1-py3-none-any.whl (8.3 kB)
+Collecting fonttools==4.67.0 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 153))
+  Downloading fonttools-4.67.0-cp312-cp312-win_amd64.whl (2.5 MB)
+     ---------------------------------------- 2.5/2.5 MB 2.3 MB/s eta 0:00:00
+Collecting kiwisolver==1.5.1 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 213))
+  Using cached kiwisolver-1.5.1-cp312-cp312-win_amd64.whl (70 kB)
+Collecting matplotlib==3.11.2 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 338))
+  Using cached matplotlib-3.11.2-cp312-cp312-win_amd64.whl (9.3 MB)
+Collecting numpy==2.5.4 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 470))
+  Downloading numpy-2.5.4-cp312-cp312-win_amd64.whl (12.6 MB)
+     --------------------------------------- 12.6/12.6 MB 29.8 MB/s eta 0:00:00
+Collecting packaging==26.3 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 541))
+  Using cached packaging-26.3-py3-none-any.whl (129 kB)
+Collecting pillow==13.0.0 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 545))
+  Downloading pillow-13.0.0-cp312-cp312-win_amd64.whl (7.3 MB)
+     ---------------------------------------- 7.3/7.3 MB 51.9 MB/s eta 0:00:00
+Collecting pyparsing==3.3.3 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 630))
+  Using cached pyparsing-3.3.3-py3-none-any.whl (126 kB)
+Collecting python-dateutil==2.9.0.post0 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 634))
+  Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+Collecting pyyaml==6.0.3 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 638))
+  Using cached pyyaml-6.0.3-cp312-cp312-win_amd64.whl (154 kB)
+Collecting six==1.17.0 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 688))
+  Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)
+Saved c:\users\administrator\.cache\eidos-sdk-v411\windows-wheels\contourpy-1.4.0-cp312-cp312-win_amd64.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\windows-wheels\cycler-0.12.1-py3-none-any.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\windows-wheels\fonttools-4.67.0-cp312-cp312-win_amd64.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\windows-wheels\kiwisolver-1.5.1-cp312-cp312-win_amd64.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\windows-wheels\matplotlib-3.11.2-cp312-cp312-win_amd64.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\windows-wheels\numpy-2.5.4-cp312-cp312-win_amd64.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\windows-wheels\packaging-26.3-py3-none-any.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\windows-wheels\pillow-13.0.0-cp312-cp312-win_amd64.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\windows-wheels\pyparsing-3.3.3-py3-none-any.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\windows-wheels\python_dateutil-2.9.0.post0-py2.py3-none-any.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\windows-wheels\pyyaml-6.0.3-cp312-cp312-win_amd64.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\windows-wheels\six-1.17.0-py2.py3-none-any.whl
+Successfully downloaded contourpy cycler fonttools kiwisolver matplotlib numpy packaging pillow pyparsing python-dateutil pyyaml six
+
+[notice] A new release of pip is available: 24.0 -> 26.2.2
+[notice] To update, run: C:\Users\Administrator\.cache\eidos-sdk-v411\windows venv\Scripts\python.exe -m pip install --upgrade pip

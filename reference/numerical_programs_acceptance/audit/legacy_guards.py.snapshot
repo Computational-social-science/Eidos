@@ -1,0 +1,80 @@
+"""Explicit inventories; counts alone are never a qualification criterion."""
+SDK = {'timeout kills inherited descendants','normal exit closes inherited-output descendants',
+       'nested SDK scopes','worker code 125 remains research OPEN','missing executable remains SKIP'}
+QUARTO = {'reject '+name+' and preserve previous publication' for name in ['none','partial','corrupt','mutate','missing-resource']} | {
+    'complete three-format files, resources and receipt','reject overwriting a declared input',
+    'reject reserved receipt resource','reject wrong executable version',
+    'single Matplotlib svg with normal CLI exit','single Matplotlib png with normal CLI exit',
+    'single Matplotlib pdf with normal CLI exit','reject noninteger exit 0.0',
+    "reject noninteger exit __import__('numpy').int64(0)",'reject PDF shell without a document'}
+REPRODUCTION = {'512 comparisons against independent Decimal arithmetic',
+    'nonfinite and mistyped domains refused','one-unit integer error above binary64 exact range rejected',
+    'executed source-bound MATCH and S12 positive control','declared data changes invalidate an existing MATCH',
+    *('reject '+name+' output' for name in ['duplicate','nan','overflow','boolean','multiple','multiline-prefix']),
+    'invalid spec refused before launch','complete bundle preserves the mismatching result',
+    'successful child cannot qualify the complete paper','trimmed and resealed bundle rejected against original inventory',
+    'input mutation during execution is UNRUN','owned timeout closes descendants and retains both streams',
+    'portable paper identities round trip without overwriting'}
+RECOVERY = {'initial_real_service','http_status_contract','redirect_does_not_substitute_another_endpoint',
+    'actual_process_crash_observed','two_fault_samples_do_not_launch','third_sample_starts_real_process',
+    'real_endpoints_verify_recovery','one_attempt_one_terminal','healthy_service_is_not_restarted',
+    'half_failed_service_is_not_healthy','held_port_refuses_duplicate_launch',
+    'windows_launchers_have_no_console','owned_job_closes_disposable_services'}
+RECOVERY_NEGATIVES = {'worker-failure','json-list','json-empty','json-checks-null','-O','-OO'}
+TRACKING_NEGATIVES = {'runtime-failure','-O','-OO','same-code-wrong-metadata'}
+
+def require(value, message):
+    if not value: raise ValueError(message)
+
+def inventory(rows, expected, field='case'):
+    require(type(rows) is list and len(rows)==len(expected)
+            and all(type(row) is dict and type(row.get(field)) is str for row in rows), 'Invalid case inventory')
+    require({row[field] for row in rows}==expected, 'Missing, duplicate or unexpected case')
+
+def lifecycle(value, case, platform):
+    require(value.get('platform')==('win32' if platform=='windows' else 'linux')
+            and type(value.get('optimization_level')) is int and value['optimization_level']==0,
+            'Wrong platform or optimization mode')
+    expected = SDK | ({'Windows worker has no console window'} if platform=='windows' else
+                      {'normal-root handoff survives caller cleanup delay'}) if case=='sdk' else (
+        QUARTO | ({'actual Quarto three formats from custom manuscript directory'} if platform=='windows' else set())
+        if case=='quarto' else REPRODUCTION)
+    inventory(value.get('cases'), expected)
+    for row in value['cases']:
+        if row['case']=='nested SDK scopes':
+            require(row.get('leaked') is False and row.get('negative_control') is False
+                    and row.get('expected_outcome') is True,'Nested SDK scope failed')
+        else:
+            require(row.get('accepted') is True,'A lifecycle case did not pass')
+        if row['case']=='Windows worker has no console window':
+            require(type(row.get('console_window')) is int and row['console_window']==0,'Visible worker console')
+    if case=='reproduction':
+        require(type(value.get('oracle_comparisons')) is int and value['oracle_comparisons']==512,'Incomplete oracle comparisons')
+
+def optimization(rows):
+    inventory(rows,{'-O','-OO'},'mode')
+    require(all(row.get('rejected') is True and row.get('stdout_empty') is True
+                and type(row.get('exit_code')) is int and row['exit_code']!=0 for row in rows),
+            'Optimized mode was not rejected')
+
+def recovery(value, platform):
+    require(value.get('platform')==('win32' if platform=='windows' else 'linux') and value.get('status')=='PASS',
+            'Wrong recovery platform/status')
+    inventory(value.get('checks'),RECOVERY,'name')
+    require(all(row.get('passed') is True for row in value['checks']),'Recovery case did not pass')
+
+def negative(rows, kind):
+    inventory(rows,RECOVERY_NEGATIVES if kind=='recovery' else TRACKING_NEGATIVES)
+    for row in rows:
+        require(type(row.get('exit_code')) is int and row['exit_code']!=0,'Negative control exited successfully')
+        if kind=='tracking':
+            require(row.get('expected_outcome') is True,'Tracking negative control not accepted')
+        if row['case'] in {'-O','-OO'}:
+            if kind=='recovery':
+                require(row.get('rejected') is True and row.get('prior_receipt_unchanged') is True,'Optimization overwrote receipt')
+            else:
+                require(row.get('receipt_status')=='PASS' and row.get('prior_pass_retained_as_history') is True,'Optimization did not preserve history')
+        elif kind=='recovery':
+            require(row.get('prior_status')=='PASS' and row.get('final_status')=='FAIL','Invalid recovery evidence retained PASS')
+        else:
+            require(row.get('receipt_status')=='FAIL','Invalid tracking evidence retained PASS')

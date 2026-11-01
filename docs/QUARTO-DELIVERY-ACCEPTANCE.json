@@ -1,20 +1,20 @@
 {
-  "generated": "2026-11-01T12:53:16.617889+00:00",
+  "generated": "2026-11-01T22:22:54.503563+00:00",
   "scope": "Installed SDK artifact-production boundary; controlled CLI and actual Matplotlib on both systems, actual Quarto/TeX on Windows. No scientific/journal/general new-machine claim.",
-  "wheel": "reference/sdk_process_acceptance/eidos-0.4.10-py3-none-any.whl",
-  "wheel_sha256": "68faf443a36d668325b96145971db2ce7bbcb8ae3b8e03b074c2c2b2ea47d9eb",
+  "wheel": "reference/sdk_process_acceptance/eidos-0.4.11-py3-none-any.whl",
+  "wheel_sha256": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
   "driver": "reference/quarto_delivery_acceptance/check.py",
   "driver_sha256": "f0efe362c24aa1b680d57f2716aced4214cd9967005e0a27a21bc8c065af2b2f",
   "source_inventory": "SDK-PROCESS-ACCEPTANCE.json#source_sha256_canonical_lf",
   "windows": {
     "status": "PASS",
     "result": {
-      "generated": "2026-11-01T09:06:36.176491+00:00",
+      "generated": "2026-11-01T21:53:59.479096+00:00",
       "platform": "win32",
       "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
-      "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v410-tracking\\venv with spaces\\Scripts\\python.exe",
-      "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v410-tracking\\venv with spaces\\Lib\\site-packages\\framework\\quarto_bridge\\__init__.py",
-      "sdk_version": "0.4.10",
+      "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\windows venv\\Scripts\\python.exe",
+      "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\windows venv\\Lib\\site-packages\\framework\\quarto_bridge\\__init__.py",
+      "sdk_version": "0.4.11",
       "optimization_level": 0,
       "pdfinfo": "pdfinfo version 26.07.0\nCopyright 2005-2026 The Poppler Developers - http://poppler.freedesktop.org\nCopyright 1996-2011, 2022 Glyph & Cog, LLC",
       "cases": [
@@ -86,640 +86,60 @@
       "real_quarto": true,
       "dependencies": [
         [
-          "Flask",
-          "3.1.3"
-        ],
-        [
-          "GitPython",
-          "3.2.1"
-        ],
-        [
-          "Jinja2",
-          "3.1.6"
-        ],
-        [
-          "Mako",
-          "1.4.3"
-        ],
-        [
-          "MarkupSafe",
-          "3.0.4"
-        ],
-        [
           "PyYAML",
           "6.0.3"
-        ],
-        [
-          "Pygments",
-          "2.21.0"
-        ],
-        [
-          "SQLAlchemy",
-          "2.1.6"
-        ],
-        [
-          "Werkzeug",
-          "3.1.9"
-        ],
-        [
-          "aiohappyeyeballs",
-          "2.7.1"
-        ],
-        [
-          "aiohttp",
-          "3.14.5"
-        ],
-        [
-          "aiohttp-retry",
-          "2.9.1"
-        ],
-        [
-          "aiosignal",
-          "1.4.0"
-        ],
-        [
-          "alembic",
-          "1.20.1"
-        ],
-        [
-          "amqp",
-          "5.4.1"
-        ],
-        [
-          "annotated-doc",
-          "0.0.5"
-        ],
-        [
-          "annotated-types",
-          "0.8.0"
-        ],
-        [
-          "antlr4-python3-runtime",
-          "4.9.3"
-        ],
-        [
-          "anyio",
-          "4.15.1"
-        ],
-        [
-          "appdirs",
-          "1.4.4"
-        ],
-        [
-          "asyncssh",
-          "2.24.1"
-        ],
-        [
-          "atpublic",
-          "9.0.0"
-        ],
-        [
-          "attrs",
-          "26.1.0"
-        ],
-        [
-          "billiard",
-          "4.3.1"
-        ],
-        [
-          "blinker",
-          "1.9.0"
-        ],
-        [
-          "cachetools",
-          "7.2.5"
-        ],
-        [
-          "celery",
-          "5.6.3"
-        ],
-        [
-          "certifi",
-          "2026.10.23"
-        ],
-        [
-          "cffi",
-          "2.1.1"
-        ],
-        [
-          "charset-normalizer",
-          "3.5.2"
-        ],
-        [
-          "click",
-          "8.3.3"
-        ],
-        [
-          "click-didyoumean",
-          "0.3.1"
-        ],
-        [
-          "click-plugins",
-          "1.1.1.2"
-        ],
-        [
-          "click-repl",
-          "0.4.1"
-        ],
-        [
-          "cloudpickle",
-          "3.1.2"
-        ],
-        [
-          "colorama",
-          "0.4.6"
-        ],
-        [
-          "configobj",
-          "5.0.9"
         ],
         [
           "contourpy",
           "1.4.0"
         ],
         [
-          "coverage",
-          "7.17.0"
-        ],
-        [
-          "cryptography",
-          "50.0.2"
-        ],
-        [
           "cycler",
           "0.12.1"
         ],
         [
-          "databricks-sdk",
-          "0.157.0"
-        ],
-        [
-          "dictdiffer",
-          "0.10.0"
-        ],
-        [
-          "diskcache",
-          "5.6.3"
-        ],
-        [
-          "distro",
-          "1.9.0"
-        ],
-        [
-          "docker",
-          "7.2.0"
-        ],
-        [
-          "dpath",
-          "2.2.0"
-        ],
-        [
-          "dulwich",
-          "1.2.19"
-        ],
-        [
-          "dvc",
-          "3.67.1"
-        ],
-        [
-          "dvc-data",
-          "3.18.3"
-        ],
-        [
-          "dvc-http",
-          "2.32.0"
-        ],
-        [
-          "dvc-objects",
-          "5.2.0"
-        ],
-        [
-          "dvc-render",
-          "1.0.2"
-        ],
-        [
-          "dvc-studio-client",
-          "0.23.0"
-        ],
-        [
-          "dvc-task",
-          "0.40.2"
-        ],
-        [
           "eidos",
-          "0.4.10"
-        ],
-        [
-          "entrypoints",
-          "0.4.2"
-        ],
-        [
-          "fastapi",
-          "0.162.0"
-        ],
-        [
-          "filelock",
-          "4.2.4"
-        ],
-        [
-          "flask-cors",
-          "6.0.5"
-        ],
-        [
-          "flatten-dict",
-          "0.5.0"
-        ],
-        [
-          "flufl.lock",
-          "9.2.0"
+          "0.4.11"
         ],
         [
           "fonttools",
           "4.67.0"
         ],
         [
-          "frozenlist",
-          "1.8.0"
-        ],
-        [
-          "fsspec",
-          "2026.6.0"
-        ],
-        [
-          "funcy",
-          "2.1"
-        ],
-        [
-          "gitdb",
-          "4.0.12"
-        ],
-        [
-          "google-auth",
-          "2.62.0"
-        ],
-        [
-          "grandalf",
-          "0.8"
-        ],
-        [
-          "graphene",
-          "3.4.3"
-        ],
-        [
-          "graphql-core",
-          "3.2.13"
-        ],
-        [
-          "graphql-relay",
-          "3.2.0"
-        ],
-        [
-          "gto",
-          "1.10.1"
-        ],
-        [
-          "h11",
-          "0.16.0"
-        ],
-        [
-          "huey",
-          "3.5.3"
-        ],
-        [
-          "hydra-core",
-          "1.3.8"
-        ],
-        [
-          "idna",
-          "3.20"
-        ],
-        [
-          "importlib_metadata",
-          "9.1.0"
-        ],
-        [
-          "iniconfig",
-          "2.3.1"
-        ],
-        [
-          "iterative-telemetry",
-          "0.0.10"
-        ],
-        [
-          "itsdangerous",
-          "2.2.0"
-        ],
-        [
-          "joblib",
-          "1.6.0"
-        ],
-        [
           "kiwisolver",
           "1.5.1"
-        ],
-        [
-          "kombu",
-          "5.6.2"
-        ],
-        [
-          "markdown-it-py",
-          "4.2.0"
         ],
         [
           "matplotlib",
           "3.11.2"
         ],
         [
-          "mdurl",
-          "0.1.2"
-        ],
-        [
-          "mlflow",
-          "3.17.2"
-        ],
-        [
-          "mlflow-skinny",
-          "3.17.2"
-        ],
-        [
-          "mlflow-tracing",
-          "3.17.2"
-        ],
-        [
-          "multidict",
-          "7.2.1"
-        ],
-        [
-          "narwhals",
-          "2.27.1"
-        ],
-        [
-          "networkx",
-          "3.7"
-        ],
-        [
           "numpy",
           "2.5.4"
-        ],
-        [
-          "omegaconf",
-          "2.3.1"
-        ],
-        [
-          "opentelemetry-api",
-          "1.45.1"
-        ],
-        [
-          "opentelemetry-proto",
-          "1.45.1"
-        ],
-        [
-          "opentelemetry-sdk",
-          "1.45.1"
-        ],
-        [
-          "opentelemetry-semantic-conventions",
-          "0.66b1"
-        ],
-        [
-          "orjson",
-          "3.13.0"
         ],
         [
           "packaging",
           "26.3"
         ],
         [
-          "pandas",
-          "3.1.0"
-        ],
-        [
-          "pathspec",
-          "1.1.1"
-        ],
-        [
           "pillow",
           "13.0.0"
         ],
         [
-          "platformdirs",
-          "4.13.5"
-        ],
-        [
-          "pluggy",
-          "1.7.0"
-        ],
-        [
-          "prettytable",
-          "3.18.0"
-        ],
-        [
-          "prompt_toolkit",
-          "3.0.53"
-        ],
-        [
-          "propcache",
-          "0.5.4"
-        ],
-        [
-          "protobuf",
-          "7.36.2"
-        ],
-        [
-          "psutil",
-          "7.2.2"
-        ],
-        [
-          "pyarrow",
-          "25.0.1"
-        ],
-        [
-          "pyasn1",
-          "0.6.4"
-        ],
-        [
-          "pyasn1_modules",
-          "0.4.2"
-        ],
-        [
-          "pycparser",
-          "3.12"
-        ],
-        [
-          "pydantic",
-          "2.14.1"
-        ],
-        [
-          "pydantic-settings",
-          "2.16.1"
-        ],
-        [
-          "pydantic_core",
-          "2.50.1"
-        ],
-        [
-          "pydot",
-          "4.0.1"
-        ],
-        [
-          "pygit2",
-          "1.20.1"
-        ],
-        [
-          "pygtrie",
-          "2.6.2"
+          "pip",
+          "24.0"
         ],
         [
           "pyparsing",
           "3.3.3"
         ],
         [
-          "pytest",
-          "9.1.1"
-        ],
-        [
           "python-dateutil",
           "2.9.0.post0"
         ],
         [
-          "python-dotenv",
-          "1.2.4"
-        ],
-        [
-          "pywin32",
-          "312"
-        ],
-        [
-          "requests",
-          "2.34.2"
-        ],
-        [
-          "rich",
-          "14.3.4"
-        ],
-        [
-          "ruamel.yaml",
-          "0.19.1"
-        ],
-        [
-          "scikit-learn",
-          "1.9.1"
-        ],
-        [
-          "scipy",
-          "1.18.1"
-        ],
-        [
-          "scmrepo",
-          "3.6.2"
-        ],
-        [
-          "semver",
-          "3.1.0"
-        ],
-        [
-          "setuptools",
-          "84.2.1"
-        ],
-        [
-          "shortuuid",
-          "1.0.13"
-        ],
-        [
-          "shtab",
-          "1.13.0"
-        ],
-        [
           "six",
           "1.17.0"
-        ],
-        [
-          "skops",
-          "0.16.0"
-        ],
-        [
-          "smmap",
-          "5.0.3"
-        ],
-        [
-          "sqlparse",
-          "0.6.0"
-        ],
-        [
-          "sqltrie",
-          "0.11.3"
-        ],
-        [
-          "starlette",
-          "1.10.0"
-        ],
-        [
-          "tabulate",
-          "0.9.0"
-        ],
-        [
-          "threadpoolctl",
-          "3.7.0"
-        ],
-        [
-          "tomlkit",
-          "0.15.2"
-        ],
-        [
-          "tqdm",
-          "4.70.1"
-        ],
-        [
-          "typing-inspection",
-          "0.4.4"
-        ],
-        [
-          "typing_extensions",
-          "4.16.0"
-        ],
-        [
-          "tzdata",
-          "2026.5"
-        ],
-        [
-          "tzlocal",
-          "5.4.5"
-        ],
-        [
-          "urllib3",
-          "2.8.0"
-        ],
-        [
-          "uvicorn",
-          "0.54.0"
-        ],
-        [
-          "vine",
-          "5.1.0"
-        ],
-        [
-          "voluptuous",
-          "0.16.0"
-        ],
-        [
-          "waitress",
-          "3.0.2"
-        ],
-        [
-          "wcwidth",
-          "0.9.4"
-        ],
-        [
-          "yarl",
-          "1.25.1"
-        ],
-        [
-          "zc.lockfile",
-          "4.0"
-        ],
-        [
-          "zipp",
-          "4.1.2"
         ]
       ],
       "scope": "Installed SDK delivery boundary, controlled CLI and actual Matplotlib; actual Quarto only when explicitly requested. Not scientific truth, journal acceptance, new-machine or runtime-service migration.",
@@ -739,6 +159,10 @@
         "framework/inference/llama_cpp.py": "03fac820b5665dcf12c4e2749a0fe929b04f292f1bae86a3a7a97e6398fc7a30",
         "framework/lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
         "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
+        "framework/numerical_programs/__init__.py": "eb59e849b6458789d07b5c0e46abaa317efc465b569a426c02205d6aa427748b",
+        "framework/numerical_programs/_compiler.py": "53d2b1e6a76a6dd93571408e74d0da2d8b50c34e3e82a4454f2722a9e503576b",
+        "framework/numerical_programs/_json.py": "efb83e3de30eb390cb13a4ff5b99db8e66383a46843c765615e5abe639cb1123",
+        "framework/numerical_programs/_language.py": "7a7f773d34d837368136b911e7fa0a43970423ee7f1b5d01e43896b50a649373",
         "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
         "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
         "framework/quarto_bridge/__init__.py": "09c1830a16d651b14f6baf14a73143d8c0403b9d614c1540a46019eac9832af2",
@@ -767,17 +191,17 @@
         "framework/verifiers/support.py": "8416c27e1c67c2da4983bd5043d40a7b00759b70c2032e31043589e42ee72aa8"
       }
     },
-    "installation": "Fresh frozen Windows dev/tracking environment; offline candidate-wheel replacement."
+    "installation": "Fresh non-editable venv; complete hash-locked normal core dependencies, normal wheel install and pip check."
   },
   "linux": {
     "status": "PASS",
     "result": {
-      "generated": "2026-11-01T09:09:23.067705+00:00",
+      "generated": "2026-11-01T21:58:38.228276+00:00",
       "platform": "linux",
       "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
-      "executable": "/workspace/.venv/bin/python",
-      "installed_module": "/workspace/.venv/lib/python3.12/site-packages/framework/quarto_bridge/__init__.py",
-      "sdk_version": "0.4.10",
+      "executable": "/tmp/eidos-v411-fresh/bin/python",
+      "installed_module": "/tmp/eidos-v411-fresh/lib/python3.12/site-packages/framework/quarto_bridge/__init__.py",
+      "sdk_version": "0.4.11",
       "optimization_level": 0,
       "pdfinfo": "pdfinfo version 22.12.0\nCopyright 2005-2022 The Poppler Developers - http://poppler.freedesktop.org\nCopyright 1996-2011, 2022 Glyph & Cog, LLC",
       "cases": [
@@ -858,7 +282,7 @@
         ],
         [
           "eidos",
-          "0.4.10"
+          "0.4.11"
         ],
         [
           "fonttools",
@@ -883,6 +307,10 @@
         [
           "pillow",
           "13.0.0"
+        ],
+        [
+          "pip",
+          "25.0.1"
         ],
         [
           "pyparsing",
@@ -914,6 +342,10 @@
         "framework/inference/llama_cpp.py": "03fac820b5665dcf12c4e2749a0fe929b04f292f1bae86a3a7a97e6398fc7a30",
         "framework/lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
         "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
+        "framework/numerical_programs/__init__.py": "eb59e849b6458789d07b5c0e46abaa317efc465b569a426c02205d6aa427748b",
+        "framework/numerical_programs/_compiler.py": "53d2b1e6a76a6dd93571408e74d0da2d8b50c34e3e82a4454f2722a9e503576b",
+        "framework/numerical_programs/_json.py": "efb83e3de30eb390cb13a4ff5b99db8e66383a46843c765615e5abe639cb1123",
+        "framework/numerical_programs/_language.py": "7a7f773d34d837368136b911e7fa0a43970423ee7f1b5d01e43896b50a649373",
         "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
         "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
         "framework/quarto_bridge/__init__.py": "09c1830a16d651b14f6baf14a73143d8c0403b9d614c1540a46019eac9832af2",
@@ -942,9 +374,10 @@
         "framework/verifiers/support.py": "8416c27e1c67c2da4983bd5043d40a7b00759b70c2032e31043589e42ee72aa8"
       }
     },
-    "installation": "Network-disabled same-host Linux container; candidate wheel replaced in the pinned existing core environment.",
+    "installation": "Fresh non-editable venv; complete hash-locked normal core dependencies, normal wheel install and pip check.",
     "image": "sha256:bc384f41896ee75c8001a4a17a4830869b6b9b47a23dfd5df038384f2bc755be",
-    "network": "none"
+    "network": "none",
+    "execution": "NUMERICAL-PROGRAMS-ACCEPTANCE.json#additional_sdk_linux_execution"
   },
   "initial_red": {
     "failed": 10,
@@ -999,8 +432,13 @@
     ]
   },
   "lineage": {
-    "previous_release": "v0.4.9",
-    "previous_record": "archive/quarto-delivery-acceptance-v0.4.9.json",
-    "previous_wheel_sha256": "ccb6c15bec83e79a3aaab8c5c653ea4a525cffa44223cdc2dd7cbdcef3a0c187"
+    "previous_release": "v0.4.10",
+    "previous_record": "archive/quarto-delivery-acceptance-v0.4.10.json",
+    "previous_wheel_sha256": "68faf443a36d668325b96145971db2ce7bbcb8ae3b8e03b074c2c2b2ea47d9eb",
+    "earlier": {
+      "previous_release": "v0.4.9",
+      "previous_record": "archive/quarto-delivery-acceptance-v0.4.9.json",
+      "previous_wheel_sha256": "ccb6c15bec83e79a3aaab8c5c653ea4a525cffa44223cdc2dd7cbdcef3a0c187"
+    }
   }
 }

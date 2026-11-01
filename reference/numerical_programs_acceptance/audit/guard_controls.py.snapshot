@@ -1,0 +1,80 @@
+"""Exercise the real assembler guards on actual receipts and deliberately broken copies."""
+import ast
+from copy import deepcopy
+import json
+from pathlib import Path
+import tempfile
+
+import v411_receipt_guards as guards
+
+cache=Path('C:/Users/Administrator/.cache/eidos-sdk-v411')
+value=json.loads((cache/'windows-results/numerical.json').read_text())
+linux=json.loads((cache/'public-core-2/results/numerical.json').read_text())
+arguments=(value['source_sha256_canonical_lf'],value['wheel_sha256'],value['driver_sha256_lf'])
+guards.numerical(value,'windows',*arguments)
+guards.numerical(linux,'linux',*arguments)
+negative=json.loads((cache/'installed-negatives-v2/summary.json').read_text())
+guards.installed_negatives(negative)
+rejections=[]
+
+def refuse(label,action):
+    try:action()
+    except (ValueError,RuntimeError):rejections.append(label)
+    else:raise RuntimeError('Guard falsely qualified '+label)
+
+refuse('Windows receipt in Linux slot',lambda:guards.numerical(value,'linux',*arguments))
+for field,replacement in [('optimization_level',True),('optimization_level',1),('wheel_sha256','0'*64)]:
+    data=deepcopy(value);data[field]=replacement
+    refuse(field+'='+str(replacement),lambda:guards.numerical(data,'windows',*arguments))
+for key in ('log1mexp','softplus','refusals'):
+    data=deepcopy(value);data['controls'][key][-1]=deepcopy(data['controls'][key][0])
+    refuse('duplicate '+key,lambda:guards.numerical(data,'windows',*arguments))
+data=deepcopy(value);data['controls']['log1mexp'][0]['represented_input']=True
+refuse('boolean point',lambda:guards.numerical(data,'windows',*arguments))
+for label,field,replacement in [('mode boolean exit','exit_code',True),('missing empty stdout','stdout_empty',False)]:
+    data=deepcopy(negative);data['controls'][0][field]=replacement
+    refuse(label,lambda:guards.installed_negatives(data))
+data=deepcopy(negative);data['controls'][-1]=deepcopy(data['controls'][0])
+refuse('duplicate installed negative',lambda:guards.installed_negatives(data))
+
+tree=ast.parse(Path('.scratch/quality/record_v411_acceptances.py').read_text())
+function=next(node for node in tree.body if isinstance(node,ast.FunctionDef) and node.name=='execution')
+code=compile(ast.fix_missing_locations(ast.Module(body=[function],type_ignores=[])),'actual-execution-guard','exec')
+scope=dict(cache=cache,root=Path.cwd(),raw=lambda p:Path(p).read_bytes(),
+    read=lambda p:json.loads(Path(p).read_text()),sha=__import__('hashlib').sha256,
+    require=lambda ok,message:None if ok else (_ for _ in ()).throw(RuntimeError(message)),
+    wheel=Path('eidos-0.4.11-py3-none-any.whl'),wheel_sha=value['wheel_sha256'],Path=Path)
+scope['sha']=lambda body:__import__('hashlib').sha256(body).hexdigest()
+exec(code,scope)
+actual_read=scope['read']
+scope['execution']('public-core-2')
+for label,change in [
+    ('wrong input wheel',lambda data:data['input_sha256'].__setitem__('eidos-0.4.11-py3-none-any.whl','0'*64)),
+    ('wrong input driver',lambda data:data['input_sha256'].__setitem__('numerical-check.py','0'*64)),
+    ('wrong command',lambda data:data['command'].append('--unexpected')),
+    ('writable input mount',lambda data:data['after']['Mounts'][0].__setitem__('RW',True)),
+    ('boolean worker exit',lambda data:data['after']['State'].__setitem__('ExitCode',False)),
+    ('OOM worker',lambda data:data['after']['State'].__setitem__('OOMKilled',True)),
+]:
+    record=actual_read(cache/'public-core-2/execution.json');change(record)
+    scope['read']=lambda path:deepcopy(record)
+    refuse(label,lambda:scope['execution']('public-core-2'))
+scope['read']=actual_read
+
+index=next(i for i,node in enumerate(tree.body) if isinstance(node,ast.Expr)
+    and isinstance(node.value,ast.Call) and any(isinstance(a,ast.Constant)
+    and a.value=='Source/environment changed during assembly' for a in node.value.args))
+tail=compile(ast.fix_missing_locations(ast.Module(body=tree.body[index:index+2],type_ignores=[])),
+             'actual-final-assembly-guard','exec')
+with tempfile.TemporaryDirectory() as directory:
+    path=Path(directory)/'audit.json';path.write_bytes(b'original')
+    state={'source':'stable'}
+    common=dict(require=scope['require'],input_state=lambda:dict(state),
+                audit={'stability':{'before':{'source':'stable'},'after':{'source':'stable'}}},
+                inputs={path:b'original'})
+    exec(tail,common)
+    path.write_bytes(b'replaced')
+    refuse('changed self-audit bytes',lambda:exec(tail,common))
+    path.write_bytes(b'original');state['source']='changed'
+    refuse('changed source at final publication',lambda:exec(tail,common))
+print(json.dumps({'rejected':len(rejections),'controls':rejections},indent=2))

@@ -1,0 +1,124 @@
+{
+  "kind": "public-core",
+  "owner": "d4914d5bff51444eb29dfd04ab847535",
+  "image_reference": "public.ecr.aws/docker/library/python@sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+  "image_id": "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+  "started": "2026-11-01T21:56:35.517939+00:00",
+  "command": [
+    "python",
+    "-I",
+    "/input/bootstrap.py",
+    "--only-numerical"
+  ],
+  "status": "FAIL",
+  "controller_sha256": "9cd3396431e00ac3a98c72b2895cc42586d54b919b42ca7baa3ea951db5da92d",
+  "before": {
+    "Id": "56ebe7925a466ba9f0c7bbd624421202fe76a03ef91d0d0ee271cd52d747553c",
+    "Image": "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+    "State": {
+      "Status": "created",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "0001-01-01T00:00:00Z",
+      "FinishedAt": "0001-01-01T00:00:00Z"
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\input",
+        "Destination": "/input",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\public-core",
+        "Destination": "/out",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      }
+    ],
+    "network": "none",
+    "readonly_rootfs": true,
+    "tmpfs": {
+      "/root/.cache": "rw,nosuid,nodev,size=536870912,mode=1777",
+      "/tmp": "rw,exec,nosuid,nodev,size=2147483648,mode=1777"
+    },
+    "command": [
+      "python",
+      "-I",
+      "/input/bootstrap.py",
+      "--only-numerical"
+    ],
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges"
+    ]
+  },
+  "after": {
+    "Id": "56ebe7925a466ba9f0c7bbd624421202fe76a03ef91d0d0ee271cd52d747553c",
+    "Image": "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+    "State": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-11-01T21:56:38.449975907Z",
+      "FinishedAt": "2026-11-01T21:56:51.223987625Z"
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\input",
+        "Destination": "/input",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\public-core",
+        "Destination": "/out",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      }
+    ],
+    "network": "none",
+    "readonly_rootfs": true,
+    "tmpfs": {
+      "/root/.cache": "rw,nosuid,nodev,size=536870912,mode=1777",
+      "/tmp": "rw,exec,nosuid,nodev,size=2147483648,mode=1777"
+    },
+    "command": [
+      "python",
+      "-I",
+      "/input/bootstrap.py",
+      "--only-numerical"
+    ],
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges"
+    ]
+  },
+  "cleanup_verified": false,
+  "cleanup_error": "RuntimeError: Removal not proven",
+  "finished": "2026-11-01T21:56:53.837815+00:00"
+}

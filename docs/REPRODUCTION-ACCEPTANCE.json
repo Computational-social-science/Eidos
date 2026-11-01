@@ -1,21 +1,21 @@
 {
-  "generated": "2026-11-01T12:53:16.617889+00:00",
+  "generated": "2026-11-01T22:22:54.503563+00:00",
   "scope": "Installed-wheel direct reproduction numeric/execution/receipt boundaries; benign controlled stubs, not paper training or signed attestation.",
-  "wheel": "reference/sdk_process_acceptance/eidos-0.4.10-py3-none-any.whl",
-  "wheel_sha256": "68faf443a36d668325b96145971db2ce7bbcb8ae3b8e03b074c2c2b2ea47d9eb",
+  "wheel": "reference/sdk_process_acceptance/eidos-0.4.11-py3-none-any.whl",
+  "wheel_sha256": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
   "driver": "reference/reproduction_acceptance/check.py",
   "driver_sha256": "16c34435bf7b9e1f6a3c8c59d83458a5b3ada5d4b064581183dbcb43f5a0ea0f",
   "source_inventory": "SDK-PROCESS-ACCEPTANCE.json#source_sha256_canonical_lf",
   "windows": {
     "status": "PASS",
     "result": {
-      "generated": "2026-11-01T09:06:43.827842+00:00",
+      "generated": "2026-11-01T21:54:06.202191+00:00",
       "platform": "win32",
-      "sdk_version": "0.4.10",
+      "sdk_version": "0.4.11",
       "optimization_level": 0,
       "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
-      "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v410-tracking\\venv with spaces\\Scripts\\python.exe",
-      "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v410-tracking\\venv with spaces\\Lib\\site-packages\\framework\\reproduction\\__init__.py",
+      "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\windows venv\\Scripts\\python.exe",
+      "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\windows venv\\Lib\\site-packages\\framework\\reproduction\\__init__.py",
       "source_sha256_canonical_lf": {
         "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
         "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
@@ -32,6 +32,10 @@
         "framework/inference/llama_cpp.py": "03fac820b5665dcf12c4e2749a0fe929b04f292f1bae86a3a7a97e6398fc7a30",
         "framework/lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
         "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
+        "framework/numerical_programs/__init__.py": "eb59e849b6458789d07b5c0e46abaa317efc465b569a426c02205d6aa427748b",
+        "framework/numerical_programs/_compiler.py": "53d2b1e6a76a6dd93571408e74d0da2d8b50c34e3e82a4454f2722a9e503576b",
+        "framework/numerical_programs/_json.py": "efb83e3de30eb390cb13a4ff5b99db8e66383a46843c765615e5abe639cb1123",
+        "framework/numerical_programs/_language.py": "7a7f773d34d837368136b911e7fa0a43970423ee7f1b5d01e43896b50a649373",
         "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
         "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
         "framework/quarto_bridge/__init__.py": "09c1830a16d651b14f6baf14a73143d8c0403b9d614c1540a46019eac9832af2",
@@ -137,18 +141,18 @@
       "seed": 20261101,
       "scope": "Installed SDK numeric and receipt boundary with benign stubs; not paper training, signed attestation, service migration or new-machine qualification."
     },
-    "installation": "Fresh frozen Windows dev/tracking environment; offline candidate-wheel replacement."
+    "installation": "Fresh non-editable venv; complete hash-locked normal core dependencies, normal wheel install and pip check."
   },
   "linux": {
     "status": "PASS",
     "result": {
-      "generated": "2026-11-01T09:09:28.263193+00:00",
+      "generated": "2026-11-01T21:58:43.633269+00:00",
       "platform": "linux",
-      "sdk_version": "0.4.10",
+      "sdk_version": "0.4.11",
       "optimization_level": 0,
       "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
-      "executable": "/workspace/.venv/bin/python",
-      "installed_module": "/workspace/.venv/lib/python3.12/site-packages/framework/reproduction/__init__.py",
+      "executable": "/tmp/eidos-v411-fresh/bin/python",
+      "installed_module": "/tmp/eidos-v411-fresh/lib/python3.12/site-packages/framework/reproduction/__init__.py",
       "source_sha256_canonical_lf": {
         "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
         "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
@@ -165,6 +169,10 @@
         "framework/inference/llama_cpp.py": "03fac820b5665dcf12c4e2749a0fe929b04f292f1bae86a3a7a97e6398fc7a30",
         "framework/lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
         "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
+        "framework/numerical_programs/__init__.py": "eb59e849b6458789d07b5c0e46abaa317efc465b569a426c02205d6aa427748b",
+        "framework/numerical_programs/_compiler.py": "53d2b1e6a76a6dd93571408e74d0da2d8b50c34e3e82a4454f2722a9e503576b",
+        "framework/numerical_programs/_json.py": "efb83e3de30eb390cb13a4ff5b99db8e66383a46843c765615e5abe639cb1123",
+        "framework/numerical_programs/_language.py": "7a7f773d34d837368136b911e7fa0a43970423ee7f1b5d01e43896b50a649373",
         "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
         "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
         "framework/quarto_bridge/__init__.py": "09c1830a16d651b14f6baf14a73143d8c0403b9d614c1540a46019eac9832af2",
@@ -270,9 +278,10 @@
       "seed": 20261101,
       "scope": "Installed SDK numeric and receipt boundary with benign stubs; not paper training, signed attestation, service migration or new-machine qualification."
     },
-    "installation": "Network-disabled same-host Linux container; candidate wheel replaced in the pinned existing core environment.",
+    "installation": "Fresh non-editable venv; complete hash-locked normal core dependencies, normal wheel install and pip check.",
     "image": "sha256:bc384f41896ee75c8001a4a17a4830869b6b9b47a23dfd5df038384f2bc755be",
-    "network": "none"
+    "network": "none",
+    "execution": "NUMERICAL-PROGRAMS-ACCEPTANCE.json#additional_sdk_linux_execution"
   },
   "initial_red": {
     "version": "0.4.7",
@@ -335,8 +344,13 @@
     ]
   },
   "lineage": {
-    "previous_release": "v0.4.9",
-    "previous_record": "archive/reproduction-acceptance-v0.4.9.json",
-    "previous_wheel_sha256": "ccb6c15bec83e79a3aaab8c5c653ea4a525cffa44223cdc2dd7cbdcef3a0c187"
+    "previous_release": "v0.4.10",
+    "previous_record": "archive/reproduction-acceptance-v0.4.10.json",
+    "previous_wheel_sha256": "68faf443a36d668325b96145971db2ce7bbcb8ae3b8e03b074c2c2b2ea47d9eb",
+    "earlier": {
+      "previous_release": "v0.4.9",
+      "previous_record": "archive/reproduction-acceptance-v0.4.9.json",
+      "previous_wheel_sha256": "ccb6c15bec83e79a3aaab8c5c653ea4a525cffa44223cdc2dd7cbdcef3a0c187"
+    }
   }
 }

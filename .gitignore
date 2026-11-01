@@ -43,6 +43,7 @@ Thumbs.db
 !reference/method_portability/recorded_trials/**/*.stdout.log
 !reference/method_portability/recorded_trials/**/*.stderr.log
 !reference/method_portability/recorded_trials/**/bootstrap.log
+!reference/numerical_programs_acceptance/recorded_trials/**/*.log
 tmp/
 .pytest_cache/
 

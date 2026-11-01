@@ -1,6 +1,6 @@
 # Eidos：可复核科研流水线技术框架
 
-**实现基线：0.4.10（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
+**实现基线：0.4.11（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
 
 运行部署边界：核查发现现存监控及两条旧链路循环仍使用全局 Python 3.14；本地启动配置已选择项目 Python 3.12，但受控停止/重启被自动审批以 blocked by policy 拒绝，未执行、未改道终止。新增调度循环源码已补 OS 生命周期锁、单次 tick 互斥、隐藏子进程树超时清理及原子心跳；这些规则不会追溯应用到旧进程。运行迁移仍为 PENDING，不能以网页可访问或源码测试通过替代实际部署验收。详见 docs/MONITOR-RUNTIME-MIGRATION-2026-11-01.json。
 
@@ -193,7 +193,7 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。
 
 <!-- self-audit:start -->
-本轮验收：1110 passed、2 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 75%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
+本轮验收：1194 passed、2 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 75%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
 <!-- self-audit:end -->
 
 既有 CUDA 16 项已独立通过；本轮未修改数值后端。
@@ -429,6 +429,38 @@ translation and feedback-stagnation limits rather than demonstrating RSI.
 Next qualify explicitly attributed typed method/derivative tools and a feedback
 policy that avoids equivalent failures. The default remains keyless/local,
 without Gemini, paid APIs, new CRON loops or changes to the v0.4.10 wheel.
+
+## Installed numerical programs and free reuse
+
+The v0.4.11 candidate promotes the bounded formula/JSON mechanism into
+`framework.numerical_programs`, shipped in the wheel. Its dependencies are NumPy
+and the standard library; the declared package core also installs Matplotlib and
+PyYAML with their complete frozen closure. It requires no model, GPU, Gemini API,
+paid provider, service key, background schedule or source-checkout import.
+
+The API accepts native float32/float64 scalar inputs, including negative values
+and signed zero, fully validates every expression branch, executes selected
+branches lazily, refuses nonfinite selected intermediates and returns independent
+typed output buffers. Supplied derivatives are not automatically differentiated
+or certified. Finite underflow remains possible and is explicitly outside the
+execution primitive's mathematical acceptance.
+
+The installed acceptance checks all 45 framework modules against wheel/RECORD
+bytes, metadata identities, dependency origins and driver stability. Fresh
+Windows and a network-disabled Linux public-image environment execute 23
+log1mexp and 16 softplus controls against converged independent Decimal references;
+the +100 float32 softplus control tests the stable lazy branch. A finite wrong
+gradient and host-dependency leakage must be rejected. The original model's 0/23
+and the externally authored method's 23/23 remain separate historical evidence;
+these known controls do not establish discovery or RSI.
+
+Installed lifecycle, manuscript delivery, reproduction and tracking have their
+own replay receipts; disposable-service recovery remains source qualification.
+Actual Windows Quarto/TeX and controlled Linux CLI delivery have different scopes.
+See [API contract](docs/NUMERICAL-PROGRAMS.md),
+[installed evidence](docs/NUMERICAL-PROGRAMS-ACCEPTANCE.json) and
+[remaining capabilities](docs/FUNCTIONAL_COMPLETENESS.md). Source, package,
+published release and unmigrated resident-process identities remain distinct.
 
 The [sourced formula compiler checkpoint](https://github.com/Computational-social-science/Eidos/blob/main/docs/NUMERICAL-METHOD-COMPILER-2026-11-02.md)
 adds a deterministic, bounded formula-to-typed-program path with no new model

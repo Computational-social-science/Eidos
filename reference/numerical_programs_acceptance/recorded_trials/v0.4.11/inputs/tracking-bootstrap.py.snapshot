@@ -1,0 +1,8 @@
+from pathlib import Path
+import subprocess
+
+python='/opt/tracking/bin/python'
+subprocess.run([python,'-I','-m','pip','check'],check=True)
+subprocess.run([python,'-I','/source/reference/tracking_acceptance/check.py',
+    '--source','/source','--wheel','/source/reference/sdk_process_acceptance/eidos-0.4.11-py3-none-any.whl',
+    '--expected-version','0.4.11','--out','/out/tracking.json'],check=True)

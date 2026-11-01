@@ -1,0 +1,77 @@
+import base64
+import csv
+import hashlib
+from io import StringIO
+import json
+from pathlib import Path
+import shutil
+import sys
+import zipfile
+
+root = Path.cwd()
+sys.path.insert(0, str(root))
+from framework.subprocesses import run_tree
+
+python = Path('C:/Users/Administrator/.cache/eidos-sdk-v411/tracking venv/Scripts/python.exe')
+driver = root / 'reference/tracking_acceptance/check.py'
+wheel = root / 'reference/sdk_process_acceptance/eidos-0.4.11-py3-none-any.whl'
+positive = Path('C:/Users/Administrator/.cache/eidos-sdk-v411/windows-tracking.json')
+record = json.loads(positive.read_text(encoding='utf-8'))
+if record['status'] != 'PASS' or len(record['cases']) != 49:
+    raise RuntimeError('Positive qualification missing')
+folder = positive.parent / 'controls-final'
+folder.mkdir(exist_ok=True)
+if (folder / 'summary.json').exists():
+    raise RuntimeError('Completed control history must not be overwritten')
+checks = []
+for label, mode, extra in [('runtime-failure',None,['--fault-child']), ('-O','-O',[]), ('-OO','-OO',[])]:
+    target = folder / (label + '.json')
+    shutil.copyfile(positive, target)
+    before = target.read_bytes()
+    command = [str(python), '-I', *([mode] if mode else []), str(driver),
+               '--expected-version','0.4.11','--source', str(root), '--wheel', str(wheel), '--out', str(target), *extra]
+    run = run_tree(command, cwd=folder, timeout=45)
+    result = json.loads(target.read_text(encoding='utf-8'))
+    if run.returncode == 0:
+        raise RuntimeError('A negative control passed')
+    if mode:
+        if target.read_bytes() != before or 'Qualification requires' not in run.stderr:
+            raise RuntimeError('Optimization mode mutated a receipt or did not refuse')
+    elif result['status'] != 'FAIL' or 'Protocol process failed' not in result['error']:
+        raise RuntimeError('Runtime failure retained prior PASS')
+    checks.append({'case':label, 'exit_code':run.returncode,
+                   'expected_outcome':True,'receipt_status':result['status'],
+                   'prior_pass_retained_as_history':bool(mode),
+                   'receipt_sha256':hashlib.sha256(target.read_bytes()).hexdigest()})
+
+badfolder = folder / 'same-code-wrong-metadata'
+badfolder.mkdir(exist_ok=True)
+badwheel = badfolder / wheel.name
+with zipfile.ZipFile(wheel) as archive:
+    members = {name:archive.read(name) for name in archive.namelist()}
+metadata = 'eidos-0.4.11.dist-info/METADATA'
+members[metadata] = members[metadata].replace(b'Name: eidos\r\n', b'Name: forged\r\n', 1)
+if b'Name: forged\r\n' not in members[metadata]:
+    raise RuntimeError('Negative fixture failed to change the metadata')
+output = StringIO(newline='')
+writer = csv.writer(output)
+for name, body in members.items():
+    if name.endswith('/RECORD'):
+        writer.writerow([name,'',''])
+    else:
+        digest = base64.urlsafe_b64encode(hashlib.sha256(body).digest()).decode().rstrip('=')
+        writer.writerow([name,'sha256='+digest,len(body)])
+members['eidos-0.4.11.dist-info/RECORD'] = output.getvalue().encode()
+with zipfile.ZipFile(badwheel,'w') as archive:
+    for name,body in members.items():
+        archive.writestr(name,body)
+target = folder / 'wrong-metadata.json'
+shutil.copyfile(positive,target)
+run = run_tree([str(python),'-I',str(driver),'--expected-version','0.4.11','--source',str(root),'--wheel',str(badwheel),'--out',str(target)],cwd=folder,timeout=45)
+result = json.loads(target.read_text(encoding='utf-8'))
+if run.returncode == 0 or result['status'] != 'FAIL' or 'METADATA identity differs' not in result['error']:
+    raise RuntimeError('Same-code forged package was qualified')
+checks.append({'case':'same-code-wrong-metadata','exit_code':run.returncode,'expected_outcome':True,
+               'receipt_status':'FAIL','receipt_sha256':hashlib.sha256(target.read_bytes()).hexdigest()})
+(folder / 'summary.json').write_text(json.dumps(checks,indent=2)+'\n',encoding='utf-8')
+print('4 installed-driver failure, optimization and metadata controls accepted.')

@@ -1,6 +1,7 @@
 # Experiment identity and data provenance
 
-Status: v0.4.10 candidate; controlled source and installed Windows/Linux checks pass.
+Installed-wheel qualification: v0.4.11 on Windows and offline Linux. Release
+publication and running-service identity are recorded separately.
 Final release tagging still requires exact-commit CI and asset verification.
 The published lifecycle, manuscript and reproduction receipts cover their listed
 operations. They do not qualify the optional tracking adapter's general
@@ -102,9 +103,9 @@ prove remote existence. Explicit run writes and termination follow the
 
 The [measured receipt](TRACKING-ACCEPTANCE.json) includes the same ten initial
 controls failing on immutable v0.4.9 and passing after repair; 49 installed-wheel
-cases pass on both Windows and network-disabled Linux. Source self-audit reports
-1086 passed, five skipped, no failures/errors and 75% framework coverage, with
-unchanged source/dependency snapshots. Coverage of separately executed workers
+cases pass on both Windows and network-disabled Linux. The current full
+[source audit](SELF_AUDIT.json) records test counts, skips, coverage and the
+source/dependency snapshots. Coverage of separately executed workers
 is not inferred from parent-process coverage. Controls include
 metadata replacement, preserved-stat mutation, SQLite aliases, separate-process
 ownership and unchanged ambient context. Twenty-two additional harness controls
@@ -121,6 +122,6 @@ does not establish disk performance or persistence. No SQLite durability setting
 were weakened. The frozen environment was prepared with network access; the
 qualified container execution had network disabled.
 
-Release assets and exact-commit CI remain pending. No distributed-store,
+Release assets and exact-commit CI require their own release records. No distributed-store,
 power-loss, new-machine or unseen-model acceptance is claimed. Existing
 model/monitor services were not stopped or restarted.

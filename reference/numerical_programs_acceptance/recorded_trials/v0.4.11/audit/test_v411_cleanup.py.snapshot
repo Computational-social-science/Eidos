@@ -1,0 +1,36 @@
+import ast
+from pathlib import Path
+from types import SimpleNamespace
+
+tree=ast.parse(Path('.scratch/quality/run_v411_linux.py').read_text())
+function=next(node for node in tree.body if isinstance(node,ast.FunctionDef) and node.name=='finish_container')
+code=compile(ast.fix_missing_locations(ast.Module(body=[function],type_ignores=[])),'actual-container-cleanup','exec')
+for label in ('logs-timeout','log-write-failure','owner-mismatch','removal-transport-failure'):
+    calls=[]
+    record={'status':'PASS'}
+    class Folder:
+        def __truediv__(self,name):return self
+        def write_text(self,*args,**kwargs):raise OSError('read-only output control')
+    def inspect_owned():
+        if label=='owner-mismatch':raise RuntimeError('Wrong owner control')
+        return {}
+    def call(argv):
+        calls.append(argv)
+        if argv[1]=='logs':
+            if label=='logs-timeout':raise TimeoutError('Log timeout control')
+            return SimpleNamespace(returncode=0,stdout='fixture',stderr='')
+        return SimpleNamespace(returncode=1,stderr='Daemon unavailable' if label=='removal-transport-failure'
+                               else 'Error response from daemon: No such container: owned-id')
+    def checked(argv):calls.append(argv);return ''
+    scope=dict(inspect_owned=inspect_owned,call=call,checked=checked,record=record,
+               folder=Folder(),cid='owned-id')
+    exec(code,scope)
+    scope['finish_container']()
+    removals=[argv for argv in calls if argv[:3]==['docker','rm','--force']]
+    if label=='owner-mismatch':
+        if removals or record.get('cleanup_verified') is not False:raise RuntimeError('Unowned cleanup accepted')
+    elif label=='removal-transport-failure':
+        if len(removals)!=1 or record.get('cleanup_verified') is not False:raise RuntimeError('Transport error proved removal')
+    elif len(removals)!=1 or record.get('cleanup_verified') is not True or record['status']!='FAIL':
+        raise RuntimeError('Logging error blocked cleanup or falsely qualified')
+print('4 actual cleanup-function failure controls PASS')

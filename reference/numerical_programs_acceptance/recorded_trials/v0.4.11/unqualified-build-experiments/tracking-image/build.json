@@ -1,0 +1,7 @@
+{
+  "base_image_id": "sha256:8f137816f3f718fbc84d0e37ff07b3b25690d981ed0658a27a88977a58ee93ec",
+  "image_id": "sha256:c2b0571c1ca247445c4f8f6dbe5b0b6f1f47113f561a75dcc0e57e4bda3b8bb3",
+  "network": "none",
+  "recipe": "FROM eidos-tracking-acceptance:v410\nCOPY eidos-0.4.11-py3-none-any.whl /tmp/\nRUN [\"/opt/tracking/bin/python\", \"-I\", \"-m\", \"pip\", \"install\", \"--no-index\", \"/tmp/eidos-0.4.11-py3-none-any.whl\"]\nRUN [\"/opt/tracking/bin/python\", \"-I\", \"-m\", \"pip\", \"check\"]\n",
+  "wheel_sha256": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a"
+}

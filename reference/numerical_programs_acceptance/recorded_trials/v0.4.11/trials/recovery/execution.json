@@ -1,0 +1,159 @@
+{
+  "kind": "recovery",
+  "owner": "c9c85f23cc3a47ba80ba1944cd3a5b1a",
+  "image_reference": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
+  "image_id": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
+  "started": "2026-11-01T22:05:15.673497+00:00",
+  "command": [
+    "/opt/tracking/bin/python",
+    "/input/recovery-bootstrap.py"
+  ],
+  "status": "PASS",
+  "controller_sha256": "4a1da1d623afe3a6ec1a847d5b989d18c038f5f84132032b16e1019cb58d2ef5",
+  "input_sha256": {
+    "bootstrap.py": "ab7b3b458b604081d55ab68ddef7ae0fd74f7abfd5fd502fba49aa349357c656",
+    "core.txt": "e8fa2b18e9b178fbc5f606273f5db876c2289198e88dd5b210c85f834280a5ac",
+    "eidos-0.4.11-py3-none-any.whl": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
+    "numerical-check.py": "11e515a4d17259f56d8effd0aca0c933965b01f683cd73ba9a6920f4a53297db",
+    "quarto-check.py": "f0efe362c24aa1b680d57f2716aced4214cd9967005e0a27a21bc8c065af2b2f",
+    "recovery-bootstrap.py": "73c311e4ad884f5dded934a6cd576f6fbd34df91be7c889e1ac65697aa5bd757",
+    "recovery-negative.py": "94df88801eaefb37f2c3f24575c6b17563c742328182727bb1487f08273dafdc",
+    "reproduction-check.py": "16c34435bf7b9e1f6a3c8c59d83458a5b3ada5d4b064581183dbcb43f5a0ea0f",
+    "run.py": "f63ade2199e791218cd9d033bf51b08b722c1051f6d4b3f2ce1a74c816aea1fb",
+    "sdk-check.py": "1c47047026769a78b1fc5bd7cc4371532c671911eee977bde1823125e5f0f262",
+    "tracking-bootstrap.py": "76ec1407f7226da2e64d772d48da55b9a0dfda10cbd68446ceece1b656a899f9",
+    "wheels/contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "875f42444c9cf48d56f724f2637e60d0f73b3b12c9041e1484580a233edf9591",
+    "wheels/cycler-0.12.1-py3-none-any.whl": "85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30",
+    "wheels/fonttools-4.67.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "eb3c98cac93aac4b9f6e3ce2008325340b234cc9b0338ca6b513f31962a1e278",
+    "wheels/kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "34633ecf50d16187ab8e5528b7a2530f2feb4e23f300db4672538b51cfc5cd38",
+    "wheels/matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "df4f7784aca81a94f254c0a2767d592ee25f407e488f5fa7203e51093fb6ca27",
+    "wheels/numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "fbde6962867ee75b48b0ee29b2b9372ec5d617799dbaf38e82dc0596f2f7738a",
+    "wheels/packaging-26.3-py3-none-any.whl": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
+    "wheels/pillow-13.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "42d63be3af4f9b951b199b0a9d23365d37ab14687e6d77b74940432c8515c4ca",
+    "wheels/pyparsing-3.3.3-py3-none-any.whl": "ece8c00a69cf01b45d0b1dedabb469c90d8caf996d4fda40f147627a122849a4",
+    "wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+    "wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
+    "wheels/six-1.17.0-py2.py3-none-any.whl": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
+  },
+  "attempt": 1,
+  "before": {
+    "Id": "2dfa45421ff2eedc21eaeaf50797b0428a1f90854d27975b9c209ca25227e78d",
+    "Image": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
+    "State": {
+      "Status": "created",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "0001-01-01T00:00:00Z",
+      "FinishedAt": "0001-01-01T00:00:00Z"
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\input",
+        "Destination": "/input",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\recovery",
+        "Destination": "/out",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "E:\\2026-AI4S\\Eidos",
+        "Destination": "/source",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ],
+    "network": "none",
+    "readonly_rootfs": true,
+    "tmpfs": {
+      "/root/.cache": "rw,nosuid,nodev,size=536870912,mode=1777",
+      "/tmp": "rw,exec,nosuid,nodev,size=2147483648,mode=1777"
+    },
+    "command": [
+      "/opt/tracking/bin/python",
+      "/input/recovery-bootstrap.py"
+    ],
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges"
+    ]
+  },
+  "after": {
+    "Id": "2dfa45421ff2eedc21eaeaf50797b0428a1f90854d27975b9c209ca25227e78d",
+    "Image": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
+    "State": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-11-01T22:05:18.300921081Z",
+      "FinishedAt": "2026-11-01T22:05:23.130318035Z"
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\input",
+        "Destination": "/input",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\recovery",
+        "Destination": "/out",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "E:\\2026-AI4S\\Eidos",
+        "Destination": "/source",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ],
+    "network": "none",
+    "readonly_rootfs": true,
+    "tmpfs": {
+      "/root/.cache": "rw,nosuid,nodev,size=536870912,mode=1777",
+      "/tmp": "rw,exec,nosuid,nodev,size=2147483648,mode=1777"
+    },
+    "command": [
+      "/opt/tracking/bin/python",
+      "/input/recovery-bootstrap.py"
+    ],
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges"
+    ]
+  },
+  "cleanup_verified": true,
+  "finished": "2026-11-01T22:05:25.530323+00:00"
+}

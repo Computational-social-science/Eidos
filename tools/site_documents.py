@@ -3,6 +3,7 @@ from pathlib import Path
 from framework.artifacts import atomic_output
 
 PUBLIC = ('ACADEMIC_POSITIONING.md','FUNCTIONAL_COMPLETENESS.md','HEALTH.md','SELF_AUDIT.json',
+          'NUMERICAL-PROGRAMS.md','NUMERICAL-PROGRAMS-ACCEPTANCE.json',
           'RELEASES.md','CASE-SOFTMAX.md','QUALITY-2026-10-31.md','PAPER2AGENT.md','VERIFIERS.md',
           'ORCHESTRATION.md','CHAIN_AUDIT.md','COUPLING.md','PROJECT_INTEGRATION.md',
           'MODEL_VERDICTS.md','UPDATES.md','EVOLUTION.json','DEMO_COVERAGE.json',
@@ -29,6 +30,10 @@ PUBLIC = ('ACADEMIC_POSITIONING.md','FUNCTIONAL_COMPLETENESS.md','HEALTH.md','SE
           'archive/self-audit-v0.4.9.json','archive/core-recovery-acceptance-v0.4.9.json',
           'archive/recovery-live-acceptance-v0.4.9.json','archive/sdk-process-acceptance-v0.4.9.json',
           'archive/quarto-delivery-acceptance-v0.4.9.json','archive/reproduction-acceptance-v0.4.9.json',
+          'archive/self-audit-v0.4.10.json','archive/core-recovery-acceptance-v0.4.10.json',
+          'archive/recovery-live-acceptance-v0.4.10.json','archive/sdk-process-acceptance-v0.4.10.json',
+          'archive/quarto-delivery-acceptance-v0.4.10.json','archive/reproduction-acceptance-v0.4.10.json',
+          'archive/tracking-acceptance-v0.4.10.json',
           'REPRODUCTION-INTEGRITY.md','REPRODUCTION-ACCEPTANCE.json')
 
 PUBLIC_ASSETS = ('docs/screens/web/index-top.webp',
@@ -38,6 +43,8 @@ PUBLIC_ASSETS = ('docs/screens/web/index-top.webp',
                  'reference/sdk_process_acceptance/eidos-0.4.8-py3-none-any.whl',
                  'reference/sdk_process_acceptance/eidos-0.4.9-py3-none-any.whl',
                  'reference/sdk_process_acceptance/eidos-0.4.10-py3-none-any.whl',
+                 'reference/sdk_process_acceptance/eidos-0.4.11-py3-none-any.whl',
+                 'reference/numerical_programs_acceptance/check.py',
                  'reference/tracking_acceptance/check.py','reference/tracking_acceptance/README.md',
                  'reference/recovery_acceptance/check.py','reference/recovery_acceptance/service.py',
                  'reference/recovery_acceptance/README.md',

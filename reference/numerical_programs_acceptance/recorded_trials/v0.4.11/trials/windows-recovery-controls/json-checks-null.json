@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "kind": "eidos.disposable-recovery-acceptance",
+  "recorded_at": "2026-11-01T22:04:08.807748+00:00",
+  "status": "FAIL",
+  "python": "3.12.4",
+  "platform": "win32",
+  "optimization_level": 0,
+  "source_sha256_lf": {
+    "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+    "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+    "tools/watch_pipeline.py": "80bcf5699792cc767daa23788d1a92d4b57af3d43b264e7d040a0f082cae130d",
+    "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+    "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+    "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+    "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+    "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+    "tools/owned_workspace.py": "bac8df5ec876f8ee5a0a88c4b9c97d6ab3596e17bdfcefe0685cab740e1dee91",
+    "pyproject.toml": "665d30cca5d748fe95d762e0a990e56edc27fab5eb6f693ab2dd60a663b186aa",
+    "uv.lock": "22e6b7afac4f507f9746dbcf07fbc0a1eaa5e03d235efe5a1b91ac377a5c80cc",
+    "reference/recovery_acceptance/check.py": "5f6b9f88f4f8ad74cedc63b4ee435685d60275270297faf8b52671999f625b2a",
+    "reference/recovery_acceptance/service.py": "cc7f7503e9d7779746131f0033c1f08658ec003c45f729d4c2242202f3875e2f"
+  },
+  "stable_sources": true,
+  "checks": [
+    {
+      "name": "fixture_execution",
+      "passed": false,
+      "error": "RuntimeError",
+      "detail": "invalid worker object"
+    }
+  ],
+  "limits": [
+    "Disposable HTTP service, not a real model-service restart or legacy-runtime migration.",
+    "Source-checkout qualification, not installed-wheel, reboot or 24-hour acceptance.",
+    "401/403 qualify authenticated presence, not successful inference or credential validity.",
+    "Default retry/cooldown wall time is not accelerated or qualified by this short probe."
+  ]
+}

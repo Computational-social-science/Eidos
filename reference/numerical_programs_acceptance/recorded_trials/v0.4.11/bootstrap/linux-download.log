@@ -1,0 +1,49 @@
+Ignoring contourpy: markers 'python_full_version < "3.12"' don't match your environment
+Ignoring numpy: markers 'python_full_version < "3.12"' don't match your environment
+Collecting contourpy==1.4.0 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 77))
+  Downloading contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (383 kB)
+     ------------------------------------ 383.2/383.2 kB 555.1 kB/s eta 0:00:00
+Collecting cycler==0.12.1 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 149))
+  Using cached cycler-0.12.1-py3-none-any.whl (8.3 kB)
+Collecting fonttools==4.67.0 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 153))
+  Downloading fonttools-4.67.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.4 MB)
+     ---------------------------------------- 5.4/5.4 MB 8.4 MB/s eta 0:00:00
+Collecting kiwisolver==1.5.1 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 213))
+  Downloading kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.5 MB)
+     ---------------------------------------- 1.5/1.5 MB 45.9 MB/s eta 0:00:00
+Collecting matplotlib==3.11.2 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 338))
+  Downloading matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (9.9 MB)
+     ---------------------------------------- 9.9/9.9 MB 48.5 MB/s eta 0:00:00
+Collecting numpy==2.5.4 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 470))
+  Downloading numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.7 MB)
+     --------------------------------------- 16.7/16.7 MB 50.4 MB/s eta 0:00:00
+Collecting packaging==26.3 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 541))
+  Using cached packaging-26.3-py3-none-any.whl (129 kB)
+Collecting pillow==13.0.0 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 545))
+  Downloading pillow-13.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (7.1 MB)
+     ---------------------------------------- 7.1/7.1 MB 91.5 MB/s eta 0:00:00
+Collecting pyparsing==3.3.3 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 630))
+  Using cached pyparsing-3.3.3-py3-none-any.whl (126 kB)
+Collecting python-dateutil==2.9.0.post0 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 634))
+  Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+Collecting pyyaml==6.0.3 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 638))
+  Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+     ------------------------------------- 807.9/807.9 kB 53.2 MB/s eta 0:00:00
+Collecting six==1.17.0 (from -r E:\2026-AI4S\Eidos\.scratch\quality\v411-core-requirements.txt (line 688))
+  Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)
+Saved c:\users\administrator\.cache\eidos-sdk-v411\linux-wheels\contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\linux-wheels\cycler-0.12.1-py3-none-any.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\linux-wheels\fonttools-4.67.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\linux-wheels\kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\linux-wheels\matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\linux-wheels\numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\linux-wheels\packaging-26.3-py3-none-any.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\linux-wheels\pillow-13.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\linux-wheels\pyparsing-3.3.3-py3-none-any.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\linux-wheels\python_dateutil-2.9.0.post0-py2.py3-none-any.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\linux-wheels\pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
+Saved c:\users\administrator\.cache\eidos-sdk-v411\linux-wheels\six-1.17.0-py2.py3-none-any.whl
+Successfully downloaded contourpy cycler fonttools kiwisolver matplotlib numpy packaging pillow pyparsing python-dateutil pyyaml six
+
+[notice] A new release of pip is available: 24.0 -> 26.2.2
+[notice] To update, run: C:\Users\Administrator\.cache\eidos-sdk-v411\windows venv\Scripts\python.exe -m pip install --upgrade pip

@@ -1,0 +1,35 @@
+"""Recover exact earlier controller revisions, accepting only recorded raw SHA matches."""
+from pathlib import Path
+import hashlib
+import json
+
+root=Path.cwd()
+cache=Path('C:/Users/Administrator/.cache/eidos-sdk-v411')
+current=(root/'.scratch/quality/run_v411_linux.py').read_text()
+recovery_new="'/opt/tracking/bin/python','/input/recovery-bootstrap.py']"
+recovery_old="'/opt/tracking/bin/python','/source/reference/recovery_acceptance/check.py','--out','/out/recovery.json']"
+build=current.replace(recovery_new,recovery_old)
+core=build.replace(",'build-tracking'",'')
+core=core.replace(",\n          'build-tracking':'sha256:8f137816f3f718fbc84d0e37ff07b3b25690d981ed0658a27a88977a58ee93ec'",'')
+start=core.index("if args.kind=='build-tracking':\n")
+end=core.index('cid=None',start)
+core=core[:start]+core[end:]
+core=core.replace("'--network','none',*([] if args.kind=='build-tracking' else ['--read-only']),\n        '--init'",
+                  "'--network','none','--read-only','--init'")
+core=core.replace("or before['HostConfig']['ReadonlyRootfs']!=(args.kind!='build-tracking')", "or not before['HostConfig']['ReadonlyRootfs']")
+start=core.index("    if args.kind=='build-tracking':\n")
+end=core.index("    record['status']='PASS'",start)
+core=core[:start]+core[end:]
+candidates=[current,build,core,build.replace("cid,'eidos-tracking-acceptance:v411-owned'],timeout=180)",
+                                                "cid,'eidos-tracking-acceptance:v411-owned'])")]
+found=[]
+for name in ('public-core-2','sdk-core','build-tracking','build-tracking-2','tracking','recovery'):
+    folder=cache/name
+    expected=json.loads((folder/'execution.json').read_text())['controller_sha256']
+    matches=[body.encode() for body in candidates if hashlib.sha256(body.encode()).hexdigest()==expected]
+    if not matches:raise RuntimeError('Exact executed controller not recovered: '+name)
+    target=folder/'controller.py.snapshot'
+    if target.exists() and target.read_bytes()!=matches[0]:raise RuntimeError('Snapshot collision')
+    target.write_bytes(matches[0])
+    found.append(name)
+print('Exact recorded controller SHA verified for: '+', '.join(found))

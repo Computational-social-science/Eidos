@@ -1,0 +1,49 @@
+"""Prepare pinned core wheels and a fresh Windows environment; no service changes."""
+from pathlib import Path
+import hashlib
+import json
+import subprocess
+import sys
+import tomllib
+
+root = Path.cwd()
+cache = Path('C:/Users/Administrator/.cache/eidos-sdk-v411')
+cache.mkdir(exist_ok=False)
+lock = tomllib.loads((root/'uv.lock').read_text())
+constraints = []
+for name in ('setuptools', 'wheel', 'packaging'):
+    packages = [p for p in lock['package'] if p['name'] == name]
+    if len(packages) != 1:
+        raise RuntimeError('Build dependency identity is ambiguous')
+    p = packages[0]
+    constraints.append(name+'=='+p['version']+' '+ ' '.join('--hash='+w['hash'] for w in p['wheels']))
+build_constraints = cache/'build-constraints.txt'
+build_constraints.write_text('\n'.join(constraints)+'\n')
+subprocess.run(['uv','build','--wheel','--build-constraints',str(build_constraints),
+                '--require-hashes','--out-dir',str(root/'.scratch/quality/v411-dist')],check=True)
+wheel = root/'.scratch/quality/v411-dist/eidos-0.4.11-py3-none-any.whl'
+public = root/'reference/sdk_process_acceptance'/wheel.name
+if public.exists():
+    raise RuntimeError('Candidate wheel must not overwrite a frozen artifact')
+public.write_bytes(wheel.read_bytes())
+subprocess.run([sys.executable,'-m','venv',str(cache/'windows venv')],check=True)
+python = cache/'windows venv/Scripts/python.exe'
+requirements = root/'.scratch/quality/v411-core-requirements.txt'
+for platform in ('windows','linux'):
+    folder = cache/(platform+'-wheels')
+    folder.mkdir()
+    extra = [] if platform == 'windows' else ['--platform','manylinux_2_28_x86_64',
+        '--platform','manylinux_2_27_x86_64','--platform','manylinux_2_17_x86_64',
+        '--python-version','3.12','--implementation','cp','--abi','cp312']
+    with (cache/(platform+'-download.log')).open('w',encoding='utf-8') as log:
+        subprocess.run([str(python),'-I','-m','pip','download','--only-binary=:all:',
+                        '--require-hashes','-r',str(requirements),'--dest',str(folder),*extra],
+                       check=True,stdout=log,stderr=subprocess.STDOUT,timeout=300)
+manifest = {'wheel_sha256':hashlib.sha256(public.read_bytes()).hexdigest(),
+    'lock_sha256':hashlib.sha256((root/'uv.lock').read_bytes()).hexdigest(),
+    'build_constraints':constraints,'uv_version':subprocess.check_output(['uv','--version'],text=True).strip(),
+    'wheels':{p.relative_to(cache).as_posix():{'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),
+                                           'size':p.stat().st_size} for p in cache.glob('*-wheels/*.whl')}}
+(cache/'bootstrap-manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+print(json.dumps({'cache':str(cache),'wheel':str(public),'wheel_sha256':manifest['wheel_sha256'],
+                  'dependency_artifacts':len(manifest['wheels'])}))

@@ -1,6 +1,6 @@
 # EIDOS — scientific claims, executable evidence
 
-**Version 0.4.10** · initial development · local-first · MIT framework
+**Version 0.4.11** · initial development · local-first · MIT framework
 
 [![CI](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml/badge.svg)](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
 
@@ -18,28 +18,20 @@ the website; current execution state belongs in the monitor.
 ![The scientific argument and measured case](docs/screens/web/index-top.webp)
 
 **Free reuse requirement:** the default research path must run with local models
-and no Gemini API, paid provider or mandatory service key. Existing CPU case
-replay does not require a model service. The portable RSI runtime is still under
-development; see the [component selection and acceptance plan](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-COMPONENT-ASSEMBLY-2026-11-02.md).
-The new [configured local C0 CLI](https://github.com/Computational-social-science/Eidos/blob/main/reference/rsi_bootstrap/LOCAL-RUNTIME.md)
-has one same-host CPU execution with runtime acceptance; its candidate failed
-the numerical task. It is a source-checkout work package, not a qualified RSI
-runtime or an addition to the published v0.4.10 wheel.
-The subsequent [local method/feedback comparison](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-RETRIEVAL-FEEDBACK-2026-11-02.md)
-completed all six proposals without a paid provider: treatment loss values
-passed 23/23 points, but its derivatives failed every point. Both arms remained
-at 0/23 joint acceptance. Complete failures, repeated answers and actual costs
-are retained; adding retrieval did not demonstrate RSI.
-The [deterministic method compiler](https://github.com/Computational-social-science/Eidos/blob/main/reference/numerical_method_tools/README.md)
-now supplies a concrete, keyless reproduction command: the preserved proposal
-remains 0/23, while a separately attributed known-method program passes 23/23.
-This source-checkout tool avoids formula-to-program translation by a model;
-autonomous tool selection and recursive improvement remain unqualified.
-The subsequent [offline Linux acceptance](https://github.com/Computational-social-science/Eidos/blob/main/docs/METHOD-OFFLINE-PORTABILITY-2026-11-02.md)
-ran that source tool in a fresh NumPy+pip environment with runtime networking
-disabled, retaining 0/23 for the old proposal and 23/23 for the separate tool.
-The public image/wheel bootstrap is explicitly pinned; independent-machine,
-installed EIDOS-wheel and live-model tool-selection acceptance remain open.
+and no Gemini API, paid provider or mandatory service key. Saved-case replay
+and the numerical-program API need neither a model service nor a GPU. Public
+dependency/image bootstrap and runtime network isolation are recorded separately.
+
+| Start here | Available path | Evidence boundary |
+|---|---|---|
+| Reproduce the scientific case | [Saved-model CPU acceptance](#reproduce-the-measured-case) | Checks measured artifacts and independent references; does not rerun CUDA training. |
+| Use bounded formula execution | [Numerical-program SDK](docs/NUMERICAL-PROGRAMS.md) | Compile/parse supplied formulas into immutable typed programs. A supplied gradient still needs independent verification. |
+| Inspect the experimental research agent | [RSI plan and trial evidence](docs/RSI-OPTIMIZATION-PLAN.md) | Local proposals failed joint numerical acceptance. External known-method tooling passed its public tests; no autonomous research reasoner or RSI is qualified. |
+
+The [offline source-tool comparison](https://github.com/Computational-social-science/Eidos/blob/main/docs/METHOD-OFFLINE-PORTABILITY-2026-11-02.md)
+preserves both the failed model proposal (0/23) and the separate externally
+supplied method (23/23). Source experiments, installed-package acceptance and
+running-service identity have distinct records in the completeness ledger.
 
 ## What has been demonstrated
 
@@ -205,6 +197,7 @@ These checks establish bounded execution/acceptance behaviour, not scientific no
 | `framework/project.py` | Typed project registry, command execution, required artifacts and research states |
 | `framework/validity/` | Claim spans, evidence pointers, scope, controls and scientific acceptance rules |
 | `framework/stable_numerics*.py` | Qualified numerical implementations; independent references live in the verifier |
+| `framework/numerical_programs/` | Bounded formula/JSON compilation and finite scalar NumPy execution; gradients are supplied, not derived or scientifically certified |
 | `tools/audit_chains.py`, `tools/refresh_chains.py` | Deterministic execution chains, dependencies, scheduling and traces |
 | `tools/consumer_snapshot.py`, `tools/watch_pipeline.py` | Input-bound cached verdicts and current observations |
 | `tools/serve_site.py`, `tools/monitor_supervisor.py` | Loopback monitor, lifetime ownership, recovery and background verification |

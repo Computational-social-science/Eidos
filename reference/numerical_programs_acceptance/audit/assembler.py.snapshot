@@ -1,0 +1,264 @@
+"""Assemble only executed candidate evidence, preserving all earlier release records."""
+from datetime import datetime, timezone
+import hashlib
+import io
+import json
+from pathlib import Path
+import sys
+import zipfile
+
+root=Path.cwd()
+sys.path.insert(0,str(root))
+from framework.artifacts import atomic_output
+from tools.record_self_audit import input_state
+import v410_receipt_guards as guards
+import v411_receipt_guards as new_guards
+
+cache=Path('C:/Users/Administrator/.cache/eidos-sdk-v411')
+docs=root/'docs'
+now=datetime.now(timezone.utc).isoformat()
+sha=lambda body:hashlib.sha256(body).hexdigest()
+canonical=lambda body:body.decode('utf-8-sig').replace('\r\n','\n').encode()
+inputs={}
+
+def require(ok,message):
+    if not ok:raise RuntimeError(message)
+
+def raw(path):
+    path=Path(path).resolve()
+    body=path.read_bytes()
+    if path in inputs:require(inputs[path]==body,'An assembly input changed: '+str(path))
+    inputs[path]=body
+    return body
+
+def read(path):return json.loads(raw(path).decode('utf-8-sig'))
+
+assembly_sources={
+    'reference/numerical_programs_acceptance/audit/assembler.py.snapshot':Path(__file__),
+    'reference/numerical_programs_acceptance/audit/inventory_guards.py.snapshot':Path(new_guards.__file__),
+    'reference/numerical_programs_acceptance/audit/legacy_guards.py.snapshot':Path(guards.__file__)}
+assembly_hashes={}
+for public,private in assembly_sources.items():
+    body=raw(private)
+    require(raw(root/public)==body,'Published assembler snapshot differs')
+    assembly_hashes[public]=sha(body)
+
+wheel=root/'reference/sdk_process_acceptance/eidos-0.4.11-py3-none-any.whl'
+wheel_sha=sha(raw(wheel))
+with zipfile.ZipFile(io.BytesIO(raw(wheel))) as archive:
+    modules={n:sha(canonical(archive.read(n))) for n in archive.namelist()
+             if n.startswith('framework/') and n.endswith('.py')}
+source={p.relative_to(root).as_posix():sha(canonical(raw(p))) for p in (root/'framework').rglob('*.py')}
+require(modules==source and len(modules)==45,'Whole source/wheel inventory differs')
+audit=read(docs/'SELF_AUDIT.json')
+require(audit['stability']['stable'] is True and audit['tests']['failed']==audit['tests']['errors']==0,
+        'Current full audit failed')
+require(input_state()==audit['stability']['before']==audit['stability']['after'],'Stale source/environment audit')
+require(not any('fastmcp' in reason for reason in audit['skip_reasons']),'Paper2Agent dependency was not restored')
+pending={}
+
+def put(name,data):pending[name]=(json.dumps(data,indent=2)+'\n').encode()
+
+def execution(name):
+    folder=cache/name
+    value=read(folder/'execution.json')
+    require(value['status']=='PASS' and value['cleanup_verified'] is True,'Unqualified controller: '+name)
+    require(sha(raw(folder/'controller.py.snapshot'))==value['controller_sha256'],'Controller bytes differ')
+    commands={
+        'public-core-2':['python','-I','/input/bootstrap.py','--only-numerical'],
+        'sdk-core':['python','-I','/input/bootstrap.py'],
+        'tracking':['/opt/tracking/bin/python','-I','/input/tracking-bootstrap.py'],
+        'recovery':['/opt/tracking/bin/python','/input/recovery-bootstrap.py'],
+        'build-tracking-2':['/opt/tracking/bin/python','-I','-c',
+            "import subprocess; subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','install',"
+            "'--no-index','/input/eidos-0.4.11-py3-none-any.whl'],check=True); "
+            "subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','check'],check=True)"]}
+    require(value['command']==commands[name],'Wrong container command/profile')
+    expected_kind={'public-core-2':'public-core','build-tracking-2':'build-tracking'}.get(name,name)
+    require(value['kind']==expected_kind,'Container profile name differs')
+    input_pins=value['input_sha256']
+    require(type(input_pins) is dict and input_pins.get(wheel.name)==wheel_sha,'Container wheel input differs')
+    for member,expected in input_pins.items():
+        path=(cache/'input'/member).resolve()
+        require(path.is_relative_to((cache/'input').resolve()) and sha(raw(path))==expected,
+                'Container input does not match retained files')
+    expected_inputs={'bootstrap.py','run.py','core.txt','numerical-check.py',wheel.name}
+    if name=='tracking':expected_inputs.add('tracking-bootstrap.py')
+    if name=='recovery':expected_inputs.update({'recovery-bootstrap.py','recovery-negative.py'})
+    require(expected_inputs<=set(input_pins),'Container input inventory is incomplete')
+    require(input_pins['numerical-check.py']==sha(raw(root/'reference/numerical_programs_acceptance/check.py')),
+            'Container numerical checker differs')
+    for case,checker in [('sdk','sdk_process'),('quarto','quarto_delivery'),('reproduction','reproduction')]:
+        require(input_pins.get(case+'-check.py')==sha(raw(root/'reference'/(checker+'_acceptance')/'check.py')),
+                'Container lifecycle checker differs')
+    paths={'/input':((cache/'input').resolve(),False),'/out':(folder.resolve(),True)}
+    if name in {'tracking','recovery'}:paths['/source']=(root.resolve(),False)
+    for phase in ('before','after'):
+        state=value[phase]
+        require(state['network']=='none' and state['Image']==value['image_id'],'Image/network differs')
+        require(state['readonly_rootfs'] is (name!='build-tracking-2'),'Wrong root filesystem policy')
+        require(state['command']==commands[name] and state['Id']==value['before']['Id'],'Container execution identity differs')
+        mounts=state['Mounts']
+        require(len(mounts)==len(paths) and {r['Destination'] for r in mounts}==set(paths),'Container mounts differ')
+        for mount in mounts:
+            path,writable=paths[mount['Destination']]
+            require(mount['Type']=='bind' and mount['RW'] is writable and Path(mount['Source']).resolve()==path,
+                    'Wrong container input/output source or permissions')
+        require(set(state['tmpfs'])=={'/tmp','/root/.cache'} and state['cap_drop']==['ALL']
+                and state['security_opt']==['no-new-privileges'],'Container isolation policy differs')
+    terminal=value['after']['State']
+    require(type(terminal['ExitCode']) is int and terminal['ExitCode']==0 and terminal['Status']=='exited'
+            and terminal['Running'] is False and terminal['OOMKilled'] is False and terminal['Dead'] is False,
+            'Worker terminal state differs')
+    return value
+
+sdk_execution=execution('sdk-core')
+public_execution=execution('public-core-2')
+tracking_execution=execution('tracking')
+recovery_execution=execution('recovery')
+build_execution=execution('build-tracking-2')
+require(tracking_execution['image_id']==recovery_execution['image_id']==build_execution['candidate_image_id'],
+        'Installed tracking/recovery image differs from owned candidate build')
+for case,name,old in [('sdk','SDK-PROCESS-ACCEPTANCE.json','sdk-process'),
+                     ('quarto','QUARTO-DELIVERY-ACCEPTANCE.json','quarto-delivery'),
+                     ('reproduction','REPRODUCTION-ACCEPTANCE.json','reproduction')]:
+    archived=old+'-acceptance-v0.4.10.json'
+    record=read(docs/'archive'/archived)
+    lineage=record.get('lineage')
+    record['lineage']={'previous_release':'v0.4.10','previous_record':'archive/'+archived,
+                       'previous_wheel_sha256':record['wheel_sha256'],'earlier':lineage}
+    record.update(generated=now,wheel=wheel.relative_to(root).as_posix(),wheel_sha256=wheel_sha)
+    require(sha(raw(root/record['driver']))==record['driver_sha256'],'Historical lifecycle driver changed')
+    if case=='sdk':record['source_sha256_canonical_lf']=modules
+    else:record['source_inventory']='SDK-PROCESS-ACCEPTANCE.json#source_sha256_canonical_lf'
+    record['optimization_controls']={}
+    for platform,folder in [('windows',cache/'windows-results'),('linux',cache/'sdk-core/results')]:
+        result=read(folder/(case+'.json'))
+        guards.lifecycle(result,case,platform)
+        require(result['sdk_version']=='0.4.11' and result['source_sha256_canonical_lf']==modules,'Wrong installed source')
+        record[platform]={'status':'PASS','result':result,
+            'installation':'Fresh non-editable venv; complete hash-locked normal core dependencies, normal wheel install and pip check.'}
+        if platform=='linux':record[platform].update(image=sdk_execution['image_id'],network='none',
+            execution='NUMERICAL-PROGRAMS-ACCEPTANCE.json#additional_sdk_linux_execution')
+        controls=read(folder/'optimization.json')[case]
+        guards.optimization(controls)
+        record['optimization_controls'][platform]=controls
+    put(name,record)
+
+live=read(docs/'archive/recovery-live-acceptance-v0.4.10.json')
+live.update(generated=now,version='0.4.11',docker_image=recovery_execution['image_id'],
+    method='Original c12acdd paired failures retained; unchanged checker replayed against candidate source with disposable real HTTP services.',
+    previous_record='archive/recovery-live-acceptance-v0.4.10.json')
+for platform,folder,file in [('windows',cache,'windows-recovery.json'),('linux',cache/'recovery','recovery.json')]:
+    value=read(folder/file)
+    guards.recovery(value,platform)
+    for name,expected in value['source_sha256_lf'].items():
+        require(sha(canonical(raw(root/name)))==expected,'Recovery source drift')
+    controls=read(folder/('windows-recovery-controls' if platform=='windows' else 'recovery-controls')/'summary.json')
+    guards.negative(controls,'recovery')
+    control_folder=folder/('windows-recovery-controls' if platform=='windows' else 'recovery-controls')
+    for row in controls:
+        path=control_folder/(row['case']+'.json')
+        original=read(path)
+        if row['case'] in {'-O','-OO'}:
+            require(raw(path)==raw(folder/file),'Recovery optimized mode altered the positive receipt')
+        else:
+            require(sha(raw(path))==row['receipt_sha256'] and original['status']=='FAIL'
+                    and original['platform']==value['platform'] and original['source_sha256_lf']==value['source_sha256_lf'],
+                    'Recovery negative evidence differs')
+    live['after'][platform]=value
+    live['negative_controls'][platform]=controls
+live['linux_execution']=recovery_execution
+put('RECOVERY-LIVE-ACCEPTANCE.json',live)
+
+core=read(docs/'archive/core-recovery-acceptance-v0.4.10.json')
+core.update(recorded_at=now,version='0.4.11',tests_passed=audit['tests']['passed'],
+            historical_record='docs/archive/core-recovery-acceptance-v0.4.10.json')
+core['source_sha256_lf']={n:sha(canonical(raw(root/n))) for n in core['source_sha256_lf']}
+core['full_self_audit']={'tests_collected':audit['tests_collected'],'tests':audit['tests'],
+    'coverage_total':audit['coverage_total'],'chains':audit['chains'],'source_stable':True,
+    'receipt_sha256':sha(raw(docs/'SELF_AUDIT.json'))}
+core['paired_live_record']['sha256']=sha(pending['RECOVERY-LIVE-ACCEPTANCE.json'])
+put('CORE-RECOVERY-ACCEPTANCE.json',core)
+
+tracking=read(docs/'archive/tracking-acceptance-v0.4.10.json')
+tracking.update(generated=now,version='0.4.11',wheel=wheel.relative_to(root).as_posix(),wheel_sha256=wheel_sha,
+    previous_record='archive/tracking-acceptance-v0.4.10.json',
+    release_qualification='Installed candidate qualification; exact-final-commit CI and release assets are separate.')
+driver=sha(canonical(raw(root/tracking['driver'])))
+require(driver==tracking['driver_sha256_lf'],'Tracking protocol changed')
+for platform,path,expected in [('windows',cache/'windows-tracking.json','win32'),
+                              ('linux',cache/'tracking/tracking.json','linux')]:
+    value=read(path)
+    require(value['status']=='PASS' and value['sdk_version']=='0.4.11' and value['platform']==expected
+            and value['optimization_level']==0 and value['source_sha256_canonical_lf']==modules
+            and value['wheel_sha256']==wheel_sha and value['driver_sha256_lf']==driver,'Tracking identity differs')
+    require(len(value['cases'])==49 and len({(r['class'],r['case']) for r in value['cases']})==49
+            and all(r['accepted'] is True for r in value['cases']),'Tracking controls differ')
+    for n,expected_sha in value['protocol_sha256_lf'].items():
+        require(sha(canonical(raw(root/'tests'/n)))==expected_sha,'Tracking test protocol differs')
+    tracking[platform]=value
+require(tracking['windows']['cases']==tracking['linux']['cases'],'Tracking platform protocols differ')
+controls=read(cache/'controls-final/summary.json')
+guards.negative(controls,'tracking')
+for row in controls:
+    path=cache/'controls-final'/('wrong-metadata.json' if row['case']=='same-code-wrong-metadata' else row['case']+'.json')
+    original=read(path)
+    require(sha(raw(path))==row['receipt_sha256'] and original['platform']=='win32','Tracking negative receipt differs')
+    if row['case'] in {'-O','-OO'}:
+        require(raw(path)==raw(cache/'windows-tracking.json'),'Tracking optimized mode altered the positive receipt')
+    else:
+        message='METADATA identity differs' if row['case']=='same-code-wrong-metadata' else 'Protocol process failed'
+        require(original['status']=='FAIL' and message in original['error'],'Tracking rejection has the wrong cause')
+tracking['windows_negative_controls']=controls
+tracking['linux_execution']={'network':'none','image':tracking_execution['image_id'],
+    'workspace':'Private tmpfs only; no disk performance or persistence claim.',
+    'exit_code':0,'command':tracking_execution['command'],'tmpfs':tracking_execution['after']['tmpfs'],
+    'receipt_sha256':sha(raw(cache/'tracking/tracking.json')),'controller':tracking_execution}
+tracking['full_source_audit']={'path':'docs/SELF_AUDIT.json','sha256':sha(raw(docs/'SELF_AUDIT.json')),
+    'tests':audit['tests'],'coverage_total':audit['coverage_total'],'stable':True}
+tracking['ordinary_overlay_attempt']['scope']='Retained v0.4.10 failure; no new v0.4.11 ordinary-overlay PASS is claimed.'
+put('TRACKING-ACCEPTANCE.json',tracking)
+
+api_driver='reference/numerical_programs_acceptance/check.py'
+api_sha=sha(canonical(raw(root/api_driver)))
+api_results={}
+for platform,folder in [('windows',cache/'windows-results'),('linux',cache/'public-core-2/results')]:
+    value=read(folder/'numerical.json')
+    new_guards.numerical(value,platform,modules,wheel_sha,api_sha)
+    api_results[platform]=value
+negative=read(cache/'installed-negatives-v2/summary.json')
+new_guards.installed_negatives(negative)
+archive=root/'reference/numerical_programs_acceptance/recorded_trials/v0.4.11'
+manifest=read(archive/'manifest.json')
+declared=manifest['files']
+require({p.relative_to(archive).as_posix() for p in archive.rglob('*') if p.is_file()}==set(declared)|{'manifest.json'},
+        'Archive inventory differs')
+for name,item in declared.items():
+    body=raw(archive/name)
+    require(sha(body)==item['sha256'] and len(body)==item['size'],'Archive member changed')
+    if name.startswith('trials/'):
+        require(raw(cache/name.removeprefix('trials/'))==body,'Archive differs from assembled raw trial input')
+for folder in ('public-core','build-tracking'):
+    require(read(archive/'trials'/folder/'execution.json')['status']=='FAIL','Failed controller was hidden')
+put('NUMERICAL-PROGRAMS-ACCEPTANCE.json',{
+    'schema':1,'kind':'eidos.numerical-programs-sdk-qualification','generated':now,'status':'PASS','version':'0.4.11',
+    'wheel':wheel.relative_to(root).as_posix(),'wheel_sha256':wheel_sha,'driver':api_driver,'driver_sha256_lf':api_sha,
+    'source_sha256_canonical_lf':modules,**api_results,'windows_negative_controls':negative,
+    'linux_execution':public_execution,'additional_sdk_linux_execution':sdk_execution,
+    'tracking_image_build':build_execution,'bootstrap':read(cache/'bootstrap-manifest.json'),
+    'full_source_audit_sha256':sha(raw(docs/'SELF_AUDIT.json')),
+    'archive':'reference/numerical_programs_acceptance/recorded_trials/v0.4.11',
+    'archive_manifest_sha256':sha(raw(archive/'manifest.json')),
+    'assembly_sources_sha256':assembly_hashes,
+    'free_reuse':{'gemini_api':False,'paid_service':False,'mandatory_credentials':False,'execution':'local CPU'},
+    'limits':['Known external numerical methods and explicitly supplied derivatives; no model or RSI qualification.',
+              'Same-host Windows and offline Linux, not new hardware, GPU, vectors, AD or a whole-domain guarantee.',
+              'Public dependency bootstrap is separate; Linux qualifier networking was disabled.',
+              'The first public-core controller attempt and first owned-image commit attempt remain retained FAIL records.',
+              'Dependency METADATA/RECORD stability is not a hostile-process or full dependency-file integrity sandbox.']})
+require(input_state()==audit['stability']['before']==audit['stability']['after'],'Source/environment changed during assembly')
+for path,body in inputs.items():require(path.read_bytes()==body,'Assembly input changed before publication')
+for name,body in pending.items():
+    with atomic_output(docs/name) as temporary:temporary.write_bytes(body)
+print('Assembled actual v0.4.11 installed/recovery/source receipts with exact current audit and wheel bindings.')

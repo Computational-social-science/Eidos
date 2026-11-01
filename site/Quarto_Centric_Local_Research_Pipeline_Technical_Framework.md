@@ -389,3 +389,18 @@ incomplete fields. Neither reached numerical grading or promotion. Raw responses
 protocol/source bindings and executed runtime sources are retained. The next
 priority is structured-output reliability, followed by numerical qualification;
 these one-task failures do not establish general model incapability or RSI.
+
+The [decoder-constrained follow-up](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-C0-DECODER-STUDY-2026-11-02.md)
+then produced admissible programs from both models, but each failed all 23 joint
+loss/gradient development points. Runtime acceptance is distinct from candidate
+acceptance. Both responses, numerical outputs, failed/successful backend controls
+and executed runtime sources are preserved; no candidate was promoted.
+
+The [component assembly plan](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-COMPONENT-ASSEMBLY-2026-11-02.md)
+prioritizes existing Paper2Agent artifacts, local source-grounded retrieval and
+bounded search with independent scoring. Free reuse is required: the default
+path must operate with local models and no Gemini API, paid service or mandatory
+credential. ERA is a search reference requiring a local adapter, not an accepted
+Gemini-dependent runtime. Component installation and known-method reuse do not
+constitute scientific RSI. Self-check, bounded self-healing and monitoring remain
+required; no new CRON loop is introduced by this selection.

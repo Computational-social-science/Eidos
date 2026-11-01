@@ -7,6 +7,14 @@ operator arity; ScienceRSI emitted duplicate/incomplete fields. Neither reached
 numerical grading or earned authority. These are one-task development results,
 not general model-accuracy estimates; the short S4 results retain their narrower scope.
 
+In the subsequent [decoder-constrained study](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-C0-DECODER-STUDY-2026-11-02.md),
+both models generated admissible programs but failed all 23 joint numerical
+development points. Qwen's program has loss/derivative defects; ScienceRSI's
+program does not use its input. Runtime acceptance did not confer task authority.
+The next intervention is grounded method retrieval and bounded counterexample
+feedback under a new protocol. The [component plan](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-COMPONENT-ASSEMBLY-2026-11-02.md)
+requires local, keyless operation without Gemini or paid services.
+
 EIDOS has no task-qualified autonomous research reasoner. The legacy stage/model
 table was a proposed routing list, not an executed capability measurement. Model
 presence, endpoint health, general benchmarks and task acceptance are different

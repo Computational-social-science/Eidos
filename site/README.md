@@ -17,6 +17,11 @@ the website; current execution state belongs in the monitor.
 
 ![The scientific argument and measured case](docs/screens/web/index-top.webp)
 
+**Free reuse requirement:** the default research path must run with local models
+and no Gemini API, paid provider or mandatory service key. Existing CPU case
+replay does not require a model service. The portable RSI runtime is still under
+development; see the [component selection and acceptance plan](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-COMPONENT-ASSEMBLY-2026-11-02.md).
+
 ## What has been demonstrated
 
 The current case is **Softmax Collapse and Softmax Cancellation**, based on

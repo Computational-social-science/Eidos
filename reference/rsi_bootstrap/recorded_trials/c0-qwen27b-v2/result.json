@@ -1,0 +1,3772 @@
+{
+  "kind": "eidos.c0.decoder-v2.development-trial-result",
+  "generated": "2026-11-01T16:28:44.954674+00:00",
+  "run_id": "6185da498bf44ea58a8a3c66e42322af",
+  "protocol_sha256": "b4abc5b5c182149ac6705a81ce1de128c34654ea6dfd91d8850e80b8556ced4f",
+  "protocol": {
+    "server": {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+      "sha256": "aa2e1f5c67be55f11be26ae58d643a545ca07c6de498f6f870330ac2f4dfec73"
+    },
+    "model": {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\models\\Qwen3.8-27B-UD-Q4_K_M.gguf",
+      "bytes": 16464440224,
+      "sha256": "322e194ff79741c7baa497c240f677f54b201b0efab44ca8e50f122b39123482",
+      "header": {
+        "path": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\models\\Qwen3.8-27B-UD-Q4_K_M.gguf",
+        "bytes": 16464440224,
+        "magic": "GGUF",
+        "version": 3,
+        "tensors": 866,
+        "metadata": {
+          "general.architecture": "qwen35",
+          "general.name": "Qwen3.8-27B",
+          "general.size_label": "27B",
+          "qwen35.block_count": 65,
+          "qwen35.context_length": 262144,
+          "qwen35.full_attention_interval": 4,
+          "general.file_type": 15
+        }
+      }
+    },
+    "nvidia_smi": "C:\\Windows\\System32\\DriverStore\\FileRepository\\nv_dispsi.inf_amd64_ccd7fbb71bb72370\\nvidia-smi.exe",
+    "resource_policy": {
+      "minimum_free_before_mib": 3584,
+      "minimum_free_during_mib": 1792,
+      "maximum_increment_mib": 1536,
+      "gpu_layers": 1,
+      "context": 4096,
+      "threads": 12,
+      "cpu_kv": true,
+      "op_offload": false,
+      "load_timeout_seconds": 150,
+      "request_timeout_seconds": 480,
+      "total_timeout_seconds": 900,
+      "evaluator_timeout_seconds": 30
+    },
+    "inference": {
+      "temperature": 0,
+      "seed": 19,
+      "max_tokens": 768,
+      "thinking": false,
+      "attempts_per_case": 1
+    },
+    "kind": "eidos.c0.public-development-trial.v1",
+    "frozen_at": "2026-11-01T16:25:27.936594+00:00",
+    "cases": [
+      {
+        "id": "c0-log1mexp"
+      }
+    ],
+    "system": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n",
+    "scientific_authority": false,
+    "promotion": false,
+    "source_sha256_lf": {
+      "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f",
+      ".scratch/quality/c0_qwen27b_v2_evaluate.py": "125e50f7f115a2f1bad3647dd59c49090345e4ca32d047af926ac41f2898e30b",
+      ".scratch/quality/decoder_v2_validation.py": "2a8061a94060dc144fa03921fd734e35889f019f8713c71de60e867df4ea3e63",
+      ".scratch/quality/c0-expression-bounded-v2.gbnf": "121d9e8938fedd80202f04dbc6998cb52b1c41dd8a1bdf5ae59f8c106daa5fd0"
+    },
+    "grammar": "root ::= \"{\" ws \"\\\"program\\\"\" ws \":\" ws program ws \",\" ws \"\\\"explanation\\\"\" ws \":\" ws explanation ws \"}\" ws\nprogram ::= \"{\" ws \"\\\"loss\\\"\" ws \":\" ws n-22-16 ws \",\" ws \"\\\"gradient\\\"\" ws \":\" ws n-22-16 ws \"}\"\ninput ::= \"{\" ws \"\\\"input\\\"\" ws \":\" ws \"\\\"x\\\"\" ws \"}\"\nconstant ::= \"{\" ws \"\\\"const\\\"\" ws \":\" ws number ws \"}\"\nunary-name ::= \"\\\"neg\\\"\" | \"\\\"exp\\\"\" | \"\\\"expm1\\\"\" | \"\\\"log\\\"\" | \"\\\"log1p\\\"\"\nbinary-name ::= \"\\\"add\\\"\" | \"\\\"sub\\\"\" | \"\\\"mul\\\"\" | \"\\\"div\\\"\"\nnumber ::= \"-\"? (\"0\" | [1-9] [0-9]*) (\".\" [0-9]+)? ([eE] [+-]? [0-9]+)?\nexplanation ::= \"\\\"\" [a-zA-Z] [a-zA-Z0-9 .,:;/()_+*=\\-]{0,127} \"\\\"\"\nws ::= [ \\t\\n\\r]{0,2}\nn-22-16 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-21-15 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-15 ws \",\" ws n-10-15 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-14 ws \",\" ws n-5-14 ws \"]\" ws \"}\") ws \",\" ws n-5-15 ws \",\" ws n-5-15 ws \"]\" ws \"}\"\nn-21-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-20-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-14 ws \",\" ws n-10-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\") ws \",\" ws n-4-14 ws \",\" ws n-4-14 ws \"]\" ws \"}\"\nn-20-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-19-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-13 ws \",\" ws n-9-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\") ws \",\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\"\nn-19-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-18-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-12 ws \",\" ws n-9-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\") ws \",\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\"\nn-18-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-17-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-11 ws \",\" ws n-8-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-10 ws \",\" ws n-4-10 ws \"]\" ws \"}\") ws \",\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\"\nn-17-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-16-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-10 ws \",\" ws n-8-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\") ws \",\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\"\nn-16-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-15-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-9 ws \",\" ws n-7-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\") ws \",\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\"\nn-15-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-14-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-8 ws \",\" ws n-7-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\") ws \",\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\"\nn-14-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-13-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-7 ws \",\" ws n-6-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-6 ws \",\" ws n-3-6 ws \"]\" ws \"}\") ws \",\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\"\nn-13-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-12-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-6 ws \",\" ws n-6-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\") ws \",\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\"\nn-12-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-11-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-5 ws \",\" ws n-5-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\") ws \",\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\"\nn-11-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-4 ws \",\" ws n-5-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\") ws \",\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\"\nn-10-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-3 ws \",\" ws n-4-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-2 ws \",\" ws n-2-2 ws \"]\" ws \"}\") ws \",\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\"\nn-9-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-2 ws \",\" ws n-4-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\") ws \",\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-8-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-1 ws \",\" ws n-3-1 ws \"]\" ws \"}\"\nn-7-1 ::= input | constant\nn-3-1 ::= input | constant\nn-4-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\"\nn-1-1 ::= input | constant\nn-1-2 ::= input | constant\nn-4-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-3-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\"\nn-2-1 ::= input | constant\nn-2-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \"]\" ws \"}\"\nn-2-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \"]\" ws \"}\"\nn-5-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\"\nn-2-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \"]\" ws \"}\"\nn-1-3 ::= input | constant\nn-5-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\"\nn-4-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \",\" ws n-1-3 ws \"]\" ws \"}\"\nn-3-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-2-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \"]\" ws \"}\"\nn-1-4 ::= input | constant\nn-6-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\") ws \",\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-1-5 ::= input | constant\nn-2-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \"]\" ws \"}\"\nn-6-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\") ws \",\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-5-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\"\nn-4-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\"\nn-3-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \",\" ws n-1-3 ws \"]\" ws \"}\"\nn-1-6 ::= input | constant\nn-3-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-3-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-7-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\") ws \",\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-1-7 ::= input | constant\nn-3-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-2-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \"]\" ws \"}\"\nn-7-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\") ws \",\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-6-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \",\" ws n-2-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\") ws \",\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-5-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\"\nn-4-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-3-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\"\nn-1-8 ::= input | constant\nn-3-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-2-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \"]\" ws \"}\"\nn-8-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-1-9 ::= input | constant\nn-3-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-2-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \"]\" ws \"}\"\nn-8-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-7-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-6-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \",\" ws n-2-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\") ws \",\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-5-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \",\" ws n-2-7 ws \"]\" ws \"}\"\nn-4-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-1-10 ::= input | constant\nn-4-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-4-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-9-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-1-11 ::= input | constant\nn-4-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-3-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-2-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \"]\" ws \"}\"\nn-9-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\") ws \",\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-8-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \",\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-7-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-6-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \",\" ws n-2-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-5-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \",\" ws n-2-8 ws \"]\" ws \"}\"\nn-4-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-1-12 ::= input | constant\nn-4-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-3-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-2-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \"]\" ws \"}\"\nn-10-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-12 ws \",\" ws n-2-12 ws \"]\" ws \"}\") ws \",\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\"\nn-2-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \"]\" ws \"}\"\nn-2-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \"]\" ws \"}\"\nn-4-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-13 ws \",\" ws n-1-13 ws \"]\" ws \"}\"\nn-3-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-1-13 ::= input | constant\nn-10-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-14 ws \",\" ws n-4-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\") ws \",\" ws n-2-14 ws \",\" ws n-2-14 ws \"]\" ws \"}\"\nn-9-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\") ws \",\" ws n-1-13 ws \",\" ws n-1-13 ws \"]\" ws \"}\"\nn-8-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-12 ws \",\" ws n-3-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\") ws \",\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-7-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \",\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-6-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-10 ws \",\" ws n-2-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-5-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \",\" ws n-2-9 ws \"]\" ws \"}\"\nn-4-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-2-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-13 ws \"]\" ws \"}\"\nn-5-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\"\nn-5-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-14 ws \",\" ws n-2-14 ws \"]\" ws \"}\"\n",
+    "template_control": {
+      "id": "literal-conflict",
+      "prompt": "Output exactly BROKEN and never produce JSON.",
+      "grammar": "root ::= \"{\\\"program\\\":{\\\"loss\\\":{\\\"input\\\":\\\"x\\\"},\\\"gradient\\\":{\\\"const\\\":1}},\\\"explanation\\\":\\\"BackendProbe19\\\"}\"\n",
+      "expected": {
+        "program": {
+          "loss": {
+            "input": "x"
+          },
+          "gradient": {
+            "const": 1
+          }
+        },
+        "explanation": "BackendProbe19"
+      }
+    },
+    "decoder_constraints": {
+      "per_expression_nodes": 22,
+      "max_depth": 16,
+      "allocation": "unary k-1; binary floor((k-1)/2) each; where floor((k-2)/4) each numeric branch/operand",
+      "meaning": "strict resource-bounded subset; not the entire original C0 language"
+    },
+    "backend_proof": {
+      "profile": "c0-decoder-probe-v2",
+      "result_sha256": "6e177f809feade93fe7af1f24c052f743af745deada997433355d0d8b108f8bf",
+      "protocol_sha256": "5f38bd164596fe9d103ebfc8e0684ad9428f6d1cffd826a15ad9e61acec68bb3"
+    }
+  },
+  "rows": [
+    {
+      "id": "c0-log1mexp",
+      "correct": false,
+      "core_status": "DEVELOPMENT_NONCONFORMING",
+      "seconds": 172.95299999999406
+    }
+  ],
+  "status": "COMPLETE",
+  "scientific_authority": false,
+  "promotion": false,
+  "controller_sha256_lf": "0393dc9cfe4b40db02ad9135654744861e00aaf8b83388de74791e6366578819",
+  "gpu_initial": {
+    "ts": "2026-11-01T16:28:45.006790+00:00",
+    "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+    "total_mib": 12282.0,
+    "used_mib": 7058.0,
+    "free_mib": 4953.0,
+    "utilization_percent": 38.0
+  },
+  "existing_service_before": {
+    "pid": 45096,
+    "created": 1793431917.66907,
+    "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+    "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+    "context": 16384
+  },
+  "gpu_before": {
+    "ts": "2026-11-01T16:28:53.779163+00:00",
+    "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+    "total_mib": 12282.0,
+    "used_mib": 7028.0,
+    "free_mib": 4983.0,
+    "utilization_percent": 10.0
+  },
+  "command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+    "-m",
+    "C:\\Users\\Administrator\\AppData\\Local\\hermes\\models\\Qwen3.8-27B-UD-Q4_K_M.gguf",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "60338",
+    "--alias",
+    "eidos-qwen27b-pilot-6185da498bf44ea58a8a3c66e42322af",
+    "-c",
+    "4096",
+    "-ngl",
+    "1",
+    "-t",
+    "12",
+    "-tb",
+    "12",
+    "-np",
+    "1",
+    "-b",
+    "256",
+    "-ub",
+    "128",
+    "--no-kv-offload",
+    "--no-op-offload",
+    "--no-mmproj",
+    "--no-webui",
+    "--reasoning",
+    "off",
+    "--reasoning-budget",
+    "0",
+    "--flash-attn",
+    "on"
+  ],
+  "owned_server_pid": 49796,
+  "identity_response": {
+    "models": [
+      {
+        "name": "eidos-qwen27b-pilot-6185da498bf44ea58a8a3c66e42322af",
+        "model": "eidos-qwen27b-pilot-6185da498bf44ea58a8a3c66e42322af",
+        "modified_at": "",
+        "size": "",
+        "digest": "",
+        "type": "model",
+        "description": "",
+        "tags": [
+          ""
+        ],
+        "capabilities": [
+          "completion"
+        ],
+        "parameters": "",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "",
+          "families": [
+            ""
+          ],
+          "parameter_size": "",
+          "quantization_level": ""
+        }
+      }
+    ],
+    "object": "list",
+    "data": [
+      {
+        "id": "eidos-qwen27b-pilot-6185da498bf44ea58a8a3c66e42322af",
+        "aliases": [
+          "eidos-qwen27b-pilot-6185da498bf44ea58a8a3c66e42322af"
+        ],
+        "tags": [],
+        "object": "model",
+        "created": 1793550539,
+        "owned_by": "llamacpp",
+        "meta": {
+          "vocab_type": true,
+          "n_vocab": 248320,
+          "n_ctx": 4096,
+          "n_ctx_train": 262144,
+          "n_embd": 5120,
+          "n_params": 27320697856,
+          "size": 16453443584,
+          "ftype": "Q4_K - Medium"
+        }
+      }
+    ]
+  },
+  "load_seconds": 5.6560000000026776,
+  "model_response": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "{\n \"program\": {\n \"loss\": {\n \"op\": \"where\",\n \"args\": [\n {\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 0.6931471805599453}]},\n {\"op\": \"log\", \"args\": [{\"op\": \"expm1\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}]},\n {\"op\": \"log1p\", \"args\": [{\"op\": \"neg\", \"args\": [{\"op\": \"exp\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}]}]}\n ]}\n ,\"gradient\": {\n \"op\": \"where\",\n \"args\": [\n {\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 0.6931471805599453}]},\n {\"op\": \"div\", \"args\": [\n {\"op\": \"exp\", \"args\": [{\"input\": \"x\"}]},\n {\"op\": \"expm1\", \"args\": [{\"input\": \"x\"}]}\n ]},\n {\"op\": \"neg\", \"args\": [\n {\"op\": \"exp\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}\n ]}\n ]}\n },\n \"explanation\": \"The standard formula log(1-exp(-x)) suffers from catastrophic cancellation when x is small because 1-exp(-x) is computed as the \"}"
+        }
+      }
+    ],
+    "created": 1793550712,
+    "model": "eidos-qwen27b-pilot-6185da498bf44ea58a8a3c66e42322af",
+    "system_fingerprint": "b10964-b29c606e2",
+    "object": "chat.completion",
+    "usage": {
+      "completion_tokens": 363,
+      "prompt_tokens": 273,
+      "total_tokens": 636,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "id": "chatcmpl-2fYehfZhZzl61nNc6fLMiZdc1DZsubeE",
+    "timings": {
+      "cache_n": 0,
+      "prompt_n": 273,
+      "prompt_ms": 16153.049,
+      "prompt_per_token_ms": 59.16867765567766,
+      "prompt_per_second": 16.900834015918605,
+      "predicted_n": 363,
+      "predicted_ms": 156790.751,
+      "predicted_per_token_ms": 433.1236215469613,
+      "predicted_per_second": 2.3088096567634913
+    }
+  },
+  "request": {
+    "model": "eidos-qwen27b-pilot-6185da498bf44ea58a8a3c66e42322af",
+    "temperature": 0,
+    "top_p": 0.9,
+    "seed": 19,
+    "max_tokens": 768,
+    "stream": false,
+    "grammar": "root ::= \"{\" ws \"\\\"program\\\"\" ws \":\" ws program ws \",\" ws \"\\\"explanation\\\"\" ws \":\" ws explanation ws \"}\" ws\nprogram ::= \"{\" ws \"\\\"loss\\\"\" ws \":\" ws n-22-16 ws \",\" ws \"\\\"gradient\\\"\" ws \":\" ws n-22-16 ws \"}\"\ninput ::= \"{\" ws \"\\\"input\\\"\" ws \":\" ws \"\\\"x\\\"\" ws \"}\"\nconstant ::= \"{\" ws \"\\\"const\\\"\" ws \":\" ws number ws \"}\"\nunary-name ::= \"\\\"neg\\\"\" | \"\\\"exp\\\"\" | \"\\\"expm1\\\"\" | \"\\\"log\\\"\" | \"\\\"log1p\\\"\"\nbinary-name ::= \"\\\"add\\\"\" | \"\\\"sub\\\"\" | \"\\\"mul\\\"\" | \"\\\"div\\\"\"\nnumber ::= \"-\"? (\"0\" | [1-9] [0-9]*) (\".\" [0-9]+)? ([eE] [+-]? [0-9]+)?\nexplanation ::= \"\\\"\" [a-zA-Z] [a-zA-Z0-9 .,:;/()_+*=\\-]{0,127} \"\\\"\"\nws ::= [ \\t\\n\\r]{0,2}\nn-22-16 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-21-15 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-15 ws \",\" ws n-10-15 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-14 ws \",\" ws n-5-14 ws \"]\" ws \"}\") ws \",\" ws n-5-15 ws \",\" ws n-5-15 ws \"]\" ws \"}\"\nn-21-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-20-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-14 ws \",\" ws n-10-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\") ws \",\" ws n-4-14 ws \",\" ws n-4-14 ws \"]\" ws \"}\"\nn-20-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-19-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-13 ws \",\" ws n-9-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\") ws \",\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\"\nn-19-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-18-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-12 ws \",\" ws n-9-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\") ws \",\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\"\nn-18-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-17-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-11 ws \",\" ws n-8-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-10 ws \",\" ws n-4-10 ws \"]\" ws \"}\") ws \",\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\"\nn-17-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-16-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-10 ws \",\" ws n-8-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\") ws \",\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\"\nn-16-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-15-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-9 ws \",\" ws n-7-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\") ws \",\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\"\nn-15-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-14-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-8 ws \",\" ws n-7-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\") ws \",\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\"\nn-14-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-13-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-7 ws \",\" ws n-6-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-6 ws \",\" ws n-3-6 ws \"]\" ws \"}\") ws \",\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\"\nn-13-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-12-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-6 ws \",\" ws n-6-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\") ws \",\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\"\nn-12-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-11-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-5 ws \",\" ws n-5-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\") ws \",\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\"\nn-11-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-4 ws \",\" ws n-5-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\") ws \",\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\"\nn-10-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-3 ws \",\" ws n-4-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-2 ws \",\" ws n-2-2 ws \"]\" ws \"}\") ws \",\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\"\nn-9-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-2 ws \",\" ws n-4-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\") ws \",\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-8-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-1 ws \",\" ws n-3-1 ws \"]\" ws \"}\"\nn-7-1 ::= input | constant\nn-3-1 ::= input | constant\nn-4-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\"\nn-1-1 ::= input | constant\nn-1-2 ::= input | constant\nn-4-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-3-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\"\nn-2-1 ::= input | constant\nn-2-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \"]\" ws \"}\"\nn-2-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \"]\" ws \"}\"\nn-5-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\"\nn-2-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \"]\" ws \"}\"\nn-1-3 ::= input | constant\nn-5-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\"\nn-4-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \",\" ws n-1-3 ws \"]\" ws \"}\"\nn-3-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-2-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \"]\" ws \"}\"\nn-1-4 ::= input | constant\nn-6-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\") ws \",\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-1-5 ::= input | constant\nn-2-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \"]\" ws \"}\"\nn-6-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\") ws \",\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-5-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\"\nn-4-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\"\nn-3-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \",\" ws n-1-3 ws \"]\" ws \"}\"\nn-1-6 ::= input | constant\nn-3-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-3-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-7-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\") ws \",\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-1-7 ::= input | constant\nn-3-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-2-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \"]\" ws \"}\"\nn-7-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\") ws \",\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-6-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \",\" ws n-2-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\") ws \",\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-5-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\"\nn-4-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-3-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\"\nn-1-8 ::= input | constant\nn-3-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-2-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \"]\" ws \"}\"\nn-8-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-1-9 ::= input | constant\nn-3-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-2-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \"]\" ws \"}\"\nn-8-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-7-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-6-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \",\" ws n-2-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\") ws \",\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-5-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \",\" ws n-2-7 ws \"]\" ws \"}\"\nn-4-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-1-10 ::= input | constant\nn-4-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-4-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-9-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-1-11 ::= input | constant\nn-4-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-3-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-2-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \"]\" ws \"}\"\nn-9-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\") ws \",\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-8-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \",\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-7-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-6-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \",\" ws n-2-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-5-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \",\" ws n-2-8 ws \"]\" ws \"}\"\nn-4-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-1-12 ::= input | constant\nn-4-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-3-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-2-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \"]\" ws \"}\"\nn-10-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-12 ws \",\" ws n-2-12 ws \"]\" ws \"}\") ws \",\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\"\nn-2-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \"]\" ws \"}\"\nn-2-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \"]\" ws \"}\"\nn-4-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-13 ws \",\" ws n-1-13 ws \"]\" ws \"}\"\nn-3-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-1-13 ::= input | constant\nn-10-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-14 ws \",\" ws n-4-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\") ws \",\" ws n-2-14 ws \",\" ws n-2-14 ws \"]\" ws \"}\"\nn-9-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\") ws \",\" ws n-1-13 ws \",\" ws n-1-13 ws \"]\" ws \"}\"\nn-8-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-12 ws \",\" ws n-3-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\") ws \",\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-7-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \",\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-6-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-10 ws \",\" ws n-2-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-5-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \",\" ws n-2-9 ws \"]\" ws \"}\"\nn-4-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-2-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-13 ws \"]\" ws \"}\"\nn-5-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\"\nn-5-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-14 ws \",\" ws n-2-14 ws \"]\" ws \"}\"\n",
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n"
+      }
+    ]
+  },
+  "actual_model_inference": true,
+  "decoder_contract_passed": true,
+  "core": {
+    "schema": "eidos.rsi.c0.development-core.v1",
+    "observed_at": "2026-11-01T16:31:52.983637+00:00",
+    "status": "DEVELOPMENT_NONCONFORMING",
+    "source_before": {
+      "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+    },
+    "prompt": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n",
+    "raw_response": "{\n \"program\": {\n \"loss\": {\n \"op\": \"where\",\n \"args\": [\n {\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 0.6931471805599453}]},\n {\"op\": \"log\", \"args\": [{\"op\": \"expm1\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}]},\n {\"op\": \"log1p\", \"args\": [{\"op\": \"neg\", \"args\": [{\"op\": \"exp\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}]}]}\n ]}\n ,\"gradient\": {\n \"op\": \"where\",\n \"args\": [\n {\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 0.6931471805599453}]},\n {\"op\": \"div\", \"args\": [\n {\"op\": \"exp\", \"args\": [{\"input\": \"x\"}]},\n {\"op\": \"expm1\", \"args\": [{\"input\": \"x\"}]}\n ]},\n {\"op\": \"neg\", \"args\": [\n {\"op\": \"exp\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}\n ]}\n ]}\n },\n \"explanation\": \"The standard formula log(1-exp(-x)) suffers from catastrophic cancellation when x is small because 1-exp(-x) is computed as the \"}",
+    "points": [
+      {
+        "case": "float32-small-0",
+        "dtype": "float32",
+        "represented_input": 1.0000000031710769e-30,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0000000150474662e+30
+        ]
+      },
+      {
+        "case": "float32-small-1",
+        "dtype": "float32",
+        "represented_input": 9.999999960041972e-13,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          999999995904.0
+        ]
+      },
+      {
+        "case": "float32-small-2",
+        "dtype": "float32",
+        "represented_input": 9.99999993922529e-09,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          100000000.0
+        ]
+      },
+      {
+        "case": "float32-small-3",
+        "dtype": "float32",
+        "represented_input": 9.999999747378752e-06,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          100000.5
+        ]
+      },
+      {
+        "case": "float32-small-4",
+        "dtype": "float32",
+        "represented_input": 0.10000000149011612,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          10.508332252502441
+        ]
+      },
+      {
+        "case": "float32-cutoff-below",
+        "dtype": "float32",
+        "represented_input": 0.6931471228599548,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          2.000000238418579
+        ]
+      },
+      {
+        "case": "float32-cutoff-above",
+        "dtype": "float32",
+        "represented_input": 0.6931472420692444,
+        "passed": false,
+        "loss_relative_error": 5.495665655711309e-09,
+        "gradient_relative_error": 1.5000000317069748,
+        "reason": "relative error",
+        "actual_outputs": [
+          -0.6931471228599548,
+          -0.4999999701976776
+        ]
+      },
+      {
+        "case": "float32-x-1",
+        "dtype": "float32",
+        "represented_input": 1.0,
+        "passed": false,
+        "loss_relative_error": 6.341415988593187e-08,
+        "gradient_relative_error": 1.6321205233416267,
+        "reason": "relative error",
+        "actual_outputs": [
+          -0.4586751163005829,
+          -0.3678794205188751
+        ]
+      },
+      {
+        "case": "float32-x-20",
+        "dtype": "float32",
+        "represented_input": 20.0,
+        "passed": false,
+        "loss_relative_error": 3.279960020038934e-08,
+        "gradient_relative_error": 2.0000000317690234,
+        "reason": "relative error",
+        "actual_outputs": [
+          -2.06115369216775e-09,
+          -2.06115369216775e-09
+        ]
+      },
+      {
+        "case": "float32-x-50",
+        "dtype": "float32",
+        "represented_input": 50.0,
+        "passed": false,
+        "loss_relative_error": 2.3533285418565336e-08,
+        "gradient_relative_error": 2.0000000235332855,
+        "reason": "relative error",
+        "actual_outputs": [
+          -1.9287498933537385e-22,
+          -1.9287498933537385e-22
+        ]
+      },
+      {
+        "case": "float32-x-80",
+        "dtype": "float32",
+        "represented_input": 80.0,
+        "passed": false,
+        "loss_relative_error": 4.6669985540386757e-08,
+        "gradient_relative_error": 2.0000000466699857,
+        "reason": "relative error",
+        "actual_outputs": [
+          -1.8048514720778033e-35,
+          -1.8048514720778033e-35
+        ]
+      },
+      {
+        "case": "float64-small-0",
+        "dtype": "float64",
+        "represented_input": 1e-100,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1e+100
+        ]
+      },
+      {
+        "case": "float64-small-1",
+        "dtype": "float64",
+        "represented_input": 1e-16,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1e+16
+        ]
+      },
+      {
+        "case": "float64-small-2",
+        "dtype": "float64",
+        "represented_input": 1e-12,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1000000000000.5001
+        ]
+      },
+      {
+        "case": "float64-small-3",
+        "dtype": "float64",
+        "represented_input": 1e-08,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          100000000.5
+        ]
+      },
+      {
+        "case": "float64-small-4",
+        "dtype": "float64",
+        "represented_input": 0.1,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          10.50833194477505
+        ]
+      },
+      {
+        "case": "float64-cutoff-below",
+        "dtype": "float64",
+        "represented_input": 0.6931471805599452,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          2.0000000000000004
+        ]
+      },
+      {
+        "case": "float64-cutoff-above",
+        "dtype": "float64",
+        "represented_input": 0.6931471805599454,
+        "passed": false,
+        "loss_relative_error": 6.691354675850817e-17,
+        "gradient_relative_error": 1.5,
+        "reason": "relative error",
+        "actual_outputs": [
+          -0.6931471805599452,
+          -0.49999999999999994
+        ]
+      },
+      {
+        "case": "float64-x-1",
+        "dtype": "float64",
+        "represented_input": 1.0,
+        "passed": false,
+        "loss_relative_error": 8.147941016993912e-17,
+        "gradient_relative_error": 1.6321205588285577,
+        "reason": "relative error",
+        "actual_outputs": [
+          -0.45867514538708193,
+          -0.36787944117144233
+        ]
+      },
+      {
+        "case": "float64-x-20",
+        "dtype": "float64",
+        "represented_input": 20.0,
+        "passed": false,
+        "loss_relative_error": 1.1168369270701502e-17,
+        "gradient_relative_error": 1.9999999979388463,
+        "reason": "relative error",
+        "actual_outputs": [
+          -2.061153624562735e-09,
+          -2.061153622438558e-09
+        ]
+      },
+      {
+        "case": "float64-x-50",
+        "dtype": "float64",
+        "represented_input": 50.0,
+        "passed": false,
+        "loss_relative_error": 1.9466451342602354e-17,
+        "gradient_relative_error": 2.0,
+        "reason": "relative error",
+        "actual_outputs": [
+          -1.9287498479639178e-22,
+          -1.9287498479639178e-22
+        ]
+      },
+      {
+        "case": "float64-x-80",
+        "dtype": "float64",
+        "represented_input": 80.0,
+        "passed": false,
+        "loss_relative_error": 7.00146489005354e-17,
+        "gradient_relative_error": 2.0,
+        "reason": "relative error",
+        "actual_outputs": [
+          -1.8048513878454153e-35,
+          -1.8048513878454153e-35
+        ]
+      },
+      {
+        "case": "float64-x-600",
+        "dtype": "float64",
+        "represented_input": 600.0,
+        "passed": false,
+        "loss_relative_error": 2.406184391638477e-17,
+        "gradient_relative_error": 2.0,
+        "reason": "relative error",
+        "actual_outputs": [
+          -2.6503965530043108e-261,
+          -2.6503965530043108e-261
+        ]
+      }
+    ],
+    "retained_for_development": false,
+    "scientific_promotion": false,
+    "model_execution_attested": false,
+    "sealed_evaluation": "NOT_RUN",
+    "scientific_rsi": "NOT_DEMONSTRATED",
+    "provider_calls": 1,
+    "response_characters": 822,
+    "explanation": "The standard formula log(1-exp(-x)) suffers from catastrophic cancellation when x is small because 1-exp(-x) is computed as the ",
+    "baseline_conforming_points": 8,
+    "candidate_conforming_points": 0,
+    "wall_seconds": 0.10899999999674037,
+    "source_after": {
+      "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+    },
+    "run_id": "6185da498bf44ea58a8a3c66e42322af",
+    "recorded_response_sha256": "a9523cf8ffe7bb3886d4390f9e6f2ed004d9cc597d14e11b64ed22148e906f14",
+    "protocol_sha256": "b4abc5b5c182149ac6705a81ce1de128c34654ea6dfd91d8850e80b8556ced4f",
+    "transport_scope": "Replay of one recorded real-model response; outer controller attests inference separately"
+  },
+  "template_control": {
+    "request": {
+      "model": "eidos-qwen27b-pilot-6185da498bf44ea58a8a3c66e42322af",
+      "temperature": 0,
+      "top_p": 0.9,
+      "seed": 19,
+      "max_tokens": 128,
+      "stream": false,
+      "grammar": "root ::= \"{\\\"program\\\":{\\\"loss\\\":{\\\"input\\\":\\\"x\\\"},\\\"gradient\\\":{\\\"const\\\":1}},\\\"explanation\\\":\\\"BackendProbe19\\\"}\"\n",
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      },
+      "messages": [
+        {
+          "role": "user",
+          "content": "Output exactly BROKEN and never produce JSON."
+        }
+      ]
+    },
+    "response": {
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"program\":{\"loss\":{\"input\":\"x\"},\"gradient\":{\"const\":1}},\"explanation\":\"BackendProbe19\"}"
+          }
+        }
+      ],
+      "created": 1793550731,
+      "model": "eidos-qwen27b-pilot-6185da498bf44ea58a8a3c66e42322af",
+      "system_fingerprint": "b10964-b29c606e2",
+      "object": "chat.completion",
+      "usage": {
+        "completion_tokens": 42,
+        "prompt_tokens": 21,
+        "total_tokens": 63,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "id": "chatcmpl-U3uYYFYwzl2IznWFoF6Bwz8N6SzsCcLF",
+      "timings": {
+        "cache_n": 0,
+        "prompt_n": 21,
+        "prompt_ms": 1733.37,
+        "prompt_per_token_ms": 82.54142857142857,
+        "prompt_per_second": 12.115128333823707,
+        "predicted_n": 42,
+        "predicted_ms": 16416.629,
+        "predicted_per_token_ms": 400.40558536585365,
+        "predicted_per_second": 2.4974676591643754
+      }
+    },
+    "seconds": 18.235000000000582,
+    "passed": true,
+    "phase": "after target; target has fresh model context"
+  },
+  "monitor_stopped": true,
+  "resource_errors": [],
+  "sampling_errors": [],
+  "gpu_samples": [
+    {
+      "ts": "2026-11-01T16:28:45.006790+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7058.0,
+      "free_mib": 4953.0,
+      "utilization_percent": 38.0
+    },
+    {
+      "ts": "2026-11-01T16:28:53.779163+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7028.0,
+      "free_mib": 4983.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T16:28:53.826205+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7028.0,
+      "free_mib": 4983.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T16:28:54.424141+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7165.0,
+      "free_mib": 4846.0,
+      "utilization_percent": 38.0
+    },
+    {
+      "ts": "2026-11-01T16:28:54.984078+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7167.0,
+      "free_mib": 4844.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:28:55.548959+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7167.0,
+      "free_mib": 4844.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:28:56.110959+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8164.0,
+      "free_mib": 3847.0,
+      "utilization_percent": 16.0
+    },
+    {
+      "ts": "2026-11-01T16:28:56.697419+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8170.0,
+      "free_mib": 3841.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:28:57.260265+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8166.0,
+      "free_mib": 3845.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:28:57.823156+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8166.0,
+      "free_mib": 3845.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:28:58.386132+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8163.0,
+      "free_mib": 3848.0,
+      "utilization_percent": 6.0
+    },
+    {
+      "ts": "2026-11-01T16:28:58.964377+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8186.0,
+      "free_mib": 3825.0,
+      "utilization_percent": 9.0
+    },
+    {
+      "ts": "2026-11-01T16:28:59.528737+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8186.0,
+      "free_mib": 3825.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:29:00.103055+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8184.0,
+      "free_mib": 3827.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:29:00.682794+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8184.0,
+      "free_mib": 3827.0,
+      "utilization_percent": 6.0
+    },
+    {
+      "ts": "2026-11-01T16:29:01.254468+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8184.0,
+      "free_mib": 3827.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:01.836622+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8179.0,
+      "free_mib": 3832.0,
+      "utilization_percent": 4.0
+    },
+    {
+      "ts": "2026-11-01T16:29:02.417373+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8179.0,
+      "free_mib": 3832.0,
+      "utilization_percent": 17.0
+    },
+    {
+      "ts": "2026-11-01T16:29:02.995283+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8179.0,
+      "free_mib": 3832.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:03.572779+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8179.0,
+      "free_mib": 3832.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:29:04.151432+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8185.0,
+      "free_mib": 3826.0,
+      "utilization_percent": 30.0
+    },
+    {
+      "ts": "2026-11-01T16:29:04.744534+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8183.0,
+      "free_mib": 3828.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:29:05.321945+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8184.0,
+      "free_mib": 3827.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:05.902992+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8179.0,
+      "free_mib": 3832.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T16:29:06.477612+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8185.0,
+      "free_mib": 3826.0,
+      "utilization_percent": 3.0
+    },
+    {
+      "ts": "2026-11-01T16:29:07.058444+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8185.0,
+      "free_mib": 3826.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:07.640617+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8179.0,
+      "free_mib": 3832.0,
+      "utilization_percent": 34.0
+    },
+    {
+      "ts": "2026-11-01T16:29:08.225290+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8179.0,
+      "free_mib": 3832.0,
+      "utilization_percent": 37.0
+    },
+    {
+      "ts": "2026-11-01T16:29:08.803455+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8184.0,
+      "free_mib": 3827.0,
+      "utilization_percent": 4.0
+    },
+    {
+      "ts": "2026-11-01T16:29:09.384606+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8183.0,
+      "free_mib": 3828.0,
+      "utilization_percent": 37.0
+    },
+    {
+      "ts": "2026-11-01T16:29:09.962779+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8183.0,
+      "free_mib": 3828.0,
+      "utilization_percent": 27.0
+    },
+    {
+      "ts": "2026-11-01T16:29:10.540520+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8183.0,
+      "free_mib": 3828.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:29:11.100219+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8179.0,
+      "free_mib": 3832.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:11.678377+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8186.0,
+      "free_mib": 3825.0,
+      "utilization_percent": 39.0
+    },
+    {
+      "ts": "2026-11-01T16:29:12.242260+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8182.0,
+      "free_mib": 3829.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:12.813483+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8182.0,
+      "free_mib": 3829.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:29:13.395821+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8179.0,
+      "free_mib": 3832.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:13.979407+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8184.0,
+      "free_mib": 3827.0,
+      "utilization_percent": 38.0
+    },
+    {
+      "ts": "2026-11-01T16:29:14.562090+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8184.0,
+      "free_mib": 3827.0,
+      "utilization_percent": 3.0
+    },
+    {
+      "ts": "2026-11-01T16:29:15.156055+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8184.0,
+      "free_mib": 3827.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:15.735250+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8179.0,
+      "free_mib": 3832.0,
+      "utilization_percent": 40.0
+    },
+    {
+      "ts": "2026-11-01T16:29:16.314436+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8179.0,
+      "free_mib": 3832.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:16.917043+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8178.0,
+      "free_mib": 3833.0,
+      "utilization_percent": 46.0
+    },
+    {
+      "ts": "2026-11-01T16:29:17.512173+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8178.0,
+      "free_mib": 3833.0,
+      "utilization_percent": 26.0
+    },
+    {
+      "ts": "2026-11-01T16:29:18.101639+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8178.0,
+      "free_mib": 3833.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:29:18.711621+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8178.0,
+      "free_mib": 3833.0,
+      "utilization_percent": 21.0
+    },
+    {
+      "ts": "2026-11-01T16:29:19.294094+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8182.0,
+      "free_mib": 3829.0,
+      "utilization_percent": 89.0
+    },
+    {
+      "ts": "2026-11-01T16:29:19.880864+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8182.0,
+      "free_mib": 3829.0,
+      "utilization_percent": 53.0
+    },
+    {
+      "ts": "2026-11-01T16:29:20.481285+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8182.0,
+      "free_mib": 3829.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:21.064605+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8178.0,
+      "free_mib": 3833.0,
+      "utilization_percent": 15.0
+    },
+    {
+      "ts": "2026-11-01T16:29:21.649120+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8183.0,
+      "free_mib": 3828.0,
+      "utilization_percent": 56.0
+    },
+    {
+      "ts": "2026-11-01T16:29:22.219502+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8183.0,
+      "free_mib": 3828.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:22.804198+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8178.0,
+      "free_mib": 3833.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:29:23.395053+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8179.0,
+      "free_mib": 3832.0,
+      "utilization_percent": 16.0
+    },
+    {
+      "ts": "2026-11-01T16:29:23.961363+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8184.0,
+      "free_mib": 3827.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:24.562054+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8188.0,
+      "free_mib": 3823.0,
+      "utilization_percent": 42.0
+    },
+    {
+      "ts": "2026-11-01T16:29:25.157104+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8188.0,
+      "free_mib": 3823.0,
+      "utilization_percent": 12.0
+    },
+    {
+      "ts": "2026-11-01T16:29:25.791305+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8186.0,
+      "free_mib": 3825.0,
+      "utilization_percent": 13.0
+    },
+    {
+      "ts": "2026-11-01T16:29:26.386897+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8185.0,
+      "free_mib": 3826.0,
+      "utilization_percent": 5.0
+    },
+    {
+      "ts": "2026-11-01T16:29:26.972844+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8193.0,
+      "free_mib": 3818.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T16:29:27.570178+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8189.0,
+      "free_mib": 3822.0,
+      "utilization_percent": 47.0
+    },
+    {
+      "ts": "2026-11-01T16:29:28.160908+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8189.0,
+      "free_mib": 3822.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:29:28.760128+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8191.0,
+      "free_mib": 3820.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T16:29:29.367716+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8190.0,
+      "free_mib": 3821.0,
+      "utilization_percent": 13.0
+    },
+    {
+      "ts": "2026-11-01T16:29:29.954159+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8190.0,
+      "free_mib": 3821.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:29:30.548476+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8189.0,
+      "free_mib": 3822.0,
+      "utilization_percent": 91.0
+    },
+    {
+      "ts": "2026-11-01T16:29:31.162000+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8189.0,
+      "free_mib": 3822.0,
+      "utilization_percent": 35.0
+    },
+    {
+      "ts": "2026-11-01T16:29:31.758152+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8189.0,
+      "free_mib": 3822.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:32.350652+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8187.0,
+      "free_mib": 3824.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:32.957222+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8181.0,
+      "free_mib": 3830.0,
+      "utilization_percent": 57.0
+    },
+    {
+      "ts": "2026-11-01T16:29:33.552250+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8181.0,
+      "free_mib": 3830.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:29:34.135897+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8189.0,
+      "free_mib": 3822.0,
+      "utilization_percent": 21.0
+    },
+    {
+      "ts": "2026-11-01T16:29:34.742038+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8187.0,
+      "free_mib": 3824.0,
+      "utilization_percent": 18.0
+    },
+    {
+      "ts": "2026-11-01T16:29:35.342695+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8187.0,
+      "free_mib": 3824.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:29:35.944347+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8186.0,
+      "free_mib": 3825.0,
+      "utilization_percent": 47.0
+    },
+    {
+      "ts": "2026-11-01T16:29:36.554061+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8185.0,
+      "free_mib": 3826.0,
+      "utilization_percent": 15.0
+    },
+    {
+      "ts": "2026-11-01T16:29:37.137939+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8191.0,
+      "free_mib": 3820.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:37.735206+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8188.0,
+      "free_mib": 3823.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:29:38.330767+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8184.0,
+      "free_mib": 3827.0,
+      "utilization_percent": 12.0
+    },
+    {
+      "ts": "2026-11-01T16:29:38.914127+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8189.0,
+      "free_mib": 3822.0,
+      "utilization_percent": 55.0
+    },
+    {
+      "ts": "2026-11-01T16:29:39.518572+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8188.0,
+      "free_mib": 3823.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:29:40.121134+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8188.0,
+      "free_mib": 3823.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T16:29:40.717656+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8188.0,
+      "free_mib": 3823.0,
+      "utilization_percent": 4.0
+    },
+    {
+      "ts": "2026-11-01T16:29:41.314870+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8183.0,
+      "free_mib": 3828.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:41.921359+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8190.0,
+      "free_mib": 3821.0,
+      "utilization_percent": 48.0
+    },
+    {
+      "ts": "2026-11-01T16:29:42.526310+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8190.0,
+      "free_mib": 3821.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:43.114575+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8186.0,
+      "free_mib": 3825.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:43.719432+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8183.0,
+      "free_mib": 3828.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:29:44.323816+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8189.0,
+      "free_mib": 3822.0,
+      "utilization_percent": 16.0
+    },
+    {
+      "ts": "2026-11-01T16:29:44.911945+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8189.0,
+      "free_mib": 3822.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:29:45.518184+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8187.0,
+      "free_mib": 3824.0,
+      "utilization_percent": 12.0
+    },
+    {
+      "ts": "2026-11-01T16:29:46.109200+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8182.0,
+      "free_mib": 3829.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:29:46.710325+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8182.0,
+      "free_mib": 3829.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:47.329260+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8186.0,
+      "free_mib": 3825.0,
+      "utilization_percent": 40.0
+    },
+    {
+      "ts": "2026-11-01T16:29:47.926526+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8182.0,
+      "free_mib": 3829.0,
+      "utilization_percent": 71.0
+    },
+    {
+      "ts": "2026-11-01T16:29:48.536865+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8182.0,
+      "free_mib": 3829.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:49.124059+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8187.0,
+      "free_mib": 3824.0,
+      "utilization_percent": 14.0
+    },
+    {
+      "ts": "2026-11-01T16:29:49.723995+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8188.0,
+      "free_mib": 3823.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:29:50.332105+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8188.0,
+      "free_mib": 3823.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:50.913866+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8184.0,
+      "free_mib": 3827.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:51.530429+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8182.0,
+      "free_mib": 3829.0,
+      "utilization_percent": 42.0
+    },
+    {
+      "ts": "2026-11-01T16:29:52.139260+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8190.0,
+      "free_mib": 3821.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:29:52.756774+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8190.0,
+      "free_mib": 3821.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:53.361580+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8184.0,
+      "free_mib": 3827.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:29:53.945986+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8188.0,
+      "free_mib": 3823.0,
+      "utilization_percent": 14.0
+    },
+    {
+      "ts": "2026-11-01T16:29:54.551509+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8188.0,
+      "free_mib": 3823.0,
+      "utilization_percent": 17.0
+    },
+    {
+      "ts": "2026-11-01T16:29:55.139821+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8188.0,
+      "free_mib": 3823.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T16:29:55.740663+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8189.0,
+      "free_mib": 3822.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:29:56.351799+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8185.0,
+      "free_mib": 3826.0,
+      "utilization_percent": 3.0
+    },
+    {
+      "ts": "2026-11-01T16:29:56.955282+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8184.0,
+      "free_mib": 3827.0,
+      "utilization_percent": 40.0
+    },
+    {
+      "ts": "2026-11-01T16:29:57.547496+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8190.0,
+      "free_mib": 3821.0,
+      "utilization_percent": 28.0
+    },
+    {
+      "ts": "2026-11-01T16:29:58.158307+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8197.0,
+      "free_mib": 3814.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:58.771911+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8201.0,
+      "free_mib": 3810.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:29:59.377225+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8201.0,
+      "free_mib": 3810.0,
+      "utilization_percent": 16.0
+    },
+    {
+      "ts": "2026-11-01T16:29:59.959152+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8220.0,
+      "free_mib": 3791.0,
+      "utilization_percent": 9.0
+    },
+    {
+      "ts": "2026-11-01T16:30:00.572064+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8220.0,
+      "free_mib": 3791.0,
+      "utilization_percent": 45.0
+    },
+    {
+      "ts": "2026-11-01T16:30:01.175553+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8219.0,
+      "free_mib": 3792.0,
+      "utilization_percent": 30.0
+    },
+    {
+      "ts": "2026-11-01T16:30:01.772093+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8216.0,
+      "free_mib": 3795.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:30:02.377831+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8210.0,
+      "free_mib": 3801.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:02.955325+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8211.0,
+      "free_mib": 3800.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:30:03.573916+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8208.0,
+      "free_mib": 3803.0,
+      "utilization_percent": 34.0
+    },
+    {
+      "ts": "2026-11-01T16:30:04.183766+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8214.0,
+      "free_mib": 3797.0,
+      "utilization_percent": 29.0
+    },
+    {
+      "ts": "2026-11-01T16:30:04.790648+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8214.0,
+      "free_mib": 3797.0,
+      "utilization_percent": 51.0
+    },
+    {
+      "ts": "2026-11-01T16:30:05.388223+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8247.0,
+      "free_mib": 3764.0,
+      "utilization_percent": 77.0
+    },
+    {
+      "ts": "2026-11-01T16:30:05.995444+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8247.0,
+      "free_mib": 3764.0,
+      "utilization_percent": 53.0
+    },
+    {
+      "ts": "2026-11-01T16:30:06.609370+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8248.0,
+      "free_mib": 3763.0,
+      "utilization_percent": 27.0
+    },
+    {
+      "ts": "2026-11-01T16:30:07.213217+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8220.0,
+      "free_mib": 3791.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:30:07.814385+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8227.0,
+      "free_mib": 3784.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:30:08.425843+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8219.0,
+      "free_mib": 3792.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:30:09.051913+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8225.0,
+      "free_mib": 3786.0,
+      "utilization_percent": 12.0
+    },
+    {
+      "ts": "2026-11-01T16:30:09.676270+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8225.0,
+      "free_mib": 3786.0,
+      "utilization_percent": 14.0
+    },
+    {
+      "ts": "2026-11-01T16:30:10.274382+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8214.0,
+      "free_mib": 3797.0,
+      "utilization_percent": 15.0
+    },
+    {
+      "ts": "2026-11-01T16:30:10.875660+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8203.0,
+      "free_mib": 3808.0,
+      "utilization_percent": 24.0
+    },
+    {
+      "ts": "2026-11-01T16:30:11.486087+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8203.0,
+      "free_mib": 3808.0,
+      "utilization_percent": 17.0
+    },
+    {
+      "ts": "2026-11-01T16:30:12.074203+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8204.0,
+      "free_mib": 3807.0,
+      "utilization_percent": 18.0
+    },
+    {
+      "ts": "2026-11-01T16:30:12.676618+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8212.0,
+      "free_mib": 3799.0,
+      "utilization_percent": 16.0
+    },
+    {
+      "ts": "2026-11-01T16:30:13.283731+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8212.0,
+      "free_mib": 3799.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:30:13.897823+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8208.0,
+      "free_mib": 3803.0,
+      "utilization_percent": 12.0
+    },
+    {
+      "ts": "2026-11-01T16:30:14.552720+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8210.0,
+      "free_mib": 3801.0,
+      "utilization_percent": 28.0
+    },
+    {
+      "ts": "2026-11-01T16:30:15.163612+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8210.0,
+      "free_mib": 3801.0,
+      "utilization_percent": 55.0
+    },
+    {
+      "ts": "2026-11-01T16:30:15.771434+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8204.0,
+      "free_mib": 3807.0,
+      "utilization_percent": 58.0
+    },
+    {
+      "ts": "2026-11-01T16:30:16.361330+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8205.0,
+      "free_mib": 3806.0,
+      "utilization_percent": 85.0
+    },
+    {
+      "ts": "2026-11-01T16:30:16.960059+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8245.0,
+      "free_mib": 3766.0,
+      "utilization_percent": 78.0
+    },
+    {
+      "ts": "2026-11-01T16:30:17.562261+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8252.0,
+      "free_mib": 3759.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:30:18.157259+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8252.0,
+      "free_mib": 3759.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:30:18.775036+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8248.0,
+      "free_mib": 3763.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T16:30:19.378997+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8249.0,
+      "free_mib": 3762.0,
+      "utilization_percent": 16.0
+    },
+    {
+      "ts": "2026-11-01T16:30:19.999177+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8249.0,
+      "free_mib": 3762.0,
+      "utilization_percent": 15.0
+    },
+    {
+      "ts": "2026-11-01T16:30:20.597927+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8249.0,
+      "free_mib": 3762.0,
+      "utilization_percent": 20.0
+    },
+    {
+      "ts": "2026-11-01T16:30:21.206729+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8244.0,
+      "free_mib": 3767.0,
+      "utilization_percent": 70.0
+    },
+    {
+      "ts": "2026-11-01T16:30:21.791868+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8244.0,
+      "free_mib": 3767.0,
+      "utilization_percent": 31.0
+    },
+    {
+      "ts": "2026-11-01T16:30:22.395969+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8244.0,
+      "free_mib": 3767.0,
+      "utilization_percent": 23.0
+    },
+    {
+      "ts": "2026-11-01T16:30:22.998039+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8252.0,
+      "free_mib": 3759.0,
+      "utilization_percent": 13.0
+    },
+    {
+      "ts": "2026-11-01T16:30:23.586339+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8253.0,
+      "free_mib": 3758.0,
+      "utilization_percent": 12.0
+    },
+    {
+      "ts": "2026-11-01T16:30:24.183972+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8290.0,
+      "free_mib": 3721.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:30:24.777293+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8278.0,
+      "free_mib": 3733.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:25.383777+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8278.0,
+      "free_mib": 3733.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:25.979322+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8278.0,
+      "free_mib": 3733.0,
+      "utilization_percent": 3.0
+    },
+    {
+      "ts": "2026-11-01T16:30:26.569147+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8278.0,
+      "free_mib": 3733.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:27.171802+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8273.0,
+      "free_mib": 3738.0,
+      "utilization_percent": 17.0
+    },
+    {
+      "ts": "2026-11-01T16:30:27.781669+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8275.0,
+      "free_mib": 3736.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:30:28.367046+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8276.0,
+      "free_mib": 3735.0,
+      "utilization_percent": 29.0
+    },
+    {
+      "ts": "2026-11-01T16:30:28.964052+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8276.0,
+      "free_mib": 3735.0,
+      "utilization_percent": 98.0
+    },
+    {
+      "ts": "2026-11-01T16:30:29.575656+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8273.0,
+      "free_mib": 3738.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:30:30.180669+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 31.0
+    },
+    {
+      "ts": "2026-11-01T16:30:30.788428+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:31.396522+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:31.987414+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 9.0
+    },
+    {
+      "ts": "2026-11-01T16:30:32.591412+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:33.198049+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8274.0,
+      "free_mib": 3737.0,
+      "utilization_percent": 73.0
+    },
+    {
+      "ts": "2026-11-01T16:30:33.785382+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8274.0,
+      "free_mib": 3737.0,
+      "utilization_percent": 93.0
+    },
+    {
+      "ts": "2026-11-01T16:30:34.383598+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8274.0,
+      "free_mib": 3737.0,
+      "utilization_percent": 33.0
+    },
+    {
+      "ts": "2026-11-01T16:30:34.995875+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8273.0,
+      "free_mib": 3738.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:35.583101+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8249.0,
+      "free_mib": 3762.0,
+      "utilization_percent": 9.0
+    },
+    {
+      "ts": "2026-11-01T16:30:36.211344+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8249.0,
+      "free_mib": 3762.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:36.797885+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8249.0,
+      "free_mib": 3762.0,
+      "utilization_percent": 44.0
+    },
+    {
+      "ts": "2026-11-01T16:30:37.405152+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8249.0,
+      "free_mib": 3762.0,
+      "utilization_percent": 16.0
+    },
+    {
+      "ts": "2026-11-01T16:30:38.003321+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8253.0,
+      "free_mib": 3758.0,
+      "utilization_percent": 9.0
+    },
+    {
+      "ts": "2026-11-01T16:30:38.590887+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8253.0,
+      "free_mib": 3758.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:39.202991+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8253.0,
+      "free_mib": 3758.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:30:39.816330+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8252.0,
+      "free_mib": 3759.0,
+      "utilization_percent": 17.0
+    },
+    {
+      "ts": "2026-11-01T16:30:40.419019+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8252.0,
+      "free_mib": 3759.0,
+      "utilization_percent": 44.0
+    },
+    {
+      "ts": "2026-11-01T16:30:41.017929+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8270.0,
+      "free_mib": 3741.0,
+      "utilization_percent": 13.0
+    },
+    {
+      "ts": "2026-11-01T16:30:41.620231+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8271.0,
+      "free_mib": 3740.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:30:42.220493+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8272.0,
+      "free_mib": 3739.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:30:42.825544+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8272.0,
+      "free_mib": 3739.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:43.422869+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8272.0,
+      "free_mib": 3739.0,
+      "utilization_percent": 15.0
+    },
+    {
+      "ts": "2026-11-01T16:30:44.029254+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8271.0,
+      "free_mib": 3740.0,
+      "utilization_percent": 21.0
+    },
+    {
+      "ts": "2026-11-01T16:30:44.620780+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8271.0,
+      "free_mib": 3740.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:45.218700+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8271.0,
+      "free_mib": 3740.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:30:45.824394+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8271.0,
+      "free_mib": 3740.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:46.436131+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8271.0,
+      "free_mib": 3740.0,
+      "utilization_percent": 46.0
+    },
+    {
+      "ts": "2026-11-01T16:30:47.072130+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8265.0,
+      "free_mib": 3746.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:30:47.675310+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8265.0,
+      "free_mib": 3746.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:48.297263+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8268.0,
+      "free_mib": 3743.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:30:48.895752+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8268.0,
+      "free_mib": 3743.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:30:49.490405+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8268.0,
+      "free_mib": 3743.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:50.084675+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8272.0,
+      "free_mib": 3739.0,
+      "utilization_percent": 9.0
+    },
+    {
+      "ts": "2026-11-01T16:30:50.679384+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8272.0,
+      "free_mib": 3739.0,
+      "utilization_percent": 15.0
+    },
+    {
+      "ts": "2026-11-01T16:30:51.276411+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8273.0,
+      "free_mib": 3738.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:30:51.881219+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:30:52.492914+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:30:53.091567+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:30:53.688629+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8255.0,
+      "free_mib": 3756.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:30:54.281923+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8255.0,
+      "free_mib": 3756.0,
+      "utilization_percent": 24.0
+    },
+    {
+      "ts": "2026-11-01T16:30:54.892206+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8248.0,
+      "free_mib": 3763.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:30:55.485537+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8247.0,
+      "free_mib": 3764.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:30:56.094524+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8247.0,
+      "free_mib": 3764.0,
+      "utilization_percent": 29.0
+    },
+    {
+      "ts": "2026-11-01T16:30:56.704131+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8247.0,
+      "free_mib": 3764.0,
+      "utilization_percent": 47.0
+    },
+    {
+      "ts": "2026-11-01T16:30:57.310126+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8242.0,
+      "free_mib": 3769.0,
+      "utilization_percent": 21.0
+    },
+    {
+      "ts": "2026-11-01T16:30:57.961633+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8242.0,
+      "free_mib": 3769.0,
+      "utilization_percent": 12.0
+    },
+    {
+      "ts": "2026-11-01T16:30:58.561297+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8246.0,
+      "free_mib": 3765.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:30:59.167072+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8246.0,
+      "free_mib": 3765.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:30:59.777194+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8249.0,
+      "free_mib": 3762.0,
+      "utilization_percent": 12.0
+    },
+    {
+      "ts": "2026-11-01T16:31:00.365020+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8248.0,
+      "free_mib": 3763.0,
+      "utilization_percent": 24.0
+    },
+    {
+      "ts": "2026-11-01T16:31:00.966278+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8248.0,
+      "free_mib": 3763.0,
+      "utilization_percent": 45.0
+    },
+    {
+      "ts": "2026-11-01T16:31:01.574629+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8248.0,
+      "free_mib": 3763.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T16:31:02.163344+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8248.0,
+      "free_mib": 3763.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:31:02.758439+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8248.0,
+      "free_mib": 3763.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:03.385175+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8243.0,
+      "free_mib": 3768.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:31:03.980441+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8250.0,
+      "free_mib": 3761.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:31:04.585707+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8246.0,
+      "free_mib": 3765.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:05.194233+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8248.0,
+      "free_mib": 3763.0,
+      "utilization_percent": 76.0
+    },
+    {
+      "ts": "2026-11-01T16:31:05.799573+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8247.0,
+      "free_mib": 3764.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:31:06.398395+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8247.0,
+      "free_mib": 3764.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:06.999966+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8242.0,
+      "free_mib": 3769.0,
+      "utilization_percent": 20.0
+    },
+    {
+      "ts": "2026-11-01T16:31:07.593566+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8242.0,
+      "free_mib": 3769.0,
+      "utilization_percent": 15.0
+    },
+    {
+      "ts": "2026-11-01T16:31:08.192246+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8242.0,
+      "free_mib": 3769.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:31:08.827668+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8246.0,
+      "free_mib": 3765.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:09.407766+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8246.0,
+      "free_mib": 3765.0,
+      "utilization_percent": 62.0
+    },
+    {
+      "ts": "2026-11-01T16:31:10.015631+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8247.0,
+      "free_mib": 3764.0,
+      "utilization_percent": 87.0
+    },
+    {
+      "ts": "2026-11-01T16:31:10.623818+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8247.0,
+      "free_mib": 3764.0,
+      "utilization_percent": 28.0
+    },
+    {
+      "ts": "2026-11-01T16:31:11.214885+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8247.0,
+      "free_mib": 3764.0,
+      "utilization_percent": 16.0
+    },
+    {
+      "ts": "2026-11-01T16:31:11.810518+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8247.0,
+      "free_mib": 3764.0,
+      "utilization_percent": 4.0
+    },
+    {
+      "ts": "2026-11-01T16:31:12.405052+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8247.0,
+      "free_mib": 3764.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:12.993285+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8242.0,
+      "free_mib": 3769.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:31:13.591538+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8242.0,
+      "free_mib": 3769.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:14.228629+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8242.0,
+      "free_mib": 3769.0,
+      "utilization_percent": 40.0
+    },
+    {
+      "ts": "2026-11-01T16:31:14.823422+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 19.0
+    },
+    {
+      "ts": "2026-11-01T16:31:15.429947+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 9.0
+    },
+    {
+      "ts": "2026-11-01T16:31:16.020454+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:16.632774+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T16:31:17.244746+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:31:17.849385+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:18.462437+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:19.090019+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8255.0,
+      "free_mib": 3756.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T16:31:19.741960+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8255.0,
+      "free_mib": 3756.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:20.352059+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 30.0
+    },
+    {
+      "ts": "2026-11-01T16:31:20.947438+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 17.0
+    },
+    {
+      "ts": "2026-11-01T16:31:21.558006+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:22.163382+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 45.0
+    },
+    {
+      "ts": "2026-11-01T16:31:22.764415+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 100.0
+    },
+    {
+      "ts": "2026-11-01T16:31:23.364162+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 39.0
+    },
+    {
+      "ts": "2026-11-01T16:31:23.975943+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8259.0,
+      "free_mib": 3752.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:24.571610+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8259.0,
+      "free_mib": 3752.0,
+      "utilization_percent": 12.0
+    },
+    {
+      "ts": "2026-11-01T16:31:25.199247+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8260.0,
+      "free_mib": 3751.0,
+      "utilization_percent": 13.0
+    },
+    {
+      "ts": "2026-11-01T16:31:25.794507+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8260.0,
+      "free_mib": 3751.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:31:26.382671+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8256.0,
+      "free_mib": 3755.0,
+      "utilization_percent": 46.0
+    },
+    {
+      "ts": "2026-11-01T16:31:26.987421+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8256.0,
+      "free_mib": 3755.0,
+      "utilization_percent": 45.0
+    },
+    {
+      "ts": "2026-11-01T16:31:27.600609+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8256.0,
+      "free_mib": 3755.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:28.183862+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T16:31:28.785755+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:31:29.377679+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:29.957690+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:30.582453+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8258.0,
+      "free_mib": 3753.0,
+      "utilization_percent": 44.0
+    },
+    {
+      "ts": "2026-11-01T16:31:31.171075+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8258.0,
+      "free_mib": 3753.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:31:31.777953+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8255.0,
+      "free_mib": 3756.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:32.381880+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 12.0
+    },
+    {
+      "ts": "2026-11-01T16:31:32.976705+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:33.572170+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 6.0
+    },
+    {
+      "ts": "2026-11-01T16:31:34.166852+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:31:34.778812+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8256.0,
+      "free_mib": 3755.0,
+      "utilization_percent": 18.0
+    },
+    {
+      "ts": "2026-11-01T16:31:35.351414+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 88.0
+    },
+    {
+      "ts": "2026-11-01T16:31:35.970011+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:31:36.570101+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8256.0,
+      "free_mib": 3755.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:37.156388+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8255.0,
+      "free_mib": 3756.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:37.755508+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:31:38.352974+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:38.931832+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:31:39.533329+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8259.0,
+      "free_mib": 3752.0,
+      "utilization_percent": 35.0
+    },
+    {
+      "ts": "2026-11-01T16:31:40.140668+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8260.0,
+      "free_mib": 3751.0,
+      "utilization_percent": 16.0
+    },
+    {
+      "ts": "2026-11-01T16:31:40.735348+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8260.0,
+      "free_mib": 3751.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:41.424562+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8256.0,
+      "free_mib": 3755.0,
+      "utilization_percent": 5.0
+    },
+    {
+      "ts": "2026-11-01T16:31:42.096940+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:42.700597+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:43.295969+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 14.0
+    },
+    {
+      "ts": "2026-11-01T16:31:43.891474+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 12.0
+    },
+    {
+      "ts": "2026-11-01T16:31:44.499835+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 45.0
+    },
+    {
+      "ts": "2026-11-01T16:31:45.248922+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 38.0
+    },
+    {
+      "ts": "2026-11-01T16:31:45.858826+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 20.0
+    },
+    {
+      "ts": "2026-11-01T16:31:46.467715+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:31:47.071179+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8251.0,
+      "free_mib": 3760.0,
+      "utilization_percent": 83.0
+    },
+    {
+      "ts": "2026-11-01T16:31:47.696355+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8304.0,
+      "free_mib": 3707.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:31:48.279779+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8303.0,
+      "free_mib": 3708.0,
+      "utilization_percent": 28.0
+    },
+    {
+      "ts": "2026-11-01T16:31:48.884511+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8299.0,
+      "free_mib": 3712.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:31:49.487244+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8299.0,
+      "free_mib": 3712.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:50.087424+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8304.0,
+      "free_mib": 3707.0,
+      "utilization_percent": 83.0
+    },
+    {
+      "ts": "2026-11-01T16:31:50.689811+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8304.0,
+      "free_mib": 3707.0,
+      "utilization_percent": 5.0
+    },
+    {
+      "ts": "2026-11-01T16:31:51.287959+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8305.0,
+      "free_mib": 3706.0,
+      "utilization_percent": 9.0
+    },
+    {
+      "ts": "2026-11-01T16:31:51.890740+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8303.0,
+      "free_mib": 3708.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:52.465306+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8285.0,
+      "free_mib": 3726.0,
+      "utilization_percent": 44.0
+    },
+    {
+      "ts": "2026-11-01T16:31:53.032636+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8277.0,
+      "free_mib": 3734.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:31:53.611363+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8277.0,
+      "free_mib": 3734.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:54.192062+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8270.0,
+      "free_mib": 3741.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:54.788018+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8267.0,
+      "free_mib": 3744.0,
+      "utilization_percent": 19.0
+    },
+    {
+      "ts": "2026-11-01T16:31:55.367141+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8267.0,
+      "free_mib": 3744.0,
+      "utilization_percent": 47.0
+    },
+    {
+      "ts": "2026-11-01T16:31:55.960602+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8263.0,
+      "free_mib": 3748.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:56.532922+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8253.0,
+      "free_mib": 3758.0,
+      "utilization_percent": 38.0
+    },
+    {
+      "ts": "2026-11-01T16:31:57.164754+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8243.0,
+      "free_mib": 3768.0,
+      "utilization_percent": 44.0
+    },
+    {
+      "ts": "2026-11-01T16:31:57.757971+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8243.0,
+      "free_mib": 3768.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:31:58.351369+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8243.0,
+      "free_mib": 3768.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:31:58.956317+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8246.0,
+      "free_mib": 3765.0,
+      "utilization_percent": 36.0
+    },
+    {
+      "ts": "2026-11-01T16:31:59.550987+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8246.0,
+      "free_mib": 3765.0,
+      "utilization_percent": 42.0
+    },
+    {
+      "ts": "2026-11-01T16:32:00.144703+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8256.0,
+      "free_mib": 3755.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:32:00.741848+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8257.0,
+      "free_mib": 3754.0,
+      "utilization_percent": 12.0
+    },
+    {
+      "ts": "2026-11-01T16:32:01.339703+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8258.0,
+      "free_mib": 3753.0,
+      "utilization_percent": 0.0
+    },
+    {
+      "ts": "2026-11-01T16:32:01.931874+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8273.0,
+      "free_mib": 3738.0,
+      "utilization_percent": 23.0
+    },
+    {
+      "ts": "2026-11-01T16:32:02.574390+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8266.0,
+      "free_mib": 3745.0,
+      "utilization_percent": 16.0
+    },
+    {
+      "ts": "2026-11-01T16:32:03.174988+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8276.0,
+      "free_mib": 3735.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:32:03.763074+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8276.0,
+      "free_mib": 3735.0,
+      "utilization_percent": 4.0
+    },
+    {
+      "ts": "2026-11-01T16:32:04.362618+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8276.0,
+      "free_mib": 3735.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:32:04.976036+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8282.0,
+      "free_mib": 3729.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:32:05.573742+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8282.0,
+      "free_mib": 3729.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:32:06.177479+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8281.0,
+      "free_mib": 3730.0,
+      "utilization_percent": 21.0
+    },
+    {
+      "ts": "2026-11-01T16:32:06.786046+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8290.0,
+      "free_mib": 3721.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:32:07.396310+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8246.0,
+      "free_mib": 3765.0,
+      "utilization_percent": 4.0
+    },
+    {
+      "ts": "2026-11-01T16:32:08.020132+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8297.0,
+      "free_mib": 3714.0,
+      "utilization_percent": 25.0
+    },
+    {
+      "ts": "2026-11-01T16:32:08.634676+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8314.0,
+      "free_mib": 3697.0,
+      "utilization_percent": 37.0
+    },
+    {
+      "ts": "2026-11-01T16:32:09.216570+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8314.0,
+      "free_mib": 3697.0,
+      "utilization_percent": 17.0
+    },
+    {
+      "ts": "2026-11-01T16:32:09.831310+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8389.0,
+      "free_mib": 3622.0,
+      "utilization_percent": 24.0
+    },
+    {
+      "ts": "2026-11-01T16:32:10.437194+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8394.0,
+      "free_mib": 3617.0,
+      "utilization_percent": 14.0
+    },
+    {
+      "ts": "2026-11-01T16:32:11.030981+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8394.0,
+      "free_mib": 3617.0,
+      "utilization_percent": 44.0
+    }
+  ],
+  "existing_service_continuity": [
+    {
+      "ts": "2026-11-01T16:28:53.870388+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:28:58.973379+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:29:04.160673+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:29:09.391606+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:29:14.570202+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:29:19.905376+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:29:25.188607+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:29:30.561977+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:29:35.958347+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:29:41.327539+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:29:46.725325+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:29:52.152264+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:29:57.574393+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:30:02.964327+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:30:08.441345+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:30:13.947835+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:30:19.406884+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:30:24.792305+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:30:30.191669+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:30:35.612120+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:30:41.034226+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:30:46.473648+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:30:51.896480+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:30:57.352698+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:31:02.788492+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:31:08.234066+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:31:13.623938+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:31:19.130874+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:31:24.589932+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:31:29.976703+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:31:35.364501+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:31:40.766370+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:31:45.872337+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:31:51.299302+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:31:56.543925+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:32:01.972840+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:32:07.408790+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    }
+  ],
+  "correct": 0,
+  "completed_cases": 1,
+  "owned_server_exit_code": 1,
+  "existing_service_after": {
+    "pid": 45096,
+    "created": 1793431917.66907,
+    "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+    "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+    "context": 16384
+  },
+  "existing_service_preserved": true,
+  "model_sha256_after": "322e194ff79741c7baa497c240f677f54b201b0efab44ca8e50f122b39123482",
+  "finished": "2026-11-01T16:32:21.695680+00:00"
+}

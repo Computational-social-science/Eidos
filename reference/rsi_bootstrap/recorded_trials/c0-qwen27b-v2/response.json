@@ -1,0 +1,36 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n \"program\": {\n \"loss\": {\n \"op\": \"where\",\n \"args\": [\n {\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 0.6931471805599453}]},\n {\"op\": \"log\", \"args\": [{\"op\": \"expm1\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}]},\n {\"op\": \"log1p\", \"args\": [{\"op\": \"neg\", \"args\": [{\"op\": \"exp\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}]}]}\n ]}\n ,\"gradient\": {\n \"op\": \"where\",\n \"args\": [\n {\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 0.6931471805599453}]},\n {\"op\": \"div\", \"args\": [\n {\"op\": \"exp\", \"args\": [{\"input\": \"x\"}]},\n {\"op\": \"expm1\", \"args\": [{\"input\": \"x\"}]}\n ]},\n {\"op\": \"neg\", \"args\": [\n {\"op\": \"exp\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}\n ]}\n ]}\n },\n \"explanation\": \"The standard formula log(1-exp(-x)) suffers from catastrophic cancellation when x is small because 1-exp(-x) is computed as the \"}"
+      }
+    }
+  ],
+  "created": 1793550712,
+  "model": "eidos-qwen27b-pilot-6185da498bf44ea58a8a3c66e42322af",
+  "system_fingerprint": "b10964-b29c606e2",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 363,
+    "prompt_tokens": 273,
+    "total_tokens": 636,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "id": "chatcmpl-2fYehfZhZzl61nNc6fLMiZdc1DZsubeE",
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 273,
+    "prompt_ms": 16153.049,
+    "prompt_per_token_ms": 59.16867765567766,
+    "prompt_per_second": 16.900834015918605,
+    "predicted_n": 363,
+    "predicted_ms": 156790.751,
+    "predicted_per_token_ms": 433.1236215469613,
+    "predicted_per_second": 2.3088096567634913
+  }
+}

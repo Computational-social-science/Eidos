@@ -1,0 +1,11 @@
+{
+  "status": "COMPLETE",
+  "accepted": true,
+  "run_id": "6185da498bf44ea58a8a3c66e42322af",
+  "exit_code": 0,
+  "development_conforming": false,
+  "correct": 0,
+  "cases": 1,
+  "existing_service_preserved": true,
+  "promotion": false
+}

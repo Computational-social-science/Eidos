@@ -1,0 +1,14 @@
+root ::= "{" ws "\"program\"" ws ":" ws program ws "," ws "\"explanation\"" ws ":" ws explanation ws "}" ws
+program ::= "{" ws "\"loss\"" ws ":" ws numeric ws "," ws "\"gradient\"" ws ":" ws numeric ws "}"
+numeric ::= input | constant | unary | binary | selection
+input ::= "{" ws "\"input\"" ws ":" ws "\"x\"" ws "}"
+constant ::= "{" ws "\"const\"" ws ":" ws number ws "}"
+unary ::= "{" ws "\"op\"" ws ":" ws unary-name ws "," ws "\"args\"" ws ":" ws "[" ws numeric ws "]" ws "}"
+binary ::= "{" ws "\"op\"" ws ":" ws binary-name ws "," ws "\"args\"" ws ":" ws "[" ws numeric ws "," ws numeric ws "]" ws "}"
+selection ::= "{" ws "\"op\"" ws ":" ws "\"where\"" ws "," ws "\"args\"" ws ":" ws "[" ws boolean ws "," ws numeric ws "," ws numeric ws "]" ws "}"
+boolean ::= "{" ws "\"op\"" ws ":" ws "\"le\"" ws "," ws "\"args\"" ws ":" ws "[" ws numeric ws "," ws numeric ws "]" ws "}"
+unary-name ::= "\"neg\"" | "\"exp\"" | "\"expm1\"" | "\"log\"" | "\"log1p\""
+binary-name ::= "\"add\"" | "\"sub\"" | "\"mul\"" | "\"div\""
+number ::= "-"? ("0" | [1-9] [0-9]*) ("." [0-9]+)? ([eE] [+-]? [0-9]+)?
+explanation ::= "\"" [a-zA-Z] [a-zA-Z0-9 .,:;/()_+*=\-]{0,127} "\""
+ws ::= [ \t\n\r]{0,2}

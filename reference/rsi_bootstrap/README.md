@@ -1,8 +1,9 @@
 # RSI bootstrap: development evaluator foundation
 
-Latest checkpoint: [two real local-model trials](../../docs/RSI-C0-MODEL-TRIALS-2026-11-01.md)
-completed same-host runtime checks; both responses were rejected before numerical
-grading. The exact runtime sources are archived under `recorded_trials/`.
+Latest checkpoint: the [decoder study](../../docs/RSI-C0-DECODER-STUDY-2026-11-02.md)
+obtained admissible programs from two real local models; both failed all 23 joint
+numerical points. The prior v1 responses were rejected before numerical grading.
+Exact runtime sources and backend controls are archived under `recorded_trials/`.
 The frozen C0 specification and early foundation records retain their historical
 scope; a portable configured model runtime and RSI acceptance remain open.
 
@@ -49,11 +50,13 @@ and no candidate is promoted. The case does not demonstrate scientific novelty,
 model competence, transfer or RSI. The source and positive repair are external
 development, not outputs of EIDOS self-improvement.
 
-Next: freeze the [C0 contract](C0-SPEC.md), implement the bounded seed procedure,
-and qualify separate sealed-task access before an independent recursive campaign.
+The historical [C0 contract](C0-SPEC.md) precedes the implemented proposal core
+and same-host trials. A portable local runtime and independent sealed-task access
+remain pending before a recursive campaign.
 
 The closed expression interpreter in `expressions.py` enforces the proposed
 scalar operator/type/size/depth/node limits. Its adversarial tests include
 duplicate/nonfinite JSON, unsupported operations, incorrect types, invalid
 unselected branches and budget overflows. This is a development prerequisite
-for model programs; the model runner and sealed boundary remain unimplemented.
+for model programs; the recorded model runners are host-specific and the sealed
+boundary remains unimplemented.

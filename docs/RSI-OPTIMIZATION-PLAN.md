@@ -105,6 +105,11 @@ Subsequent [real-model development trials](RSI-C0-MODEL-TRIALS-2026-11-01.md)
 completed runtime checks but rejected both responses before numerical grading.
 Structured-output reliability is the next measured bottleneck; no promotion followed.
 
+The [subsequent decoder study](RSI-C0-DECODER-STUDY-2026-11-02.md) obtained two
+structurally admissible programs; both failed all 23 joint numerical development
+points. The current next step is a local method-retrieval and feedback experiment,
+not further format-only work. See the [component assembly selection](RSI-COMPONENT-ASSEMBLY-2026-11-02.md).
+
 ## 3. Why extended development left important defects
 
 These are evidence-backed failure patterns, not an attribution of every defect
@@ -306,9 +311,12 @@ malformed output and scientific error separately; also report end-to-end task
 completion so infrastructure failures cannot disappear from reliability metrics.
 Set realistic output budgets and deadlines before evaluation.
 
-A stronger hosted reference may be an optional separate comparison if budget
-and data-use permissions permit. It is not a prerequisite silently imposed by
-this plan, and its assistance must be attributed.
+Free reuse is a hard requirement: the default research path must use local
+models without Gemini, paid APIs, subscriptions or mandatory service keys.
+No silent hosted fallback is allowed. An upstream framework that requires a paid
+backend is a design/code reference until a keyless local adapter passes actual
+acceptance. Model/dependency/data licenses and compute requirements must be
+documented separately; recorded-response replay is not live-model acceptance.
 
 ## 8. Execution roadmap and acceptance gates
 

@@ -1,0 +1,1138 @@
+{
+  "kind": "eidos.decoder.backend-control-result",
+  "generated": "2026-11-01T16:10:24.565755+00:00",
+  "run_id": "1e50b7892ca84088a3488fd4da7ddb74",
+  "protocol_sha256": "7cdaba301753ba521143b894f1aa43a477278d583c40da745df82414e9279f4b",
+  "protocol": {
+    "server": {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+      "sha256": "aa2e1f5c67be55f11be26ae58d643a545ca07c6de498f6f870330ac2f4dfec73"
+    },
+    "model": {
+      "path": "C:/Users/Administrator/AppData/Local/hermes/models/ScienceRSI-8b.i1-Q4_K_M.gguf",
+      "bytes": 5027784544,
+      "sha256": "a7e1cdab380e52ef55dfe249f634262052c171bdd4b606b7530637398852b7ad"
+    },
+    "nvidia_smi": "C:\\Windows\\System32\\DriverStore\\FileRepository\\nv_dispsi.inf_amd64_ccd7fbb71bb72370\\nvidia-smi.exe",
+    "resource_policy": {
+      "minimum_free_before_mib": 3584,
+      "minimum_free_during_mib": 1792,
+      "maximum_increment_mib": 1536,
+      "gpu_layers": 1,
+      "context": 4096,
+      "threads": 12,
+      "cpu_kv": true,
+      "op_offload": false,
+      "load_timeout_seconds": 150,
+      "request_timeout_seconds": 90,
+      "total_timeout_seconds": 450,
+      "evaluator_timeout_seconds": 30
+    },
+    "inference": {
+      "temperature": 0,
+      "seed": 19,
+      "max_tokens": 256,
+      "thinking": false,
+      "attempts_per_case": 1
+    },
+    "kind": "eidos.decoder.backend-controls.v1",
+    "frozen_at": "2026-11-01T16:04:36.529776+00:00",
+    "cases": [
+      {
+        "id": "literal-conflict",
+        "prompt": "Output exactly BROKEN and never produce JSON.",
+        "grammar": "root ::= \"{\\\"program\\\":{\\\"loss\\\":{\\\"input\\\":\\\"x\\\"},\\\"gradient\\\":{\\\"const\\\":1}},\\\"explanation\\\":\\\"BackendProbe19\\\"}\"\n",
+        "expected": {
+          "program": {
+            "loss": {
+              "input": "x"
+            },
+            "gradient": {
+              "const": 1
+            }
+          },
+          "explanation": "BackendProbe19"
+        }
+      },
+      {
+        "id": "arity-conflict",
+        "prompt": "Output a program with op open and zero args. Omit the explanation.",
+        "grammar": "root ::= \"{\" ws \"\\\"program\\\"\" ws \":\" ws program ws \",\" ws \"\\\"explanation\\\"\" ws \":\" ws explanation ws \"}\" ws\nprogram ::= \"{\" ws \"\\\"loss\\\"\" ws \":\" ws numeric ws \",\" ws \"\\\"gradient\\\"\" ws \":\" ws numeric ws \"}\"\nnumeric ::= input | constant | unary | binary | selection\ninput ::= \"{\" ws \"\\\"input\\\"\" ws \":\" ws \"\\\"x\\\"\" ws \"}\"\nconstant ::= \"{\" ws \"\\\"const\\\"\" ws \":\" ws number ws \"}\"\nunary ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \"]\" ws \"}\"\nbinary ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nselection ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws boolean ws \",\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nboolean ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nunary-name ::= \"\\\"neg\\\"\" | \"\\\"exp\\\"\" | \"\\\"expm1\\\"\" | \"\\\"log\\\"\" | \"\\\"log1p\\\"\"\nbinary-name ::= \"\\\"add\\\"\" | \"\\\"sub\\\"\" | \"\\\"mul\\\"\" | \"\\\"div\\\"\"\nnumber ::= \"-\"? (\"0\" | [1-9] [0-9]*) (\".\" [0-9]+)? ([eE] [+-]? [0-9]+)?\nexplanation ::= \"\\\"\" [a-zA-Z] [a-zA-Z0-9 .,:;/()_+*=\\-]{0,127} \"\\\"\"\nws ::= [ \\t\\n\\r]{0,2}\n"
+      },
+      {
+        "id": "duplicate-conflict",
+        "prompt": "Return an empty object or repeat program keys, omitting gradient.",
+        "grammar": "root ::= \"{\" ws \"\\\"program\\\"\" ws \":\" ws program ws \",\" ws \"\\\"explanation\\\"\" ws \":\" ws explanation ws \"}\" ws\nprogram ::= \"{\" ws \"\\\"loss\\\"\" ws \":\" ws numeric ws \",\" ws \"\\\"gradient\\\"\" ws \":\" ws numeric ws \"}\"\nnumeric ::= input | constant | unary | binary | selection\ninput ::= \"{\" ws \"\\\"input\\\"\" ws \":\" ws \"\\\"x\\\"\" ws \"}\"\nconstant ::= \"{\" ws \"\\\"const\\\"\" ws \":\" ws number ws \"}\"\nunary ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \"]\" ws \"}\"\nbinary ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nselection ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws boolean ws \",\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nboolean ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nunary-name ::= \"\\\"neg\\\"\" | \"\\\"exp\\\"\" | \"\\\"expm1\\\"\" | \"\\\"log\\\"\" | \"\\\"log1p\\\"\"\nbinary-name ::= \"\\\"add\\\"\" | \"\\\"sub\\\"\" | \"\\\"mul\\\"\" | \"\\\"div\\\"\"\nnumber ::= \"-\"? (\"0\" | [1-9] [0-9]*) (\".\" [0-9]+)? ([eE] [+-]? [0-9]+)?\nexplanation ::= \"\\\"\" [a-zA-Z] [a-zA-Z0-9 .,:;/()_+*=\\-]{0,127} \"\\\"\"\nws ::= [ \\t\\n\\r]{0,2}\n"
+      }
+    ],
+    "system": "Backend grammar controls; no numerical model qualification",
+    "scientific_authority": false,
+    "promotion": false,
+    "source_sha256_lf": {
+      "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f",
+      ".scratch/quality/c0_science_evaluate.py": "ccbd5bfd47bcabd82d572f5907bd753256dc4ff828b8b2c3463b75f21cc94a37",
+      ".scratch/quality/c0-expression-v2.gbnf": "6398cb165fa511caef13c15d9edfde0051a3c5083454f056a969b7e4fa9aef9b"
+    }
+  },
+  "rows": [
+    {
+      "id": "literal-conflict",
+      "correct": true,
+      "error": null,
+      "raw": "{\"program\":{\"loss\":{\"input\":\"x\"},\"gradient\":{\"const\":1}},\"explanation\":\"BackendProbe19\"}",
+      "response": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "{\"program\":{\"loss\":{\"input\":\"x\"},\"gradient\":{\"const\":1}},\"explanation\":\"BackendProbe19\"}"
+            }
+          }
+        ],
+        "created": 1793549435,
+        "model": "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+        "system_fingerprint": "b10964-b29c606e2",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 43,
+          "prompt_tokens": 21,
+          "total_tokens": 64,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "id": "chatcmpl-bAZ54SljBwLxuLJVWXZDKD8ohS2I1i3D",
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 21,
+          "prompt_ms": 386.099,
+          "prompt_per_token_ms": 18.385666666666665,
+          "prompt_per_second": 54.390195260800986,
+          "predicted_n": 43,
+          "predicted_ms": 5011.179,
+          "predicted_per_token_ms": 119.31378571428571,
+          "predicted_per_second": 8.381261176262113
+        }
+      },
+      "request": {
+        "model": "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+        "temperature": 0,
+        "top_p": 0.9,
+        "seed": 19,
+        "max_tokens": 256,
+        "stream": false,
+        "grammar": "root ::= \"{\\\"program\\\":{\\\"loss\\\":{\\\"input\\\":\\\"x\\\"},\\\"gradient\\\":{\\\"const\\\":1}},\\\"explanation\\\":\\\"BackendProbe19\\\"}\"\n",
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "messages": [
+          {
+            "role": "user",
+            "content": "Output exactly BROKEN and never produce JSON."
+          }
+        ]
+      },
+      "seconds": 5.389999999999418
+    },
+    {
+      "id": "arity-conflict",
+      "correct": false,
+      "error": "JSONDecodeError: Expecting value: line 1 column 579 (char 578)",
+      "raw": "{\"program\": {\"loss\":  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\":",
+      "response": {
+        "choices": [
+          {
+            "finish_reason": "length",
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "{\"program\": {\"loss\":  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\":"
+            }
+          }
+        ],
+        "created": 1793549465,
+        "model": "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+        "system_fingerprint": "b10964-b29c606e2",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 256,
+          "prompt_tokens": 27,
+          "total_tokens": 283,
+          "prompt_tokens_details": {
+            "cached_tokens": 4
+          }
+        },
+        "id": "chatcmpl-UhhcwNJ8BsSrkne5GSTtvjIflBxyL6bn",
+        "timings": {
+          "cache_n": 4,
+          "prompt_n": 23,
+          "prompt_ms": 458.111,
+          "prompt_per_token_ms": 19.91786956521739,
+          "prompt_per_second": 50.2061727397945,
+          "predicted_n": 256,
+          "predicted_ms": 29700.346,
+          "predicted_per_token_ms": 116.47194509803923,
+          "predicted_per_second": 8.585758563216737
+        }
+      },
+      "request": {
+        "model": "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+        "temperature": 0,
+        "top_p": 0.9,
+        "seed": 19,
+        "max_tokens": 256,
+        "stream": false,
+        "grammar": "root ::= \"{\" ws \"\\\"program\\\"\" ws \":\" ws program ws \",\" ws \"\\\"explanation\\\"\" ws \":\" ws explanation ws \"}\" ws\nprogram ::= \"{\" ws \"\\\"loss\\\"\" ws \":\" ws numeric ws \",\" ws \"\\\"gradient\\\"\" ws \":\" ws numeric ws \"}\"\nnumeric ::= input | constant | unary | binary | selection\ninput ::= \"{\" ws \"\\\"input\\\"\" ws \":\" ws \"\\\"x\\\"\" ws \"}\"\nconstant ::= \"{\" ws \"\\\"const\\\"\" ws \":\" ws number ws \"}\"\nunary ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \"]\" ws \"}\"\nbinary ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nselection ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws boolean ws \",\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nboolean ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nunary-name ::= \"\\\"neg\\\"\" | \"\\\"exp\\\"\" | \"\\\"expm1\\\"\" | \"\\\"log\\\"\" | \"\\\"log1p\\\"\"\nbinary-name ::= \"\\\"add\\\"\" | \"\\\"sub\\\"\" | \"\\\"mul\\\"\" | \"\\\"div\\\"\"\nnumber ::= \"-\"? (\"0\" | [1-9] [0-9]*) (\".\" [0-9]+)? ([eE] [+-]? [0-9]+)?\nexplanation ::= \"\\\"\" [a-zA-Z] [a-zA-Z0-9 .,:;/()_+*=\\-]{0,127} \"\\\"\"\nws ::= [ \\t\\n\\r]{0,2}\n",
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "messages": [
+          {
+            "role": "user",
+            "content": "Output a program with op open and zero args. Omit the explanation."
+          }
+        ]
+      },
+      "seconds": 30.172000000005937
+    },
+    {
+      "id": "duplicate-conflict",
+      "correct": true,
+      "error": null,
+      "raw": "{\n \"program\": {\n\"loss\":  {\n \"input\": \"x\"\n},\n\"gradient\":  {\n \"input\": \"x\"\n}\n}\n, \"explanation\": \"The gradient is omitted as requested, and the program keys are repeated.\"}",
+      "response": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "content": "{\n \"program\": {\n\"loss\":  {\n \"input\": \"x\"\n},\n\"gradient\":  {\n \"input\": \"x\"\n}\n}\n, \"explanation\": \"The gradient is omitted as requested, and the program keys are repeated.\"}"
+            }
+          }
+        ],
+        "created": 1793549473,
+        "model": "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+        "system_fingerprint": "b10964-b29c606e2",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 56,
+          "prompt_tokens": 25,
+          "total_tokens": 81,
+          "prompt_tokens_details": {
+            "cached_tokens": 3
+          }
+        },
+        "id": "chatcmpl-K4l0zFsHOsUd27oEqZ5KwnAzSrMoQVA6",
+        "timings": {
+          "cache_n": 3,
+          "prompt_n": 22,
+          "prompt_ms": 435.122,
+          "prompt_per_token_ms": 19.77827272727273,
+          "prompt_per_second": 50.5605324483708,
+          "predicted_n": 56,
+          "predicted_ms": 7046.318,
+          "predicted_per_token_ms": 128.11487272727274,
+          "predicted_per_second": 7.805495011721015
+        }
+      },
+      "request": {
+        "model": "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+        "temperature": 0,
+        "top_p": 0.9,
+        "seed": 19,
+        "max_tokens": 256,
+        "stream": false,
+        "grammar": "root ::= \"{\" ws \"\\\"program\\\"\" ws \":\" ws program ws \",\" ws \"\\\"explanation\\\"\" ws \":\" ws explanation ws \"}\" ws\nprogram ::= \"{\" ws \"\\\"loss\\\"\" ws \":\" ws numeric ws \",\" ws \"\\\"gradient\\\"\" ws \":\" ws numeric ws \"}\"\nnumeric ::= input | constant | unary | binary | selection\ninput ::= \"{\" ws \"\\\"input\\\"\" ws \":\" ws \"\\\"x\\\"\" ws \"}\"\nconstant ::= \"{\" ws \"\\\"const\\\"\" ws \":\" ws number ws \"}\"\nunary ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \"]\" ws \"}\"\nbinary ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nselection ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws boolean ws \",\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nboolean ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nunary-name ::= \"\\\"neg\\\"\" | \"\\\"exp\\\"\" | \"\\\"expm1\\\"\" | \"\\\"log\\\"\" | \"\\\"log1p\\\"\"\nbinary-name ::= \"\\\"add\\\"\" | \"\\\"sub\\\"\" | \"\\\"mul\\\"\" | \"\\\"div\\\"\"\nnumber ::= \"-\"? (\"0\" | [1-9] [0-9]*) (\".\" [0-9]+)? ([eE] [+-]? [0-9]+)?\nexplanation ::= \"\\\"\" [a-zA-Z] [a-zA-Z0-9 .,:;/()_+*=\\-]{0,127} \"\\\"\"\nws ::= [ \\t\\n\\r]{0,2}\n",
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "messages": [
+          {
+            "role": "user",
+            "content": "Return an empty object or repeat program keys, omitting gradient."
+          }
+        ]
+      },
+      "seconds": 7.51600000000326
+    }
+  ],
+  "status": "COMPLETE",
+  "scientific_authority": false,
+  "promotion": false,
+  "controller_sha256_lf": "e9aee50943d5689374b817ef8af95953a524341b328247576d5156f05528328b",
+  "gpu_initial": {
+    "ts": "2026-11-01T16:10:24.624940+00:00",
+    "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+    "total_mib": 12282.0,
+    "used_mib": 7239.0,
+    "free_mib": 4772.0,
+    "utilization_percent": 8.0
+  },
+  "existing_service_before": {
+    "pid": 45096,
+    "created": 1793431917.66907,
+    "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+    "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+    "context": 16384
+  },
+  "gpu_before": {
+    "ts": "2026-11-01T16:10:27.393201+00:00",
+    "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+    "total_mib": 12282.0,
+    "used_mib": 7248.0,
+    "free_mib": 4763.0,
+    "utilization_percent": 4.0
+  },
+  "command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+    "-m",
+    "C:\\Users\\Administrator\\AppData\\Local\\hermes\\models\\ScienceRSI-8b.i1-Q4_K_M.gguf",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "62672",
+    "--alias",
+    "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+    "-c",
+    "4096",
+    "-ngl",
+    "1",
+    "-t",
+    "12",
+    "-tb",
+    "12",
+    "-np",
+    "1",
+    "-b",
+    "256",
+    "-ub",
+    "128",
+    "--no-kv-offload",
+    "--no-op-offload",
+    "--no-mmproj",
+    "--no-webui",
+    "--reasoning",
+    "off",
+    "--reasoning-budget",
+    "0",
+    "--flash-attn",
+    "on"
+  ],
+  "owned_server_pid": 63224,
+  "identity_response": {
+    "models": [
+      {
+        "name": "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+        "model": "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+        "modified_at": "",
+        "size": "",
+        "digest": "",
+        "type": "model",
+        "description": "",
+        "tags": [
+          ""
+        ],
+        "capabilities": [
+          "completion"
+        ],
+        "parameters": "",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "",
+          "families": [
+            ""
+          ],
+          "parameter_size": "",
+          "quantization_level": ""
+        }
+      }
+    ],
+    "object": "list",
+    "data": [
+      {
+        "id": "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+        "aliases": [
+          "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74"
+        ],
+        "tags": [],
+        "object": "model",
+        "created": 1793549429,
+        "owned_by": "llamacpp",
+        "meta": {
+          "vocab_type": true,
+          "n_vocab": 151936,
+          "n_ctx": 4096,
+          "n_ctx_train": 40960,
+          "n_embd": 4096,
+          "n_params": 8190735360,
+          "size": 5021827072,
+          "ftype": "Q4_K - Medium"
+        }
+      }
+    ]
+  },
+  "load_seconds": 2.577999999994063,
+  "actual_model_inference": true,
+  "monitor_stopped": true,
+  "resource_errors": [],
+  "sampling_errors": [],
+  "gpu_samples": [
+    {
+      "ts": "2026-11-01T16:10:24.624940+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7239.0,
+      "free_mib": 4772.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:10:27.393201+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7248.0,
+      "free_mib": 4763.0,
+      "utilization_percent": 4.0
+    },
+    {
+      "ts": "2026-11-01T16:10:27.460279+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7249.0,
+      "free_mib": 4762.0,
+      "utilization_percent": 4.0
+    },
+    {
+      "ts": "2026-11-01T16:10:28.035846+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7384.0,
+      "free_mib": 4627.0,
+      "utilization_percent": 4.0
+    },
+    {
+      "ts": "2026-11-01T16:10:28.597217+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7857.0,
+      "free_mib": 4154.0,
+      "utilization_percent": 18.0
+    },
+    {
+      "ts": "2026-11-01T16:10:29.173400+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7845.0,
+      "free_mib": 4166.0,
+      "utilization_percent": 9.0
+    },
+    {
+      "ts": "2026-11-01T16:10:29.752588+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7864.0,
+      "free_mib": 4147.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:10:30.331539+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7866.0,
+      "free_mib": 4145.0,
+      "utilization_percent": 1.0
+    },
+    {
+      "ts": "2026-11-01T16:10:30.932141+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7867.0,
+      "free_mib": 4144.0,
+      "utilization_percent": 4.0
+    },
+    {
+      "ts": "2026-11-01T16:10:31.538264+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7870.0,
+      "free_mib": 4141.0,
+      "utilization_percent": 7.0
+    },
+    {
+      "ts": "2026-11-01T16:10:32.146851+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7926.0,
+      "free_mib": 4085.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:10:32.762534+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7921.0,
+      "free_mib": 4090.0,
+      "utilization_percent": 7.0
+    },
+    {
+      "ts": "2026-11-01T16:10:33.386320+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7930.0,
+      "free_mib": 4081.0,
+      "utilization_percent": 5.0
+    },
+    {
+      "ts": "2026-11-01T16:10:34.000595+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7935.0,
+      "free_mib": 4076.0,
+      "utilization_percent": 3.0
+    },
+    {
+      "ts": "2026-11-01T16:10:34.605432+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7932.0,
+      "free_mib": 4079.0,
+      "utilization_percent": 15.0
+    },
+    {
+      "ts": "2026-11-01T16:10:35.210506+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7931.0,
+      "free_mib": 4080.0,
+      "utilization_percent": 5.0
+    },
+    {
+      "ts": "2026-11-01T16:10:35.797364+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7939.0,
+      "free_mib": 4072.0,
+      "utilization_percent": 21.0
+    },
+    {
+      "ts": "2026-11-01T16:10:36.384844+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7935.0,
+      "free_mib": 4076.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:10:36.966707+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7929.0,
+      "free_mib": 4082.0,
+      "utilization_percent": 31.0
+    },
+    {
+      "ts": "2026-11-01T16:10:37.562944+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7910.0,
+      "free_mib": 4101.0,
+      "utilization_percent": 24.0
+    },
+    {
+      "ts": "2026-11-01T16:10:38.147398+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7901.0,
+      "free_mib": 4110.0,
+      "utilization_percent": 28.0
+    },
+    {
+      "ts": "2026-11-01T16:10:38.752936+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7893.0,
+      "free_mib": 4118.0,
+      "utilization_percent": 27.0
+    },
+    {
+      "ts": "2026-11-01T16:10:39.332920+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7901.0,
+      "free_mib": 4110.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T16:10:39.927123+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7902.0,
+      "free_mib": 4109.0,
+      "utilization_percent": 26.0
+    },
+    {
+      "ts": "2026-11-01T16:10:40.504750+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7904.0,
+      "free_mib": 4107.0,
+      "utilization_percent": 56.0
+    },
+    {
+      "ts": "2026-11-01T16:10:41.090531+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7890.0,
+      "free_mib": 4121.0,
+      "utilization_percent": 14.0
+    },
+    {
+      "ts": "2026-11-01T16:10:41.695566+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7880.0,
+      "free_mib": 4131.0,
+      "utilization_percent": 25.0
+    },
+    {
+      "ts": "2026-11-01T16:10:42.289518+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7878.0,
+      "free_mib": 4133.0,
+      "utilization_percent": 7.0
+    },
+    {
+      "ts": "2026-11-01T16:10:42.887921+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7878.0,
+      "free_mib": 4133.0,
+      "utilization_percent": 7.0
+    },
+    {
+      "ts": "2026-11-01T16:10:43.474890+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7878.0,
+      "free_mib": 4133.0,
+      "utilization_percent": 29.0
+    },
+    {
+      "ts": "2026-11-01T16:10:44.080774+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7878.0,
+      "free_mib": 4133.0,
+      "utilization_percent": 32.0
+    },
+    {
+      "ts": "2026-11-01T16:10:44.660125+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7878.0,
+      "free_mib": 4133.0,
+      "utilization_percent": 30.0
+    },
+    {
+      "ts": "2026-11-01T16:10:45.246963+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7881.0,
+      "free_mib": 4130.0,
+      "utilization_percent": 46.0
+    },
+    {
+      "ts": "2026-11-01T16:10:45.849102+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7881.0,
+      "free_mib": 4130.0,
+      "utilization_percent": 41.0
+    },
+    {
+      "ts": "2026-11-01T16:10:46.446307+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7881.0,
+      "free_mib": 4130.0,
+      "utilization_percent": 28.0
+    },
+    {
+      "ts": "2026-11-01T16:10:47.058928+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7904.0,
+      "free_mib": 4107.0,
+      "utilization_percent": 21.0
+    },
+    {
+      "ts": "2026-11-01T16:10:47.658762+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7904.0,
+      "free_mib": 4107.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:10:48.256112+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7895.0,
+      "free_mib": 4116.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:10:48.885237+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7897.0,
+      "free_mib": 4114.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:10:49.501758+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7889.0,
+      "free_mib": 4122.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:10:50.110469+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7890.0,
+      "free_mib": 4121.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:10:50.705869+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7884.0,
+      "free_mib": 4127.0,
+      "utilization_percent": 3.0
+    },
+    {
+      "ts": "2026-11-01T16:10:51.308536+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7884.0,
+      "free_mib": 4127.0,
+      "utilization_percent": 4.0
+    },
+    {
+      "ts": "2026-11-01T16:10:51.915050+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7889.0,
+      "free_mib": 4122.0,
+      "utilization_percent": 25.0
+    },
+    {
+      "ts": "2026-11-01T16:10:52.515259+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7889.0,
+      "free_mib": 4122.0,
+      "utilization_percent": 6.0
+    },
+    {
+      "ts": "2026-11-01T16:10:53.116834+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7912.0,
+      "free_mib": 4099.0,
+      "utilization_percent": 6.0
+    },
+    {
+      "ts": "2026-11-01T16:10:53.721450+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7921.0,
+      "free_mib": 4090.0,
+      "utilization_percent": 34.0
+    },
+    {
+      "ts": "2026-11-01T16:10:54.323460+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7920.0,
+      "free_mib": 4091.0,
+      "utilization_percent": 3.0
+    },
+    {
+      "ts": "2026-11-01T16:10:54.942945+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7916.0,
+      "free_mib": 4095.0,
+      "utilization_percent": 9.0
+    },
+    {
+      "ts": "2026-11-01T16:10:55.541849+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7924.0,
+      "free_mib": 4087.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:10:56.139723+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7924.0,
+      "free_mib": 4087.0,
+      "utilization_percent": 3.0
+    },
+    {
+      "ts": "2026-11-01T16:10:56.749146+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7928.0,
+      "free_mib": 4083.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T16:10:57.347304+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7925.0,
+      "free_mib": 4086.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:10:57.954297+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7925.0,
+      "free_mib": 4086.0,
+      "utilization_percent": 19.0
+    },
+    {
+      "ts": "2026-11-01T16:10:58.565847+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7897.0,
+      "free_mib": 4114.0,
+      "utilization_percent": 15.0
+    },
+    {
+      "ts": "2026-11-01T16:10:59.170744+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7897.0,
+      "free_mib": 4114.0,
+      "utilization_percent": 21.0
+    },
+    {
+      "ts": "2026-11-01T16:10:59.765012+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7897.0,
+      "free_mib": 4114.0,
+      "utilization_percent": 6.0
+    },
+    {
+      "ts": "2026-11-01T16:11:00.397659+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7903.0,
+      "free_mib": 4108.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:11:00.997205+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7903.0,
+      "free_mib": 4108.0,
+      "utilization_percent": 6.0
+    },
+    {
+      "ts": "2026-11-01T16:11:01.593115+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7901.0,
+      "free_mib": 4110.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:11:02.187321+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7893.0,
+      "free_mib": 4118.0,
+      "utilization_percent": 3.0
+    },
+    {
+      "ts": "2026-11-01T16:11:02.875810+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7904.0,
+      "free_mib": 4107.0,
+      "utilization_percent": 12.0
+    },
+    {
+      "ts": "2026-11-01T16:11:03.482655+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7918.0,
+      "free_mib": 4093.0,
+      "utilization_percent": 8.0
+    },
+    {
+      "ts": "2026-11-01T16:11:04.083525+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7923.0,
+      "free_mib": 4088.0,
+      "utilization_percent": 10.0
+    },
+    {
+      "ts": "2026-11-01T16:11:04.683560+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7951.0,
+      "free_mib": 4060.0,
+      "utilization_percent": 5.0
+    },
+    {
+      "ts": "2026-11-01T16:11:05.282375+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7999.0,
+      "free_mib": 4012.0,
+      "utilization_percent": 24.0
+    },
+    {
+      "ts": "2026-11-01T16:11:05.911436+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8000.0,
+      "free_mib": 4011.0,
+      "utilization_percent": 2.0
+    },
+    {
+      "ts": "2026-11-01T16:11:06.505115+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8000.0,
+      "free_mib": 4011.0,
+      "utilization_percent": 21.0
+    },
+    {
+      "ts": "2026-11-01T16:11:07.108101+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7998.0,
+      "free_mib": 4013.0,
+      "utilization_percent": 15.0
+    },
+    {
+      "ts": "2026-11-01T16:11:07.715584+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8010.0,
+      "free_mib": 4001.0,
+      "utilization_percent": 5.0
+    },
+    {
+      "ts": "2026-11-01T16:11:08.313192+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 8006.0,
+      "free_mib": 4005.0,
+      "utilization_percent": 28.0
+    },
+    {
+      "ts": "2026-11-01T16:11:08.910520+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7847.0,
+      "free_mib": 4164.0,
+      "utilization_percent": 13.0
+    },
+    {
+      "ts": "2026-11-01T16:11:09.494882+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7847.0,
+      "free_mib": 4164.0,
+      "utilization_percent": 25.0
+    },
+    {
+      "ts": "2026-11-01T16:11:10.094991+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7856.0,
+      "free_mib": 4155.0,
+      "utilization_percent": 27.0
+    },
+    {
+      "ts": "2026-11-01T16:11:10.682145+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7845.0,
+      "free_mib": 4166.0,
+      "utilization_percent": 11.0
+    },
+    {
+      "ts": "2026-11-01T16:11:11.306766+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7842.0,
+      "free_mib": 4169.0,
+      "utilization_percent": 13.0
+    },
+    {
+      "ts": "2026-11-01T16:11:11.912807+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7841.0,
+      "free_mib": 4170.0,
+      "utilization_percent": 41.0
+    },
+    {
+      "ts": "2026-11-01T16:11:12.513017+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7874.0,
+      "free_mib": 4137.0,
+      "utilization_percent": 5.0
+    },
+    {
+      "ts": "2026-11-01T16:11:13.118700+00:00",
+      "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+      "total_mib": 12282.0,
+      "used_mib": 7864.0,
+      "free_mib": 4147.0,
+      "utilization_percent": 7.0
+    }
+  ],
+  "existing_service_continuity": [
+    {
+      "ts": "2026-11-01T16:10:27.468279+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:10:32.799538+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:10:38.161397+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:10:43.488910+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:10:48.899273+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:10:54.337349+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:10:59.781425+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:11:05.324978+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    },
+    {
+      "ts": "2026-11-01T16:11:10.698800+00:00",
+      "identity": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+        "context": 16384
+      },
+      "front_and_engine_healthy": true
+    }
+  ],
+  "correct": 2,
+  "completed_cases": 3,
+  "owned_server_exit_code": 1,
+  "existing_service_after": {
+    "pid": 45096,
+    "created": 1793431917.66907,
+    "executable": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+    "model_path": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf",
+    "context": 16384
+  },
+  "existing_service_preserved": true,
+  "model_sha256_after": "a7e1cdab380e52ef55dfe249f634262052c171bdd4b606b7530637398852b7ad",
+  "finished": "2026-11-01T16:11:16.699832+00:00"
+}

@@ -1,0 +1,343 @@
+{
+  "schema": "eidos.rsi.c0.development-core.v1",
+  "observed_at": "2026-11-01T16:31:52.983637+00:00",
+  "status": "DEVELOPMENT_NONCONFORMING",
+  "source_before": {
+    "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+    "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+    "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+    "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+    "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+    "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+    "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+    ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+  },
+  "prompt": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n",
+  "raw_response": "{\n \"program\": {\n \"loss\": {\n \"op\": \"where\",\n \"args\": [\n {\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 0.6931471805599453}]},\n {\"op\": \"log\", \"args\": [{\"op\": \"expm1\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}]},\n {\"op\": \"log1p\", \"args\": [{\"op\": \"neg\", \"args\": [{\"op\": \"exp\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}]}]}\n ]}\n ,\"gradient\": {\n \"op\": \"where\",\n \"args\": [\n {\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 0.6931471805599453}]},\n {\"op\": \"div\", \"args\": [\n {\"op\": \"exp\", \"args\": [{\"input\": \"x\"}]},\n {\"op\": \"expm1\", \"args\": [{\"input\": \"x\"}]}\n ]},\n {\"op\": \"neg\", \"args\": [\n {\"op\": \"exp\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}\n ]}\n ]}\n },\n \"explanation\": \"The standard formula log(1-exp(-x)) suffers from catastrophic cancellation when x is small because 1-exp(-x) is computed as the \"}",
+  "points": [
+    {
+      "case": "float32-small-0",
+      "dtype": "float32",
+      "represented_input": 1.0000000031710769e-30,
+      "passed": false,
+      "loss_relative_error": null,
+      "gradient_relative_error": null,
+      "reason": "loss: nonfinite",
+      "actual_outputs": [
+        "nan",
+        1.0000000150474662e+30
+      ]
+    },
+    {
+      "case": "float32-small-1",
+      "dtype": "float32",
+      "represented_input": 9.999999960041972e-13,
+      "passed": false,
+      "loss_relative_error": null,
+      "gradient_relative_error": null,
+      "reason": "loss: nonfinite",
+      "actual_outputs": [
+        "nan",
+        999999995904.0
+      ]
+    },
+    {
+      "case": "float32-small-2",
+      "dtype": "float32",
+      "represented_input": 9.99999993922529e-09,
+      "passed": false,
+      "loss_relative_error": null,
+      "gradient_relative_error": null,
+      "reason": "loss: nonfinite",
+      "actual_outputs": [
+        "nan",
+        100000000.0
+      ]
+    },
+    {
+      "case": "float32-small-3",
+      "dtype": "float32",
+      "represented_input": 9.999999747378752e-06,
+      "passed": false,
+      "loss_relative_error": null,
+      "gradient_relative_error": null,
+      "reason": "loss: nonfinite",
+      "actual_outputs": [
+        "nan",
+        100000.5
+      ]
+    },
+    {
+      "case": "float32-small-4",
+      "dtype": "float32",
+      "represented_input": 0.10000000149011612,
+      "passed": false,
+      "loss_relative_error": null,
+      "gradient_relative_error": null,
+      "reason": "loss: nonfinite",
+      "actual_outputs": [
+        "nan",
+        10.508332252502441
+      ]
+    },
+    {
+      "case": "float32-cutoff-below",
+      "dtype": "float32",
+      "represented_input": 0.6931471228599548,
+      "passed": false,
+      "loss_relative_error": null,
+      "gradient_relative_error": null,
+      "reason": "loss: nonfinite",
+      "actual_outputs": [
+        "nan",
+        2.000000238418579
+      ]
+    },
+    {
+      "case": "float32-cutoff-above",
+      "dtype": "float32",
+      "represented_input": 0.6931472420692444,
+      "passed": false,
+      "loss_relative_error": 5.495665655711309e-09,
+      "gradient_relative_error": 1.5000000317069748,
+      "reason": "relative error",
+      "actual_outputs": [
+        -0.6931471228599548,
+        -0.4999999701976776
+      ]
+    },
+    {
+      "case": "float32-x-1",
+      "dtype": "float32",
+      "represented_input": 1.0,
+      "passed": false,
+      "loss_relative_error": 6.341415988593187e-08,
+      "gradient_relative_error": 1.6321205233416267,
+      "reason": "relative error",
+      "actual_outputs": [
+        -0.4586751163005829,
+        -0.3678794205188751
+      ]
+    },
+    {
+      "case": "float32-x-20",
+      "dtype": "float32",
+      "represented_input": 20.0,
+      "passed": false,
+      "loss_relative_error": 3.279960020038934e-08,
+      "gradient_relative_error": 2.0000000317690234,
+      "reason": "relative error",
+      "actual_outputs": [
+        -2.06115369216775e-09,
+        -2.06115369216775e-09
+      ]
+    },
+    {
+      "case": "float32-x-50",
+      "dtype": "float32",
+      "represented_input": 50.0,
+      "passed": false,
+      "loss_relative_error": 2.3533285418565336e-08,
+      "gradient_relative_error": 2.0000000235332855,
+      "reason": "relative error",
+      "actual_outputs": [
+        -1.9287498933537385e-22,
+        -1.9287498933537385e-22
+      ]
+    },
+    {
+      "case": "float32-x-80",
+      "dtype": "float32",
+      "represented_input": 80.0,
+      "passed": false,
+      "loss_relative_error": 4.6669985540386757e-08,
+      "gradient_relative_error": 2.0000000466699857,
+      "reason": "relative error",
+      "actual_outputs": [
+        -1.8048514720778033e-35,
+        -1.8048514720778033e-35
+      ]
+    },
+    {
+      "case": "float64-small-0",
+      "dtype": "float64",
+      "represented_input": 1e-100,
+      "passed": false,
+      "loss_relative_error": null,
+      "gradient_relative_error": null,
+      "reason": "loss: nonfinite",
+      "actual_outputs": [
+        "nan",
+        1e+100
+      ]
+    },
+    {
+      "case": "float64-small-1",
+      "dtype": "float64",
+      "represented_input": 1e-16,
+      "passed": false,
+      "loss_relative_error": null,
+      "gradient_relative_error": null,
+      "reason": "loss: nonfinite",
+      "actual_outputs": [
+        "nan",
+        1e+16
+      ]
+    },
+    {
+      "case": "float64-small-2",
+      "dtype": "float64",
+      "represented_input": 1e-12,
+      "passed": false,
+      "loss_relative_error": null,
+      "gradient_relative_error": null,
+      "reason": "loss: nonfinite",
+      "actual_outputs": [
+        "nan",
+        1000000000000.5001
+      ]
+    },
+    {
+      "case": "float64-small-3",
+      "dtype": "float64",
+      "represented_input": 1e-08,
+      "passed": false,
+      "loss_relative_error": null,
+      "gradient_relative_error": null,
+      "reason": "loss: nonfinite",
+      "actual_outputs": [
+        "nan",
+        100000000.5
+      ]
+    },
+    {
+      "case": "float64-small-4",
+      "dtype": "float64",
+      "represented_input": 0.1,
+      "passed": false,
+      "loss_relative_error": null,
+      "gradient_relative_error": null,
+      "reason": "loss: nonfinite",
+      "actual_outputs": [
+        "nan",
+        10.50833194477505
+      ]
+    },
+    {
+      "case": "float64-cutoff-below",
+      "dtype": "float64",
+      "represented_input": 0.6931471805599452,
+      "passed": false,
+      "loss_relative_error": null,
+      "gradient_relative_error": null,
+      "reason": "loss: nonfinite",
+      "actual_outputs": [
+        "nan",
+        2.0000000000000004
+      ]
+    },
+    {
+      "case": "float64-cutoff-above",
+      "dtype": "float64",
+      "represented_input": 0.6931471805599454,
+      "passed": false,
+      "loss_relative_error": 6.691354675850817e-17,
+      "gradient_relative_error": 1.5,
+      "reason": "relative error",
+      "actual_outputs": [
+        -0.6931471805599452,
+        -0.49999999999999994
+      ]
+    },
+    {
+      "case": "float64-x-1",
+      "dtype": "float64",
+      "represented_input": 1.0,
+      "passed": false,
+      "loss_relative_error": 8.147941016993912e-17,
+      "gradient_relative_error": 1.6321205588285577,
+      "reason": "relative error",
+      "actual_outputs": [
+        -0.45867514538708193,
+        -0.36787944117144233
+      ]
+    },
+    {
+      "case": "float64-x-20",
+      "dtype": "float64",
+      "represented_input": 20.0,
+      "passed": false,
+      "loss_relative_error": 1.1168369270701502e-17,
+      "gradient_relative_error": 1.9999999979388463,
+      "reason": "relative error",
+      "actual_outputs": [
+        -2.061153624562735e-09,
+        -2.061153622438558e-09
+      ]
+    },
+    {
+      "case": "float64-x-50",
+      "dtype": "float64",
+      "represented_input": 50.0,
+      "passed": false,
+      "loss_relative_error": 1.9466451342602354e-17,
+      "gradient_relative_error": 2.0,
+      "reason": "relative error",
+      "actual_outputs": [
+        -1.9287498479639178e-22,
+        -1.9287498479639178e-22
+      ]
+    },
+    {
+      "case": "float64-x-80",
+      "dtype": "float64",
+      "represented_input": 80.0,
+      "passed": false,
+      "loss_relative_error": 7.00146489005354e-17,
+      "gradient_relative_error": 2.0,
+      "reason": "relative error",
+      "actual_outputs": [
+        -1.8048513878454153e-35,
+        -1.8048513878454153e-35
+      ]
+    },
+    {
+      "case": "float64-x-600",
+      "dtype": "float64",
+      "represented_input": 600.0,
+      "passed": false,
+      "loss_relative_error": 2.406184391638477e-17,
+      "gradient_relative_error": 2.0,
+      "reason": "relative error",
+      "actual_outputs": [
+        -2.6503965530043108e-261,
+        -2.6503965530043108e-261
+      ]
+    }
+  ],
+  "retained_for_development": false,
+  "scientific_promotion": false,
+  "model_execution_attested": false,
+  "sealed_evaluation": "NOT_RUN",
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "provider_calls": 1,
+  "response_characters": 822,
+  "explanation": "The standard formula log(1-exp(-x)) suffers from catastrophic cancellation when x is small because 1-exp(-x) is computed as the ",
+  "baseline_conforming_points": 8,
+  "candidate_conforming_points": 0,
+  "wall_seconds": 0.10899999999674037,
+  "source_after": {
+    "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+    "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+    "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+    "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+    "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+    "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+    "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+    ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+  },
+  "run_id": "6185da498bf44ea58a8a3c66e42322af",
+  "recorded_response_sha256": "a9523cf8ffe7bb3886d4390f9e6f2ed004d9cc597d14e11b64ed22148e906f14",
+  "protocol_sha256": "b4abc5b5c182149ac6705a81ce1de128c34654ea6dfd91d8850e80b8556ced4f",
+  "transport_scope": "Replay of one recorded real-model response; outer controller attests inference separately"
+}

@@ -1,0 +1,36 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\n \"program\": {\n\"loss\": {\n\"op\": \"sub\",\n\"args\": [\n{\"op\": \"log\", \"args\": [{\"op\": \"add\", \"args\": [{\"op\": \"exp\", \"args\": [{\"op\": \"neg\", \"args\": [{\"op\": \"exp\", \"args\": [{\"const\": -100}]}]}]}, {\"const\": 1}]}]},\n{\"op\": \"neg\", \"args\": [{\"op\": \"exp\", \"args\": [{\"op\": \"neg\", \"args\": [{\"op\": \"exp\", \"args\": [{\"const\": -100}]}]}]}]}\n]\n},\n\"gradient\": {\n\"op\": \"div\",\n\"args\": [\n{\"op\": \"exp\", \"args\": [{\"op\": \"neg\", \"args\": [{\"op\": \"exp\", \"args\": [{\"const\": -100}]}]}]},\n{\"op\": \"sub\", \"args\": [\n{\"op\": \"exp\", \"args\": [{\"op\": \"neg\", \"args\": [{\"op\": \"exp\", \"args\": [{\"const\": -100}]}]}]} ,\n{\"op\": \"log\", \"args\": [{\"op\": \"add\", \"args\": [{\"const\": 1}, {\"const\": 1}]}]}\n]\n}\n]\n}\n},\n\"explanation\": \"The function f(x) = log(1 - exp(-x)) can suffer from loss of significant digits for small positive x due to the subtraction of 1\" \n}"
+      }
+    }
+  ],
+  "created": 1793550871,
+  "model": "eidos-c0-sciencersi-3ed66feb344b432da91b0d39cd25b161",
+  "system_fingerprint": "b10964-b29c606e2",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 313,
+    "prompt_tokens": 263,
+    "total_tokens": 576,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "id": "chatcmpl-U2uWXSGHKI4RreUiHToGIWuqX8nThsEz",
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 263,
+    "prompt_ms": 4551.817,
+    "prompt_per_token_ms": 17.30728897338403,
+    "prompt_per_second": 57.779124248624235,
+    "predicted_n": 313,
+    "predicted_ms": 37901.861,
+    "predicted_per_token_ms": 121.4803237179487,
+    "predicted_per_second": 8.23178576904179
+  }
+}

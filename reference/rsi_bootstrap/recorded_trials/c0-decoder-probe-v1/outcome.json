@@ -1,0 +1,11 @@
+{
+  "status": "NOT_ACCEPTED",
+  "accepted": false,
+  "run_id": "1e50b7892ca84088a3488fd4da7ddb74",
+  "exit_code": 0,
+  "decoder_controls_passed": false,
+  "correct": 2,
+  "cases": 3,
+  "existing_service_preserved": true,
+  "promotion": false
+}

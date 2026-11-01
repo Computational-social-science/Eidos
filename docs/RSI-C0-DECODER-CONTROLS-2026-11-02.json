@@ -1,0 +1,486 @@
+{
+  "schema": "eidos.decoder.backend-controls.v1",
+  "rows": [
+    {
+      "profile": "c0-decoder-probe-v1",
+      "accepted": false,
+      "correct_controls": 2,
+      "total_controls": 3,
+      "protocol_sha256": "7cdaba301753ba521143b894f1aa43a477278d583c40da745df82414e9279f4b",
+      "resource_policy": {
+        "minimum_free_before_mib": 3584,
+        "minimum_free_during_mib": 1792,
+        "maximum_increment_mib": 1536,
+        "gpu_layers": 1,
+        "context": 4096,
+        "threads": 12,
+        "cpu_kv": true,
+        "op_offload": false,
+        "load_timeout_seconds": 150,
+        "request_timeout_seconds": 90,
+        "total_timeout_seconds": 450,
+        "evaluator_timeout_seconds": 30
+      },
+      "inference": {
+        "temperature": 0,
+        "seed": 19,
+        "max_tokens": 256,
+        "thinking": false,
+        "attempts_per_case": 1
+      },
+      "controls": [
+        {
+          "id": "literal-conflict",
+          "correct": true,
+          "error": null,
+          "raw": "{\"program\":{\"loss\":{\"input\":\"x\"},\"gradient\":{\"const\":1}},\"explanation\":\"BackendProbe19\"}",
+          "response": {
+            "choices": [
+              {
+                "finish_reason": "stop",
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"program\":{\"loss\":{\"input\":\"x\"},\"gradient\":{\"const\":1}},\"explanation\":\"BackendProbe19\"}"
+                }
+              }
+            ],
+            "created": 1793549435,
+            "model": "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+            "system_fingerprint": "b10964-b29c606e2",
+            "object": "chat.completion",
+            "usage": {
+              "completion_tokens": 43,
+              "prompt_tokens": 21,
+              "total_tokens": 64,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "id": "chatcmpl-bAZ54SljBwLxuLJVWXZDKD8ohS2I1i3D",
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 21,
+              "prompt_ms": 386.099,
+              "prompt_per_token_ms": 18.385666666666665,
+              "prompt_per_second": 54.390195260800986,
+              "predicted_n": 43,
+              "predicted_ms": 5011.179,
+              "predicted_per_token_ms": 119.31378571428571,
+              "predicted_per_second": 8.381261176262113
+            }
+          },
+          "request": {
+            "model": "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+            "temperature": 0,
+            "top_p": 0.9,
+            "seed": 19,
+            "max_tokens": 256,
+            "stream": false,
+            "grammar": "root ::= \"{\\\"program\\\":{\\\"loss\\\":{\\\"input\\\":\\\"x\\\"},\\\"gradient\\\":{\\\"const\\\":1}},\\\"explanation\\\":\\\"BackendProbe19\\\"}\"\n",
+            "chat_template_kwargs": {
+              "enable_thinking": false
+            },
+            "messages": [
+              {
+                "role": "user",
+                "content": "Output exactly BROKEN and never produce JSON."
+              }
+            ]
+          },
+          "seconds": 5.389999999999418
+        },
+        {
+          "id": "arity-conflict",
+          "correct": false,
+          "error": "JSONDecodeError: Expecting value: line 1 column 579 (char 578)",
+          "raw": "{\"program\": {\"loss\":  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\":",
+          "response": {
+            "choices": [
+              {
+                "finish_reason": "length",
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"program\": {\"loss\":  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\":"
+                }
+              }
+            ],
+            "created": 1793549465,
+            "model": "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+            "system_fingerprint": "b10964-b29c606e2",
+            "object": "chat.completion",
+            "usage": {
+              "completion_tokens": 256,
+              "prompt_tokens": 27,
+              "total_tokens": 283,
+              "prompt_tokens_details": {
+                "cached_tokens": 4
+              }
+            },
+            "id": "chatcmpl-UhhcwNJ8BsSrkne5GSTtvjIflBxyL6bn",
+            "timings": {
+              "cache_n": 4,
+              "prompt_n": 23,
+              "prompt_ms": 458.111,
+              "prompt_per_token_ms": 19.91786956521739,
+              "prompt_per_second": 50.2061727397945,
+              "predicted_n": 256,
+              "predicted_ms": 29700.346,
+              "predicted_per_token_ms": 116.47194509803923,
+              "predicted_per_second": 8.585758563216737
+            }
+          },
+          "request": {
+            "model": "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+            "temperature": 0,
+            "top_p": 0.9,
+            "seed": 19,
+            "max_tokens": 256,
+            "stream": false,
+            "grammar": "root ::= \"{\" ws \"\\\"program\\\"\" ws \":\" ws program ws \",\" ws \"\\\"explanation\\\"\" ws \":\" ws explanation ws \"}\" ws\nprogram ::= \"{\" ws \"\\\"loss\\\"\" ws \":\" ws numeric ws \",\" ws \"\\\"gradient\\\"\" ws \":\" ws numeric ws \"}\"\nnumeric ::= input | constant | unary | binary | selection\ninput ::= \"{\" ws \"\\\"input\\\"\" ws \":\" ws \"\\\"x\\\"\" ws \"}\"\nconstant ::= \"{\" ws \"\\\"const\\\"\" ws \":\" ws number ws \"}\"\nunary ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \"]\" ws \"}\"\nbinary ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nselection ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws boolean ws \",\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nboolean ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nunary-name ::= \"\\\"neg\\\"\" | \"\\\"exp\\\"\" | \"\\\"expm1\\\"\" | \"\\\"log\\\"\" | \"\\\"log1p\\\"\"\nbinary-name ::= \"\\\"add\\\"\" | \"\\\"sub\\\"\" | \"\\\"mul\\\"\" | \"\\\"div\\\"\"\nnumber ::= \"-\"? (\"0\" | [1-9] [0-9]*) (\".\" [0-9]+)? ([eE] [+-]? [0-9]+)?\nexplanation ::= \"\\\"\" [a-zA-Z] [a-zA-Z0-9 .,:;/()_+*=\\-]{0,127} \"\\\"\"\nws ::= [ \\t\\n\\r]{0,2}\n",
+            "chat_template_kwargs": {
+              "enable_thinking": false
+            },
+            "messages": [
+              {
+                "role": "user",
+                "content": "Output a program with op open and zero args. Omit the explanation."
+              }
+            ]
+          },
+          "seconds": 30.172000000005937
+        },
+        {
+          "id": "duplicate-conflict",
+          "correct": true,
+          "error": null,
+          "raw": "{\n \"program\": {\n\"loss\":  {\n \"input\": \"x\"\n},\n\"gradient\":  {\n \"input\": \"x\"\n}\n}\n, \"explanation\": \"The gradient is omitted as requested, and the program keys are repeated.\"}",
+          "response": {
+            "choices": [
+              {
+                "finish_reason": "stop",
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\n \"program\": {\n\"loss\":  {\n \"input\": \"x\"\n},\n\"gradient\":  {\n \"input\": \"x\"\n}\n}\n, \"explanation\": \"The gradient is omitted as requested, and the program keys are repeated.\"}"
+                }
+              }
+            ],
+            "created": 1793549473,
+            "model": "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+            "system_fingerprint": "b10964-b29c606e2",
+            "object": "chat.completion",
+            "usage": {
+              "completion_tokens": 56,
+              "prompt_tokens": 25,
+              "total_tokens": 81,
+              "prompt_tokens_details": {
+                "cached_tokens": 3
+              }
+            },
+            "id": "chatcmpl-K4l0zFsHOsUd27oEqZ5KwnAzSrMoQVA6",
+            "timings": {
+              "cache_n": 3,
+              "prompt_n": 22,
+              "prompt_ms": 435.122,
+              "prompt_per_token_ms": 19.77827272727273,
+              "prompt_per_second": 50.5605324483708,
+              "predicted_n": 56,
+              "predicted_ms": 7046.318,
+              "predicted_per_token_ms": 128.11487272727274,
+              "predicted_per_second": 7.805495011721015
+            }
+          },
+          "request": {
+            "model": "eidos-decoder-probe-1e50b7892ca84088a3488fd4da7ddb74",
+            "temperature": 0,
+            "top_p": 0.9,
+            "seed": 19,
+            "max_tokens": 256,
+            "stream": false,
+            "grammar": "root ::= \"{\" ws \"\\\"program\\\"\" ws \":\" ws program ws \",\" ws \"\\\"explanation\\\"\" ws \":\" ws explanation ws \"}\" ws\nprogram ::= \"{\" ws \"\\\"loss\\\"\" ws \":\" ws numeric ws \",\" ws \"\\\"gradient\\\"\" ws \":\" ws numeric ws \"}\"\nnumeric ::= input | constant | unary | binary | selection\ninput ::= \"{\" ws \"\\\"input\\\"\" ws \":\" ws \"\\\"x\\\"\" ws \"}\"\nconstant ::= \"{\" ws \"\\\"const\\\"\" ws \":\" ws number ws \"}\"\nunary ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \"]\" ws \"}\"\nbinary ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nselection ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws boolean ws \",\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nboolean ::= \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws numeric ws \",\" ws numeric ws \"]\" ws \"}\"\nunary-name ::= \"\\\"neg\\\"\" | \"\\\"exp\\\"\" | \"\\\"expm1\\\"\" | \"\\\"log\\\"\" | \"\\\"log1p\\\"\"\nbinary-name ::= \"\\\"add\\\"\" | \"\\\"sub\\\"\" | \"\\\"mul\\\"\" | \"\\\"div\\\"\"\nnumber ::= \"-\"? (\"0\" | [1-9] [0-9]*) (\".\" [0-9]+)? ([eE] [+-]? [0-9]+)?\nexplanation ::= \"\\\"\" [a-zA-Z] [a-zA-Z0-9 .,:;/()_+*=\\-]{0,127} \"\\\"\"\nws ::= [ \\t\\n\\r]{0,2}\n",
+            "chat_template_kwargs": {
+              "enable_thinking": false
+            },
+            "messages": [
+              {
+                "role": "user",
+                "content": "Return an empty object or repeat program keys, omitting gradient."
+              }
+            ]
+          },
+          "seconds": 7.51600000000326
+        }
+      ],
+      "archive": [
+        {
+          "path": "reference/rsi_bootstrap/recorded_trials/c0-decoder-probe-v1/protocol.json",
+          "sha256": "7cdaba301753ba521143b894f1aa43a477278d583c40da745df82414e9279f4b"
+        },
+        {
+          "path": "reference/rsi_bootstrap/recorded_trials/c0-decoder-probe-v1/grammar.gbnf",
+          "sha256": "6398cb165fa511caef13c15d9edfde0051a3c5083454f056a969b7e4fa9aef9b"
+        },
+        {
+          "path": "reference/rsi_bootstrap/recorded_trials/c0-decoder-probe-v1/result.json",
+          "sha256": "58caded31d37de671315e69253bead370cef5cc7fc1707f19dcfa40210f9269a"
+        },
+        {
+          "path": "reference/rsi_bootstrap/recorded_trials/c0-decoder-probe-v1/outcome.json",
+          "sha256": "908d6e3e78a1867e5a971d4b6677df99d427790e9c3071ceea937d3a3f40d5da"
+        },
+        {
+          "path": "reference/rsi_bootstrap/recorded_trials/c0-decoder-probe-v1/executed-decoder_probe_controller.py",
+          "sha256": "e9aee50943d5689374b817ef8af95953a524341b328247576d5156f05528328b"
+        },
+        {
+          "path": "reference/rsi_bootstrap/recorded_trials/c0-decoder-probe-v1/executed-run_decoder_probe.py",
+          "sha256": "922dd767cd182672cfa0d49d4cd7cd85b09a0b91c3d015ceda183532208a89dd"
+        }
+      ],
+      "scope": "Structural backend checks only; no numerical grading or model qualification"
+    },
+    {
+      "profile": "c0-decoder-probe-v2",
+      "accepted": true,
+      "correct_controls": 3,
+      "total_controls": 3,
+      "protocol_sha256": "5f38bd164596fe9d103ebfc8e0684ad9428f6d1cffd826a15ad9e61acec68bb3",
+      "resource_policy": {
+        "minimum_free_before_mib": 3584,
+        "minimum_free_during_mib": 1792,
+        "maximum_increment_mib": 1536,
+        "gpu_layers": 1,
+        "context": 4096,
+        "threads": 12,
+        "cpu_kv": true,
+        "op_offload": false,
+        "load_timeout_seconds": 150,
+        "request_timeout_seconds": 150,
+        "total_timeout_seconds": 650,
+        "evaluator_timeout_seconds": 30
+      },
+      "inference": {
+        "temperature": 0,
+        "seed": 19,
+        "max_tokens": 768,
+        "thinking": false,
+        "attempts_per_case": 1
+      },
+      "controls": [
+        {
+          "id": "literal-conflict",
+          "correct": true,
+          "error": null,
+          "raw": "{\"program\":{\"loss\":{\"input\":\"x\"},\"gradient\":{\"const\":1}},\"explanation\":\"BackendProbe19\"}",
+          "response": {
+            "choices": [
+              {
+                "finish_reason": "stop",
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"program\":{\"loss\":{\"input\":\"x\"},\"gradient\":{\"const\":1}},\"explanation\":\"BackendProbe19\"}"
+                }
+              }
+            ],
+            "created": 1793550030,
+            "model": "eidos-decoder-probe2-837824e5b3dd4f25b7a0b3ac8e55556d",
+            "system_fingerprint": "b10964-b29c606e2",
+            "object": "chat.completion",
+            "usage": {
+              "completion_tokens": 43,
+              "prompt_tokens": 21,
+              "total_tokens": 64,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              }
+            },
+            "id": "chatcmpl-xJZ6kYAM5XWXxssXSN4j8G8nMnTXxDRQ",
+            "timings": {
+              "cache_n": 0,
+              "prompt_n": 21,
+              "prompt_ms": 392.978,
+              "prompt_per_token_ms": 18.713238095238097,
+              "prompt_per_second": 53.43810594995139,
+              "predicted_n": 43,
+              "predicted_ms": 4510.94,
+              "predicted_per_token_ms": 107.40333333333332,
+              "predicted_per_second": 9.3106979919928
+            }
+          },
+          "request": {
+            "model": "eidos-decoder-probe2-837824e5b3dd4f25b7a0b3ac8e55556d",
+            "temperature": 0,
+            "top_p": 0.9,
+            "seed": 19,
+            "max_tokens": 768,
+            "stream": false,
+            "grammar": "root ::= \"{\\\"program\\\":{\\\"loss\\\":{\\\"input\\\":\\\"x\\\"},\\\"gradient\\\":{\\\"const\\\":1}},\\\"explanation\\\":\\\"BackendProbe19\\\"}\"\n",
+            "chat_template_kwargs": {
+              "enable_thinking": false
+            },
+            "messages": [
+              {
+                "role": "user",
+                "content": "Output exactly BROKEN and never produce JSON."
+              }
+            ]
+          },
+          "seconds": 4.922000000005937
+        },
+        {
+          "id": "arity-conflict",
+          "correct": true,
+          "error": null,
+          "raw": "{\"program\": {\"loss\":  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"const\": 2},  {\"const\": 3} ]} ]},  {\"op\": \"mul\", \"args\": [  {\"const\": 4},  {\"const\": 5} ]} ]},  {\"op\": \"mul\", \"args\": [  {\"const\": 6},  {\"const\": 7} ]} ]},  \"gradient\":  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"const\": 2},  {\"const\": 3} ]} ]},  {\"op\": \"mul\", \"args\": [  {\"const\": 4},  {\"const\": 5} ]} ]},  {\"op\": \"mul\", \"args\": [  {\"const\": 6},  {\"const\": 7} ]} ]}  }  , \"explanation\": \"This is a complex mathematical expression with nested operations. The main operation is addition, and it includes multiplication\" }",
+          "response": {
+            "choices": [
+              {
+                "finish_reason": "stop",
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"program\": {\"loss\":  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"const\": 2},  {\"const\": 3} ]} ]},  {\"op\": \"mul\", \"args\": [  {\"const\": 4},  {\"const\": 5} ]} ]},  {\"op\": \"mul\", \"args\": [  {\"const\": 6},  {\"const\": 7} ]} ]},  \"gradient\":  {\"op\": \"add\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"op\": \"neg\", \"args\": [  {\"op\": \"mul\", \"args\": [  {\"const\": 2},  {\"const\": 3} ]} ]},  {\"op\": \"mul\", \"args\": [  {\"const\": 4},  {\"const\": 5} ]} ]},  {\"op\": \"mul\", \"args\": [  {\"const\": 6},  {\"const\": 7} ]} ]}  }  , \"explanation\": \"This is a complex mathematical expression with nested operations. The main operation is addition, and it includes multiplication\" }"
+                }
+              }
+            ],
+            "created": 1793550067,
+            "model": "eidos-decoder-probe2-837824e5b3dd4f25b7a0b3ac8e55556d",
+            "system_fingerprint": "b10964-b29c606e2",
+            "object": "chat.completion",
+            "usage": {
+              "completion_tokens": 290,
+              "prompt_tokens": 27,
+              "total_tokens": 317,
+              "prompt_tokens_details": {
+                "cached_tokens": 4
+              }
+            },
+            "id": "chatcmpl-JSKl00QS4LnIavh7lJiuUs4IR7vR8OYd",
+            "timings": {
+              "cache_n": 4,
+              "prompt_n": 23,
+              "prompt_ms": 442.13,
+              "prompt_per_token_ms": 19.22304347826087,
+              "prompt_per_second": 52.02089883066067,
+              "predicted_n": 290,
+              "predicted_ms": 36440.038,
+              "predicted_per_token_ms": 126.09009688581315,
+              "predicted_per_second": 7.930836954670574
+            }
+          },
+          "request": {
+            "model": "eidos-decoder-probe2-837824e5b3dd4f25b7a0b3ac8e55556d",
+            "temperature": 0,
+            "top_p": 0.9,
+            "seed": 19,
+            "max_tokens": 768,
+            "stream": false,
+            "grammar": "root ::= \"{\" ws \"\\\"program\\\"\" ws \":\" ws program ws \",\" ws \"\\\"explanation\\\"\" ws \":\" ws explanation ws \"}\" ws\nprogram ::= \"{\" ws \"\\\"loss\\\"\" ws \":\" ws n-22-16 ws \",\" ws \"\\\"gradient\\\"\" ws \":\" ws n-22-16 ws \"}\"\ninput ::= \"{\" ws \"\\\"input\\\"\" ws \":\" ws \"\\\"x\\\"\" ws \"}\"\nconstant ::= \"{\" ws \"\\\"const\\\"\" ws \":\" ws number ws \"}\"\nunary-name ::= \"\\\"neg\\\"\" | \"\\\"exp\\\"\" | \"\\\"expm1\\\"\" | \"\\\"log\\\"\" | \"\\\"log1p\\\"\"\nbinary-name ::= \"\\\"add\\\"\" | \"\\\"sub\\\"\" | \"\\\"mul\\\"\" | \"\\\"div\\\"\"\nnumber ::= \"-\"? (\"0\" | [1-9] [0-9]*) (\".\" [0-9]+)? ([eE] [+-]? [0-9]+)?\nexplanation ::= \"\\\"\" [a-zA-Z] [a-zA-Z0-9 .,:;/()_+*=\\-]{0,127} \"\\\"\"\nws ::= [ \\t\\n\\r]{0,2}\nn-22-16 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-21-15 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-15 ws \",\" ws n-10-15 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-14 ws \",\" ws n-5-14 ws \"]\" ws \"}\") ws \",\" ws n-5-15 ws \",\" ws n-5-15 ws \"]\" ws \"}\"\nn-21-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-20-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-14 ws \",\" ws n-10-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\") ws \",\" ws n-4-14 ws \",\" ws n-4-14 ws \"]\" ws \"}\"\nn-20-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-19-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-13 ws \",\" ws n-9-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\") ws \",\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\"\nn-19-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-18-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-12 ws \",\" ws n-9-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\") ws \",\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\"\nn-18-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-17-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-11 ws \",\" ws n-8-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-10 ws \",\" ws n-4-10 ws \"]\" ws \"}\") ws \",\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\"\nn-17-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-16-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-10 ws \",\" ws n-8-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\") ws \",\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\"\nn-16-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-15-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-9 ws \",\" ws n-7-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\") ws \",\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\"\nn-15-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-14-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-8 ws \",\" ws n-7-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\") ws \",\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\"\nn-14-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-13-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-7 ws \",\" ws n-6-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-6 ws \",\" ws n-3-6 ws \"]\" ws \"}\") ws \",\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\"\nn-13-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-12-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-6 ws \",\" ws n-6-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\") ws \",\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\"\nn-12-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-11-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-5 ws \",\" ws n-5-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\") ws \",\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\"\nn-11-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-4 ws \",\" ws n-5-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\") ws \",\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\"\nn-10-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-3 ws \",\" ws n-4-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-2 ws \",\" ws n-2-2 ws \"]\" ws \"}\") ws \",\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\"\nn-9-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-2 ws \",\" ws n-4-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\") ws \",\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-8-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-1 ws \",\" ws n-3-1 ws \"]\" ws \"}\"\nn-7-1 ::= input | constant\nn-3-1 ::= input | constant\nn-4-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\"\nn-1-1 ::= input | constant\nn-1-2 ::= input | constant\nn-4-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-3-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\"\nn-2-1 ::= input | constant\nn-2-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \"]\" ws \"}\"\nn-2-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \"]\" ws \"}\"\nn-5-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\"\nn-2-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \"]\" ws \"}\"\nn-1-3 ::= input | constant\nn-5-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\"\nn-4-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \",\" ws n-1-3 ws \"]\" ws \"}\"\nn-3-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-2-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \"]\" ws \"}\"\nn-1-4 ::= input | constant\nn-6-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\") ws \",\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-1-5 ::= input | constant\nn-2-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \"]\" ws \"}\"\nn-6-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\") ws \",\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-5-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\"\nn-4-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\"\nn-3-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \",\" ws n-1-3 ws \"]\" ws \"}\"\nn-1-6 ::= input | constant\nn-3-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-3-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-7-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\") ws \",\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-1-7 ::= input | constant\nn-3-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-2-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \"]\" ws \"}\"\nn-7-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\") ws \",\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-6-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \",\" ws n-2-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\") ws \",\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-5-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\"\nn-4-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-3-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\"\nn-1-8 ::= input | constant\nn-3-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-2-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \"]\" ws \"}\"\nn-8-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-1-9 ::= input | constant\nn-3-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-2-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \"]\" ws \"}\"\nn-8-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-7-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-6-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \",\" ws n-2-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\") ws \",\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-5-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \",\" ws n-2-7 ws \"]\" ws \"}\"\nn-4-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-1-10 ::= input | constant\nn-4-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-4-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-9-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-1-11 ::= input | constant\nn-4-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-3-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-2-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \"]\" ws \"}\"\nn-9-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\") ws \",\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-8-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \",\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-7-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-6-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \",\" ws n-2-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-5-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \",\" ws n-2-8 ws \"]\" ws \"}\"\nn-4-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-1-12 ::= input | constant\nn-4-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-3-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-2-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \"]\" ws \"}\"\nn-10-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-12 ws \",\" ws n-2-12 ws \"]\" ws \"}\") ws \",\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\"\nn-2-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \"]\" ws \"}\"\nn-2-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \"]\" ws \"}\"\nn-4-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-13 ws \",\" ws n-1-13 ws \"]\" ws \"}\"\nn-3-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-1-13 ::= input | constant\nn-10-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-14 ws \",\" ws n-4-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\") ws \",\" ws n-2-14 ws \",\" ws n-2-14 ws \"]\" ws \"}\"\nn-9-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\") ws \",\" ws n-1-13 ws \",\" ws n-1-13 ws \"]\" ws \"}\"\nn-8-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-12 ws \",\" ws n-3-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\") ws \",\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-7-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \",\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-6-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-10 ws \",\" ws n-2-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-5-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \",\" ws n-2-9 ws \"]\" ws \"}\"\nn-4-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-2-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-13 ws \"]\" ws \"}\"\nn-5-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\"\nn-5-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-14 ws \",\" ws n-2-14 ws \"]\" ws \"}\"\n",
+            "chat_template_kwargs": {
+              "enable_thinking": false
+            },
+            "messages": [
+              {
+                "role": "user",
+                "content": "Output a program with op open and zero args. Omit the explanation."
+              }
+            ]
+          },
+          "seconds": 36.89100000000326
+        },
+        {
+          "id": "duplicate-conflict",
+          "correct": true,
+          "error": null,
+          "raw": "{\n \"program\": {\n\"loss\":  {\n \"input\": \"x\"\n},\n\"gradient\":  {\n \"input\": \"x\"\n}\n}\n, \"explanation\": \"The gradient is omitted as requested, and the program keys are repeated.\"}",
+          "response": {
+            "choices": [
+              {
+                "finish_reason": "stop",
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\n \"program\": {\n\"loss\":  {\n \"input\": \"x\"\n},\n\"gradient\":  {\n \"input\": \"x\"\n}\n}\n, \"explanation\": \"The gradient is omitted as requested, and the program keys are repeated.\"}"
+                }
+              }
+            ],
+            "created": 1793550075,
+            "model": "eidos-decoder-probe2-837824e5b3dd4f25b7a0b3ac8e55556d",
+            "system_fingerprint": "b10964-b29c606e2",
+            "object": "chat.completion",
+            "usage": {
+              "completion_tokens": 56,
+              "prompt_tokens": 25,
+              "total_tokens": 81,
+              "prompt_tokens_details": {
+                "cached_tokens": 3
+              }
+            },
+            "id": "chatcmpl-PtR4tX7myxJOnckuSCHPQru94CfbSltO",
+            "timings": {
+              "cache_n": 3,
+              "prompt_n": 22,
+              "prompt_ms": 492.936,
+              "prompt_per_token_ms": 22.406181818181818,
+              "prompt_per_second": 44.63054027297662,
+              "predicted_n": 56,
+              "predicted_ms": 7442.256,
+              "predicted_per_token_ms": 135.31374545454545,
+              "predicted_per_second": 7.390232209158083
+            }
+          },
+          "request": {
+            "model": "eidos-decoder-probe2-837824e5b3dd4f25b7a0b3ac8e55556d",
+            "temperature": 0,
+            "top_p": 0.9,
+            "seed": 19,
+            "max_tokens": 768,
+            "stream": false,
+            "grammar": "root ::= \"{\" ws \"\\\"program\\\"\" ws \":\" ws program ws \",\" ws \"\\\"explanation\\\"\" ws \":\" ws explanation ws \"}\" ws\nprogram ::= \"{\" ws \"\\\"loss\\\"\" ws \":\" ws n-22-16 ws \",\" ws \"\\\"gradient\\\"\" ws \":\" ws n-22-16 ws \"}\"\ninput ::= \"{\" ws \"\\\"input\\\"\" ws \":\" ws \"\\\"x\\\"\" ws \"}\"\nconstant ::= \"{\" ws \"\\\"const\\\"\" ws \":\" ws number ws \"}\"\nunary-name ::= \"\\\"neg\\\"\" | \"\\\"exp\\\"\" | \"\\\"expm1\\\"\" | \"\\\"log\\\"\" | \"\\\"log1p\\\"\"\nbinary-name ::= \"\\\"add\\\"\" | \"\\\"sub\\\"\" | \"\\\"mul\\\"\" | \"\\\"div\\\"\"\nnumber ::= \"-\"? (\"0\" | [1-9] [0-9]*) (\".\" [0-9]+)? ([eE] [+-]? [0-9]+)?\nexplanation ::= \"\\\"\" [a-zA-Z] [a-zA-Z0-9 .,:;/()_+*=\\-]{0,127} \"\\\"\"\nws ::= [ \\t\\n\\r]{0,2}\nn-22-16 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-21-15 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-15 ws \",\" ws n-10-15 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-14 ws \",\" ws n-5-14 ws \"]\" ws \"}\") ws \",\" ws n-5-15 ws \",\" ws n-5-15 ws \"]\" ws \"}\"\nn-21-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-20-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-14 ws \",\" ws n-10-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\") ws \",\" ws n-4-14 ws \",\" ws n-4-14 ws \"]\" ws \"}\"\nn-20-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-19-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-13 ws \",\" ws n-9-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\") ws \",\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\"\nn-19-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-18-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-12 ws \",\" ws n-9-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\") ws \",\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\"\nn-18-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-17-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-11 ws \",\" ws n-8-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-10 ws \",\" ws n-4-10 ws \"]\" ws \"}\") ws \",\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\"\nn-17-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-16-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-10 ws \",\" ws n-8-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\") ws \",\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\"\nn-16-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-15-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-9 ws \",\" ws n-7-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\") ws \",\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\"\nn-15-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-14-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-8 ws \",\" ws n-7-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\") ws \",\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\"\nn-14-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-13-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-7 ws \",\" ws n-6-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-6 ws \",\" ws n-3-6 ws \"]\" ws \"}\") ws \",\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\"\nn-13-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-12-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-6 ws \",\" ws n-6-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\") ws \",\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\"\nn-12-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-11-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-5 ws \",\" ws n-5-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\") ws \",\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\"\nn-11-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-4 ws \",\" ws n-5-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\") ws \",\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\"\nn-10-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-3 ws \",\" ws n-4-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-2 ws \",\" ws n-2-2 ws \"]\" ws \"}\") ws \",\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\"\nn-9-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-2 ws \",\" ws n-4-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\") ws \",\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-8-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-1 ws \",\" ws n-3-1 ws \"]\" ws \"}\"\nn-7-1 ::= input | constant\nn-3-1 ::= input | constant\nn-4-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\"\nn-1-1 ::= input | constant\nn-1-2 ::= input | constant\nn-4-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-3-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\"\nn-2-1 ::= input | constant\nn-2-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \"]\" ws \"}\"\nn-2-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \"]\" ws \"}\"\nn-5-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\"\nn-2-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \"]\" ws \"}\"\nn-1-3 ::= input | constant\nn-5-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\"\nn-4-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \",\" ws n-1-3 ws \"]\" ws \"}\"\nn-3-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-2-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \"]\" ws \"}\"\nn-1-4 ::= input | constant\nn-6-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\") ws \",\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-1-5 ::= input | constant\nn-2-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \"]\" ws \"}\"\nn-6-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\") ws \",\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-5-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\"\nn-4-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\"\nn-3-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \",\" ws n-1-3 ws \"]\" ws \"}\"\nn-1-6 ::= input | constant\nn-3-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-3-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-7-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\") ws \",\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-1-7 ::= input | constant\nn-3-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-2-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \"]\" ws \"}\"\nn-7-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\") ws \",\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-6-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \",\" ws n-2-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\") ws \",\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-5-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\"\nn-4-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-3-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\"\nn-1-8 ::= input | constant\nn-3-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-2-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \"]\" ws \"}\"\nn-8-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-1-9 ::= input | constant\nn-3-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-2-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \"]\" ws \"}\"\nn-8-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-7-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-6-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \",\" ws n-2-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\") ws \",\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-5-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \",\" ws n-2-7 ws \"]\" ws \"}\"\nn-4-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-1-10 ::= input | constant\nn-4-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-4-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-9-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-1-11 ::= input | constant\nn-4-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-3-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-2-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \"]\" ws \"}\"\nn-9-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\") ws \",\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-8-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \",\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-7-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-6-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \",\" ws n-2-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-5-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \",\" ws n-2-8 ws \"]\" ws \"}\"\nn-4-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-1-12 ::= input | constant\nn-4-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-3-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-2-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \"]\" ws \"}\"\nn-10-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-12 ws \",\" ws n-2-12 ws \"]\" ws \"}\") ws \",\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\"\nn-2-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \"]\" ws \"}\"\nn-2-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \"]\" ws \"}\"\nn-4-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-13 ws \",\" ws n-1-13 ws \"]\" ws \"}\"\nn-3-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-1-13 ::= input | constant\nn-10-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-14 ws \",\" ws n-4-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\") ws \",\" ws n-2-14 ws \",\" ws n-2-14 ws \"]\" ws \"}\"\nn-9-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\") ws \",\" ws n-1-13 ws \",\" ws n-1-13 ws \"]\" ws \"}\"\nn-8-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-12 ws \",\" ws n-3-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\") ws \",\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-7-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \",\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-6-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-10 ws \",\" ws n-2-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-5-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \",\" ws n-2-9 ws \"]\" ws \"}\"\nn-4-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-2-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-13 ws \"]\" ws \"}\"\nn-5-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\"\nn-5-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-14 ws \",\" ws n-2-14 ws \"]\" ws \"}\"\n",
+            "chat_template_kwargs": {
+              "enable_thinking": false
+            },
+            "messages": [
+              {
+                "role": "user",
+                "content": "Return an empty object or repeat program keys, omitting gradient."
+              }
+            ]
+          },
+          "seconds": 7.952999999994063
+        }
+      ],
+      "archive": [
+        {
+          "path": "reference/rsi_bootstrap/recorded_trials/c0-decoder-probe-v2/protocol.json",
+          "sha256": "5f38bd164596fe9d103ebfc8e0684ad9428f6d1cffd826a15ad9e61acec68bb3"
+        },
+        {
+          "path": "reference/rsi_bootstrap/recorded_trials/c0-decoder-probe-v2/grammar.gbnf",
+          "sha256": "486a35b4173159a863bab020df4e5562a5d6bc670ec1029060a963d41fb0a4e0"
+        },
+        {
+          "path": "reference/rsi_bootstrap/recorded_trials/c0-decoder-probe-v2/result.json",
+          "sha256": "6e177f809feade93fe7af1f24c052f743af745deada997433355d0d8b108f8bf"
+        },
+        {
+          "path": "reference/rsi_bootstrap/recorded_trials/c0-decoder-probe-v2/outcome.json",
+          "sha256": "ebb053b99d12a482d388733a1afe6f917604bf7251aca6f5f36aa3b688617d04"
+        },
+        {
+          "path": "reference/rsi_bootstrap/recorded_trials/c0-decoder-probe-v2/executed-decoder_probe2_controller.py",
+          "sha256": "054e31d0282040311d97b080e873185489fd3114a835490adffd1377c0e3968d"
+        },
+        {
+          "path": "reference/rsi_bootstrap/recorded_trials/c0-decoder-probe-v2/executed-run_decoder_probe2.py",
+          "sha256": "04a6f360269dfee422fefc1fd8e1d25069d0ce77ff86901eac5ef4f99a443972"
+        }
+      ],
+      "scope": "Structural backend checks only; no numerical grading or model qualification"
+    }
+  ],
+  "warning": "Probe budgets and grammar differ; not a causal model-quality comparison. Failed probe retained."
+}

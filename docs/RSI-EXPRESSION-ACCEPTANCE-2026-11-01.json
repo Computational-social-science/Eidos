@@ -1,0 +1,306 @@
+{
+  "schema": "eidos.rsi.closed-expression-development.v1",
+  "status": "PASS",
+  "scope": "closed public development language; no model or sealed evaluation",
+  "observed_at": "2026-11-01T14:57:13.476353+00:00",
+  "command": [
+    "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "reference/rsi_bootstrap/test_expressions.py",
+    "reference/rsi_bootstrap/test_grader.py",
+    "-q",
+    "--junitxml=E:\\2026-AI4S\\Eidos\\.scratch\\quality\\rsi-bootstrap-tests.xml"
+  ],
+  "returncode": 0,
+  "tests": 45,
+  "source_hashes": {
+    "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+    "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+    "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+    "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+    "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+    ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+  },
+  "source_stable": true,
+  "junit_sha256": "a497b79f6e1e5b485d926a10d5b8c410894e64d85befa5d94a45f2bd80052b40",
+  "runtime": {
+    "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+    "numpy": "2.5.4"
+  },
+  "outcomes": [
+    {
+      "name": "test_actual_interpreted_repair_matches_independent_reference",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.038",
+      "passed": true
+    },
+    {
+      "name": "test_unsafe_or_wrongly_typed_programs_are_refused[node0]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.001",
+      "passed": true
+    },
+    {
+      "name": "test_unsafe_or_wrongly_typed_programs_are_refused[node1]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_unsafe_or_wrongly_typed_programs_are_refused[node2]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_unsafe_or_wrongly_typed_programs_are_refused[node3]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_unsafe_or_wrongly_typed_programs_are_refused[node4]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_unsafe_or_wrongly_typed_programs_are_refused[node5]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_unsafe_or_wrongly_typed_programs_are_refused[node6]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_unsafe_or_wrongly_typed_programs_are_refused[node7]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_unsafe_or_wrongly_typed_programs_are_refused[node8]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_malformed_duplicate_and_nonfinite_json_are_refused[{\"loss\":{\"const\":1},\"loss\":{\"const\":2},\"gradient\":{\"const\":1}}]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_malformed_duplicate_and_nonfinite_json_are_refused[{\"loss\":{\"const\":NaN},\"gradient\":{\"const\":1}}]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_malformed_duplicate_and_nonfinite_json_are_refused[{\"loss\":{\"const\":Infinity},\"gradient\":{\"const\":1}}]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_malformed_duplicate_and_nonfinite_json_are_refused[{\"loss\":{\"const\":1e999},\"gradient\":{\"const\":1}}]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_malformed_duplicate_and_nonfinite_json_are_refused[{\"loss\":]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_malformed_duplicate_and_nonfinite_json_are_refused[[]]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_size_depth_and_node_budgets_are_enforced",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.001",
+      "passed": true
+    },
+    {
+      "name": "test_invalid_unselected_branch_is_still_validated",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_nonfinite_numeric_results_are_rejected_by_grader",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.003",
+      "passed": true
+    },
+    {
+      "name": "test_inputs_cannot_expand_the_execution_contract[value0]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_inputs_cannot_expand_the_execution_contract[value1]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_inputs_cannot_expand_the_execution_contract[value2]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_inputs_cannot_expand_the_execution_contract[value3]",
+      "class": "reference.rsi_bootstrap.test_expressions",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_protocol_domain_and_precision_convergence",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.101",
+      "passed": true
+    },
+    {
+      "name": "test_reference_at_independent_ordinary_point",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.003",
+      "passed": true
+    },
+    {
+      "name": "test_oracle_tail_requires_sufficient_precision",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.002",
+      "passed": true
+    },
+    {
+      "name": "test_correct_ordinary_formula_can_pass[float32]",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.004",
+      "passed": true
+    },
+    {
+      "name": "test_correct_ordinary_formula_can_pass[float64]",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.003",
+      "passed": true
+    },
+    {
+      "name": "test_result_contract_refuses_faults[nonfinite]",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.003",
+      "passed": true
+    },
+    {
+      "name": "test_result_contract_refuses_faults[shape]",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.003",
+      "passed": true
+    },
+    {
+      "name": "test_result_contract_refuses_faults[dtype]",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.003",
+      "passed": true
+    },
+    {
+      "name": "test_small_results_cannot_hide_in_absolute_tolerance",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.002",
+      "passed": true
+    },
+    {
+      "name": "test_partial_repair_does_not_certify_derivative",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.001",
+      "passed": true
+    },
+    {
+      "name": "test_complete_calibration_has_all_controls_and_no_model_claim",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.440",
+      "passed": true
+    },
+    {
+      "name": "test_invalid_reference_input_never_produces_a_pass[0.0]",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_invalid_reference_input_never_produces_a_pass[-1.0]",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_invalid_reference_input_never_produces_a_pass[nan]",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_invalid_reference_input_never_produces_a_pass[inf]",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.000",
+      "passed": true
+    },
+    {
+      "name": "test_changed_protocol_during_execution_cannot_publish_pass",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.511",
+      "passed": true
+    },
+    {
+      "name": "test_runtime_identity_drift_cannot_publish_pass",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.436",
+      "passed": true
+    },
+    {
+      "name": "test_output_cannot_overwrite_bound_inputs[grader.py]",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.002",
+      "passed": true
+    },
+    {
+      "name": "test_output_cannot_overwrite_bound_inputs[test_grader.py]",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.002",
+      "passed": true
+    },
+    {
+      "name": "test_output_cannot_overwrite_bound_inputs[protocol]",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.002",
+      "passed": true
+    },
+    {
+      "name": "test_output_hardlink_alias_cannot_overwrite_input",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.005",
+      "passed": true
+    },
+    {
+      "name": "test_error_rounding_cannot_admit_value_above_tolerance",
+      "class": "reference.rsi_bootstrap.test_grader",
+      "seconds": "0.000",
+      "passed": true
+    }
+  ],
+  "model_evaluation": "NOT_RUN",
+  "sealed_evaluation": "NOT_RUN",
+  "scientific_rsi": "NOT_DEMONSTRATED"
+}

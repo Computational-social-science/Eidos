@@ -96,6 +96,11 @@ commits may advance `main` without changing the frozen tag.
 an experimental objective. Autonomous scientific RSI remains unproven; the
 current evidence does not establish that it is impossible either.
 
+Execution has started with a public numerical-oracle calibration and a C0
+specification. See the [dated execution record](RSI-EXECUTION-2026-11-01.md)
+for measured results and remaining gates; no model or sealed-task result is
+implied by this checkpoint.
+
 ## 3. Why extended development left important defects
 
 These are evidence-backed failure patterns, not an attribution of every defect

@@ -1,0 +1,1976 @@
+{
+  "schema": "eidos.rsi.development-oracle-calibration.v1",
+  "status": "PASS",
+  "observed_at": "2026-11-01T14:46:24.684572+00:00",
+  "scope": "public development grader calibration, externally authored controls",
+  "case_count": 23,
+  "control_count": 9,
+  "reference_precision": [
+    420,
+    520
+  ],
+  "reference_convergence": "PASS",
+  "relative_tolerances": {
+    "float32": 2e-05,
+    "float64": 2e-12
+  },
+  "source_hashes": {
+    ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f",
+    "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+    "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7"
+  },
+  "source_stability": "PASS: beginning and ending hashes agree",
+  "runtime": {
+    "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+    "version": "3.12.4",
+    "numpy": "2.5.4",
+    "numpy_module": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Lib\\site-packages\\numpy\\__init__.py",
+    "device": "CPU",
+    "seed": null,
+    "seed_reason": "deterministic enumerated controls; no RNG or model call"
+  },
+  "controls": {
+    "repair": {
+      "expected": "PASS",
+      "observed": "PASS",
+      "points": [
+        {
+          "case": "float32-small-0",
+          "dtype": "float32",
+          "represented_input": 1.0000000031710769e-30,
+          "passed": true,
+          "loss_relative_error": 1.2681199929677224e-10,
+          "gradient_relative_error": 1.8218543118564412e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-small-1",
+          "dtype": "float32",
+          "represented_input": 9.999999960041972e-13,
+          "passed": true,
+          "loss_relative_error": 1.3742124708259266e-08,
+          "gradient_relative_error": 8.091302783389216e-09,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-small-2",
+          "dtype": "float32",
+          "represented_input": 9.99999993922529e-09,
+          "passed": true,
+          "loss_relative_error": 1.32853951600674e-08,
+          "gradient_relative_error": 1.0774710150301928e-09,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-small-3",
+          "dtype": "float32",
+          "represented_input": 9.999999747378752e-06,
+          "passed": true,
+          "loss_relative_error": 3.2991434462980414e-08,
+          "gradient_relative_error": 2.527058452206597e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-small-4",
+          "dtype": "float32",
+          "represented_input": 0.10000000149011612,
+          "passed": true,
+          "loss_relative_error": 4.810561254730654e-08,
+          "gradient_relative_error": 5.227619732419704e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-cutoff-below",
+          "dtype": "float32",
+          "represented_input": 0.6931471228599548,
+          "passed": true,
+          "loss_relative_error": 9.148698363887302e-08,
+          "gradient_relative_error": 3.8092981724550265e-09,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-cutoff-above",
+          "dtype": "float32",
+          "represented_input": 0.6931472420692444,
+          "passed": true,
+          "loss_relative_error": 5.495665655711309e-09,
+          "gradient_relative_error": 6.341394982622004e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-1",
+          "dtype": "float32",
+          "represented_input": 1.0,
+          "passed": true,
+          "loss_relative_error": 6.341415988593187e-08,
+          "gradient_relative_error": 8.386425153419426e-09,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-20",
+          "dtype": "float32",
+          "represented_input": 20.0,
+          "passed": true,
+          "loss_relative_error": 3.279960020038934e-08,
+          "gradient_relative_error": 3.176902335465949e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-50",
+          "dtype": "float32",
+          "represented_input": 50.0,
+          "passed": true,
+          "loss_relative_error": 2.3533285418565336e-08,
+          "gradient_relative_error": 2.353328541856524e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-80",
+          "dtype": "float32",
+          "represented_input": 80.0,
+          "passed": true,
+          "loss_relative_error": 4.6669985540386757e-08,
+          "gradient_relative_error": 4.6669985540386757e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-small-0",
+          "dtype": "float64",
+          "represented_input": 1e-100,
+          "passed": true,
+          "loss_relative_error": 4.807385026031791e-17,
+          "gradient_relative_error": 3.58947909123628e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-small-1",
+          "dtype": "float64",
+          "represented_input": 1e-16,
+          "passed": true,
+          "loss_relative_error": 9.235021743842541e-17,
+          "gradient_relative_error": 2.90977867240346e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-small-2",
+          "dtype": "float64",
+          "represented_input": 1e-12,
+          "passed": true,
+          "loss_relative_error": 1.2772185310188677e-18,
+          "gradient_relative_error": 1.0195696004597326e-16,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-small-3",
+          "dtype": "float64",
+          "represented_input": 1e-08,
+          "passed": true,
+          "loss_relative_error": 7.477018012949381e-17,
+          "gradient_relative_error": 1.3642238512379335e-16,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-small-4",
+          "dtype": "float64",
+          "represented_input": 0.1,
+          "passed": true,
+          "loss_relative_error": 1.5674043417414208e-17,
+          "gradient_relative_error": 3.4093584288407766e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-cutoff-below",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599452,
+          "passed": true,
+          "loss_relative_error": 2.27084871949254e-16,
+          "gradient_relative_error": 4.6380936276926034e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-cutoff-above",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599454,
+          "passed": true,
+          "loss_relative_error": 6.691354675850817e-17,
+          "gradient_relative_error": 6.464136618558964e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-1",
+          "dtype": "float64",
+          "represented_input": 1.0,
+          "passed": true,
+          "loss_relative_error": 8.147941016993912e-17,
+          "gradient_relative_error": 5.166376031930387e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-20",
+          "dtype": "float64",
+          "represented_input": 20.0,
+          "passed": true,
+          "loss_relative_error": 1.1168369270701502e-17,
+          "gradient_relative_error": 4.4117945463928405e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-50",
+          "dtype": "float64",
+          "represented_input": 50.0,
+          "passed": true,
+          "loss_relative_error": 1.9466451342602354e-17,
+          "gradient_relative_error": 1.9466354905109954e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-80",
+          "dtype": "float64",
+          "represented_input": 80.0,
+          "passed": true,
+          "loss_relative_error": 7.00146489005354e-17,
+          "gradient_relative_error": 7.00146489005354e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-600",
+          "dtype": "float64",
+          "represented_input": 600.0,
+          "passed": true,
+          "loss_relative_error": 2.406184391638477e-17,
+          "gradient_relative_error": 2.406184391638477e-17,
+          "reason": "within relative tolerance"
+        }
+      ]
+    },
+    "textbook": {
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "points": [
+        {
+          "case": "float32-small-0",
+          "dtype": "float32",
+          "represented_input": 1.0000000031710769e-30,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: nonfinite"
+        },
+        {
+          "case": "float32-small-1",
+          "dtype": "float32",
+          "represented_input": 9.999999960041972e-13,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: nonfinite"
+        },
+        {
+          "case": "float32-small-2",
+          "dtype": "float32",
+          "represented_input": 9.99999993922529e-09,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: nonfinite"
+        },
+        {
+          "case": "float32-small-3",
+          "dtype": "float32",
+          "represented_input": 9.999999747378752e-06,
+          "passed": false,
+          "loss_relative_error": 0.00011833831283956598,
+          "gradient_relative_error": 0.0013612039170801456,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-small-4",
+          "dtype": "float32",
+          "represented_input": 0.10000000149011612,
+          "passed": true,
+          "loss_relative_error": 4.810561254730654e-08,
+          "gradient_relative_error": 1.4832141262010957e-07,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-cutoff-below",
+          "dtype": "float32",
+          "represented_input": 0.6931471228599548,
+          "passed": true,
+          "loss_relative_error": 8.049565290749988e-08,
+          "gradient_relative_error": 1.1539997762157687e-07,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-cutoff-above",
+          "dtype": "float32",
+          "represented_input": 0.6931472420692444,
+          "passed": true,
+          "loss_relative_error": 9.148699871791389e-08,
+          "gradient_relative_error": 6.341394982622004e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-1",
+          "dtype": "float32",
+          "represented_input": 1.0,
+          "passed": true,
+          "loss_relative_error": 1.933637448478323e-07,
+          "gradient_relative_error": 9.403115285589066e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-20",
+          "dtype": "float32",
+          "represented_input": 20.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 3.176902335465949e-08,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-x-50",
+          "dtype": "float32",
+          "represented_input": 50.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 2.353328541856524e-08,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-x-80",
+          "dtype": "float32",
+          "represented_input": 80.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 4.6669985540386757e-08,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-0",
+          "dtype": "float64",
+          "represented_input": 1e-100,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: nonfinite"
+        },
+        {
+          "case": "float64-small-1",
+          "dtype": "float64",
+          "represented_input": 1e-16,
+          "passed": false,
+          "loss_relative_error": 0.002838139363062311,
+          "gradient_relative_error": 0.09928007452590087,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-2",
+          "dtype": "float64",
+          "represented_input": 1e-12,
+          "passed": false,
+          "loss_relative_error": 8.006205857294543e-07,
+          "gradient_relative_error": 2.2122209002798564e-05,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-3",
+          "dtype": "float64",
+          "represented_input": 1e-08,
+          "passed": false,
+          "loss_relative_error": 5.442121086760241e-10,
+          "gradient_relative_error": 1.0024759359939431e-08,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-4",
+          "dtype": "float64",
+          "represented_input": 0.1,
+          "passed": true,
+          "loss_relative_error": 2.0447396026220447e-16,
+          "gradient_relative_error": 5.263696546006325e-16,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-cutoff-below",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599452,
+          "passed": true,
+          "loss_relative_error": 9.325777843223769e-17,
+          "gradient_relative_error": 1.756636686481052e-16,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-cutoff-above",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599454,
+          "passed": true,
+          "loss_relative_error": 9.325777843223773e-17,
+          "gradient_relative_error": 6.464136618558964e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-1",
+          "dtype": "float64",
+          "represented_input": 1.0,
+          "passed": true,
+          "loss_relative_error": 8.147941016993912e-17,
+          "gradient_relative_error": 5.166376031930387e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-20",
+          "dtype": "float64",
+          "represented_input": 20.0,
+          "passed": false,
+          "loss_relative_error": 2.0033980033130906e-08,
+          "gradient_relative_error": 4.4117945463928405e-17,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-50",
+          "dtype": "float64",
+          "represented_input": 50.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.9466354905109954e-17,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-80",
+          "dtype": "float64",
+          "represented_input": 80.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 7.00146489005354e-17,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-600",
+          "dtype": "float64",
+          "represented_input": 600.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 2.406184391638477e-17,
+          "reason": "relative error"
+        }
+      ]
+    },
+    "loss_only": {
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "points": [
+        {
+          "case": "float32-small-0",
+          "dtype": "float32",
+          "represented_input": 1.0000000031710769e-30,
+          "passed": false,
+          "loss_relative_error": 1.2681199929677224e-10,
+          "gradient_relative_error": null,
+          "reason": "gradient: nonfinite"
+        },
+        {
+          "case": "float32-small-1",
+          "dtype": "float32",
+          "represented_input": 9.999999960041972e-13,
+          "passed": false,
+          "loss_relative_error": 1.3742124708259266e-08,
+          "gradient_relative_error": null,
+          "reason": "gradient: nonfinite"
+        },
+        {
+          "case": "float32-small-2",
+          "dtype": "float32",
+          "represented_input": 9.99999993922529e-09,
+          "passed": false,
+          "loss_relative_error": 1.32853951600674e-08,
+          "gradient_relative_error": null,
+          "reason": "gradient: nonfinite"
+        },
+        {
+          "case": "float32-small-3",
+          "dtype": "float32",
+          "represented_input": 9.999999747378752e-06,
+          "passed": false,
+          "loss_relative_error": 3.2991434462980414e-08,
+          "gradient_relative_error": 0.0013612039170801456,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-small-4",
+          "dtype": "float32",
+          "represented_input": 0.10000000149011612,
+          "passed": true,
+          "loss_relative_error": 4.810561254730654e-08,
+          "gradient_relative_error": 1.4832141262010957e-07,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-cutoff-below",
+          "dtype": "float32",
+          "represented_input": 0.6931471228599548,
+          "passed": true,
+          "loss_relative_error": 9.148698363887302e-08,
+          "gradient_relative_error": 1.1539997762157687e-07,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-cutoff-above",
+          "dtype": "float32",
+          "represented_input": 0.6931472420692444,
+          "passed": true,
+          "loss_relative_error": 5.495665655711309e-09,
+          "gradient_relative_error": 6.341394982622004e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-1",
+          "dtype": "float32",
+          "represented_input": 1.0,
+          "passed": true,
+          "loss_relative_error": 6.341415988593187e-08,
+          "gradient_relative_error": 9.403115285589066e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-20",
+          "dtype": "float32",
+          "represented_input": 20.0,
+          "passed": true,
+          "loss_relative_error": 3.279960020038934e-08,
+          "gradient_relative_error": 3.176902335465949e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-50",
+          "dtype": "float32",
+          "represented_input": 50.0,
+          "passed": true,
+          "loss_relative_error": 2.3533285418565336e-08,
+          "gradient_relative_error": 2.353328541856524e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-80",
+          "dtype": "float32",
+          "represented_input": 80.0,
+          "passed": true,
+          "loss_relative_error": 4.6669985540386757e-08,
+          "gradient_relative_error": 4.6669985540386757e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-small-0",
+          "dtype": "float64",
+          "represented_input": 1e-100,
+          "passed": false,
+          "loss_relative_error": 4.807385026031791e-17,
+          "gradient_relative_error": null,
+          "reason": "gradient: nonfinite"
+        },
+        {
+          "case": "float64-small-1",
+          "dtype": "float64",
+          "represented_input": 1e-16,
+          "passed": false,
+          "loss_relative_error": 9.235021743842541e-17,
+          "gradient_relative_error": 0.09928007452590087,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-2",
+          "dtype": "float64",
+          "represented_input": 1e-12,
+          "passed": false,
+          "loss_relative_error": 1.2772185310188677e-18,
+          "gradient_relative_error": 2.2122209002798564e-05,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-3",
+          "dtype": "float64",
+          "represented_input": 1e-08,
+          "passed": false,
+          "loss_relative_error": 7.477018012949381e-17,
+          "gradient_relative_error": 1.0024759359939431e-08,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-4",
+          "dtype": "float64",
+          "represented_input": 0.1,
+          "passed": true,
+          "loss_relative_error": 1.5674043417414208e-17,
+          "gradient_relative_error": 5.263696546006325e-16,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-cutoff-below",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599452,
+          "passed": true,
+          "loss_relative_error": 2.27084871949254e-16,
+          "gradient_relative_error": 1.756636686481052e-16,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-cutoff-above",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599454,
+          "passed": true,
+          "loss_relative_error": 6.691354675850817e-17,
+          "gradient_relative_error": 6.464136618558964e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-1",
+          "dtype": "float64",
+          "represented_input": 1.0,
+          "passed": true,
+          "loss_relative_error": 8.147941016993912e-17,
+          "gradient_relative_error": 5.166376031930387e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-20",
+          "dtype": "float64",
+          "represented_input": 20.0,
+          "passed": true,
+          "loss_relative_error": 1.1168369270701502e-17,
+          "gradient_relative_error": 4.4117945463928405e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-50",
+          "dtype": "float64",
+          "represented_input": 50.0,
+          "passed": true,
+          "loss_relative_error": 1.9466451342602354e-17,
+          "gradient_relative_error": 1.9466354905109954e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-80",
+          "dtype": "float64",
+          "represented_input": 80.0,
+          "passed": true,
+          "loss_relative_error": 7.00146489005354e-17,
+          "gradient_relative_error": 7.00146489005354e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-600",
+          "dtype": "float64",
+          "represented_input": 600.0,
+          "passed": true,
+          "loss_relative_error": 2.406184391638477e-17,
+          "gradient_relative_error": 2.406184391638477e-17,
+          "reason": "within relative tolerance"
+        }
+      ]
+    },
+    "gradient_floor": {
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "points": [
+        {
+          "case": "float32-small-0",
+          "dtype": "float32",
+          "represented_input": 1.0000000031710769e-30,
+          "passed": true,
+          "loss_relative_error": 1.2681199929677224e-10,
+          "gradient_relative_error": 1.8218543118564412e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-small-1",
+          "dtype": "float32",
+          "represented_input": 9.999999960041972e-13,
+          "passed": true,
+          "loss_relative_error": 1.3742124708259266e-08,
+          "gradient_relative_error": 8.091302783389216e-09,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-small-2",
+          "dtype": "float32",
+          "represented_input": 9.99999993922529e-09,
+          "passed": true,
+          "loss_relative_error": 1.32853951600674e-08,
+          "gradient_relative_error": 1.0774710150301928e-09,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-small-3",
+          "dtype": "float32",
+          "represented_input": 9.999999747378752e-06,
+          "passed": true,
+          "loss_relative_error": 3.2991434462980414e-08,
+          "gradient_relative_error": 2.527058452206597e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-small-4",
+          "dtype": "float32",
+          "represented_input": 0.10000000149011612,
+          "passed": true,
+          "loss_relative_error": 4.810561254730654e-08,
+          "gradient_relative_error": 5.227619732419704e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-cutoff-below",
+          "dtype": "float32",
+          "represented_input": 0.6931471228599548,
+          "passed": true,
+          "loss_relative_error": 9.148698363887302e-08,
+          "gradient_relative_error": 3.8092981724550265e-09,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-cutoff-above",
+          "dtype": "float32",
+          "represented_input": 0.6931472420692444,
+          "passed": true,
+          "loss_relative_error": 5.495665655711309e-09,
+          "gradient_relative_error": 6.341394982622004e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-1",
+          "dtype": "float32",
+          "represented_input": 1.0,
+          "passed": true,
+          "loss_relative_error": 6.341415988593187e-08,
+          "gradient_relative_error": 8.386425153419426e-09,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-20",
+          "dtype": "float32",
+          "represented_input": 20.0,
+          "passed": true,
+          "loss_relative_error": 3.279960020038934e-08,
+          "gradient_relative_error": 3.176902335465949e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-50",
+          "dtype": "float32",
+          "represented_input": 50.0,
+          "passed": false,
+          "loss_relative_error": 2.3533285418565336e-08,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-x-80",
+          "dtype": "float32",
+          "represented_input": 80.0,
+          "passed": false,
+          "loss_relative_error": 4.6669985540386757e-08,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-0",
+          "dtype": "float64",
+          "represented_input": 1e-100,
+          "passed": true,
+          "loss_relative_error": 4.807385026031791e-17,
+          "gradient_relative_error": 3.58947909123628e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-small-1",
+          "dtype": "float64",
+          "represented_input": 1e-16,
+          "passed": true,
+          "loss_relative_error": 9.235021743842541e-17,
+          "gradient_relative_error": 2.90977867240346e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-small-2",
+          "dtype": "float64",
+          "represented_input": 1e-12,
+          "passed": true,
+          "loss_relative_error": 1.2772185310188677e-18,
+          "gradient_relative_error": 1.0195696004597326e-16,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-small-3",
+          "dtype": "float64",
+          "represented_input": 1e-08,
+          "passed": true,
+          "loss_relative_error": 7.477018012949381e-17,
+          "gradient_relative_error": 1.3642238512379335e-16,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-small-4",
+          "dtype": "float64",
+          "represented_input": 0.1,
+          "passed": true,
+          "loss_relative_error": 1.5674043417414208e-17,
+          "gradient_relative_error": 3.4093584288407766e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-cutoff-below",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599452,
+          "passed": true,
+          "loss_relative_error": 2.27084871949254e-16,
+          "gradient_relative_error": 4.6380936276926034e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-cutoff-above",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599454,
+          "passed": true,
+          "loss_relative_error": 6.691354675850817e-17,
+          "gradient_relative_error": 6.464136618558964e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-1",
+          "dtype": "float64",
+          "represented_input": 1.0,
+          "passed": true,
+          "loss_relative_error": 8.147941016993912e-17,
+          "gradient_relative_error": 5.166376031930387e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-20",
+          "dtype": "float64",
+          "represented_input": 20.0,
+          "passed": true,
+          "loss_relative_error": 1.1168369270701502e-17,
+          "gradient_relative_error": 4.4117945463928405e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-50",
+          "dtype": "float64",
+          "represented_input": 50.0,
+          "passed": false,
+          "loss_relative_error": 1.9466451342602354e-17,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-80",
+          "dtype": "float64",
+          "represented_input": 80.0,
+          "passed": false,
+          "loss_relative_error": 7.00146489005354e-17,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-600",
+          "dtype": "float64",
+          "represented_input": 600.0,
+          "passed": false,
+          "loss_relative_error": 2.406184391638477e-17,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        }
+      ]
+    },
+    "log1p_only": {
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "points": [
+        {
+          "case": "float32-small-0",
+          "dtype": "float32",
+          "represented_input": 1.0000000031710769e-30,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: nonfinite"
+        },
+        {
+          "case": "float32-small-1",
+          "dtype": "float32",
+          "represented_input": 9.999999960041972e-13,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: nonfinite"
+        },
+        {
+          "case": "float32-small-2",
+          "dtype": "float32",
+          "represented_input": 9.99999993922529e-09,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: nonfinite"
+        },
+        {
+          "case": "float32-small-3",
+          "dtype": "float32",
+          "represented_input": 9.999999747378752e-06,
+          "passed": false,
+          "loss_relative_error": 0.00011833831283956598,
+          "gradient_relative_error": 2.527058452206597e-08,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-small-4",
+          "dtype": "float32",
+          "represented_input": 0.10000000149011612,
+          "passed": true,
+          "loss_relative_error": 4.810561254730654e-08,
+          "gradient_relative_error": 5.227619732419704e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-cutoff-below",
+          "dtype": "float32",
+          "represented_input": 0.6931471228599548,
+          "passed": true,
+          "loss_relative_error": 8.049565290749988e-08,
+          "gradient_relative_error": 3.8092981724550265e-09,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-cutoff-above",
+          "dtype": "float32",
+          "represented_input": 0.6931472420692444,
+          "passed": true,
+          "loss_relative_error": 5.495665655711309e-09,
+          "gradient_relative_error": 6.341394982622004e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-1",
+          "dtype": "float32",
+          "represented_input": 1.0,
+          "passed": true,
+          "loss_relative_error": 6.341415988593187e-08,
+          "gradient_relative_error": 8.386425153419426e-09,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-20",
+          "dtype": "float32",
+          "represented_input": 20.0,
+          "passed": true,
+          "loss_relative_error": 3.279960020038934e-08,
+          "gradient_relative_error": 3.176902335465949e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-50",
+          "dtype": "float32",
+          "represented_input": 50.0,
+          "passed": true,
+          "loss_relative_error": 2.3533285418565336e-08,
+          "gradient_relative_error": 2.353328541856524e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-80",
+          "dtype": "float32",
+          "represented_input": 80.0,
+          "passed": true,
+          "loss_relative_error": 4.6669985540386757e-08,
+          "gradient_relative_error": 4.6669985540386757e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-small-0",
+          "dtype": "float64",
+          "represented_input": 1e-100,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: nonfinite"
+        },
+        {
+          "case": "float64-small-1",
+          "dtype": "float64",
+          "represented_input": 1e-16,
+          "passed": false,
+          "loss_relative_error": 0.002838139363062311,
+          "gradient_relative_error": 2.90977867240346e-17,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-2",
+          "dtype": "float64",
+          "represented_input": 1e-12,
+          "passed": false,
+          "loss_relative_error": 8.006205857294543e-07,
+          "gradient_relative_error": 1.0195696004597326e-16,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-3",
+          "dtype": "float64",
+          "represented_input": 1e-08,
+          "passed": false,
+          "loss_relative_error": 5.442121086760241e-10,
+          "gradient_relative_error": 1.3642238512379335e-16,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-4",
+          "dtype": "float64",
+          "represented_input": 0.1,
+          "passed": true,
+          "loss_relative_error": 2.0447396026220447e-16,
+          "gradient_relative_error": 3.4093584288407766e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-cutoff-below",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599452,
+          "passed": true,
+          "loss_relative_error": 9.325777843223769e-17,
+          "gradient_relative_error": 4.6380936276926034e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-cutoff-above",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599454,
+          "passed": true,
+          "loss_relative_error": 6.691354675850817e-17,
+          "gradient_relative_error": 6.464136618558964e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-1",
+          "dtype": "float64",
+          "represented_input": 1.0,
+          "passed": true,
+          "loss_relative_error": 8.147941016993912e-17,
+          "gradient_relative_error": 5.166376031930387e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-20",
+          "dtype": "float64",
+          "represented_input": 20.0,
+          "passed": true,
+          "loss_relative_error": 1.1168369270701502e-17,
+          "gradient_relative_error": 4.4117945463928405e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-50",
+          "dtype": "float64",
+          "represented_input": 50.0,
+          "passed": true,
+          "loss_relative_error": 1.9466451342602354e-17,
+          "gradient_relative_error": 1.9466354905109954e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-80",
+          "dtype": "float64",
+          "represented_input": 80.0,
+          "passed": true,
+          "loss_relative_error": 7.00146489005354e-17,
+          "gradient_relative_error": 7.00146489005354e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-600",
+          "dtype": "float64",
+          "represented_input": 600.0,
+          "passed": true,
+          "loss_relative_error": 2.406184391638477e-17,
+          "gradient_relative_error": 2.406184391638477e-17,
+          "reason": "within relative tolerance"
+        }
+      ]
+    },
+    "expm1_only": {
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "points": [
+        {
+          "case": "float32-small-0",
+          "dtype": "float32",
+          "represented_input": 1.0000000031710769e-30,
+          "passed": true,
+          "loss_relative_error": 1.2681199929677224e-10,
+          "gradient_relative_error": 1.8218543118564412e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-small-1",
+          "dtype": "float32",
+          "represented_input": 9.999999960041972e-13,
+          "passed": true,
+          "loss_relative_error": 1.3742124708259266e-08,
+          "gradient_relative_error": 8.091302783389216e-09,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-small-2",
+          "dtype": "float32",
+          "represented_input": 9.99999993922529e-09,
+          "passed": true,
+          "loss_relative_error": 1.32853951600674e-08,
+          "gradient_relative_error": 1.0774710150301928e-09,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-small-3",
+          "dtype": "float32",
+          "represented_input": 9.999999747378752e-06,
+          "passed": true,
+          "loss_relative_error": 3.2991434462980414e-08,
+          "gradient_relative_error": 2.527058452206597e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-small-4",
+          "dtype": "float32",
+          "represented_input": 0.10000000149011612,
+          "passed": true,
+          "loss_relative_error": 4.810561254730654e-08,
+          "gradient_relative_error": 5.227619732419704e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-cutoff-below",
+          "dtype": "float32",
+          "represented_input": 0.6931471228599548,
+          "passed": true,
+          "loss_relative_error": 9.148698363887302e-08,
+          "gradient_relative_error": 3.8092981724550265e-09,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-cutoff-above",
+          "dtype": "float32",
+          "represented_input": 0.6931472420692444,
+          "passed": true,
+          "loss_relative_error": 9.148699871791389e-08,
+          "gradient_relative_error": 6.341394982622004e-08,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-1",
+          "dtype": "float32",
+          "represented_input": 1.0,
+          "passed": true,
+          "loss_relative_error": 1.5606325950183408e-09,
+          "gradient_relative_error": 8.386425153419426e-09,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float32-x-20",
+          "dtype": "float32",
+          "represented_input": 20.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 3.176902335465949e-08,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-x-50",
+          "dtype": "float32",
+          "represented_input": 50.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 2.353328541856524e-08,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-x-80",
+          "dtype": "float32",
+          "represented_input": 80.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 4.6669985540386757e-08,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-0",
+          "dtype": "float64",
+          "represented_input": 1e-100,
+          "passed": true,
+          "loss_relative_error": 4.807385026031791e-17,
+          "gradient_relative_error": 3.58947909123628e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-small-1",
+          "dtype": "float64",
+          "represented_input": 1e-16,
+          "passed": true,
+          "loss_relative_error": 9.235021743842541e-17,
+          "gradient_relative_error": 2.90977867240346e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-small-2",
+          "dtype": "float64",
+          "represented_input": 1e-12,
+          "passed": true,
+          "loss_relative_error": 1.2772185310188677e-18,
+          "gradient_relative_error": 1.0195696004597326e-16,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-small-3",
+          "dtype": "float64",
+          "represented_input": 1e-08,
+          "passed": true,
+          "loss_relative_error": 7.477018012949381e-17,
+          "gradient_relative_error": 1.3642238512379335e-16,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-small-4",
+          "dtype": "float64",
+          "represented_input": 0.1,
+          "passed": true,
+          "loss_relative_error": 1.5674043417414208e-17,
+          "gradient_relative_error": 3.4093584288407766e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-cutoff-below",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599452,
+          "passed": true,
+          "loss_relative_error": 2.27084871949254e-16,
+          "gradient_relative_error": 4.6380936276926034e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-cutoff-above",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599454,
+          "passed": true,
+          "loss_relative_error": 9.325777843223773e-17,
+          "gradient_relative_error": 6.464136618558964e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-1",
+          "dtype": "float64",
+          "represented_input": 1.0,
+          "passed": true,
+          "loss_relative_error": 8.147941016993912e-17,
+          "gradient_relative_error": 5.166376031930387e-17,
+          "reason": "within relative tolerance"
+        },
+        {
+          "case": "float64-x-20",
+          "dtype": "float64",
+          "represented_input": 20.0,
+          "passed": false,
+          "loss_relative_error": 2.0033980033130906e-08,
+          "gradient_relative_error": 4.4117945463928405e-17,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-50",
+          "dtype": "float64",
+          "represented_input": 50.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.9466354905109954e-17,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-80",
+          "dtype": "float64",
+          "represented_input": 80.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 7.00146489005354e-17,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-600",
+          "dtype": "float64",
+          "represented_input": 600.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 2.406184391638477e-17,
+          "reason": "relative error"
+        }
+      ]
+    },
+    "sign_flip": {
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "points": [
+        {
+          "case": "float32-small-0",
+          "dtype": "float32",
+          "represented_input": 1.0000000031710769e-30,
+          "passed": false,
+          "loss_relative_error": 1.2681199929677224e-10,
+          "gradient_relative_error": 2.000000018218543,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-small-1",
+          "dtype": "float32",
+          "represented_input": 9.999999960041972e-13,
+          "passed": false,
+          "loss_relative_error": 1.3742124708259266e-08,
+          "gradient_relative_error": 1.9999999919086973,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-small-2",
+          "dtype": "float32",
+          "represented_input": 9.99999993922529e-09,
+          "passed": false,
+          "loss_relative_error": 1.32853951600674e-08,
+          "gradient_relative_error": 1.999999998922529,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-small-3",
+          "dtype": "float32",
+          "represented_input": 9.999999747378752e-06,
+          "passed": false,
+          "loss_relative_error": 3.2991434462980414e-08,
+          "gradient_relative_error": 1.9999999747294155,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-small-4",
+          "dtype": "float32",
+          "represented_input": 0.10000000149011612,
+          "passed": false,
+          "loss_relative_error": 4.810561254730654e-08,
+          "gradient_relative_error": 1.9999999477238026,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-cutoff-below",
+          "dtype": "float32",
+          "represented_input": 0.6931471228599548,
+          "passed": false,
+          "loss_relative_error": 9.148698363887302e-08,
+          "gradient_relative_error": 2.000000003809298,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-cutoff-above",
+          "dtype": "float32",
+          "represented_input": 0.6931472420692444,
+          "passed": false,
+          "loss_relative_error": 5.495665655711309e-09,
+          "gradient_relative_error": 2.0000000634139496,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-x-1",
+          "dtype": "float32",
+          "represented_input": 1.0,
+          "passed": false,
+          "loss_relative_error": 6.341415988593187e-08,
+          "gradient_relative_error": 2.0000000083864253,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-x-20",
+          "dtype": "float32",
+          "represented_input": 20.0,
+          "passed": false,
+          "loss_relative_error": 3.279960020038934e-08,
+          "gradient_relative_error": 2.0000000317690234,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-x-50",
+          "dtype": "float32",
+          "represented_input": 50.0,
+          "passed": false,
+          "loss_relative_error": 2.3533285418565336e-08,
+          "gradient_relative_error": 2.0000000235332855,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-x-80",
+          "dtype": "float32",
+          "represented_input": 80.0,
+          "passed": false,
+          "loss_relative_error": 4.6669985540386757e-08,
+          "gradient_relative_error": 2.0000000466699857,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-0",
+          "dtype": "float64",
+          "represented_input": 1e-100,
+          "passed": false,
+          "loss_relative_error": 4.807385026031791e-17,
+          "gradient_relative_error": 2.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-1",
+          "dtype": "float64",
+          "represented_input": 1e-16,
+          "passed": false,
+          "loss_relative_error": 9.235021743842541e-17,
+          "gradient_relative_error": 2.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-2",
+          "dtype": "float64",
+          "represented_input": 1e-12,
+          "passed": false,
+          "loss_relative_error": 1.2772185310188677e-18,
+          "gradient_relative_error": 2.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-3",
+          "dtype": "float64",
+          "represented_input": 1e-08,
+          "passed": false,
+          "loss_relative_error": 7.477018012949381e-17,
+          "gradient_relative_error": 1.9999999999999998,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-4",
+          "dtype": "float64",
+          "represented_input": 0.1,
+          "passed": false,
+          "loss_relative_error": 1.5674043417414208e-17,
+          "gradient_relative_error": 2.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-cutoff-below",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599452,
+          "passed": false,
+          "loss_relative_error": 2.27084871949254e-16,
+          "gradient_relative_error": 2.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-cutoff-above",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599454,
+          "passed": false,
+          "loss_relative_error": 6.691354675850817e-17,
+          "gradient_relative_error": 2.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-1",
+          "dtype": "float64",
+          "represented_input": 1.0,
+          "passed": false,
+          "loss_relative_error": 8.147941016993912e-17,
+          "gradient_relative_error": 2.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-20",
+          "dtype": "float64",
+          "represented_input": 20.0,
+          "passed": false,
+          "loss_relative_error": 1.1168369270701502e-17,
+          "gradient_relative_error": 2.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-50",
+          "dtype": "float64",
+          "represented_input": 50.0,
+          "passed": false,
+          "loss_relative_error": 1.9466451342602354e-17,
+          "gradient_relative_error": 2.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-80",
+          "dtype": "float64",
+          "represented_input": 80.0,
+          "passed": false,
+          "loss_relative_error": 7.00146489005354e-17,
+          "gradient_relative_error": 2.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-600",
+          "dtype": "float64",
+          "represented_input": 600.0,
+          "passed": false,
+          "loss_relative_error": 2.406184391638477e-17,
+          "gradient_relative_error": 2.0,
+          "reason": "relative error"
+        }
+      ]
+    },
+    "always_zero": {
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "points": [
+        {
+          "case": "float32-small-0",
+          "dtype": "float32",
+          "represented_input": 1.0000000031710769e-30,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-small-1",
+          "dtype": "float32",
+          "represented_input": 9.999999960041972e-13,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-small-2",
+          "dtype": "float32",
+          "represented_input": 9.99999993922529e-09,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-small-3",
+          "dtype": "float32",
+          "represented_input": 9.999999747378752e-06,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-small-4",
+          "dtype": "float32",
+          "represented_input": 0.10000000149011612,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-cutoff-below",
+          "dtype": "float32",
+          "represented_input": 0.6931471228599548,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-cutoff-above",
+          "dtype": "float32",
+          "represented_input": 0.6931472420692444,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-x-1",
+          "dtype": "float32",
+          "represented_input": 1.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-x-20",
+          "dtype": "float32",
+          "represented_input": 20.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-x-50",
+          "dtype": "float32",
+          "represented_input": 50.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float32-x-80",
+          "dtype": "float32",
+          "represented_input": 80.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-0",
+          "dtype": "float64",
+          "represented_input": 1e-100,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-1",
+          "dtype": "float64",
+          "represented_input": 1e-16,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-2",
+          "dtype": "float64",
+          "represented_input": 1e-12,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-3",
+          "dtype": "float64",
+          "represented_input": 1e-08,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-small-4",
+          "dtype": "float64",
+          "represented_input": 0.1,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-cutoff-below",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599452,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-cutoff-above",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599454,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-1",
+          "dtype": "float64",
+          "represented_input": 1.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-20",
+          "dtype": "float64",
+          "represented_input": 20.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-50",
+          "dtype": "float64",
+          "represented_input": 50.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-80",
+          "dtype": "float64",
+          "represented_input": 80.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        },
+        {
+          "case": "float64-x-600",
+          "dtype": "float64",
+          "represented_input": 600.0,
+          "passed": false,
+          "loss_relative_error": 1.0,
+          "gradient_relative_error": 1.0,
+          "reason": "relative error"
+        }
+      ]
+    },
+    "wrong_dtype": {
+      "expected": "FAIL",
+      "observed": "FAIL",
+      "points": [
+        {
+          "case": "float32-small-0",
+          "dtype": "float32",
+          "represented_input": 1.0000000031710769e-30,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float32-small-1",
+          "dtype": "float32",
+          "represented_input": 9.999999960041972e-13,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float32-small-2",
+          "dtype": "float32",
+          "represented_input": 9.99999993922529e-09,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float32-small-3",
+          "dtype": "float32",
+          "represented_input": 9.999999747378752e-06,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float32-small-4",
+          "dtype": "float32",
+          "represented_input": 0.10000000149011612,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float32-cutoff-below",
+          "dtype": "float32",
+          "represented_input": 0.6931471228599548,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float32-cutoff-above",
+          "dtype": "float32",
+          "represented_input": 0.6931472420692444,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float32-x-1",
+          "dtype": "float32",
+          "represented_input": 1.0,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float32-x-20",
+          "dtype": "float32",
+          "represented_input": 20.0,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float32-x-50",
+          "dtype": "float32",
+          "represented_input": 50.0,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float32-x-80",
+          "dtype": "float32",
+          "represented_input": 80.0,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float64-small-0",
+          "dtype": "float64",
+          "represented_input": 1e-100,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float64-small-1",
+          "dtype": "float64",
+          "represented_input": 1e-16,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float64-small-2",
+          "dtype": "float64",
+          "represented_input": 1e-12,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float64-small-3",
+          "dtype": "float64",
+          "represented_input": 1e-08,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float64-small-4",
+          "dtype": "float64",
+          "represented_input": 0.1,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float64-cutoff-below",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599452,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float64-cutoff-above",
+          "dtype": "float64",
+          "represented_input": 0.6931471805599454,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float64-x-1",
+          "dtype": "float64",
+          "represented_input": 1.0,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float64-x-20",
+          "dtype": "float64",
+          "represented_input": 20.0,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float64-x-50",
+          "dtype": "float64",
+          "represented_input": 50.0,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float64-x-80",
+          "dtype": "float64",
+          "represented_input": 80.0,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        },
+        {
+          "case": "float64-x-600",
+          "dtype": "float64",
+          "represented_input": 600.0,
+          "passed": false,
+          "loss_relative_error": null,
+          "gradient_relative_error": null,
+          "reason": "loss: shape/dtype mismatch"
+        }
+      ]
+    }
+  },
+  "ordinary_clean_controls": [
+    {
+      "case": "float32-ordinary-clean",
+      "dtype": "float32",
+      "represented_input": 1.0,
+      "passed": true,
+      "loss_relative_error": 1.933637448478323e-07,
+      "gradient_relative_error": 9.403115285589066e-08,
+      "reason": "within relative tolerance"
+    },
+    {
+      "case": "float64-ordinary-clean",
+      "dtype": "float64",
+      "represented_input": 1.0,
+      "passed": true,
+      "loss_relative_error": 8.147941016993912e-17,
+      "gradient_relative_error": 5.166376031930387e-17,
+      "reason": "within relative tolerance"
+    }
+  ],
+  "model_evaluation": "NOT_RUN",
+  "sealed_evaluation": "NOT_RUN",
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "novelty": "KNOWN_METHOD",
+  "wall_seconds": 0.5
+}

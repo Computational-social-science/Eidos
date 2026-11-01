@@ -358,3 +358,17 @@ research transfer. These are proposed milestones, not newly implemented
 capabilities. Scientific RSI remains unproven. Self-check, bounded self-healing,
 the existing monitor and manual controls remain required; no new CRON research
 loop is proposed.
+
+### First executed RSI work package
+
+The [execution record](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-EXECUTION-2026-11-01.md)
+documents P0 and partial P1: a public log1mexp development oracle, 23 represented
+float32/float64 points, nine externally authored controls and 22 passing scoped
+tests. The naive formula conforms at 8/23 points; the known repair conforms at
+23/23, while all eight incorrect implementations are rejected for the full
+declared domain. These are evaluator controls, not model outputs or independent
+scientific tasks. The core v0.4.10 self-audit does not qualify this new work
+package; its explicit scoped tests and source-bound receipt provide that limited
+development evidence. A closed scalar expression interpreter adds 23 adversarial
+controls, with 45 combined scoped tests passing. C0 is specified but not implemented; model comparison,
+sealed access separation and recursive-procedure gains remain unmeasured.

@@ -20,6 +20,10 @@ PUBLIC = ('ACADEMIC_POSITIONING.md','FUNCTIONAL_COMPLETENESS.md','HEALTH.md','SE
           'archive/startup-runtime-acceptance-v0.4.7.json',
           'SCHEDULING-POLICY.md','SCHEDULING-ACCEPTANCE-2026-11-01.json',
           'CRON-RETIREMENT-2026-11-01.json','CORE-RECOVERY-ACCEPTANCE.json',
+          'RECOVERY-ACCEPTANCE.md','RECOVERY-LIVE-ACCEPTANCE.json',
+          'archive/core-recovery-acceptance-c12acdd.json',
+          'archive/sdk-process-acceptance-v0.4.8.json','archive/quarto-delivery-acceptance-v0.4.8.json',
+          'archive/reproduction-acceptance-v0.4.8.json',
           'REPRODUCTION-INTEGRITY.md','REPRODUCTION-ACCEPTANCE.json')
 
 PUBLIC_ASSETS = ('docs/screens/web/index-top.webp',
@@ -27,6 +31,9 @@ PUBLIC_ASSETS = ('docs/screens/web/index-top.webp',
                  'reference/sdk_process_acceptance/eidos-0.4.6-py3-none-any.whl',
                  'reference/sdk_process_acceptance/eidos-0.4.7-py3-none-any.whl',
                  'reference/sdk_process_acceptance/eidos-0.4.8-py3-none-any.whl',
+                 'reference/sdk_process_acceptance/eidos-0.4.9-py3-none-any.whl',
+                 'reference/recovery_acceptance/check.py','reference/recovery_acceptance/service.py',
+                 'reference/recovery_acceptance/README.md',
                  'reference/reproduction_acceptance/check.py',
                  'reference/sdk_process_acceptance/check.py',
                  'reference/quarto_delivery_acceptance/check.py')

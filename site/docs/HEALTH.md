@@ -14,8 +14,8 @@ Historical CUDA results retain their original separate qualification scope.
 
 | dimension | measurement | verdict |
 |---|---|---|
-| unit tests | **944 collected**, 943 passed; 1 item skips, 4 collection-level optional-module skips (historical separate CUDA qualification: 16 passed) | ✅ |
-| coverage of `framework/` | **73%**, source-only scope including unexecuted modules; future no-regression by >1 point | measured |
+| unit tests | **971 collected**, 970 passed; 1 item skips, 4 collection-level optional-module skips (historical separate CUDA qualification: 16 passed) | ✅ |
+| coverage of `framework/` | **74%**, source-only scope including unexecuted modules; future no-regression by >1 point | measured |
 | chain audit | **11 chains: 10 PASS, 1 SKIP, 0 FAIL/ERROR** | ✅ |
 | Gate S on the reference fixture | PASS (valid register) and FAIL (mutated copy) | ✅ |
 | Gate S on Eidos itself | **PASS — 8 objections, 0 open** (consumers are sealed fixtures) | ✅ |

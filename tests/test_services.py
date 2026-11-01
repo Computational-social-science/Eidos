@@ -46,7 +46,7 @@ def test_401_is_presence_not_absence(monkeypatch):
     def boom(url, timeout=3.0):
         raise urllib.error.HTTPError(url, 401, "unauthorized", Message(), None)
 
-    monkeypatch.setattr(services.urllib.request, "urlopen", boom)
+    monkeypatch.setattr(services, "_open", boom)
     assert services.answers("http://127.0.0.1:18434/v1/models") is True
 
 
@@ -56,7 +56,7 @@ def test_a_refused_connection_is_absence(monkeypatch):
     def refused(url, timeout=3.0):
         raise urllib.error.URLError("connection refused")
 
-    monkeypatch.setattr(services.urllib.request, "urlopen", refused)
+    monkeypatch.setattr(services, "_open", refused)
     assert services.answers("http://127.0.0.1:9/health") is False
 
 
@@ -72,7 +72,7 @@ def test_the_pair_reports_the_half_that_is_silent(monkeypatch):
             raise urllib.error.URLError("refused")
         raise urllib.error.HTTPError(url, 200, "ok", Message(), None)
 
-    monkeypatch.setattr(services.urllib.request, "urlopen", only_front_door)
+    monkeypatch.setattr(services, "_open", only_front_door)
     look = services.check("decision_service")
     assert look["healthy"] is False
     assert look["silent"] == ["http://127.0.0.1:8081/health"]

@@ -76,6 +76,11 @@ These are controlled source-level tests, not a live-service fault-injection,
 installed-wheel, reboot or clean-soak certificate. The immutable v0.4.8 assets do
 not contain later development changes. See [the focused receipt](CORE-RECOVERY-ACCEPTANCE.json).
 
+The 0.4.9 adds a separate real disposable-service before/after comparison
+on Windows and offline Linux, including observed console visibility and actual
+process cleanup. It preserves the same bounded control loop; it does not migrate
+legacy services or qualify model restarts. See [recovery acceptance](RECOVERY-ACCEPTANCE.md).
+
 ## Other chain findings
 
 | Finding | Correction or remaining work |

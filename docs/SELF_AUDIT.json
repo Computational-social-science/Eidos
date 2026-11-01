@@ -5,9 +5,9 @@
     "skip": 1,
     "fail": 0
   },
-  "tests_collected": 944,
+  "tests_collected": 971,
   "tests": {
-    "passed": 943,
+    "passed": 970,
     "failed": 0,
     "skipped": 5,
     "errors": 0
@@ -15,22 +15,22 @@
   "stability": {
     "stable": true,
     "before": {
-      "source_sha256": "e61c25fb58a4a5288338f225f2615baf4476ed7ac42ebc69bcbcc700c143b005",
-      "distribution_sha256": "8c82c101bfafca3163316b8608c60b3068ca5356b9784d848b9962d3b79cac0d"
+      "source_sha256": "709f29e2b3bb648e36fcfd75a45a8bd5361364be3662e9dd6a6178a3d169bef9",
+      "distribution_sha256": "4eaad580358b5eafc14b150ce1cb5c65d8a12e74a641296a8266d76c3ba8c566"
     },
     "after": {
-      "source_sha256": "e61c25fb58a4a5288338f225f2615baf4476ed7ac42ebc69bcbcc700c143b005",
-      "distribution_sha256": "8c82c101bfafca3163316b8608c60b3068ca5356b9784d848b9962d3b79cac0d"
+      "source_sha256": "709f29e2b3bb648e36fcfd75a45a8bd5361364be3662e9dd6a6178a3d169bef9",
+      "distribution_sha256": "4eaad580358b5eafc14b150ce1cb5c65d8a12e74a641296a8266d76c3ba8c566"
     },
-    "collection_after": 944,
+    "collection_after": 971,
     "execution": {
-      "reported_items": 944,
+      "reported_items": 971,
       "collection_level_skips": 4
     },
     "deselection_detected": false,
-    "collected_ids": 944,
-    "unique_ids": 944,
-    "recollected_ids": 944,
+    "collected_ids": 971,
+    "unique_ids": 971,
+    "recollected_ids": 971,
     "scope": "Framework/tools/tests Python sources, project version/lock/README/claims, installed distribution names+versions, collected test IDs"
   },
   "skip_reasons": [
@@ -41,7 +41,7 @@
     "SKIPPED [1] tests\\test_process_nested_lifecycle.py:19: POSIX delayed cleanup handoff"
   ],
   "diagnostics": {},
-  "coverage_total": 73,
+  "coverage_total": 74,
   "coverage_scope": "framework; unexecuted modules included; tests and tools excluded",
   "gate_s": {
     "fixture_status": "PASS"

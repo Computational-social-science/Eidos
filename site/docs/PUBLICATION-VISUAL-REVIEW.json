@@ -1,12 +1,12 @@
 {
-  "generated": "2026-11-01T02:38:55.431065+00:00",
-  "assessor": "Codex: all 36 PDF/Word pages compared pixel-for-pixel to inspected v0.4.7 baseline; both changed version-glyph pages manually inspected.",
+  "generated": "2026-11-01T05:34:24.973938+00:00",
+  "assessor": "Codex: exact pixel comparison of all36pages to inspected v0.4.8 baseline, plus manual full-page review of both changed pages.",
   "scope": "Rendered PDF and Word pages only; web layout is a separate browser check. Manuscript spacing permits whitespace before intact figures/tables.",
   "submission_ready": false,
   "reports": [
     {
       "path": "site/reports/numerics/report.pdf",
-      "sha256": "683bcfcb018eae90f505d4b77f893f8c2f7d2818c55f5d1c2a501882996d9bd2",
+      "sha256": "926172009edae2021b8b401e496ad13a687e1f4c56a141cddc22298a6f6ebde6",
       "pages_inspected": [
         1,
         2,
@@ -20,7 +20,7 @@
       "renderer": "Poppler",
       "page_png_sha256": [
         "5a721d8c8fd6a3d94bcab23258f40790add2b7d7d586e0f37119d068c54b03c2",
-        "db2832d71ad029854038f126de32352d645da4c1fea1b77cd849ae07dabc2635",
+        "2ed26790093b390da96c6d2c892582a65f1be5c36bbb665c29f9977aa3ef7f43",
         "7330dfc4b56904a66d0540d7fef5de8f3238c39410e1bba9c56242eefb53584d",
         "36112ba1d8923ecfcec10ec2b1ffe23f6585dc6e3fbeb5211ffdf987c5842af9",
         "1b7f9c95ac2ce92fd2b7f9b6bc12e7abbad1844d47140655dfda0fc0f55724a3",
@@ -41,7 +41,7 @@
     },
     {
       "path": "site/reports/numerics/report.docx",
-      "sha256": "fc0d9240dde0dfe3760d2d1f9aa48844c79bbbc3e3296b04b3329eff0b66a03c",
+      "sha256": "44072f6392b60890533b82c80963cdee6c908177d830ef6c9a1bcb3947a25082",
       "pages_inspected": [
         1,
         2,
@@ -55,7 +55,7 @@
       "renderer": "Bundled render_docx.py PNG pipeline; native Microsoft Word read-only conversion adapter",
       "page_png_sha256": [
         "0dcd5ed98eb7c949f3024a07aa8d77035f5f33e67221fb367e9400b09f8fb2e0",
-        "b3b840f1e57ca042a371ebe84b4c397ba36e24dbe38a529e750e415c468f62db",
+        "0d21da4a558833cc14ddb15b6d8bdda4650c8c9808609b49fbdf7b41c15fef0b",
         "8946a42950d26320a80d1ee961f599d7a9db9c27f856c0ec5a80e06044b472f4",
         "485d553f9b0551d9df6a967100a216baad21a72cd6437af4e1989d30519e82b2",
         "60daad8f065666a94411181e944267429d48c4e5a0607a74b29cf6f5376696cd",
@@ -76,7 +76,7 @@
     },
     {
       "path": "site/reports/softmax-matrix/report.pdf",
-      "sha256": "72a22c57fe8149db2c7ef6b7dbf769562ddb11f9bf52ff1409e7aba5174db915",
+      "sha256": "e2870ab0aa5f26c86e8e03df935a857a68a043a7f2b87046848346ce6348d1a9",
       "pages_inspected": [
         1,
         2,
@@ -107,7 +107,7 @@
     },
     {
       "path": "site/reports/softmax-matrix/report.docx",
-      "sha256": "5c6eae650c8be37fa1ec825e4e8eb4a69c32c49955ba8f030ee34845f7f5da3b",
+      "sha256": "666ac4ae9562991e8427316a69029ad2006c3682db583a8cacc2ad4ab8d9bb8e",
       "pages_inspected": [
         1,
         2,
@@ -138,7 +138,7 @@
     },
     {
       "path": "site/reports/hpaf-metric/report.pdf",
-      "sha256": "3ed44eabea2ebbfb2902810ca79d2ee68929005ba7e55883238c30ca681d6f49",
+      "sha256": "2394936f3be78d521811bb710472e89fde2b40b0c7cc7cdf1dc5376f857599dc",
       "pages_inspected": [
         1,
         2,
@@ -165,7 +165,7 @@
     },
     {
       "path": "site/reports/hpaf-metric/report.docx",
-      "sha256": "fc58dad9820260b67e52383aedc7a14ccb1f90aade2b2dd5abb5337a4b7e1088",
+      "sha256": "ac3192943e8c933990e0ad974456391fe3ad9848685eec849ac6e3b6743b4905",
       "pages_inspected": [
         1,
         2,
@@ -191,7 +191,7 @@
       ]
     }
   ],
-  "baseline_tag": "v0.4.7",
+  "baseline_tag": "v0.4.8",
   "page_comparison": [
     {
       "path": "site/reports/numerics/report.pdf",
@@ -210,7 +210,7 @@
         860,
         428
       ],
-      "changed_region_review": "Manually inspected full page: Eidos 0.4.8 version glyph only; legible, no clipping or reflow."
+      "changed_region_review": "Manually inspected full page: only version glyph 0.4.8 to 0.4.9 changed; no overlap, clipping or changed scientific content."
     },
     {
       "path": "site/reports/numerics/report.pdf",
@@ -271,7 +271,7 @@
         1250,
         696
       ],
-      "changed_region_review": "Manually inspected full page: Eidos 0.4.8 version glyph only; legible, no clipping or reflow."
+      "changed_region_review": "Manually inspected full page: only version glyph 0.4.8 to 0.4.9 changed; no overlap, clipping or changed scientific content."
     },
     {
       "path": "site/reports/numerics/report.docx",

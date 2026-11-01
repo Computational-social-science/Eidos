@@ -30,4 +30,11 @@ site/reports/softmax-matrix/** whitespace=-blank-at-eol,-blank-at-eof
 site/reports/hpaf-metric/** whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
 site/reports/softmax-matrix/*.json -text whitespace=cr-at-eol
 docs/archive/** whitespace=-blank-at-eol
+# These receipts bind one another by exact byte digest.
+docs/SELF_AUDIT.json -text whitespace=cr-at-eol
+docs/CORE-RECOVERY-ACCEPTANCE.json -text whitespace=cr-at-eol
+docs/RECOVERY-LIVE-ACCEPTANCE.json -text whitespace=cr-at-eol
+site/docs/SELF_AUDIT.json -text whitespace=cr-at-eol
+site/docs/CORE-RECOVERY-ACCEPTANCE.json -text whitespace=cr-at-eol
+site/docs/RECOVERY-LIVE-ACCEPTANCE.json -text whitespace=cr-at-eol
 *.sh text eol=lf

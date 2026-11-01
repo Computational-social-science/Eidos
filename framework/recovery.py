@@ -23,6 +23,7 @@ import math
 import os
 import re
 import shutil
+import socket
 import subprocess
 import sys
 import time
@@ -236,22 +237,45 @@ OWNER_HINTS = {
 }
 
 
-def port_owner(port: int) -> int | None:
-    """Which PID holds this listening port, if any."""
+def _listener_table() -> dict[int, int] | None:
+    """Read a completed Windows TCP table; missing data is not an empty table."""
     try:
         from framework.subprocesses import quiet_flags
-        out = subprocess.run(["netstat", "-ano"], capture_output=True, timeout=10, creationflags=quiet_flags(),
-                             encoding="utf-8", errors="replace").stdout or ""
+        run = subprocess.run(["netstat", "-ano"], capture_output=True, timeout=10, creationflags=quiet_flags(),
+                             encoding="utf-8", errors="replace")
     except (OSError, subprocess.SubprocessError):
         return None
-    for line in out.splitlines():
+    if run.returncode != 0:
+        return None
+    listeners = {}
+    observed = False
+    for line in (run.stdout or "").splitlines():
         parts = line.split()
-        if len(parts) >= 5 and parts[3] == "LISTENING" and parts[1].endswith(f":{port}"):
-            try:
-                return int(parts[4])
-            except ValueError:
-                continue
-    return None
+        if not parts or parts[0] != "TCP":
+            continue
+        try:
+            if len(parts) != 5:
+                return None
+            port = int(parts[1].rsplit(":", 1)[1])
+            pid = int(parts[4])
+            if not 0 <= port <= 65535 or pid < 0:
+                return None
+            if parts[3] not in {"LISTENING", "LISTEN", "CLOSE_WAIT", "CLOSED", "ESTABLISHED",
+                                "FIN_WAIT_1", "FIN_WAIT_2", "LAST_ACK", "SYN_RECEIVED", "SYN_SENT",
+                                "SYN_SEND", "TIME_WAIT", "TIMED_WAIT", "CLOSING", "DELETE_TCB", "BOUND"}:
+                return None
+            observed = True
+            if parts[3] in {"LISTENING", "LISTEN"}:
+                listeners[port] = pid
+        except (ValueError, IndexError):
+            return None
+    return listeners if observed else None
+
+
+def port_owner(port: int) -> int | None:
+    """Which PID holds this listening port, if attribution is observable."""
+    table = _listener_table()
+    return (table.get(port) or None) if table is not None else None
 
 
 def command_line(pid: int) -> str:
@@ -287,22 +311,38 @@ def preflight(service: str) -> dict:
               "owned_by_self": False, "owners": []}
     urls = ENDPOINTS.get(service) or ((HEALTH.get(service),) if HEALTH.get(service) else ())
     if urls:
-        report["healthy"] = all(_answers(u) for u in urls)
         report["answered"] = {u: _answers(u) for u in urls}
+        report["healthy"] = all(report["answered"].values())
     for port in PORTS.get(service, ()):
         pid = port_owner(port)
         name = process_name(pid) if pid else ""
         cmd = command_line(pid) if pid else ""
         haystack = (name + " " + cmd).lower()
         self_owned = bool(pid) and any(h in haystack for h in hints)
+        listening = True if pid else port_listening(port)
         report["ports"][port] = {"pid": pid, "name": name, "self": self_owned,
-                                 "cmd": cmd[:120]}
+                                 "command_observed": bool(cmd), "listening": listening}
         if pid:
             report["owners"].append(pid)
             report["owned_by_self"] = report["owned_by_self"] or self_owned
             if not self_owned:
                 report["conflict"] = True
     return report
+
+
+def port_listening(port: int) -> bool | None:
+    """A listener still exists when PID attribution is unavailable (including POSIX)."""
+    if os.name == "nt":
+        table = _listener_table()
+        if table is not None:
+            return port in table
+    try:
+        with socket.create_connection(("127.0.0.1", port), timeout=0.5):
+            return True
+    except ConnectionRefusedError:
+        return False
+    except OSError:
+        return None
 
 
 def _shell() -> str:
@@ -400,7 +440,8 @@ def _execute(plan_: RecoveryPlan) -> dict:
     # A port that already has a listener is not a port to start on. Five llama-server processes
     # accumulated on :18434 this way: each attempt answered "ok", each verification timed out while
     # the model loaded, and ten minutes later the next attempt started a sixth.
-    held = {p: v["pid"] for p, v in (look.get("ports") or {}).items() if v.get("pid")}
+    held = {p: v.get("pid") or "unattributed listener"
+            for p, v in (look.get("ports") or {}).items() if v.get("pid") or v.get("listening")}
     if held and not look["healthy"]:
         _log(plan_.service, plan_.action, "refused", False,
              reason="port already held; refusing to start a second instance", ports=held)
@@ -408,6 +449,13 @@ def _execute(plan_: RecoveryPlan) -> dict:
                 "reason": "port already held by pid " + ", ".join(str(v) for v in held.values())
                           + "; waiting for it to become healthy beats starting a duplicate",
                 "preflight": look}
+    unknown = [p for p, row in (look.get("ports") or {}).items()
+               if row.get("listening") is None and not row.get("pid")]
+    if unknown:
+        _log(plan_.service, plan_.action, "refused", False,
+             reason="listener state unobservable", ports=unknown)
+        return {"ok": False, "skipped": True, "service": plan_.service,
+                "reason": "listener state unobservable; refusing an unaccounted launch", "preflight": look}
     if look["conflict"]:
         _log(plan_.service, plan_.action, "refused", False, reason="port held by another process",
              ports={p: v["pid"] for p, v in look["ports"].items() if v["pid"]})
@@ -447,11 +495,12 @@ def _execute(plan_: RecoveryPlan) -> dict:
     else:
         cmd = [sys.executable, str(script)]
         cwd = None
-    # A spawned child that dies with its parent is not a recovery. On Windows the launcher is
-    # detached into its own process group so the service outlives this call.
+    # Lifetime belongs to the service supervisor. Console/group flags are separate:
+    # DETACHED_PROCESS made the venv redirector create a visible console for its child.
     flags = 0
     if os.name == "nt":
-        flags = 0x00000008 | 0x00000200      # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
+        from .subprocesses import quiet_flags
+        flags = quiet_flags() | subprocess.CREATE_NEW_PROCESS_GROUP
     log_dir = ROOT / "docs" / "status"
     log_dir.mkdir(parents=True, exist_ok=True)
     log_path = log_dir / f"recovery-{plan_.service}.log"
@@ -459,7 +508,7 @@ def _execute(plan_: RecoveryPlan) -> dict:
         with log_path.open("a", encoding="utf-8") as log:
             log.write("\n=== " + time.strftime("%Y-%m-%d %H:%M:%S") + " " + plan_.description + "\n")
             log.flush()
-            proc = subprocess.Popen(cmd, cwd=cwd, stdout=log, stderr=log, close_fds=True,
+            proc = subprocess.Popen(cmd, cwd=cwd, stdout=log, stderr=log, stdin=subprocess.DEVNULL, close_fds=True,
                                     creationflags=flags or 0)
     except OSError as exc:
         _note(plan_.service, in_flight=False, pending=False, ok=False,

@@ -1,0 +1,331 @@
+{
+  "generated": "2026-11-01T02:50:45.389576+00:00",
+  "scope": "Installed SDK artifact-production boundary; controlled CLI and actual Matplotlib on both systems, actual Quarto/TeX on Windows. No scientific/journal/general new-machine claim.",
+  "wheel": "reference/sdk_process_acceptance/eidos-0.4.8-py3-none-any.whl",
+  "wheel_sha256": "fdfd1aa5ce3e67e9d50e6b1f37973a902b5f8038ef158f268076431c477133e1",
+  "driver": "reference/quarto_delivery_acceptance/check.py",
+  "driver_sha256": "f0efe362c24aa1b680d57f2716aced4214cd9967005e0a27a21bc8c065af2b2f",
+  "source_inventory": "SDK-PROCESS-ACCEPTANCE.json#source_sha256_canonical_lf",
+  "windows": {
+    "status": "PASS",
+    "installation": "New dedicated Windows environment; offline cached core-dependency installation.",
+    "result": {
+      "generated": "2026-11-01T02:48:11.986475+00:00",
+      "platform": "win32",
+      "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+      "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-048-vfs72r_j\\venv with spaces\\Scripts\\python.exe",
+      "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-048-vfs72r_j\\venv with spaces\\Lib\\site-packages\\framework\\quarto_bridge\\__init__.py",
+      "sdk_version": "0.4.8",
+      "optimization_level": 0,
+      "pdfinfo": "pdfinfo version 26.07.0\nCopyright 2005-2026 The Poppler Developers - http://poppler.freedesktop.org\nCopyright 1996-2011, 2022 Glyph & Cog, LLC",
+      "cases": [
+        {
+          "case": "reject none and preserve previous publication",
+          "accepted": true
+        },
+        {
+          "case": "reject partial and preserve previous publication",
+          "accepted": true
+        },
+        {
+          "case": "reject corrupt and preserve previous publication",
+          "accepted": true
+        },
+        {
+          "case": "reject mutate and preserve previous publication",
+          "accepted": true
+        },
+        {
+          "case": "reject missing-resource and preserve previous publication",
+          "accepted": true
+        },
+        {
+          "case": "complete three-format files, resources and receipt",
+          "accepted": true
+        },
+        {
+          "case": "reject overwriting a declared input",
+          "accepted": true
+        },
+        {
+          "case": "reject reserved receipt resource",
+          "accepted": true
+        },
+        {
+          "case": "reject wrong executable version",
+          "accepted": true
+        },
+        {
+          "case": "single Matplotlib svg with normal CLI exit",
+          "accepted": true
+        },
+        {
+          "case": "single Matplotlib png with normal CLI exit",
+          "accepted": true
+        },
+        {
+          "case": "single Matplotlib pdf with normal CLI exit",
+          "accepted": true
+        },
+        {
+          "case": "reject noninteger exit 0.0",
+          "accepted": true
+        },
+        {
+          "case": "reject noninteger exit __import__('numpy').int64(0)",
+          "accepted": true
+        },
+        {
+          "case": "reject PDF shell without a document",
+          "accepted": true
+        },
+        {
+          "case": "actual Quarto three formats from custom manuscript directory",
+          "accepted": true
+        }
+      ],
+      "real_quarto": true,
+      "dependencies": [
+        [
+          "PyYAML",
+          "6.0.3"
+        ],
+        [
+          "contourpy",
+          "1.4.0"
+        ],
+        [
+          "cycler",
+          "0.12.1"
+        ],
+        [
+          "eidos",
+          "0.4.8"
+        ],
+        [
+          "fonttools",
+          "4.67.0"
+        ],
+        [
+          "kiwisolver",
+          "1.5.1"
+        ],
+        [
+          "matplotlib",
+          "3.11.2"
+        ],
+        [
+          "numpy",
+          "2.5.4"
+        ],
+        [
+          "packaging",
+          "26.3"
+        ],
+        [
+          "pillow",
+          "13.0.0"
+        ],
+        [
+          "pyparsing",
+          "3.3.3"
+        ],
+        [
+          "python-dateutil",
+          "3.0.0"
+        ],
+        [
+          "six",
+          "1.17.0"
+        ],
+        [
+          "tzdata",
+          "2026.6"
+        ]
+      ],
+      "scope": "Installed SDK delivery boundary, controlled CLI and actual Matplotlib; actual Quarto only when explicitly requested. Not scientific truth, journal acceptance, new-machine or runtime-service migration."
+    }
+  },
+  "linux": {
+    "status": "PASS",
+    "installation": "Same-host network-disabled Linux container, existing CPU dependencies; replaced only the SDK wheel. Derived test image adds OS Poppler for delivery checks.",
+    "image": "sha256:bc384f41896ee75c8001a4a17a4830869b6b9b47a23dfd5df038384f2bc755be",
+    "network": "none",
+    "result": {
+      "generated": "2026-11-01T02:49:42.930248+00:00",
+      "platform": "linux",
+      "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
+      "executable": "/workspace/.venv/bin/python",
+      "installed_module": "/workspace/.venv/lib/python3.12/site-packages/framework/quarto_bridge/__init__.py",
+      "sdk_version": "0.4.8",
+      "optimization_level": 0,
+      "pdfinfo": "pdfinfo version 22.12.0\nCopyright 2005-2022 The Poppler Developers - http://poppler.freedesktop.org\nCopyright 1996-2011, 2022 Glyph & Cog, LLC",
+      "cases": [
+        {
+          "case": "reject none and preserve previous publication",
+          "accepted": true
+        },
+        {
+          "case": "reject partial and preserve previous publication",
+          "accepted": true
+        },
+        {
+          "case": "reject corrupt and preserve previous publication",
+          "accepted": true
+        },
+        {
+          "case": "reject mutate and preserve previous publication",
+          "accepted": true
+        },
+        {
+          "case": "reject missing-resource and preserve previous publication",
+          "accepted": true
+        },
+        {
+          "case": "complete three-format files, resources and receipt",
+          "accepted": true
+        },
+        {
+          "case": "reject overwriting a declared input",
+          "accepted": true
+        },
+        {
+          "case": "reject reserved receipt resource",
+          "accepted": true
+        },
+        {
+          "case": "reject wrong executable version",
+          "accepted": true
+        },
+        {
+          "case": "single Matplotlib svg with normal CLI exit",
+          "accepted": true
+        },
+        {
+          "case": "single Matplotlib png with normal CLI exit",
+          "accepted": true
+        },
+        {
+          "case": "single Matplotlib pdf with normal CLI exit",
+          "accepted": true
+        },
+        {
+          "case": "reject noninteger exit 0.0",
+          "accepted": true
+        },
+        {
+          "case": "reject noninteger exit __import__('numpy').int64(0)",
+          "accepted": true
+        },
+        {
+          "case": "reject PDF shell without a document",
+          "accepted": true
+        }
+      ],
+      "real_quarto": false,
+      "dependencies": [
+        [
+          "PyYAML",
+          "6.0.3"
+        ],
+        [
+          "contourpy",
+          "1.4.0"
+        ],
+        [
+          "cycler",
+          "0.12.1"
+        ],
+        [
+          "eidos",
+          "0.4.8"
+        ],
+        [
+          "fonttools",
+          "4.67.0"
+        ],
+        [
+          "kiwisolver",
+          "1.5.1"
+        ],
+        [
+          "matplotlib",
+          "3.11.2"
+        ],
+        [
+          "numpy",
+          "2.5.4"
+        ],
+        [
+          "packaging",
+          "26.3"
+        ],
+        [
+          "pillow",
+          "13.0.0"
+        ],
+        [
+          "pyparsing",
+          "3.3.3"
+        ],
+        [
+          "python-dateutil",
+          "2.9.0.post0"
+        ],
+        [
+          "six",
+          "1.17.0"
+        ]
+      ],
+      "scope": "Installed SDK delivery boundary, controlled CLI and actual Matplotlib; actual Quarto only when explicitly requested. Not scientific truth, journal acceptance, new-machine or runtime-service migration."
+    }
+  },
+  "initial_red": {
+    "failed": 10,
+    "scope": "Actual pre-fix direct SDK render/builder controls; not a scientific experiment"
+  },
+  "focused_regression": {
+    "record": "SELF_AUDIT.json",
+    "scope": "Current source suite; independent installed-wheel controls recorded separately."
+  },
+  "fixtures": {
+    "data": "Benign deterministic markup, two-point Matplotlib plots and malformed files embedded in the versioned checker",
+    "seed": null,
+    "seed_reason": "No sampled scientific data or stochastic training is used"
+  },
+  "remaining": [
+    "No actual Linux Quarto/TeX run in this container",
+    "External/transitive resources and full journal/scientific content require separate checks",
+    "Existing monitor/loop runtime migration remains pending"
+  ],
+  "optimization_controls": {
+    "windows": [
+      {
+        "driver": "quarto-check.py",
+        "flag": "-O",
+        "exit_code": 1,
+        "success_document_emitted": false
+      },
+      {
+        "driver": "quarto-check.py",
+        "flag": "-OO",
+        "exit_code": 1,
+        "success_document_emitted": false
+      }
+    ],
+    "linux": [
+      {
+        "driver": "quarto-check.py",
+        "flag": "-O",
+        "exit_code": 1,
+        "success_document_emitted": false
+      },
+      {
+        "driver": "quarto-check.py",
+        "flag": "-OO",
+        "exit_code": 1,
+        "success_document_emitted": false
+      }
+    ]
+  }
+}

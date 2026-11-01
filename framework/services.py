@@ -20,9 +20,20 @@ ENDPOINTS = {
     "runtime_18434": ("http://127.0.0.1:18434/v1/models",),
 }
 
-#: Statuses that prove a server is alive. 401 means it answered and is enforcing auth; that is
-#: presence, not absence, and treating it as "down" once made a live runtime look dead.
-ALIVE = range(200, 500)
+#: Accepted endpoint presence, not successful inference or credential validation.
+#: Missing routes, throttling and server errors must not qualify as health.
+ALIVE = frozenset(range(200, 300)) | {401, 403}
+
+
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+def _open(url: str, timeout: float):
+    # A fresh opener observes current proxy settings; another URL must not stand in
+    # for the declared endpoint after a redirect.
+    return urllib.request.build_opener(_NoRedirect()).open(url, timeout=timeout)
 
 
 def answers(url: str, timeout: float = 3.0) -> bool:
@@ -33,7 +44,7 @@ def answers(url: str, timeout: float = 3.0) -> bool:
     exact mistake this module exists to stop repeating.
     """
     try:
-        with urllib.request.urlopen(url, timeout=timeout) as resp:
+        with _open(url, timeout=timeout) as resp:
             return resp.status in ALIVE
     except urllib.error.HTTPError as exc:
         return exc.code in ALIVE

@@ -53,12 +53,12 @@ missing executables. Windows also checks its actual console-window handle. Linux
 adds a delayed-cleanup handoff control. Two private broken candidate wheels first
 reproduced nested and handoff leaks; the final wheel rejects both. Only the fixed
 wheel is distributed. Download the
-[fixed wheel](../reference/sdk_process_acceptance/eidos-0.4.8-py3-none-any.whl) and
+[fixed wheel](../reference/sdk_process_acceptance/eidos-0.4.9-py3-none-any.whl) and
 [standalone checker](../reference/sdk_process_acceptance/check.py).
 Reproduce with a fresh environment and the checked driver:
 
 ```sh
-python -m pip install eidos-0.4.8-py3-none-any.whl
+python -m pip install eidos-0.4.9-py3-none-any.whl
 python -I -X utf8 reference/sdk_process_acceptance/check.py
 ```
 
@@ -67,6 +67,10 @@ environment. The repository's lock and this standalone wheel installation are
 different installation contracts; actual resolved versions are retained in the
 record. This acceptance does not migrate already running monitors, prove reboot
 or clean-24-hour stability, or establish scientific truth.
+
+The source-checkout monitor recovery path has a separate
+[real disposable-service comparison](RECOVERY-ACCEPTANCE.md). Do not infer model
+restart acceptance from this installed project-command lifecycle test.
 
 ## Remaining callers
 

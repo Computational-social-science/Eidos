@@ -1,0 +1,124 @@
+{
+  "schema": 1,
+  "recorded_at": "2026-11-01T04:04:38.120758+00:00",
+  "status": "CONTROLLED_SOURCE_TESTS_PASS",
+  "development_on_release": "0.4.8",
+  "platform": "Windows; project Python 3.12.4",
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "tests/test_recovery_control.py",
+    "tests/test_recovery_schema.py",
+    "tests/test_monitor_failure_paths.py",
+    "tests/test_scheduling_consolidation.py",
+    "tests/test_audit_ownership.py",
+    "tests/test_chain_states.py",
+    "tests/test_refresh_ownership.py",
+    "tests/test_dashboard.py",
+    "tests/test_cron_entry.py",
+    "tests/test_windows_runtime_launch.py",
+    "-q"
+  ],
+  "tests_passed": 184,
+  "elapsed_seconds": 9.47,
+  "full_self_audit": {
+    "tests_collected": 944,
+    "tests": {
+      "passed": 943,
+      "failed": 0,
+      "skipped": 5,
+      "errors": 0
+    },
+    "coverage_total": 73,
+    "chains": {
+      "total": 11,
+      "pass": 10,
+      "skip": 1,
+      "fail": 0
+    },
+    "source_stable": true,
+    "receipt_sha256": "e5e50b3cc66b639c264c4f4785198bcb8d7214535ebe360d6d9226271398ccd7"
+  },
+  "real_selected_chain_cli": {
+    "command": [
+      "python",
+      "tools/audit_chains.py",
+      "--only",
+      "gates",
+      "--json",
+      "--status-dir",
+      ".scratch/quality/core-gates-state",
+      "--spans",
+      ".scratch/quality/core-gates-trace.json"
+    ],
+    "rows": 1,
+    "chain": "gates",
+    "status": "PASS",
+    "marker_cleaned": true
+  },
+  "read_only_reviews": [
+    {
+      "role": "code-reviewer",
+      "status": "APPROVE"
+    },
+    {
+      "role": "python-reviewer",
+      "status": "APPROVE"
+    }
+  ],
+  "source_sha256_lf": {
+    "framework/recovery.py": "54250fb88891364002ee2f5ac3e408f69e67348726f68c296592455d33173881",
+    "tools/watch_pipeline.py": "32f10510d1d45975bc22ef610f7868a9c9827f515b864ace115f3807fb38a60d",
+    "tools/serve_site.py": "9e55c39a74d104295febc3388b2fa0a7217128354a12f04272b0213a886f4cd4",
+    "tools/audit_chains.py": "2a4b38ca6250d313711aa2b8c688f4264fae991ff77114870e2eca6ad3f9a085",
+    "tools/chain_states.py": "5d672528b901f8e08fad06e564b6ef64841785c18c1d606b5b0ab2e2ceb8f964",
+    "tests/test_recovery_control.py": "8a1d4adfb73c5430ceeba9852a63d12f5a7f107dac9b78cba456340c6b19ea10",
+    "tests/test_audit_ownership.py": "20d5f88000d488ba3207446e43190b960572916729c110b05447038da8d64d36",
+    "tests/test_dashboard.py": "8bf3958f3a5f72bd2817f8a484ef7ff4b8a25a5c915b7def27b6ae98da27e692",
+    "tools/site_documents.py": "637f215a4d9e0346059a46f330e38c9a41463072fc35528d272f3674680c637c"
+  },
+  "private_test_log_sha256": "507f9b1f238f2280a1b2d9240b2ba354a44c547b716f6dca9a82f75061cbaecd",
+  "prior_failure_observations": [
+    {
+      "name": "six recovery defects and four Windows trace aliases",
+      "failed": 10,
+      "log_sha256": "2efdf4af07dfb90b29e49229a6cb48c4688c20787817f4f69144b0000a8a68bc"
+    },
+    {
+      "name": "post-launch publication, loading window and guard-budget interactions",
+      "failed": 3,
+      "log_sha256": "d805d9e10d97938a56bd3ca609261db425ff6442b94baf5438e79fef831037a1"
+    },
+    {
+      "name": "automatic settlement before manual verification returned",
+      "failed": 1,
+      "log_sha256": "e7518682e5962733cf51f8e66c01a929bf59bacaba2254adb4761cfb72578729"
+    },
+    {
+      "name": "terminal state-commit retry and atomic journal publication",
+      "failed": 2,
+      "log_sha256": "a00fbab337f5a66a552232b8e153a5e0a9e2efce418fa9ccc9cf4f9886cd5bc6"
+    }
+  ],
+  "controlled_boundaries": [
+    "All declared health endpoints must answer; process creation alone is not repair.",
+    "Sustained faults, cooldown, three automatic launch attempts per unresolved incident and measured healthy reset.",
+    "Shared auto/manual state ownership, no launcher-state loss, one launch attempt record.",
+    "Durable intent before Popen; reservation failure prevents launch; later result/log failure retains intent.",
+    "Runtime in-flight protection covers the 300-second observation window.",
+    "Guard/port refusal does not consume launch budget; two concurrent manual callers launch only once.",
+    "Attempt tokens prevent double settlement and obsolete observers from clearing a new launch.",
+    "Atomic journal publication and stable event IDs preserve first terminal outcome across failed state commits.",
+    "Corrupt JSON, duplicate fields and invalid counters/times/flags are preserved and rejected.",
+    "Explicit HTTP recovery result follows verified health.",
+    "Exact chain selection, no retained API results, cross-process ownership, atomic records and owner marker cleanup."
+  ],
+  "limits": [
+    "Controlled probes and launcher doubles, not live model-service fault injection.",
+    "Not an installed-wheel acceptance or a change to frozen v0.4.8 assets.",
+    "Legacy loaded processes do not necessarily participate in the new ownership protocol.",
+    "Atomic individual files do not imply an atomic state-and-log reader snapshot or crash-exactly-once log.",
+    "Reboot/logon and a clean 24-hour observation remain pending; failure history is retained."
+  ]
+}

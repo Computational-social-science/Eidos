@@ -112,6 +112,8 @@ jobs:
         run: |
           uv run --no-sync python tools/build_site.py
           uv run --no-sync python -m pytest -q tests/test_site.py tests/test_demo.py
+      - name: Actual isolated HTTP recovery and duplicate-start controls
+        run: uv run --no-sync python reference/recovery_acceptance/check.py --out "$RUNNER_TEMP/recovery-live.json"
       - name: Monitor page is structurally complete
         run: uv run --no-sync python tools/dashboard.py --check --no-age
       - name: Numerical guard (softmax collapse and cancellation)

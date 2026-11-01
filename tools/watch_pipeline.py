@@ -134,7 +134,7 @@ def measure() -> dict:
     # answers through urllib and its verdict was the one that went stale inside this process.
     urls = _services.endpoints("decision_service") or ()
     codes = {u: http_status(u) for u in urls}
-    pair_up = bool(codes) and all(c and c < 500 for c in codes.values())
+    pair_up = bool(codes) and all(c in _services.ALIVE for c in codes.values())
     up = code == 200 and body.get("status") == "ok" and pair_up
     note = body.get("model") or body.get("error")
     if not up:
@@ -149,9 +149,9 @@ def measure() -> dict:
     headers = {"Authorization": f"Bearer {key}"} if key else {}
     code = http_status("http://127.0.0.1:18434/v1/models", headers)
     signals["runtime_18434"] = {
-        "value": 1 if code in (200, 401) else 0, "reference": 1,
+        "value": 1 if code in _services.ALIVE else 0, "reference": 1,
         "direction": "min", "unit": "up", "source": "127.0.0.1:18434/v1/models",
-        "note": "auth required" if code == 401 else ("key unset" if code == 200 and not key else "")}
+        "note": "auth required" if code in (401, 403) else ("key unset" if code == 200 and not key else "")}
 
     # Services the chains call out to. Existence is enough for a binary or an installed
     # package; a wrong answer here would show green for something that cannot run.

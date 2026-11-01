@@ -1,0 +1,18 @@
+{
+  "command": [
+    "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+    "-m",
+    "reference.numerical_method_tools",
+    "--response",
+    "E:\\2026-AI4S\\Eidos\\reference\\rsi_bootstrap\\recorded_trials\\rsi-retrieval-feedback-v1\\retrieval-feedback-1\\response.json",
+    "--sha256",
+    "173cbf478e059a16fb9fe8ed2b5f4ba5213b4f034240c47b6c9154e10999e13a",
+    "--method",
+    "log1mexp-v1",
+    "--output",
+    "E:\\2026-AI4S\\Eidos\\.scratch\\quality\\method-compiler-v1\\run"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 1.8385130999959074,
+  "scope": "Actual owned CLI process; no new model inference"
+}

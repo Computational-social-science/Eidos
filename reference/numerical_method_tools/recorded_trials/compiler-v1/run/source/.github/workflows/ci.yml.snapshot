@@ -1,0 +1,257 @@
+name: ci
+
+# The framework's claim is that its chains work, not that they import. This job runs
+# the suite and then exercises each chain. Chains whose external dependency is absent
+# (no project checkout, no decision service) report SKIP; the job fails only on FAIL
+# or ERROR. That distinction is the point: a skip is not evidence, but it is not a
+# failure either, and collapsing the two is how a green badge starts lying.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  release-integrity:
+    # Check committed artifacts before any build can replace them on the runner.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Source, documentation and release history agree
+        run: python tools/versioning.py --check
+      - name: Publication artifacts match their inspected fingerprints
+        run: python tools/check_publication_record.py
+
+  test:
+    runs-on: ubuntu-latest
+    env:
+      UV_PYTHON: ${{ matrix.python-version }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: '0.12.17'
+      - name: Install
+        run: |
+          uv lock --check --python "$UV_PYTHON"
+          uv sync --locked --python "$UV_PYTHON" --extra dev --extra tracking --extra verifiers
+      - name: Unit tests
+        run: |
+          command -v pdfinfo >/dev/null || { sudo apt-get update -qq; sudo apt-get install -y poppler-utils; }
+          pdfinfo -v
+          set -o pipefail
+          uv run --no-sync python -m pytest -q 2>&1 | tee /tmp/pytest.log || {
+            # Annotations are readable without a token; a red X with no reason is not.
+            grep -E "^(FAILED|ERROR)" /tmp/pytest.log | head -n 5 | while IFS= read -r line; do
+              echo "::error title=pytest::$line"
+            done
+            exit 1
+          }
+
+      - name: RSI development oracle and restricted-expression controls
+        run: |
+          uv run --no-sync python -m pytest reference/rsi_bootstrap reference/numerical_method_tools -q --junitxml="$RUNNER_TEMP/rsi-development.xml"
+          uv run --no-sync python reference/rsi_bootstrap/grader.py --output "$RUNNER_TEMP/rsi-development.json"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rsi-development-${{ matrix.python-version }}
+          path: |
+            ${{ runner.temp }}/rsi-development.xml
+            ${{ runner.temp }}/rsi-development.json
+          if-no-files-found: warn
+
+      - name: Independent edit-metric repair and rejection controls
+        run: |
+          UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/eidos-metric-$UV_PYTHON" uv run --locked --project reference/hpaf_metric --python "$UV_PYTHON" python reference/hpaf_metric/acceptance.py
+
+      - name: Installed-wheel tracking in a fresh environment
+        run: |
+          VERSION=$(uv run --no-sync python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')
+          TRACKING_ENV="$RUNNER_TEMP/eidos-installed-tracking-$UV_PYTHON"
+          uv export --frozen --extra dev --extra tracking --no-emit-project --output-file "$RUNNER_TEMP/tracking-requirements.txt" >/dev/null
+          uv venv --python "$UV_PYTHON" "$TRACKING_ENV"
+          uv pip install --python "$TRACKING_ENV/bin/python" --require-hashes --no-deps -r "$RUNNER_TEMP/tracking-requirements.txt"
+          uv pip install --python "$TRACKING_ENV/bin/python" --no-deps "$GITHUB_WORKSPACE/reference/sdk_process_acceptance/eidos-$VERSION-py3-none-any.whl"
+          cd "$RUNNER_TEMP"
+          "$TRACKING_ENV/bin/python" -I "$GITHUB_WORKSPACE/reference/tracking_acceptance/check.py" --source "$GITHUB_WORKSPACE" --wheel "$GITHUB_WORKSPACE/reference/sdk_process_acceptance/eidos-$VERSION-py3-none-any.whl" --expected-version "$VERSION" --out "$RUNNER_TEMP/tracking-installed-$UV_PYTHON.json"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: installed-tracking-${{ matrix.python-version }}
+          path: ${{ runner.temp }}/tracking-installed-${{ matrix.python-version }}.json
+          if-no-files-found: warn
+
+      # A red badge with no readable reason is a dead end for anyone who did not run it locally.
+      # The tail of the run goes to the job summary, which is visible without authentication.
+      - name: Test output
+        if: always()
+        run: |
+          {
+            echo '```'
+            tail -n 80 /tmp/pytest.log || echo 'no log'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  audit:
+    runs-on: ubuntu-latest
+    env:
+      UV_PYTHON: '3.12'
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: '0.12.17'
+      - name: Install
+        run: |
+          uv lock --check --python "$UV_PYTHON"
+          uv sync --locked --python "$UV_PYTHON" --extra dev --extra tracking --extra verifiers
+      - name: Exercise every chain
+        run: uv run --no-sync python tools/audit_chains.py --ci
+      - name: Self-audit record (no drift, no new objection)
+        run: |
+          command -v pdfinfo >/dev/null || { sudo apt-get update -qq; sudo apt-get install -y poppler-utils; }
+          pdfinfo -v
+          uv run --no-sync python tools/record_self_audit.py --check
+      - name: Delivery page builds from artefacts
+        run: |
+          uv run --no-sync python tools/build_site.py
+          uv run --no-sync python -m pytest -q tests/test_site.py tests/test_demo.py
+      - name: Actual isolated HTTP recovery and duplicate-start controls
+        run: uv run --no-sync python reference/recovery_acceptance/check.py --out "$RUNNER_TEMP/recovery-live.json"
+      - name: Monitor page is structurally complete
+        run: uv run --no-sync python tools/dashboard.py --check --no-age
+      - name: Numerical guard (softmax collapse and cancellation)
+        run: uv run --no-sync python tools/audit_numerics.py --projects
+
+      - name: Stray-directory check
+        run: uv run --no-sync python tools/audit_stray.py
+
+      - name: Fixture audit (each gate check must trip)
+        run: uv run --no-sync python tools/audit_fixtures.py
+
+      - name: Mutation and chain audits
+        run: |
+          uv run --no-sync python tools/fuzz_register.py
+          uv run --no-sync python tools/audit_chain_fixtures.py
+
+      - name: Site gate (no browser here)
+        # Audit the page already rendered by this runner above. Host facts and libm results
+        # legitimately differ from the Windows build; source and checks stay on the same host.
+        run: uv run --no-sync python tools/audit_site.py --skip-browser --no-build
+      - name: Local neural operator (planted fixed point + control)
+        run: |
+          uv run --no-sync python tools/audit_surrogate.py
+          uv run --no-sync python tools/audit_surrogate.py --negative-test
+      - name: Gate S (scientific validity) on the reference fixture
+        run: uv run --no-sync python tools/audit_validity.py --project tests/fixtures/valid_project
+
+      - name: Dependency pins match this host
+        run: |
+          uv run --no-sync python tools/update_operator.py sense --offline
+          uv run --no-sync python tools/update_operator.py status
+      - name: Coupling gate (no import cycles)
+        run: uv run --no-sync python tools/audit_coupling.py
+      - name: External contracts (recorded, not gated)
+        run: uv run --no-sync python tools/contract_snapshot.py --check --allow-missing
+
+  browser:
+    # The page guards are browser guards. Without this job they exist only on the machine of
+    # whoever runs them, and a layout regression reaches the monitor unchallenged.
+    runs-on: ubuntu-latest
+    env:
+      UV_PYTHON: '3.12'
+      EIDOS_AUTO_RECOVER: '0'
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: '0.12.17'
+      - name: Install
+        run: |
+          uv lock --check --python "$UV_PYTHON"
+          uv sync --locked --python "$UV_PYTHON" --extra dev --extra browser
+          uv run --no-sync python -m playwright install --with-deps chromium
+      - name: Layout guards (paint order, clipping, hit-test)
+        # The following audits compare a rebuild, so generate on this runner first.
+        # Local pre-commit separately validates the committed Windows artifact and screenshots.
+        run: |
+          uv run --no-sync python tools/build_site.py
+          uv run --no-sync python tools/watch_pipeline.py
+          sleep 2
+          uv run --no-sync python tools/watch_pipeline.py
+          uv run --no-sync python tools/dashboard.py
+          uv run --no-sync python -m pytest -q tests/test_layout_guards.py
+      - name: Page audits (layout, contrast, visual language, runtime)
+        run: |
+          uv run --no-sync python tools/audit_site.py --no-build 2>&1 | tee /tmp/site.log || {
+            # Annotations are readable without a token; the log is not.
+            grep -E "^\[FAIL\]|FAIL " /tmp/site.log | head -n 6 | while IFS= read -r line; do
+              echo "::error title=page audit::$line"
+            done
+            tail -n 3 /tmp/site.log | sed 's/^/::error title=page audit tail::/'
+            exit 1
+          }
+
+  agent-e2e:
+    # The MCP report is evidence only if CI can regenerate it. This job starts the converted
+    # server over stdio, runs Paper2Agent's own verifier, then drives the agent end to end.
+    runs-on: ubuntu-latest
+    env:
+      UV_PYTHON: '3.12'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: '0.12.17'
+      - name: Install
+        run: |
+          uv lock --check --python "$UV_PYTHON"
+          uv sync --locked --python "$UV_PYTHON" --extra dev --extra agent
+      - name: Paper2Agent verifier (unchanged vendor, typed numeric assertions)
+        run: |
+          uv run --no-sync python tools/verify_barron_mcp.py \
+            --server reference/reproduction/barron2026/mcp/server.py \
+            --expected reference/reproduction/barron2026/mcp/expected.json \
+            --cases reference/reproduction/barron2026/mcp/cases.json \
+            --require-all-tools --report "$RUNNER_TEMP/verify.json" \
+            --cwd reference/reproduction/barron2026/mcp || {
+              cat "$RUNNER_TEMP/verify.json"
+              exit 1
+            }
+      - name: Agent end to end, judged by Gate S
+        run: uv run --no-sync python reference/barron2026_agent/agent.py

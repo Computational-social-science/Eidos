@@ -13,6 +13,13 @@ conforming candidate: treatment loss passed 23/23 but derivatives failed all
 points. This is local known-method reuse, not an upstream framework install or
 RSI. Network-denied/new-machine model qualification remains pending.
 
+The subsequent [formula compiler](NUMERICAL-METHOD-COMPILER-2026-11-02.md) replaces
+model-generated AST transcription for an explicitly selected known method.
+Actual saved-response comparison retains T1 at 0/23 and a separate external
+tool program at 23/23, with preserved attribution and fresh-reader acceptance.
+It requires no new dependency or model inference. Live-model tool choice,
+framework/wheel promotion, sealed transfer and RSI still need qualification.
+
 ## Decision
 
 Use a small composition: **existing Paper2Agent artifacts + source-grounded

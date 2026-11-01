@@ -1,0 +1,234 @@
+{
+  "schema": "eidos.numerical-method-study.v1",
+  "scope": "Actual deterministic CLI compilation beside one preserved prior model response; no new inference",
+  "run_id": "df41f59c98f54576ad6ea5fdd971b58d",
+  "record_sha256": "8e074604defe789842d127f0b31ac986a6f9aa7cdc4a04c40721c054bfa486d9",
+  "prepared_sha256": "882538b5f77debccb8e817752ecae9f4918989e3bf2d06a73f657cfd1ff079fd",
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "scientific_promotion": false,
+  "new_model_inference": false,
+  "sealed_evaluation": "NOT_RUN",
+  "attribution": "Known formula and first derivative supplied by external maintainer workflow; compiler does not discover or differentiate it",
+  "origin": {
+    "prior_study": "docs/RSI-RETRIEVAL-FEEDBACK-2026-11-02.json",
+    "prior_protocol_sha256": "186ab5bfa7a423dc3e71a73ea796884be687d2a6833576f9438a8d588de66a2b",
+    "attempt": "retrieval-feedback-1",
+    "response_sha256": "173cbf478e059a16fb9fe8ed2b5f4ba5213b4f034240c47b6c9154e10999e13a"
+  },
+  "runtime": {
+    "python": "3.12.4",
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.27891-SP0",
+    "numpy": "2.5.4",
+    "device": "CPU"
+  },
+  "source_count": 25,
+  "method": {
+    "id": "log1mexp-v1",
+    "version": 1,
+    "task": "log1mexp-loss-and-first-derivative",
+    "domain": "Positive finite scalar float32/float64 with normal-range loss and first derivative; public 23-point domain only is qualified here.",
+    "loss": "where(x <= log(2), log(-expm1(-x)), log1p(-exp(-x)))",
+    "gradient": "exp(-x)/(-expm1(-x))",
+    "source_urls": [
+      "https://search.r-project.org/CRAN/refmans/Rmpfr/html/log1mexp.html"
+    ],
+    "checked_on": "2026-11-02",
+    "derivative_attribution": "Analytically derived by the external maintainer workflow from f(x)=log(1-exp(-x)); not automatic differentiation, an upstream derivative implementation or a local-model discovery.",
+    "origin_card_id": "log1mexp-piecewise",
+    "origin_card_sha256": "1707a0262fc323e8621db794a1d86180f6c9a7dcb748631dcffe601d9037e0d3"
+  },
+  "proposal": {
+    "status": "DEVELOPMENT_NONCONFORMING",
+    "points_evaluated": 23,
+    "joint_points": 0,
+    "accepted": false
+  },
+  "tool": {
+    "status": "DEVELOPMENT_CONFORMING",
+    "points_evaluated": 23,
+    "joint_points": 23,
+    "accepted": true
+  },
+  "proposal_positive_gradient_points": 0,
+  "tool_positive_gradient_points": 23,
+  "tool_negative_loss_points": 23,
+  "decimal_reference_convergence_cases": 23,
+  "execution": {
+    "command": [
+      "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+      "-m",
+      "reference.numerical_method_tools",
+      "--response",
+      "E:\\2026-AI4S\\Eidos\\reference\\rsi_bootstrap\\recorded_trials\\rsi-retrieval-feedback-v1\\retrieval-feedback-1\\response.json",
+      "--sha256",
+      "173cbf478e059a16fb9fe8ed2b5f4ba5213b4f034240c47b6c9154e10999e13a",
+      "--method",
+      "log1mexp-v1",
+      "--output",
+      "E:\\2026-AI4S\\Eidos\\.scratch\\quality\\method-compiler-v1\\run"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 1.8385130999959074,
+    "scope": "Actual owned CLI process; no new model inference"
+  },
+  "fresh_reader": {
+    "command": [
+      "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+      "-m",
+      "reference.numerical_method_tools",
+      "--verify",
+      "E:\\2026-AI4S\\Eidos\\.scratch\\quality\\method-compiler-v1\\run"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.788323600019794,
+    "scope": "Fresh owned reader process; same public oracle, not independent scientific authority"
+  },
+  "evaluation_seconds": 0.446765399974538,
+  "archive": [
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/method-program.json",
+      "sha256": "f52a14f5dffa20c1ad7c0ab64c6d62580aa809fe5890fde05cc88caf204b4d60"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/proposal-evaluation.json",
+      "sha256": "37ea3ba48fc50b4a88d06c7588f0e3d28201e778089c5adefd64bf903c4ed2c1"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/record.json",
+      "sha256": "8e074604defe789842d127f0b31ac986a6f9aa7cdc4a04c40721c054bfa486d9"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/response.json",
+      "sha256": "173cbf478e059a16fb9fe8ed2b5f4ba5213b4f034240c47b6c9154e10999e13a"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/.Codex/evals/numerical-method-compiler.md.snapshot",
+      "sha256": "0fafe4117cdbc34eb8108b595f0e5de4fb137202492f20130f427b74427ece42"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/.Codex/evals/rsi-bootstrap-foundation.md.snapshot",
+      "sha256": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/.github/workflows/ci.yml.snapshot",
+      "sha256": "8522f2cd92d6db53dcee291423a743b7de7500b8af3f10fdb81fe7e790522789"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/pyproject.toml.snapshot",
+      "sha256": "d6fffb2f31b4c3c6564d19e48d16b02a37da8fc5b47640aeb579313b27ad92c6"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/numerical_method_tools/__main__.py.snapshot",
+      "sha256": "7d00b899062b2fdacb75c3b70778148ce9e28efb7b6e3a485a7a0279492e2b43"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/numerical_method_tools/catalog.json.snapshot",
+      "sha256": "253fb66dbd984f498a4ea135010b21d290f254bdcb894df3ca4bac179ee5f056"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/numerical_method_tools/compiler.py.snapshot",
+      "sha256": "b3127aa9252b675efbe5220ff3178afae0b52fafbe5191aa604fe94b573c8a87"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/numerical_method_tools/runner.py.snapshot",
+      "sha256": "78b08b3c3dd2db4e989dc9408b84450538ea08802e55ef093509120cfccb0124"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/numerical_method_tools/test_compiler.py.snapshot",
+      "sha256": "21d862593a5774f88f55e97880d02eb17cf43a6e7cf8baf3dc515650cf13a881"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/numerical_method_tools/test_runner.py.snapshot",
+      "sha256": "e1d5514fe642724c8d2ed7d243f8e1118c9f5e8d014999451880a187c7623aa9"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/rsi_bootstrap/C0-SPEC.md.snapshot",
+      "sha256": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/rsi_bootstrap/c0.py.snapshot",
+      "sha256": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/rsi_bootstrap/expressions.py.snapshot",
+      "sha256": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/rsi_bootstrap/grader.py.snapshot",
+      "sha256": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/rsi_bootstrap/local_runtime.py.snapshot",
+      "sha256": "400e0331ee91c42f38a5a6075ba307762c83c8a2f12cad01bf710a3e541a80cb"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/rsi_bootstrap/local_worker.py.snapshot",
+      "sha256": "f15b7a6dd2fcb8539c44c70efddc49aacb5dfb6c4ef252f185e9dab48210406e"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/rsi_bootstrap/method_campaign.py.snapshot",
+      "sha256": "1f0c53ab3800f3574c7039004856c6a8d308fd47992aeb3f6f49a1d2bb0285dc"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/rsi_bootstrap/methods/cards.json.snapshot",
+      "sha256": "416057a0382d9193941e4965d0935dfed61645c82ce7ef1ca4ac84f7dbe6657f"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/rsi_bootstrap/request_context.py.snapshot",
+      "sha256": "ebb79063566730521f6c4872d07e4a8ae6a27f2710107b08955ad4bb5055b74c"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/rsi_bootstrap/test_c0.py.snapshot",
+      "sha256": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/rsi_bootstrap/test_expressions.py.snapshot",
+      "sha256": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/rsi_bootstrap/test_grader.py.snapshot",
+      "sha256": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/rsi_bootstrap/test_local_runtime.py.snapshot",
+      "sha256": "c1a5d18a305461eaaabbcf0967e72cd72693d2cdf63543b5d774f221078f0f25"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/reference/rsi_bootstrap/test_method_campaign.py.snapshot",
+      "sha256": "2f925e9c4b07a38eafe290eb53b669ca454f29d9ef101992a9a35fc8333b24c5"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/source/uv.lock.snapshot",
+      "sha256": "6c279354f73273f54427205ec0e00d3f7ce3cd7382c5378121262cac0ddeedd3"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/run/tool-evaluation.json",
+      "sha256": "42ad779ab8b83a313d0d933a0faef923d597c0ec34c7e93d7020e6eed4c86d50"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/prepared.json",
+      "sha256": "882538b5f77debccb8e817752ecae9f4918989e3bf2d06a73f657cfd1ff079fd"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/controller.log",
+      "sha256": "2019313d4c53389a6b99fb8153ffe1b3c9b0a47ec84c066f370b0eb59b86460e"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/controller-observation.json",
+      "sha256": "0dc28fd2196124784fd5b2e04ffc5469499c65d2081a532b2e38d0c88f10f0d5"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/verification.log",
+      "sha256": "2019313d4c53389a6b99fb8153ffe1b3c9b0a47ec84c066f370b0eb59b86460e"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/verification-observation.json",
+      "sha256": "c72b875bf28e4fc72c21801f6952144315e2c7420663d23882d1b4c63e4fb14f"
+    },
+    {
+      "path": "reference/numerical_method_tools/recorded_trials/compiler-v1/audit/export_compiled_method.py.snapshot",
+      "sha256": "db0c1f3fa698e0741738dbdfef4905ecff297ea83120387f7bee62037f60d685"
+    }
+  ]
+}

@@ -429,3 +429,14 @@ translation and feedback-stagnation limits rather than demonstrating RSI.
 Next qualify explicitly attributed typed method/derivative tools and a feedback
 policy that avoids equivalent failures. The default remains keyless/local,
 without Gemini, paid APIs, new CRON loops or changes to the v0.4.10 wheel.
+
+The [sourced formula compiler checkpoint](https://github.com/Computational-social-science/Eidos/blob/main/docs/NUMERICAL-METHOD-COMPILER-2026-11-02.md)
+adds a deterministic, bounded formula-to-typed-program path with no new model
+inference or provider dependency. Actual CLI comparison preserves the original
+T1 model failure (0/23) and separately compiles an externally supplied method
+passing all 23 joint loss/derivative points and sign constraints. A fresh process
+rechecks the receipt using the same public oracle; 248 combined controls pass.
+Whole-core typed receipt comparison and beginning/end source/input/output
+stability checks close detected evidence-coherence defects. The tool is a
+source-checkout prototype: live-model method selection, installed-wheel/new-machine
+acceptance, general symbolic derivation, sealed transfer and RSI remain open.

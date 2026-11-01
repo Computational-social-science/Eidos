@@ -1,0 +1,685 @@
+{
+  "core": {
+    "schema": "eidos.rsi.c0.development-core.v1",
+    "observed_at": "2026-11-01T19:57:25.309181+00:00",
+    "status": "DEVELOPMENT_CONFORMING",
+    "source_before": {
+      "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference/rsi_bootstrap/local_runtime.py": "400e0331ee91c42f38a5a6075ba307762c83c8a2f12cad01bf710a3e541a80cb",
+      "reference/rsi_bootstrap/local_worker.py": "f15b7a6dd2fcb8539c44c70efddc49aacb5dfb6c4ef252f185e9dab48210406e",
+      "reference/rsi_bootstrap/method_campaign.py": "1f0c53ab3800f3574c7039004856c6a8d308fd47992aeb3f6f49a1d2bb0285dc",
+      "reference/rsi_bootstrap/request_context.py": "ebb79063566730521f6c4872d07e4a8ae6a27f2710107b08955ad4bb5055b74c",
+      "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference/rsi_bootstrap/test_local_runtime.py": "c1a5d18a305461eaaabbcf0967e72cd72693d2cdf63543b5d774f221078f0f25",
+      "reference/rsi_bootstrap/test_method_campaign.py": "2f925e9c4b07a38eafe290eb53b669ca454f29d9ef101992a9a35fc8333b24c5",
+      "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+    },
+    "prompt": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n",
+    "raw_response": "{\"program\": {\"loss\": {\"op\": \"where\", \"args\": [{\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"op\": \"log\", \"args\": [{\"const\": 2}]}]}, {\"op\": \"log\", \"args\": [{\"op\": \"neg\", \"args\": [{\"op\": \"expm1\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}]}]}, {\"op\": \"log1p\", \"args\": [{\"op\": \"neg\", \"args\": [{\"op\": \"exp\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}]}]}]}, \"gradient\": {\"op\": \"div\", \"args\": [{\"op\": \"exp\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}, {\"op\": \"neg\", \"args\": [{\"op\": \"expm1\", \"args\": [{\"op\": \"neg\", \"args\": [{\"input\": \"x\"}]}]}]}]}}, \"explanation\": \"External known method compiled deterministically; not a model-generated repair.\"}",
+    "points": [
+      {
+        "case": "float32-small-0",
+        "dtype": "float32",
+        "represented_input": 1.0000000031710769e-30,
+        "passed": true,
+        "loss_relative_error": 1.2681199929677224e-10,
+        "gradient_relative_error": 1.8218543118564412e-08,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -69.07755279541016,
+          1.0000000150474662e+30
+        ]
+      },
+      {
+        "case": "float32-small-1",
+        "dtype": "float32",
+        "represented_input": 9.999999960041972e-13,
+        "passed": true,
+        "loss_relative_error": 1.3742124708259266e-08,
+        "gradient_relative_error": 8.091302783389216e-09,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -27.63102149963379,
+          999999995904.0
+        ]
+      },
+      {
+        "case": "float32-small-2",
+        "dtype": "float32",
+        "represented_input": 9.99999993922529e-09,
+        "passed": true,
+        "loss_relative_error": 1.32853951600674e-08,
+        "gradient_relative_error": 1.0774710150301928e-09,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -18.42068099975586,
+          100000000.0
+        ]
+      },
+      {
+        "case": "float32-small-3",
+        "dtype": "float32",
+        "represented_input": 9.999999747378752e-06,
+        "passed": true,
+        "loss_relative_error": 3.2991434462980414e-08,
+        "gradient_relative_error": 2.527058452206597e-08,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -11.512930870056152,
+          99999.5
+        ]
+      },
+      {
+        "case": "float32-small-4",
+        "dtype": "float32",
+        "represented_input": 0.10000000149011612,
+        "passed": true,
+        "loss_relative_error": 4.810561254730654e-08,
+        "gradient_relative_error": 5.227619732419704e-08,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -2.352168560028076,
+          9.508331298828125
+        ]
+      },
+      {
+        "case": "float32-cutoff-below",
+        "dtype": "float32",
+        "represented_input": 0.6931471228599548,
+        "passed": true,
+        "loss_relative_error": 9.148698363887302e-08,
+        "gradient_relative_error": 3.8092981724550265e-09,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -0.6931473016738892,
+          1.0000001192092896
+        ]
+      },
+      {
+        "case": "float32-cutoff-above",
+        "dtype": "float32",
+        "represented_input": 0.6931472420692444,
+        "passed": true,
+        "loss_relative_error": 5.495665655711309e-09,
+        "gradient_relative_error": 6.341394982622004e-08,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -0.6931471228599548,
+          0.9999999403953552
+        ]
+      },
+      {
+        "case": "float32-x-1",
+        "dtype": "float32",
+        "represented_input": 1.0,
+        "passed": true,
+        "loss_relative_error": 6.341415988593187e-08,
+        "gradient_relative_error": 8.386425153419426e-09,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -0.4586751163005829,
+          0.5819767117500305
+        ]
+      },
+      {
+        "case": "float32-x-20",
+        "dtype": "float32",
+        "represented_input": 20.0,
+        "passed": true,
+        "loss_relative_error": 3.279960020038934e-08,
+        "gradient_relative_error": 3.176902335465949e-08,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -2.06115369216775e-09,
+          2.06115369216775e-09
+        ]
+      },
+      {
+        "case": "float32-x-50",
+        "dtype": "float32",
+        "represented_input": 50.0,
+        "passed": true,
+        "loss_relative_error": 2.3533285418565336e-08,
+        "gradient_relative_error": 2.353328541856524e-08,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -1.9287498933537385e-22,
+          1.9287498933537385e-22
+        ]
+      },
+      {
+        "case": "float32-x-80",
+        "dtype": "float32",
+        "represented_input": 80.0,
+        "passed": true,
+        "loss_relative_error": 4.6669985540386757e-08,
+        "gradient_relative_error": 4.6669985540386757e-08,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -1.8048514720778033e-35,
+          1.8048514720778033e-35
+        ]
+      },
+      {
+        "case": "float64-small-0",
+        "dtype": "float64",
+        "represented_input": 1e-100,
+        "passed": true,
+        "loss_relative_error": 4.807385026031791e-17,
+        "gradient_relative_error": 3.58947909123628e-17,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -230.25850929940458,
+          1e+100
+        ]
+      },
+      {
+        "case": "float64-small-1",
+        "dtype": "float64",
+        "represented_input": 1e-16,
+        "passed": true,
+        "loss_relative_error": 9.235021743842541e-17,
+        "gradient_relative_error": 2.90977867240346e-17,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -36.841361487904734,
+          1e+16
+        ]
+      },
+      {
+        "case": "float64-small-2",
+        "dtype": "float64",
+        "represented_input": 1e-12,
+        "passed": true,
+        "loss_relative_error": 1.2772185310188677e-18,
+        "gradient_relative_error": 1.0195696004597326e-16,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -27.631021115929048,
+          999999999999.5001
+        ]
+      },
+      {
+        "case": "float64-small-3",
+        "dtype": "float64",
+        "represented_input": 1e-08,
+        "passed": true,
+        "loss_relative_error": 7.477018012949381e-17,
+        "gradient_relative_error": 1.3642238512379335e-16,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -18.420680748952364,
+          99999999.49999999
+        ]
+      },
+      {
+        "case": "float64-small-4",
+        "dtype": "float64",
+        "represented_input": 0.1,
+        "passed": true,
+        "loss_relative_error": 1.5674043417414208e-17,
+        "gradient_relative_error": 3.4093584288407766e-17,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -2.3521684610440907,
+          9.50833194477505
+        ]
+      },
+      {
+        "case": "float64-cutoff-below",
+        "dtype": "float64",
+        "represented_input": 0.6931471805599452,
+        "passed": true,
+        "loss_relative_error": 2.27084871949254e-16,
+        "gradient_relative_error": 4.6380936276926034e-17,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -0.6931471805599453,
+          1.0000000000000002
+        ]
+      },
+      {
+        "case": "float64-cutoff-above",
+        "dtype": "float64",
+        "represented_input": 0.6931471805599454,
+        "passed": true,
+        "loss_relative_error": 6.691354675850817e-17,
+        "gradient_relative_error": 6.464136618558964e-17,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -0.6931471805599452,
+          0.9999999999999999
+        ]
+      },
+      {
+        "case": "float64-x-1",
+        "dtype": "float64",
+        "represented_input": 1.0,
+        "passed": true,
+        "loss_relative_error": 8.147941016993912e-17,
+        "gradient_relative_error": 5.166376031930387e-17,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -0.45867514538708193,
+          0.5819767068693265
+        ]
+      },
+      {
+        "case": "float64-x-20",
+        "dtype": "float64",
+        "represented_input": 20.0,
+        "passed": true,
+        "loss_relative_error": 1.1168369270701502e-17,
+        "gradient_relative_error": 4.4117945463928405e-17,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -2.061153624562735e-09,
+          2.061153626686912e-09
+        ]
+      },
+      {
+        "case": "float64-x-50",
+        "dtype": "float64",
+        "represented_input": 50.0,
+        "passed": true,
+        "loss_relative_error": 1.9466451342602354e-17,
+        "gradient_relative_error": 1.9466354905109954e-17,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -1.9287498479639178e-22,
+          1.9287498479639178e-22
+        ]
+      },
+      {
+        "case": "float64-x-80",
+        "dtype": "float64",
+        "represented_input": 80.0,
+        "passed": true,
+        "loss_relative_error": 7.00146489005354e-17,
+        "gradient_relative_error": 7.00146489005354e-17,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -1.8048513878454153e-35,
+          1.8048513878454153e-35
+        ]
+      },
+      {
+        "case": "float64-x-600",
+        "dtype": "float64",
+        "represented_input": 600.0,
+        "passed": true,
+        "loss_relative_error": 2.406184391638477e-17,
+        "gradient_relative_error": 2.406184391638477e-17,
+        "reason": "within relative tolerance",
+        "actual_outputs": [
+          -2.6503965530043108e-261,
+          2.6503965530043108e-261
+        ]
+      }
+    ],
+    "retained_for_development": true,
+    "scientific_promotion": false,
+    "model_execution_attested": false,
+    "sealed_evaluation": "NOT_RUN",
+    "scientific_rsi": "NOT_DEMONSTRATED",
+    "provider_calls": 1,
+    "response_characters": 657,
+    "explanation": "External known method compiled deterministically; not a model-generated repair.",
+    "baseline_conforming_points": 8,
+    "candidate_conforming_points": 23,
+    "wall_seconds": 0.07899999999790452,
+    "source_after": {
+      "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference/rsi_bootstrap/local_runtime.py": "400e0331ee91c42f38a5a6075ba307762c83c8a2f12cad01bf710a3e541a80cb",
+      "reference/rsi_bootstrap/local_worker.py": "f15b7a6dd2fcb8539c44c70efddc49aacb5dfb6c4ef252f185e9dab48210406e",
+      "reference/rsi_bootstrap/method_campaign.py": "1f0c53ab3800f3574c7039004856c6a8d308fd47992aeb3f6f49a1d2bb0285dc",
+      "reference/rsi_bootstrap/request_context.py": "ebb79063566730521f6c4872d07e4a8ae6a27f2710107b08955ad4bb5055b74c",
+      "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference/rsi_bootstrap/test_local_runtime.py": "c1a5d18a305461eaaabbcf0967e72cd72693d2cdf63543b5d774f221078f0f25",
+      "reference/rsi_bootstrap/test_method_campaign.py": "2f925e9c4b07a38eafe290eb53b669ca454f29d9ef101992a9a35fc8333b24c5",
+      "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+    }
+  },
+  "sign_checks": [
+    {
+      "case": "float32-small-0",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float32-small-1",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float32-small-2",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float32-small-3",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float32-small-4",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float32-cutoff-below",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float32-cutoff-above",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float32-x-1",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float32-x-20",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float32-x-50",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float32-x-80",
+      "dtype": "float32",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float64-small-0",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float64-small-1",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float64-small-2",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float64-small-3",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float64-small-4",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float64-cutoff-below",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float64-cutoff-above",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float64-x-1",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float64-x-20",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float64-x-50",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float64-x-80",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": true
+    },
+    {
+      "case": "float64-x-600",
+      "dtype": "float64",
+      "loss_negative": true,
+      "gradient_positive": true
+    }
+  ],
+  "reference_convergence": [
+    {
+      "case": "float32-small-0",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-small-1",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-small-2",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-small-3",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-small-4",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-cutoff-below",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-cutoff-above",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-x-1",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-x-20",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-x-50",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float32-x-80",
+      "dtype": "float32",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-small-0",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-small-1",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-small-2",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-small-3",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-small-4",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-cutoff-below",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-cutoff-above",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-x-1",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-x-20",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-x-50",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-x-80",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    },
+    {
+      "case": "float64-x-600",
+      "dtype": "float64",
+      "relative_errors_decimal": {
+        "loss": "0E-119",
+        "gradient": "0E-119"
+      }
+    }
+  ],
+  "summary": {
+    "status": "DEVELOPMENT_CONFORMING",
+    "points_evaluated": 23,
+    "joint_points": 23,
+    "accepted": true
+  }
+}

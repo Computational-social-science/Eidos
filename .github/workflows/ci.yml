@@ -68,7 +68,7 @@ jobs:
 
       - name: RSI development oracle and restricted-expression controls
         run: |
-          uv run --no-sync python -m pytest reference/rsi_bootstrap -q --junitxml="$RUNNER_TEMP/rsi-development.xml"
+          uv run --no-sync python -m pytest reference/rsi_bootstrap reference/numerical_method_tools -q --junitxml="$RUNNER_TEMP/rsi-development.xml"
           uv run --no-sync python reference/rsi_bootstrap/grader.py --output "$RUNNER_TEMP/rsi-development.json"
 
       - uses: actions/upload-artifact@v4

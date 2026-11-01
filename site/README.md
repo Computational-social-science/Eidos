@@ -30,6 +30,11 @@ completed all six proposals without a paid provider: treatment loss values
 passed 23/23 points, but its derivatives failed every point. Both arms remained
 at 0/23 joint acceptance. Complete failures, repeated answers and actual costs
 are retained; adding retrieval did not demonstrate RSI.
+The [deterministic method compiler](https://github.com/Computational-social-science/Eidos/blob/main/reference/numerical_method_tools/README.md)
+now supplies a concrete, keyless reproduction command: the preserved proposal
+remains 0/23, while a separately attributed known-method program passes 23/23.
+This source-checkout tool avoids formula-to-program translation by a model;
+autonomous tool selection and recursive improvement remain unqualified.
 
 ## What has been demonstrated
 

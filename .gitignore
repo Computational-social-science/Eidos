@@ -38,6 +38,8 @@ Thumbs.db
 !reference/rsi_bootstrap/recorded_trials/**/server.log
 !reference/rsi_bootstrap/recorded_trials/**/controller.log
 !reference/rsi_bootstrap/recorded_trials/**/evaluation.log
+!reference/numerical_method_tools/recorded_trials/**/controller.log
+!reference/numerical_method_tools/recorded_trials/**/verification.log
 tmp/
 .pytest_cache/
 

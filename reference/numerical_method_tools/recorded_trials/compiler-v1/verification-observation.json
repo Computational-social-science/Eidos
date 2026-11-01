@@ -1,0 +1,12 @@
+{
+  "command": [
+    "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+    "-m",
+    "reference.numerical_method_tools",
+    "--verify",
+    "E:\\2026-AI4S\\Eidos\\.scratch\\quality\\method-compiler-v1\\run"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 0.788323600019794,
+  "scope": "Fresh owned reader process; same public oracle, not independent scientific authority"
+}

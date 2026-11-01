@@ -126,6 +126,14 @@ feedback-policy comparison. Do not quietly repair a model proposal or count
 externally encoded methods as EIDOS-generated C1/C2. Additional local-model
 qualification and independent sealed acceptance remain required.
 
+The [deterministic method compiler](NUMERICAL-METHOD-COMPILER-2026-11-02.md)
+now provides a tested source-checkout tool path. Actual CLI replay retained the
+original T1 at 0/23 and compiled a separately attributed known method passing
+23/23, with fresh-reader acceptance and 248 combined controls. No inference or
+automatic differentiation occurred. Next qualify bounded local tool selection
+and assistance attribution, then the anti-stagnation feedback policy. This is
+not a new installed-wheel capability or EIDOS-generated C1/C2.
+
 ## 3. Why extended development left important defects
 
 These are evidence-backed failure patterns, not an attribution of every defect

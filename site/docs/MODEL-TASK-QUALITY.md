@@ -33,6 +33,13 @@ or a general model ranking. Next qualify typed method/derivative tools and a
 feedback policy that avoids recycling equivalent failures, using local models
 and preserved raw proposals. Known-method tool execution remains distinct from RSI.
 
+The subsequent [compiled-method comparison](https://github.com/Computational-social-science/Eidos/blob/main/docs/NUMERICAL-METHOD-COMPILER-2026-11-02.md)
+preserved the T1 model failure at 0/23 and generated a separate, externally
+attributed tool program passing 23/23. No new model inference occurred. This
+qualifies bounded deterministic formula translation/execution, not model
+competence, autonomous tool selection or an improvement procedure. The source
+prototype has 68 controls; the combined RSI/compiler suite passed 248 tests.
+
 EIDOS has no task-qualified autonomous research reasoner. The legacy stage/model
 table was a proposed routing list, not an executed capability measurement. Model
 presence, endpoint health, general benchmarks and task acceptance are different

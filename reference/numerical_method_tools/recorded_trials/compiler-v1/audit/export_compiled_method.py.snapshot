@@ -1,0 +1,118 @@
+"""Archive one actual known-method CLI comparison, never execute a model."""
+from pathlib import Path
+import json
+import math
+import sys
+
+ROOT = Path.cwd().resolve()
+sys.path.insert(0, str(ROOT))
+from reference.numerical_method_tools import runner
+
+folder = ROOT/'.scratch/quality/method-compiler-v1'
+run = folder/'run'
+expected_run = 'df41f59c98f54576ad6ea5fdd971b58d'
+expected_record = '8e074604defe789842d127f0b31ac986a6f9aa7cdc4a04c40721c054bfa486d9'
+expected_prepared = '882538b5f77debccb8e817752ecae9f4918989e3bf2d06a73f657cfd1ff079fd'
+AUXILIARY = ('prepared.json', 'controller.log', 'controller-observation.json',
+             'verification.log', 'verification-observation.json')
+auxiliary_raw = {name: (folder/name).read_bytes() for name in AUXILIARY}
+
+
+def require(condition, reason):
+    if not condition:
+        raise RuntimeError(reason)
+
+
+require(runner.sha((run/'record.json').read_bytes()) == expected_record, 'Different executed receipt')
+require(runner.sha(auxiliary_raw['prepared.json']) == expected_prepared, 'Different source freeze')
+record = runner.verify(run)
+prepared = runner.compiler.strict_json(auxiliary_raw['prepared.json'])
+execution = runner.compiler.strict_json(auxiliary_raw['controller-observation.json'])
+verification = runner.compiler.strict_json(auxiliary_raw['verification-observation.json'])
+require(record['run_id'] == expected_run and record['source_sha256'] == prepared['source_sha256']
+        and record['runtime'] == prepared['runtime'] and record['response_sha256'] == prepared['response_sha256']
+        and record['method_id'] == prepared['method_id'] and record['response_original_path'] == prepared['response_path'],
+        'Preparation/execution identities differ')
+require(type(execution['exit_code']) is int and execution['exit_code'] == 0
+        and type(verification['exit_code']) is int and verification['exit_code'] == 0,
+        'Actual CLI/reader did not accept')
+require(all(type(value['wall_seconds']) in (int, float) and math.isfinite(value['wall_seconds'])
+            and value['wall_seconds'] >= 0 for value in (execution, verification)), 'Invalid duration')
+require(execution['command'] == [sys.executable, '-m', 'reference.numerical_method_tools',
+        '--response', prepared['response_path'], '--sha256', prepared['response_sha256'],
+        '--method', prepared['method_id'], '--output', str(run)] and
+        verification['command'] == [sys.executable, '-m', 'reference.numerical_method_tools', '--verify', str(run)],
+        'Observed command differs from the declared comparison')
+require(execution['wall_seconds'] >= record['evaluation_seconds']
+        and verification['wall_seconds'] > 0, 'Actual duration scope is incoherent')
+stdout = runner.compiler.strict_json(auxiliary_raw['controller.log'])
+require(stdout['run_id'] == expected_run and runner.identical(stdout['proposal'], record['proposal'])
+        and runner.identical(stdout['tool'], record['tool'])
+        and stdout['new_model_inference'] is False and stdout['scientific_rsi'] == 'NOT_DEMONSTRATED',
+        'CLI output differs from its terminal receipt')
+read_stdout = runner.compiler.strict_json(auxiliary_raw['verification.log'])
+require(runner.identical(stdout, read_stdout), 'Fresh reader output differs')
+prior_path = ROOT/'docs/RSI-RETRIEVAL-FEEDBACK-2026-11-02.json'
+prior = runner.compiler.strict_json(prior_path.read_bytes())
+original = next(row for row in prior['attempts'] if row['path'] == 'retrieval-feedback-1')
+require(prior['protocol_sha256'] == prepared['prior_campaign_protocol_sha256']
+        and original['response_sha256'] == record['response_sha256']
+        and original['core_result']['raw_response'] == runner.response_text((run/'response.json').read_bytes()),
+        'Recorded-response origin does not match the prior campaign')
+require(record['proposal']['joint_points'] == original['measured']['joint_conforming_points'],
+        'Original proposal outcome changed on replay')
+
+archive = ROOT/'reference/numerical_method_tools/recorded_trials/compiler-v1'
+pending, manifest = [], []
+
+
+def queue(source, name, expected=None):
+    data = source.read_bytes()
+    require(expected is None or runner.sha(data) == expected, 'Queued artifact differs from its checked identity')
+    target = archive/name
+    require(not target.exists() or target.read_bytes() == data, 'Immutable archive differs')
+    pending.append((target, data))
+    manifest.append({'path': target.relative_to(ROOT).as_posix(), 'sha256': runner.sha(data)})
+
+
+for path in sorted(run.rglob('*')):
+    if path.is_file():
+        relative = path.relative_to(run).as_posix()
+        queue(path, Path('run')/path.relative_to(run),
+              expected_record if relative == 'record.json' else record['files'][relative])
+for name in AUXILIARY:
+    queue(folder/name, Path(name), runner.sha(auxiliary_raw[name]))
+queue(Path(__file__).resolve(), Path('audit/export_compiled_method.py.snapshot'))
+proposal = runner.compiler.strict_json((run/'proposal-evaluation.json').read_bytes())
+tool = runner.compiler.strict_json((run/'tool-evaluation.json').read_bytes())
+study = {'schema': 'eidos.numerical-method-study.v1',
+         'scope': 'Actual deterministic CLI compilation beside one preserved prior model response; no new inference',
+         'run_id': expected_run, 'record_sha256': expected_record, 'prepared_sha256': expected_prepared,
+         'scientific_rsi': 'NOT_DEMONSTRATED', 'scientific_promotion': False,
+         'new_model_inference': False, 'sealed_evaluation': 'NOT_RUN',
+         'attribution': 'Known formula and first derivative supplied by external maintainer workflow; compiler does not discover or differentiate it',
+         'origin': {'prior_study': prior_path.relative_to(ROOT).as_posix(),
+                    'prior_protocol_sha256': prior['protocol_sha256'], 'attempt': original['path'],
+                    'response_sha256': record['response_sha256']},
+         'runtime': record['runtime'], 'source_count': len(record['source_sha256']),
+         'method': runner.compiler.load_method(record['method_id']),
+         'proposal': record['proposal'], 'tool': record['tool'],
+         'proposal_positive_gradient_points': sum(row['gradient_positive'] for row in proposal['sign_checks']),
+         'tool_positive_gradient_points': sum(row['gradient_positive'] for row in tool['sign_checks']),
+         'tool_negative_loss_points': sum(row['loss_negative'] for row in tool['sign_checks']),
+         'decimal_reference_convergence_cases': len(tool['reference_convergence']),
+         'execution': execution, 'fresh_reader': verification, 'evaluation_seconds': record['evaluation_seconds'],
+         'archive': manifest}
+runner.verify(run)  # All validation precedes archive publication.
+for target, data in pending:
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if target.exists():
+        require(target.read_bytes() == data, 'Archive changed during publication')
+    else:
+        with target.open('xb') as stream:
+            stream.write(data)
+require(runner.sha((archive/'run/record.json').read_bytes()) == expected_record, 'Archive receipt differs')
+runner.verify(archive/'run')
+(ROOT/'docs/NUMERICAL-METHOD-COMPILER-2026-11-02.json').write_bytes(runner.encoded(study))
+print(json.dumps({'proposal': study['proposal'], 'tool': study['tool'],
+                  'source_count': study['source_count'], 'archive_files': len(manifest)}))

@@ -1,0 +1,1 @@
+{"run_id": "df41f59c98f54576ad6ea5fdd971b58d", "proposal": {"status": "DEVELOPMENT_NONCONFORMING", "points_evaluated": 23, "joint_points": 0, "accepted": false}, "tool": {"status": "DEVELOPMENT_CONFORMING", "points_evaluated": 23, "joint_points": 23, "accepted": true}, "new_model_inference": false, "scientific_rsi": "NOT_DEMONSTRATED"}

@@ -1,5 +1,5 @@
 {
-  "asof": "2026-11-01T08:50:27+08:00",
+  "asof": "2026-11-01T09:01:08+08:00",
   "version": "0.4.7",
   "state": {
     "chains": {
@@ -51,16 +51,12 @@
     "open_defects": 0
   },
   "evolution": {
-    "mutation_runs": 256,
+    "mutation_runs": 258,
     "runs_with_a_blind_spot": 1,
     "blind_spots_found": 1,
     "blind_spots_open": 0,
-    "releases": 16,
+    "releases": 17,
     "tests_by_release": [
-      {
-        "version": "0.4.1",
-        "tests": 626
-      },
       {
         "version": "0.4.2",
         "tests": 642
@@ -80,6 +76,10 @@
       {
         "version": "0.4.6",
         "tests": 752
+      },
+      {
+        "version": "0.4.7",
+        "tests": 786
       }
     ],
     "blind_spots_by_run": [

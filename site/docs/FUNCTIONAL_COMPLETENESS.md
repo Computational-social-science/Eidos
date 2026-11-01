@@ -75,3 +75,21 @@ the same rule so an old negative fixture cannot monopolize refreshes.
 5. Reassess every row against artifacts before declaring functional completeness.
 
 This is an evidence map and work queue, not a machine-produced PASS certificate.
+
+## Open direct-reproduction comparator defect (2026-11-01)
+
+Controlled calls to `framework.reproduction.compare` reproduced three false
+`MATCH` verdicts: expected positive infinity with a finite observation and relative
+comparison; an infinite tolerance; and integers 9007199254740992 versus
+9007199254740993 at zero tolerance (both were first converted to the same float).
+The exact integer distance is one. This remains open in 0.4.7 and is a priority
+for the next SDK batch. The direct comparator must not be used as an unrestricted
+scientific gate. These are controlled API defect probes; they do not establish a
+failure of the separately qualified finite Softmax kernel/gradient cases.
+
+Exit conditions: validate finite typed expectations/observations and finite
+nonnegative tolerances; preserve represented integer/float differences; reject
+invalid specs before launching work; bind records to commands/inputs and retain
+explicit unavailable/error states. Add deliberate false-MATCH controls and valid
+positive comparisons, then migrate the direct reproduction lifetime. Tracking,
+formal/citation and update subprocess callers also retain their separate work.

@@ -273,3 +273,5 @@ QuartoBridge 原先只看进程退出码，受控 CLI 可在不生成任何文�
 图形入口改为有界的受信 Python/Matplotlib 单图执行，支持 SVG/PNG/PDF、零参数脚本与正常整数零退出，拒绝无图/多图/非整数退出对象。figure_inputs 可声明数据与辅助代码，执行后及发布前均复核摘要。文稿构建器正确处理自定义目录、安全 YAML 元数据、矩形表格、表头分隔行、单元格转义和引用块。
 
 PDF 校验使用明确的外部 Poppler 契约；缺工具拒绝。原数值研究锁、权重和证据保持原有冻结状态。安装包验证区分受控 CLI/真实 Matplotlib 与可选的真实 Quarto/TeX，明确要求三种物理主文件并独立重算输入输出摘要。详见 [交付契约](docs/QUARTO-DELIVERY.md)。这不是科学内容、NATURE 投稿接受、新机器或运行中服务迁移的证明。其他直接 SDK 子进程调用仍须逐项验收。
+
+下一批已复现问题：直接 reproduction.compare 在无限预期/无限容差及大整数先转浮点时可错误返回 MATCH，详见 FUNCTIONAL_COMPLETENESS 的开放缺陷段。0.4.7 不将该未限定比较器作为通用科研判据。

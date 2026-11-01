@@ -25,6 +25,11 @@ The new [configured local C0 CLI](https://github.com/Computational-social-scienc
 has one same-host CPU execution with runtime acceptance; its candidate failed
 the numerical task. It is a source-checkout work package, not a qualified RSI
 runtime or an addition to the published v0.4.10 wheel.
+The subsequent [local method/feedback comparison](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-RETRIEVAL-FEEDBACK-2026-11-02.md)
+completed all six proposals without a paid provider: treatment loss values
+passed 23/23 points, but its derivatives failed every point. Both arms remained
+at 0/23 joint acceptance. Complete failures, repeated answers and actual costs
+are retained; adding retrieval did not demonstrate RSI.
 
 ## What has been demonstrated
 

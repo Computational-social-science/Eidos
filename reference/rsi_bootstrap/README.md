@@ -1,6 +1,12 @@
 # RSI bootstrap: development evaluator foundation
 
-Latest checkpoint: the [configured local CPU runtime](LOCAL-RUNTIME.md) completed
+Latest checkpoint: the [local method/feedback campaign](METHOD-CAMPAIGN.md)
+completed six actual local ScienceRSI proposals. Both arms remained at 0/23 joint
+points; treatment loss passed 23/23 but derivatives failed all points. Read the
+[complete report](../../docs/RSI-RETRIEVAL-FEEDBACK-2026-11-02.md) for all failures,
+repeated answers, actual costs and limits. No RSI or scientific promotion followed.
+
+Previously, the [configured local CPU runtime](LOCAL-RUNTIME.md) completed
 its first actual CLI trial with preserved declared services and a cleaned-up
 owned model; the ScienceRSI program failed all 23 joint numerical points.
 The preceding [decoder study](../../docs/RSI-C0-DECODER-STUDY-2026-11-02.md)

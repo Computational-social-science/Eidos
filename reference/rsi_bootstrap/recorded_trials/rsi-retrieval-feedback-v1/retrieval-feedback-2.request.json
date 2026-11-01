@@ -1,0 +1,23 @@
+{
+  "kind": "retrieval-feedback",
+  "text": "Externally authored known-method summaries (not discovered by this model):\n\n[log1mexp-piecewise] https://search.r-project.org/CRAN/refmans/Rmpfr/html/log1mexp.html\nFor positive x, f(x)=log(1-exp(-x)). M\u00e4chler's documented stable method uses loss=log(-expm1(-x)) when x<=log(2), and loss=log1p(-exp(-x)) otherwise. log(2)=0.6931471805599453. The minus sign before expm1(-x) is essential: its result is negative. EIDOS analytic derivation: the positive first derivative can be written exp(-x)/(-expm1(-x)). This derivative identity is derived here, not attributed to the Rmpfr documentation. Preserve the input dtype; evaluate the selected loss branch lazily. Scope: the declared positive float32/float64 public normal-result domain, not subnormals, higher derivatives or training outcomes. This supplies a known repair, not a new discovery.\n\n[log1p-small] https://numpy.org/doc/stable/reference/generated/numpy.log1p.html\nNumPy log1p(y) computes log(1+y) accurately for small real y even when forming 1+y would round to one. Its real finite domain requires y>-1. For large positive x, y=-exp(-x) is a small negative increment. Using log1p does not by itself verify the derivative, input dtype or validity at every branch boundary.\n\nPublic development feedback from this arm only: DEVELOPMENT_NONCONFORMING\n\nJoint conformance: 0/23.\n\nPrior program: {\"loss\":{\"op\":\"where\",\"args\":[{\"op\":\"le\",\"args\":[{\"input\":\"x\"},{\"const\":0.6931471805599453}]},{\"op\":\"log\",\"args\":[{\"op\":\"neg\",\"args\":[{\"op\":\"expm1\",\"args\":[{\"op\":\"neg\",\"args\":[{\"input\":\"x\"}]}]}]}]},{\"op\":\"log1p\",\"args\":[{\"op\":\"neg\",\"args\":[{\"op\":\"exp\",\"args\":[{\"op\":\"neg\",\"args\":[{\"input\":\"x\"}]}]}]}]}]},\"gradient\":{\"op\":\"where\",\"args\":[{\"op\":\"le\",\"args\":[{\"input\":\"x\"},{\"const\":0.6931471805599453}]},{\"op\":\"div\",\"args\":[{\"op\":\"exp\",\"args\":[{\"input\":\"x\"}]},{\"op\":\"neg\",\"args\":[{\"const\":1}]}]},{\"op\":\"div\",\"args\":[{\"op\":\"exp\",\"args\":[{\"input\":\"x\"}]},{\"op\":\"neg\",\"args\":[{\"const\":1}]}]}]}}\n\nCounterexamples: [{\"case\":\"float32-small-0\",\"dtype\":\"float32\",\"represented_input\":1.0000000031710769e-30,\"actual_outputs\":[-69.07755279541016,-1.0],\"loss_relative_error\":1.2681199929677224e-10,\"gradient_relative_error\":1.0,\"reason\":\"relative error\"},{\"case\":\"float32-x-80\",\"dtype\":\"float32\",\"represented_input\":80.0,\"actual_outputs\":[-1.8048514720778033e-35,-5.540622484676759e+34],\"loss_relative_error\":4.6669985540386757e-08,\"gradient_relative_error\":3.069849696207404e+69,\"reason\":\"relative error\"},{\"case\":\"float64-small-0\",\"dtype\":\"float64\",\"represented_input\":1e-100,\"actual_outputs\":[-230.25850929940458,-1.0],\"loss_relative_error\":4.807385026031791e-17,\"gradient_relative_error\":1.0,\"reason\":\"relative error\"},{\"case\":\"float64-x-600\",\"dtype\":\"float64\",\"represented_input\":600.0,\"actual_outputs\":[-2.6503965530043108e-261,-3.7730203009299397e+260],\"loss_relative_error\":2.406184391638477e-17,\"gradient_relative_error\":null,\"reason\":\"relative error\"}]",
+  "inputs": [
+    {
+      "path": "E:\\2026-AI4S\\Eidos\\.scratch\\quality\\rsi-method-campaign-v1\\run\\campaign-protocol.json",
+      "sha256": "186ab5bfa7a423dc3e71a73ea796884be687d2a6833576f9438a8d588de66a2b"
+    },
+    {
+      "path": "E:\\2026-AI4S\\Eidos\\reference\\rsi_bootstrap\\methods\\cards.json",
+      "sha256": "416057a0382d9193941e4965d0935dfed61645c82ce7ef1ca4ac84f7dbe6657f"
+    },
+    {
+      "path": "E:\\2026-AI4S\\Eidos\\.scratch\\quality\\rsi-method-campaign-v1\\run\\retrieval-feedback-1\\result.json",
+      "sha256": "82b66ba3554591a4010cb4d5be9c0d2f9165a2bd0d449caf8828208b40cb1c9a"
+    },
+    {
+      "path": "E:\\2026-AI4S\\Eidos\\.scratch\\quality\\rsi-method-campaign-v1\\run\\retrieval-feedback-1\\response.json",
+      "sha256": "173cbf478e059a16fb9fe8ed2b5f4ba5213b4f034240c47b6c9154e10999e13a"
+    }
+  ],
+  "token_allowance": 8920
+}

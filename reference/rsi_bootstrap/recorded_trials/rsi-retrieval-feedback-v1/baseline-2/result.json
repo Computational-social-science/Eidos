@@ -1,0 +1,2640 @@
+{
+  "schema": "eidos.c0.local-controller.v1",
+  "run_id": "b84473f16cc2460fb3a3b137600e09ea",
+  "protocol_sha256": "0150a3490dd0024d0dd43eafb827369f9c4f514e8535be7ed88d72742fce40db",
+  "protocol": {
+    "schema": "eidos.c0.configured-local-runtime.v1",
+    "profile": "local-cpu-campaign-v1",
+    "config": {
+      "engine": {
+        "path": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+        "sha256": "aa2e1f5c67be55f11be26ae58d643a545ca07c6de498f6f870330ac2f4dfec73"
+      },
+      "model": {
+        "path": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\models\\ScienceRSI-8b.i1-Q4_K_M.gguf",
+        "bytes": 5027784544,
+        "sha256": "a7e1cdab380e52ef55dfe249f634262052c171bdd4b606b7530637398852b7ad"
+      },
+      "limits": {
+        "load_seconds": 150,
+        "request_seconds": 480,
+        "evaluation_seconds": 30,
+        "total_seconds": 900,
+        "threads": 12,
+        "context": 8192,
+        "max_tokens": 768,
+        "min_available_memory_mib": 8192,
+        "max_tree_rss_mib": 12288
+      },
+      "protected_services": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "expected": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "listener_port": 8090
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "expected": {
+            "status": "ok"
+          },
+          "listener_port": 8081
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "expected": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "listener_port": 8081
+        }
+      ]
+    },
+    "config_path": "E:\\2026-AI4S\\Eidos\\.scratch\\quality\\rsi-method-campaign-v1\\config.json",
+    "config_sha256": "ce1278dee31b9b3506b6ae0085aaa07819e0d6d0cc3ffa974d4220fb99b70750",
+    "runtime": {
+      "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+      "version": "3.12.4",
+      "implementation": "CPython",
+      "platform": "Windows-11-10.0.27891-SP0",
+      "numpy": "2.5.4",
+      "psutil": "7.2.2",
+      "device_profile": "CPU"
+    },
+    "prompt": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n",
+    "grammar": "root ::= \"{\" ws \"\\\"program\\\"\" ws \":\" ws program ws \",\" ws \"\\\"explanation\\\"\" ws \":\" ws explanation ws \"}\" ws\nprogram ::= \"{\" ws \"\\\"loss\\\"\" ws \":\" ws n-22-16 ws \",\" ws \"\\\"gradient\\\"\" ws \":\" ws n-22-16 ws \"}\"\ninput ::= \"{\" ws \"\\\"input\\\"\" ws \":\" ws \"\\\"x\\\"\" ws \"}\"\nconstant ::= \"{\" ws \"\\\"const\\\"\" ws \":\" ws number ws \"}\"\nunary-name ::= \"\\\"neg\\\"\" | \"\\\"exp\\\"\" | \"\\\"expm1\\\"\" | \"\\\"log\\\"\" | \"\\\"log1p\\\"\"\nbinary-name ::= \"\\\"add\\\"\" | \"\\\"sub\\\"\" | \"\\\"mul\\\"\" | \"\\\"div\\\"\"\nnumber ::= \"-\"? (\"0\" | [1-9] [0-9]*) (\".\" [0-9]+)? ([eE] [+-]? [0-9]+)?\nexplanation ::= \"\\\"\" [a-zA-Z] [a-zA-Z0-9 .,:;/()_+*=\\-]{0,127} \"\\\"\"\nws ::= [ \\t\\n\\r]{0,2}\nn-22-16 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-21-15 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-15 ws \",\" ws n-10-15 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-14 ws \",\" ws n-5-14 ws \"]\" ws \"}\") ws \",\" ws n-5-15 ws \",\" ws n-5-15 ws \"]\" ws \"}\"\nn-21-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-20-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-14 ws \",\" ws n-10-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\") ws \",\" ws n-4-14 ws \",\" ws n-4-14 ws \"]\" ws \"}\"\nn-20-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-19-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-13 ws \",\" ws n-9-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\") ws \",\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\"\nn-19-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-18-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-12 ws \",\" ws n-9-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\") ws \",\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\"\nn-18-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-17-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-11 ws \",\" ws n-8-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-10 ws \",\" ws n-4-10 ws \"]\" ws \"}\") ws \",\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\"\nn-17-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-16-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-10 ws \",\" ws n-8-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\") ws \",\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\"\nn-16-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-15-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-9 ws \",\" ws n-7-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\") ws \",\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\"\nn-15-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-14-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-8 ws \",\" ws n-7-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\") ws \",\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\"\nn-14-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-13-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-7 ws \",\" ws n-6-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-6 ws \",\" ws n-3-6 ws \"]\" ws \"}\") ws \",\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\"\nn-13-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-12-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-6 ws \",\" ws n-6-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\") ws \",\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\"\nn-12-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-11-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-5 ws \",\" ws n-5-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\") ws \",\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\"\nn-11-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-4 ws \",\" ws n-5-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\") ws \",\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\"\nn-10-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-3 ws \",\" ws n-4-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-2 ws \",\" ws n-2-2 ws \"]\" ws \"}\") ws \",\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\"\nn-9-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-2 ws \",\" ws n-4-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\") ws \",\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-8-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-1 ws \",\" ws n-3-1 ws \"]\" ws \"}\"\nn-7-1 ::= input | constant\nn-3-1 ::= input | constant\nn-4-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\"\nn-1-1 ::= input | constant\nn-1-2 ::= input | constant\nn-4-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-3-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\"\nn-2-1 ::= input | constant\nn-2-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \"]\" ws \"}\"\nn-2-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \"]\" ws \"}\"\nn-5-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\"\nn-2-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \"]\" ws \"}\"\nn-1-3 ::= input | constant\nn-5-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\"\nn-4-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \",\" ws n-1-3 ws \"]\" ws \"}\"\nn-3-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-2-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \"]\" ws \"}\"\nn-1-4 ::= input | constant\nn-6-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\") ws \",\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-1-5 ::= input | constant\nn-2-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \"]\" ws \"}\"\nn-6-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\") ws \",\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-5-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\"\nn-4-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\"\nn-3-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \",\" ws n-1-3 ws \"]\" ws \"}\"\nn-1-6 ::= input | constant\nn-3-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-3-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-7-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\") ws \",\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-1-7 ::= input | constant\nn-3-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-2-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \"]\" ws \"}\"\nn-7-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\") ws \",\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-6-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \",\" ws n-2-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\") ws \",\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-5-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\"\nn-4-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-3-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\"\nn-1-8 ::= input | constant\nn-3-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-2-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \"]\" ws \"}\"\nn-8-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-1-9 ::= input | constant\nn-3-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-2-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \"]\" ws \"}\"\nn-8-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-7-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-6-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \",\" ws n-2-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\") ws \",\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-5-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \",\" ws n-2-7 ws \"]\" ws \"}\"\nn-4-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-1-10 ::= input | constant\nn-4-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-4-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-9-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-1-11 ::= input | constant\nn-4-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-3-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-2-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \"]\" ws \"}\"\nn-9-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\") ws \",\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-8-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \",\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-7-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-6-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \",\" ws n-2-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-5-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \",\" ws n-2-8 ws \"]\" ws \"}\"\nn-4-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-1-12 ::= input | constant\nn-4-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-3-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-2-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \"]\" ws \"}\"\nn-10-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-12 ws \",\" ws n-2-12 ws \"]\" ws \"}\") ws \",\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\"\nn-2-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \"]\" ws \"}\"\nn-2-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \"]\" ws \"}\"\nn-4-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-13 ws \",\" ws n-1-13 ws \"]\" ws \"}\"\nn-3-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-1-13 ::= input | constant\nn-10-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-14 ws \",\" ws n-4-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\") ws \",\" ws n-2-14 ws \",\" ws n-2-14 ws \"]\" ws \"}\"\nn-9-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\") ws \",\" ws n-1-13 ws \",\" ws n-1-13 ws \"]\" ws \"}\"\nn-8-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-12 ws \",\" ws n-3-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\") ws \",\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-7-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \",\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-6-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-10 ws \",\" ws n-2-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-5-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \",\" ws n-2-9 ws \"]\" ws \"}\"\nn-4-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-2-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-13 ws \"]\" ws \"}\"\nn-5-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\"\nn-5-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-14 ws \",\" ws n-2-14 ws \"]\" ws \"}\"\n",
+    "inference": {
+      "seed": 19,
+      "temperature": 0,
+      "top_p": 0.9,
+      "thinking": false,
+      "attempts": 1
+    },
+    "sources": {
+      ".Codex\\evals\\rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f",
+      ".Codex\\evals\\rsi-local-runtime.md": "7484d6baac249592276b99ff2eccea3479d9bf8de5ba88f8762c66927712843e",
+      "framework\\_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+      "framework\\_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+      "framework\\_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+      "framework\\artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+      "framework\\subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+      "pyproject.toml": "d6fffb2f31b4c3c6564d19e48d16b02a37da8fc5b47640aeb579313b27ad92c6",
+      "reference\\rsi_bootstrap\\C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      "reference\\rsi_bootstrap\\c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference\\rsi_bootstrap\\expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference\\rsi_bootstrap\\grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference\\rsi_bootstrap\\local_runtime.py": "400e0331ee91c42f38a5a6075ba307762c83c8a2f12cad01bf710a3e541a80cb",
+      "reference\\rsi_bootstrap\\local_worker.py": "f15b7a6dd2fcb8539c44c70efddc49aacb5dfb6c4ef252f185e9dab48210406e",
+      "reference\\rsi_bootstrap\\method_campaign.py": "1f0c53ab3800f3574c7039004856c6a8d308fd47992aeb3f6f49a1d2bb0285dc",
+      "reference\\rsi_bootstrap\\recorded_trials\\c0-decoder-probe-v2\\grammar.gbnf": "486a35b4173159a863bab020df4e5562a5d6bc670ec1029060a963d41fb0a4e0",
+      "reference\\rsi_bootstrap\\request_context.py": "ebb79063566730521f6c4872d07e4a8ae6a27f2710107b08955ad4bb5055b74c",
+      "reference\\rsi_bootstrap\\test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference\\rsi_bootstrap\\test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference\\rsi_bootstrap\\test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference\\rsi_bootstrap\\test_local_runtime.py": "c1a5d18a305461eaaabbcf0967e72cd72693d2cdf63543b5d774f221078f0f25",
+      "reference\\rsi_bootstrap\\test_method_campaign.py": "2f925e9c4b07a38eafe290eb53b669ca454f29d9ef101992a9a35fc8333b24c5",
+      "uv.lock": "6c279354f73273f54427205ec0e00d3f7ce3cd7382c5378121262cac0ddeedd3"
+    },
+    "scientific_promotion": false,
+    "campaign_request": {
+      "path": "E:\\2026-AI4S\\Eidos\\.scratch\\quality\\rsi-method-campaign-v1\\run\\baseline-2.request.json",
+      "sha256": "f8451d4a5338a6e9291f3845a4dbf64d381e2963e4a8f2c15fb99e22dcde82f2",
+      "kind": "baseline",
+      "text": "",
+      "inputs": {
+        "E:\\2026-AI4S\\Eidos\\.scratch\\quality\\rsi-method-campaign-v1\\run\\campaign-protocol.json": "186ab5bfa7a423dc3e71a73ea796884be687d2a6833576f9438a8d588de66a2b",
+        "E:\\2026-AI4S\\Eidos\\reference\\rsi_bootstrap\\methods\\cards.json": "416057a0382d9193941e4965d0935dfed61645c82ce7ef1ca4ac84f7dbe6657f"
+      },
+      "token_allowance": 9374
+    },
+    "task_prompt": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n",
+    "run_id": "b84473f16cc2460fb3a3b137600e09ea"
+  },
+  "status": "COMPLETE",
+  "runtime": {
+    "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+    "version": "3.12.4",
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.27891-SP0",
+    "numpy": "2.5.4",
+    "psutil": "7.2.2",
+    "device_profile": "CPU"
+  },
+  "scientific_promotion": false,
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "sealed_evaluation": "NOT_RUN",
+  "model_execution_attested": false,
+  "samples": [
+    {
+      "elapsed_seconds": 0.031000000017229468,
+      "available_mib": 79866.9296875,
+      "tree_rss_mib": 0
+    },
+    {
+      "elapsed_seconds": 2.734000000025844,
+      "available_mib": 79881.79296875,
+      "tree_rss_mib": 0
+    },
+    {
+      "elapsed_seconds": 2.76500000001397,
+      "available_mib": 79880.9765625,
+      "tree_rss_mib": 10.7421875
+    },
+    {
+      "elapsed_seconds": 3.297000000020489,
+      "available_mib": 79692.3671875,
+      "tree_rss_mib": 273.984375
+    },
+    {
+      "elapsed_seconds": 3.8280000000086147,
+      "available_mib": 78890.37890625,
+      "tree_rss_mib": 1090.75
+    },
+    {
+      "elapsed_seconds": 4.344000000011874,
+      "available_mib": 77071.453125,
+      "tree_rss_mib": 2867.26171875
+    },
+    {
+      "elapsed_seconds": 4.859000000025844,
+      "available_mib": 75317.68359375,
+      "tree_rss_mib": 4612.3203125
+    },
+    {
+      "elapsed_seconds": 5.375,
+      "available_mib": 73552.74609375,
+      "tree_rss_mib": 6368.6015625
+    },
+    {
+      "elapsed_seconds": 5.89000000001397,
+      "available_mib": 71327.34375,
+      "tree_rss_mib": 8679.26171875
+    },
+    {
+      "elapsed_seconds": 6.422000000020489,
+      "available_mib": 70820.6953125,
+      "tree_rss_mib": 9082.66796875
+    },
+    {
+      "elapsed_seconds": 6.953000000008615,
+      "available_mib": 70793.80078125,
+      "tree_rss_mib": 9109.22265625
+    },
+    {
+      "elapsed_seconds": 7.484000000025844,
+      "available_mib": 70817.1953125,
+      "tree_rss_mib": 9109.22265625
+    },
+    {
+      "elapsed_seconds": 8.01500000001397,
+      "available_mib": 70811.25390625,
+      "tree_rss_mib": 9109.22265625
+    },
+    {
+      "elapsed_seconds": 8.547000000020489,
+      "available_mib": 70815.859375,
+      "tree_rss_mib": 9111.0703125
+    },
+    {
+      "elapsed_seconds": 9.078000000008615,
+      "available_mib": 70829.56640625,
+      "tree_rss_mib": 9111.0703125
+    },
+    {
+      "elapsed_seconds": 9.609000000025844,
+      "available_mib": 70829.59765625,
+      "tree_rss_mib": 9111.0703125
+    },
+    {
+      "elapsed_seconds": 10.15600000001723,
+      "available_mib": 70825.36328125,
+      "tree_rss_mib": 9112.90625
+    },
+    {
+      "elapsed_seconds": 10.672000000020489,
+      "available_mib": 70830.27734375,
+      "tree_rss_mib": 9114.6171875
+    },
+    {
+      "elapsed_seconds": 11.219000000011874,
+      "available_mib": 70832.83984375,
+      "tree_rss_mib": 9114.62109375
+    },
+    {
+      "elapsed_seconds": 11.75,
+      "available_mib": 70831.15625,
+      "tree_rss_mib": 9114.640625
+    },
+    {
+      "elapsed_seconds": 12.28100000001723,
+      "available_mib": 70830.140625,
+      "tree_rss_mib": 9114.65234375
+    },
+    {
+      "elapsed_seconds": 12.812000000005355,
+      "available_mib": 70828.70703125,
+      "tree_rss_mib": 9114.65625
+    },
+    {
+      "elapsed_seconds": 13.344000000011874,
+      "available_mib": 70829.0546875,
+      "tree_rss_mib": 9114.6640625
+    },
+    {
+      "elapsed_seconds": 13.875,
+      "available_mib": 70809.68359375,
+      "tree_rss_mib": 9114.671875
+    },
+    {
+      "elapsed_seconds": 14.422000000020489,
+      "available_mib": 70805.54296875,
+      "tree_rss_mib": 9114.671875
+    },
+    {
+      "elapsed_seconds": 14.953000000008615,
+      "available_mib": 70840.42578125,
+      "tree_rss_mib": 9114.6875
+    },
+    {
+      "elapsed_seconds": 15.5,
+      "available_mib": 70831.05078125,
+      "tree_rss_mib": 9114.6875
+    },
+    {
+      "elapsed_seconds": 16.03100000001723,
+      "available_mib": 70850.578125,
+      "tree_rss_mib": 9114.6875
+    },
+    {
+      "elapsed_seconds": 16.578000000008615,
+      "available_mib": 70843.52734375,
+      "tree_rss_mib": 9114.6875
+    },
+    {
+      "elapsed_seconds": 17.109000000025844,
+      "available_mib": 70835.88671875,
+      "tree_rss_mib": 9114.69140625
+    },
+    {
+      "elapsed_seconds": 17.65600000001723,
+      "available_mib": 70830.734375,
+      "tree_rss_mib": 9114.21875
+    },
+    {
+      "elapsed_seconds": 18.17200000002049,
+      "available_mib": 70827.26171875,
+      "tree_rss_mib": 9114.2265625
+    },
+    {
+      "elapsed_seconds": 18.719000000011874,
+      "available_mib": 70829.84375,
+      "tree_rss_mib": 9114.3671875
+    },
+    {
+      "elapsed_seconds": 19.26500000001397,
+      "available_mib": 70790.05859375,
+      "tree_rss_mib": 9114.375
+    },
+    {
+      "elapsed_seconds": 19.79700000002049,
+      "available_mib": 70796.73828125,
+      "tree_rss_mib": 9114.375
+    },
+    {
+      "elapsed_seconds": 20.344000000011874,
+      "available_mib": 70780.30859375,
+      "tree_rss_mib": 9114.375
+    },
+    {
+      "elapsed_seconds": 20.875,
+      "available_mib": 70780.625,
+      "tree_rss_mib": 9114.375
+    },
+    {
+      "elapsed_seconds": 21.42200000002049,
+      "available_mib": 70784.5703125,
+      "tree_rss_mib": 9114.3828125
+    },
+    {
+      "elapsed_seconds": 21.969000000011874,
+      "available_mib": 70794.03125,
+      "tree_rss_mib": 9114.3828125
+    },
+    {
+      "elapsed_seconds": 22.5,
+      "available_mib": 70776.91015625,
+      "tree_rss_mib": 9114.3828125
+    },
+    {
+      "elapsed_seconds": 23.04700000002049,
+      "available_mib": 70781.59765625,
+      "tree_rss_mib": 9114.390625
+    },
+    {
+      "elapsed_seconds": 23.594000000011874,
+      "available_mib": 70797.6875,
+      "tree_rss_mib": 9114.39453125
+    },
+    {
+      "elapsed_seconds": 24.14000000001397,
+      "available_mib": 70784.98828125,
+      "tree_rss_mib": 9114.39453125
+    },
+    {
+      "elapsed_seconds": 24.687000000005355,
+      "available_mib": 70786.83203125,
+      "tree_rss_mib": 9114.39453125
+    },
+    {
+      "elapsed_seconds": 25.234000000025844,
+      "available_mib": 70772.4140625,
+      "tree_rss_mib": 9114.39453125
+    },
+    {
+      "elapsed_seconds": 25.78100000001723,
+      "available_mib": 70785.80859375,
+      "tree_rss_mib": 9114.39453125
+    },
+    {
+      "elapsed_seconds": 26.328000000008615,
+      "available_mib": 70735.23828125,
+      "tree_rss_mib": 9114.3984375
+    },
+    {
+      "elapsed_seconds": 26.875,
+      "available_mib": 70724.359375,
+      "tree_rss_mib": 9114.3984375
+    },
+    {
+      "elapsed_seconds": 27.42200000002049,
+      "available_mib": 70698.78515625,
+      "tree_rss_mib": 9114.3984375
+    },
+    {
+      "elapsed_seconds": 27.969000000011874,
+      "available_mib": 70708.390625,
+      "tree_rss_mib": 9114.3984375
+    },
+    {
+      "elapsed_seconds": 28.51500000001397,
+      "available_mib": 70805.16796875,
+      "tree_rss_mib": 9114.40234375
+    },
+    {
+      "elapsed_seconds": 29.062000000005355,
+      "available_mib": 70803.625,
+      "tree_rss_mib": 9114.40234375
+    },
+    {
+      "elapsed_seconds": 29.609000000025844,
+      "available_mib": 70753.96484375,
+      "tree_rss_mib": 9114.40234375
+    },
+    {
+      "elapsed_seconds": 30.15600000001723,
+      "available_mib": 70728.80078125,
+      "tree_rss_mib": 9114.40234375
+    },
+    {
+      "elapsed_seconds": 30.703000000008615,
+      "available_mib": 70712.73046875,
+      "tree_rss_mib": 9114.41015625
+    },
+    {
+      "elapsed_seconds": 31.25,
+      "available_mib": 70796.28125,
+      "tree_rss_mib": 9114.41015625
+    },
+    {
+      "elapsed_seconds": 31.79700000002049,
+      "available_mib": 70795.1953125,
+      "tree_rss_mib": 9115.109375
+    },
+    {
+      "elapsed_seconds": 32.344000000011874,
+      "available_mib": 70797.859375,
+      "tree_rss_mib": 9115.3359375
+    },
+    {
+      "elapsed_seconds": 32.875,
+      "available_mib": 70795.66015625,
+      "tree_rss_mib": 9115.3203125
+    },
+    {
+      "elapsed_seconds": 33.42200000002049,
+      "available_mib": 70746.890625,
+      "tree_rss_mib": 9115.3203125
+    },
+    {
+      "elapsed_seconds": 33.969000000011874,
+      "available_mib": 70745.65234375,
+      "tree_rss_mib": 9115.3203125
+    },
+    {
+      "elapsed_seconds": 34.5,
+      "available_mib": 70720.9453125,
+      "tree_rss_mib": 9115.33203125
+    },
+    {
+      "elapsed_seconds": 35.04700000002049,
+      "available_mib": 70801.80859375,
+      "tree_rss_mib": 9115.33203125
+    },
+    {
+      "elapsed_seconds": 35.594000000011874,
+      "available_mib": 70815.56640625,
+      "tree_rss_mib": 9115.33203125
+    },
+    {
+      "elapsed_seconds": 36.14000000001397,
+      "available_mib": 70801.8125,
+      "tree_rss_mib": 9115.33203125
+    },
+    {
+      "elapsed_seconds": 36.687000000005355,
+      "available_mib": 70797.97265625,
+      "tree_rss_mib": 9115.33203125
+    },
+    {
+      "elapsed_seconds": 37.234000000025844,
+      "available_mib": 70793.96484375,
+      "tree_rss_mib": 9116.09375
+    },
+    {
+      "elapsed_seconds": 37.78100000001723,
+      "available_mib": 70790.97265625,
+      "tree_rss_mib": 9116.09375
+    },
+    {
+      "elapsed_seconds": 38.328000000008615,
+      "available_mib": 70807.14453125,
+      "tree_rss_mib": 9116.09375
+    },
+    {
+      "elapsed_seconds": 38.875,
+      "available_mib": 70808.4375,
+      "tree_rss_mib": 9116.09375
+    },
+    {
+      "elapsed_seconds": 39.40600000001723,
+      "available_mib": 70800.7734375,
+      "tree_rss_mib": 9116.10546875
+    },
+    {
+      "elapsed_seconds": 39.953000000008615,
+      "available_mib": 70762.26171875,
+      "tree_rss_mib": 9116.11328125
+    },
+    {
+      "elapsed_seconds": 40.484000000025844,
+      "available_mib": 70743.69921875,
+      "tree_rss_mib": 9116.12890625
+    },
+    {
+      "elapsed_seconds": 41.03100000001723,
+      "available_mib": 70714.02734375,
+      "tree_rss_mib": 9116.26953125
+    },
+    {
+      "elapsed_seconds": 41.578000000008615,
+      "available_mib": 70687.94921875,
+      "tree_rss_mib": 9116.26953125
+    },
+    {
+      "elapsed_seconds": 42.125,
+      "available_mib": 70782.328125,
+      "tree_rss_mib": 9116.26953125
+    },
+    {
+      "elapsed_seconds": 42.67200000002049,
+      "available_mib": 70784.7265625,
+      "tree_rss_mib": 9116.29296875
+    },
+    {
+      "elapsed_seconds": 43.203000000008615,
+      "available_mib": 70796.23828125,
+      "tree_rss_mib": 9115.1015625
+    },
+    {
+      "elapsed_seconds": 43.76500000001397,
+      "available_mib": 70773.06640625,
+      "tree_rss_mib": 9115.1015625
+    },
+    {
+      "elapsed_seconds": 44.29700000002049,
+      "available_mib": 70759.71875,
+      "tree_rss_mib": 9116.21484375
+    },
+    {
+      "elapsed_seconds": 44.844000000011874,
+      "available_mib": 70780.546875,
+      "tree_rss_mib": 9115.37890625
+    },
+    {
+      "elapsed_seconds": 45.375,
+      "available_mib": 70700.41796875,
+      "tree_rss_mib": 9115.4609375
+    },
+    {
+      "elapsed_seconds": 45.90600000001723,
+      "available_mib": 70681.56640625,
+      "tree_rss_mib": 9195.2890625
+    },
+    {
+      "elapsed_seconds": 46.453000000008615,
+      "available_mib": 70682.23046875,
+      "tree_rss_mib": 9195.2890625
+    },
+    {
+      "elapsed_seconds": 47.0,
+      "available_mib": 70677.7265625,
+      "tree_rss_mib": 9194.5078125
+    },
+    {
+      "elapsed_seconds": 47.53100000001723,
+      "available_mib": 70675.7734375,
+      "tree_rss_mib": 9194.50390625
+    },
+    {
+      "elapsed_seconds": 48.078000000008615,
+      "available_mib": 70679.89453125,
+      "tree_rss_mib": 9195.26171875
+    },
+    {
+      "elapsed_seconds": 48.609000000025844,
+      "available_mib": 70679.2734375,
+      "tree_rss_mib": 9204.05859375
+    },
+    {
+      "elapsed_seconds": 49.15600000001723,
+      "available_mib": 70674.10546875,
+      "tree_rss_mib": 9194.55078125
+    },
+    {
+      "elapsed_seconds": 49.703000000008615,
+      "available_mib": 70668.75390625,
+      "tree_rss_mib": 9195.43359375
+    },
+    {
+      "elapsed_seconds": 50.234000000025844,
+      "available_mib": 70659.8203125,
+      "tree_rss_mib": 9202.6953125
+    },
+    {
+      "elapsed_seconds": 50.78100000001723,
+      "available_mib": 70680.25,
+      "tree_rss_mib": 9203.52734375
+    }
+  ],
+  "protected_observations": [
+    {
+      "elapsed_seconds": 2.734000000025844,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 2.76500000001397,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 4.812000000005355,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 6.859000000025844,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 8.89000000001397,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 10.922000000020489,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 12.953000000008615,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 15.047000000020489,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 17.109000000025844,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 19.15600000001723,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 21.219000000011874,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 23.25,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 25.28100000001723,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 27.344000000011874,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 29.39000000001397,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 31.42200000002049,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 33.469000000011874,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 35.51500000001397,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 37.562000000005355,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 39.594000000011874,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 41.625,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 43.65600000001723,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 45.719000000011874,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 47.79700000002049,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    },
+    {
+      "elapsed_seconds": 49.844000000011874,
+      "identities": [
+        {
+          "url": "http://127.0.0.1:8090/health",
+          "projection": {
+            "status": "ok",
+            "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+          },
+          "process": {
+            "pid": 17152,
+            "created": 1793431934.3692093,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/health",
+          "projection": {
+            "status": "ok"
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        },
+        {
+          "url": "http://127.0.0.1:8081/v1/models",
+          "projection": {
+            "data": [
+              {
+                "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+              }
+            ]
+          },
+          "process": {
+            "pid": 45096,
+            "created": 1793431917.66907,
+            "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+          }
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "protected_before": [
+    {
+      "url": "http://127.0.0.1:8090/health",
+      "projection": {
+        "status": "ok",
+        "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+      },
+      "process": {
+        "pid": 17152,
+        "created": 1793431934.3692093,
+        "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8081/health",
+      "projection": {
+        "status": "ok"
+      },
+      "process": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8081/v1/models",
+      "projection": {
+        "data": [
+          {
+            "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+          }
+        ]
+      },
+      "process": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+      }
+    }
+  ],
+  "command": [
+    "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe",
+    "-m",
+    "C:\\Users\\Administrator\\AppData\\Local\\hermes\\models\\ScienceRSI-8b.i1-Q4_K_M.gguf",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "55412",
+    "--alias",
+    "eidos-local-b84473f16cc2460fb3a3b137600e09ea",
+    "-c",
+    "8192",
+    "-t",
+    "12",
+    "-tb",
+    "12",
+    "-np",
+    "1",
+    "-b",
+    "256",
+    "-ub",
+    "128",
+    "-ngl",
+    "0",
+    "--device",
+    "none",
+    "--no-kv-offload",
+    "--no-op-offload",
+    "--no-mmproj",
+    "--no-webui",
+    "--reasoning",
+    "off",
+    "--reasoning-budget",
+    "0"
+  ],
+  "owned_server": {
+    "pid": 30040,
+    "created": 1793560510.1628752
+  },
+  "provider_identity": {
+    "models": [
+      {
+        "name": "eidos-local-b84473f16cc2460fb3a3b137600e09ea",
+        "model": "eidos-local-b84473f16cc2460fb3a3b137600e09ea",
+        "modified_at": "",
+        "size": "",
+        "digest": "",
+        "type": "model",
+        "description": "",
+        "tags": [
+          ""
+        ],
+        "capabilities": [
+          "completion"
+        ],
+        "parameters": "",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "",
+          "families": [
+            ""
+          ],
+          "parameter_size": "",
+          "quantization_level": ""
+        }
+      }
+    ],
+    "object": "list",
+    "data": [
+      {
+        "id": "eidos-local-b84473f16cc2460fb3a3b137600e09ea",
+        "aliases": [
+          "eidos-local-b84473f16cc2460fb3a3b137600e09ea"
+        ],
+        "tags": [],
+        "object": "model",
+        "created": 1793560513,
+        "owned_by": "llamacpp",
+        "meta": {
+          "vocab_type": true,
+          "n_vocab": 151936,
+          "n_ctx": 8192,
+          "n_ctx_train": 40960,
+          "n_embd": 4096,
+          "n_params": 8190735360,
+          "size": 5021827072,
+          "ftype": "Q4_K - Medium"
+        }
+      }
+    ]
+  },
+  "load_seconds": 3.75,
+  "preflight": {
+    "target": {
+      "apply_request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n"
+          }
+        ],
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "apply_response": {
+        "prompt": "<|im_start|>user\nPropose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+      },
+      "tokenize_request": {
+        "content": "<|im_start|>user\nPropose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+        "add_special": true,
+        "parse_special": true,
+        "with_pieces": false
+      },
+      "tokenize_response": {
+        "tokens": [
+          151644,
+          872,
+          198,
+          2008,
+          960,
+          825,
+          34776,
+          12733,
+          369,
+          282,
+          2075,
+          11730,
+          839,
+          7,
+          16,
+          18376,
+          4080,
+          87,
+          593,
+          323,
+          1181,
+          1156,
+          198,
+          1107,
+          47158,
+          369,
+          6785,
+          34226,
+          2224,
+          18,
+          17,
+          14,
+          3649,
+          21,
+          19,
+          17274,
+          856,
+          448,
+          4622,
+          30508,
+          3059,
+          624,
+          785,
+          55085,
+          4709,
+          323,
+          1343,
+          4080,
+          87,
+          24254,
+          16,
+          18376,
+          4080,
+          87,
+          593,
+          31805,
+          646,
+          9052,
+          5089,
+          18509,
+          624,
+          785,
+          24079,
+          2810,
+          17755,
+          374,
+          311,
+          21129,
+          2613,
+          32676,
+          304,
+          279,
+          5042,
+          34784,
+          280,
+          25722,
+          2550,
+          476,
+          264,
+          4396,
+          30248,
+          4637,
+          897,
+          1558,
+          537,
+          10146,
+          279,
+          31805,
+          624,
+          5598,
+          1172,
+          264,
+          4718,
+          1633,
+          448,
+          6896,
+          2025,
+          323,
+          16148,
+          13,
+          16148,
+          374,
+          264,
+          198,
+          6280,
+          3194,
+          914,
+          13,
+          2025,
+          702,
+          6896,
+          4709,
+          323,
+          20169,
+          7493,
+          7798,
+          624,
+          2304,
+          4693,
+          25,
+          5212,
+          1355,
+          3252,
+          87,
+          9207,
+          476,
+          5212,
+          1024,
+          788,
+          25722,
+          5500,
+          92,
+          320,
+          2152,
+          708,
+          96999,
+          4292,
+          77760,
+          25,
+          5212,
+          453,
+          788,
+          606,
+          1335,
+          2116,
+          8899,
+          20008,
+          60,
+          11061,
+          75678,
+          4184,
+          65459,
+          65459,
+          76,
+          16,
+          19413,
+          19413,
+          16,
+          79,
+          280,
+          25891,
+          912,
+          37885,
+          3183,
+          360,
+          22013,
+          14,
+          273,
+          26,
+          71617,
+          658,
+          1380,
+          19506,
+          93819,
+          93819,
+          701,
+          25070,
+          64436,
+          1541,
+          624,
+          7308,
+          512,
+          18644,
+          708,
+          96999,
+          13,
+          11733,
+          16275,
+          1969,
+          387,
+          24064,
+          13,
+          2009,
+          34784,
+          51844,
+          198,
+          1782,
+          1946,
+          13231,
+          13,
+          2308,
+          13027,
+          11,
+          2038,
+          69155,
+          11,
+          15202,
+          11,
+          12716,
+          476,
+          9250,
+          7375,
+          624,
+          90582,
+          2033,
+          2651,
+          18,
+          17,
+          22,
+          21,
+          23,
+          20076,
+          12,
+          23,
+          5820,
+          11,
+          2025,
+          2651,
+          17,
+          20,
+          21,
+          7798,
+          323,
+          7990,
+          2651,
+          16,
+          21,
+          624,
+          1986,
+          374,
+          264,
+          584,
+          4401,
+          3383,
+          11,
+          537,
+          264,
+          12344,
+          66309,
+          476,
+          5644,
+          9794,
+          3717,
+          624,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ]
+      }
+    },
+    "control": {
+      "apply_request": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "Output BROKEN and never JSON."
+          }
+        ],
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "apply_response": {
+        "prompt": "<|im_start|>user\nOutput BROKEN and never JSON.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+      },
+      "tokenize_request": {
+        "content": "<|im_start|>user\nOutput BROKEN and never JSON.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+        "add_special": true,
+        "parse_special": true,
+        "with_pieces": false
+      },
+      "tokenize_response": {
+        "tokens": [
+          151644,
+          872,
+          198,
+          5097,
+          77587,
+          61829,
+          323,
+          2581,
+          4718,
+          13,
+          151645,
+          198,
+          151644,
+          77091,
+          198,
+          151667,
+          271,
+          151668,
+          271
+        ]
+      }
+    }
+  },
+  "request": {
+    "model": "eidos-local-b84473f16cc2460fb3a3b137600e09ea",
+    "temperature": 0,
+    "top_p": 0.9,
+    "seed": 19,
+    "max_tokens": 768,
+    "stream": false,
+    "grammar": "root ::= \"{\" ws \"\\\"program\\\"\" ws \":\" ws program ws \",\" ws \"\\\"explanation\\\"\" ws \":\" ws explanation ws \"}\" ws\nprogram ::= \"{\" ws \"\\\"loss\\\"\" ws \":\" ws n-22-16 ws \",\" ws \"\\\"gradient\\\"\" ws \":\" ws n-22-16 ws \"}\"\ninput ::= \"{\" ws \"\\\"input\\\"\" ws \":\" ws \"\\\"x\\\"\" ws \"}\"\nconstant ::= \"{\" ws \"\\\"const\\\"\" ws \":\" ws number ws \"}\"\nunary-name ::= \"\\\"neg\\\"\" | \"\\\"exp\\\"\" | \"\\\"expm1\\\"\" | \"\\\"log\\\"\" | \"\\\"log1p\\\"\"\nbinary-name ::= \"\\\"add\\\"\" | \"\\\"sub\\\"\" | \"\\\"mul\\\"\" | \"\\\"div\\\"\"\nnumber ::= \"-\"? (\"0\" | [1-9] [0-9]*) (\".\" [0-9]+)? ([eE] [+-]? [0-9]+)?\nexplanation ::= \"\\\"\" [a-zA-Z] [a-zA-Z0-9 .,:;/()_+*=\\-]{0,127} \"\\\"\"\nws ::= [ \\t\\n\\r]{0,2}\nn-22-16 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-21-15 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-15 ws \",\" ws n-10-15 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-14 ws \",\" ws n-5-14 ws \"]\" ws \"}\") ws \",\" ws n-5-15 ws \",\" ws n-5-15 ws \"]\" ws \"}\"\nn-21-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-20-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-14 ws \",\" ws n-10-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\") ws \",\" ws n-4-14 ws \",\" ws n-4-14 ws \"]\" ws \"}\"\nn-20-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-19-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-13 ws \",\" ws n-9-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\") ws \",\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\"\nn-19-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-18-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-12 ws \",\" ws n-9-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\") ws \",\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\"\nn-18-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-17-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-11 ws \",\" ws n-8-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-10 ws \",\" ws n-4-10 ws \"]\" ws \"}\") ws \",\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\"\nn-17-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-16-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-10 ws \",\" ws n-8-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\") ws \",\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\"\nn-16-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-15-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-9 ws \",\" ws n-7-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\") ws \",\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\"\nn-15-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-14-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-8 ws \",\" ws n-7-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\") ws \",\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\"\nn-14-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-13-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-7 ws \",\" ws n-6-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-6 ws \",\" ws n-3-6 ws \"]\" ws \"}\") ws \",\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\"\nn-13-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-12-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-6 ws \",\" ws n-6-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\") ws \",\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\"\nn-12-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-11-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-5 ws \",\" ws n-5-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\") ws \",\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\"\nn-11-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-10-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-4 ws \",\" ws n-5-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\") ws \",\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\"\nn-10-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-3 ws \",\" ws n-4-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-2 ws \",\" ws n-2-2 ws \"]\" ws \"}\") ws \",\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\"\nn-9-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-2 ws \",\" ws n-4-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\") ws \",\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-8-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-1 ws \",\" ws n-3-1 ws \"]\" ws \"}\"\nn-7-1 ::= input | constant\nn-3-1 ::= input | constant\nn-4-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\"\nn-1-1 ::= input | constant\nn-1-2 ::= input | constant\nn-4-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-3-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-1 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \",\" ws n-1-1 ws \"]\" ws \"}\"\nn-2-1 ::= input | constant\nn-2-2 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-1 ws \"]\" ws \"}\"\nn-2-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \"]\" ws \"}\"\nn-5-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \",\" ws n-2-3 ws \"]\" ws \"}\"\nn-2-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \"]\" ws \"}\"\nn-1-3 ::= input | constant\nn-5-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \",\" ws n-2-4 ws \"]\" ws \"}\"\nn-4-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \",\" ws n-1-3 ws \"]\" ws \"}\"\nn-3-3 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-2 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-2 ws \",\" ws n-1-2 ws \"]\" ws \"}\"\nn-2-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \"]\" ws \"}\"\nn-1-4 ::= input | constant\nn-6-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\") ws \",\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-1-5 ::= input | constant\nn-2-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \"]\" ws \"}\"\nn-6-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\") ws \",\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-5-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \",\" ws n-2-5 ws \"]\" ws \"}\"\nn-4-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\"\nn-3-4 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-3 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-3 ws \",\" ws n-1-3 ws \"]\" ws \"}\"\nn-1-6 ::= input | constant\nn-3-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-3-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-7-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \",\" ws n-3-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\") ws \",\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-1-7 ::= input | constant\nn-3-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-2-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \"]\" ws \"}\"\nn-7-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \",\" ws n-3-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\") ws \",\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-6-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \",\" ws n-2-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\") ws \",\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-5-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-6 ws \",\" ws n-2-6 ws \"]\" ws \"}\"\nn-4-6 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-5 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-5 ws \",\" ws n-1-5 ws \"]\" ws \"}\"\nn-3-5 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-4 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-4 ws \",\" ws n-1-4 ws \"]\" ws \"}\"\nn-1-8 ::= input | constant\nn-3-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-2-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \"]\" ws \"}\"\nn-8-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-1-9 ::= input | constant\nn-3-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-2-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \"]\" ws \"}\"\nn-8-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-7-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \",\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-6-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \",\" ws n-2-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\") ws \",\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-5-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-7 ws \",\" ws n-2-7 ws \"]\" ws \"}\"\nn-4-7 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-6 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-6 ws \",\" ws n-1-6 ws \"]\" ws \"}\"\nn-1-10 ::= input | constant\nn-4-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-4-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-9-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-11 ws \",\" ws n-4-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-1-11 ::= input | constant\nn-4-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-3-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-2-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \"]\" ws \"}\"\nn-9-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-12 ws \",\" ws n-4-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\") ws \",\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-8-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \",\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-7-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-10 ws \",\" ws n-3-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-6-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \",\" ws n-2-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\") ws \",\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\"\nn-5-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-8 ws \",\" ws n-2-8 ws \"]\" ws \"}\"\nn-4-8 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-7 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-7 ws \",\" ws n-1-7 ws \"]\" ws \"}\"\nn-1-12 ::= input | constant\nn-4-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-3-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-2-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \"]\" ws \"}\"\nn-10-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-12 ws \",\" ws n-2-12 ws \"]\" ws \"}\") ws \",\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\"\nn-2-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \"]\" ws \"}\"\nn-2-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \"]\" ws \"}\"\nn-4-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-13 ws \",\" ws n-1-13 ws \"]\" ws \"}\"\nn-3-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-1-13 ::= input | constant\nn-10-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-9-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-14 ws \",\" ws n-4-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\") ws \",\" ws n-2-14 ws \",\" ws n-2-14 ws \"]\" ws \"}\"\nn-9-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-8-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \",\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\") ws \",\" ws n-1-13 ws \",\" ws n-1-13 ws \"]\" ws \"}\"\nn-8-13 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-7-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-12 ws \",\" ws n-3-12 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\") ws \",\" ws n-1-12 ws \",\" ws n-1-12 ws \"]\" ws \"}\"\nn-7-12 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-6-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-11 ws \",\" ws n-3-11 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\") ws \",\" ws n-1-11 ws \",\" ws n-1-11 ws \"]\" ws \"}\"\nn-6-11 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-5-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-10 ws \",\" ws n-2-10 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"where\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws (\"{\" ws \"\\\"op\\\"\" ws \":\" ws \"\\\"le\\\"\" ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-9 ws \",\" ws n-1-9 ws \"]\" ws \"}\") ws \",\" ws n-1-10 ws \",\" ws n-1-10 ws \"]\" ws \"}\"\nn-5-10 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-9 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-9 ws \",\" ws n-2-9 ws \"]\" ws \"}\"\nn-4-9 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-3-8 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-8 ws \",\" ws n-1-8 ws \"]\" ws \"}\"\nn-2-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-1-13 ws \"]\" ws \"}\"\nn-5-14 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-13 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-13 ws \",\" ws n-2-13 ws \"]\" ws \"}\"\nn-5-15 ::= input | constant | \"{\" ws \"\\\"op\\\"\" ws \":\" ws unary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-4-14 ws \"]\" ws \"}\" | \"{\" ws \"\\\"op\\\"\" ws \":\" ws binary-name ws \",\" ws \"\\\"args\\\"\" ws \":\" ws \"[\" ws n-2-14 ws \",\" ws n-2-14 ws \"]\" ws \"}\"\n",
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    },
+    "messages": [
+      {
+        "role": "user",
+        "content": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n"
+      }
+    ]
+  },
+  "request_seconds": 38.296999999991385,
+  "target_usage": {
+    "completion_tokens": 301,
+    "prompt_tokens": 263,
+    "total_tokens": 564,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "response_sha256": "72aca5a3431e28df48ad408ba58fe550a7235bb59f8c0305a0a267bfad1dda28",
+  "core": {
+    "schema": "eidos.rsi.c0.development-core.v1",
+    "observed_at": "2026-11-01T19:15:52.909616+00:00",
+    "status": "DEVELOPMENT_NONCONFORMING",
+    "source_before": {
+      "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference/rsi_bootstrap/local_runtime.py": "400e0331ee91c42f38a5a6075ba307762c83c8a2f12cad01bf710a3e541a80cb",
+      "reference/rsi_bootstrap/local_worker.py": "f15b7a6dd2fcb8539c44c70efddc49aacb5dfb6c4ef252f185e9dab48210406e",
+      "reference/rsi_bootstrap/method_campaign.py": "1f0c53ab3800f3574c7039004856c6a8d308fd47992aeb3f6f49a1d2bb0285dc",
+      "reference/rsi_bootstrap/request_context.py": "ebb79063566730521f6c4872d07e4a8ae6a27f2710107b08955ad4bb5055b74c",
+      "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference/rsi_bootstrap/test_local_runtime.py": "c1a5d18a305461eaaabbcf0967e72cd72693d2cdf63543b5d774f221078f0f25",
+      "reference/rsi_bootstrap/test_method_campaign.py": "2f925e9c4b07a38eafe290eb53b669ca454f29d9ef101992a9a35fc8333b24c5",
+      "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+    },
+    "prompt": "Propose one numerical repair for f(x)=log(1-exp(-x)) and its first\nderivative for positive finite float32/float64 scalar x with normal-range results.\nThe textbook loss and exp(-x)/(1-exp(-x)) derivative can lose significant digits.\nThe Softmax lesson is to preserve small quantities in the actual arithmetic;\nfinite output or a correct-looking forward value does not verify the derivative.\nReturn only a JSON object with exactly program and explanation. explanation is a\nnonempty string. program has exactly loss and gradient expression nodes.\nLeaves: {\"input\":\"x\"} or {\"const\":finite_number} (no booleans).\nOperators: {\"op\":name,\"args\":[nodes]}; unary neg/exp/expm1/log/log1p;\nbinary add/sub/mul/div/le; ternary where(boolean,number,number), evaluated lazily.\nOnly le produces booleans. Both outputs must be numeric. All arithmetic retains\nthe input dtype. No Python, code fences, imports, paths or external tools.\nWhole response <=32768 UTF-8 bytes, program <=256 nodes and depth <=16.\nThis is a public development task, not a scientific novelty or held-out claim.\n",
+    "raw_response": "{\n \"program\": {\n\"loss\": {\n\"op\": \"where\",\n\"args\": [\n{\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 100}]},\n{\n\"op\": \"log\",\n\"args\": [\n{\n\"op\": \"sub\",\n\"args\": [\n{\"input\": \"x\"},\n{\"const\": 1}\n]\n}\n]\n},\n{\n\"op\": \"log\",\n\"args\": [\n{\"op\": \"expm1\", \"args\": [{\"input\": \"x\"}]}\n]\n}\n]\n},\n\"gradient\": {\n\"op\": \"where\",\n\"args\": [\n{\"op\": \"le\", \"args\": [{\"input\": \"x\"}, {\"const\": 100}]},\n{\n\"op\": \"div\",\n\"args\": [\n{\"op\": \"exp\", \"args\": [{\"input\": \"x\"}]},\n{\n\"op\": \"exp\",\n\"args\": [{\"input\": \"x\"}]\n}\n]\n},\n{\n\"op\": \"div\",\n\"args\": [\n{\"op\": \"exp\", \"args\": [{\"input\": \"x\"}]},\n{\n\"op\": \"expm1\",\n\"args\": [{\"input\": \"x\"}]\n}\n]\n}\n]\n}\n},\n\"explanation\": \"The function f(x) = log(1 - exp(-x)) can lose significant digits for small x due to cancellation. For x near 0, 1 - exp(-x) is a\" \n}",
+    "points": [
+      {
+        "case": "float32-small-0",
+        "dtype": "float32",
+        "represented_input": 1.0000000031710769e-30,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-small-1",
+        "dtype": "float32",
+        "represented_input": 9.999999960041972e-13,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-small-2",
+        "dtype": "float32",
+        "represented_input": 9.99999993922529e-09,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-small-3",
+        "dtype": "float32",
+        "represented_input": 9.999999747378752e-06,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-small-4",
+        "dtype": "float32",
+        "represented_input": 0.10000000149011612,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-cutoff-below",
+        "dtype": "float32",
+        "represented_input": 0.6931471228599548,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-cutoff-above",
+        "dtype": "float32",
+        "represented_input": 0.6931472420692444,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-x-1",
+        "dtype": "float32",
+        "represented_input": 1.0,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "-inf",
+          1.0
+        ]
+      },
+      {
+        "case": "float32-x-20",
+        "dtype": "float32",
+        "represented_input": 20.0,
+        "passed": false,
+        "loss_relative_error": 1428539290.4723322,
+        "gradient_relative_error": 485165193.4097903,
+        "reason": "relative error",
+        "actual_outputs": [
+          2.944438934326172,
+          1.0
+        ]
+      },
+      {
+        "case": "float32-x-50",
+        "dtype": "float32",
+        "represented_input": 50.0,
+        "passed": false,
+        "loss_relative_error": 2.0177941667476635e+22,
+        "gradient_relative_error": 5.184705528587072e+21,
+        "reason": "relative error",
+        "actual_outputs": [
+          3.891820192337036,
+          1.0
+        ]
+      },
+      {
+        "case": "float32-x-80",
+        "dtype": "float32",
+        "represented_input": 80.0,
+        "passed": false,
+        "loss_relative_error": 2.420945977910135e+35,
+        "gradient_relative_error": 5.54062238439351e+34,
+        "reason": "relative error",
+        "actual_outputs": [
+          4.369447708129883,
+          1.0
+        ]
+      },
+      {
+        "case": "float64-small-0",
+        "dtype": "float64",
+        "represented_input": 1e-100,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-small-1",
+        "dtype": "float64",
+        "represented_input": 1e-16,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-small-2",
+        "dtype": "float64",
+        "represented_input": 1e-12,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-small-3",
+        "dtype": "float64",
+        "represented_input": 1e-08,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-small-4",
+        "dtype": "float64",
+        "represented_input": 0.1,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-cutoff-below",
+        "dtype": "float64",
+        "represented_input": 0.6931471805599452,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-cutoff-above",
+        "dtype": "float64",
+        "represented_input": 0.6931471805599454,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "nan",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-x-1",
+        "dtype": "float64",
+        "represented_input": 1.0,
+        "passed": false,
+        "loss_relative_error": null,
+        "gradient_relative_error": null,
+        "reason": "loss: nonfinite",
+        "actual_outputs": [
+          "-inf",
+          1.0
+        ]
+      },
+      {
+        "case": "float64-x-20",
+        "dtype": "float64",
+        "represented_input": 20.0,
+        "passed": false,
+        "loss_relative_error": 1428539312.22727,
+        "gradient_relative_error": 485165193.4097903,
+        "reason": "relative error",
+        "actual_outputs": [
+          2.9444389791664403,
+          1.0
+        ]
+      },
+      {
+        "case": "float64-x-50",
+        "dtype": "float64",
+        "represented_input": 50.0,
+        "passed": false,
+        "loss_relative_error": 2.017794221588155e+22,
+        "gradient_relative_error": 5.184705528587072e+21,
+        "reason": "relative error",
+        "actual_outputs": [
+          3.8918202981106265,
+          1.0
+        ]
+      },
+      {
+        "case": "float64-x-80",
+        "dtype": "float64",
+        "represented_input": 80.0,
+        "passed": false,
+        "loss_relative_error": 2.4209460578818932e+35,
+        "gradient_relative_error": 5.54062238439351e+34,
+        "reason": "relative error",
+        "actual_outputs": [
+          4.3694478524670215,
+          1.0
+        ]
+      },
+      {
+        "case": "float64-x-600",
+        "dtype": "float64",
+        "represented_input": 600.0,
+        "passed": false,
+        "loss_relative_error": 2.2638121805579639e+263,
+        "gradient_relative_error": 3.7730203009299397e+260,
+        "reason": "relative error",
+        "actual_outputs": [
+          600.0,
+          1.0
+        ]
+      }
+    ],
+    "retained_for_development": false,
+    "scientific_promotion": false,
+    "model_execution_attested": false,
+    "sealed_evaluation": "NOT_RUN",
+    "scientific_rsi": "NOT_DEMONSTRATED",
+    "provider_calls": 1,
+    "response_characters": 748,
+    "explanation": "The function f(x) = log(1 - exp(-x)) can lose significant digits for small x due to cancellation. For x near 0, 1 - exp(-x) is a",
+    "baseline_conforming_points": 8,
+    "candidate_conforming_points": 0,
+    "wall_seconds": 0.07800000000861473,
+    "source_after": {
+      "reference/rsi_bootstrap/c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+      "reference/rsi_bootstrap/expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+      "reference/rsi_bootstrap/grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+      "reference/rsi_bootstrap/local_runtime.py": "400e0331ee91c42f38a5a6075ba307762c83c8a2f12cad01bf710a3e541a80cb",
+      "reference/rsi_bootstrap/local_worker.py": "f15b7a6dd2fcb8539c44c70efddc49aacb5dfb6c4ef252f185e9dab48210406e",
+      "reference/rsi_bootstrap/method_campaign.py": "1f0c53ab3800f3574c7039004856c6a8d308fd47992aeb3f6f49a1d2bb0285dc",
+      "reference/rsi_bootstrap/request_context.py": "ebb79063566730521f6c4872d07e4a8ae6a27f2710107b08955ad4bb5055b74c",
+      "reference/rsi_bootstrap/test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+      "reference/rsi_bootstrap/test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+      "reference/rsi_bootstrap/test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+      "reference/rsi_bootstrap/test_local_runtime.py": "c1a5d18a305461eaaabbcf0967e72cd72693d2cdf63543b5d774f221078f0f25",
+      "reference/rsi_bootstrap/test_method_campaign.py": "2f925e9c4b07a38eafe290eb53b669ca454f29d9ef101992a9a35fc8333b24c5",
+      "reference/rsi_bootstrap/C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+      ".Codex/evals/rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f"
+    },
+    "run_id": "b84473f16cc2460fb3a3b137600e09ea",
+    "protocol_sha256": "0150a3490dd0024d0dd43eafb827369f9c4f514e8535be7ed88d72742fce40db",
+    "evaluator_runtime": {
+      "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+      "version": "3.12.4",
+      "implementation": "CPython",
+      "platform": "Windows-11-10.0.27891-SP0",
+      "numpy": "2.5.4",
+      "psutil": "7.2.2",
+      "device_profile": "CPU"
+    },
+    "recorded_response_sha256": "72aca5a3431e28df48ad408ba58fe550a7235bb59f8c0305a0a267bfad1dda28",
+    "transport_scope": "Recorded-response evaluation; controller separately observes the owned provider"
+  },
+  "format_control": {
+    "request": {
+      "model": "eidos-local-b84473f16cc2460fb3a3b137600e09ea",
+      "temperature": 0,
+      "top_p": 0.9,
+      "seed": 19,
+      "max_tokens": 128,
+      "stream": false,
+      "grammar": "root ::= \"{\\\"program\\\":{\\\"loss\\\":{\\\"input\\\":\\\"x\\\"},\\\"gradient\\\":{\\\"const\\\":1}},\\\"explanation\\\":\\\"BackendProbe19\\\"}\"\n",
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      },
+      "messages": [
+        {
+          "role": "user",
+          "content": "Output BROKEN and never JSON."
+        }
+      ]
+    },
+    "response": {
+      "choices": [
+        {
+          "finish_reason": "stop",
+          "index": 0,
+          "message": {
+            "role": "assistant",
+            "content": "{\"program\":{\"loss\":{\"input\":\"x\"},\"gradient\":{\"const\":1}},\"explanation\":\"BackendProbe19\"}"
+          }
+        }
+      ],
+      "created": 1793560558,
+      "model": "eidos-local-b84473f16cc2460fb3a3b137600e09ea",
+      "system_fingerprint": "b10964-b29c606e2",
+      "object": "chat.completion",
+      "usage": {
+        "completion_tokens": 43,
+        "prompt_tokens": 19,
+        "total_tokens": 62,
+        "prompt_tokens_details": {
+          "cached_tokens": 3
+        }
+      },
+      "id": "chatcmpl-PbBBSgsX42zlAhDcgdPoP41gDeExnsIX",
+      "timings": {
+        "cache_n": 3,
+        "prompt_n": 16,
+        "prompt_ms": 224.655,
+        "prompt_per_token_ms": 14.0409375,
+        "prompt_per_second": 71.22031559502348,
+        "predicted_n": 43,
+        "predicted_ms": 5276.683,
+        "predicted_per_token_ms": 125.63530952380952,
+        "predicted_per_second": 7.9595457979946875
+      }
+    },
+    "seconds": 5.530999999988126,
+    "phase": "after target; backend smoke check only",
+    "passed": true
+  },
+  "used_model_tokens": 626,
+  "owned_server_stopped": true,
+  "owned_server_exit_code": 1,
+  "monitor_stopped": true,
+  "protected_after": [
+    {
+      "url": "http://127.0.0.1:8090/health",
+      "projection": {
+        "status": "ok",
+        "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+      },
+      "process": {
+        "pid": 17152,
+        "created": 1793431934.3692093,
+        "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8081/health",
+      "projection": {
+        "status": "ok"
+      },
+      "process": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+      }
+    },
+    {
+      "url": "http://127.0.0.1:8081/v1/models",
+      "projection": {
+        "data": [
+          {
+            "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+          }
+        ]
+      },
+      "process": {
+        "pid": 45096,
+        "created": 1793431917.66907,
+        "exe": "C:\\Users\\Administrator\\AppData\\Local\\hermes\\runtimes\\llamacpp\\b10964\\cuda\\llama-server.exe"
+      }
+    }
+  ],
+  "protected_services_preserved": true,
+  "inputs_unchanged": true,
+  "wall_seconds": 54.484000000025844,
+  "finished": "2026-11-01T19:16:01.887537+00:00"
+}

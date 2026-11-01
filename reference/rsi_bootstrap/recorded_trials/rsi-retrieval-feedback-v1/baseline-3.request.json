@@ -1,0 +1,15 @@
+{
+  "kind": "baseline",
+  "text": "",
+  "inputs": [
+    {
+      "path": "E:\\2026-AI4S\\Eidos\\.scratch\\quality\\rsi-method-campaign-v1\\run\\campaign-protocol.json",
+      "sha256": "186ab5bfa7a423dc3e71a73ea796884be687d2a6833576f9438a8d588de66a2b"
+    },
+    {
+      "path": "E:\\2026-AI4S\\Eidos\\reference\\rsi_bootstrap\\methods\\cards.json",
+      "sha256": "416057a0382d9193941e4965d0935dfed61645c82ce7ef1ca4ac84f7dbe6657f"
+    }
+  ],
+  "token_allowance": 8748
+}

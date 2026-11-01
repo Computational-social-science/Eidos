@@ -417,3 +417,15 @@ requires no paid provider or GPU, distinguishes runtime from task acceptance and
 states the remaining clean-machine, installed-wheel, Linux-model, GPU and RSI
 gaps. Same-oracle parent replay checks receipt consistency; it does not add an
 independent scientific authority.
+
+The subsequent [local known-method/feedback campaign](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-RETRIEVAL-FEEDBACK-2026-11-02.md)
+completed all six ScienceRSI CPU proposals under a frozen three-proposal,
+10,000-token/3,000-second ceiling per arm. All runtime checks passed, but both
+arms retained zero jointly conforming candidates. Treatment encoded the sourced
+forward method correctly (23/23) while failing every derivative point. Complete
+raw proposals, source/context bindings, failures, actual costs and repeated
+answers are archived; 180 scoped controls passed before inference. This exposes
+translation and feedback-stagnation limits rather than demonstrating RSI.
+Next qualify explicitly attributed typed method/derivative tools and a feedback
+policy that avoids equivalent failures. The default remains keyless/local,
+without Gemini, paid APIs, new CRON loops or changes to the v0.4.10 wheel.

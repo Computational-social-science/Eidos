@@ -1,0 +1,27 @@
+{
+  "schema": "eidos.local-method-bank.v1",
+  "notice": "EIDOS-authored summaries and mathematical facts; source implementations are not bundled and retain their own terms.",
+  "cards": [
+    {
+      "id": "log1mexp-piecewise",
+      "title": "Stable log1mexp loss and analytic first derivative",
+      "source_url": "https://search.r-project.org/CRAN/refmans/Rmpfr/html/log1mexp.html",
+      "checked_on": "2026-11-02",
+      "text": "For positive x, f(x)=log(1-exp(-x)). Mächler's documented stable method uses loss=log(-expm1(-x)) when x<=log(2), and loss=log1p(-exp(-x)) otherwise. log(2)=0.6931471805599453. The minus sign before expm1(-x) is essential: its result is negative. EIDOS analytic derivation: the positive first derivative can be written exp(-x)/(-expm1(-x)). This derivative identity is derived here, not attributed to the Rmpfr documentation. Preserve the input dtype; evaluate the selected loss branch lazily. Scope: the declared positive float32/float64 public normal-result domain, not subnormals, higher derivatives or training outcomes. This supplies a known repair, not a new discovery."
+    },
+    {
+      "id": "expm1-small",
+      "title": "Preserve small exponential differences with expm1",
+      "source_url": "https://numpy.org/doc/stable/reference/generated/numpy.expm1.html",
+      "checked_on": "2026-11-02",
+      "text": "NumPy expm1(x) computes exp(x)-1 and is intended to retain accuracy for small x. Forming exp(x) first and subtracting one can lose information. For positive x, expm1(-x) is negative, so -expm1(-x) represents the positive quantity 1-exp(-x). This is an operator fact, not an independent qualification of a whole loss or gradient implementation."
+    },
+    {
+      "id": "log1p-small",
+      "title": "Preserve a small logarithmic increment with log1p",
+      "source_url": "https://numpy.org/doc/stable/reference/generated/numpy.log1p.html",
+      "checked_on": "2026-11-02",
+      "text": "NumPy log1p(y) computes log(1+y) accurately for small real y even when forming 1+y would round to one. Its real finite domain requires y>-1. For large positive x, y=-exp(-x) is a small negative increment. Using log1p does not by itself verify the derivative, input dtype or validity at every branch boundary."
+    }
+  ]
+}

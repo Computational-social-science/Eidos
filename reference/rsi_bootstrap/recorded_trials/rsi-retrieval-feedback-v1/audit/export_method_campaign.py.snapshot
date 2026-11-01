@@ -1,0 +1,240 @@
+"""Validate and archive one completed campaign; never execute a model."""
+from pathlib import Path
+from decimal import Decimal, localcontext
+import hashlib
+import json
+import math
+import sys
+
+import psutil
+import numpy as np
+
+ROOT = Path.cwd().resolve()
+sys.path.insert(0, str(ROOT))
+from reference.rsi_bootstrap import local_runtime as rt, method_campaign as campaign, expressions, grader
+
+FOLDER = ROOT / '.scratch/quality/rsi-method-campaign-v1'
+RUN = FOLDER / 'run'
+EXPECTED_RUN = 'ae199bddabab40f8a937d9e57a3ce060'
+EXPECTED_SHA = '186ab5bfa7a423dc3e71a73ea796884be687d2a6833576f9438a8d588de66a2b'
+EXPECTED_PREPARED = '7bf62479132783e65ca31d90c729959608dbfeabf325ee1cc2c988558d0bf927'
+ARCHIVE = ROOT / 'reference/rsi_bootstrap/recorded_trials/rsi-retrieval-feedback-v1'
+
+
+def require(condition, message):
+    if not condition:
+        raise RuntimeError(message)
+
+
+def read(path):
+    return rt.strict_json(path.read_bytes())
+
+
+def component(output, value, expected, tolerance):
+    if (not isinstance(output, (np.ndarray, np.floating))
+            or output.shape != value.shape or output.dtype != value.dtype
+            or not np.isfinite(output)):
+        return {'passed': False, 'relative_error_decimal': None, 'reason': 'shape/dtype/nonfinite'}
+    with localcontext() as context:
+        context.prec = 120
+        error = abs(Decimal.from_float(float(output)) / expected - 1)
+    return {'passed': error <= Decimal(str(tolerance)),
+            'relative_error_decimal': str(error), 'reason': 'independent component comparison'}
+
+
+def component_analysis(wire):
+    program = expressions.parse_program(json.dumps(read_wire(wire)['program'], allow_nan=False))
+    rows = []
+    for case in grader.development_cases():
+        expected = grader.reference(case)
+        higher = grader.reference(case, precision=520)
+        with localcontext() as context:
+            context.prec = 120
+            require(all(abs(expected[key] / higher[key] - 1) < Decimal('1e-100')
+                        for key in ('loss', 'gradient')), 'Component reference did not converge')
+        outputs = expressions.execute(program, case.value)
+        rows.append({'case': case.name, 'dtype': case.value.dtype.name,
+                     **{name: component(output, case.value, expected[name],
+                                        grader.TOLERANCES[case.value.dtype.name])
+                        for name, output in zip(('loss', 'gradient'), outputs)}})
+    return rows
+
+
+def read_wire(wire):
+    return rt.strict_json(wire.encode('utf-8'))
+
+
+# Posthoc analysis controls: do not change the frozen model/oracle/primary result.
+cutoff_case = next(case for case in grader.development_cases() if case.name == 'float64-cutoff-below')
+cutoff_expected = grader.reference(cutoff_case)
+nonfinite_loss = component(np.asarray(np.nan), cutoff_case.value, cutoff_expected['loss'], 2e-12)
+valid_gradient = component(np.asarray(1.0), cutoff_case.value, cutoff_expected['gradient'], 2e-12)
+require(nonfinite_loss['passed'] is False and valid_gradient['passed'] is True,
+        'Nonfinite loss masked a valid gradient')
+with localcontext() as context:
+    context.prec = 120
+    over_error = Decimal('2e-12') + Decimal('1e-40')
+    boundary_expected = Decimal(1) / (1 + over_error)
+boundary = component(np.asarray(1.0), np.asarray(1.0), boundary_expected, 2e-12)
+require(float(Decimal(boundary['relative_error_decimal'])) == 2e-12 and boundary['passed'] is False,
+        'Rounded float diagnostic admitted an above-tolerance component')
+component_controls = {'loss_nonfinite_gradient_valid': {'loss': nonfinite_loss, 'gradient': valid_gradient},
+                      'above_tolerance_rounding': boundary, 'all_expected_outcomes_observed': True}
+
+
+require(rt.sha(RUN / 'campaign-protocol.json') == EXPECTED_SHA, 'Different executed protocol')
+require(rt.sha(FOLDER / 'prepared.json') == EXPECTED_PREPARED, 'Different preparation freeze')
+protocol = read(RUN / 'campaign-protocol.json')
+prepared = read(FOLDER / 'prepared.json')
+for key in ('config_path', 'config_sha256', 'bank_path', 'runtime', 'clock', 'sources',
+            'query', 'order', 'token_cap', 'wall_cap_seconds'):
+    require(prepared[key] == protocol[key], f'Executed {key} differs from preparation')
+require(prepared['status'] == 'PRE_INFERENCE_SOURCE_FREEZE', 'Unknown freeze status')
+result = read(RUN / 'campaign-result.json')
+outcome = read(RUN / 'campaign-outcome.json')
+require(protocol['run_id'] == result['run_id'] == outcome['run_id'] == EXPECTED_RUN,
+        'Campaign identities disagree')
+require(result['protocol_sha256'] == outcome['protocol_sha256'] == EXPECTED_SHA,
+        'Campaign digests disagree')
+require(result['status'] == outcome['status'] == 'COMPLETE' and outcome['runtime_accepted'] is True,
+        'Comparison did not meet runtime acceptance')
+require(all(item['scientific_promotion'] is False for item in (protocol, result, outcome)),
+        'Unexpected scientific promotion')
+require(result['scientific_rsi'] == outcome['scientific_rsi'] == 'NOT_DEMONSTRATED'
+        and result['sealed_evaluation'] == 'NOT_RUN', 'Unexpected RSI/sealed claim')
+arms = campaign.summarize(RUN, protocol, result['attempts'])
+require(result['arms'] == outcome['arms'] == arms, 'Parent/worker accounting differs')
+require(result['costs_including_failures'] == campaign.all_costs(result['attempts']),
+        'Failure accounting differs')
+timing = outcome['timing']
+for key in ('one_time_setup_seconds', 'owned_worker_dispatch_seconds',
+            'parent_verification_seconds', 'total_api_seconds'):
+    require(type(timing[key]) in (int, float) and math.isfinite(timing[key]) and timing[key] >= 0,
+            f'Invalid timing {key}')
+require(timing['clock'] == protocol['clock'], 'Timing clocks differ')
+require(type(result['wall_seconds']) in (int, float) and math.isfinite(result['wall_seconds'])
+        and result['wall_seconds'] >= sum(arm['seconds'] for arm in arms.values()),
+        'Worker duration under-reports arm costs')
+require(timing['owned_worker_dispatch_seconds'] >= result['wall_seconds'],
+        'Dispatch duration under-reports worker lifetime')
+require(timing['total_api_seconds'] >= sum(timing[key] for key in
+        ('one_time_setup_seconds', 'owned_worker_dispatch_seconds', 'parent_verification_seconds')),
+        'Total API duration under-reports its component scopes')
+
+pending = []
+manifest = []
+
+
+def queue(source, relative):
+    data = source.read_bytes()
+    target = ARCHIVE / relative
+    require(not target.exists() or target.read_bytes() == data, 'Immutable archive already differs')
+    pending.append((target, data))
+    manifest.append({'path': target.relative_to(ROOT).as_posix(),
+                     'sha256': hashlib.sha256(data).hexdigest()})
+
+
+for name in ('campaign-protocol.json', 'campaign-result.json', 'campaign-outcome.json',
+             'progress.json', 'controller.log'):
+    queue(RUN / name, Path(name))
+for name in ('config.json', 'prepared.json'):
+    queue(FOLDER / name, Path(name))
+
+attempts = []
+for row in result['attempts']:
+    folder = RUN / row['path']
+    actual = campaign.read_attempt(folder)
+    core, receipt, response = actual['core'], actual['record'], read(folder / 'response.json')
+    require(receipt['owned_server_stopped'] is True and receipt['monitor_stopped'] is True
+            and receipt['protected_services_preserved'] is True and receipt['errors'] == [],
+            'Attempt cleanup/continuity receipt failed')
+    identity = receipt['owned_server']
+    try:
+        require(psutil.Process(identity['pid']).create_time() != identity['created'],
+                'Owned model is still running')
+    except psutil.NoSuchProcess:
+        pass
+    request = read(RUN / row['request_path'])
+    selected = campaign.retrieve(campaign.load_bank(Path(protocol['bank_path'])))
+    wire = core['raw_response']
+    # Posthoc same-oracle components, evaluated independently. The joint grader
+    # short-circuits on nonfinite loss, so its None diagnostics are not scores.
+    component_rows = component_analysis(wire)
+    require([(point['case'], point['dtype']) for point in component_rows] ==
+            [(point['case'], point['dtype']) for point in core['points']], 'Component inventory differs')
+    require(all((point['loss']['passed'] and point['gradient']['passed']) == saved['passed']
+                for point, saved in zip(component_rows, core['points'])), 'Posthoc joint results differ')
+    components = {output: sum(point[output]['passed'] for point in component_rows)
+                  for output in ('loss', 'gradient')}
+    attempts.append({
+        **row, 'run_id': actual['protocol']['run_id'],
+        'protocol_sha256': rt.sha(folder / 'protocol.json'),
+        'response_sha256': rt.sha(folder / 'response.json'),
+        'raw_content_sha256': hashlib.sha256(wire.encode('utf-8')).hexdigest(),
+        'raw_response': wire, 'core_result': core,
+        'component_conforming_points': components,
+        'component_analysis': component_rows,
+        'target_usage': receipt['target_usage'],
+        'target_finish_reason': response['choices'][0]['finish_reason'],
+        'format_control_usage': receipt['format_control']['response']['usage'],
+        'context': request['text'],
+        'context_source_ids': [item['card']['id'] for item in selected] if request['text'] else [],
+        'owned_server': identity, 'owned_server_absent_at_export': True,
+        'protected_sample_groups': len(receipt['protected_observations']),
+        'ram_samples': len(receipt['samples']),
+        'minimum_available_mib': min(item['available_mib'] for item in receipt['samples']),
+        'peak_owned_tree_rss_mib': max(item['tree_rss_mib'] for item in receipt['samples']),
+        'first_observed_at': core['observed_at'],
+    })
+    queue(RUN / row['request_path'], Path(row['request_path']))
+    for name in ('protocol.json', 'result.json', 'outcome.json', 'core.json', 'response.json',
+                 'owner.json', 'server.log', 'controller.log', 'evaluation.log'):
+        queue(folder / name, Path(row['path']) / name)
+
+for relative, expected in protocol['sources'].items():
+    source = (ROOT / relative).resolve()
+    require(source.is_relative_to(ROOT) and rt.sha(source) == expected, 'Source changed or escaped')
+    destination = Path('source') / source.relative_to(ROOT)
+    queue(source, destination.with_name(destination.name + '.snapshot'))
+# Auxiliary audit/test files are not asserted to be inference inputs.
+queue(ROOT / 'reference/rsi_bootstrap/runtime_controls/server.py',
+      Path('test-only/runtime_controls/server.py.snapshot'))
+queue(Path(__file__).resolve(), Path('audit/export_method_campaign.py.snapshot'))
+require(len({item['path'] for item in manifest}) == len(manifest), 'Duplicate archive names')
+
+record = {
+    'schema': 'eidos.c0.method-campaign-study.v1',
+    'scope': 'Repeated proposals on one known public function; combined external method retrieval and public feedback',
+    'runtime_accepted': True, 'status': 'COMPLETE', 'scientific_promotion': False,
+    'scientific_rsi': 'NOT_DEMONSTRATED', 'sealed_evaluation': 'NOT_RUN',
+    'run_id': EXPECTED_RUN, 'protocol_sha256': EXPECTED_SHA,
+    'prepared_sha256': EXPECTED_PREPARED, 'config_sha256': protocol['config_sha256'],
+    'runtime': protocol['runtime'], 'clock': protocol['clock'],
+    'config': read(FOLDER / 'config.json'),
+    'method_retrieval': campaign.retrieve(campaign.load_bank(Path(protocol['bank_path']))),
+    'arms': arms, 'attempts': attempts, 'costs_including_failures': result['costs_including_failures'],
+    'worker_wall_seconds': result['wall_seconds'], 'timing': timing,
+    'posthoc_component_audit': {'scope': 'Same-oracle independent loss/gradient diagnostics; not preregistered primary outcomes',
+                              'controls': component_controls},
+    'cli_contract_expected_exit_code': 0,
+    'cli_exit_scope': 'Expected from accepted receipt and source CLI contract; not a separately archived process-exit observation',
+    'source_count': len(protocol['sources']), 'archive': manifest,
+    'limits': ['Same-host Windows CPU source checkout only',
+               'No independently installed/new-machine/GPU model qualification',
+               'Known repair and derivative supplied by external maintainer workflow',
+               'Combined knowledge/history intervention is not matched-A/H/B RSI or a causal decomposition',
+               'Three deterministic proposals and 23 related points are not independent scientific tasks',
+               'No hard OS memory/disk/network isolation or hostile-backend compute attestation',
+               'Sampled protected-service identity/health does not establish continuous uptime',
+               'Backend and model identified but not redistributed; weight redistribution terms unqualified'],
+}
+# All verification precedes writes. Existing archive bytes can never be replaced.
+for target, data in pending:
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if target.exists():
+        require(target.read_bytes() == data, 'Archive changed during validation')
+    else:
+        with target.open('xb') as stream:
+            stream.write(data)
+rt.write_json(ROOT / 'docs/RSI-RETRIEVAL-FEEDBACK-2026-11-02.json', record)
+print(json.dumps({'runtime_accepted': True, 'arms': arms, 'archive_files': len(manifest)}))

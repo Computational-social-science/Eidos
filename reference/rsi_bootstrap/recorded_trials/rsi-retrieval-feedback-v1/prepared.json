@@ -1,0 +1,79 @@
+{
+  "config_path": "E:\\2026-AI4S\\Eidos\\.scratch\\quality\\rsi-method-campaign-v1\\config.json",
+  "config_sha256": "ce1278dee31b9b3506b6ae0085aaa07819e0d6d0cc3ffa974d4220fb99b70750",
+  "bank_path": "E:\\2026-AI4S\\Eidos\\reference\\rsi_bootstrap\\methods\\cards.json",
+  "runtime": {
+    "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+    "version": "3.12.4",
+    "implementation": "CPython",
+    "platform": "Windows-11-10.0.27891-SP0",
+    "numpy": "2.5.4",
+    "psutil": "7.2.2",
+    "device_profile": "CPU"
+  },
+  "clock": {
+    "cost_clock": "perf_counter",
+    "implementation": "QueryPerformanceCounter()",
+    "resolution_seconds": 1e-07,
+    "monotonic": true,
+    "deadline_clock": "monotonic",
+    "deadline_resolution_seconds": 0.015625
+  },
+  "sources": {
+    ".Codex\\evals\\rsi-bootstrap-foundation.md": "2a801171108de4b732be5e2896a45229f347f419d5c992c4d871b157f610b95f",
+    ".Codex\\evals\\rsi-local-runtime.md": "7484d6baac249592276b99ff2eccea3479d9bf8de5ba88f8762c66927712843e",
+    "framework\\_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+    "framework\\_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+    "framework\\_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+    "framework\\artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+    "framework\\subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+    "pyproject.toml": "d6fffb2f31b4c3c6564d19e48d16b02a37da8fc5b47640aeb579313b27ad92c6",
+    "reference\\rsi_bootstrap\\C0-SPEC.md": "fb3078ed3320a59b94859686abd155d5539a19aeb9e59728c66021a06e48b6cd",
+    "reference\\rsi_bootstrap\\c0.py": "b200970286a34765a4eac6c81305894292452207ef69a9995e1a7eb2705f155a",
+    "reference\\rsi_bootstrap\\expressions.py": "295ab0115901bb2877a216d1f98b6805742161896f87efb86a32ac59dbfd1d06",
+    "reference\\rsi_bootstrap\\grader.py": "13f8157357c0960f2ce45e6d85b14c4870b95ab1ad0ea1801f7614f236a41cd5",
+    "reference\\rsi_bootstrap\\local_runtime.py": "400e0331ee91c42f38a5a6075ba307762c83c8a2f12cad01bf710a3e541a80cb",
+    "reference\\rsi_bootstrap\\local_worker.py": "f15b7a6dd2fcb8539c44c70efddc49aacb5dfb6c4ef252f185e9dab48210406e",
+    "reference\\rsi_bootstrap\\method_campaign.py": "1f0c53ab3800f3574c7039004856c6a8d308fd47992aeb3f6f49a1d2bb0285dc",
+    "reference\\rsi_bootstrap\\recorded_trials\\c0-decoder-probe-v2\\grammar.gbnf": "486a35b4173159a863bab020df4e5562a5d6bc670ec1029060a963d41fb0a4e0",
+    "reference\\rsi_bootstrap\\request_context.py": "ebb79063566730521f6c4872d07e4a8ae6a27f2710107b08955ad4bb5055b74c",
+    "reference\\rsi_bootstrap\\test_c0.py": "17dfe42f6694888cdefc56e9badb65dae4f1daa1aba3b85f52dcaa2ffe981770",
+    "reference\\rsi_bootstrap\\test_expressions.py": "9e9d045dda2e9cf4fa59914698e4dee8d766de7b3018048dea69e9134a680ce5",
+    "reference\\rsi_bootstrap\\test_grader.py": "cbbf34076d36728547eba03e4d4a837fcc7951c1775f6a575bf7e4f0385873b7",
+    "reference\\rsi_bootstrap\\test_local_runtime.py": "c1a5d18a305461eaaabbcf0967e72cd72693d2cdf63543b5d774f221078f0f25",
+    "reference\\rsi_bootstrap\\test_method_campaign.py": "2f925e9c4b07a38eafe290eb53b669ca454f29d9ef101992a9a35fc8333b24c5",
+    "uv.lock": "6c279354f73273f54427205ec0e00d3f7ce3cd7382c5378121262cac0ddeedd3",
+    "reference\\rsi_bootstrap\\methods\\cards.json": "416057a0382d9193941e4965d0935dfed61645c82ce7ef1ca4ac84f7dbe6657f",
+    ".Codex/evals/rsi-retrieval-feedback.md": "528f49de90d51f608368af7a7a676b35228e6017c57748ad80c48f76d53ac226"
+  },
+  "query": "log1mexp log(1-exp(-x)) cancellation accurate expm1 log1p loss derivative",
+  "order": [
+    [
+      "baseline",
+      1
+    ],
+    [
+      "retrieval-feedback",
+      1
+    ],
+    [
+      "baseline",
+      2
+    ],
+    [
+      "retrieval-feedback",
+      2
+    ],
+    [
+      "baseline",
+      3
+    ],
+    [
+      "retrieval-feedback",
+      3
+    ]
+  ],
+  "token_cap": 10000,
+  "wall_cap_seconds": 3000,
+  "status": "PRE_INFERENCE_SOURCE_FREEZE"
+}

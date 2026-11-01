@@ -11,7 +11,7 @@ In the subsequent [decoder-constrained study](https://github.com/Computational-s
 both models generated admissible programs but failed all 23 joint numerical
 development points. Qwen's program has loss/derivative defects; ScienceRSI's
 program does not use its input. Runtime acceptance did not confer task authority.
-The next intervention is grounded method retrieval and bounded counterexample
+The subsequent intervention was grounded method retrieval and bounded counterexample
 feedback under a new protocol. The [component plan](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-COMPONENT-ASSEMBLY-2026-11-02.md)
 requires local, keyless operation without Gemini or paid services.
 
@@ -21,6 +21,17 @@ service preservation, source/environment bindings and cleanup passed; the new
 program again failed all 23 joint points. This is a different execution profile,
 not a CPU/GPU throughput or model-ranking experiment. No scientific authority
 or recursive-improvement result follows.
+
+The completed [six-proposal retrieval/feedback comparison](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-RETRIEVAL-FEEDBACK-2026-11-02.md)
+retained zero jointly conforming candidates in either arm. Treatment loss values
+passed 23/23 public points, while its derivatives failed all points despite an
+externally supplied correct formula. All three baselines repeated the same
+answer; treatment proposals two and three also repeated. Fixed seeds and the
+earliest-tied-prior rule limit interpretation. This configuration remains
+unqualified for numerical research authority; these are not independent tasks
+or a general model ranking. Next qualify typed method/derivative tools and a
+feedback policy that avoids recycling equivalent failures, using local models
+and preserved raw proposals. Known-method tool execution remains distinct from RSI.
 
 EIDOS has no task-qualified autonomous research reasoner. The legacy stage/model
 table was a proposed routing list, not an executed capability measurement. Model

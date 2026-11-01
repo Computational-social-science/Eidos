@@ -6,8 +6,12 @@ for this assessment. Repository inspection is not runtime qualification.
 
 Subsequent implementation checkpoint: the [configured CPU C0 runtime](RSI-LOCAL-RUNTIME-2026-11-02.md)
 now has one actual same-host source-checkout execution. Its runtime passed and
-its numerical candidate conformed at 0/23 points. Retrieval, feedback-search, new-machine
-qualification and RSI remain pending; this is not an upstream framework install.
+its numerical candidate conformed at 0/23 points. The subsequent
+[local retrieval/feedback comparison](RSI-RETRIEVAL-FEEDBACK-2026-11-02.md)
+completed all six proposals under equal ceilings. Neither arm produced a jointly
+conforming candidate: treatment loss passed 23/23 but derivatives failed all
+points. This is local known-method reuse, not an upstream framework install or
+RSI. Network-denied/new-machine model qualification remains pending.
 
 ## Decision
 
@@ -24,8 +28,9 @@ OpenAI-compatible protocol can be local; the protocol does not require OpenAI.
 
 The [decoder study](RSI-C0-DECODER-STUDY-2026-11-02.md) gives the immediate reason:
 both tested local models produced admissible syntax but failed all 23 joint
-loss/gradient development points. The next intervention should supply verified
-methods and bounded counterexample feedback. More agents or a prestigious
+loss/gradient development points. That motivated supplying verified
+methods and bounded counterexample feedback. Its completed comparison now directs
+work toward typed numerical tools and feedback-policy stagnation. More agents or a prestigious
 publication cannot substitute for a measured gain.
 
 ## Main-journal shortlist

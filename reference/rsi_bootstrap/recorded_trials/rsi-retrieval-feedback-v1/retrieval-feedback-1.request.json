@@ -1,0 +1,15 @@
+{
+  "kind": "retrieval-feedback",
+  "text": "Externally authored known-method summaries (not discovered by this model):\n\n[log1mexp-piecewise] https://search.r-project.org/CRAN/refmans/Rmpfr/html/log1mexp.html\nFor positive x, f(x)=log(1-exp(-x)). M\u00e4chler's documented stable method uses loss=log(-expm1(-x)) when x<=log(2), and loss=log1p(-exp(-x)) otherwise. log(2)=0.6931471805599453. The minus sign before expm1(-x) is essential: its result is negative. EIDOS analytic derivation: the positive first derivative can be written exp(-x)/(-expm1(-x)). This derivative identity is derived here, not attributed to the Rmpfr documentation. Preserve the input dtype; evaluate the selected loss branch lazily. Scope: the declared positive float32/float64 public normal-result domain, not subnormals, higher derivatives or training outcomes. This supplies a known repair, not a new discovery.\n\n[log1p-small] https://numpy.org/doc/stable/reference/generated/numpy.log1p.html\nNumPy log1p(y) computes log(1+y) accurately for small real y even when forming 1+y would round to one. Its real finite domain requires y>-1. For large positive x, y=-exp(-x) is a small negative increment. Using log1p does not by itself verify the derivative, input dtype or validity at every branch boundary.",
+  "inputs": [
+    {
+      "path": "E:\\2026-AI4S\\Eidos\\.scratch\\quality\\rsi-method-campaign-v1\\run\\campaign-protocol.json",
+      "sha256": "186ab5bfa7a423dc3e71a73ea796884be687d2a6833576f9438a8d588de66a2b"
+    },
+    {
+      "path": "E:\\2026-AI4S\\Eidos\\reference\\rsi_bootstrap\\methods\\cards.json",
+      "sha256": "416057a0382d9193941e4965d0935dfed61645c82ce7ef1ca4ac84f7dbe6657f"
+    }
+  ],
+  "token_allowance": 10000
+}

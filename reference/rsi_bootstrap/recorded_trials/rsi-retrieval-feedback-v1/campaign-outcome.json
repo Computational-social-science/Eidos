@@ -1,0 +1,39 @@
+{
+  "run_id": "ae199bddabab40f8a937d9e57a3ce060",
+  "protocol_sha256": "186ab5bfa7a423dc3e71a73ea796884be687d2a6833576f9438a8d588de66a2b",
+  "runtime_accepted": true,
+  "scientific_promotion": false,
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "status": "COMPLETE",
+  "arms": {
+    "baseline": {
+      "tokens": 1878,
+      "seconds": 165.27176539995708,
+      "conforming_proposals": 0,
+      "numerical_proposals_evaluated": 3,
+      "best_joint_points": 0
+    },
+    "retrieval-feedback": {
+      "tokens": 4732,
+      "seconds": 260.46368790001725,
+      "conforming_proposals": 0,
+      "numerical_proposals_evaluated": 3,
+      "best_joint_points": 0
+    }
+  },
+  "timing": {
+    "one_time_setup_seconds": 0.12339150000480004,
+    "clock": {
+      "cost_clock": "perf_counter",
+      "implementation": "QueryPerformanceCounter()",
+      "resolution_seconds": 1e-07,
+      "monotonic": true,
+      "deadline_clock": "monotonic",
+      "deadline_resolution_seconds": 0.015625
+    },
+    "owned_worker_dispatch_seconds": 426.72633549998864,
+    "parent_verification_seconds": 0.4836991000047419,
+    "total_api_seconds": 427.3334279000119,
+    "scope": "run() entry through final receipt preparation; excludes interpreter/CLI startup and final atomic receipt write"
+  }
+}

@@ -35,6 +35,18 @@ def main():
 
         def do_POST(self):
             body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
+            if self.path == "/apply-template":
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(json.dumps({"prompt": body["messages"][0]["content"]}).encode())
+                return
+            if self.path == "/tokenize":
+                count = len(body["content"].split()) + 1
+                if args.mode == "oversize_context": count = 10000
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(json.dumps({"tokens": list(range(count))}).encode())
+                return
             control = body["messages"][0]["content"].startswith("Output BROKEN")
             if not control and args.mode == "guard_slow":
                 time.sleep(3)
@@ -50,8 +62,11 @@ def main():
             if not control and args.mode == "source_changed":
                 args.model.write_bytes(args.model.read_bytes() + b"changed")
             text = ("BROKEN" if args.mode == "bad_control" else literal) if control else content
-            value = {"choices": [{"message": {"content": text}, "finish_reason": "stop"}],
-                     "usage": {"completion_tokens": 1, "prompt_tokens": 1, "total_tokens": 2}}
+            n_prompt = len(body["messages"][0]["content"].split()) + 1
+            usage = {"completion_tokens": 10, "prompt_tokens": n_prompt, "total_tokens": n_prompt + 10,
+                     "prompt_tokens_details": {"cached_tokens": 0}}
+            if args.mode == "bad_usage" and not control: usage["total_tokens"] += 1
+            value = {"choices": [{"message": {"content": text}, "finish_reason": "stop"}], "usage": usage}
             self.send_response(200)
             self.end_headers()
             self.wfile.write(b"x" * 262145 if args.mode == "oversize" and not control else json.dumps(value).encode())

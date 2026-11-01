@@ -1,0 +1,234 @@
+{
+  "schema": "eidos.c0.method-campaign-result.v1",
+  "run_id": "ae199bddabab40f8a937d9e57a3ce060",
+  "protocol_sha256": "186ab5bfa7a423dc3e71a73ea796884be687d2a6833576f9438a8d588de66a2b",
+  "attempts": [
+    {
+      "arm": "baseline",
+      "ordinal": 1,
+      "path": "baseline-1",
+      "request_path": "baseline-1.request.json",
+      "stage": "COMPLETED",
+      "outcome": {
+        "schema": "eidos.c0.local-outcome.v1",
+        "run_id": "7fac05558a234aaa9eb1650e8473f87a",
+        "protocol_sha256": "d42c329fd01ce5ded76c4f81eefcd8be66c65e8750386d0dba3041de7a827448",
+        "runtime_accepted": true,
+        "scientific_promotion": false,
+        "scientific_rsi": "NOT_DEMONSTRATED",
+        "status": "COMPLETE",
+        "controller_exit_code": 0,
+        "candidate_status": "DEVELOPMENT_NONCONFORMING"
+      },
+      "measured": {
+        "candidate_status": "DEVELOPMENT_NONCONFORMING",
+        "points_evaluated": 23,
+        "joint_conforming_points": 0,
+        "used_model_tokens": 626,
+        "request_seconds": 38.203000000008615,
+        "runtime_accepted": true,
+        "scientific_promotion": false
+      },
+      "charged_seconds": 54.94514539997908,
+      "token_cost": {
+        "complete": true,
+        "verified_tokens": 626
+      }
+    },
+    {
+      "arm": "retrieval-feedback",
+      "ordinal": 1,
+      "path": "retrieval-feedback-1",
+      "request_path": "retrieval-feedback-1.request.json",
+      "stage": "COMPLETED",
+      "outcome": {
+        "schema": "eidos.c0.local-outcome.v1",
+        "run_id": "871ce018179a443e93ba9df0092b95de",
+        "protocol_sha256": "49bd061ead7440b3e54a7040dac8e48ad245aefb8a679f6ad7c0aec5e64e062a",
+        "runtime_accepted": true,
+        "scientific_promotion": false,
+        "scientific_rsi": "NOT_DEMONSTRATED",
+        "status": "COMPLETE",
+        "controller_exit_code": 0,
+        "candidate_status": "DEVELOPMENT_NONCONFORMING"
+      },
+      "measured": {
+        "candidate_status": "DEVELOPMENT_NONCONFORMING",
+        "points_evaluated": 23,
+        "joint_conforming_points": 0,
+        "used_model_tokens": 1080,
+        "request_seconds": 55.75,
+        "runtime_accepted": true,
+        "scientific_promotion": false
+      },
+      "charged_seconds": 72.63223980000475,
+      "token_cost": {
+        "complete": true,
+        "verified_tokens": 1080
+      }
+    },
+    {
+      "arm": "baseline",
+      "ordinal": 2,
+      "path": "baseline-2",
+      "request_path": "baseline-2.request.json",
+      "stage": "COMPLETED",
+      "outcome": {
+        "schema": "eidos.c0.local-outcome.v1",
+        "run_id": "b84473f16cc2460fb3a3b137600e09ea",
+        "protocol_sha256": "0150a3490dd0024d0dd43eafb827369f9c4f514e8535be7ed88d72742fce40db",
+        "runtime_accepted": true,
+        "scientific_promotion": false,
+        "scientific_rsi": "NOT_DEMONSTRATED",
+        "status": "COMPLETE",
+        "controller_exit_code": 0,
+        "candidate_status": "DEVELOPMENT_NONCONFORMING"
+      },
+      "measured": {
+        "candidate_status": "DEVELOPMENT_NONCONFORMING",
+        "points_evaluated": 23,
+        "joint_conforming_points": 0,
+        "used_model_tokens": 626,
+        "request_seconds": 38.296999999991385,
+        "runtime_accepted": true,
+        "scientific_promotion": false
+      },
+      "charged_seconds": 55.383005799987586,
+      "token_cost": {
+        "complete": true,
+        "verified_tokens": 626
+      }
+    },
+    {
+      "arm": "retrieval-feedback",
+      "ordinal": 2,
+      "path": "retrieval-feedback-2",
+      "request_path": "retrieval-feedback-2.request.json",
+      "stage": "COMPLETED",
+      "outcome": {
+        "schema": "eidos.c0.local-outcome.v1",
+        "run_id": "6c4652f38d9d46d7b815ea71ea3b8f82",
+        "protocol_sha256": "2e05345ce30c2c5a3bf2fc0103165defb1d760c329894e07de8030a842e29789",
+        "runtime_accepted": true,
+        "scientific_promotion": false,
+        "scientific_rsi": "NOT_DEMONSTRATED",
+        "status": "COMPLETE",
+        "controller_exit_code": 0,
+        "candidate_status": "DEVELOPMENT_NONCONFORMING"
+      },
+      "measured": {
+        "candidate_status": "DEVELOPMENT_NONCONFORMING",
+        "points_evaluated": 23,
+        "joint_conforming_points": 0,
+        "used_model_tokens": 1826,
+        "request_seconds": 76.85899999999674,
+        "runtime_accepted": true,
+        "scientific_promotion": false
+      },
+      "charged_seconds": 93.55697710000095,
+      "token_cost": {
+        "complete": true,
+        "verified_tokens": 1826
+      }
+    },
+    {
+      "arm": "baseline",
+      "ordinal": 3,
+      "path": "baseline-3",
+      "request_path": "baseline-3.request.json",
+      "stage": "COMPLETED",
+      "outcome": {
+        "schema": "eidos.c0.local-outcome.v1",
+        "run_id": "b976f2262c554e24a95018d37c5b8dd9",
+        "protocol_sha256": "a98c9ada998475c67c94f5e3d86f64f1a5b4604825fef6879bafb1a0367a8d4f",
+        "runtime_accepted": true,
+        "scientific_promotion": false,
+        "scientific_rsi": "NOT_DEMONSTRATED",
+        "status": "COMPLETE",
+        "controller_exit_code": 0,
+        "candidate_status": "DEVELOPMENT_NONCONFORMING"
+      },
+      "measured": {
+        "candidate_status": "DEVELOPMENT_NONCONFORMING",
+        "points_evaluated": 23,
+        "joint_conforming_points": 0,
+        "used_model_tokens": 626,
+        "request_seconds": 38.203000000008615,
+        "runtime_accepted": true,
+        "scientific_promotion": false
+      },
+      "charged_seconds": 54.94361419999041,
+      "token_cost": {
+        "complete": true,
+        "verified_tokens": 626
+      }
+    },
+    {
+      "arm": "retrieval-feedback",
+      "ordinal": 3,
+      "path": "retrieval-feedback-3",
+      "request_path": "retrieval-feedback-3.request.json",
+      "stage": "COMPLETED",
+      "outcome": {
+        "schema": "eidos.c0.local-outcome.v1",
+        "run_id": "c5e7ae6d6d904ca3a0a636cda33b83c3",
+        "protocol_sha256": "f4e3ddc0cf385906d4eecae5c2ae561abee6ae296a82ffb5ff2c9b75678881e7",
+        "runtime_accepted": true,
+        "scientific_promotion": false,
+        "scientific_rsi": "NOT_DEMONSTRATED",
+        "status": "COMPLETE",
+        "controller_exit_code": 0,
+        "candidate_status": "DEVELOPMENT_NONCONFORMING"
+      },
+      "measured": {
+        "candidate_status": "DEVELOPMENT_NONCONFORMING",
+        "points_evaluated": 23,
+        "joint_conforming_points": 0,
+        "used_model_tokens": 1826,
+        "request_seconds": 77.625,
+        "runtime_accepted": true,
+        "scientific_promotion": false
+      },
+      "charged_seconds": 94.27447100001154,
+      "token_cost": {
+        "complete": true,
+        "verified_tokens": 1826
+      }
+    }
+  ],
+  "status": "COMPLETE",
+  "scientific_promotion": false,
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "sealed_evaluation": "NOT_RUN",
+  "arms": {
+    "baseline": {
+      "tokens": 1878,
+      "seconds": 165.27176539995708,
+      "conforming_proposals": 0,
+      "numerical_proposals_evaluated": 3,
+      "best_joint_points": 0
+    },
+    "retrieval-feedback": {
+      "tokens": 4732,
+      "seconds": 260.46368790001725,
+      "conforming_proposals": 0,
+      "numerical_proposals_evaluated": 3,
+      "best_joint_points": 0
+    }
+  },
+  "costs_including_failures": {
+    "baseline": {
+      "charged_seconds": 165.27176539995708,
+      "attempts_observed": 3,
+      "token_accounting_complete": true,
+      "verified_tokens_observed": 1878
+    },
+    "retrieval-feedback": {
+      "charged_seconds": 260.46368790001725,
+      "attempts_observed": 3,
+      "token_accounting_complete": true,
+      "verified_tokens_observed": 4732
+    }
+  },
+  "wall_seconds": 426.2924420000054
+}

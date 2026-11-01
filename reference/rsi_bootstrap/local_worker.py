@@ -29,8 +29,9 @@ def read_protocol(folder: Path, run_id: str, expected: str) -> dict:
     protocol = rt.strict_json((folder / "protocol.json").read_bytes())
     if (protocol["run_id"] != run_id or
             rt.strict_json((folder / "owner.json").read_bytes()) != {"run_id": run_id} or
-            protocol["prompt"] != c0.PROMPT or rt.runtime_identity() != protocol["runtime"]):
+            rt.runtime_identity() != protocol["runtime"]):
         raise RuntimeError("Protocol/owner/prompt identity differs")
+    rt.validate_prompt(protocol)
     for module in (rt, c0, c0.grader, c0.expressions):
         if Path(module.__file__).resolve().parent != Path(__file__).resolve().parent:
             raise RuntimeError("Loaded numerical/runtime modules are outside the source checkout")
@@ -217,11 +218,19 @@ def controller(folder: Path, run_id: str, expected: str) -> dict:
                        "max_tokens": limits["max_tokens"], "stream": False, "grammar": protocol["grammar"],
                        "chat_template_kwargs": {"enable_thinking": False},
                        "messages": [{"role": "user", "content": protocol["prompt"]}]}
+            if "campaign_request" in protocol:
+                record["preflight"] = rt.request_context.prepare(rt.json_request, endpoint, payload,
+                    rt.format_payload(payload), limits, protocol["campaign_request"]["token_allowance"])
             request_started = time.monotonic()
             response = timed_request(endpoint + "/v1/chat/completions", payload, limits["request_seconds"], server)
             record.update(request=payload, request_seconds=time.monotonic() - request_started)
+            record["target_usage"] = response.get("usage")
             rt.write_json(folder / "response.json", response)
             record["response_sha256"] = rt.sha(folder / "response.json")
+            if "campaign_request" in protocol:
+                rt.request_context.validate_target(record["target_usage"], record["preflight"], payload,
+                    rt.format_payload(payload), limits, protocol["campaign_request"]["token_allowance"],
+                    response["choices"][0]["message"].get("content") or "")
             evaluated = run_tree([sys.executable, "-I", "-X", "utf8", str(Path(__file__).resolve()),
                                   "evaluate", str(folder), run_id, expected],
                                  cwd=ROOT, timeout=limits["evaluation_seconds"])
@@ -245,6 +254,10 @@ def controller(folder: Path, run_id: str, expected: str) -> dict:
                                                    choice["message"].get("content") == rt.FORMAT_LITERAL}
             if not record["format_control"]["passed"]:
                 raise RuntimeError("Literal backend control failed")
+            if "campaign_request" in protocol:
+                record["used_model_tokens"] = rt.request_context.used_tokens(response["usage"], control["usage"],
+                    record["preflight"], payload, control_payload, limits,
+                    protocol["campaign_request"]["token_allowance"], core["raw_response"], choice["message"].get("content") or "")
             record["status"] = "COMPLETE"
     except Exception as error:
         record.update(status="INCOMPLETE", error_type=type(error).__name__)

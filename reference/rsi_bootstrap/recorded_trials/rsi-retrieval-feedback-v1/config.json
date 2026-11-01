@@ -1,0 +1,50 @@
+{
+  "engine": {
+    "path": "C:/Users/Administrator/AppData/Local/hermes/runtimes/llamacpp/b10964/cuda/llama-server.exe",
+    "sha256": "aa2e1f5c67be55f11be26ae58d643a545ca07c6de498f6f870330ac2f4dfec73"
+  },
+  "model": {
+    "path": "C:/Users/Administrator/AppData/Local/hermes/models/ScienceRSI-8b.i1-Q4_K_M.gguf",
+    "bytes": 5027784544,
+    "sha256": "a7e1cdab380e52ef55dfe249f634262052c171bdd4b606b7530637398852b7ad"
+  },
+  "limits": {
+    "load_seconds": 150,
+    "request_seconds": 480,
+    "evaluation_seconds": 30,
+    "total_seconds": 900,
+    "threads": 12,
+    "context": 8192,
+    "max_tokens": 768,
+    "min_available_memory_mib": 8192,
+    "max_tree_rss_mib": 12288
+  },
+  "protected_services": [
+    {
+      "url": "http://127.0.0.1:8090/health",
+      "expected": {
+        "status": "ok",
+        "model": "StartLux-Decision-v1.1-4B-AutoThink-GGUF"
+      },
+      "listener_port": 8090
+    },
+    {
+      "url": "http://127.0.0.1:8081/health",
+      "expected": {
+        "status": "ok"
+      },
+      "listener_port": 8081
+    },
+    {
+      "url": "http://127.0.0.1:8081/v1/models",
+      "expected": {
+        "data": [
+          {
+            "id": "E:\\2026-AI4S\\decision-service\\models\\StartLux-Decision-v1.1-4B-AutoThink-GGUF\\StartLux-Decision-v1.1-4B-AutoThink-Q8_0.gguf"
+          }
+        ]
+      },
+      "listener_port": 8081
+    }
+  ]
+}

@@ -11,7 +11,7 @@ reject unsupported claims → deliver → detect changes and revalidate.
 | Onboarding and registry | Safe bootstrap, isolated shell/registry tests; gate-stage required outputs; real independent HPAF intake and negative controls | The HPAF metric-repair lifecycle now rejects wrong evidence, missing outputs and changed sources/data, with separate fresh Windows replays for 1,033 private and 235 public pairs. Unseen projects and outside adopters remain unqualified; see `docs/INDEPENDENT-LIFECYCLE-ACCEPTANCE.json`. |
 | Scientific gates | `framework/validity/`, fixtures, mutations, `docs/SELF_AUDIT.json` | Structured evidence checks do not establish scientific truth or novelty. Evaluate unseen false acceptances and independent adopters. |
 | Numerical capability | Decimal reference, actual CUDA tests, broken controls; `docs/CASE-SOFTMAX.md` | AMP/bfloat16, higher-order backward and other backends remain unqualified. Each needs independent references and broken controls. |
-| Project execution lifetime | SDK-owned Windows Job and Linux owner-pipe guardian; independent installed-wheel controls for normal, timeout, nested and cleanup handoff behavior; `docs/SDK-PROCESS-ACCEPTANCE.json` | Direct reproduction/tracking/update/formal/citation/inference subprocess paths still need caller-specific migration. This is not a hostile-process sandbox, hard real-time/output-memory bound or running-service migration. |
+| Project execution lifetime | SDK-owned Windows Job and Linux owner-pipe guardian; independent installed-wheel controls for normal, timeout, nested and cleanup handoff behavior; `docs/SDK-PROCESS-ACCEPTANCE.json` | Direct reproduction now has installed-wheel numeric/execution/receipt controls; tracking/update/formal/citation/inference paths still need caller-specific migration. This is not a hostile-process sandbox, hard real-time/output-memory bound or running-service migration. |
 | Direct manuscript/figure SDK | Fresh staging, bounded Quarto/Matplotlib workers, file/asset validation, declared-input checks, locked publication and rollback; [contract](QUARTO-DELIVERY.md) | Controlled CLI and actual Quarto qualification are separate. Poppler/TeX are external prerequisites; receipt readers must verify hashes. Transitive undeclared resources, scientific content and journal acceptance remain outside these file-production checks. |
 | Research execution | Three-seed paired reconstruction, source/lock/data hashes and models; `docs/SOFTMAX-TRAINING-FOLLOWUP.md` | Full paper training results are not reproduced. Align input representation, initialization and architecture before attributing differences to the repair. |
 | Experimental acceptance | NumPy final inference and reloaded CUDA final gradients for all 36 matrix runs | Intermediate gradients remain producer-recorded; parent extension optimizer moments were not separately archived. No universal benefit or novel discovery established. |
@@ -76,20 +76,36 @@ the same rule so an old negative fixture cannot monopolize refreshes.
 
 This is an evidence map and work queue, not a machine-produced PASS certificate.
 
-## Open direct-reproduction comparator defect (2026-11-01)
+## Direct-reproduction defect and development repair (2026-11-01)
 
 Controlled calls to `framework.reproduction.compare` reproduced three false
 `MATCH` verdicts: expected positive infinity with a finite observation and relative
 comparison; an infinite tolerance; and integers 9007199254740992 versus
 9007199254740993 at zero tolerance (both were first converted to the same float).
-The exact integer distance is one. This remains open in 0.4.7 and is a priority
-for the next SDK batch. The direct comparator must not be used as an unrestricted
-scientific gate. These are controlled API defect probes; they do not establish a
+The exact integer distance is one. These defects remain in the immutable 0.4.7
+wheel and are repaired in 0.4.8 with typed finite inputs and exact represented
+arithmetic. The comparator is still not an unrestricted scientific oracle. These are controlled API defect probes; they do not establish a
 failure of the separately qualified finite Softmax kernel/gradient cases.
 
-Exit conditions: validate finite typed expectations/observations and finite
+Repair acceptance: finite typed expectations/observations and finite
 nonnegative tolerances; preserve represented integer/float differences; reject
 invalid specs before launching work; bind records to commands/inputs and retain
-explicit unavailable/error states. Add deliberate false-MATCH controls and valid
-positive comparisons, then migrate the direct reproduction lifetime. Tracking,
+explicit unavailable/error states. Independent installed-wheel controls now include deliberate false-MATCH probes,
+valid positive comparisons and owned direct-reproduction lifetimes. Tracking,
 formal/citation and update subprocess callers also retain their separate work.
+
+
+Version 0.4.8 repairs these numeric cases and binds schema-2 receipts
+through source files, complete bundle inventories, exact recomputation and
+consumer-cache invalidation. The legacy source-free MATCH shortcut is blocked.
+Controlled stubs are actually executed in disposable audit/fuzz copies. This
+is not a retroactive correction to the published 0.4.7 wheel. Independent Windows
+and network-disabled Linux installed-wheel controls are recorded in
+[the acceptance receipt](REPRODUCTION-ACCEPTANCE.json). See
+[reproduction integrity](REPRODUCTION-INTEGRITY.md).
+
+Scheduling consolidation, applied Hermes configuration and remaining duplicate
+writers are tracked in [the scheduling policy](SCHEDULING-POLICY.md). Source
+changes remove age-only automatic consumer execution, serialize manual and
+background refresh, and reuse matching recent verdicts without renewing their
+check time. Existing old service processes have not been migrated.

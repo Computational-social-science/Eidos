@@ -10,14 +10,13 @@ import dataclasses
 import hashlib
 import json
 import os
-import re
 import tempfile
 from pathlib import Path
 
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-SCOPE = "registry, framework Python sources, Python gate entry, explicit validity_inputs and Gate S file handles"
+SCOPE = "registry, framework Python sources, Python gate entry, explicit validity_inputs, Gate S handles and declared reproduction dependencies"
 
 
 def _digest(value) -> str:
@@ -75,33 +74,8 @@ def capture_inputs(spec, root: Path = ROOT) -> dict:
         # Bind the directly executed Python script, not just the argv spelling.
         # Imported helpers and module-mode/non-Python commands need validity_inputs.
         command=spec.gate_command
-        entry=None
-        if command and Path(command[0]).suffix.lower() in {'.py','.pyw'}:
-            entry=command[0]
-        elif len(command)>1 and (command[0]=='{python}' or
-                re.fullmatch(r'python(?:\d+(?:\.\d+)*)?(?:\.exe)?',Path(command[0]).name,re.I)):
-            args=iter(command[1:])
-            for arg in args:
-                if arg.startswith('-m'):
-                    if not spec.validity_inputs:
-                        raise ValueError('module-mode gate requires explicit validity_inputs')
-                    break
-                if arg.startswith('-c') or arg=='-':
-                    break
-                if arg in {'-X','-W','--check-hash-based-pycs'}:
-                    if next(args,None) is None:
-                        raise ValueError('Python gate option has no value')
-                elif arg.startswith(('-X','-W','--check-hash-based-pycs=')):
-                    continue
-                elif arg=='--':
-                    entry=next(args,None)
-                    break
-                elif arg.startswith('-'):
-                    if len(arg)<2 or any(c not in 'bBdEiIOPqRsSuvVx' for c in arg[1:]):
-                        raise ValueError(f'cannot bind unknown Python gate option: {arg}')
-                elif not arg.startswith('-'):
-                    entry=arg
-                    break
+        from framework.command_inputs import python_entry
+        entry=python_entry(command,spec.validity_inputs,'gate','validity_inputs')
         for rel in ([entry] if entry else []) + spec.validity_inputs:
             add(rel)
         for rel in [spec.validity_register, *spec.validity_document.split(","),
@@ -115,9 +89,13 @@ def capture_inputs(spec, root: Path = ROOT) -> dict:
             handles(data)
             for claim in (data or {}).get("claims", []):
                 if claim.get("reproduction"):
-                    safe = "".join(c if c.isalnum() or c in "-_." else "_"
-                                   for c in claim["reproduction"])
-                    add(f"artifacts/reproduction/{safe}.json")
+                    from framework.reproduction import record_path, record_dependencies, load
+                    receipt=record_path(claim['reproduction'],Path('artifacts/reproduction'))
+                    add(receipt.as_posix())
+                    value=load(claim['reproduction'],project/'artifacts/reproduction')
+                    if value is not None:
+                        for dependency in record_dependencies(value):
+                            add(dependency)
                 if claim.get("support") == "required":
                     safe = "".join(c if c.isalnum() or c in "-_." else "_" for c in claim["id"])
                     add(f"artifacts/literature/support/{safe}.json", root)

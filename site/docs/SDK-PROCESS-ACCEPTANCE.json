@@ -1,15 +1,16 @@
 {
-  "generated": "2026-11-01T00:41:54.097591+00:00",
+  "generated": "2026-11-01T02:50:45.385690+00:00",
   "scope": "Installed SDK project-command execution and its OS ownership scopes; not every SDK subprocess path or general scientific validity.",
-  "wheel": "reference/sdk_process_acceptance/eidos-0.4.7-py3-none-any.whl",
-  "wheel_sha256": "7f796c47af76ae9ba933777d6bbee0fea7ea598e1d3b06687590f84445edb1e9",
+  "wheel": "reference/sdk_process_acceptance/eidos-0.4.8-py3-none-any.whl",
+  "wheel_sha256": "fdfd1aa5ce3e67e9d50e6b1f37973a902b5f8038ef158f268076431c477133e1",
   "driver": "reference/sdk_process_acceptance/check.py",
-  "driver_sha256": "970728f47b4983d016db64f55a6749b363f11e5541ca262b34e6e80a2837c5e4",
+  "driver_sha256": "1c47047026769a78b1fc5bd7cc4371532c671911eee977bde1823125e5f0f262",
   "source_sha256_canonical_lf": {
     "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
     "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
     "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
     "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+    "framework/command_inputs.py": "e739c36eff434bdf38dc2604b6d10a43f66336d17eae491334cdde1033a94823",
     "framework/config.py": "ea7c01f6a2f822024199fcc22cc3e371e57594a969666daa08c87dcc59b41044",
     "framework/decision.py": "d6663f573a03685941c06a75cae7685fb68195cbf8f5a733a759360fe601892b",
     "framework/executable_package.py": "a2d9d135dfa0c0884f21b58a52fee11158f604e52e35c000009fb66ce7c85f03",
@@ -30,11 +31,12 @@
     "framework/quarto_bridge/__init__.py": "09c1830a16d651b14f6baf14a73143d8c0403b9d614c1540a46019eac9832af2",
     "framework/quarto_bridge/_delivery.py": "548024950a54b038bc34d431090c78a0518ac787eaec053c32ec0b5def2b9568",
     "framework/quarto_bridge/_figure_job.py": "e2ed211aef594b2d2e3c9ee77527f8fa059507de8d50ba050314cb3b6030c951",
-    "framework/reproduction/__init__.py": "484a9c4eb5bc35722b1413685890c79caa59296aed5699a3e9891cac50c17c58",
+    "framework/reproduction/__init__.py": "3b722d0beab94990afec2de6f04408f3e520695e7f780d63c697592eca235071",
+    "framework/reproduction/_numeric.py": "5424d8d0c4fbafa4fc2472d0dc347ec541ffed34a6f3aaf3612e3b08f7e03a18",
     "framework/surrogate/__init__.py": "1fbb528b20f80f3bf28893aa1df1cdfb041217ce4122ffe74e3d1c98556e29ad",
     "framework/surrogate/demo.py": "8e3104db0efd6fe84feb656711cbb1f22eb0ba53c7b59bddd831fae7886132b3",
     "framework/tracking/__init__.py": "6bd1d3ce9f25c69d510cc9bb19926a4c2ba9bb022920ca8c43896c1a90b50e27",
-    "framework/validity/__init__.py": "8341a3016b57e72c27dcc148a989ba6543000c0031607af0c6d8dda74226f408",
+    "framework/validity/__init__.py": "9f3ed867db4d14e6d37a012a1dcbf661a4525dddd2b5880a67489cede076d572",
     "framework/validity/lean_audit.py": "9d396ec4ff6a8472d7348a3893b006d1e64794355e1eada8e9f65ae9eb32a1eb",
     "framework/verifiers/__init__.py": "8e8086c9ca734be2b002593c7b751a909e86d2edf4fef209b2f10fe9865dc78c",
     "framework/verifiers/citations.py": "dafb09dc5233fb71408a8d62e7bc5365e41afa389e4710446719adbf86a54380",
@@ -48,12 +50,13 @@
     "status": "PASS",
     "installation": "New dedicated Windows environment; offline cached core-dependency installation.",
     "result": {
-      "generated": "2026-11-01T00:39:37.060955+00:00",
+      "generated": "2026-11-01T02:47:49.421816+00:00",
       "platform": "win32",
       "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
-      "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-047-7693kim4\\venv with spaces\\Scripts\\python.exe",
-      "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-047-7693kim4\\venv with spaces\\Lib\\site-packages\\framework\\project.py",
-      "sdk_version": "0.4.7",
+      "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-048-vfs72r_j\\venv with spaces\\Scripts\\python.exe",
+      "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-048-vfs72r_j\\venv with spaces\\Lib\\site-packages\\framework\\project.py",
+      "sdk_version": "0.4.8",
+      "optimization_level": 0,
       "module_sha256": {
         "_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
         "_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
@@ -103,7 +106,7 @@
         ],
         [
           "eidos",
-          "0.4.7"
+          "0.4.8"
         ],
         [
           "fonttools",
@@ -153,12 +156,13 @@
     "status": "PASS",
     "installation": "Same-host network-disabled Linux container, existing CPU dependencies; replaced only the SDK wheel. Derived test image adds OS Poppler for delivery checks.",
     "result": {
-      "generated": "2026-11-01T00:39:46.556975+00:00",
+      "generated": "2026-11-01T02:49:32.912026+00:00",
       "platform": "linux",
       "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
       "executable": "/workspace/.venv/bin/python",
       "installed_module": "/workspace/.venv/lib/python3.12/site-packages/framework/project.py",
-      "sdk_version": "0.4.7",
+      "sdk_version": "0.4.8",
+      "optimization_level": 0,
       "module_sha256": {
         "_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
         "_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
@@ -207,7 +211,7 @@
         ],
         [
           "eidos",
-          "0.4.7"
+          "0.4.8"
         ],
         [
           "fonttools",
@@ -415,14 +419,43 @@
     }
   ],
   "lineage": {
-    "previous_release": "v0.4.6",
-    "previous_record": "archive/sdk-process-acceptance-v0.4.6.json",
-    "previous_wheel_sha256": "e717f22f8803025ccd43b0a8a568f455fc721067127328ef09ee5293855753e9",
-    "broken_candidates": "Unreleased v0.4.6 candidates retained as historical defect controls; current fixed wheel reruns both nested and handoff controls."
+    "previous_release": "v0.4.7",
+    "previous_record": "archive/sdk-process-acceptance-v0.4.7.json",
+    "previous_wheel_sha256": "7f796c47af76ae9ba933777d6bbee0fea7ea598e1d3b06687590f84445edb1e9"
   },
   "limitations": [
-    "No service migration or clean-24-hour acceptance",
+    "No old-service migration or clean-24-hour acceptance",
     "No new-machine, GPU or hostile-process sandbox qualification",
-    "Other direct SDK subprocess callers still require separate migration"
-  ]
+    "Other direct subprocess callers require separate migration"
+  ],
+  "optimization_controls": {
+    "windows": [
+      {
+        "driver": "lifecycle-check.py",
+        "flag": "-O",
+        "exit_code": 1,
+        "success_document_emitted": false
+      },
+      {
+        "driver": "lifecycle-check.py",
+        "flag": "-OO",
+        "exit_code": 1,
+        "success_document_emitted": false
+      }
+    ],
+    "linux": [
+      {
+        "driver": "lifecycle-check.py",
+        "flag": "-O",
+        "exit_code": 1,
+        "success_document_emitted": false
+      },
+      {
+        "driver": "lifecycle-check.py",
+        "flag": "-OO",
+        "exit_code": 1,
+        "success_document_emitted": false
+      }
+    ]
+  }
 }

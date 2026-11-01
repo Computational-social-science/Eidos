@@ -86,6 +86,9 @@ The separate CUDA research interpreter is 3.14 and is not interchangeable with i
 
 ## If you are adding orchestration
 
+Scheduling ownership, cache reuse, explicit research triggers and pending runtime
+migration are specified in [the scheduling policy](SCHEDULING-POLICY.md).
+
 Add a chain, not a framework. A new graph library arrives with its own runtime model, its own
 state and its own failure modes, and none of that is observable to `audit_chains` — the moment it
 matters, the framework's claim ("these chains ran") stops being checkable. The chain registry

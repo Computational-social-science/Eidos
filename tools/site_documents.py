@@ -7,7 +7,7 @@ PUBLIC = ('ACADEMIC_POSITIONING.md','FUNCTIONAL_COMPLETENESS.md','HEALTH.md','SE
           'ORCHESTRATION.md','CHAIN_AUDIT.md','COUPLING.md','PROJECT_INTEGRATION.md',
           'MODEL_VERDICTS.md','UPDATES.md','EVOLUTION.json','DEMO_COVERAGE.json',
           'PUBLICATION-QUALITY.md','PUBLICATION-QA.json','PUBLICATION-VISUAL-REVIEW.json',
-          'MODEL_VERDICTS.md','MODEL-TASK-QUALITY.md','MODEL_TASK_READINESS.json','CAPABILITY-TRUTH-AUDIT-2026-11-01.md',
+          'MODEL-TASK-QUALITY.md','MODEL_TASK_READINESS.json','CAPABILITY-TRUTH-AUDIT-2026-11-01.md',
           'MONITOR-SEMANTICS.md','MONITOR-UI-ACCEPTANCE-2026-11-01.json',
           'EXECUTABLE-DELIVERY.md','PACKAGE-ACCEPTANCE.json',
           'CRON-ISOLATION.md','CRON-SCHEDULER-ACCEPTANCE-2026-11-01.json',
@@ -16,12 +16,17 @@ PUBLIC = ('ACADEMIC_POSITIONING.md','FUNCTIONAL_COMPLETENESS.md','HEALTH.md','SE
           '_coupling.json','REPORT-PUBLICATION-ACCEPTANCE-2026-11-01.json',
           'SDK-EXECUTION.md','SDK-PROCESS-ACCEPTANCE.json',
           'QUARTO-DELIVERY.md','QUARTO-DELIVERY-ACCEPTANCE.json',
-          'archive/sdk-process-acceptance-v0.4.6.json')
+          'archive/sdk-process-acceptance-v0.4.6.json','archive/sdk-process-acceptance-v0.4.7.json',
+          'archive/startup-runtime-acceptance-v0.4.7.json',
+          'SCHEDULING-POLICY.md','SCHEDULING-ACCEPTANCE-2026-11-01.json',
+          'REPRODUCTION-INTEGRITY.md','REPRODUCTION-ACCEPTANCE.json')
 
 PUBLIC_ASSETS = ('docs/screens/web/index-top.webp',
                  'reference/package_delivery_acceptance/package.zip',
                  'reference/sdk_process_acceptance/eidos-0.4.6-py3-none-any.whl',
                  'reference/sdk_process_acceptance/eidos-0.4.7-py3-none-any.whl',
+                 'reference/sdk_process_acceptance/eidos-0.4.8-py3-none-any.whl',
+                 'reference/reproduction_acceptance/check.py',
                  'reference/sdk_process_acceptance/check.py',
                  'reference/quarto_delivery_acceptance/check.py')
 

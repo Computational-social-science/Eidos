@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "reference" / "reproduction"
 
 import sys
+
 sys.path.insert(0, str(ROOT))
 
 from framework import reproduction  # noqa: E402
@@ -89,24 +90,52 @@ def test_gate_s_blocks_a_claim_without_a_reproduction_record(tmp_path):
     assert findings == [] and any("does not exist" in b for b in blocked)
 
 
+def _registered_run(value, tmp_path):
+    source = tmp_path / "spec.json"
+    source.write_text(json.dumps(value), encoding="utf-8")
+    return reproduction.run_spec(value, cwd=tmp_path, source_file=source)
+
+
 def test_gate_s_fails_a_claim_whose_reproduction_mismatched(tmp_path):
-    reproduction.write({"paper": "p", "verdict": reproduction.MISMATCH, "expected": 0.927,
-                        "observed": 0.4, "delta": 0.527,
-                        "registered_at": "2026-10-26T00:00:00+00:00",
-                        "ts": "2026-10-27T00:00:00+00:00"},
-                       tmp_path / "artifacts" / "reproduction")
-    findings, blocked = ScientificValidityGate(tmp_path)._reproduction_verdict("C2", "p")
+    record = _registered_run(
+        {
+            "paper": "p",
+            "command": [sys.executable, "-c", "print('{\"value\":0.4}')"],
+            "expected": 0.927,
+            "seed": None,
+            "seed_reason": "deterministic fixture",
+            "data_version": "fixture-v1",
+            "config_version": "scalar-v2",
+            "registered_at": "2026-10-26T00:00:00+00:00",
+        },
+        tmp_path,
+    )
+    reproduction.write(record, tmp_path / "artifacts/reproduction")
+    findings, blocked = ScientificValidityGate(tmp_path)._reproduction_verdict(
+        "C2", "p"
+    )
     assert blocked == []
     assert any("S12" in str(f) and "MISMATCH" in str(f) for f in findings)
 
 
 def test_gate_s_passes_a_claim_whose_reproduction_matched(tmp_path):
-    reproduction.write({"paper": "p", "verdict": reproduction.MATCH, "expected": 0.927,
-                        "observed": 0.927, "delta": 0.0,
-                        "registered_at": "2026-10-26T00:00:00+00:00",
-                        "ts": "2026-10-27T00:00:00+00:00"},
-                       tmp_path / "artifacts" / "reproduction")
-    findings, blocked = ScientificValidityGate(tmp_path)._reproduction_verdict("C3", "p")
+    record = _registered_run(
+        {
+            "paper": "p",
+            "command": [sys.executable, "-c", "print('{\"value\":0.927}')"],
+            "expected": 0.927,
+            "seed": None,
+            "seed_reason": "deterministic fixture",
+            "data_version": "fixture-v1",
+            "config_version": "scalar-v2",
+            "registered_at": "2026-10-26T00:00:00+00:00",
+        },
+        tmp_path,
+    )
+    reproduction.write(record, tmp_path / "artifacts/reproduction")
+    findings, blocked = ScientificValidityGate(tmp_path)._reproduction_verdict(
+        "C3", "p"
+    )
     assert findings == [] and blocked == []
 
 
@@ -150,10 +179,17 @@ def test_s12_fails_a_spec_registered_after_the_run(tmp_path):
     assert blocked == [] and any("after the run" in str(f) for f in findings)
 
 
-def test_s12_accepts_a_spec_registered_before_the_run(tmp_path):
-    reproduction.write({"paper": "p", "verdict": reproduction.MATCH, "expected": 1.0,
-                        "observed": 1.0, "registered_at": "2026-10-28T09:00:00+00:00",
-                        "ts": "2026-10-28T10:00:00+00:00"},
-                       tmp_path / "artifacts" / "reproduction")
+def test_s12_blocks_legacy_bare_match_even_with_prior_registration(tmp_path):
+    reproduction.write(
+        {
+            "paper": "p",
+            "verdict": reproduction.MATCH,
+            "expected": 1.0,
+            "observed": 1.0,
+            "registered_at": "2026-10-28T09:00:00+00:00",
+            "ts": "2026-10-28T10:00:00+00:00",
+        },
+        tmp_path / "artifacts" / "reproduction",
+    )
     findings, blocked = ScientificValidityGate(tmp_path)._reproduction_verdict("C", "p")
-    assert findings == [] and blocked == []
+    assert findings == [] and any("legacy" in reason for reason in blocked)

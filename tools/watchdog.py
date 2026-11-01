@@ -21,12 +21,16 @@ from __future__ import annotations
 import argparse
 import datetime
 import json
+import hashlib
+import math
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "tools"))
 import health  # noqa: E402  - one definition of "healthy", shared with the CLI
+
 CURRENT = ROOT / "docs" / "status" / "current.json"
 #: What the last run saw. The sequence comparison below is the only way to tell a live sampler from
 #: one that keeps rewriting the same sample.
@@ -39,6 +43,8 @@ def age_seconds(ts: str) -> float | None:
         stamp = datetime.datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
     except (ValueError, AttributeError):
         return None
+    if stamp.tzinfo is None:
+        return None
     return (datetime.datetime.now(datetime.timezone.utc) - stamp).total_seconds()
 
 
@@ -47,62 +53,140 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--max-age", type=float, default=120.0)
     ap.add_argument("--quiet", action="store_true", help="print nothing either way")
     ap.add_argument("--verbose", action="store_true", help="print the OK line as well")
+    ap.add_argument(
+        "--json",
+        action="store_true",
+        help="structured health result; exit remains 0 healthy / 1 unhealthy",
+    )
     args = ap.parse_args(argv)
+    if not math.isfinite(args.max_age) or args.max_age <= 0:
+        ap.error("--max-age must be finite and positive")
 
+    incident = []
+    seq = None
+    verdict = "UNKNOWN"
     if not CURRENT.exists():
         problem = "current.json does not exist: the watcher has never run"
         age = None
+        incident = ["sample-missing"]
     else:
         try:
             payload = json.loads(CURRENT.read_text(encoding="utf-8"))
-        except json.JSONDecodeError as exc:
+            if not isinstance(payload, dict) or not isinstance(
+                payload.get("derived", {}), dict
+            ):
+                raise ValueError("sample must contain mappings")
+        except (OSError, ValueError) as exc:
             problem = f"current.json is not readable: {exc}"
             age = None
+            incident = ["sample-unreadable"]
         else:
             age = age_seconds(payload.get("ts", ""))
             # The verdict comes from the same function the CLI uses. Two definitions of "healthy"
             # drift, and this one did: the cron said the watcher was dead while `overall` said OK.
             payload["sample_age_s"] = round(age, 1) if age is not None else None
-            payload["stale"] = age is None or age > args.max_age
+            payload["stale"] = age is None or age < -5 or age > args.max_age
             verdict, evidence = health.classify(payload)
             if verdict == "STALE" and age is not None:
-                problem = (f"the watcher has not sampled for {age:.0f}s "
-                           f"(limit {args.max_age:.0f}s)")
+                problem = (
+                    f"the watcher has not sampled for {age:.0f}s "
+                    f"(limit {args.max_age:.0f}s)"
+                )
             elif verdict != "OK":
                 problem = "; ".join(evidence) or f"verdict {verdict}"
             else:
                 problem = ""
+            incident = ["sample-stale"] if verdict == "STALE" else sorted(evidence)
 
             seq = payload.get("seq")
-            if not problem and seq is not None:
-                try:
-                    record = json.loads(STATE.read_text(encoding="utf-8"))
-                except Exception:            # noqa: BLE001 - first run, or an unreadable record
-                    record = {}
-                seen = int(record.get("seq") or 0)
-                since = age_seconds(record.get("checked", "")) or 0.0
-                if int(seq) > seen or int(seq) < seen:
-                    # Advanced, or the sampler restarted and its counter began again: both are fine.
-                    STATE.parent.mkdir(parents=True, exist_ok=True)
-                    STATE.write_text(json.dumps({"seq": int(seq), "checked": datetime.datetime.now(
-                        datetime.timezone.utc).isoformat(timespec="seconds")}), encoding="utf-8")
-                elif since > args.max_age:
-                    problem = (f"sample seq is still {seq} after {since:.0f}s: the file is fresh but "
-                               f"the content is not advancing")
+            if not problem:
+                if type(seq) is not int or seq <= 0:
+                    problem = "sample sequence must be a positive integer"
+                    verdict = "UNKNOWN"
+                    incident = ["sample-sequence-invalid"]
+                else:
+                    try:
+                        record = json.loads(STATE.read_text(encoding="utf-8"))
+                    except FileNotFoundError:
+                        record = {}
+                    except (OSError, ValueError):
+                        record = None
+                    seen = record.get("seq") if isinstance(record, dict) else None
+                    since = (
+                        age_seconds(record.get("checked", ""))
+                        if isinstance(record, dict)
+                        else None
+                    )
+                    baseline = not record or seq != seen
+                    if record != {} and (
+                        type(seen) is not int
+                        or seen <= 0
+                        or since is None
+                        or since < -5
+                    ):
+                        problem = "watchdog sequence checkpoint is invalid; establishing a new baseline"
+                        verdict = "UNKNOWN"
+                        incident = ["watchdog-checkpoint-invalid"]
+                        baseline = True
+                    elif not baseline and since > args.max_age:
+                        problem = (
+                            f"sample seq is still {seq} after {since:.0f}s: the file is fresh but "
+                            f"the content is not advancing"
+                        )
+                        incident = ["sample-sequence-stalled"]
+                        verdict = "STALE"
+                    if baseline:
+                        from tools.consumer_snapshot import atomic_json
+
+                        atomic_json(
+                            STATE,
+                            {
+                                "seq": seq,
+                                "checked": datetime.datetime.now(
+                                    datetime.timezone.utc
+                                ).isoformat(timespec="seconds"),
+                            },
+                        )
+
+    if args.json:
+        print(
+            json.dumps(
+                {
+                    "schema": 1,
+                    "check_completed": True,
+                    "healthy": not bool(problem),
+                    "verdict": verdict,
+                    "problems": [problem] if problem else [],
+                    "incident_key": hashlib.sha256(
+                        json.dumps(incident, sort_keys=True).encode()
+                    ).hexdigest(),
+                    "seq": seq,
+                    "sample_age_s": age,
+                }
+            )
+        )
 
     if problem:
         LOG.parent.mkdir(parents=True, exist_ok=True)
         with LOG.open("a", encoding="utf-8") as handle:
-            handle.write(json.dumps({"ts": datetime.datetime.now(datetime.timezone.utc)
-                                     .isoformat(timespec="seconds"),
-                                     "problem": problem}) + "\n")
-        if not args.quiet:
+            handle.write(
+                json.dumps(
+                    {
+                        "ts": datetime.datetime.now(datetime.timezone.utc).isoformat(
+                            timespec="seconds"
+                        ),
+                        "problem": problem,
+                    }
+                )
+                + "\n"
+            )
+        if not args.quiet and not args.json:
             print(f"FAIL  {problem}")
         return 1
 
     # Silent on success by design: a scheduled job that speaks every five minutes is
     # noise, and the log already records only failures.
-    if args.verbose and not args.quiet:
+    if args.verbose and not args.quiet and not args.json:
         print(f"OK    last sample {age:.0f}s ago" if age is not None else "OK")
     return 0
 

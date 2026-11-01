@@ -31,7 +31,9 @@ def main(argv: list[str] | None = None) -> int:
     c = sub.add_parser("check", help="validate a Paper2Agent delivery tree")
     c.add_argument("delivery")
 
-    b = sub.add_parser("run-set", help="execute every spec for one paper; MATCH only if all match")
+    b = sub.add_parser(
+        "run-set", help="execute every spec for one paper; MATCH only if all match"
+    )
     b.add_argument("bundle")
     b.add_argument("--out", default=str(OUT))
 
@@ -43,7 +45,23 @@ def main(argv: list[str] | None = None) -> int:
     s.add_argument("paper")
     s.add_argument("--out", default=str(OUT))
 
+    for parser in (b, r):
+        parser.add_argument(
+            "--cwd", help="project working directory (default: spec cwd or Eidos root)"
+        )
+        parser.add_argument("--timeout", type=float, default=900.0)
+    s.add_argument(
+        "--cwd", default=str(ROOT), help="project directory for current validation"
+    )
     args = ap.parse_args(argv)
+    try:
+        return _dispatch(args)
+    except (OSError, ValueError, TypeError, KeyError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 2
+
+
+def _dispatch(args) -> int:
 
     if args.action == "check":
         report = reproduction.check_delivery(args.delivery)
@@ -51,35 +69,66 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if report["ok"] else 2
 
     if args.action == "run-set":
-        bundle = json.loads(Path(args.bundle).read_text(encoding="utf-8"))
-        record = reproduction.run_set(bundle, cwd=ROOT)
+        bundle = reproduction._numeric.loads(
+            Path(args.bundle).read_text(encoding="utf-8-sig")
+        )
+        record = reproduction.run_set(
+            bundle,
+            cwd=args.cwd or bundle.get("cwd") or ROOT,
+            timeout=args.timeout,
+            source_file=Path(args.bundle),
+        )
         path = reproduction.write(record, args.out)
         for spec in record["specs"]:
-            print(f"  {spec['verdict']:<9} {spec.get('json_path', 'value'):24s} "
-                  f"expected {spec.get('expected')} observed {spec.get('observed')}")
-        print(f"{record['verdict']:<9} {record['paper']}  "
-              f"{record['counts']}")
+            print(
+                f"  {spec['verdict']:<9} {spec.get('json_path', 'value'):24s} "
+                f"expected {spec.get('expected')} observed {spec.get('observed')}"
+            )
+        print(f"{record['verdict']:<9} {record['paper']}  " f"{record['counts']}")
         print(f"written: {path}")
         return 0 if record["verdict"] == reproduction.MATCH else 1
 
     if args.action == "run":
-        spec = json.loads(Path(args.spec).read_text(encoding="utf-8"))
-        record = reproduction.run_spec(spec)
+        spec = reproduction._numeric.loads(
+            Path(args.spec).read_text(encoding="utf-8-sig")
+        )
+        record = reproduction.run_spec(
+            spec,
+            cwd=args.cwd or spec.get("cwd") or ROOT,
+            timeout=args.timeout,
+            source_file=Path(args.spec),
+        )
         path = reproduction.write(record, args.out)
-        print(f"{record['verdict']:<9} {record.get('paper')}  "
-              f"expected {record.get('expected')} observed {record.get('observed')} "
-              f"(delta {record.get('delta')})")
+        print(
+            f"{record['verdict']:<9} {record.get('paper')}  "
+            f"expected {record.get('expected')} observed {record.get('observed')} "
+            f"(delta {record.get('delta')})"
+        )
         if record.get("reason"):
             print(f"          {record['reason']}")
-        print(f"written: {path.relative_to(ROOT) if path.is_relative_to(ROOT) else path}")
+        print(
+            f"written: {path.relative_to(ROOT) if path.is_relative_to(ROOT) else path}"
+        )
         return 0 if record["verdict"] == reproduction.MATCH else 1
 
     record = reproduction.load(args.paper, args.out)
     if record is None:
         print(f"no record for {args.paper!r}")
         return 1
-    print(json.dumps(record, indent=2))
-    return 0 if record.get("verdict") == reproduction.MATCH else 1
+    errors = reproduction.validate_record(
+        record, Path(args.cwd), args.paper, require_source=True
+    )
+    print(
+        json.dumps(
+            {
+                "stored_record": record,
+                "qualification": "BLOCKED" if errors else record["verdict"],
+                "validation_errors": errors,
+            },
+            indent=2,
+        )
+    )
+    return 0 if not errors and record.get("verdict") == reproduction.MATCH else 1
 
 
 if __name__ == "__main__":

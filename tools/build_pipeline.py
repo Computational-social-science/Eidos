@@ -140,15 +140,26 @@ def chain_modules() -> dict[str, list[str]]:
     return mapping
 
 
-def consumers(specs: dict | None = None) -> list[dict]:
+def consumers(specs: dict | None = None, cached: list | None = None) -> list[dict]:
     from framework.project import load_projects
     from tools.consumer_snapshot import capture_inputs
 
     rows = []
     if specs is None:
         specs = load_projects(allow_missing=True)
+    saved = {row.get('name'): row for row in (cached or []) if isinstance(row, dict)}
     for name, spec in sorted(specs.items()):
         before = capture_inputs(spec)
+        previous = saved.get(name, {})
+        try:
+            checked = datetime.datetime.fromisoformat(previous.get('checked_at', '').replace('Z', '+00:00'))
+            age = (datetime.datetime.now(datetime.timezone.utc) - checked).total_seconds()
+        except (ValueError, TypeError):
+            age = float('inf')
+        if (before['digest'] and previous.get('input_digest') == before['digest']
+                and previous.get('gate_s') in {'PASS', 'FAIL'} and 0 <= age < 24 * 3600):
+            rows.append(dict(previous))
+            continue
         row = {"name": name, "root": str(spec.root), "available": spec.available,
                "gate_s": "—", "expected": None, "generated": None,
                "input_digest": None, "input_error": before["error"],
@@ -230,6 +241,9 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--probe", action="store_true", help="re-probe live services")
     ap.add_argument("--out", default=str(OUT))
+    ap.add_argument("--force", action="store_true", help="recheck even unchanged consumers")
+    ap.add_argument("--recheck", action="append", default=[], metavar="NAME",
+                    help="explicitly recheck this consumer even if inputs are unchanged")
     args = ap.parse_args(argv)
 
     graph = coupling_graph()
@@ -242,6 +256,13 @@ def main(argv: list[str] | None = None) -> int:
     from framework.project import load_projects
     from tools.consumer_snapshot import atomic_json, registry_digest, SCOPE
     specs = load_projects(allow_missing=True)
+    unknown=set(args.recheck)-set(specs)
+    if unknown:
+        ap.error('unknown consumers: '+', '.join(sorted(unknown)))
+    previous=read_json(Path(args.out), {})
+    cached=(previous.get('consumers') or []) if isinstance(previous,dict) else []
+    if not isinstance(cached,list):cached=[]
+    cached=[row for row in cached if isinstance(row,dict) and row.get('name') not in args.recheck]
 
     doc = {
         "generated": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
@@ -252,7 +273,7 @@ def main(argv: list[str] | None = None) -> int:
                     "detail": s["attributes"]["detail"]} for s in traces.get("spans", [])],
         "render": render,
         "self_audit": audit_summary(audit),
-        "consumers": consumers(specs),
+        "consumers": consumers(specs, cached=None if args.force else cached),
         "consumer_snapshot": {"schema": 1, "registry_digest": registry_digest(specs), "scope": SCOPE},
         "chain_modules": chain_modules(),
         "layers": LAYERS,

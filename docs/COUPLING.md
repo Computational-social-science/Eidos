@@ -6,11 +6,11 @@ Its statements about no framework imports and no repository commits describe an 
 
 | Measure | Current value |
 |---|---|
-| scanned modules (`framework/**`, `tools/*.py`) | 115 |
-| module-scope internal edges | 39 |
-| function-scope internal edges | 72 |
+| scanned modules (`framework/**`, `tools/*.py`) | 118 |
+| module-scope internal edges | 44 |
+| function-scope internal edges | 78 |
 | import cycles | 0 |
-| public names / names imported elsewhere in the scanned sources | 283 / 42 |
+| public names / names imported elsewhere in the scanned sources | 292 / 47 |
 | path-pattern matches | 5 |
 
 Source: [_coupling.json](_coupling.json). Imports found by AST are structural evidence,
@@ -27,5 +27,5 @@ runtime dependencies. Do not label the unclassified heuristic count as a portabi
 certificate. Other platform assumptions still require clean-environment execution.
 
 The monitor's chain/module matrix is a different projection: it shows imports used
-by registered chain functions, not all 115 scanned modules. Generic executable-package
+by registered chain functions, not all 118 scanned modules. Generic executable-package
 portability remains open in [functional completeness](FUNCTIONAL_COMPLETENESS.md).

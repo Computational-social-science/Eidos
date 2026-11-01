@@ -60,11 +60,13 @@ def current_consumer_html() -> str:
 PIPELINE_LOCK = threading.Lock()
 
 
-def run_pipeline(*, probe: bool = False):
+def run_pipeline(*, probe: bool = False, recheck: str | None = None):
     from tools.bounded_process import run_tree
     args = [sys.executable, str(ROOT / "tools/build_pipeline.py")]
     if probe:
         args.append("--probe")
+    if recheck is not None:
+        args.extend(['--recheck',recheck])
     return run_tree(args, cwd=ROOT, timeout=300)
 
 
@@ -206,28 +208,9 @@ def sampler(interval: float, page_interval: float) -> None:
             STATE["sampled"] = time.time()
             STATE["error"] = None
 
-            # Once an hour, refresh the stalest consumer if its evidence is past a day. The lock
-            # makes this safe beside a manual click; a failure is recorded, never retried in a loop.
-            if time.time() - STATE.get("last_auto", 0.0) > 3600:
-                STATE["last_auto"] = time.time()
-                try:
-                    from framework.project import consumer_freshness, load_projects
-                    pipeline = json.loads((ROOT / "docs/pipeline.json").read_text(encoding="utf-8"))
-                    checked = {row["name"]: row for row in pipeline.get("consumers", [])}
-                    stale = []
-                    for spec in load_projects(allow_missing=True).values():
-                        if not spec.available or spec.expected_gate_s.upper() not in ("PASS", "FAIL"):
-                            continue
-                        age_h = consumer_freshness(spec.root, spec.expected_gate_s,
-                            checked.get(spec.name, {}).get("checked_at"))["age_h"]
-                        if age_h is not None and age_h > 24.0:
-                            stale.append((age_h, spec.name))
-                    if stale:
-                        _, name = max(stale)
-                        threading.Thread(target=refresh_project, args=(name,), daemon=True).start()
-                        STATE["auto_note"] = f"auto-refresh started: {name} ({max(stale)[0]:.0f} h)"
-                except Exception as exc:  # noqa: BLE001 - the loop must keep sampling
-                    STATE["auto_note"] = f"auto-refresh failed: {type(exc).__name__}"
+            # Changed declarations trigger Gate S reconciliation above. Age alone
+            # must not execute an arbitrary consumer gate (which may run research).
+            # Explicit refresh remains available through the project API.
 
             timeline = payload.get("timeline") or []
             sig = (len(timeline), timeline[-1].get("ts") if timeline else None)
@@ -277,14 +260,16 @@ def refresh_project(name: str) -> dict:
     lock = REFRESH_LOCKS.setdefault(name, threading.Lock())
     if not lock.acquire(blocking=False):
         return {"ok": False, "busy": True, "error": f"{name} is already refreshing"}
+    if not PIPELINE_LOCK.acquire(blocking=False):
+        lock.release()
+        return {"ok": False, "busy": True, "error": "consumer reverification is already running"}
     started = time.time()
     try:
         run = run_command(spec, kind="gate", timeout=900)
         # The dashboard reads docs/pipeline.json for Gate S verdicts; a new evidence file without a
         # rebuild would be measured against the old registry.
         try:
-            with PIPELINE_LOCK:
-                rebuilt = run_pipeline(probe=True)
+            rebuilt = run_pipeline(probe=True,recheck=name)
             if rebuilt.returncode != 0:
                 return {"ok": False, "status": run.status, "error": "gate ran, but registry rebuild failed"}
         except (OSError, subprocess.SubprocessError) as exc:
@@ -301,6 +286,7 @@ def refresh_project(name: str) -> dict:
                 "evidence_age_h": None if age_h is None else round(age_h, 2),
                 "tail": (run.stdout_tail or "")[-600:]}
     finally:
+        PIPELINE_LOCK.release()
         lock.release()
 
 

@@ -158,6 +158,8 @@ def run(mutators: list) -> tuple[str, list[str], str]:
     try:
         root = tmp / "clean"
         shutil.copytree(CLEAN, root)
+        from tools.fixture_reproduction import prepare
+        prepare(root)
         register_path = root / "analysis" / "CLAIMS.yaml"
         register = yaml.safe_load(register_path.read_text(encoding="utf-8"))
         for fn in mutators:

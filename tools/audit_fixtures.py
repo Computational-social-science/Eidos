@@ -18,6 +18,8 @@ import argparse
 import json
 import re
 import sys
+import shutil
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -46,10 +48,14 @@ EXPECTED = {
 
 
 def run_one(name: str) -> tuple[str, set[str], list[str]]:
-    root = FIXTURES / name
-    gate = ScientificValidityGate(root, register=root / "analysis" / "CLAIMS.yaml",
-                                  document=root / "docs" / "REPORT.md")
-    result = gate.run()
+    from tools.fixture_reproduction import prepare
+    with tempfile.TemporaryDirectory(prefix="eidos-fixture-") as directory:
+        root = Path(directory) / name
+        shutil.copytree(FIXTURES / name, root)
+        prepare(root)
+        gate = ScientificValidityGate(root, register=root / "analysis" / "CLAIMS.yaml",
+                                      document=root / "docs" / "REPORT.md")
+        result = gate.run()
     verdict = "PASS" if result.passed else "FAIL"
     details = getattr(result, "details", {}) or {}
     findings = details.get("findings") or []

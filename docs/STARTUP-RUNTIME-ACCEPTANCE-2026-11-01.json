@@ -10,13 +10,13 @@
   "bootstrap_python": "C:\\Python314\\python.exe",
   "configured_python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
   "scope": "Runtime-selection probe only; no service started or Startup entry changed.",
-  "recorded_at": "2026-10-31T23:39:54.335405+00:00",
+  "recorded_at": "2026-11-01T02:27:52.492374+00:00",
   "services_started": false,
   "existing_processes_stopped": false,
   "configuration_changed": false,
   "source_sha256": {
     "tools/launch_runtime.py": "49c9cfc147919c8eb65d246aa1ebdd57eb2945c155f7160edef0bb4a2e6357f0",
-    "tools/cron_entry.py": "51e58842d9e945cfd1a53dea73e7f9468380aa8ab777f85f35ed126eedf061b6",
+    "tools/cron_entry.py": "9b76df0bf905635effa7cf603e65570c662368ad0ccbe33bdf422a6aaf15b61e",
     "tools/bounded_process.py": "b05e71b7b1e7177d313fcb4ea9de21a9918312bceb72e9888bc14b087c4c5fab",
     "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
     "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
@@ -24,5 +24,7 @@
     "scripts/eidos-monitor.cmd": "729d5eab30f8d615a45b2b34f423765eddb86fdcc836604a18e57c1b23b72edb",
     "scripts/install-autostart.cmd": "c2b6b2bf65fad8d8e11fe7caa0df8ff1487b9dcc0adea07ba6c05412411858aa"
   },
+  "source_hash_convention": "Canonical LF for Python; raw bytes for CMD launchers.",
+  "previous_record": "archive/startup-runtime-acceptance-v0.4.7.json",
   "runtime_migration": "PENDING; this diagnostic does not migrate old service/loop instances."
 }

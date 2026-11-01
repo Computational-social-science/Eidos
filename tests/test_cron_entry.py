@@ -20,7 +20,9 @@ def test_healthy_watchdog_is_quiet_and_records_success(tmp_path,monkeypatch,caps
     from tools import cron_entry,bounded_process
     monkeypatch.setattr(cron_entry,'ROOT',tmp_path)
     monkeypatch.setattr(cron_entry,'runtime',lambda:{'PYTHON':'project-python'})
-    monkeypatch.setattr(bounded_process,'run_tree',lambda *a,**kw:subprocess.CompletedProcess([],0,'',''))
+    payload=json.dumps({'schema':1,'check_completed':True,'healthy':True,'problems':[],
+                        'incident_key':'healthy','verdict':'OK'})
+    monkeypatch.setattr(bounded_process,'run_tree',lambda *a,**kw:subprocess.CompletedProcess([],0,payload,''))
     assert cron_entry.main(['watchdog'])==0
     assert capsys.readouterr().out==''
     assert (tmp_path/'docs/status/cron-watchdog.json').is_file()

@@ -76,6 +76,8 @@ def checked_outputs(bridge, result):
 
 
 def main():
+    if sys.flags.optimize:
+        raise SystemExit("Qualification requires active assertions; omit -O/-OO.")
     parser = argparse.ArgumentParser()
     parser.add_argument("--real-quarto", action="store_true")
     args = parser.parse_args()
@@ -193,6 +195,7 @@ def main():
                 "executable": sys.executable,
                 "installed_module": str(installed),
                 "sdk_version": version("eidos"),
+        "optimization_level": sys.flags.optimize,
                 "pdfinfo": (pdf_version.stdout + pdf_version.stderr).strip(),
                 "cases": cases,
                 "real_quarto": args.real_quarto,

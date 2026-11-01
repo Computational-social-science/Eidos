@@ -1,6 +1,6 @@
 # Eidos：可复核科研流水线技术框架
 
-**实现基线：0.4.7（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
+**实现基线：0.4.8（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
 
 运行部署边界：核查发现现存监控及两条旧链路循环仍使用全局 Python 3.14；本地启动配置已选择项目 Python 3.12，但受控停止/重启被自动审批以 blocked by policy 拒绝，未执行、未改道终止。新增调度循环源码已补 OS 生命周期锁、单次 tick 互斥、隐藏子进程树超时清理及原子心跳；这些规则不会追溯应用到旧进程。运行迁移仍为 PENDING，不能以网页可访问或源码测试通过替代实际部署验收。详见 docs/MONITOR-RUNTIME-MIGRATION-2026-11-01.json。
 
@@ -187,7 +187,7 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。
 
 <!-- self-audit:start -->
-本轮验收：785 passed、1 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 71%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
+本轮验收：875 passed、1 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 71%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
 <!-- self-audit:end -->
 
 既有 CUDA 16 项已独立通过；本轮未修改数值后端。
@@ -275,3 +275,14 @@ QuartoBridge 原先只看进程退出码，受控 CLI 可在不生成任何文�
 PDF 校验使用明确的外部 Poppler 契约；缺工具拒绝。原数值研究锁、权重和证据保持原有冻结状态。安装包验证区分受控 CLI/真实 Matplotlib 与可选的真实 Quarto/TeX，明确要求三种物理主文件并独立重算输入输出摘要。详见 [交付契约](docs/QUARTO-DELIVERY.md)。这不是科学内容、NATURE 投稿接受、新机器或运行中服务迁移的证明。其他直接 SDK 子进程调用仍须逐项验收。
 
 下一批已复现问题：直接 reproduction.compare 在无限预期/无限容差及大整数先转浮点时可错误返回 MATCH，详见 FUNCTIONAL_COMPLETENESS 的开放缺陷段。0.4.7 不将该未限定比较器作为通用科研判据。
+
+
+## 2026-11-01：调度去重与复现证据完整性（0.4.8）
+
+本批按用户要求执行调度精简。现有两项 Eidos Hermes CRON 保留任务 ID、时间计划和历史；继续使用无 LLM 的脚本模式，并已固定项目 Python、工作目录，关闭错过时段的补跑。watchdog 的执行完成与系统健康分开记账，持续故障仍保留负健康证据；同一原因重复轮询静默，原因变化与恢复通知。无效序号、损坏检查点、矛盾 JSON 和同类检查乱序覆盖均增加负控制。详见 [调度政策](docs/SCHEDULING-POLICY.md)。
+
+链路排查还修复了手动刷新与后台复核使用不同锁、单项刷新导致全部重复复核、按证据年龄自动执行任意科研 gate 的问题。缓存最多复用 24 小时且必须匹配当前输入摘要，不重写 checked_at；手动选中项强制重验，--force 才全量重验。源代码修复不等于已加载进旧常驻进程。既有两个旧链路循环及监控仍待迁移；此前停止/重启被自动审批拒绝（blocked by policy），没有强停、绕过或清空失败历史。
+
+直接 reproduction 比较器按所表示的整数/二进制浮点值精确比较，并拒绝无限数、非法类型及歧义 JSON。S12 要求原始规格文件、完整集合清单和当前输入绑定，不能只提取成功子项冒充整篇论文 MATCH。收据跟随声明代码/数据/规格失效，旧手写 MATCH 需重放；夹具审计和变异测试改用临时副本实际执行 stub。512 项固定 seed 的独立 Decimal 判定提供不同算法的对照。这些本地一致性检查不是签名执行证明或独立见证的预注册，也没有完成论文训练复现。详见 [复现完整性边界](docs/REPRODUCTION-INTEGRITY.md)。
+
+本批按 0.4.8 交付：新 Windows 独立环境与断网 Linux 容器各通过 18 组复现控制、512 项 Decimal 判定，另重跑生命周期与交付验收；0.4.7 的三条错误 MATCH 在保留的旧安装环境实际重现。历史 wheel、标签与收据完整保留。正式发布状态以 GitHub Releases 的标签、精确提交 CI 和资产指纹为准。测试与覆盖率由 SELF_AUDIT 记录，未通过的运行和运行时迁移限制保留。

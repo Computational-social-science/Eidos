@@ -1,0 +1,235 @@
+{
+  "recorded_at": "2026-11-01T02:28:46.821897+00:00",
+  "scope": "Same-host configured Eidos script schedules and actual watchdog dispatch; not healthy-system, old-process migration, reboot or clean-24-hour acceptance.",
+  "configuration_before": [
+    {
+      "id": "d61994a076b9",
+      "name": "Eidos contract drift",
+      "script": "eidos_contracts.py",
+      "no_agent": true,
+      "interpreter": null,
+      "workdir": null,
+      "catch_up": null,
+      "schedule": {
+        "kind": "cron",
+        "expr": "15 7 * * *",
+        "display": "15 7 * * *"
+      },
+      "last_run_at": "2026-11-01T07:15:13.043930+08:00",
+      "last_status": "ok",
+      "failure_streak": 0
+    },
+    {
+      "id": "af4ae1129d9c",
+      "name": "eidos-watchdog",
+      "script": "eidos_watchdog.py",
+      "no_agent": true,
+      "interpreter": null,
+      "workdir": null,
+      "catch_up": null,
+      "schedule": {
+        "kind": "interval",
+        "minutes": 5,
+        "display": "every 5m"
+      },
+      "last_run_at": "2026-11-01T09:56:07.364968+08:00",
+      "last_status": "error",
+      "failure_streak": 58
+    }
+  ],
+  "configuration_after": [
+    {
+      "id": "d61994a076b9",
+      "name": "Eidos contract drift",
+      "script": "eidos_contracts.py",
+      "no_agent": true,
+      "interpreter": "C:/Users/Administrator/.venvs/eidos-py312/Scripts/python.exe",
+      "workdir": "E:\\2026-AI4S\\Eidos",
+      "catch_up": false,
+      "schedule": {
+        "kind": "cron",
+        "expr": "15 7 * * *",
+        "display": "15 7 * * *"
+      },
+      "last_run_at": "2026-11-01T07:15:13.043930+08:00",
+      "last_status": "ok",
+      "failure_streak": 0
+    },
+    {
+      "id": "af4ae1129d9c",
+      "name": "eidos-watchdog",
+      "script": "eidos_watchdog.py",
+      "no_agent": true,
+      "interpreter": "C:/Users/Administrator/.venvs/eidos-py312/Scripts/python.exe",
+      "workdir": "E:\\2026-AI4S\\Eidos",
+      "catch_up": false,
+      "schedule": {
+        "kind": "interval",
+        "minutes": 5,
+        "display": "every 5m"
+      },
+      "last_run_at": "2026-11-01T10:26:06.874502+08:00",
+      "last_status": "ok",
+      "failure_streak": 0
+    }
+  ],
+  "configuration_backup_sha256": "bf7cfd10d1017e37a6912b6e19a231ef5aa178790a0c7bcc43951189f26c9353",
+  "watchdog_recent_execution_rows": [
+    {
+      "id": "0fa0d3f578604277ae94dedd52971660",
+      "job_id": "af4ae1129d9c",
+      "status": "completed",
+      "started_at": "2026-11-01T10:26:05.951394+08:00",
+      "finished_at": "2026-11-01T10:26:06.879584+08:00",
+      "error": null
+    },
+    {
+      "id": "d4cf861b3bdf41da8d50df48bc4eff28",
+      "job_id": "af4ae1129d9c",
+      "status": "completed",
+      "started_at": "2026-11-01T10:20:05.936582+08:00",
+      "finished_at": "2026-11-01T10:20:06.618865+08:00",
+      "error": null
+    },
+    {
+      "id": "2649b2c40ecd410fb9892a2c640ad757",
+      "job_id": "af4ae1129d9c",
+      "status": "completed",
+      "started_at": "2026-11-01T10:14:05.946973+08:00",
+      "finished_at": "2026-11-01T10:14:06.749837+08:00",
+      "error": null
+    },
+    {
+      "id": "0044989cd8674511ad6d68d35567b1f6",
+      "job_id": "af4ae1129d9c",
+      "status": "completed",
+      "started_at": "2026-11-01T10:08:05.907631+08:00",
+      "finished_at": "2026-11-01T10:08:06.671554+08:00",
+      "error": null
+    },
+    {
+      "id": "aabea13f78814e3a91a65d886cbb46ed",
+      "job_id": "af4ae1129d9c",
+      "status": "failed",
+      "started_at": "2026-11-01T10:02:05.926391+08:00",
+      "finished_at": "2026-11-01T10:02:07.496776+08:00",
+      "error": "Script exited with code 1\nstdout:\nFAIL  consumer_snapshot = UNOBSERVABLE; consumer_verdicts = UNOBSERVABLE; consumers = UNOBSERVABLE"
+    },
+    {
+      "id": "399d9bb7177b4418bb5f8ceef036a21f",
+      "job_id": "af4ae1129d9c",
+      "status": "failed",
+      "started_at": "2026-11-01T09:56:05.960355+08:00",
+      "finished_at": "2026-11-01T09:56:07.370356+08:00",
+      "error": "Script exited with code 1\nstdout:\nFAIL  consumer_snapshot = UNOBSERVABLE; consumer_verdicts = UNOBSERVABLE; consumers = UNOBSERVABLE"
+    },
+    {
+      "id": "7046284214fc40ab9b2a34221e2f5a08",
+      "job_id": "af4ae1129d9c",
+      "status": "failed",
+      "started_at": "2026-11-01T09:50:05.977985+08:00",
+      "finished_at": "2026-11-01T09:50:06.672015+08:00",
+      "error": "Script exited with code 1\nstdout:\nFAIL  consumer_snapshot = UNOBSERVABLE; consumer_verdicts = UNOBSERVABLE; consumers = UNOBSERVABLE"
+    },
+    {
+      "id": "1c54fca3ae2246d98a3fbb274dd0a2e4",
+      "job_id": "af4ae1129d9c",
+      "status": "failed",
+      "started_at": "2026-11-01T09:44:06.044163+08:00",
+      "finished_at": "2026-11-01T09:44:07.058258+08:00",
+      "error": "Script exited with code 1\nstdout:\nFAIL  consumer_snapshot = UNOBSERVABLE; consumer_verdicts = UNOBSERVABLE; consumers = UNOBSERVABLE"
+    }
+  ],
+  "watchdog_actual_quiet_negative_receipt": {
+    "generated": "2026-11-01T02:26:06.445862+00:00",
+    "kind": "watchdog",
+    "ok": false,
+    "entry_python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+    "python_version": "3.12.4",
+    "isolated": true,
+    "utf8_mode": true,
+    "pythonpath_present": false,
+    "pythonhome_present": false,
+    "console_window": 0,
+    "exit_code": 1,
+    "execution_ok": true,
+    "health": {
+      "schema": 1,
+      "check_completed": true,
+      "healthy": false,
+      "verdict": "ALARM",
+      "problems": [
+        "consumer_snapshot = UNOBSERVABLE; consumer_verdicts = UNOBSERVABLE; consumers = UNOBSERVABLE"
+      ],
+      "incident_key": "dcafb96867b93ecbf5caaebddf438318d9a5483ab819e9ce97890b0016bfb66c",
+      "seq": 12507,
+      "sample_age_s": 9.763569
+    },
+    "issues": [
+      "consumer_snapshot = UNOBSERVABLE; consumer_verdicts = UNOBSERVABLE; consumers = UNOBSERVABLE"
+    ],
+    "notification_key": "298f64d5bab40ed6e506fc654df3d1b925fbea2d81f72f9fb88663bd6b9626e5",
+    "notified": false
+  },
+  "daily_most_recent_execution": [
+    {
+      "id": "62db99ed656042e39b5e9d20e8f7623e",
+      "job_id": "d61994a076b9",
+      "status": "completed",
+      "started_at": "2026-11-01T07:15:06.056324+08:00",
+      "finished_at": "2026-11-01T07:15:13.049033+08:00",
+      "error": null
+    }
+  ],
+  "daily_after_new_configuration_scheduled_dispatch_qualified": false,
+  "legacy_process_observation": [
+    {
+      "ProcessId": 16616,
+      "ParentProcessId": 22704,
+      "ExecutablePath": "C:\\Python314\\python.exe",
+      "Role": "chain loop"
+    },
+    {
+      "ProcessId": 25476,
+      "ParentProcessId": 22704,
+      "ExecutablePath": "C:\\Python314\\python.exe",
+      "Role": "chain loop"
+    },
+    {
+      "ProcessId": 50656,
+      "ParentProcessId": 35004,
+      "ExecutablePath": "C:\\Python314\\python.exe",
+      "Role": "monitor supervisor"
+    },
+    {
+      "ProcessId": 55564,
+      "ParentProcessId": 50656,
+      "ExecutablePath": "C:\\Python314\\python.exe",
+      "Role": "monitor server"
+    }
+  ],
+  "legacy_process_observed_at": "2026-11-01T02:15:20+00:00",
+  "runtime_migration": "PENDING; prior stop/restart rejected by automatic approval: blocked by policy. No process stopped or reloaded to bypass it.",
+  "source_sha256_canonical_lf": {
+    "tools/cron_entry.py": "9b76df0bf905635effa7cf603e65570c662368ad0ccbe33bdf422a6aaf15b61e",
+    "tools/watchdog.py": "963d0ea1d34c3ae0d00303ca879d9c6ceeec83cdfed83a593265a78143a53515",
+    "tools/build_pipeline.py": "57e4fae4fbedc5a80c15bc5e522e2ffbe07125bc8feea6f785aa0362321ad7c7",
+    "tools/serve_site.py": "6fa0c39927255681ce50579413d9b49ff949f288408d3e56c3d4e8705f367869",
+    "tools/refresh_chains.py": "ae6cf365a749714f173e6a351412c13f0febdfe31c8970a7f8ee62a50f37e1c2",
+    "tools/launch_runtime.py": "49c9cfc147919c8eb65d246aa1ebdd57eb2945c155f7160edef0bb4a2e6357f0",
+    "tools/install_hermes_cron.py": "4c2158f9cb482fe4b6833e48d2bb68ab21d7e2834883482ec7c3a2b640fb825b",
+    "tools/consumer_snapshot.py": "7c0ca204bec8baf81c343399319145239e2ec1a709526b4e36292d072ba9f0d9"
+  },
+  "source_controls": {
+    "full_record": "SELF_AUDIT.json",
+    "focused_passed": 165,
+    "final_boundary_subset_passed": 101,
+    "counts_overlap": true
+  },
+  "health_semantics": "execution_ok is scheduler execution; ok is monitored health. Successful scheduler completion never promotes health ALARM to OK.",
+  "limits": [
+    "Old monitor/loop instances do not acquire newly added locks retroactively",
+    "Scheduler own checker-execution failure notices are not suppressed",
+    "Nominal five-minute interval is not a hard deadline; actual timestamps are retained"
+  ]
+}

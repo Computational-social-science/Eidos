@@ -68,3 +68,13 @@ and strict-soak history remain in the migration record. These diagnostics do not
 prove reboot/logon or clean 24-hour operation.
 
 Source: [Microsoft CALL contract](https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/call).
+
+
+## 2026-11-01 consolidation observation
+
+The [new scheduling receipt](SCHEDULING-ACCEPTANCE-2026-11-01.json) records the
+managed interpreter/workdir pins, disabled catch-up and actual completed watchdog
+dispatches with a retained negative health verdict. A subsequent unchanged
+incident was quiet. A daily 07:15 dispatch was also observed before these latest
+configuration/notification changes; the new daily scheduled branch remains
+unqualified until its own dispatch. See [scheduling ownership and limits](SCHEDULING-POLICY.md).

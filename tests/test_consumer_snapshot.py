@@ -1,4 +1,5 @@
 """A cached scientific verdict must describe the inputs that were actually checked."""
+
 import json
 import subprocess
 import threading
@@ -6,6 +7,7 @@ import threading
 import pytest
 
 from framework.project import ProjectSpec
+from framework.reproduction import record_path
 
 
 def consumer(tmp_path):
@@ -144,11 +146,17 @@ def test_outside_project_reference_is_not_read(tmp_path):
 @pytest.mark.parametrize("kind", ["support", "reproduction"])
 def test_implicit_record_paths_use_the_gate_filename_normalization(tmp_path, kind):
     from tools.consumer_snapshot import capture_inputs
+
     spec = consumer(tmp_path)
     fields = "support: required" if kind == "support" else "reproduction: paper/1"
-    (spec.root / "analysis/CLAIMS.yaml").write_text(f"claims:\n- id: C/1\n  {fields}\n", encoding="utf-8")
-    path = (tmp_path / "artifacts/literature/support/C_1.json" if kind == "support"
-            else spec.root / "artifacts/reproduction/paper_1.json")
+    (spec.root / "analysis/CLAIMS.yaml").write_text(
+        f"claims:\n- id: C/1\n  {fields}\n", encoding="utf-8"
+    )
+    path = (
+        tmp_path / "artifacts/literature/support/C_1.json"
+        if kind == "support"
+        else record_path("paper/1", spec.root / "artifacts/reproduction")
+    )
     path.parent.mkdir(parents=True)
     path.write_text("{}", encoding="utf-8")
     before = capture_inputs(spec, tmp_path)["digest"]
@@ -347,3 +355,65 @@ def test_hidden_noninteractive_tree_preserves_both_output_streams(tmp_path):
     assert result.returncode==0
     assert result.stdout.strip()=='structured output'
     assert result.stderr.strip()=='diagnostic'
+
+
+@pytest.mark.parametrize("target", ["worker.py", "data.txt", "spec.json"])
+def test_reproduction_dependency_change_revokes_cached_pass(tmp_path, target):
+    import sys
+    from dataclasses import replace
+    from framework import reproduction
+    from tools.consumer_snapshot import capture_inputs, snapshot_state
+
+    spec = replace(consumer(tmp_path), validity_external_inputs=[sys.executable])
+    (spec.root / "analysis/CLAIMS.yaml").write_text(
+        "claims:\n- id: C1\n  reproduction: controlled-paper\n", encoding="utf-8"
+    )
+    (spec.root / "worker.py").write_text(
+        "import json;print(json.dumps(dict(value=1)))", encoding="utf-8"
+    )
+    (spec.root / "data.txt").write_text("original", encoding="utf-8")
+    value = {
+        "paper": "controlled-paper",
+        "expected": 1,
+        "command": [sys.executable, "worker.py"],
+        "inputs": ["data.txt"],
+    }
+    source = spec.root / "spec.json"
+    source.write_text(json.dumps(value), encoding="utf-8")
+    record = reproduction.run_spec(value, cwd=spec.root, source_file=source)
+    assert record["verdict"] == reproduction.MATCH
+    reproduction.write(record, spec.root / "artifacts/reproduction")
+    assert capture_inputs(spec, tmp_path)["digest"]
+    saved = snapshot(spec, tmp_path)
+    path = spec.root / target
+    path.write_text(path.read_text(encoding="utf-8") + "\nchanged", encoding="utf-8")
+    assert spec.name in snapshot_state(saved, {spec.name: spec}, tmp_path)["stale"]
+
+
+def test_reproduction_external_executable_requires_explicit_snapshot_permission(
+    tmp_path,
+):
+    from tools.consumer_snapshot import capture_inputs
+
+    spec = consumer(tmp_path)
+    (spec.root / "analysis/CLAIMS.yaml").write_text(
+        "claims:\n- id: C1\n  reproduction: p\n", encoding="utf-8"
+    )
+    path = record_path("p", spec.root / "artifacts/reproduction")
+    path.parent.mkdir(parents=True)
+    path.write_text(
+        json.dumps(
+            {
+                "schema": 2,
+                "kind": "scalar",
+                "paper": "p",
+                "binding": {
+                    "inputs": {},
+                    "executable": {"path": str(tmp_path / "outside.exe")},
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    result = capture_inputs(spec, tmp_path)
+    assert result["digest"] is None and "outside project" in result["error"]

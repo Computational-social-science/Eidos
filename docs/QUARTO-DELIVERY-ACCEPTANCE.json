@@ -1,21 +1,22 @@
 {
-  "generated": "2026-11-01T00:41:54.097591+00:00",
+  "generated": "2026-11-01T02:50:45.389576+00:00",
   "scope": "Installed SDK artifact-production boundary; controlled CLI and actual Matplotlib on both systems, actual Quarto/TeX on Windows. No scientific/journal/general new-machine claim.",
-  "wheel": "reference/sdk_process_acceptance/eidos-0.4.7-py3-none-any.whl",
-  "wheel_sha256": "7f796c47af76ae9ba933777d6bbee0fea7ea598e1d3b06687590f84445edb1e9",
+  "wheel": "reference/sdk_process_acceptance/eidos-0.4.8-py3-none-any.whl",
+  "wheel_sha256": "fdfd1aa5ce3e67e9d50e6b1f37973a902b5f8038ef158f268076431c477133e1",
   "driver": "reference/quarto_delivery_acceptance/check.py",
-  "driver_sha256": "07ff86da02593c62bc1eb43a65d073758e13e41eee98182d781d18145c5df12a",
+  "driver_sha256": "f0efe362c24aa1b680d57f2716aced4214cd9967005e0a27a21bc8c065af2b2f",
   "source_inventory": "SDK-PROCESS-ACCEPTANCE.json#source_sha256_canonical_lf",
   "windows": {
     "status": "PASS",
     "installation": "New dedicated Windows environment; offline cached core-dependency installation.",
     "result": {
-      "generated": "2026-11-01T00:40:04.855825+00:00",
+      "generated": "2026-11-01T02:48:11.986475+00:00",
       "platform": "win32",
       "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
-      "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-047-7693kim4\\venv with spaces\\Scripts\\python.exe",
-      "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-047-7693kim4\\venv with spaces\\Lib\\site-packages\\framework\\quarto_bridge\\__init__.py",
-      "sdk_version": "0.4.7",
+      "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-048-vfs72r_j\\venv with spaces\\Scripts\\python.exe",
+      "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-048-vfs72r_j\\venv with spaces\\Lib\\site-packages\\framework\\quarto_bridge\\__init__.py",
+      "sdk_version": "0.4.8",
+      "optimization_level": 0,
       "pdfinfo": "pdfinfo version 26.07.0\nCopyright 2005-2026 The Poppler Developers - http://poppler.freedesktop.org\nCopyright 1996-2011, 2022 Glyph & Cog, LLC",
       "cases": [
         {
@@ -99,7 +100,7 @@
         ],
         [
           "eidos",
-          "0.4.7"
+          "0.4.8"
         ],
         [
           "fonttools",
@@ -151,12 +152,13 @@
     "image": "sha256:bc384f41896ee75c8001a4a17a4830869b6b9b47a23dfd5df038384f2bc755be",
     "network": "none",
     "result": {
-      "generated": "2026-11-01T00:39:57.483620+00:00",
+      "generated": "2026-11-01T02:49:42.930248+00:00",
       "platform": "linux",
       "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
       "executable": "/workspace/.venv/bin/python",
       "installed_module": "/workspace/.venv/lib/python3.12/site-packages/framework/quarto_bridge/__init__.py",
-      "sdk_version": "0.4.7",
+      "sdk_version": "0.4.8",
+      "optimization_level": 0,
       "pdfinfo": "pdfinfo version 22.12.0\nCopyright 2005-2022 The Poppler Developers - http://poppler.freedesktop.org\nCopyright 1996-2011, 2022 Glyph & Cog, LLC",
       "cases": [
         {
@@ -236,7 +238,7 @@
         ],
         [
           "eidos",
-          "0.4.7"
+          "0.4.8"
         ],
         [
           "fonttools",
@@ -283,9 +285,8 @@
     "scope": "Actual pre-fix direct SDK render/builder controls; not a scientific experiment"
   },
   "focused_regression": {
-    "passed": 61,
-    "failed": 0,
-    "scope": "Windows source tests including actual Quarto three-format chain"
+    "record": "SELF_AUDIT.json",
+    "scope": "Current source suite; independent installed-wheel controls recorded separately."
   },
   "fixtures": {
     "data": "Benign deterministic markup, two-point Matplotlib plots and malformed files embedded in the versioned checker",
@@ -297,45 +298,34 @@
     "External/transitive resources and full journal/scientific content require separate checks",
     "Existing monitor/loop runtime migration remains pending"
   ],
-  "additional_local_observation": {
-    "kind": "same-host rendered-snapshot export and validation",
-    "public_replay_archive": false,
-    "check_code_sha256": "e897cfacd61787363d0201e1679f19895365b648d046a1d6bb0cd44c6f900496",
-    "result": {
-      "status": "PASS",
-      "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-047-7693kim4\\venv with spaces\\Lib\\site-packages\\framework\\quarto_bridge\\__init__.py",
-      "formats": [
-        "docx",
-        "html",
-        "pdf"
-      ],
-      "declared_inputs": 21,
-      "package_member_hashes_verified": true,
-      "locked_environment_sync_exit": 0,
-      "declared_replay_exit": 0,
-      "execution_record": {
-        "seed": null,
-        "seed_reason": "Deterministic rendered-artifact snapshot; no sampled data",
-        "data_version": "benign-markup-v1",
-        "config_version": "sdk047-delivery-snapshot-v1",
-        "command": [
-          "python",
-          "run.py"
-        ],
-        "verify_command": [
-          "python",
-          "verify.py"
-        ],
-        "generated": "2026-11-01T00:53:12.058621+00:00",
-        "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
-        "executable": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\eidos-render-package-e92m0tja\\outputs\\rendered-snapshot\\.venv\\Scripts\\python.exe",
-        "outputs": {
-          "snapshot-check.json": "0c08dd861cf9a9235836217ecea65682d208945ae4ccbc00187626f4f8f88eaf"
-        },
-        "manifest_sha256": "7727cb417cd7a9793a211fc4fe8912d2af990d3c9c345bd06b0c838a3410fa20",
-        "scope": "Declared commands and output integrity only; not independent scientific certification."
+  "optimization_controls": {
+    "windows": [
+      {
+        "driver": "quarto-check.py",
+        "flag": "-O",
+        "exit_code": 1,
+        "success_document_emitted": false
       },
-      "scope": "Actual Quarto artifact generation, declared static snapshot export and fresh locked replay of snapshot integrity. No fresh Quarto rerender inside package or new-machine claim."
-    }
+      {
+        "driver": "quarto-check.py",
+        "flag": "-OO",
+        "exit_code": 1,
+        "success_document_emitted": false
+      }
+    ],
+    "linux": [
+      {
+        "driver": "quarto-check.py",
+        "flag": "-O",
+        "exit_code": 1,
+        "success_document_emitted": false
+      },
+      {
+        "driver": "quarto-check.py",
+        "flag": "-OO",
+        "exit_code": 1,
+        "success_document_emitted": false
+      }
+    ]
   }
 }

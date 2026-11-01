@@ -357,10 +357,13 @@ class ScientificValidityGate:
         lets the claim through. A missing artefact is BLOCKED — nothing has run — while a MISMATCH is
         FAIL, because the paper's number and the code's number disagree and that is a finding.
         """
-        from framework.reproduction import MATCH, load
+        from framework.reproduction import MATCH, UNRUN, load, validate_record, _moment
 
         directory = self.root / "artifacts" / "reproduction"
-        record = load(paper, directory)
+        try:
+            record = load(paper, directory)
+        except (OSError, ValueError) as exc:
+            return [], [f"{claim_id}: invalid reproduction record: {exc}"]
         if record is None:
             return [], [f"{claim_id}: cites reproduction of {paper!r} but "
                         f"artifacts/reproduction/{paper}.json does not exist"]
@@ -370,11 +373,20 @@ class ScientificValidityGate:
         if not registered:
             return [], [f"{claim_id}: reproduction of {paper!r} has no registered_at — the spec was "
                         f"not pre-registered, so its tolerance could have been chosen after the fact"]
-        if str(registered) > str(record.get("ts")):
+        try:
+            registered_time, finished_time = _moment(registered), _moment(record.get('ts'))
+        except ValueError as exc:
+            return [], [f"{claim_id}: invalid reproduction timestamps: {exc}"]
+        if registered_time > finished_time:
             return [Finding("S12", f"{claim_id}: reproduction of {paper!r} was registered at "
                                     f"{registered}, after the run at {record.get('ts')}")], []
 
         verdict = record.get("verdict")
+        if verdict == UNRUN:
+            return [], [f"{claim_id}: reproduction of {paper!r} is UNRUN"]
+        errors = validate_record(record, self.root, paper, require_source=True)
+        if errors:
+            return [], [f"{claim_id}: unverifiable reproduction of {paper!r}: {error}" for error in errors]
         if verdict != MATCH:
             return [Finding("S12", f"{claim_id}: reproduction of {paper!r} is {verdict} "
                                     f"(expected {record.get('expected')}, observed "

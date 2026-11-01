@@ -36,6 +36,8 @@ def fixture(root: Path, *, normal=False, nested=False) -> sdk.ProjectSpec:
 
 
 def main() -> int:
+    if sys.flags.optimize:
+        raise SystemExit("Qualification requires active assertions; omit -O/-OO.")
     parser = argparse.ArgumentParser(description=__doc__)
     controls = parser.add_mutually_exclusive_group()
     controls.add_argument("--expect-nested-leak", action="store_true", help="negative-control candidate only")
@@ -106,7 +108,8 @@ def main() -> int:
                 results.append({"case": "Windows worker has no console window", "console_window": 0, "accepted": True})
     print(json.dumps({"generated": datetime.now(timezone.utc).isoformat(), "platform": sys.platform,
                       "python": sys.version, "executable": sys.executable, "installed_module": str(installed),
-                      "sdk_version": version("eidos"), "module_sha256": modules, "cases": results,
+                      "sdk_version": version("eidos"),
+        "optimization_level": sys.flags.optimize, "module_sha256": modules, "cases": results,
                       "dependencies": sorted(set((d.metadata.get("Name"), d.version) for d in distributions())),
                       "scope": "Installed wheel lifecycle only; no GPU, network service migration, clean-24h or arbitrary escaped-process sandbox qualification."}, ensure_ascii=False))
     return 0

@@ -42,7 +42,7 @@ echo "pre-commit: page gate (no browser)"
 echo "pre-commit: no textbook softmax in consumer code"
 "$PY" tools/audit_numerics.py --projects >/dev/null     || { echo "pre-commit: a consumer computes softmax/cross-entropy the way that collapses; run tools/audit_numerics.py --projects" >&2; exit 1; }
 
-echo "pre-commit: nothing written outside the project"
-"$PY" tools/audit_stray.py >/dev/null     || { echo "pre-commit: stray directories outside the project; remove them or move them into .scratch/" >&2; "$PY" tools/audit_stray.py >&2; exit 1; }
+echo "pre-commit: external directory attribution"
+"$PY" tools/audit_stray.py     || { echo "pre-commit: project-attributed directory or inspection error; inspect the report before changing external files" >&2; exit 1; }
 
 echo "pre-commit: ok"

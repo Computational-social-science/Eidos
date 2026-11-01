@@ -32,6 +32,12 @@ def _build(output):
     if errors:
         raise ValueError(errors)
     output = Path(output); output.mkdir(parents=True, exist_ok=True)
+    from framework.lock_compatibility import frozen_tracking_resolution
+    compatibility = frozen_tracking_resolution(ROOT, r['source_sha256']['uv.lock'])
+    if compatibility['status'] != 'COMPATIBLE_FROZEN_RESOLUTION':
+        raise ValueError('delivery lock has no compatible frozen-resolution attestation')
+    (output / 'original-experiment-uv.lock').write_bytes((ROOT / compatibility['original_lock']).read_bytes())
+    (output / 'delivery-lock-compatibility.json').write_text(json.dumps(compatibility, indent=2) + '\n', encoding='utf-8')
     from tools.numerics_figure import STYLE, STANDARD, FIXED
     import matplotlib.pyplot as plt
     from matplotlib.lines import Line2D
@@ -130,8 +136,9 @@ def _build(output):
               "Raw model tensors and final held-out predictions are checked by an independent NumPy forward path. "
               "Final gradients are independently reloaded on the recorded CUDA runtime; intermediate gradient "
               "counts remain producer logs. Source, data, protocol, initial state, checkpoint and environment "
-              "hashes are verified. The original experimental lock is archived unchanged when the local "
-              "EIDOS release label changes; any dependency/source/marker/hash change still fails that equivalence check."]
+              "hashes are verified. The original experiment lock is preserved as an immutable snapshot. "
+              "A separate attestation verifies unchanged frozen third-party resolution under the explicit "
+              "tracking-minima metadata policy; it does not establish runtime equivalence or a new training run."]
     (HERE / "docs/REPORT.md").write_text('\n'.join(lines)+declarations(), encoding='utf-8', newline='\n')
     with (output / "paired.csv").open("w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=list(paired[0])); writer.writeheader(); writer.writerows(paired)
@@ -184,6 +191,8 @@ def _bundle(output):
         files[name] = (ROOT / name).read_bytes()
     files['tools/publication.py'] = (ROOT / 'tools/publication.py').read_bytes()
     files["SOURCE-README.md"] = (ROOT / "README.md").read_bytes()
+    for name in ('original-experiment-uv.lock', 'delivery-lock-compatibility.json'):
+        files[name] = (output / name).read_bytes()
     for path in sorted((ROOT / "lock/snapshots/uv").glob("*.lock")):
         files[path.relative_to(ROOT).as_posix()] = path.read_bytes()
     for path in ROOT.glob("LICENSE*"):

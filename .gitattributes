@@ -8,6 +8,12 @@ site/reports/numerics/**/*.json -text whitespace=cr-at-eol
 *.yaml text eol=lf
 *.toml text eol=lf
 *.sh text eol=lf
+docs/archive/self-audit-v0.4.9.json -text whitespace=cr-at-eol
+docs/archive/core-recovery-acceptance-v0.4.9.json -text whitespace=cr-at-eol
+docs/archive/recovery-live-acceptance-v0.4.9.json -text whitespace=cr-at-eol
+site/docs/archive/self-audit-v0.4.9.json -text whitespace=cr-at-eol
+site/docs/archive/core-recovery-acceptance-v0.4.9.json -text whitespace=cr-at-eol
+site/docs/archive/recovery-live-acceptance-v0.4.9.json -text whitespace=cr-at-eol
 .githooks/* text eol=lf
 # Preserve byte-bound research artifacts across Windows/Linux checkouts.
 reference/softmax_*/checkpoints/* -text
@@ -29,12 +35,17 @@ site/reports/numerics/** whitespace=-blank-at-eol,-blank-at-eof
 site/reports/softmax-matrix/** whitespace=-blank-at-eol,-blank-at-eof
 site/reports/hpaf-metric/** whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
 site/reports/softmax-matrix/*.json -text whitespace=cr-at-eol
+site/reports/softmax-matrix/*.lock -text
 docs/archive/** whitespace=-blank-at-eol
 # These receipts bind one another by exact byte digest.
 docs/SELF_AUDIT.json -text whitespace=cr-at-eol
 docs/CORE-RECOVERY-ACCEPTANCE.json -text whitespace=cr-at-eol
 docs/RECOVERY-LIVE-ACCEPTANCE.json -text whitespace=cr-at-eol
+docs/TRACKING-ACCEPTANCE.json -text whitespace=cr-at-eol
+docs/CONSUMER-OBSERVATION-ACCEPTANCE.json -text whitespace=cr-at-eol
 site/docs/SELF_AUDIT.json -text whitespace=cr-at-eol
 site/docs/CORE-RECOVERY-ACCEPTANCE.json -text whitespace=cr-at-eol
 site/docs/RECOVERY-LIVE-ACCEPTANCE.json -text whitespace=cr-at-eol
+site/docs/TRACKING-ACCEPTANCE.json -text whitespace=cr-at-eol
+site/docs/CONSUMER-OBSERVATION-ACCEPTANCE.json -text whitespace=cr-at-eol
 *.sh text eol=lf

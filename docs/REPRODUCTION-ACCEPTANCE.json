@@ -1,21 +1,21 @@
 {
-  "generated": "2026-11-01T05:22:07.799501+00:00",
+  "generated": "2026-11-01T11:58:36.938954+00:00",
   "scope": "Installed-wheel direct reproduction numeric/execution/receipt boundaries; benign controlled stubs, not paper training or signed attestation.",
-  "wheel": "reference/sdk_process_acceptance/eidos-0.4.9-py3-none-any.whl",
-  "wheel_sha256": "ccb6c15bec83e79a3aaab8c5c653ea4a525cffa44223cdc2dd7cbdcef3a0c187",
+  "wheel": "reference/sdk_process_acceptance/eidos-0.4.10-py3-none-any.whl",
+  "wheel_sha256": "68faf443a36d668325b96145971db2ce7bbcb8ae3b8e03b074c2c2b2ea47d9eb",
   "driver": "reference/reproduction_acceptance/check.py",
   "driver_sha256": "16c34435bf7b9e1f6a3c8c59d83458a5b3ada5d4b064581183dbcb43f5a0ea0f",
   "source_inventory": "SDK-PROCESS-ACCEPTANCE.json#source_sha256_canonical_lf",
   "windows": {
     "status": "PASS",
     "result": {
-      "generated": "2026-11-01T05:14:30.058569+00:00",
+      "generated": "2026-11-01T09:06:43.827842+00:00",
       "platform": "win32",
-      "sdk_version": "0.4.9",
+      "sdk_version": "0.4.10",
       "optimization_level": 0,
       "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
-      "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-049-recovery\\venv with spaces\\Scripts\\python.exe",
-      "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-049-recovery\\venv with spaces\\Lib\\site-packages\\framework\\reproduction\\__init__.py",
+      "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v410-tracking\\venv with spaces\\Scripts\\python.exe",
+      "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v410-tracking\\venv with spaces\\Lib\\site-packages\\framework\\reproduction\\__init__.py",
       "source_sha256_canonical_lf": {
         "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
         "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
@@ -30,6 +30,7 @@
         "framework/inference/__init__.py": "58a89874bd025e87defc40476b041c8e7296c375c97fd6048f1de8df62db8140",
         "framework/inference/gguf.py": "4cc04cd656bde30ba8679b33a41739c86e89a70e1c7046874a40fbc0864d1267",
         "framework/inference/llama_cpp.py": "03fac820b5665dcf12c4e2749a0fe929b04f292f1bae86a3a7a97e6398fc7a30",
+        "framework/lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
         "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
         "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
         "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
@@ -45,7 +46,8 @@
         "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
         "framework/surrogate/__init__.py": "1fbb528b20f80f3bf28893aa1df1cdfb041217ce4122ffe74e3d1c98556e29ad",
         "framework/surrogate/demo.py": "8e3104db0efd6fe84feb656711cbb1f22eb0ba53c7b59bddd831fae7886132b3",
-        "framework/tracking/__init__.py": "6bd1d3ce9f25c69d510cc9bb19926a4c2ba9bb022920ca8c43896c1a90b50e27",
+        "framework/tracking/__init__.py": "e648cdf8e511a8c4725f6d732212d2660f49a4682bfd840aea08451b756bb942",
+        "framework/tracking/_worker.py": "bce9fa56d8f05ecab350e3689bb35c19773ad9aa283c42b6fc5ad5c6190a9b54",
         "framework/updates.py": "e92b282d0fb5691a043cd8131c2d0ab620a3e80f8b5200e58022c339da75d711",
         "framework/validity/__init__.py": "9f3ed867db4d14e6d37a012a1dcbf661a4525dddd2b5880a67489cede076d572",
         "framework/validity/lean_audit.py": "9d396ec4ff6a8472d7348a3893b006d1e64794355e1eada8e9f65ae9eb32a1eb",
@@ -135,14 +137,14 @@
       "seed": 20261101,
       "scope": "Installed SDK numeric and receipt boundary with benign stubs; not paper training, signed attestation, service migration or new-machine qualification."
     },
-    "installation": "Fresh offline Windows environment with frozen core dependencies."
+    "installation": "Fresh frozen Windows dev/tracking environment; offline candidate-wheel replacement."
   },
   "linux": {
     "status": "PASS",
     "result": {
-      "generated": "2026-11-01T05:15:51.530101+00:00",
+      "generated": "2026-11-01T09:09:28.263193+00:00",
       "platform": "linux",
-      "sdk_version": "0.4.9",
+      "sdk_version": "0.4.10",
       "optimization_level": 0,
       "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
       "executable": "/workspace/.venv/bin/python",
@@ -161,6 +163,7 @@
         "framework/inference/__init__.py": "58a89874bd025e87defc40476b041c8e7296c375c97fd6048f1de8df62db8140",
         "framework/inference/gguf.py": "4cc04cd656bde30ba8679b33a41739c86e89a70e1c7046874a40fbc0864d1267",
         "framework/inference/llama_cpp.py": "03fac820b5665dcf12c4e2749a0fe929b04f292f1bae86a3a7a97e6398fc7a30",
+        "framework/lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
         "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
         "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
         "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
@@ -176,7 +179,8 @@
         "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
         "framework/surrogate/__init__.py": "1fbb528b20f80f3bf28893aa1df1cdfb041217ce4122ffe74e3d1c98556e29ad",
         "framework/surrogate/demo.py": "8e3104db0efd6fe84feb656711cbb1f22eb0ba53c7b59bddd831fae7886132b3",
-        "framework/tracking/__init__.py": "6bd1d3ce9f25c69d510cc9bb19926a4c2ba9bb022920ca8c43896c1a90b50e27",
+        "framework/tracking/__init__.py": "e648cdf8e511a8c4725f6d732212d2660f49a4682bfd840aea08451b756bb942",
+        "framework/tracking/_worker.py": "bce9fa56d8f05ecab350e3689bb35c19773ad9aa283c42b6fc5ad5c6190a9b54",
         "framework/updates.py": "e92b282d0fb5691a043cd8131c2d0ab620a3e80f8b5200e58022c339da75d711",
         "framework/validity/__init__.py": "9f3ed867db4d14e6d37a012a1dcbf661a4525dddd2b5880a67489cede076d572",
         "framework/validity/lean_audit.py": "9d396ec4ff6a8472d7348a3893b006d1e64794355e1eada8e9f65ae9eb32a1eb",
@@ -266,7 +270,7 @@
       "seed": 20261101,
       "scope": "Installed SDK numeric and receipt boundary with benign stubs; not paper training, signed attestation, service migration or new-machine qualification."
     },
-    "installation": "Same-host network-disabled Linux container; only SDK replaced in the pinned existing dependency environment.",
+    "installation": "Network-disabled same-host Linux container; candidate wheel replaced in the pinned existing core environment.",
     "image": "sha256:bc384f41896ee75c8001a4a17a4830869b6b9b47a23dfd5df038384f2bc755be",
     "network": "none"
   },
@@ -303,18 +307,14 @@
         "exit_code": 1,
         "stdout_empty": true,
         "rejected": true,
-        "message": "Qualification requires active assertions; omit -O/-OO.",
-        "flag": "-O",
-        "success_document_emitted": false
+        "message": "Qualification requires active assertions; omit -O/-OO."
       },
       {
         "mode": "-OO",
         "exit_code": 1,
         "stdout_empty": true,
         "rejected": true,
-        "message": "Qualification requires active assertions; omit -O/-OO.",
-        "flag": "-OO",
-        "success_document_emitted": false
+        "message": "Qualification requires active assertions; omit -O/-OO."
       }
     ],
     "linux": [
@@ -323,19 +323,20 @@
         "exit_code": 1,
         "stdout_empty": true,
         "rejected": true,
-        "message": "Qualification requires active assertions; omit -O/-OO.",
-        "flag": "-O",
-        "success_document_emitted": false
+        "message": "Qualification requires active assertions; omit -O/-OO."
       },
       {
         "mode": "-OO",
         "exit_code": 1,
         "stdout_empty": true,
         "rejected": true,
-        "message": "Qualification requires active assertions; omit -O/-OO.",
-        "flag": "-OO",
-        "success_document_emitted": false
+        "message": "Qualification requires active assertions; omit -O/-OO."
       }
     ]
+  },
+  "lineage": {
+    "previous_release": "v0.4.9",
+    "previous_record": "archive/reproduction-acceptance-v0.4.9.json",
+    "previous_wheel_sha256": "ccb6c15bec83e79a3aaab8c5c653ea4a525cffa44223cdc2dd7cbdcef3a0c187"
   }
 }

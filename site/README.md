@@ -1,6 +1,6 @@
 # EIDOS — scientific claims, executable evidence
 
-**Version 0.4.9** · initial development · local-first · MIT framework
+**Version 0.4.10** · initial development · local-first · MIT framework
 
 [![CI](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml/badge.svg)](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
 
@@ -189,7 +189,12 @@ These checks establish bounded execution/acceptance behaviour, not scientific no
 | `tools/publication.py`, `tools/audit_publication.py` | Shared scientific manuscript policy, physical figure/PDF/Word audits and staleness checks |
 | `reference/` | Protocols, original evidence, models, controls and existing Paper2Agent tools |
 
-DVC/MLflow tracking and semantic-evaluation adapters are optional. Model-based
+DVC/MLflow tracking and semantic-evaluation adapters are optional. Tracking binds
+store, experiment and run identities, verifies DVC data and isolates model
+logging/download from ambient fluent state. See the [tracking contract](docs/TRACKING-INTEGRITY.md)
+for the API and its version-specific qualification limits.
+
+Model-based
 scientific judgements by **ScienceRSI-8B (Q4_K_M)** have not met acceptance thresholds: structured S4 accuracy
 **0.867** and held-out S7 accuracy **0.850** remain outside scientific gates.
 Details: [model verdicts](docs/MODEL_VERDICTS.md).

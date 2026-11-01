@@ -53,12 +53,12 @@ missing executables. Windows also checks its actual console-window handle. Linux
 adds a delayed-cleanup handoff control. Two private broken candidate wheels first
 reproduced nested and handoff leaks; the final wheel rejects both. Only the fixed
 wheel is distributed. Download the
-[fixed wheel](../reference/sdk_process_acceptance/eidos-0.4.9-py3-none-any.whl) and
+[fixed wheel](../reference/sdk_process_acceptance/eidos-0.4.10-py3-none-any.whl) and
 [standalone checker](../reference/sdk_process_acceptance/check.py).
 Reproduce with a fresh environment and the checked driver:
 
 ```sh
-python -m pip install eidos-0.4.9-py3-none-any.whl
+python -m pip install eidos-0.4.10-py3-none-any.whl
 python -I -X utf8 reference/sdk_process_acceptance/check.py
 ```
 
@@ -77,11 +77,15 @@ restart acceptance from this installed project-command lifecycle test.
 This change qualifies the project-command entry and its shared primitive.
 Quarto manuscript/figure calls now use this primitive and require fresh artifacts;
 see the [direct delivery contract](QUARTO-DELIVERY.md). Direct subprocess paths in
-tracking, update governance,
+update governance,
 formal/citation checkers and inference still require caller-specific migration and
 failure-path acceptance. A project command encloses ordinary children it launches;
 that does not make a direct Python call to another SDK entry automatically bounded.
 See the [functional completeness ledger](FUNCTIONAL_COMPLETENESS.md).
+
+Local tracking DVC/model subprocess paths now use owned interpreters and explicit
+run identities; their separate [installed qualification](TRACKING-INTEGRITY.md)
+does not qualify distributed MLflow stores or remote API deadlines.
 
 Sources: [Python subprocess timeout semantics](https://docs.python.org/3.12/library/subprocess.html),
 [Microsoft Job Objects](https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects).

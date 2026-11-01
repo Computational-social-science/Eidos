@@ -18,6 +18,7 @@ from reference.softmax_grokking.common import digest, source_digest, load_weight
 from reference.softmax_grokking.verify import validate as validate_parent, state_hash
 from reference.softmax_training.validate import qualified_backend
 from framework.provenance import historical_lock_matches
+from framework.lock_compatibility import frozen_tracking_resolution
 
 
 def expected_cells(p):
@@ -93,7 +94,14 @@ def validate(r, p, base=HERE):
             errors.append("source inventory mismatch")
         for name in SOURCES:
             recorded = r.get("source_sha256", {}).get(name)
-            matches = historical_lock_matches(ROOT, recorded) if name == "uv.lock" else recorded == source_digest(ROOT / name)
+            if name == 'uv.lock':
+                matches = historical_lock_matches(ROOT, recorded)
+                if not matches:
+                    # Explicitly attest unchanged frozen resolution; this does
+                    # not relabel the new lock as the original experimental lock.
+                    matches = frozen_tracking_resolution(ROOT, recorded)['status'] == 'COMPATIBLE_FROZEN_RESOLUTION'
+            else:
+                matches = recorded == source_digest(ROOT / name)
             if not matches:
                 errors.append("source mismatch: " + name)
         parent_path = ROOT / p["parent"]

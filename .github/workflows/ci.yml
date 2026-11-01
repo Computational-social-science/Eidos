@@ -70,6 +70,24 @@ jobs:
         run: |
           UV_PROJECT_ENVIRONMENT="$RUNNER_TEMP/eidos-metric-$UV_PYTHON" uv run --locked --project reference/hpaf_metric --python "$UV_PYTHON" python reference/hpaf_metric/acceptance.py
 
+      - name: Installed-wheel tracking in a fresh environment
+        run: |
+          VERSION=$(uv run --no-sync python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')
+          TRACKING_ENV="$RUNNER_TEMP/eidos-installed-tracking-$UV_PYTHON"
+          uv export --frozen --extra dev --extra tracking --no-emit-project --output-file "$RUNNER_TEMP/tracking-requirements.txt" >/dev/null
+          uv venv --python "$UV_PYTHON" "$TRACKING_ENV"
+          uv pip install --python "$TRACKING_ENV/bin/python" --require-hashes --no-deps -r "$RUNNER_TEMP/tracking-requirements.txt"
+          uv pip install --python "$TRACKING_ENV/bin/python" --no-deps "$GITHUB_WORKSPACE/reference/sdk_process_acceptance/eidos-$VERSION-py3-none-any.whl"
+          cd "$RUNNER_TEMP"
+          "$TRACKING_ENV/bin/python" -I "$GITHUB_WORKSPACE/reference/tracking_acceptance/check.py" --source "$GITHUB_WORKSPACE" --wheel "$GITHUB_WORKSPACE/reference/sdk_process_acceptance/eidos-$VERSION-py3-none-any.whl" --expected-version "$VERSION" --out "$RUNNER_TEMP/tracking-installed-$UV_PYTHON.json"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: installed-tracking-${{ matrix.python-version }}
+          path: ${{ runner.temp }}/tracking-installed-${{ matrix.python-version }}.json
+          if-no-files-found: warn
+
       # A red badge with no readable reason is a dead end for anyone who did not run it locally.
       # The tail of the run goes to the job summary, which is visible without authentication.
       - name: Test output

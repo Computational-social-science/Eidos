@@ -1,0 +1,477 @@
+"""Qualify installed tracking against a pinned, nonvacuous source test protocol."""
+
+from __future__ import annotations
+
+import argparse
+import base64
+import csv
+from datetime import datetime, timezone
+from email.parser import BytesParser
+from email import policy
+import hashlib
+from io import BytesIO, StringIO
+from importlib import metadata, util
+import json
+import os
+from pathlib import Path, PurePosixPath
+import re
+import shutil
+import stat
+import sys
+import tempfile
+import xml.etree.ElementTree as ET
+import zipfile
+
+EXPECTED_CASES = 49
+PROTOCOL_SHA256_LF = {
+    "test_tracking_contract.py": "496deb4dd6261ba1fb5c1a4b085b00d3d859c9c945341658e619f05ec61ca6aa",
+    "test_tracking_dvc.py": "9320600d1908ab97c39bc9479f4e6009a054c3cdb66d214dbc5cfc5f0f3abb7f",
+    "test_tracking_protocol.py": "c8cf5de2052d6965dae9aec11fd20296231b9b0fd9487ccd662b6ad300442a8f",
+}  # Populated from the reviewed protocol before qualification.
+PROTOCOL_FILES = (
+    "test_tracking_contract.py",
+    "test_tracking_dvc.py",
+    "test_tracking_protocol.py",
+)
+
+
+def require(condition, message):
+    if not condition:
+        raise ValueError(message)
+
+
+def canonical(body):
+    return body.decode("utf-8-sig").replace("\r\n", "\n").encode("utf-8")
+
+
+def sha(body):
+    return hashlib.sha256(body).hexdigest()
+
+
+def record_rows(body):
+    rows = list(csv.reader(StringIO(body.decode("utf-8"))))
+    require(all(len(row) == 3 for row in rows), "Malformed wheel RECORD")
+    require(len({row[0] for row in rows}) == len(rows), "Duplicate wheel RECORD member")
+    return {row[0]: (row[1], row[2]) for row in rows}
+
+
+def wheel_identity(path, expected_version):
+    from packaging.utils import parse_wheel_filename, canonicalize_name
+    from packaging.version import Version
+
+    raw = path.read_bytes()
+    name, version, _, tags = parse_wheel_filename(path.name)
+    require(
+        name == "eidos" and version == Version(expected_version),
+        "Wheel filename identity differs",
+    )
+    with zipfile.ZipFile(BytesIO(raw)) as archive:
+        names = archive.namelist()
+        require(len(names) == len(set(names)), "Duplicate wheel member")
+        for info in archive.infolist():
+            parts = PurePosixPath(info.filename).parts
+            require(
+                parts
+                and not info.is_dir()
+                and not PurePosixPath(info.filename).is_absolute()
+                and info.orig_filename == info.filename
+                and ".." not in parts
+                and "\\" not in info.filename
+                and info.filename == PurePosixPath(info.filename).as_posix()
+                and ":" not in info.filename
+                and not stat.S_ISLNK(info.external_attr >> 16),
+                "Unsafe wheel member",
+            )
+        roots = {
+            name.split("/")[0]
+            for name in names
+            if name.split("/")[0].endswith(".dist-info")
+        }
+        require(len(roots) == 1, "Wheel must contain one dist-info directory")
+        directory = next(iter(roots))
+        require(
+            directory == "eidos-" + expected_version + ".dist-info",
+            "Wheel dist-info identity differs",
+        )
+        require(
+            all(name.startswith(("framework/", directory + "/")) for name in names),
+            "Unsupported wheel payload layout",
+        )
+        required = {
+            directory + "/" + suffix for suffix in ("METADATA", "WHEEL", "RECORD")
+        }
+        require(required <= set(names), "Wheel metadata is incomplete")
+        members = {name: archive.read(name) for name in names}
+    message = BytesParser(policy=policy.default).parsebytes(
+        members[directory + "/METADATA"]
+    )
+    require(
+        len(message.get_all("Name", [])) == len(message.get_all("Version", [])) == 1,
+        "Wheel metadata identity is ambiguous",
+    )
+    require(
+        canonicalize_name(message["Name"]) == "eidos"
+        and message["Version"] == expected_version,
+        "Wheel METADATA identity differs",
+    )
+    wheel = BytesParser(policy=policy.default).parsebytes(members[directory + "/WHEEL"])
+    declared_tags = wheel.get_all("Tag", [])
+    require(
+        len(wheel.get_all("Wheel-Version", []))
+        == len(wheel.get_all("Root-Is-Purelib", []))
+        == 1
+        and wheel["Wheel-Version"] == "1.0"
+        and wheel["Root-Is-Purelib"] == "true"
+        and len(declared_tags) == len(set(declared_tags))
+        and set(declared_tags) == {str(tag) for tag in tags},
+        "Unsupported wheel format/tags",
+    )
+    records = record_rows(members[directory + "/RECORD"])
+    require(set(records) == set(members), "Wheel RECORD inventory differs")
+    for name, body in members.items():
+        if name == directory + "/RECORD":
+            require(records[name] == ("", ""), "RECORD cannot self-assert a digest")
+        else:
+            digest = "sha256=" + base64.urlsafe_b64encode(
+                hashlib.sha256(body).digest()
+            ).decode().rstrip("=")
+            require(
+                records[name] == (digest, str(len(body))),
+                "Wheel RECORD checksum differs",
+            )
+    modules = {
+        name: sha(canonical(body))
+        for name, body in members.items()
+        if name.startswith("framework/") and name.endswith(".py")
+    }
+    require(modules, "Wheel has no framework Python inventory")
+    return {
+        "sha256": sha(raw),
+        "members": members,
+        "records": records,
+        "directory": directory,
+        "modules": modules,
+    }
+
+
+def private_environment(workspace, original=None):
+    environment = dict(os.environ if original is None else original)
+    for name in (
+        "PYTHONPATH",
+        "PYTHONHOME",
+        "PYTEST_ADDOPTS",
+        "PYTEST_PLUGINS",
+        "MLFLOW_RUN_ID",
+        "MLFLOW_EXPERIMENT_ID",
+        "MLFLOW_EXPERIMENT_NAME",
+    ):
+        environment.pop(name, None)
+    environment.update(
+        PYTHONUTF8="1",
+        PYTEST_DISABLE_PLUGIN_AUTOLOAD="1",
+        MLFLOW_DISABLE_AGENT_HINT="1",
+        MLFLOW_ENABLE_TELEMETRY="false",
+        MLFLOW_ENABLE_SYSTEM_METRICS_LOGGING="false",
+        DVC_NO_ANALYTICS="1",
+        MLFLOW_TRACKING_URI="sqlite:///" + (workspace / "ambient.db").as_posix(),
+        MLFLOW_REGISTRY_URI="sqlite:///" + (workspace / "ambient.db").as_posix(),
+    )
+    for variable, name in [
+        ("DVC_GLOBAL_CONFIG_DIR", "global-config"),
+        ("DVC_SYSTEM_CONFIG_DIR", "system-config"),
+        ("DVC_SITE_CACHE_DIR", "site-cache"),
+    ]:
+        directory = workspace / name
+        directory.mkdir()
+        environment[variable] = str(directory)
+    environment["PATH"] = (
+        str(Path(sys.executable).parent) + os.pathsep + environment.get("PATH", "")
+    )
+    return environment
+
+
+def installed_inventory(identity, source):
+    distribution = metadata.distribution("eidos")
+    direct = json.loads(distribution.read_text("direct_url.json") or "{}")
+    require(
+        not direct.get("dir_info", {}).get("editable"),
+        "Editable source is not installed-wheel qualification",
+    )
+    base = Path(distribution.locate_file("")).resolve()
+    require(
+        base.is_relative_to(Path(sys.prefix).resolve()),
+        "Distribution is outside this environment",
+    )
+    actual_origin = Path(util.find_spec("framework.tracking").origin).resolve()
+    require(
+        actual_origin == (base / "framework/tracking/__init__.py").resolve(),
+        "Tracking resolved outside the installed distribution",
+    )
+    expected = identity["modules"]
+    require(
+        Path(distribution._path).name == identity["directory"],
+        "Installed dist-info identity differs",
+    )
+    installed_records = record_rows(distribution.read_text("RECORD").encode("utf-8"))
+    for name, body in identity["members"].items():
+        if name.endswith("/RECORD"):
+            continue
+        target = (base / name).resolve()
+        require(
+            target.is_relative_to(base)
+            and target.is_file()
+            and target.read_bytes() == body,
+            "Installed wheel payload/metadata differs: " + name,
+        )
+        require(
+            installed_records.get(name) == identity["records"][name],
+            "Installed RECORD differs: " + name,
+        )
+    archive_hashes = direct.get("archive_info", {}).get("hashes", {})
+    recorded_hash = archive_hashes.get("sha256")
+    if recorded_hash is None:
+        legacy = direct.get("archive_info", {}).get("hash", "")
+        recorded_hash = (
+            legacy.split("=", 1)[1] if legacy.startswith("sha256=") else None
+        )
+    require(
+        recorded_hash is None or recorded_hash == identity["sha256"],
+        "Installer archive digest differs",
+    )
+    actual = {
+        path.relative_to(base).as_posix(): sha(canonical(path.read_bytes()))
+        for path in (base / "framework").rglob("*.py")
+    }
+    original = {
+        path.relative_to(source).as_posix(): sha(canonical(path.read_bytes()))
+        for path in (source / "framework").rglob("*.py")
+        if "__pycache__" not in path.parts
+    }
+    require(
+        actual == expected == original,
+        "Wheel, installed modules and candidate source differ",
+    )
+    files = {str(path).replace("\\", "/") for path in distribution.files or []}
+    require(set(expected) <= files, "Distribution RECORD omits framework modules")
+    return actual
+
+
+def protocol_inventory(directory):
+    return {
+        name: sha(canonical((directory / name).read_bytes())) for name in PROTOCOL_FILES
+    }
+
+
+def require_unchanged(path, digest, *, text_file=False):
+    body = path.read_bytes()
+    require(
+        sha(canonical(body) if text_file else body) == digest,
+        "Qualification input changed: " + str(path),
+    )
+
+
+def dependency_inventory():
+    from packaging.utils import canonicalize_name
+
+    return sorted(
+        (
+            {
+                "name": canonicalize_name(distribution.metadata["Name"]),
+                "version": distribution.version,
+                "metadata_sha256_lf": sha(
+                    canonical(
+                        (distribution.read_text("METADATA") or "").encode("utf-8")
+                    )
+                ),
+                "record_sha256_lf": sha(
+                    canonical((distribution.read_text("RECORD") or "").encode("utf-8"))
+                ),
+            }
+            for distribution in metadata.distributions()
+        ),
+        key=lambda row: (
+            row["name"],
+            row["version"],
+            row["metadata_sha256_lf"],
+            row["record_sha256_lf"],
+        ),
+    )
+
+
+def qualify(args):
+    source, wheel = args.source.resolve(), args.wheel.resolve()
+    driver = Path(__file__).resolve()
+    driver_sha = sha(canonical(driver.read_bytes()))
+    identity = wheel_identity(wheel, args.expected_version)
+    dependencies = dependency_inventory()
+    require(
+        metadata.version("eidos") == args.expected_version,
+        "Installed candidate version differs",
+    )
+    inventory = installed_inventory(identity, source)
+    require(
+        set(PROTOCOL_SHA256_LF) == set(PROTOCOL_FILES),
+        "Checker protocol inventory is incomplete",
+    )
+    protocol = protocol_inventory(source / "tests")
+    require(
+        protocol == PROTOCOL_SHA256_LF,
+        "Source test protocol differs from this qualified checker",
+    )
+    from framework.subprocesses import run_tree, validate_timeout
+
+    validate_timeout(args.timeout)
+    with tempfile.TemporaryDirectory(prefix="eidos-installed-tracking-") as directory:
+        workspace = Path(directory)
+        tests = workspace / "protocol"
+        tests.mkdir()
+        for name in PROTOCOL_FILES:
+            shutil.copyfile(source / "tests" / name, tests / name)
+        require(protocol_inventory(tests) == protocol, "Copied protocol differs")
+        report = workspace / "junit.xml"
+        environment = private_environment(workspace)
+        command = [
+            sys.executable,
+            "-I",
+            "-X",
+            "utf8",
+            "-m",
+            "pytest",
+            "-q",
+            str(tests),
+            "--rootdir=" + str(workspace),
+            "--basetemp=" + str(workspace / "pytest-tmp"),
+            "--override-ini=addopts=",
+            "--junitxml=" + str(report),
+            "-k",
+            "not optional_dependency_is_skipped_before_spawning",
+        ]
+        if args.fault_child:
+            command = [sys.executable, "-I", "-c", "raise SystemExit(17)"]
+        result = run_tree(command, cwd=workspace, env=environment, timeout=args.timeout)
+        require(
+            result.returncode == 0,
+            "Protocol process failed: " + result.stderr[-4000:] + result.stdout[-4000:],
+        )
+        cases = list(ET.parse(report).getroot().iter("testcase"))
+        require(len(cases) == EXPECTED_CASES, "Protocol case inventory differs")
+        require(
+            all(
+                not any(
+                    case.find(tag) is not None
+                    for tag in ("failure", "error", "skipped")
+                )
+                for case in cases
+            ),
+            "Protocol contains failure/error/skip",
+        )
+        identities = [(case.get("classname"), case.get("name")) for case in cases]
+        require(len(set(identities)) == EXPECTED_CASES, "Protocol repeats cases")
+        require(
+            re.search(r"\b2 deselected\b", result.stdout) is not None,
+            "Source-only optional-chain checks must be explicitly deselected",
+        )
+        require(
+            installed_inventory(identity, source) == inventory,
+            "Installed source changed during qualification",
+        )
+        require(
+            protocol_inventory(source / "tests") == protocol,
+            "Source protocol changed during qualification",
+        )
+        require(
+            protocol_inventory(tests) == protocol,
+            "Executed protocol changed during qualification",
+        )
+    require_unchanged(wheel, identity["sha256"])
+    require_unchanged(driver, driver_sha, text_file=True)
+    require(
+        dependency_inventory() == dependencies,
+        "Dependency environment changed during qualification",
+    )
+    return {
+        "status": "PASS",
+        "sdk_version": metadata.version("eidos"),
+        "wheel_sha256": identity["sha256"],
+        "wheel_payload_binding": "Full raw payload and METADATA/WHEEL against installed files and RECORD; installer archive SHA-256 checked when present.",
+        "source_sha256_canonical_lf": inventory,
+        "protocol_sha256_lf": protocol,
+        "driver_sha256_lf": driver_sha,
+        "cases": [
+            {"class": group, "case": name, "accepted": True}
+            for group, name in identities
+        ],
+        "source_only_deselected": 2,
+        "dependencies": dependencies,
+        "scope": "Same-host installed-wheel tracking with local SQLite/DVC and trusted synthetic sklearn models; no live service migration, distributed store or new-machine certificate.",
+    }
+
+
+def publish(path, record):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            "w",
+            encoding="utf-8",
+            dir=path.parent,
+            prefix="." + path.stem + "-",
+            suffix=".tmp",
+            delete=False,
+        ) as handle:
+            temporary = Path(handle.name)
+            json.dump(record, handle, indent=2, allow_nan=False)
+            handle.write("\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
+def main():
+    if sys.flags.optimize:
+        raise SystemExit("Qualification requires active assertions; omit -O/-OO.")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--source", type=Path, required=True)
+    parser.add_argument("--wheel", type=Path, required=True)
+    parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument("--expected-version", default="0.4.10")
+    parser.add_argument("--timeout", type=float, default=900)
+    parser.add_argument(
+        "--fault-child",
+        action="store_true",
+        help="Deliberately fail the protocol subprocess",
+    )
+    args = parser.parse_args()
+    require(args.out.suffix == ".json", "Qualification output must be JSON")
+    try:
+        result = qualify(args)
+    except BaseException as exc:
+        result = {"status": "FAIL", "error": type(exc).__name__ + ": " + str(exc)}
+    record = {
+        "kind": "eidos.installed-tracking-acceptance",
+        "schema": 1,
+        "generated": datetime.now(timezone.utc).isoformat(),
+        "platform": sys.platform,
+        "executable": sys.executable,
+        "python": sys.version,
+        "optimization_level": sys.flags.optimize,
+        **result,
+    }
+    publish(args.out.resolve(), record)
+    print(
+        json.dumps(
+            {
+                "status": record["status"],
+                "cases": len(record.get("cases", [])),
+                "out": str(args.out),
+            }
+        )
+    )
+    return 0 if record["status"] == "PASS" else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

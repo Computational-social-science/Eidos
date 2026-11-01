@@ -1,0 +1,633 @@
+{
+  "kind": "eidos.local-model-capacity-and-development-pilot.v1",
+  "inventory_observed_at": "2026-11-01T10:49:46.778102+00:00",
+  "inventory_source": "Read-only local Ollama-compatible /api/tags; selected larger candidates, not a complete inventory.",
+  "models": [
+    {
+      "name": "neohorse-1-9b:latest",
+      "model": "neohorse-1-9b:latest",
+      "modified_at": "2026-09-20T01:46:37.2966071+08:00",
+      "size": 5629109282,
+      "digest": "1ff1f30c906c358be12341e944891c295b16aff07be65503e83f00cf135ac5b5",
+      "details": {
+        "parent_model": "NeoHorse-1-9B-Q4_K_M.gguf",
+        "format": "gguf",
+        "family": "qwen35",
+        "families": [
+          "qwen35"
+        ],
+        "parameter_size": "9.0B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 262144,
+        "embedding_length": 4096,
+        "runner": "ggml"
+      },
+      "capabilities": [
+        "tools",
+        "thinking",
+        "completion"
+      ]
+    },
+    {
+      "name": "smtek/BigBang-v1:latest",
+      "model": "smtek/BigBang-v1:latest",
+      "modified_at": "2026-09-11T21:13:38.3842637+08:00",
+      "size": 21864082353,
+      "digest": "01b7f2026e1f08cde902c6ab6e35d097489709032d2fe66211afff34d19c0ce5",
+      "details": {
+        "parent_model": "smtek/BigBang-v1:Q4_K_M",
+        "format": "gguf",
+        "family": "qwen35moe",
+        "families": [
+          "qwen35moe"
+        ],
+        "parameter_size": "35.5B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 262144,
+        "embedding_length": 2048,
+        "runner": "ggml"
+      },
+      "capabilities": [
+        "tools",
+        "thinking",
+        "completion"
+      ]
+    },
+    {
+      "name": "qwen3.8:27b",
+      "model": "qwen3.8:27b",
+      "modified_at": "2026-09-01T23:17:27.0566448+08:00",
+      "size": 17741872154,
+      "digest": "22130167c4c20e20c7b71454612966ca8e8171e9b3cc8ab6ce8aa6cbfec79643",
+      "details": {
+        "parent_model": "qwen3.8:27b-q4_K_M",
+        "format": "gguf",
+        "family": "qwen35",
+        "families": [
+          "qwen35"
+        ],
+        "parameter_size": "27.3B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 262144,
+        "embedding_length": 5120,
+        "runner": "ggml"
+      },
+      "capabilities": [
+        "completion",
+        "vision",
+        "tools",
+        "thinking"
+      ]
+    },
+    {
+      "name": "qwen2.5:32b",
+      "model": "qwen2.5:32b",
+      "modified_at": "2026-07-07T09:15:02.6443204+08:00",
+      "size": 19851349669,
+      "digest": "9f13ba1299afea09d9a956fc6a85becc99115a6d596fae201a5487a03bdc4368",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen2",
+        "families": [
+          "qwen2"
+        ],
+        "parameter_size": "32.8B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 32768,
+        "embedding_length": 5120,
+        "runner": "ggml"
+      },
+      "capabilities": [
+        "completion",
+        "tools"
+      ]
+    },
+    {
+      "name": "deepseek-r1-qwen-14b:Q4_K_M",
+      "model": "deepseek-r1-qwen-14b:Q4_K_M",
+      "modified_at": "2026-07-07T01:56:40.7562633+08:00",
+      "size": 8988110250,
+      "digest": "f4b756aa6a5107c7c21ce9e5f2e7ceadceaafa3fb0de9df5cc0908589fccf6fa",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "qwen2",
+        "families": [
+          "qwen2"
+        ],
+        "parameter_size": "14.8B",
+        "quantization_level": "Q4_K_M",
+        "context_length": 131072,
+        "embedding_length": 5120,
+        "runner": "ggml"
+      },
+      "capabilities": [
+        "tools",
+        "thinking",
+        "completion"
+      ]
+    }
+  ],
+  "hardware": {
+    "gpu": "NVIDIA GeForce RTX 4070",
+    "vram_total_mib": 12282.0,
+    "cpu": "Intel Core i9-13900K",
+    "system_ram_approx_gib": 128
+  },
+  "artifact": {
+    "basename": "Qwen3.8-27B-UD-Q4_K_M.gguf",
+    "bytes": 16464440224,
+    "sha256": "322e194ff79741c7baa497c240f677f54b201b0efab44ca8e50f122b39123482"
+  },
+  "pilot": {
+    "run_id": "ace4436e35e140a881c58ea7d2a5dd08",
+    "started": "2026-11-01T11:24:42.614048+00:00",
+    "finished": "2026-11-01T11:27:40.910819+00:00",
+    "status": "COMPLETE",
+    "execution_accepted": true,
+    "correct": 15,
+    "cases": 15,
+    "invalid_formats": 0,
+    "scientific_authority": false,
+    "promotion": false,
+    "development_set": true,
+    "matched_historical_comparison": false,
+    "protocol_sha256": "b28ba5523b67ccfbb2ded3df91183ff6cb9f01dab171808f7c894647e0689aa1",
+    "source_sha256_lf": {
+      "tools/probe_s4.py": "25348af9816c06e382950d1c4d4b1a06522b9fac32a88484e9e9dfd40f98e624",
+      "tools/probe_s4_structured.py": "32cc34df682d77c3dfe6ebf5a508f26ceb36bbd14e2ece204aaef5f3d0e05c41"
+    },
+    "server_binary_sha256": "aa2e1f5c67be55f11be26ae58d643a545ca07c6de498f6f870330ac2f4dfec73",
+    "context": 4096,
+    "resource_policy": {
+      "minimum_free_before_mib": 3584,
+      "minimum_free_during_mib": 1792,
+      "maximum_increment_mib": 1536,
+      "gpu_layers": 1,
+      "context": 4096,
+      "threads": 12,
+      "cpu_kv": true,
+      "op_offload": false,
+      "load_timeout_seconds": 150,
+      "request_timeout_seconds": 45,
+      "total_timeout_seconds": 600
+    },
+    "inference": {
+      "temperature": 0,
+      "seed": 19,
+      "max_tokens": 96,
+      "thinking": false,
+      "attempts_per_case": 1
+    },
+    "system": "You judge design validity from a structured record. Apply the rule exactly: required power is 0.80; below 0.75 fails; between 0.75 and 0.80 is WEAK_PASS only if shortfall_declared is true, otherwise FAIL; at or above 0.80 is PASS when pre_registered is true, otherwise WEAK_PASS; if confounders_adjusted < confounders_named, FAIL; if power is null, FAIL. Answer only with JSON: {\"verdict\":\"PASS|WEAK_PASS|FAIL\"}",
+    "rows": [
+      {
+        "id": "s4-01",
+        "input": {
+          "power": 0.41,
+          "required_power": 0.8,
+          "confounders_named": 2,
+          "confounders_adjusted": 2,
+          "pre_registered": true,
+          "shortfall_declared": false
+        },
+        "expected": "FAIL",
+        "got": "FAIL",
+        "correct": true,
+        "raw": "{\n  \"verdict\": \"FAIL\"\n}",
+        "format_error": null,
+        "seconds": 17.922000000005937,
+        "usage": {
+          "completion_tokens": 13,
+          "prompt_tokens": 185,
+          "total_tokens": 198,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "id": "s4-02",
+        "input": {
+          "power": 0.93,
+          "required_power": 0.8,
+          "confounders_named": 2,
+          "confounders_adjusted": 2,
+          "pre_registered": true,
+          "shortfall_declared": false
+        },
+        "expected": "PASS",
+        "got": "PASS",
+        "correct": true,
+        "raw": "{\n  \"verdict\": \"PASS\"\n}",
+        "format_error": null,
+        "seconds": 9.75,
+        "usage": {
+          "completion_tokens": 13,
+          "prompt_tokens": 185,
+          "total_tokens": 198,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "id": "s4-03",
+        "input": {
+          "power": 0.78,
+          "required_power": 0.8,
+          "confounders_named": 2,
+          "confounders_adjusted": 2,
+          "pre_registered": true,
+          "shortfall_declared": true
+        },
+        "expected": "WEAK_PASS",
+        "got": "WEAK_PASS",
+        "correct": true,
+        "raw": "{\n  \"verdict\": \"WEAK_PASS\"\n}",
+        "format_error": null,
+        "seconds": 10.577999999994063,
+        "usage": {
+          "completion_tokens": 15,
+          "prompt_tokens": 185,
+          "total_tokens": 200,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "id": "s4-04",
+        "input": {
+          "power": 0.78,
+          "required_power": 0.8,
+          "confounders_named": 2,
+          "confounders_adjusted": 2,
+          "pre_registered": true,
+          "shortfall_declared": false
+        },
+        "expected": "FAIL",
+        "got": "FAIL",
+        "correct": true,
+        "raw": "{\n  \"verdict\": \"FAIL\"\n}",
+        "format_error": null,
+        "seconds": 9.985000000000582,
+        "usage": {
+          "completion_tokens": 13,
+          "prompt_tokens": 185,
+          "total_tokens": 198,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "id": "s4-05",
+        "input": {
+          "power": null,
+          "required_power": 0.8,
+          "confounders_named": 0,
+          "confounders_adjusted": 0,
+          "pre_registered": true,
+          "shortfall_declared": false
+        },
+        "expected": "FAIL",
+        "got": "FAIL",
+        "correct": true,
+        "raw": "{\"verdict\":\"FAIL\"}",
+        "format_error": null,
+        "seconds": 7.1710000000020955,
+        "usage": {
+          "completion_tokens": 7,
+          "prompt_tokens": 181,
+          "total_tokens": 188,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "id": "s4-06",
+        "input": {
+          "power": 0.86,
+          "required_power": 0.8,
+          "confounders_named": 3,
+          "confounders_adjusted": 1,
+          "pre_registered": true,
+          "shortfall_declared": false
+        },
+        "expected": "FAIL",
+        "got": "FAIL",
+        "correct": true,
+        "raw": "{\n\"verdict\": \"FAIL\"\n}",
+        "format_error": null,
+        "seconds": 9.39100000000326,
+        "usage": {
+          "completion_tokens": 12,
+          "prompt_tokens": 185,
+          "total_tokens": 197,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "id": "s4-07",
+        "input": {
+          "power": 0.86,
+          "required_power": 0.8,
+          "confounders_named": 1,
+          "confounders_adjusted": 1,
+          "pre_registered": false,
+          "shortfall_declared": false
+        },
+        "expected": "WEAK_PASS",
+        "got": "WEAK_PASS",
+        "correct": true,
+        "raw": "{\n  \"verdict\": \"WEAK_PASS\"\n}",
+        "format_error": null,
+        "seconds": 10.718999999997322,
+        "usage": {
+          "completion_tokens": 15,
+          "prompt_tokens": 185,
+          "total_tokens": 200,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "id": "s4-08",
+        "input": {
+          "power": 0.74,
+          "required_power": 0.8,
+          "confounders_named": 1,
+          "confounders_adjusted": 1,
+          "pre_registered": true,
+          "shortfall_declared": true
+        },
+        "expected": "FAIL",
+        "got": "FAIL",
+        "correct": true,
+        "raw": "{\n  \"verdict\": \"FAIL\"\n}",
+        "format_error": null,
+        "seconds": 9.827999999994063,
+        "usage": {
+          "completion_tokens": 13,
+          "prompt_tokens": 185,
+          "total_tokens": 198,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "id": "s4-09",
+        "input": {
+          "power": 0.8,
+          "required_power": 0.8,
+          "confounders_named": 0,
+          "confounders_adjusted": 0,
+          "pre_registered": true,
+          "shortfall_declared": false
+        },
+        "expected": "PASS",
+        "got": "PASS",
+        "correct": true,
+        "raw": "{\n  \"verdict\": \"PASS\"\n}",
+        "format_error": null,
+        "seconds": 9.953000000008615,
+        "usage": {
+          "completion_tokens": 13,
+          "prompt_tokens": 184,
+          "total_tokens": 197,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "id": "s4-10",
+        "input": {
+          "power": 0.99,
+          "required_power": 0.8,
+          "confounders_named": 4,
+          "confounders_adjusted": 4,
+          "pre_registered": true,
+          "shortfall_declared": false
+        },
+        "expected": "PASS",
+        "got": "PASS",
+        "correct": true,
+        "raw": "{\n  \"verdict\": \"PASS\"\n}",
+        "format_error": null,
+        "seconds": 9.98399999999674,
+        "usage": {
+          "completion_tokens": 13,
+          "prompt_tokens": 185,
+          "total_tokens": 198,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "id": "s4-11",
+        "input": {
+          "power": 0.55,
+          "required_power": 0.8,
+          "confounders_named": 0,
+          "confounders_adjusted": 0,
+          "pre_registered": false,
+          "shortfall_declared": false
+        },
+        "expected": "FAIL",
+        "got": "FAIL",
+        "correct": true,
+        "raw": "{\n  \"verdict\": \"FAIL\"\n}",
+        "format_error": null,
+        "seconds": 10.01600000000326,
+        "usage": {
+          "completion_tokens": 13,
+          "prompt_tokens": 185,
+          "total_tokens": 198,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "id": "s4-12",
+        "input": {
+          "power": 0.9,
+          "required_power": 0.8,
+          "confounders_named": 2,
+          "confounders_adjusted": 2,
+          "pre_registered": true,
+          "shortfall_declared": false
+        },
+        "expected": "PASS",
+        "got": "PASS",
+        "correct": true,
+        "raw": "{\n\"verdict\": \"PASS\"\n}",
+        "format_error": null,
+        "seconds": 9.718999999997322,
+        "usage": {
+          "completion_tokens": 12,
+          "prompt_tokens": 184,
+          "total_tokens": 196,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "id": "s4-13",
+        "input": {
+          "power": 0.79,
+          "required_power": 0.8,
+          "confounders_named": 1,
+          "confounders_adjusted": 1,
+          "pre_registered": false,
+          "shortfall_declared": true
+        },
+        "expected": "WEAK_PASS",
+        "got": "WEAK_PASS",
+        "correct": true,
+        "raw": "{\n\"verdict\": \"WEAK_PASS\"\n}",
+        "format_error": null,
+        "seconds": 10.5,
+        "usage": {
+          "completion_tokens": 14,
+          "prompt_tokens": 185,
+          "total_tokens": 199,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "id": "s4-14",
+        "input": {
+          "power": 0.6,
+          "required_power": 0.8,
+          "confounders_named": 3,
+          "confounders_adjusted": 2,
+          "pre_registered": true,
+          "shortfall_declared": false
+        },
+        "expected": "FAIL",
+        "got": "FAIL",
+        "correct": true,
+        "raw": "{\n  \"verdict\": \"FAIL\"\n}",
+        "format_error": null,
+        "seconds": 8.936999999990803,
+        "usage": {
+          "completion_tokens": 13,
+          "prompt_tokens": 184,
+          "total_tokens": 197,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "id": "s4-15",
+        "input": {
+          "power": 0.95,
+          "required_power": 0.8,
+          "confounders_named": 1,
+          "confounders_adjusted": 1,
+          "pre_registered": true,
+          "shortfall_declared": false
+        },
+        "expected": "PASS",
+        "got": "PASS",
+        "correct": true,
+        "raw": "{\n  \"verdict\": \"PASS\"\n}",
+        "format_error": null,
+        "seconds": 9.078000000008615,
+        "usage": {
+          "completion_tokens": 13,
+          "prompt_tokens": 185,
+          "total_tokens": 198,
+          "prompt_tokens_details": {
+            "cached_tokens": 122
+          }
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "load_seconds": 5.687000000005355,
+    "latency_seconds": {
+      "min": 7.1710000000020955,
+      "median": 9.953000000008615,
+      "max": 17.922000000005937
+    },
+    "generation_tokens_per_second": {
+      "min": 2.31,
+      "max": 2.67,
+      "scope": "Server generation-only timing; prompt cost excluded."
+    },
+    "gpu": {
+      "baseline_used_mib": 7907.0,
+      "baseline_free_mib": 4104.0,
+      "peak_system_used_mib": 9120.0,
+      "minimum_system_free_mib": 2891.0,
+      "scope": "System-wide telemetry; not model-only attribution or isolated peak throughput."
+    },
+    "existing_service_preserved": true,
+    "continuity_checks": 30,
+    "owned_server_stopped": true,
+    "owned_server_exit_code": 1,
+    "cleanup_scope": "Explicit owned-server termination after all responses; not a server normal-exit claim."
+  },
+  "prior_resource_admissions": [
+    {
+      "protocol_sha256": "4f425aac287ceef4308c27278205a5b237b3b6b05e5451b3ad15cef386d51d07",
+      "status": "RESOURCE_BUSY",
+      "gpu_initial": {
+        "ts": "2026-11-01T11:10:30.465881+00:00",
+        "uuid": "GPU-eb460337-cfa4-2993-7bd8-9bffe122dcbd",
+        "total_mib": 12282.0,
+        "used_mib": 9218.0,
+        "free_mib": 2793.0,
+        "utilization_percent": 38.0
+      },
+      "completed_cases": 0
+    },
+    {
+      "protocol_sha256": "f2ae5b8daff5006d90748b8d6f3faaa39a4b0f0163d9ddcea86505ceb72c6c25",
+      "status": "ABORTED_RESOURCE",
+      "completed_cases": 0,
+      "reason": "System-wide usage increment reached 1133 MiB during load, exceeding the preregistered 768 MiB increment; no model responses observed."
+    }
+  ],
+  "raw_private_sha256": {
+    "protocol.json": "b28ba5523b67ccfbb2ded3df91183ff6cb9f01dab171808f7c894647e0689aa1",
+    "result.json": "ab110bab6db8bd6f4219ffd498712fbcb00b926161ecea89a621a45d503f03a5",
+    "outcome.json": "c3115b8ad58594202ada2ca4ebc363308d1889835d74a14e4597cb94e9e386ab",
+    "server.log": "3f03e0171afc4bc963e43fe4de6a4dfb2b78176c6d7ff32f8ac4f5d9566eccb4"
+  },
+  "inventory_raw_sha256": "ea08475681a096b4680d54656ea33b12591a7d79075e6dd00e1c1f2529babf38",
+  "limits": [
+    "No long-context, source retrieval, novel-gap, experimental-design or autonomous-RSI qualification.",
+    "Partial GPU/CPU profile preserves the existing StartLux service; it is not peak isolated throughput.",
+    "Known short development cases; no scientific task qualification or comparative model ranking."
+  ]
+}

@@ -132,15 +132,28 @@ def audit_diagnosis():
 
 @chain("tracking", "mlflow + dvc", deps=("mlflow", "dvc"))
 def audit_tracking():
-    from framework.tracking import ExperimentTracker
-    # ignore_cleanup_errors: mlflow keeps the sqlite handle open on Windows, so a
-    # strict TemporaryDirectory cleanup raises PermissionError after a successful run.
-    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
-        tracker = ExperimentTracker({"project_root": tmp, "experiment_name": "audit"})
-        run = tracker.start_run("probe")
-        tracker.log_metrics(run, {"acc": 0.9})
-        tracker.end_run(run)
-        return "PASS", f"mlflow run {run.run_id[:8]}; dvc_available={tracker.dvc_available}"
+    import hashlib
+    from framework import tracking
+
+    tracking._require_mlflow()
+    tracking._require_dvc()
+
+    # The worker releases database/cache handles before strict workspace cleanup.
+    # Interleaved records exercise identity; a single fluent run cannot prove it.
+    with tempfile.TemporaryDirectory(prefix='eidos-tracking-audit-') as tmp:
+        result = tracking._operation(Path(tmp), 'smoke', 90)
+        expected = {'isolated_runs', 'metrics', 'terminal_states', 'dvc_content', 'private_dvc_cache'}
+        checks = result.get('checks') if isinstance(result, dict) else None
+        if (not isinstance(checks, dict) or set(checks) != expected
+                or not all(type(value) is bool and value for value in checks.values())):
+            return 'FAIL', 'tracking did not verify independent runs and actual DVC content'
+        fingerprints = result.get('source_sha256_lf')
+        paths = {'module': Path(tracking.__file__),
+                 'worker': Path(tracking.__file__).with_name('_worker.py')}
+        if fingerprints != {key: hashlib.sha256(path.read_text(encoding='utf-8').encode()).hexdigest()
+                            for key, path in paths.items()}:
+            return 'FAIL', 'tracking smoke executed another source version'
+        return 'PASS', 'two isolated runs, verified metrics/terminal states and actual DVC content; worker closed'
 
 
 @chain("quarto", "quarto binary", deps=("bin:quarto",))

@@ -1,0 +1,851 @@
+{
+  "schema": 1,
+  "kind": "eidos.paired-disposable-recovery-acceptance",
+  "generated": "2026-11-01T05:22:07.799501+00:00",
+  "status": "PASS",
+  "source_before_commit": "c12acdd617f1bac1d2449d2cb98dc7b085a5e404",
+  "method": "Same final source-checkout protocol replayed on c12acdd and the candidate; real private HTTP processes.",
+  "before": {
+    "windows": {
+      "schema": 1,
+      "kind": "eidos.disposable-recovery-acceptance",
+      "recorded_at": "2026-11-01T05:01:30.499295+00:00",
+      "status": "FAIL",
+      "python": "3.12.4",
+      "platform": "win32",
+      "optimization_level": 0,
+      "source_sha256_lf": {
+        "framework/recovery.py": "54250fb88891364002ee2f5ac3e408f69e67348726f68c296592455d33173881",
+        "framework/services.py": "5adaeb4f27dc6931e0fed493e87392feffab04da64ce1a1a2347126404a20348",
+        "tools/watch_pipeline.py": "32f10510d1d45975bc22ef610f7868a9c9827f515b864ace115f3807fb38a60d",
+        "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+        "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+        "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+        "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+        "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+        "tools/owned_workspace.py": "bac8df5ec876f8ee5a0a88c4b9c97d6ab3596e17bdfcefe0685cab740e1dee91",
+        "pyproject.toml": "3f78b3c60365e3ae2342bd62918654e9c207508f7da84165042f1440b32ac5db",
+        "uv.lock": "b40f473cfdfed2e8204ec6ad7ae74734435e7a6d186bf3d765ef9a7c1b846ee2",
+        "reference/recovery_acceptance/check.py": "5f6b9f88f4f8ad74cedc63b4ee435685d60275270297faf8b52671999f625b2a",
+        "reference/recovery_acceptance/service.py": "cc7f7503e9d7779746131f0033c1f08658ec003c45f729d4c2242202f3875e2f"
+      },
+      "stable_sources": true,
+      "checks": [
+        {
+          "name": "initial_real_service",
+          "passed": true
+        },
+        {
+          "name": "http_status_contract",
+          "passed": false,
+          "rows": [
+            {
+              "status": 200,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 204,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 401,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 403,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 404,
+              "observed": true,
+              "expected": false
+            },
+            {
+              "status": 405,
+              "observed": true,
+              "expected": false
+            },
+            {
+              "status": 410,
+              "observed": true,
+              "expected": false
+            },
+            {
+              "status": 429,
+              "observed": true,
+              "expected": false
+            },
+            {
+              "status": 500,
+              "observed": false,
+              "expected": false
+            },
+            {
+              "status": 503,
+              "observed": false,
+              "expected": false
+            }
+          ]
+        },
+        {
+          "name": "redirect_does_not_substitute_another_endpoint",
+          "passed": false
+        },
+        {
+          "name": "actual_process_crash_observed",
+          "passed": true
+        },
+        {
+          "name": "two_fault_samples_do_not_launch",
+          "passed": true
+        },
+        {
+          "name": "third_sample_starts_real_process",
+          "passed": true
+        },
+        {
+          "name": "real_endpoints_verify_recovery",
+          "passed": true
+        },
+        {
+          "name": "one_attempt_one_terminal",
+          "passed": true
+        },
+        {
+          "name": "healthy_service_is_not_restarted",
+          "passed": true
+        },
+        {
+          "name": "half_failed_service_is_not_healthy",
+          "passed": true
+        },
+        {
+          "name": "held_port_refuses_duplicate_launch",
+          "passed": true
+        },
+        {
+          "name": "windows_launchers_have_no_console",
+          "passed": false
+        },
+        {
+          "name": "owned_job_closes_disposable_services",
+          "passed": true
+        }
+      ],
+      "port": 49737,
+      "boots": [
+        {
+          "pid": 38108,
+          "port": 49737,
+          "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+          "console_window": 0,
+          "console_visible": false
+        },
+        {
+          "pid": 58848,
+          "port": 49737,
+          "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+          "console_window": 8000158,
+          "console_visible": true
+        }
+      ],
+      "processes_are_disposable": true,
+      "sampling": "three distinct real probes at accelerated intervals; default cooldown constants unchanged",
+      "limits": [
+        "Disposable HTTP service, not a real model-service restart or legacy-runtime migration.",
+        "Source-checkout qualification, not installed-wheel, reboot or 24-hour acceptance.",
+        "401/403 qualify authenticated presence, not successful inference or credential validity.",
+        "Default retry/cooldown wall time is not accelerated or qualified by this short probe."
+      ]
+    },
+    "linux": {
+      "schema": 1,
+      "kind": "eidos.disposable-recovery-acceptance",
+      "recorded_at": "2026-11-01T05:01:03.839899+00:00",
+      "status": "FAIL",
+      "python": "3.12.16",
+      "platform": "linux",
+      "optimization_level": 0,
+      "source_sha256_lf": {
+        "framework/recovery.py": "54250fb88891364002ee2f5ac3e408f69e67348726f68c296592455d33173881",
+        "framework/services.py": "5adaeb4f27dc6931e0fed493e87392feffab04da64ce1a1a2347126404a20348",
+        "tools/watch_pipeline.py": "32f10510d1d45975bc22ef610f7868a9c9827f515b864ace115f3807fb38a60d",
+        "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+        "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+        "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+        "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+        "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+        "tools/owned_workspace.py": "bac8df5ec876f8ee5a0a88c4b9c97d6ab3596e17bdfcefe0685cab740e1dee91",
+        "pyproject.toml": "3f78b3c60365e3ae2342bd62918654e9c207508f7da84165042f1440b32ac5db",
+        "uv.lock": "b40f473cfdfed2e8204ec6ad7ae74734435e7a6d186bf3d765ef9a7c1b846ee2",
+        "reference/recovery_acceptance/check.py": "5f6b9f88f4f8ad74cedc63b4ee435685d60275270297faf8b52671999f625b2a",
+        "reference/recovery_acceptance/service.py": "cc7f7503e9d7779746131f0033c1f08658ec003c45f729d4c2242202f3875e2f"
+      },
+      "stable_sources": true,
+      "checks": [
+        {
+          "name": "initial_real_service",
+          "passed": true
+        },
+        {
+          "name": "http_status_contract",
+          "passed": false,
+          "rows": [
+            {
+              "status": 200,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 204,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 401,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 403,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 404,
+              "observed": true,
+              "expected": false
+            },
+            {
+              "status": 405,
+              "observed": true,
+              "expected": false
+            },
+            {
+              "status": 410,
+              "observed": true,
+              "expected": false
+            },
+            {
+              "status": 429,
+              "observed": true,
+              "expected": false
+            },
+            {
+              "status": 500,
+              "observed": false,
+              "expected": false
+            },
+            {
+              "status": 503,
+              "observed": false,
+              "expected": false
+            }
+          ]
+        },
+        {
+          "name": "redirect_does_not_substitute_another_endpoint",
+          "passed": false
+        },
+        {
+          "name": "actual_process_crash_observed",
+          "passed": true
+        },
+        {
+          "name": "two_fault_samples_do_not_launch",
+          "passed": true
+        },
+        {
+          "name": "third_sample_starts_real_process",
+          "passed": true
+        },
+        {
+          "name": "real_endpoints_verify_recovery",
+          "passed": true
+        },
+        {
+          "name": "one_attempt_one_terminal",
+          "passed": true
+        },
+        {
+          "name": "healthy_service_is_not_restarted",
+          "passed": true
+        },
+        {
+          "name": "half_failed_service_is_not_healthy",
+          "passed": true
+        },
+        {
+          "name": "held_port_refuses_duplicate_launch",
+          "passed": false
+        },
+        {
+          "name": "windows_launchers_have_no_console",
+          "passed": true
+        },
+        {
+          "name": "owned_job_closes_disposable_services",
+          "passed": true
+        }
+      ],
+      "port": 41183,
+      "boots": [
+        {
+          "pid": 11,
+          "port": 41183,
+          "python": "/usr/local/bin/python",
+          "console_window": null,
+          "console_visible": null
+        },
+        {
+          "pid": 13,
+          "port": 41183,
+          "python": "/usr/local/bin/python",
+          "console_window": null,
+          "console_visible": null
+        }
+      ],
+      "processes_are_disposable": true,
+      "sampling": "three distinct real probes at accelerated intervals; default cooldown constants unchanged",
+      "limits": [
+        "Disposable HTTP service, not a real model-service restart or legacy-runtime migration.",
+        "Source-checkout qualification, not installed-wheel, reboot or 24-hour acceptance.",
+        "401/403 qualify authenticated presence, not successful inference or credential validity.",
+        "Default retry/cooldown wall time is not accelerated or qualified by this short probe."
+      ]
+    }
+  },
+  "after": {
+    "windows": {
+      "schema": 1,
+      "kind": "eidos.disposable-recovery-acceptance",
+      "recorded_at": "2026-11-01T05:06:15.733519+00:00",
+      "status": "PASS",
+      "python": "3.12.4",
+      "platform": "win32",
+      "optimization_level": 0,
+      "source_sha256_lf": {
+        "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+        "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+        "tools/watch_pipeline.py": "5f46a2956d1f38991222d2184b6bfb189735b6dc0433e3dde1aa5382af58488f",
+        "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+        "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+        "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+        "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+        "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+        "tools/owned_workspace.py": "bac8df5ec876f8ee5a0a88c4b9c97d6ab3596e17bdfcefe0685cab740e1dee91",
+        "pyproject.toml": "1c5fa0e13d7938804ca10c0e0328e7a74a06353ab948b9595a2beb3af8c8399b",
+        "uv.lock": "2962cc846831e2d004b085fb98de6b1a665f05bbeb51f4d160e56eb59de49bd1",
+        "reference/recovery_acceptance/check.py": "5f6b9f88f4f8ad74cedc63b4ee435685d60275270297faf8b52671999f625b2a",
+        "reference/recovery_acceptance/service.py": "cc7f7503e9d7779746131f0033c1f08658ec003c45f729d4c2242202f3875e2f"
+      },
+      "stable_sources": true,
+      "checks": [
+        {
+          "name": "initial_real_service",
+          "passed": true
+        },
+        {
+          "name": "http_status_contract",
+          "passed": true,
+          "rows": [
+            {
+              "status": 200,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 204,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 401,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 403,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 404,
+              "observed": false,
+              "expected": false
+            },
+            {
+              "status": 405,
+              "observed": false,
+              "expected": false
+            },
+            {
+              "status": 410,
+              "observed": false,
+              "expected": false
+            },
+            {
+              "status": 429,
+              "observed": false,
+              "expected": false
+            },
+            {
+              "status": 500,
+              "observed": false,
+              "expected": false
+            },
+            {
+              "status": 503,
+              "observed": false,
+              "expected": false
+            }
+          ]
+        },
+        {
+          "name": "redirect_does_not_substitute_another_endpoint",
+          "passed": true
+        },
+        {
+          "name": "actual_process_crash_observed",
+          "passed": true
+        },
+        {
+          "name": "two_fault_samples_do_not_launch",
+          "passed": true
+        },
+        {
+          "name": "third_sample_starts_real_process",
+          "passed": true
+        },
+        {
+          "name": "real_endpoints_verify_recovery",
+          "passed": true
+        },
+        {
+          "name": "one_attempt_one_terminal",
+          "passed": true
+        },
+        {
+          "name": "healthy_service_is_not_restarted",
+          "passed": true
+        },
+        {
+          "name": "half_failed_service_is_not_healthy",
+          "passed": true
+        },
+        {
+          "name": "held_port_refuses_duplicate_launch",
+          "passed": true
+        },
+        {
+          "name": "windows_launchers_have_no_console",
+          "passed": true
+        },
+        {
+          "name": "owned_job_closes_disposable_services",
+          "passed": true
+        }
+      ],
+      "port": 59291,
+      "boots": [
+        {
+          "pid": 44984,
+          "port": 59291,
+          "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+          "console_window": 0,
+          "console_visible": false
+        },
+        {
+          "pid": 51464,
+          "port": 59291,
+          "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+          "console_window": 0,
+          "console_visible": false
+        }
+      ],
+      "processes_are_disposable": true,
+      "sampling": "three distinct real probes at accelerated intervals; default cooldown constants unchanged",
+      "limits": [
+        "Disposable HTTP service, not a real model-service restart or legacy-runtime migration.",
+        "Source-checkout qualification, not installed-wheel, reboot or 24-hour acceptance.",
+        "401/403 qualify authenticated presence, not successful inference or credential validity.",
+        "Default retry/cooldown wall time is not accelerated or qualified by this short probe."
+      ]
+    },
+    "linux": {
+      "schema": 1,
+      "kind": "eidos.disposable-recovery-acceptance",
+      "recorded_at": "2026-11-01T05:05:50.556468+00:00",
+      "status": "PASS",
+      "python": "3.12.16",
+      "platform": "linux",
+      "optimization_level": 0,
+      "source_sha256_lf": {
+        "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+        "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+        "tools/watch_pipeline.py": "5f46a2956d1f38991222d2184b6bfb189735b6dc0433e3dde1aa5382af58488f",
+        "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+        "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+        "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+        "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+        "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+        "tools/owned_workspace.py": "bac8df5ec876f8ee5a0a88c4b9c97d6ab3596e17bdfcefe0685cab740e1dee91",
+        "pyproject.toml": "1c5fa0e13d7938804ca10c0e0328e7a74a06353ab948b9595a2beb3af8c8399b",
+        "uv.lock": "2962cc846831e2d004b085fb98de6b1a665f05bbeb51f4d160e56eb59de49bd1",
+        "reference/recovery_acceptance/check.py": "5f6b9f88f4f8ad74cedc63b4ee435685d60275270297faf8b52671999f625b2a",
+        "reference/recovery_acceptance/service.py": "cc7f7503e9d7779746131f0033c1f08658ec003c45f729d4c2242202f3875e2f"
+      },
+      "stable_sources": true,
+      "checks": [
+        {
+          "name": "initial_real_service",
+          "passed": true
+        },
+        {
+          "name": "http_status_contract",
+          "passed": true,
+          "rows": [
+            {
+              "status": 200,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 204,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 401,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 403,
+              "observed": true,
+              "expected": true
+            },
+            {
+              "status": 404,
+              "observed": false,
+              "expected": false
+            },
+            {
+              "status": 405,
+              "observed": false,
+              "expected": false
+            },
+            {
+              "status": 410,
+              "observed": false,
+              "expected": false
+            },
+            {
+              "status": 429,
+              "observed": false,
+              "expected": false
+            },
+            {
+              "status": 500,
+              "observed": false,
+              "expected": false
+            },
+            {
+              "status": 503,
+              "observed": false,
+              "expected": false
+            }
+          ]
+        },
+        {
+          "name": "redirect_does_not_substitute_another_endpoint",
+          "passed": true
+        },
+        {
+          "name": "actual_process_crash_observed",
+          "passed": true
+        },
+        {
+          "name": "two_fault_samples_do_not_launch",
+          "passed": true
+        },
+        {
+          "name": "third_sample_starts_real_process",
+          "passed": true
+        },
+        {
+          "name": "real_endpoints_verify_recovery",
+          "passed": true
+        },
+        {
+          "name": "one_attempt_one_terminal",
+          "passed": true
+        },
+        {
+          "name": "healthy_service_is_not_restarted",
+          "passed": true
+        },
+        {
+          "name": "half_failed_service_is_not_healthy",
+          "passed": true
+        },
+        {
+          "name": "held_port_refuses_duplicate_launch",
+          "passed": true
+        },
+        {
+          "name": "windows_launchers_have_no_console",
+          "passed": true
+        },
+        {
+          "name": "owned_job_closes_disposable_services",
+          "passed": true
+        }
+      ],
+      "port": 41231,
+      "boots": [
+        {
+          "pid": 11,
+          "port": 41231,
+          "python": "/usr/local/bin/python",
+          "console_window": null,
+          "console_visible": null
+        },
+        {
+          "pid": 13,
+          "port": 41231,
+          "python": "/usr/local/bin/python",
+          "console_window": null,
+          "console_visible": null
+        }
+      ],
+      "processes_are_disposable": true,
+      "sampling": "three distinct real probes at accelerated intervals; default cooldown constants unchanged",
+      "limits": [
+        "Disposable HTTP service, not a real model-service restart or legacy-runtime migration.",
+        "Source-checkout qualification, not installed-wheel, reboot or 24-hour acceptance.",
+        "401/403 qualify authenticated presence, not successful inference or credential validity.",
+        "Default retry/cooldown wall time is not accelerated or qualified by this short probe."
+      ]
+    }
+  },
+  "negative_controls": {
+    "windows": [
+      {
+        "case": "worker-failure",
+        "exit_code": 1,
+        "prior_status": "PASS",
+        "final_status": "FAIL",
+        "source_sha256_lf": {
+          "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+          "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+          "tools/watch_pipeline.py": "5f46a2956d1f38991222d2184b6bfb189735b6dc0433e3dde1aa5382af58488f",
+          "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+          "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+          "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+          "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+          "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+          "tools/owned_workspace.py": "bac8df5ec876f8ee5a0a88c4b9c97d6ab3596e17bdfcefe0685cab740e1dee91",
+          "pyproject.toml": "1c5fa0e13d7938804ca10c0e0328e7a74a06353ab948b9595a2beb3af8c8399b",
+          "uv.lock": "2962cc846831e2d004b085fb98de6b1a665f05bbeb51f4d160e56eb59de49bd1",
+          "reference/recovery_acceptance/check.py": "5f6b9f88f4f8ad74cedc63b4ee435685d60275270297faf8b52671999f625b2a",
+          "reference/recovery_acceptance/service.py": "cc7f7503e9d7779746131f0033c1f08658ec003c45f729d4c2242202f3875e2f"
+        },
+        "receipt_sha256": "36f7cf2f5304bc6542015672cbee26c54036ab1a68bd981439d1a42bf394effb"
+      },
+      {
+        "case": "json-list",
+        "exit_code": 1,
+        "prior_status": "PASS",
+        "final_status": "FAIL",
+        "source_sha256_lf": {
+          "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+          "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+          "tools/watch_pipeline.py": "5f46a2956d1f38991222d2184b6bfb189735b6dc0433e3dde1aa5382af58488f",
+          "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+          "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+          "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+          "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+          "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+          "tools/owned_workspace.py": "bac8df5ec876f8ee5a0a88c4b9c97d6ab3596e17bdfcefe0685cab740e1dee91",
+          "pyproject.toml": "1c5fa0e13d7938804ca10c0e0328e7a74a06353ab948b9595a2beb3af8c8399b",
+          "uv.lock": "2962cc846831e2d004b085fb98de6b1a665f05bbeb51f4d160e56eb59de49bd1",
+          "reference/recovery_acceptance/check.py": "5f6b9f88f4f8ad74cedc63b4ee435685d60275270297faf8b52671999f625b2a",
+          "reference/recovery_acceptance/service.py": "cc7f7503e9d7779746131f0033c1f08658ec003c45f729d4c2242202f3875e2f"
+        },
+        "receipt_sha256": "5667600fe2c28b23875ae3de06b91c756d084202b180177e279c8bc11c9f5ad9"
+      },
+      {
+        "case": "json-empty",
+        "exit_code": 1,
+        "prior_status": "PASS",
+        "final_status": "FAIL",
+        "source_sha256_lf": {
+          "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+          "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+          "tools/watch_pipeline.py": "5f46a2956d1f38991222d2184b6bfb189735b6dc0433e3dde1aa5382af58488f",
+          "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+          "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+          "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+          "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+          "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+          "tools/owned_workspace.py": "bac8df5ec876f8ee5a0a88c4b9c97d6ab3596e17bdfcefe0685cab740e1dee91",
+          "pyproject.toml": "1c5fa0e13d7938804ca10c0e0328e7a74a06353ab948b9595a2beb3af8c8399b",
+          "uv.lock": "2962cc846831e2d004b085fb98de6b1a665f05bbeb51f4d160e56eb59de49bd1",
+          "reference/recovery_acceptance/check.py": "5f6b9f88f4f8ad74cedc63b4ee435685d60275270297faf8b52671999f625b2a",
+          "reference/recovery_acceptance/service.py": "cc7f7503e9d7779746131f0033c1f08658ec003c45f729d4c2242202f3875e2f"
+        },
+        "receipt_sha256": "e9240d2b941b0e732f60ed48e3360ee26c2ef4472a43ed7659b7e67e97b1708e"
+      },
+      {
+        "case": "json-checks-null",
+        "exit_code": 1,
+        "prior_status": "PASS",
+        "final_status": "FAIL",
+        "source_sha256_lf": {
+          "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+          "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+          "tools/watch_pipeline.py": "5f46a2956d1f38991222d2184b6bfb189735b6dc0433e3dde1aa5382af58488f",
+          "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+          "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+          "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+          "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+          "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+          "tools/owned_workspace.py": "bac8df5ec876f8ee5a0a88c4b9c97d6ab3596e17bdfcefe0685cab740e1dee91",
+          "pyproject.toml": "1c5fa0e13d7938804ca10c0e0328e7a74a06353ab948b9595a2beb3af8c8399b",
+          "uv.lock": "2962cc846831e2d004b085fb98de6b1a665f05bbeb51f4d160e56eb59de49bd1",
+          "reference/recovery_acceptance/check.py": "5f6b9f88f4f8ad74cedc63b4ee435685d60275270297faf8b52671999f625b2a",
+          "reference/recovery_acceptance/service.py": "cc7f7503e9d7779746131f0033c1f08658ec003c45f729d4c2242202f3875e2f"
+        },
+        "receipt_sha256": "1f7760568f0935d56daf110da74ac2356284459def6de13d4191f04f4f3442af"
+      },
+      {
+        "case": "-O",
+        "exit_code": 1,
+        "rejected": true,
+        "prior_receipt_unchanged": true
+      },
+      {
+        "case": "-OO",
+        "exit_code": 1,
+        "rejected": true,
+        "prior_receipt_unchanged": true
+      }
+    ],
+    "linux": [
+      {
+        "case": "worker-failure",
+        "exit_code": 1,
+        "prior_status": "PASS",
+        "final_status": "FAIL",
+        "source_sha256_lf": {
+          "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+          "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+          "tools/watch_pipeline.py": "5f46a2956d1f38991222d2184b6bfb189735b6dc0433e3dde1aa5382af58488f",
+          "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+          "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+          "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+          "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+          "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+          "tools/owned_workspace.py": "bac8df5ec876f8ee5a0a88c4b9c97d6ab3596e17bdfcefe0685cab740e1dee91",
+          "pyproject.toml": "1c5fa0e13d7938804ca10c0e0328e7a74a06353ab948b9595a2beb3af8c8399b",
+          "uv.lock": "2962cc846831e2d004b085fb98de6b1a665f05bbeb51f4d160e56eb59de49bd1",
+          "reference/recovery_acceptance/check.py": "5f6b9f88f4f8ad74cedc63b4ee435685d60275270297faf8b52671999f625b2a",
+          "reference/recovery_acceptance/service.py": "cc7f7503e9d7779746131f0033c1f08658ec003c45f729d4c2242202f3875e2f"
+        },
+        "receipt_sha256": "869dcdd4a54fa9dd75eb14e725382fe737b0c93da9cd90172be61915e11889b7"
+      },
+      {
+        "case": "json-list",
+        "exit_code": 1,
+        "prior_status": "PASS",
+        "final_status": "FAIL",
+        "source_sha256_lf": {
+          "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+          "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+          "tools/watch_pipeline.py": "5f46a2956d1f38991222d2184b6bfb189735b6dc0433e3dde1aa5382af58488f",
+          "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+          "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+          "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+          "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+          "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+          "tools/owned_workspace.py": "bac8df5ec876f8ee5a0a88c4b9c97d6ab3596e17bdfcefe0685cab740e1dee91",
+          "pyproject.toml": "1c5fa0e13d7938804ca10c0e0328e7a74a06353ab948b9595a2beb3af8c8399b",
+          "uv.lock": "2962cc846831e2d004b085fb98de6b1a665f05bbeb51f4d160e56eb59de49bd1",
+          "reference/recovery_acceptance/check.py": "5f6b9f88f4f8ad74cedc63b4ee435685d60275270297faf8b52671999f625b2a",
+          "reference/recovery_acceptance/service.py": "cc7f7503e9d7779746131f0033c1f08658ec003c45f729d4c2242202f3875e2f"
+        },
+        "receipt_sha256": "a26463e539a1b4077538db986e39853f3a37f37642c3e47347e9fb705839bff2"
+      },
+      {
+        "case": "json-empty",
+        "exit_code": 1,
+        "prior_status": "PASS",
+        "final_status": "FAIL",
+        "source_sha256_lf": {
+          "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+          "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+          "tools/watch_pipeline.py": "5f46a2956d1f38991222d2184b6bfb189735b6dc0433e3dde1aa5382af58488f",
+          "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+          "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+          "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+          "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+          "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+          "tools/owned_workspace.py": "bac8df5ec876f8ee5a0a88c4b9c97d6ab3596e17bdfcefe0685cab740e1dee91",
+          "pyproject.toml": "1c5fa0e13d7938804ca10c0e0328e7a74a06353ab948b9595a2beb3af8c8399b",
+          "uv.lock": "2962cc846831e2d004b085fb98de6b1a665f05bbeb51f4d160e56eb59de49bd1",
+          "reference/recovery_acceptance/check.py": "5f6b9f88f4f8ad74cedc63b4ee435685d60275270297faf8b52671999f625b2a",
+          "reference/recovery_acceptance/service.py": "cc7f7503e9d7779746131f0033c1f08658ec003c45f729d4c2242202f3875e2f"
+        },
+        "receipt_sha256": "8355bc866f2bcafad9415518a31fa577dab6cb7383c87cbef0ae707c1001a486"
+      },
+      {
+        "case": "json-checks-null",
+        "exit_code": 1,
+        "prior_status": "PASS",
+        "final_status": "FAIL",
+        "source_sha256_lf": {
+          "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+          "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+          "tools/watch_pipeline.py": "5f46a2956d1f38991222d2184b6bfb189735b6dc0433e3dde1aa5382af58488f",
+          "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+          "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+          "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+          "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+          "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+          "tools/owned_workspace.py": "bac8df5ec876f8ee5a0a88c4b9c97d6ab3596e17bdfcefe0685cab740e1dee91",
+          "pyproject.toml": "1c5fa0e13d7938804ca10c0e0328e7a74a06353ab948b9595a2beb3af8c8399b",
+          "uv.lock": "2962cc846831e2d004b085fb98de6b1a665f05bbeb51f4d160e56eb59de49bd1",
+          "reference/recovery_acceptance/check.py": "5f6b9f88f4f8ad74cedc63b4ee435685d60275270297faf8b52671999f625b2a",
+          "reference/recovery_acceptance/service.py": "cc7f7503e9d7779746131f0033c1f08658ec003c45f729d4c2242202f3875e2f"
+        },
+        "receipt_sha256": "7b7c2ce706d537b095f13e4d8ebaa76e377afe82a34404ceb5dd7870a82ab40b"
+      },
+      {
+        "case": "-O",
+        "exit_code": 1,
+        "rejected": true,
+        "prior_receipt_unchanged": true
+      },
+      {
+        "case": "-OO",
+        "exit_code": 1,
+        "rejected": true,
+        "prior_receipt_unchanged": true
+      }
+    ]
+  },
+  "docker_image": "sha256:bc384f41896ee75c8001a4a17a4830869b6b9b47a23dfd5df038384f2bc755be",
+  "docker_network": "none",
+  "limits": [
+    "Disposable service, not a real model-service restart or legacy service migration.",
+    "Same-host source-checkout and offline-container qualification, not installed recovery or new-machine qualification.",
+    "Accelerated sample intervals; default cooldown duration, reboot/logon and clean24h remain pending.",
+    "401/403 qualify presence only, not credentials or successful inference."
+  ],
+  "version": "0.4.9"
+}

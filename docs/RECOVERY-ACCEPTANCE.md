@@ -1,6 +1,6 @@
 # Recovery acceptance and its limits
 
-Version 0.4.9 preserves resident diagnosis, self-check, bounded automatic
+Version 0.4.10 retains the recovery repairs introduced in 0.4.9, preserving resident diagnosis, self-check, bounded automatic
 recovery and explicit recovery controls after the two external Eidos CRON jobs
 were retired. Removing schedules did not remove these functions. The existing
 Startup entry remains. The [retirement record](CRON-RETIREMENT-2026-11-01.json)
@@ -14,7 +14,7 @@ final checker is copied into a detached checkout of `c12acdd617f1bac1d2449d2cb98
 for the before measurement. Imported module locations and source hashes are
 checked, so the old checkout cannot silently use the repaired package.
 
-| Control | Before: c12acdd | After: 0.4.9 |
+| Control | Before: c12acdd | After: 0.4.10 replay |
 |---|---|---|
 | Crash, sustained detection, actual process launch and endpoint verification | Works in the bounded fixture | Preserved |
 | Missing/throttled route reported healthy | 404, 405, 410 and 429 incorrectly accepted | Rejected |
@@ -29,6 +29,12 @@ samples and is restarted on the third. Real responses confirm recovery. A degrad
 endpoint and a still-held port must not start another instance. The runner owns
 the process tree; its completion is followed by bounded port and fixture-PID exit
 checks before its uniquely owned workspace is removed.
+
+The original c12acdd observations are retained under the unchanged checker;
+the candidate source repeats all thirteen controls on both systems and six
+invalid-worker/optimization controls per system. The receipt records the old
+before image and current after image separately. Historical v0.4.9 receipts
+remain in `docs/archive/`.
 
 The Windows experiment also established that a closed-loopback TCP probe can time
 out on this host. A timeout is therefore not evidence of a free port. A completed,

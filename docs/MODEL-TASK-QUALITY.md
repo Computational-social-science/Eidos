@@ -5,6 +5,19 @@ table was a proposed routing list, not an executed capability measurement. Model
 presence, endpoint health, general benchmarks and task acceptance are different
 claims. This limitation remains even if a larger model is installed.
 
+Live inventory also confirms larger candidates, including `qwen3.8:27b` and
+`qwen2.5:32b`. The legacy three-name snapshot below is not a complete host
+inventory. Historical ScienceRSI failures cannot be extrapolated to these
+models. See the [verified local capacity and pilot record](LOCAL-MODEL-CAPACITY-2026-11-01.md).
+The separate Hermes 27B UD-Q4_K_M artifact completed 15/15 known structured
+S4 development cases with no invalid formats under partial GPU offload. This
+is a bounded execution result, not a scientific qualification or a matched
+comparison against historical ScienceRSI scores.
+
+The [scientific self-improvement assessment](RSI-READINESS-2026-11-01.md) records
+the development failures, current authority boundary and next acceptance
+milestone. Software regression counts do not qualify the scientific mission.
+
 ## What was actually measured
 
 | Model | Evidence | Accepted use and limitation |
@@ -13,7 +26,7 @@ claims. This limitation remains even if a larger model is installed.
 | StartLux-Decision-4B-Q8_0 | Constructed calibration and a 50-item hold-out; 23 actions, recorded precision 1.0 with 95% interval [0.857,1.0] | Typed routing and bounded triage. This sample does not establish experiment-design, novel-gap discovery, general scientific judgement or reliable confidence for other option sets. Threshold tau was not identified. |
 | llama3.1:8b / qwen2.5:14b | Absent from the host's dated Ollama inventory on 2026-11-01; see [snapshot](MODEL_TASK_READINESS.json) | UNQUALIFIED. An entry in MODEL_REGISTRY is not an installed model. Llama3:8b and Qwen2.5:32b are distinct identities and do not satisfy these names. |
 | gemma2:9b | Installed with a recorded digest; no accepted EIDOS task evaluation | UNQUALIFIED. May be evaluated as a draft assistant; installation does not establish scientific capability. |
-| Larger local or external candidates | No matched EIDOS task qualification in the current record | Candidates for a future comparison; no automatic promotion or performance claim. |
+| Local Qwen3.8 27B Q4_K_M / separate Hermes UD-Q4_K_M, Qwen2.5 32B, BigBang 35.5B, DeepSeek R1 Qwen 14B and NeoHorse 9B | Present in the live local catalog; the separate Hermes 27B file is hashed for a bounded development pilot | Candidate pool for task-specific comparison. Different quantizations and artifacts do not inherit one another's results. No scientific authority is granted. |
 
 The ScienceRSI probes are historical measurements recorded on 2026-10-27, not a
 new benchmark run on 2026-11-01. The inventory command checks presence without

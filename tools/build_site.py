@@ -423,20 +423,23 @@ def adopt_rows(rows: list[dict]) -> str:
     def gs(value: str) -> str:
         return pill(value) if value in PILL else f"<span class='detail'>{value}</span>"
 
-    from framework.project import consumer_freshness
+    from tools.consumer_observation import verification_freshness
 
     out = []
     for p in rows:
         verdict = p.get("gate_s", "—")
         note = ""
-        freshness = consumer_freshness(p.get("root_path") or p.get("root") or "",
+        freshness = verification_freshness(p.get("root_path") or p.get("root") or "",
                                       p.get("expected"), p.get("checked_at")) if verdict in ("PASS", "FAIL") else None
         if freshness and freshness["stale"]:
             verdict = "STALE"
             # Stable wording: a static page must not become a different artifact every hour.
-            note = f" <span class='detail'>(was {p.get('gate_s')}) · evidence or verification stale / absent</span>"
+            note = f" <span class='detail'>(was {p.get('gate_s')}) · verification stale / absent</span>"
         elif p.get("expected") == "FAIL" and p.get("gate_s") == "FAIL":
             note = " <span class='detail'>(expected)</span>"
+        if freshness and freshness['artifact_age_h'] is not None:
+            # Preserve the original experiment clock without an hourly-changing page.
+            note += " <span class='detail'>· original measurement time retained in evidence</span>"
         out.append(
             f"<tr><td class='mono'>{html.escape(p['name'])}</td><td>{html.escape(p['root'])}</td>"
             f"<td><code>{html.escape(p['gate'])}</code></td>"

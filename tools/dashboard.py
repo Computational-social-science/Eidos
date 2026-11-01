@@ -772,13 +772,13 @@ def consumer_strip(pipeline: dict) -> str:
         return ("<p class='mono' style='color:var(--mut)'>no consumer registered: the framework "
                 "is checking itself and serving no project</p>")
     parts = ['<div class="consumer-grid" aria-label="Consumers: what the framework does for a project">']
-    from framework.project import consumer_freshness
+    from tools.consumer_observation import verification_freshness
     for row in rows:
         name = str(row.get("name") or "?")
         got, want = str(row.get("gate_s") or "—"), str(row.get("expected") or "—")
         as_expected = want != "—" and got == want
         st = "PASS" if as_expected else "FAIL"
-        freshness = consumer_freshness(row.get("root") or "", want, row.get("checked_at"))
+        freshness = verification_freshness(row.get("root") or "", want, row.get("checked_at"))
         age_h = freshness["age_h"]
         changed = name in pipeline.get("stale_consumers", [])
         if freshness["stale"] or changed:
@@ -792,6 +792,8 @@ def consumer_strip(pipeline: dict) -> str:
         label = "Expected rejection" if want == "FAIL" and as_expected else "As expected" if as_expected else "Unexpected verdict"
         note = f"Gate S {got} · expected {want}"
         timing = f"{'Checked' if freshness['source'] == 'verification' else 'Evidence'} {age} ago" if age else "Freshness unavailable"
+        if freshness['artifact_age_h'] is not None:
+            timing += f"; evidence {freshness['artifact_age_h']:.1f} h old"
         if changed:
             label = "Reverification required"
             timing = "Declared inputs changed; cached verdict withdrawn"

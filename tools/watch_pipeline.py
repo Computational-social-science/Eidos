@@ -225,7 +225,8 @@ def measure() -> dict:
     unexpected = []
     try:
         sys.path.insert(0, str(ROOT))
-        from framework.project import load_projects, consumer_freshness, aggregate_consumer_freshness
+        from framework.project import load_projects, aggregate_consumer_freshness
+        from tools.consumer_observation import verification_freshness
         from tools.consumer_snapshot import snapshot_state
         pipeline = json.loads((ROOT / "docs/pipeline.json").read_text(encoding="utf-8"))
         checked = {r["name"]: r for r in pipeline.get("consumers", [])}
@@ -239,7 +240,7 @@ def measure() -> dict:
             if spec.name in binding["stale"]:
                 ages.append((spec.name, None))
                 continue
-            freshness = consumer_freshness(spec.root, expected, row.get("checked_at"))
+            freshness = verification_freshness(spec.root, expected, row.get("checked_at"))
             ages.append((spec.name, freshness["age_h"]))
             if row.get("gate_s") != expected:
                 unexpected.append(spec.name)
@@ -252,7 +253,7 @@ def measure() -> dict:
         age_h = aggregate["age_h"]
         signals["consumers"] = {
             "value": age_h, "reference": 24.0, "direction": "max", "unit": "h",
-            "source": "consumer evidence; immutable controls use actual verification time",
+            "source": "current Gate S verification time; original measurement timestamps are retained separately",
             "note": f"oldest: {aggregate['name']}; stale: {aggregate['stale']}; unknown: {aggregate['unknown']}"}
     else:
         signals["consumers"] = {"value": None, "reference": 24.0, "direction": "max",

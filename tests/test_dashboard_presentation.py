@@ -53,14 +53,12 @@ def test_missing_required_service_remains_visible_as_unobserved():
     assert f"fill='{dash.PALETTE['STALE']}'" in svg
 
 
-def test_control_success_and_stale_verdict_are_not_promoted(monkeypatch):
-    import framework.project
-    fresh = {'age_h': 0.1, 'stale': False, 'source': 'verification'}
-    monkeypatch.setattr(framework.project, 'consumer_freshness', lambda *args: fresh)
-    row = {'name': 'negative', 'root': '.', 'gate_s': 'FAIL', 'expected': 'FAIL', 'role': 'control'}
+def test_control_success_and_stale_verdict_are_not_promoted(tmp_path):
+    row = {'name': 'negative', 'root': str(tmp_path), 'gate_s': 'FAIL', 'expected': 'FAIL', 'role': 'control',
+           'checked_at': datetime.datetime.now(datetime.timezone.utc).isoformat()}
     page = dash.consumer_strip({'consumers': [row]})
     assert 'CONTROL OK' in page and 'Gate S FAIL' in page
-    fresh['stale'] = True
+    row['checked_at'] = (datetime.datetime.now(datetime.timezone.utc)-datetime.timedelta(hours=40)).isoformat()
     page = dash.consumer_strip({'consumers': [row]})
     assert 'Reverification required' in page and 'Cached Gate S FAIL' in page
     assert 'CONTROL OK' not in page

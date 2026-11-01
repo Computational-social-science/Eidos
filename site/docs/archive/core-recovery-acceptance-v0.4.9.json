@@ -1,0 +1,82 @@
+{
+  "schema": 2,
+  "recorded_at": "2026-11-01T06:01:02.872398+00:00",
+  "status": "CONTROLLED_SOURCE_AND_DISPOSABLE_SERVICE_TESTS_PASS",
+  "version": "0.4.9",
+  "tests_passed": 216,
+  "elapsed_seconds": 11.6,
+  "scope": "Focused source controls plus separate paired disposable-service qualification; no legacy/model-service migration.",
+  "source_sha256_lf": {
+    "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+    "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+    "tools/watch_pipeline.py": "5f46a2956d1f38991222d2184b6bfb189735b6dc0433e3dde1aa5382af58488f",
+    "tools/serve_site.py": "9e55c39a74d104295febc3388b2fa0a7217128354a12f04272b0213a886f4cd4",
+    "tools/audit_chains.py": "2a4b38ca6250d313711aa2b8c688f4264fae991ff77114870e2eca6ad3f9a085",
+    "tools/chain_states.py": "5d672528b901f8e08fad06e564b6ef64841785c18c1d606b5b0ab2e2ceb8f964",
+    "tools/site_documents.py": "baecb059935b0e5480c2da52bf7dd1db998f3c055c08369314df1e524a73aed3",
+    "tests/test_recovery_control.py": "8a1d4adfb73c5430ceeba9852a63d12f5a7f107dac9b78cba456340c6b19ea10",
+    "tests/test_service_contract.py": "3e9b929a6c9dfcb0b1dfaf9ab24b07d99f95b50166a8267e06237f5fc08981d3",
+    "tests/test_services.py": "52ce2d3e2eaa50e27b9327e5b049f2fdfdc9dcf5e55b01eb39f353c299d70f20",
+    "tests/test_audit_ownership.py": "20d5f88000d488ba3207446e43190b960572916729c110b05447038da8d64d36",
+    "tests/test_dashboard.py": "8bf3958f3a5f72bd2817f8a484ef7ff4b8a25a5c915b7def27b6ae98da27e692",
+    ".github/workflows/ci.yml": "ab083dff9b85f963fc792092cd71c21fce76c0302d0e842f88133e4eb31848cd",
+    ".gitattributes": "a4accb1120b8091eed7b6b7806e00b07e0cfe001a7c83a58d768429dad911e11",
+    "reference/recovery_acceptance/check.py": "5f6b9f88f4f8ad74cedc63b4ee435685d60275270297faf8b52671999f625b2a",
+    "reference/recovery_acceptance/service.py": "cc7f7503e9d7779746131f0033c1f08658ec003c45f729d4c2242202f3875e2f"
+  },
+  "full_self_audit": {
+    "tests_collected": 971,
+    "tests": {
+      "passed": 970,
+      "failed": 0,
+      "skipped": 5,
+      "errors": 0
+    },
+    "coverage_total": 74,
+    "chains": {
+      "total": 11,
+      "pass": 10,
+      "skip": 1,
+      "fail": 0
+    },
+    "source_stable": true,
+    "receipt_sha256": "e5b856c62d176fd855ddf62caf8a68d2548cbf456f42d35e62fde19c5f79c392"
+  },
+  "paired_live_record": {
+    "path": "docs/RECOVERY-LIVE-ACCEPTANCE.json",
+    "sha256": "fce536207c4ac9b4f84dc380dfae751a5ddb4c1bf07e8b35187b1c20bf8c02ab",
+    "before_source_commit": "c12acdd617f1bac1d2449d2cb98dc7b085a5e404",
+    "after_controls_per_platform": 13,
+    "failure_optimization_controls_per_platform": 6
+  },
+  "historical_record": "docs/archive/core-recovery-acceptance-c12acdd.json",
+  "read_only_reviews": [
+    {
+      "role": "code-reviewer",
+      "status": "APPROVE"
+    },
+    {
+      "role": "python-reviewer",
+      "status": "APPROVE"
+    }
+  ],
+  "prior_failure_logs": {
+    "service-contract-before.log": "8fbd1fec11290177d5b3ec365c228c6bfd48e34e8ddefdb3b79b4ef113f3145c",
+    "preflight-command-before.log": "f00bee0b2a64045202da654ecdf25ffa3f56f11ce2afb3e2432ac1752bb2a50c",
+    "listener-table-before.log": "e1a830b36cf0123c44e87d7170d4b642d3d80cb0ab42c965999f91174fece1c6"
+  },
+  "preserved": [
+    "three consecutive fault samples",
+    "cooldown and per-incident attempt budget",
+    "durable pre-launch reservation",
+    "auto/manual ownership and idempotent terminal events",
+    "explicit refresh/recovery controls",
+    "resident monitor/Startup and failure history"
+  ],
+  "limits": [
+    "Disposable actual HTTP processes, not real model-service restarts or legacy loaded-process migration.",
+    "Source and installed lifecycle/delivery/reproduction qualify different paths; installed recovery remains unqualified.",
+    "No multi-file reader snapshot, power-loss, reboot/logon, full-duration retry or clean24h guarantee.",
+    "401/403 qualify endpoint presence, not credential or inference success."
+  ]
+}

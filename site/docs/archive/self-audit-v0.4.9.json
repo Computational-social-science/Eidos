@@ -1,0 +1,62 @@
+{
+  "chains": {
+    "total": 11,
+    "pass": 10,
+    "skip": 1,
+    "fail": 0
+  },
+  "tests_collected": 971,
+  "tests": {
+    "passed": 970,
+    "failed": 0,
+    "skipped": 5,
+    "errors": 0
+  },
+  "stability": {
+    "stable": true,
+    "before": {
+      "source_sha256": "709f29e2b3bb648e36fcfd75a45a8bd5361364be3662e9dd6a6178a3d169bef9",
+      "distribution_sha256": "4eaad580358b5eafc14b150ce1cb5c65d8a12e74a641296a8266d76c3ba8c566"
+    },
+    "after": {
+      "source_sha256": "709f29e2b3bb648e36fcfd75a45a8bd5361364be3662e9dd6a6178a3d169bef9",
+      "distribution_sha256": "4eaad580358b5eafc14b150ce1cb5c65d8a12e74a641296a8266d76c3ba8c566"
+    },
+    "collection_after": 971,
+    "execution": {
+      "reported_items": 971,
+      "collection_level_skips": 4
+    },
+    "deselection_detected": false,
+    "collected_ids": 971,
+    "unique_ids": 971,
+    "recollected_ids": 971,
+    "scope": "Framework/tools/tests Python sources, project version/lock/README/claims, installed distribution names+versions, collected test IDs"
+  },
+  "skip_reasons": [
+    "SKIPPED [1] tests\\test_grokking_torch.py:3: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_softmax_matrix_torch.py:4: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_softmax_training_torch.py:5: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_stable_numerics_torch.py:6: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_process_nested_lifecycle.py:19: POSIX delayed cleanup handoff"
+  ],
+  "diagnostics": {},
+  "coverage_total": 74,
+  "coverage_scope": "framework; unexecuted modules included; tests and tools excluded",
+  "gate_s": {
+    "fixture_status": "PASS"
+  },
+  "self_gate_s": {
+    "status": "PASS",
+    "findings": [],
+    "open_objections": 0
+  },
+  "exit_codes": {
+    "chains": 0,
+    "gate_s": 0,
+    "self_gate_s": 0,
+    "test_collection": 0,
+    "test_collection_after": 0,
+    "tests": 0
+  }
+}

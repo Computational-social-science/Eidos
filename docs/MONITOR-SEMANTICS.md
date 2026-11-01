@@ -42,7 +42,37 @@ The presentation guard recomputes named state and rejects a contradictory
 cached overall verdict. It does not run probes, rerun experiments, or rewrite
 sampler evidence. Recovery terminal events from an earlier attempt or another
 service cannot verify a new attempt. Controls and input binding continue to
-use the existing project registry and `consumer_freshness` rules.
+use the existing project registry and snapshot checks. Monitor cards, sampling
+and the homepage share `tools.consumer_observation.verification_freshness`.
+
+## Verification and measurement are separate clocks
+
+The previous positive-consumer rule aged the original experiment, while negative
+controls aged their latest Gate S check. This produced an actual ALARM with no
+unexpected consumer verdict: evidence was about 26 hours old, but the same
+unchanged inputs had been verified less than one hour earlier. The source of the
+alarm was age, not a crashed service.
+
+Operational freshness now uses the actual `checked_at` for both declared PASS
+and FAIL expectations. This does not grant a verdict: input changes still
+withdraw cached results, and unexpected verdicts remain independent faults.
+Missing, naive, malformed, expired or excessively future-dated verification
+times cannot produce MATCH. The existing 60-second clock-skew tolerance is
+explicit; timestamps beyond it are rejected. The 24-hour verification limit
+remains, so an expired check still requires a real recheck.
+
+Cards display original evidence age separately. Neither evidence contents nor
+experiment timestamps are rewritten; verification does not rerun the experiment.
+The separate seven-day calibration-measurement age signal is unchanged. A fresh
+operational check does not establish recency of time-dependent scientific data;
+projects must enforce their actual data-recency requirements through their
+declared checks. Age alone does not execute arbitrary consumer research.
+
+The [observation receipt](CONSUMER-OBSERVATION-ACCEPTANCE.json) records the paired
+v0.4.9 fixture, preserved production evidence and advancing live OK samples.
+The existing website source-loading mechanism picked up the repair; no service
+stop/restart, manual module reload or alarm-history deletion was used. This
+does not qualify the still-pending migration of legacy interpreters or processes.
 
 Validation: targeted dashboard, consumer-binding and presentation regression
 tests; executed JavaScript with DOM doubles for PASS-to-FAIL transitions,

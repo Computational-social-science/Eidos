@@ -1,12 +1,13 @@
 {
-  "generated": "2026-11-01T05:34:24.973938+00:00",
-  "assessor": "Codex: exact pixel comparison of all36pages to inspected v0.4.8 baseline, plus manual full-page review of both changed pages.",
+  "generated": "2026-11-01T09:08:07.823863+00:00",
+  "assessor": "Codex: exact pixel comparison of all 36 pages to inspected v0.4.9 baseline; manual full-page review of all six changed pages.",
   "scope": "Rendered PDF and Word pages only; web layout is a separate browser check. Manuscript spacing permits whitespace before intact figures/tables.",
   "submission_ready": false,
+  "baseline_tag": "v0.4.9",
   "reports": [
     {
       "path": "site/reports/numerics/report.pdf",
-      "sha256": "926172009edae2021b8b401e496ad13a687e1f4c56a141cddc22298a6f6ebde6",
+      "sha256": "42ad65c0d228b1aa52df88a096d45ceed539058818ecaed2c9753920a78a66fa",
       "pages_inspected": [
         1,
         2,
@@ -20,7 +21,7 @@
       "renderer": "Poppler",
       "page_png_sha256": [
         "5a721d8c8fd6a3d94bcab23258f40790add2b7d7d586e0f37119d068c54b03c2",
-        "2ed26790093b390da96c6d2c892582a65f1be5c36bbb665c29f9977aa3ef7f43",
+        "dbeacedf597d1c2d2dc86bc89f989553730539b012dcc78eb984e0aaef7528cf",
         "7330dfc4b56904a66d0540d7fef5de8f3238c39410e1bba9c56242eefb53584d",
         "36112ba1d8923ecfcec10ec2b1ffe23f6585dc6e3fbeb5211ffdf987c5842af9",
         "1b7f9c95ac2ce92fd2b7f9b6bc12e7abbad1844d47140655dfda0fc0f55724a3",
@@ -41,7 +42,7 @@
     },
     {
       "path": "site/reports/numerics/report.docx",
-      "sha256": "44072f6392b60890533b82c80963cdee6c908177d830ef6c9a1bcb3947a25082",
+      "sha256": "870424c25d212cd384119672d900be95429b9baeca63910df2d1ef2e3a126f5e",
       "pages_inspected": [
         1,
         2,
@@ -55,7 +56,7 @@
       "renderer": "Bundled render_docx.py PNG pipeline; native Microsoft Word read-only conversion adapter",
       "page_png_sha256": [
         "0dcd5ed98eb7c949f3024a07aa8d77035f5f33e67221fb367e9400b09f8fb2e0",
-        "0d21da4a558833cc14ddb15b6d8bdda4650c8c9808609b49fbdf7b41c15fef0b",
+        "be2f14e59ab9ae71413b06c0a1b802d0f84b08a25244f76b03f7612fec10f9d7",
         "8946a42950d26320a80d1ee961f599d7a9db9c27f856c0ec5a80e06044b472f4",
         "485d553f9b0551d9df6a967100a216baad21a72cd6437af4e1989d30519e82b2",
         "60daad8f065666a94411181e944267429d48c4e5a0607a74b29cf6f5376696cd",
@@ -76,7 +77,7 @@
     },
     {
       "path": "site/reports/softmax-matrix/report.pdf",
-      "sha256": "e2870ab0aa5f26c86e8e03df935a857a68a043a7f2b87046848346ce6348d1a9",
+      "sha256": "f4cd87975fa9b1ef3dc05f1b5e4820a7cfef2ff1928c7a085d558792d2b22a16",
       "pages_inspected": [
         1,
         2,
@@ -91,8 +92,8 @@
         "5ee6e5dc094dbe163b78d88d39287c6ce28d06f9cf79c358dac1e6a6d1f0ad85",
         "03db1841d6244ddd5d835a09658dda42771088a46c9697a5e59b4eba08821c2a",
         "81fcf286ec87f50120b26fb795ef94bfc4690dcf046661073487938348c536f5",
-        "d911653e0e44f586dcf0862d815eacd3f310651d21f25a8c4f964d6cb66c97d9",
-        "8be7cd5d4c5d25e20da2aabdd656913d95925ad903fb2dceb31d55e0eea543cf"
+        "bf4a77fe2a75e7c782af5a544030c8b7e4a0ecad86287506b8f22311f8dd497c",
+        "1f044f919c129411a0e375c007b7d9ec5d4e99140c88e1723859592b8283bf00"
       ],
       "outcome": "PASS",
       "checked": [
@@ -107,7 +108,7 @@
     },
     {
       "path": "site/reports/softmax-matrix/report.docx",
-      "sha256": "666ac4ae9562991e8427316a69029ad2006c3682db583a8cacc2ad4ab8d9bb8e",
+      "sha256": "8d75a962822cfc8fdb49de22d6c8f1fb4a32f506f144d1b1b82884a6bd7ed9ef",
       "pages_inspected": [
         1,
         2,
@@ -122,8 +123,8 @@
         "f117ca065013b2b8af627b9b73af6b46b83e8258130622f8f49003621ec5f86b",
         "063fb55728bc9ad0413a74a3a1a84349eb7797c31c02c3be8cfbc6f057be0d3d",
         "f6e0eb972ea245922c46dab77c0d64780f181f68076182f33b8d9356106c6187",
-        "679ef83127fcca7d9a34cc233e8759f79c1e4385ff120ec4898e17440f4cb2c3",
-        "2b869e086cc5de5a209bc115c0ab366e4069824731671c08c18e00296b08be42"
+        "64675ed72cec97f450f70aef14e8b79471f50a9f64fb71a08ad4625524f3be2e",
+        "9e7af8ffd4f74f0466d2964e14d5fb0892d6c7d533a1e64d39d95c9bdbfcb622"
       ],
       "outcome": "PASS",
       "checked": [
@@ -138,7 +139,7 @@
     },
     {
       "path": "site/reports/hpaf-metric/report.pdf",
-      "sha256": "2394936f3be78d521811bb710472e89fde2b40b0c7cc7cdf1dc5376f857599dc",
+      "sha256": "e02cd7f22e9ed75d63dd0d39ad1cbf942b8d9023d6844ed1d75d0d8f02d1f1dd",
       "pages_inspected": [
         1,
         2,
@@ -165,7 +166,7 @@
     },
     {
       "path": "site/reports/hpaf-metric/report.docx",
-      "sha256": "ac3192943e8c933990e0ad974456391fe3ad9848685eec849ac6e3b6743b4905",
+      "sha256": "28c706a02d4488708edee8d6b1cec86c52a5f77fca81a9c45bb9f8c722c909cb",
       "pages_inspected": [
         1,
         2,
@@ -191,7 +192,6 @@
       ]
     }
   ],
-  "baseline_tag": "v0.4.8",
   "page_comparison": [
     {
       "path": "site/reports/numerics/report.pdf",
@@ -205,12 +205,12 @@
       "page": 2,
       "pixel_identical": false,
       "difference_bbox": [
-        851,
+        63,
         413,
-        860,
-        428
+        927,
+        551
       ],
-      "changed_region_review": "Manually inspected full page: only version glyph 0.4.8 to 0.4.9 changed; no overlap, clipping or changed scientific content."
+      "changed_region_review": "Full page visually inspected: v0.4.10 version line remains readable with valid line wrapping."
     },
     {
       "path": "site/reports/numerics/report.pdf",
@@ -268,10 +268,10 @@
       "difference_bbox": [
         1237,
         675,
-        1250,
-        696
+        1272,
+        700
       ],
-      "changed_region_review": "Manually inspected full page: only version glyph 0.4.8 to 0.4.9 changed; no overlap, clipping or changed scientific content."
+      "changed_region_review": "Full page visually inspected: v0.4.10 version line remains readable with valid line wrapping."
     },
     {
       "path": "site/reports/numerics/report.docx",
@@ -346,16 +346,26 @@
     {
       "path": "site/reports/softmax-matrix/report.pdf",
       "page": 5,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
+      "pixel_identical": false,
+      "difference_bbox": [
+        36,
+        403,
+        929,
+        1293
+      ],
+      "changed_region_review": "Full page visually inspected: original experiment lock and scoped frozen-resolution attestation text, line numbering and references remain readable; no overlap or clipping."
     },
     {
       "path": "site/reports/softmax-matrix/report.pdf",
       "page": 6,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
+      "pixel_identical": false,
+      "difference_bbox": [
+        36,
+        116,
+        47,
+        296
+      ],
+      "changed_region_review": "Full page visually inspected: original experiment lock and scoped frozen-resolution attestation text, line numbering and references remain readable; no overlap or clipping."
     },
     {
       "path": "site/reports/softmax-matrix/report.docx",
@@ -388,16 +398,26 @@
     {
       "path": "site/reports/softmax-matrix/report.docx",
       "page": 5,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
+      "pixel_identical": false,
+      "difference_bbox": [
+        39,
+        1634,
+        1273,
+        1792
+      ],
+      "changed_region_review": "Full page visually inspected: original experiment lock and scoped frozen-resolution attestation text, line numbering and references remain readable; no overlap or clipping."
     },
     {
       "path": "site/reports/softmax-matrix/report.docx",
       "page": 6,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
+      "pixel_identical": false,
+      "difference_bbox": [
+        39,
+        154,
+        67,
+        1436
+      ],
+      "changed_region_review": "Full page visually inspected: original experiment lock and scoped frozen-resolution attestation text, line numbering and references remain readable; no overlap or clipping."
     },
     {
       "path": "site/reports/hpaf-metric/report.pdf",
@@ -456,5 +476,5 @@
       "changed_region_review": null
     }
   ],
-  "identical_pages": 34
+  "identical_pages": 30
 }

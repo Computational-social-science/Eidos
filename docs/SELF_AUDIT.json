@@ -5,32 +5,32 @@
     "skip": 1,
     "fail": 0
   },
-  "tests_collected": 971,
+  "tests_collected": 1104,
   "tests": {
-    "passed": 970,
+    "passed": 1102,
     "failed": 0,
-    "skipped": 5,
+    "skipped": 6,
     "errors": 0
   },
   "stability": {
     "stable": true,
     "before": {
-      "source_sha256": "709f29e2b3bb648e36fcfd75a45a8bd5361364be3662e9dd6a6178a3d169bef9",
-      "distribution_sha256": "4eaad580358b5eafc14b150ce1cb5c65d8a12e74a641296a8266d76c3ba8c566"
+      "source_sha256": "569b8a6f3ef218a9ac23a51b88ff007bfcf0d1380fd0df5df522cf84a1de9e8a",
+      "distribution_sha256": "bd1d8885d95bc93a4da5535014836f668273b310fbeb6100fb1b3bb03b0e22ed"
     },
     "after": {
-      "source_sha256": "709f29e2b3bb648e36fcfd75a45a8bd5361364be3662e9dd6a6178a3d169bef9",
-      "distribution_sha256": "4eaad580358b5eafc14b150ce1cb5c65d8a12e74a641296a8266d76c3ba8c566"
+      "source_sha256": "569b8a6f3ef218a9ac23a51b88ff007bfcf0d1380fd0df5df522cf84a1de9e8a",
+      "distribution_sha256": "bd1d8885d95bc93a4da5535014836f668273b310fbeb6100fb1b3bb03b0e22ed"
     },
-    "collection_after": 971,
+    "collection_after": 1104,
     "execution": {
-      "reported_items": 971,
+      "reported_items": 1104,
       "collection_level_skips": 4
     },
     "deselection_detected": false,
-    "collected_ids": 971,
-    "unique_ids": 971,
-    "recollected_ids": 971,
+    "collected_ids": 1104,
+    "unique_ids": 1104,
+    "recollected_ids": 1104,
     "scope": "Framework/tools/tests Python sources, project version/lock/README/claims, installed distribution names+versions, collected test IDs"
   },
   "skip_reasons": [
@@ -38,10 +38,11 @@
     "SKIPPED [1] tests\\test_softmax_matrix_torch.py:4: could not import 'torch': No module named 'torch'",
     "SKIPPED [1] tests\\test_softmax_training_torch.py:5: could not import 'torch': No module named 'torch'",
     "SKIPPED [1] tests\\test_stable_numerics_torch.py:6: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_audit_stray.py:213: POSIX FIFO control; exercised on Linux",
     "SKIPPED [1] tests\\test_process_nested_lifecycle.py:19: POSIX delayed cleanup handoff"
   ],
   "diagnostics": {},
-  "coverage_total": 74,
+  "coverage_total": 75,
   "coverage_scope": "framework; unexecuted modules included; tests and tools excluded",
   "gate_s": {
     "fixture_status": "PASS"

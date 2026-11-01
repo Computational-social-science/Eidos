@@ -336,3 +336,25 @@ Linux 追踪通过项明确采用私有 tmpfs 临时工作区与缓存；普通 
 对同一份 40 小时证据、同一个刚完成的核验，直接执行已发布 v0.4.9 dashboard 原始源码得到 STALE，修复后为 MATCH；证据字节与 mtime 均未变。在线连续观测从 seq 14272 增至 14288，均为新鲜 OK；原 ALARM 到 OK 的历史转换保留。相关 181 项检查通过，覆盖异常判定、输入变更、缺失/过期核验及有界时钟偏差；当前完整源码复验为 1086 通过、5 跳过、0 失败/错误，覆盖率 75%，1087 个收集项一致且源码与依赖快照稳定。
 
 24 小时核验限制与单独的七天校准测量年龄信号没有取消。新鲜核验不等于时间敏感科研数据变新，也不授予科学有效性。网站通过既有源码加载机制采纳修复，没有停止/重启服务、手动模块重载或清空告警。旧解释器/常驻进程迁移仍须单独验收。见 [监测语义](docs/MONITOR-SEMANTICS.md) 与 [核验时钟收据](docs/CONSUMER-OBSERVATION-ACCEPTANCE.json)。
+
+## 2026-11-01: verified release baseline and proposed RSI roadmap
+
+The v0.4.10 publication was verified at commit
+`1b5157a08fa525eba0cf6a252616cee8681192b8`: six exact-commit CI jobs
+succeeded and all nineteen release assets matched their Git bytes. The v0.4.9
+annotated tag and sixteen existing assets remained unchanged. This is a
+publication-time verification; later documentation may advance `main`. It does
+not certify resident-process migration or scientific RSI. Earlier candidate
+counts above are historical; the final source audit records 1,110 passing tests,
+six skips including collection-level skips, and ten passing chains plus one skip.
+
+The English, LLM-consumable
+[RSI optimization plan](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-OPTIMIZATION-PLAN.md)
+defines bootstrap as initialization and identifies independently verified
+improvement of the improvement procedure as the critical recursive link. It
+proposes a finite on-demand campaign, independent sealed evaluation, explicit
+attribution, fixed-budget C0/C1/C2 comparisons, promotion/rollback gates and
+research transfer. These are proposed milestones, not newly implemented
+capabilities. Scientific RSI remains unproven. Self-check, bounded self-healing,
+the existing monitor and manual controls remain required; no new CRON research
+loop is proposed.

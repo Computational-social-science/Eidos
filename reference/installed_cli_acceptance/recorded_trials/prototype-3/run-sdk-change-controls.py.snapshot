@@ -1,0 +1,38 @@
+"""Old/new actual acceptance replay under a post-console installed-source fault."""
+import json
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+
+BASE=Path(__file__).resolve().parent
+OUT=Path(tempfile.mkdtemp(prefix='sdk-window-controls-',dir=BASE))
+
+
+def run(label,argv):
+    result=subprocess.run(list(map(str,argv)),cwd=OUT,capture_output=True,timeout=180)
+    (OUT/(label+'.stdout')).write_bytes(result.stdout)
+    (OUT/(label+'.stderr')).write_bytes(result.stderr)
+    if result.returncode:raise RuntimeError('Control failed: '+label+': '+result.stderr.decode('utf-8',errors='replace')[-1000:])
+
+
+rows=[]
+for version in ('v4','v5'):
+    prefix=OUT/version
+    run(version+'-venv',[sys.executable,'-m','venv',prefix])
+    py=prefix/'Scripts/python.exe'
+    run(version+'-deps',[shutil.which('uv'),'pip','install','--offline','--python',py,'--require-hashes','-r',BASE/'core-requirements.txt'])
+    folder=BASE/('portable-input-'+version)
+    run(version+'-wheel',[shutil.which('uv'),'pip','install','--offline','--no-deps','--python',py,folder/'eidos-0.5.0-py3-none-any.whl'])
+    arguments=[py,'-I',BASE/'inject-sdk-change.py','--driver',folder/'cli.py','--record',OUT/(version+'-injection.json'),
+               '--fixture',folder/'fixture','--out',OUT/(version+'-results'),'--expected-version','0.5.0']
+    if version=='v5':arguments+=['--wheel',folder/'eidos-0.5.0-py3-none-any.whl','--identity-driver',folder/'numerical.py']
+    run(version+'-injection',arguments)
+    value=json.loads((OUT/(version+'-injection.json')).read_text())
+    if value['driver_accepted']!=(version=='v4'):raise RuntimeError('Unexpected identity-window outcome')
+    if version=='v5' and 'Whole-wheel identity failed: identity-after' not in (value['error'] or ''):
+        raise RuntimeError('Final identity was not the rejecting mechanism')
+    rows.append({'driver':version,'driver_accepted':value['driver_accepted'],'sdk_changed':True})
+(OUT/'record.json').write_text(json.dumps({'status':'PASS','rows':rows,'scope':'Harness identity-window fault control, not a framework/RSI improvement claim'},indent=2)+'\n')
+print(json.dumps({'record':str(OUT/'record.json'),'rows':rows},indent=2))

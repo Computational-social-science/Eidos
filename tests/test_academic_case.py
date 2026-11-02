@@ -48,6 +48,25 @@ def test_public_source_documents_are_available_under_the_site_root(tmp_path):
     assert (tmp_path/'site/docs/ACADEMIC_POSITIONING.md').read_bytes()==source.read_bytes()
 
 
+def test_public_reuse_guides_keep_their_local_link_targets(tmp_path):
+    import re
+    from tools.site_documents import publish
+    sources={
+        'README.md':'[Project reuse](docs/PROJECT_INTEGRATION.md)',
+        'docs/PROJECT_INTEGRATION.md':'[Development](CLI-REUSE-DEVELOPMENT.md) [Stable publication](RELEASE-PUBLICATION-0.4.12.json)',
+        'docs/CLI-REUSE-DEVELOPMENT.md':'Unreleased development; stable release remains separate.',
+        'docs/RELEASE-PUBLICATION-0.4.12.json':'{"version":"0.4.12"}',
+    }
+    for relative,body in sources.items():
+        path=tmp_path/relative;path.parent.mkdir(parents=True,exist_ok=True)
+        path.write_text(body,encoding='utf-8')
+    publish(tmp_path)
+    for relative in ('README.md','docs/PROJECT_INTEGRATION.md'):
+        document=tmp_path/'site'/relative
+        for target in re.findall(r'\]\(([^)]+)\)',document.read_text(encoding='utf-8')):
+            assert (document.parent/target).is_file(),f'Published guide has missing local target: {target}'
+
+
 def test_actual_scientific_probe_model_is_named_without_promoting_it():
     from tools import build_site
     import site_page

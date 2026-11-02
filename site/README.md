@@ -1,6 +1,9 @@
 # EIDOS — scientific claims, executable evidence
 
-**Version 0.4.12** · initial development · local-first · MIT framework
+**Version 0.5.0** · initial development · local-first · MIT framework
+
+Development branch: the installed CLI below is under qualification and is not
+part of the published 0.4.12 release. See [development scope](docs/CLI-REUSE-DEVELOPMENT.md).
 
 [![CI](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml/badge.svg)](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
 
@@ -14,6 +17,11 @@ Start with the [scientific showcase](index.html),
 [functional completeness ledger](docs/FUNCTIONAL_COMPLETENESS.md).
 The monitor and website serve different jobs: research interpretation belongs on
 the website; current execution state belongs in the monitor.
+
+For a new research repository, see the [downstream deployment decision](docs/PROJECT_INTEGRATION.md#deployment-decision-in-brief):
+pinned SDK/CLI, optional shared dashboard, thin Agent entry points and an explicit
+feedback-to-release-to-project replay loop. The current installed CLI is an
+unreleased candidate; it does not automatically enroll projects in the monitor.
 
 ![The scientific argument and measured case](docs/screens/web/index-top.webp)
 

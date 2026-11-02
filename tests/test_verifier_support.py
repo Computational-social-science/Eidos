@@ -105,3 +105,23 @@ def test_support_required_without_a_record_blocks_and_with_one_passes(tmp_path, 
                             "text": SOURCE[start:start + 8]}, source_text=SOURCE)
     findings, blocked = _gate(root)._verifier_findings([{"id": "C3", "support": "required"}])
     assert findings == [] and blocked == []
+
+
+def test_another_project_cannot_borrow_the_same_claim_id(tmp_path,monkeypatch):
+    project_a=tmp_path/'a';project_b=tmp_path/'b'
+    store=project_a/'artifacts/literature/support'
+    support.record('C1',support.SUPPORTED,'project A claim',
+                   passage={'source':'fixture','start':0,'end':1,'text':'a'},source_text='a',store=store)
+    monkeypatch.setattr(support,'STORE',store)
+    findings,blocked=_gate(project_b)._verifier_findings([{'id':'C1','support':'required'}])
+    assert findings==[]
+    assert any('support unchecked' in item for item in blocked)
+
+
+def test_project_local_support_does_not_depend_on_an_sdk_global_store(tmp_path,monkeypatch):
+    project=tmp_path/'study';store=project/'artifacts/literature/support'
+    support.record('C1',support.SUPPORTED,'this project claim',
+                   passage={'source':'fixture','start':0,'end':1,'text':'a'},source_text='a',store=store)
+    monkeypatch.setattr(support,'STORE',tmp_path/'unrelated-sdk-global')
+    findings,blocked=_gate(project)._verifier_findings([{'id':'C1','support':'required'}])
+    assert findings==[] and blocked==[]

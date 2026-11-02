@@ -6,24 +6,29 @@ fixture, or if the clean control is rejected. Running it from pytest keeps it in
 
 from __future__ import annotations
 
-import subprocess
+import os
 import sys
 import json
 from pathlib import Path
 
+from framework.subprocesses import run_tree
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def fixture_audit(*arguments):
+    return run_tree([sys.executable,'tools/audit_fixtures.py',*arguments],cwd=ROOT,
+                    timeout=300,env=dict(os.environ,PYTHONIOENCODING='utf-8'))
+
+
 def test_every_check_has_a_fixture_that_trips_it():
-    run = subprocess.run([sys.executable, "tools/audit_fixtures.py"], cwd=ROOT,
-                         capture_output=True, text=True, timeout=300)
+    run = fixture_audit()
     assert run.returncode == 0, run.stdout + run.stderr
     assert "S1-S12 each trip once" in run.stdout
 
 
 def test_the_clean_fixture_is_not_rejected():
-    run = subprocess.run([sys.executable, "tools/audit_fixtures.py", "--verbose"], cwd=ROOT,
-                         capture_output=True, text=True, timeout=300)
+    run = fixture_audit('--verbose')
     line = [l for l in run.stdout.splitlines() if l.startswith("clean")][0]
     assert "PASS" in line and "ok" in line, line
 

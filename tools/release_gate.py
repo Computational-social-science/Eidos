@@ -29,7 +29,9 @@ TEMPLATE = ROOT / "reference" / "demo_onboarding"
 def _run(cmd: list[str], cwd: Path, timeout: int = 900) -> subprocess.CompletedProcess:
     # The template locates the framework by walking up, which fails for a rehearsal outside the
     # repository; EIDOS_ROOT states it explicitly, exactly as a real external project would.
-    env = dict(os.environ, EIDOS_ROOT=str(ROOT))
+    # The owned rehearsal uses UTF-8 captured streams regardless of the parent
+    # console's locale or Python stdio setting. Do not change the parent env.
+    env = dict(os.environ, EIDOS_ROOT=str(ROOT), PYTHONIOENCODING='utf-8')
     from tools.bounded_process import run_tree
     return run_tree(cmd,cwd=cwd,timeout=timeout,env=env)
 

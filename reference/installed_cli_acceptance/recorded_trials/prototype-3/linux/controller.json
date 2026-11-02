@@ -1,0 +1,69 @@
+{
+  "owner": "e2073693ae834e8cbf6b3bd2cf2582b7",
+  "status": "PASS",
+  "started": "2026-11-02T13:27:19.154009+00:00",
+  "output": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\portable-linux-0cy8s39n",
+  "controller_sha256": "8f3ae019f943f323cc94ebd765184a6e26a6cc31adc364c76cdef948ef440911",
+  "image_id": "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+  "manifest_sha256": "127f7238f8610934f44402fbbd3ba88a7ada4ebd95e1da1f6154d242f2ed2097",
+  "container_id": "068f4a94ef74c279f7a972223d04e291df4c1830b67270b76460642ba6278bdf",
+  "before": {
+    "state": {
+      "Status": "created",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "0001-01-01T00:00:00Z",
+      "FinishedAt": "0001-01-01T00:00:00Z"
+    },
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\portable-input-v5",
+        "Destination": "/input",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\portable-linux-0cy8s39n",
+        "Destination": "/out",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\linux-wheels",
+        "Destination": "/wheels",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ],
+    "network": "none"
+  },
+  "after": {
+    "state": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-11-02T13:27:21.629244007Z",
+      "FinishedAt": "2026-11-02T13:27:52.52269536Z"
+    },
+    "network": "none"
+  },
+  "cleanup_verified": true
+}

@@ -1,0 +1,1 @@
+{"status": "REFUSED", "reason": "[Errno 17] File exists: 'C:\\\\Users\\\\Administrator\\\\AppData\\\\Local\\\\Temp\\\\eidos-cli-console-1xgg2_bg\\\\feedback.zip'", "scientific_status": "UNRUN", "schema": "eidos.cli-result.v1", "operation": "feedback"}

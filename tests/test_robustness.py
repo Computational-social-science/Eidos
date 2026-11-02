@@ -8,15 +8,18 @@ gate that exits 0 without producing an artefact count as approval?
 from __future__ import annotations
 
 import subprocess
+import os
 import sys
 from pathlib import Path
+
+from framework.subprocesses import run_tree
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def _run(script: str) -> subprocess.CompletedProcess:
-    return subprocess.run([sys.executable, script], cwd=ROOT, capture_output=True,
-                          text=True, timeout=300)
+    return run_tree([sys.executable,script],cwd=ROOT,timeout=300,
+                    env=dict(os.environ,PYTHONIOENCODING='utf-8'))
 
 
 def test_no_wrong_register_passes():

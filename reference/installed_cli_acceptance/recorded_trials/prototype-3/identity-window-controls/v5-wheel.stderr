@@ -1,0 +1,5 @@
+Using Python 3.12.4 environment at: v5
+Resolved 1 package in 1ms
+Prepared 1 package in 18ms
+Installed 1 package in 45ms
+ + eidos==0.5.0 (from file:///C:/Users/Administrator/.cache/eidos-cli-acceptance/portable-input-v5/eidos-0.5.0-py3-none-any.whl)

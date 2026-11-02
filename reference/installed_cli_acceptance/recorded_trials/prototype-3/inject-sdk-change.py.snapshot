@@ -1,0 +1,50 @@
+"""Inject one byte-identity fault after the final real console case."""
+import argparse
+import contextlib
+import hashlib
+import io
+import json
+from pathlib import Path
+import runpy
+import sys
+import traceback
+
+parser=argparse.ArgumentParser()
+parser.add_argument('--driver',type=Path,required=True)
+parser.add_argument('--record',type=Path,required=True)
+args,remaining=parser.parse_known_args()
+module=runpy.run_path(str(args.driver))
+globals_=module['main'].__globals__
+original=globals_['run_tree']
+injected={}
+
+
+def instrument(command,**kwargs):
+    result=original(command,**kwargs)
+    words=list(map(str,command))
+    if (not injected and '--project' in words and 'check' in words
+            and Path(words[words.index('--project')+1]).name=='bad-evidence'):
+        import framework
+        target=Path(next(iter(framework.__path__)))/'cli.py'
+        before=target.read_bytes()
+        target.write_bytes(before+b'\n# deliberate installed identity qualification fault\n')
+        injected.update(path=str(target),before_sha256=hashlib.sha256(before).hexdigest(),
+                        after_sha256=hashlib.sha256(target.read_bytes()).hexdigest())
+    return result
+
+
+globals_['run_tree']=instrument
+sys.argv=[str(args.driver),*remaining]
+output=io.StringIO();error=None
+try:
+    with contextlib.redirect_stdout(output):module['main']()
+except Exception:
+    error=traceback.format_exc()
+args.record.parent.mkdir(parents=True,exist_ok=True)
+args.record.with_suffix('.stdout').write_text(output.getvalue(),encoding='utf-8')
+args.record.with_suffix('.stderr').write_text(error or '',encoding='utf-8')
+if not injected:raise RuntimeError('Fault injection did not execute')
+record={'driver':str(args.driver),'injected':injected,'driver_accepted':error is None,'error':error,
+        'scope':'Dedicated disposable prefix only; positive qualified prefixes untouched'}
+args.record.write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8')
+print(json.dumps({'record':str(args.record),'injected':True,'driver_accepted':error is None}))

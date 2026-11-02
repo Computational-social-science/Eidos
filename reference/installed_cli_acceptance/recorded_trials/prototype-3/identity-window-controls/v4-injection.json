@@ -1,0 +1,11 @@
+{
+  "driver": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\portable-input-v4\\cli.py",
+  "injected": {
+    "path": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\sdk-window-controls-0wojykdx\\v4\\Lib\\site-packages\\framework\\cli.py",
+    "before_sha256": "51a1a1f2e77cf19ef46fc01cc046506962537c3fedbef2234548fbc4ad0d4664",
+    "after_sha256": "d170cac295887ab85fea35aebf03ca11158b3e9a35c35f8c6d56361809374e2f"
+  },
+  "driver_accepted": true,
+  "error": null,
+  "scope": "Dedicated disposable prefix only; positive qualified prefixes untouched"
+}

@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "C:\Users\Administrator\.cache\eidos-cli-acceptance\portable-input-v2\cli.py", line 125, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "C:\Users\Administrator\.cache\eidos-cli-acceptance\portable-input-v2\cli.py", line 25, in main
+    raise RuntimeError('Use an isolated non-optimized invocation in a dedicated installed venv')
+RuntimeError: Use an isolated non-optimized invocation in a dedicated installed venv

@@ -1,6 +1,6 @@
 # Eidos：可复核科研流水线技术框架
 
-**实现基线：0.4.12（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
+**实现基线：0.5.0（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
 
 运行部署边界：核查发现现存监控及两条旧链路循环仍使用全局 Python 3.14；本地启动配置已选择项目 Python 3.12，但受控停止/重启被自动审批以 blocked by policy 拒绝，未执行、未改道终止。新增调度循环源码已补 OS 生命周期锁、单次 tick 互斥、隐藏子进程树超时清理及原子心跳；这些规则不会追溯应用到旧进程。运行迁移仍为 PENDING，不能以网页可访问或源码测试通过替代实际部署验收。详见 docs/MONITOR-RUNTIME-MIGRATION-2026-11-01.json。
 
@@ -193,7 +193,7 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。
 
 <!-- self-audit:start -->
-本轮验收：1206 passed、2 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 75%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
+本轮验收：1237 passed、2 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 76%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
 <!-- self-audit:end -->
 
 既有 CUDA 16 项已独立通过；本轮未修改数值后端。
@@ -565,7 +565,7 @@ INDEPENDENTLY_VALIDATED -> RELEASED -> DOWNSTREAM_VERIFIED. Preserve original
 failures, add rejecting regression cases, validate independently and replay the
 new immutable dependency at the originating project before closing feedback.
 Generic installed CLI/init, incident export, distributed worker ingestion and a
-general EIDOS Agent remain planned. Improve on events with finite budgets and
+general EIDOS Agent were planned at that architecture checkpoint. Improve on events with finite budgets and
 retained self-check/self-healing; do not equate automatic source changes with
 scientific RSI or reintroduce external CRON research runs.
 
@@ -579,3 +579,48 @@ byte-identical retained artifacts. Technical production checks pass without
 asserting journal submission readiness. Version history now identifies source
 commit `208b12a` after the actual onboarding rehearsal; final metadata checks,
 exact-final-commit CI and GitHub publication remain pending.
+
+### Downstream deployment implementation update (2026-11-02 evening)
+
+The preceding publication-pending sentence is a historical checkpoint. Stable
+0.4.12 has since been published at `7a3d35e85736e3d245f4d9d83f10627a27a4d3d5`:
+ten exact-head remote jobs and 21 release assets were verified, with older
+0.4.10/0.4.11 release bytes retained. See
+[the publication receipt](docs/RELEASE-PUBLICATION-0.4.12.json).
+
+The default reuse architecture is now specified as independent project
+repositories/environments consuming pinned SDK releases, an optional shared
+local dashboard, and thin Agent/MCP entry points. Forks are for modifying EIDOS.
+The [English deployment decision](docs/PROJECT_INTEGRATION.md#deployment-decision-in-brief)
+defines ownership, availability, onboarding, feedback states and measurable
+improvement. Shared observation does not imply a shared interpreter, automatic
+upgrades, remote access through localhost, or scientific acceptance.
+
+An isolated **unreleased 0.5.0** branch implements the installed
+`init/check/status/report/feedback` CLI and model-free project workspace. Actual
+noneditable Windows probes exercise the console, numerical controls and HTML
+delivery. Runtime, input mutation and project-local support faults have rejecting
+controls. A subsequent configuration fix exposed a module-input regression;
+implicit YAML observation now remains separate from explicit code declarations.
+The focused suite passes 76 checks after that repair. Earlier full audits bind
+earlier sources and are not final-source release acceptance. See
+[development scope](docs/CLI-REUSE-DEVELOPMENT.md).
+
+The subsequent encoding/public-document controls brought the focused suite to
+95 passes. Final frozen source measured 1,237 passes, six skips, 76% framework
+coverage, ten passing chains and one skip, with stable source/dependency inputs.
+The installed portable profile passes 26 synthetic console controls on each of
+Windows and network-disabled same-host Linux, binding complete installed identity
+before/after. An independent installed-source mutation exposes the older
+harness's false provenance acceptance and is rejected by the final harness.
+Its [raw profile](https://github.com/Computational-social-science/Eidos/tree/feature/installed-cli/reference/installed_cli_acceptance)
+retains 419 payloads, rejected candidates and checksums. This does not release
+0.5.0 or qualify a new machine/complete research project. The development monitor
+preview is finite observation-only; the deployed 8765 service remains separate.
+
+Automatic enrollment, distributed/per-project worker observation, full incident
+repair/release/originating-project replay and a generic Agent remain open.
+Bootstrap prepares a project; sustained improvement requires independently
+accepted changes to reach downstream users and survive replay. Operational
+recovery, software reliability and scientific RSI have distinct evidence needs.
+No scientific RSI qualification follows from this CLI work.

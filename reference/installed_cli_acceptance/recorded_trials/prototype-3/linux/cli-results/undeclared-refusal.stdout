@@ -1,0 +1,1 @@
+{"status": "REFUSED", "reason": "Execution inputs are not observable: ValueError: module-mode gate requires explicit validity_inputs", "scientific_status": "UNRUN", "schema": "eidos.cli-result.v1", "operation": "check"}

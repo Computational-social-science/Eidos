@@ -1,6 +1,6 @@
 {
-  "asof": "2026-11-02T19:08:10+08:00",
-  "version": "0.4.12",
+  "asof": "2026-11-02T22:14:35+08:00",
+  "version": "0.5.0",
   "state": {
     "chains": {
       "total": 11,
@@ -8,8 +8,8 @@
       "skip": 1,
       "fail": 0
     },
-    "tests": 1208,
-    "coverage": 75,
+    "tests": 1239,
+    "coverage": 76,
     "instruments": [
       {
         "capability": "every Gate S check fires on a case built to trip it",
@@ -51,9 +51,9 @@
     "open_defects": 0
   },
   "evolution": {
-    "mutation_runs": 333,
-    "runs_with_a_blind_spot": 1,
-    "blind_spots_found": 1,
+    "mutation_runs": 8,
+    "runs_with_a_blind_spot": 0,
+    "blind_spots_found": 0,
     "blind_spots_open": 0,
     "releases": 22,
     "tests_by_release": [
@@ -83,10 +83,6 @@
       }
     ],
     "blind_spots_by_run": [
-      0,
-      0,
-      0,
-      0,
       0,
       0,
       0,

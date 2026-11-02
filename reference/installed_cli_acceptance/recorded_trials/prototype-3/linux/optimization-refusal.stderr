@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/input/cli.py", line 171, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/input/cli.py", line 29, in main
+    raise RuntimeError('Use an isolated non-optimized invocation in a dedicated installed venv')
+RuntimeError: Use an isolated non-optimized invocation in a dedicated installed venv

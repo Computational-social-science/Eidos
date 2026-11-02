@@ -1,0 +1,171 @@
+{
+  "schema": "eidos.installed-cli-acceptance.v1",
+  "status": "PASS",
+  "unreleased": true,
+  "sdk_version": "0.5.0",
+  "platform": "win32",
+  "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+  "prefix": "C:\\Users\\Administrator\\.cache\\eidos-cli-dev-venv",
+  "console": "C:\\Users\\Administrator\\.cache\\eidos-cli-dev-venv\\Scripts\\eidos.exe",
+  "cases": [
+    {
+      "case": "init",
+      "exit_code": 0,
+      "status": "INITIALIZED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "initial-refusal",
+      "exit_code": 4,
+      "status": "REFUSED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "execution-only",
+      "exit_code": 0,
+      "status": "PASS",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "missing-output",
+      "exit_code": 1,
+      "status": "FAIL",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "feedback",
+      "exit_code": 0,
+      "status": "EXPORTED",
+      "scientific_status": null
+    },
+    {
+      "case": "feedback-overwrite",
+      "exit_code": 4,
+      "status": "REFUSED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "missing-manuscript",
+      "exit_code": 4,
+      "status": "REFUSED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "scientific-init",
+      "exit_code": 0,
+      "status": "INITIALIZED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "scientific-pass",
+      "exit_code": 0,
+      "status": "PASS",
+      "scientific_status": "PASS"
+    },
+    {
+      "case": "module-change",
+      "exit_code": 0,
+      "status": "STALE",
+      "scientific_status": "STALE"
+    },
+    {
+      "case": "failed-worker",
+      "exit_code": 1,
+      "status": "FAIL",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "config-seed-init",
+      "exit_code": 0,
+      "status": "INITIALIZED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "seed-pass",
+      "exit_code": 0,
+      "status": "PASS",
+      "scientific_status": "PASS"
+    },
+    {
+      "case": "seed-change",
+      "exit_code": 0,
+      "status": "STALE",
+      "scientific_status": "STALE"
+    },
+    {
+      "case": "config-delivery-init",
+      "exit_code": 0,
+      "status": "INITIALIZED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "delivery-pass",
+      "exit_code": 0,
+      "status": "PASS",
+      "scientific_status": "PASS"
+    },
+    {
+      "case": "delivery-change",
+      "exit_code": 0,
+      "status": "STALE",
+      "scientific_status": "STALE"
+    },
+    {
+      "case": "config-comment-init",
+      "exit_code": 0,
+      "status": "INITIALIZED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "comment-pass",
+      "exit_code": 0,
+      "status": "PASS",
+      "scientific_status": "PASS"
+    },
+    {
+      "case": "comment-change",
+      "exit_code": 0,
+      "status": "STALE",
+      "scientific_status": "STALE"
+    },
+    {
+      "case": "undeclared-module-init",
+      "exit_code": 0,
+      "status": "INITIALIZED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "undeclared-refusal",
+      "exit_code": 4,
+      "status": "REFUSED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "bad-evidence-init",
+      "exit_code": 0,
+      "status": "INITIALIZED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "evidence-baseline",
+      "exit_code": 0,
+      "status": "PASS",
+      "scientific_status": "PASS"
+    },
+    {
+      "case": "evidence-change",
+      "exit_code": 0,
+      "status": "STALE",
+      "scientific_status": "STALE"
+    },
+    {
+      "case": "wrong-science",
+      "exit_code": 1,
+      "status": "FAIL",
+      "scientific_status": "FAIL"
+    }
+  ],
+  "generated": "2026-11-02T13:17:51.701803+00:00",
+  "driver_sha256": "09682e67d9032a0737446eca5aa0cf135e57fd1adb5188d587fd3776ba440167",
+  "scope": "Synthetic installed console controls; not a research lifecycle, generic agent, monitor enrollment, new-machine or RSI qualification"
+}

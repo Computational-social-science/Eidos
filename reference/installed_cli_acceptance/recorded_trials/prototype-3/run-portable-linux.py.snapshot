@@ -1,0 +1,91 @@
+"""Own one finite offline CLI qualification container; preserve raw evidence."""
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import tempfile
+import uuid
+
+BASE=Path(__file__).resolve().parent
+INPUT=BASE/'portable-input-v5'
+WHEELS=Path('C:/Users/Administrator/.cache/eidos-sdk-v411/linux-wheels')
+IMAGE='sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337'
+OWNER=uuid.uuid4().hex
+OUTPUT=Path(tempfile.mkdtemp(prefix='portable-linux-',dir=BASE))
+controller_before=Path(__file__).read_bytes()
+record={'owner':OWNER,'status':'FAIL','started':datetime.now(timezone.utc).isoformat(),'output':str(OUTPUT),
+        'controller_sha256':hashlib.sha256(controller_before).hexdigest()}
+cid=None
+
+
+def call(command,timeout=30):
+    return subprocess.run(command,capture_output=True,text=True,encoding='utf-8',timeout=timeout,
+                          creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
+
+
+def checked(command,timeout=30):
+    result=call(command,timeout)
+    if result.returncode:raise RuntimeError(str(command[:3])+': '+result.stderr[-1000:])
+    return result.stdout.strip()
+
+
+def owned():
+    state=json.loads(checked(['docker','container','inspect',cid]))[0]
+    if state['Id']!=cid or state['Image']!=IMAGE or state['Config']['Labels'].get('eidos.cli.owner')!=OWNER:
+        raise RuntimeError('Container ownership differs; do not clean up')
+    if state['HostConfig']['NetworkMode']!='none' or not state['HostConfig']['ReadonlyRootfs']:
+        raise RuntimeError('Container network/filesystem policy differs')
+    return state
+
+
+try:
+    image=json.loads(checked(['docker','image','inspect',IMAGE]))[0]
+    if image['Id']!=IMAGE:raise RuntimeError('Cached image identity differs')
+    manifest_sha=hashlib.sha256((INPUT/'manifest.json').read_bytes()).hexdigest()
+    record.update(image_id=IMAGE,manifest_sha256=manifest_sha)
+    cid=checked(['docker','create','--pull','never','--name','eidos-cli-v050-'+OWNER[:12],
+        '--label','eidos.cli.owner='+OWNER,'--network','none','--read-only','--init',
+        '--memory','3g','--cpus','2','--pids-limit','256','--cap-drop','ALL',
+        '--security-opt','no-new-privileges','--tmpfs','/tmp:rw,exec,nosuid,nodev,size=2147483648,mode=1777',
+        '--tmpfs','/root/.cache:rw,nosuid,nodev,size=536870912,mode=1777',
+        '--env','PYTHONUTF8=1','--env','OMP_NUM_THREADS=1','--env','OPENBLAS_NUM_THREADS=1',
+        '--workdir','/tmp','--mount','type=bind,source='+str(INPUT)+',target=/input,readonly',
+        '--mount','type=bind,source='+str(WHEELS)+',target=/wheels,readonly',
+        '--mount','type=bind,source='+str(OUTPUT)+',target=/out',IMAGE,
+        'python','-I','/input/bootstrap.py','--manifest-sha256',manifest_sha])
+    record['container_id']=cid
+    before=owned()
+    record['before']={'state':before['State'],'mounts':before['Mounts'],'network':before['HostConfig']['NetworkMode']}
+    checked(['docker','start',cid])
+    exit_code=int(checked(['docker','wait',cid],timeout=240))
+    after=owned();record['after']={'state':after['State'],'network':after['HostConfig']['NetworkMode']}
+    if exit_code or after['State']['ExitCode']:raise RuntimeError('Offline CLI worker failed: '+str(exit_code))
+    result=json.loads((OUTPUT/'record.json').read_text())
+    if result.get('status')!='PASS' or result.get('manifest_sha256')!=manifest_sha:
+        raise RuntimeError('Worker receipt does not bind inputs')
+    record['status']='PASS'
+except Exception as error:
+    record['error']=str(error)
+finally:
+    if cid:
+        try:
+            owned()
+            logs=call(['docker','logs',cid])
+            (OUTPUT/'docker.stdout').write_text(logs.stdout,encoding='utf-8')
+            (OUTPUT/'docker.stderr').write_text(logs.stderr,encoding='utf-8')
+        except Exception as error:
+            record.update(status='FAIL',log_error=str(error))
+        try:
+            owned()
+            checked(['docker','rm','--force',cid])
+            absent=call(['docker','container','inspect',cid])
+            if not absent.returncode or 'no such container' not in absent.stderr.lower():raise RuntimeError('Owned removal unproven')
+            record['cleanup_verified']=True
+        except Exception as error:
+            record.update(status='FAIL',cleanup_verified=False,cleanup_error=str(error))
+    if Path(__file__).read_bytes()!=controller_before:record.update(status='FAIL',controller_changed=True)
+    (OUTPUT/'controller.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8')
+print(json.dumps(record,indent=2))
+raise SystemExit(0 if record['status']=='PASS' else 1)

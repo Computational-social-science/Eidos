@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "eidos"
-version = "0.4.12"
+version = "0.5.0"
 description = "Global reusable research pipeline: Quarto + BootLoops + complementary quality gates"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -17,6 +17,9 @@ dependencies = [
     "numpy>=1.26",
     "matplotlib>=3.8",
 ]
+
+[project.scripts]
+eidos = "framework.cli:main"
 
 [project.optional-dependencies]
 # The core dependency closure is declared above. Everything below is opt-in.

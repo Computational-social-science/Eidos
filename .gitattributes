@@ -70,3 +70,7 @@ site/docs/RELEASE-CANDIDATE-*.json -text whitespace=cr-at-eol
 reference/numerical_programs_acceptance/recorded_trials/v0.4.12/** -text
 # Historical source bytes include their original trailing spaces; do not reformat evidence.
 reference/numerical_programs_acceptance/recorded_trials/v0.4.12/**/*.py.snapshot whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+# Installed CLI prototype evidence includes rejected candidates and exact raw streams.
+reference/installed_cli_acceptance/recorded_trials/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+reference/installed_cli_acceptance/fixture/** -text whitespace=cr-at-eol
+lock/snapshots/uv/292c4f4618eadebd26e18912cc5c5be5cca50935fa4e3c27dd4d641e70525d59.lock whitespace=cr-at-eol

@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "C:\Users\Administrator\.cache\eidos-cli-acceptance\portable-input-v3\cli.py", line 145, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "C:\Users\Administrator\.cache\eidos-cli-acceptance\portable-input-v3\cli.py", line 32, in main
+    if direct_url.get('dir_info',{}).get('editable') or not Path(framework.__file__).resolve().is_relative_to(Path(sys.prefix).resolve()):
+                                                            ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1162, in __init__
+    super().__init__(*args)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 373, in __init__
+    raise TypeError(
+TypeError: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'NoneType'

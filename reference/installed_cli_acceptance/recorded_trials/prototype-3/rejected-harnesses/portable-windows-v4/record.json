@@ -1,0 +1,178 @@
+{
+  "schema": "eidos.installed-cli-acceptance.v1",
+  "status": "PASS",
+  "unreleased": true,
+  "sdk_version": "0.5.0",
+  "platform": "win32",
+  "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+  "prefix": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\third-candidate\\replay-4f0l1w4k\\installed",
+  "console": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\third-candidate\\replay-4f0l1w4k\\installed\\Scripts\\eidos.exe",
+  "cases": [
+    {
+      "case": "init",
+      "exit_code": 0,
+      "status": "INITIALIZED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "initial-refusal",
+      "exit_code": 4,
+      "status": "REFUSED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "execution-only",
+      "exit_code": 0,
+      "status": "PASS",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "missing-output",
+      "exit_code": 1,
+      "status": "FAIL",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "feedback",
+      "exit_code": 0,
+      "status": "EXPORTED",
+      "scientific_status": null
+    },
+    {
+      "case": "feedback-overwrite",
+      "exit_code": 4,
+      "status": "REFUSED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "missing-manuscript",
+      "exit_code": 4,
+      "status": "REFUSED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "scientific-init",
+      "exit_code": 0,
+      "status": "INITIALIZED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "scientific-pass",
+      "exit_code": 0,
+      "status": "PASS",
+      "scientific_status": "PASS"
+    },
+    {
+      "case": "module-change",
+      "exit_code": 0,
+      "status": "STALE",
+      "scientific_status": "STALE"
+    },
+    {
+      "case": "failed-worker",
+      "exit_code": 1,
+      "status": "FAIL",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "config-seed-init",
+      "exit_code": 0,
+      "status": "INITIALIZED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "seed-pass",
+      "exit_code": 0,
+      "status": "PASS",
+      "scientific_status": "PASS"
+    },
+    {
+      "case": "seed-change",
+      "exit_code": 0,
+      "status": "STALE",
+      "scientific_status": "STALE"
+    },
+    {
+      "case": "config-delivery-init",
+      "exit_code": 0,
+      "status": "INITIALIZED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "delivery-pass",
+      "exit_code": 0,
+      "status": "PASS",
+      "scientific_status": "PASS"
+    },
+    {
+      "case": "delivery-change",
+      "exit_code": 0,
+      "status": "STALE",
+      "scientific_status": "STALE"
+    },
+    {
+      "case": "config-comment-init",
+      "exit_code": 0,
+      "status": "INITIALIZED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "comment-pass",
+      "exit_code": 0,
+      "status": "PASS",
+      "scientific_status": "PASS"
+    },
+    {
+      "case": "comment-change",
+      "exit_code": 0,
+      "status": "STALE",
+      "scientific_status": "STALE"
+    },
+    {
+      "case": "undeclared-module-init",
+      "exit_code": 0,
+      "status": "INITIALIZED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "undeclared-refusal",
+      "exit_code": 4,
+      "status": "REFUSED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "bad-evidence-init",
+      "exit_code": 0,
+      "status": "INITIALIZED",
+      "scientific_status": "UNRUN"
+    },
+    {
+      "case": "evidence-baseline",
+      "exit_code": 0,
+      "status": "PASS",
+      "scientific_status": "PASS"
+    },
+    {
+      "case": "evidence-change",
+      "exit_code": 0,
+      "status": "STALE",
+      "scientific_status": "STALE"
+    },
+    {
+      "case": "wrong-science",
+      "exit_code": 1,
+      "status": "FAIL",
+      "scientific_status": "FAIL"
+    }
+  ],
+  "generated": "2026-11-02T13:20:43.211889+00:00",
+  "driver_sha256": "e1079a6daa33efd603b0690adfc713af085a2ce2e1363acd9a6974caed449402",
+  "fixture_sha256": {
+    "lakefile.lean": "6f1e8e01e9a5afce42a663e88274a8e7988c2e56e0e33ad89bb6b3ecb92c8057",
+    "analysis/CLAIMS.yaml": "34e2f3489cc72b8a0e0fbdd98ec6a41591e5fec75639a0db5560d9c2bb6e50c3",
+    "data/evidence.json": "cf0b52579ed2ae3f558aa07a510ce25e9bf2e418fd119d66e930fb014c18c32a",
+    "docs/MANUSCRIPT.html": "cf0b1555a96bf702ca720439bf0e4d37f90eea58f0ec38dad362d34d186aae46",
+    "docs/REFEREE.md": "b94c9cc56a5af10974a43cf5a79884e38585eef85af3c02116b7dc62d14a48c8"
+  },
+  "scope": "Synthetic installed console controls; not a research lifecycle, generic agent, monitor enrollment, new-machine or RSI qualification"
+}

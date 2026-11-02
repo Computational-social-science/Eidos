@@ -128,8 +128,12 @@ def test_real_vacuous_control_preserves_existing_projects_and_runs_concurrently(
     assert not list((tmp_path/'docs/status').glob('_vacuous_demo-*'))
 
 
-def test_rehearsal_process_tree_forwards_environment_and_utf8(tmp_path):
+@pytest.mark.parametrize('inherited_encoding',[None,'latin-1'])
+def test_rehearsal_process_tree_forwards_environment_and_utf8(tmp_path,monkeypatch,inherited_encoding):
     import sys
+    monkeypatch.setenv('PYTHONUTF8','0')
+    if inherited_encoding is None:monkeypatch.delenv('PYTHONIOENCODING',raising=False)
+    else:monkeypatch.setenv('PYTHONIOENCODING',inherited_encoding)
     run=release_gate._run([sys.executable,'-c',
                           'import os;print(os.environ["EIDOS_ROOT"]);print("科学 → µ")'],tmp_path,30)
     assert run.returncode==0,run.stderr

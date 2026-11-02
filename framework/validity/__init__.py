@@ -308,7 +308,7 @@ class ScientificValidityGate:
                                f"({', '.join(c.get('id', '?') for c in bad) or 'verdict FAIL'})"))
             if claim.get("support") == "required":
                 from framework.verifiers import support
-                allowed, reason = support.passable(cid)
+                allowed, reason = support.passable(cid, store=root / "artifacts" / "literature" / "support")
                 if not allowed:
                     blocked.append(f"{cid}: support {reason}")
             if claim.get("s4"):

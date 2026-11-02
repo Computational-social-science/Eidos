@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "C:\Users\Administrator\.cache\eidos-cli-acceptance\portable-input-v3\cli.py", line 145, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "C:\Users\Administrator\.cache\eidos-cli-acceptance\portable-input-v3\cli.py", line 33, in main
+    raise RuntimeError('Editable or outside-prefix imports cannot qualify installed console acceptance')
+RuntimeError: Editable or outside-prefix imports cannot qualify installed console acceptance

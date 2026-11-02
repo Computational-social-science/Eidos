@@ -41,6 +41,18 @@ def test_changed_declared_input_revokes_old_verdict(tmp_path, target):
     assert spec.name in snapshot_state(saved, {spec.name: spec}, tmp_path)["stale"]
 
 
+def test_workspace_configuration_is_implicit_without_becoming_a_code_declaration(tmp_path):
+    from tools.consumer_snapshot import capture_inputs
+    spec=consumer(tmp_path)
+    folder=spec.root/'.eidos';folder.mkdir()
+    config=folder/'project.yaml';config.write_text('seed: 1\n',encoding='utf-8')
+    before=capture_inputs(spec,tmp_path)['digest']
+    assert before and spec.validity_inputs==[]
+    config.write_text('seed: 2\n',encoding='utf-8')
+    assert capture_inputs(spec,tmp_path)['digest']!=before
+    assert spec.validity_inputs==[]
+
+
 @pytest.mark.parametrize('command',[
     ['python','gate.py'],['{python}','-I','-X','utf8','-W','ignore','gate.py'],
     ['python3.12','-Xutf8','--','gate.py'],['gate.py'],
@@ -153,7 +165,7 @@ def test_implicit_record_paths_use_the_gate_filename_normalization(tmp_path, kin
         f"claims:\n- id: C/1\n  {fields}\n", encoding="utf-8"
     )
     path = (
-        tmp_path / "artifacts/literature/support/C_1.json"
+        spec.root / "artifacts/literature/support/C_1.json"
         if kind == "support"
         else record_path("paper/1", spec.root / "artifacts/reproduction")
     )

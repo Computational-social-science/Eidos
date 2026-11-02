@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "rows": [
+    {
+      "driver": "v4",
+      "driver_accepted": true,
+      "sdk_changed": true
+    },
+    {
+      "driver": "v5",
+      "driver_accepted": false,
+      "sdk_changed": true
+    }
+  ],
+  "scope": "Harness identity-window fault control, not a framework/RSI improvement claim"
+}

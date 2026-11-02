@@ -1,0 +1,177 @@
+{
+  "head": "7a3d35e85736e3d245f4d9d83f10627a27a4d3d5",
+  "source_commit": "208b12a634f99034d3467e28e5d876b4d85cdeee",
+  "tag_commit": "7a3d35e85736e3d245f4d9d83f10627a27a4d3d5",
+  "release": "https://github.com/Computational-social-science/Eidos/releases/tag/v0.4.12",
+  "assets_verified": [
+    {
+      "asset": "eidos-numerics-report.pdf",
+      "size": 195817,
+      "digest": "sha256:9c64569a62200e880e92d5e3cbb0c0aef80f0f2b3d8e499015ab59ce45eeb120"
+    },
+    {
+      "asset": "eidos-numerics-report.docx",
+      "size": 360909,
+      "digest": "sha256:a057173800f3ac1536b30c363bd1ac10322ceae772d5713c81aa1fb469638d69"
+    },
+    {
+      "asset": "eidos-numerics-reproduce.zip",
+      "size": 3529507,
+      "digest": "sha256:2050f18bf296b62ff2c59d42a83e1e0c0337f949ab26c240363b043cf3664db9"
+    },
+    {
+      "asset": "eidos-softmax-matrix-report.pdf",
+      "size": 162316,
+      "digest": "sha256:8ba60f4b18c44d41355bc3ff885e736160b7bdce203ce351ae152268abae8218"
+    },
+    {
+      "asset": "eidos-softmax-matrix-report.docx",
+      "size": 230959,
+      "digest": "sha256:ba60dc5dcac4763413c9d6c9bf90dd0c6a84e9961388b084cd5cd295e9a55588"
+    },
+    {
+      "asset": "eidos-softmax-matrix-reproduce.zip",
+      "size": 37755796,
+      "digest": "sha256:f065801f872aaa85a3a7353517533e74556f9da0a0fe796c70a89317d37a1fbe"
+    },
+    {
+      "asset": "eidos-hpaf-metric-report.pdf",
+      "size": 146062,
+      "digest": "sha256:e02cd7f22e9ed75d63dd0d39ad1cbf942b8d9023d6844ed1d75d0d8f02d1f1dd"
+    },
+    {
+      "asset": "eidos-hpaf-metric-report.docx",
+      "size": 234474,
+      "digest": "sha256:28c706a02d4488708edee8d6b1cec86c52a5f77fca81a9c45bb9f8c722c909cb"
+    },
+    {
+      "asset": "eidos-hpaf-metric-reproduce.zip",
+      "size": 20682,
+      "digest": "sha256:2d3c681dea7aea585426cd1955dda3f8e049744d1ecb8b4df9f756e5de463cbf"
+    },
+    {
+      "asset": "eidos-executable-delivery-probe-v0.4.2.zip",
+      "size": 581304,
+      "digest": "sha256:4f565b7a966ac7f5fc2a5ed0676a1cd788aab24bd7f45c05fa83b08e2b060c85"
+    },
+    {
+      "asset": "eidos-0.4.12-py3-none-any.whl",
+      "size": 158435,
+      "digest": "sha256:8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7"
+    },
+    {
+      "asset": "eidos-sdk-lifecycle-check.py",
+      "size": 7876,
+      "digest": "sha256:1c47047026769a78b1fc5bd7cc4371532c671911eee977bde1823125e5f0f262"
+    },
+    {
+      "asset": "eidos-quarto-delivery-check.py",
+      "size": 10937,
+      "digest": "sha256:f0efe362c24aa1b680d57f2716aced4214cd9967005e0a27a21bc8c065af2b2f"
+    },
+    {
+      "asset": "eidos-reproduction-check.py",
+      "size": 10069,
+      "digest": "sha256:16c34435bf7b9e1f6a3c8c59d83458a5b3ada5d4b064581183dbcb43f5a0ea0f"
+    },
+    {
+      "asset": "eidos-recovery-live-acceptance.json",
+      "size": 40335,
+      "digest": "sha256:39b95e14c4fe3cc0751e5b9e790ac5240c790595b18894056b9df6202e55262f"
+    },
+    {
+      "asset": "eidos-core-recovery-acceptance.json",
+      "size": 5460,
+      "digest": "sha256:d73046caef26ed532a63f3a397cfddb313bfa5fb36d684a166eb4e2779f2acf5"
+    },
+    {
+      "asset": "eidos-tracking-check.py",
+      "size": 17249,
+      "digest": "sha256:f93a8743b688536e02202bcaa050321f8bd085121c0f14d221d95fb684659057"
+    },
+    {
+      "asset": "eidos-tracking-acceptance.json",
+      "size": 125824,
+      "digest": "sha256:b0d1fa2136d8960e3d5fe00b831785502870a0a0448b691d9eeeb71f70af249b"
+    },
+    {
+      "asset": "eidos-consumer-observation-acceptance.json",
+      "size": 12721,
+      "digest": "sha256:113321db34bae88b2998c09e837d049bf343eeae1c741db2995552fa01ec4c8c"
+    },
+    {
+      "asset": "eidos-numerical-programs-check.py",
+      "size": 12923,
+      "digest": "sha256:11e515a4d17259f56d8effd0aca0c933965b01f683cd73ba9a6920f4a53297db"
+    },
+    {
+      "asset": "eidos-numerical-programs-acceptance.json",
+      "size": 99531,
+      "digest": "sha256:a6a778e49cb17dcace632fd3827252f8c23b25bfc416a5e234e06921b9061621"
+    }
+  ],
+  "ci": [
+    {
+      "path": ".github/workflows/symbolic-gradient.yml",
+      "url": "https://github.com/Computational-social-science/Eidos/actions/runs/41436309703",
+      "jobs": [
+        {
+          "name": "reference (windows-latest)",
+          "conclusion": "success"
+        },
+        {
+          "name": "reference (ubuntu-latest)",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/installed-sdk.yml",
+      "url": "https://github.com/Computational-social-science/Eidos/actions/runs/41436164270",
+      "jobs": [
+        {
+          "name": "core (windows-latest)",
+          "conclusion": "success"
+        },
+        {
+          "name": "core (ubuntu-latest)",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "url": "https://github.com/Computational-social-science/Eidos/actions/runs/41436164304",
+      "jobs": [
+        {
+          "name": "test (3.12)",
+          "conclusion": "success"
+        },
+        {
+          "name": "test (3.11)",
+          "conclusion": "success"
+        },
+        {
+          "name": "release-integrity",
+          "conclusion": "success"
+        },
+        {
+          "name": "agent-e2e",
+          "conclusion": "success"
+        },
+        {
+          "name": "audit",
+          "conclusion": "success"
+        },
+        {
+          "name": "browser",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "ci_jobs": 10,
+  "previous_v411_tag_assets_unchanged": true,
+  "previous_v410_tag_assets_unchanged": true,
+  "scope": "Git/remote API identity and server-reported SHA-256/size; not a fresh hardware/whole research pipeline qualification."
+}

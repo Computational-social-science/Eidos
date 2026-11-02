@@ -1,0 +1,49 @@
+{
+  "schema": "eidos.cli-prototype-acceptance.v1",
+  "status": "PASS",
+  "unreleased": true,
+  "version": "0.5.0",
+  "wheel_sha256": "0d8ca60088be1366f90889ddba686e32c28b15d458a7a5033470a26d683d78cf",
+  "driver_sha256": "109530941f03cab571519636b4d66a4a1f69186c7faa1399627c356e35e5420a",
+  "platforms": {
+    "windows": {
+      "cases": 26,
+      "record": "windows/record.json"
+    },
+    "linux": {
+      "cases": 26,
+      "record": "linux/cli-results/record.json",
+      "network": "none",
+      "cleanup_verified": true
+    }
+  },
+  "source_audit": {
+    "passed": 1237,
+    "skipped": 6,
+    "framework_coverage_percent": 76,
+    "chains_pass": 10,
+    "chains_skip": 1,
+    "source_sha256": "fc0cba3a95cfe1d67eb6ee7ae0d80eff51f377b52548ab9d1a5a8ba799d382b4"
+  },
+  "identity_window_control": {
+    "status": "PASS",
+    "rows": [
+      {
+        "driver": "v4",
+        "driver_accepted": true,
+        "sdk_changed": true
+      },
+      {
+        "driver": "v5",
+        "driver_accepted": false,
+        "sdk_changed": true
+      }
+    ],
+    "scope": "Harness identity-window fault control, not a framework/RSI improvement claim"
+  },
+  "limits": [
+    "Same-host synthetic fixtures, not new-machine or complete scientific-project acceptance.",
+    "No generic Agent/MCP, central worker enrollment, full incident/release/replay loop, or RSI qualification.",
+    "Rejected/intermediate harnesses retained; only the final input and v5 platform records support the current scoped PASS."
+  ]
+}

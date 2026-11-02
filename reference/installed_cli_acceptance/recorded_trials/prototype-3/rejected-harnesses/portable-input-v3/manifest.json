@@ -1,0 +1,12 @@
+{
+  "bootstrap.py": "23b8c9d0c050db364a44e343e94ea65ae09a748147e6bf08037f5ca623779c15",
+  "cli.py": "785f0db855948c4af09501c8db2bec1b193387e9c6921531bf4c61276539ac56",
+  "core-requirements.txt": "14992eee3f6a6268e2667df2e089b07809dcc212836ca1585139d575e903d034",
+  "eidos-0.5.0-py3-none-any.whl": "0d8ca60088be1366f90889ddba686e32c28b15d458a7a5033470a26d683d78cf",
+  "numerical.py": "11e515a4d17259f56d8effd0aca0c933965b01f683cd73ba9a6920f4a53297db",
+  "fixture/lakefile.lean": "6f1e8e01e9a5afce42a663e88274a8e7988c2e56e0e33ad89bb6b3ecb92c8057",
+  "fixture/analysis/CLAIMS.yaml": "34e2f3489cc72b8a0e0fbdd98ec6a41591e5fec75639a0db5560d9c2bb6e50c3",
+  "fixture/data/evidence.json": "cf0b52579ed2ae3f558aa07a510ce25e9bf2e418fd119d66e930fb014c18c32a",
+  "fixture/docs/MANUSCRIPT.html": "cf0b1555a96bf702ca720439bf0e4d37f90eea58f0ec38dad362d34d186aae46",
+  "fixture/docs/REFEREE.md": "b94c9cc56a5af10974a43cf5a79884e38585eef85af3c02116b7dc62d14a48c8"
+}

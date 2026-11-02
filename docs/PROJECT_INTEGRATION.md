@@ -5,6 +5,94 @@ owns its source, data, scientific acceptance, tests and manuscript; EIDOS owns
 command discovery, invocation, declared-output checks and bound observations.
 Isolated copies may be used for failure injection without changing the original.
 
+## Deployment decision in brief
+
+The default is **one EIDOS core, independent research projects, thin entry
+points, and one optional local dashboard**. Package/CLI, Agent and fork are
+complementary forms rather than competing architectures. Packaging improves
+installation; a thin Agent improves interaction; neither creates scientific
+competence that the underlying operators have not demonstrated.
+
+| Downstream need | Recommended form | What stays with the project |
+|---|---|---|
+| Use EIDOS without changing its internals | Pinned wheel/SDK and project-local configuration; installed CLI once released | Repository, environment/lock, data, validator, claims, evidence and manuscript |
+| Ask an agent to plan, check or prepare a report | Agent instructions calling the same versioned CLI/SDK, with structured results | Domain assumptions, permissions, model/runtime selection and acceptance protocol |
+| Start a new study quickly | Small project template consuming the SDK | Its own Git history; no copied EIDOS source tree required |
+| Extend or repair EIDOS | EIDOS development fork/branch and upstream patch | A separate trial environment; production projects keep their release pins |
+| Observe several local studies | Central registry and the existing loopback dashboard | Separate worker identities, runs and evidence; environments remain independent |
+
+An ordinary scientific repository should not fork the entire framework just to
+use it. A framework fork makes fixes harder to propagate and mixes research
+history with infrastructure history. An upstream repair becomes useful to an
+existing project only after that project trials and adopts the new version.
+
+### Availability, not a product promise
+
+As checked on 2026-11-02, stable **0.4.12** has a published wheel and source
+release; its publication record is [here](RELEASE-PUBLICATION-0.4.12.json).
+The model-free `init/check/status/report/feedback` CLI is a **0.5.0 development
+candidate**, with actual noneditable Windows installation probes; see
+[the development evidence and remaining acceptance](CLI-REUSE-DEVELOPMENT.md).
+It is not part of 0.4.12, a verified PyPI listing, a generic Agent/MCP release,
+or an automatic multi-project enrollment service.
+
+The stable SDK can already execute an explicit external project registration.
+The current monitor can observe centrally registered local consumers. The new
+CLI's project-local `.eidos/project.yaml` and run history are not automatically
+consumed by that monitor. That integration boundary must be implemented and
+qualified before claiming a unified installed product.
+
+### The intended first-use experience
+
+After installing a verified release into the appropriate locked environment,
+the intended user journey is:
+
+```text
+eidos init --project <study>
+configure the actual validator, declared inputs and scientific acceptance
+eidos check --project <study> --json
+eidos status --project <study> --json
+eidos report --project <study> --format html --json
+```
+
+These command names are implemented in the unreleased candidate. Initialization
+alone deliberately leaves scientific status UNRUN/REFUSED. The developer must
+provide a real domain validator: a generic agent cannot invent a passing
+acceptance rule on behalf of the result it proposes. A later enrollment step
+should explicitly attach that workspace to the optional central monitor;
+`eidos monitor` and an enrollment command are not currently delivered.
+
+```text
+research-project/                 central control workspace/
+  source, data, manuscript          project registrations
+  dependency lock                  observation/incident indexes
+  analysis/CLAIMS.yaml              dashboard on 127.0.0.1:8765
+  .eidos/project.yaml
+  .eidos/runs/<run-id>.json       EIDOS development repository/
+  .eidos/latest.json                isolated patch + regression suite
+```
+
+The `.eidos` layout is the candidate CLI's layout. Dependencies should not be
+installed into package directories as writable project state. Core installation
+does not install a local model, Quarto/TeX, training data or a GPU environment.
+Each requested capability reports its own prerequisites and unsupported scope.
+
+### What a reusable EIDOS Agent should do
+
+A general Agent should discover the selected project, read its protocol, choose
+an available qualified local operator, invoke the core, and explain its structured
+receipts. It should never treat a fluent answer, exit code zero, or healthy
+dashboard as scientific acceptance. Return execution, scientific, delivery and
+evidence-currency states separately; keep REFUSED, UNRUN and STALE visible.
+
+The Agent needs no second gate implementation. Its minimum adapter contract is:
+explicit project path; allowlisted operation; bounded timeout/resource budget;
+immutable run reference; structured status; and visible capability limits.
+Patch proposals may not rewrite protected acceptance policy, negative controls
+or sealed evaluations to accept themselves. A model can propose; independent
+checks decide which proposals qualify. Weak or unavailable local models must
+lead to a bounded failure or manual handoff, never a silent paid-provider fallback.
+
 ## Register an existing project
 
 Create `projects/my_study/project.yaml`:
@@ -189,9 +277,9 @@ distribution is named `eidos` and uses the generic `framework` namespace. Before
 public-index publication, verify publisher rights/name availability and evaluate
 an `eidos` import namespace with a documented compatibility transition. Do not
 tell users to run unqualified `pip install eidos` and assume it is this project.
-The desired user interface is `eidos init`, `eidos check`, `eidos report`,
-`eidos feedback` and `eidos monitor`; these commands are a proposal, not currently
-installed console entry points.
+The installed `eidos init/check/status/report/feedback` entry is being qualified
+in the unreleased 0.5.0 branch. `eidos monitor` and generic enrollment remain
+proposed. Stable 0.4.12 does not provide these new console entry points.
 
 ### What can be used now
 
@@ -199,7 +287,7 @@ Install a verified, versioned wheel in the research project's own environment,
 using its dependency lock and artifact checksum. Then supply an explicit registry:
 
 ```sh
-python -m pip install /verified/path/eidos-0.4.11-py3-none-any.whl
+python -m pip install /verified/path/eidos-0.4.12-py3-none-any.whl
 python -m framework.project list --projects-dir /path/to/local-registry
 python -m framework.project check my_study --projects-dir /path/to/local-registry --json
 ```
@@ -296,13 +384,21 @@ Operational service recovery is distinct from framework source modification.
    contract or scoped procedure. File scientific findings in the project's wiki
    when present. Prose memory alone does not enforce a behavior change.
 
-The standard incident bundle/export CLI, cross-project feedback queue and full
-release-to-originating-project status linkage are not implemented yet. Existing
+The development CLI exports a local metadata-only incident bundle. It does not
+yet capture a complete reproducible fixture or perform repair. The cross-project
+queue and full release-to-originating-project linkage remain unimplemented. Existing
 tests, snapshots, recovery logs, dependency try/promote/rollback and
 `tools/evolution.py` are useful parts of this loop; the evolution ledger is an
 instrument, not an autonomous source-code repair engine.
 
 ### Sustained improvement without uncontrolled self-modification
+
+Bootstrap creates the first runnable project/environment. The continuing
+capability comes from **observed failure -> reproducible evaluation -> proposed
+change -> independent acceptance -> versioned adoption -> downstream replay**.
+Bootstrap is necessary setup, not the improvement loop. A feedback exporter
+without triage/replay, or a patch without downstream adoption, leaves the loop
+open. Running more autonomous agents does not close either gap.
 
 Trigger this loop on a failed run, stale binding, rejected gate, recovery failure
 or an explicit research request. Keep bounded monitoring and self-healing; do
@@ -323,10 +419,37 @@ establish that claim.
 
 ### Delivery order and acceptance
 
+There are three different improvement targets: operational recovery (verified
+service recovery within budget), framework reliability (regression-protected
+repair replayed at the originating project), and scientific RSI (the improvement
+procedure itself improves held-out research performance). None implies the next.
+
+Remain ready to improve on events; do not keep changing source merely to appear
+active. Retain bounded monitoring/self-healing. Software promotion and research
+execution follow their separate policies. Stop a candidate campaign at its budget
+or retry limit, or when the independent oracle is unavailable. A rejected change
+leaves the last qualified release available.
+
+Measure the loop with a ledger:
+
+- Feedback closure: downstream-verified incidents / reproducible core-defect
+  incidents; show unresolved and unknown incidents separately.
+- Recurrence/escape: repeated fixed defects, new regressions per adopted release,
+  and independent controls discovering false PASS.
+- Repair latency: detection-to-reproduction and detection-to-originating-project
+  verification; include unsuccessful attempts in resource totals.
+- Research effect: held-out protocol acceptance, independent reproducibility and
+  quality under matched compute; faster execution alone does not establish it.
+
+Archive task sets, acceptance rules, code/data/model identities, budgets, rejected
+proposals and rollback outcomes. For the Softmax case, a numerical regression can
+demonstrate a repaired kernel contract; it cannot establish improved downstream
+training or scientific novelty by itself.
+
 | Priority | Deliverable | Acceptance before advertising support |
 |---|---|---|
-| P0 | Finish coherent 0.4.12 publication already in progress | Current evidence/version metadata, installed replay, exact-final-commit CI and immutable assets agree. |
-| P1 | Installed CLI and model-free initializer; explicit workspace/config paths | Two independent noneditable environments, no source checkout dependency, missing-output and changed-input refusals. Keep compatibility for existing registrations. |
+| P0, done | Coherent 0.4.12 publication | Ten exact-commit remote jobs and 21 assets verified; historical 0.4.10/0.4.11 tags and assets retained. This does not release the development CLI. |
+| P1, partial | Installed CLI and model-free initializer; explicit workspace/config paths | Independent noneditable environments, no source checkout dependency, missing-output and changed-input refusals. Retain existing registration compatibility; complete final-source review and release qualification. |
 | P2 | Shared dashboard project-runtime boundary | Two projects with different dependencies run concurrently, isolated state, correct worker versions, continued sampling when one worker fails and no duplicate server. |
 | P3 | Local incident bundle plus feedback state machine | Inject a real core defect, reproduce, reject before repair, validate the patch and replay at the originating project; retain a failed-patch control and rollback record. |
 | P4 | Thin generic Agent/MCP adapter | Each tool calls the same core operation; malformed requests and unsupported claims are refused; unavailable local models never trigger hosted fallback. |

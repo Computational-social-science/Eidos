@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "C:\Users\Administrator\.cache\eidos-cli-acceptance\portable-input-v5\numerical.py", line 241, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\Administrator\.cache\eidos-cli-acceptance\portable-input-v5\numerical.py", line 223, in main
+    before = identity(args.wheel, args.expected_version)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\.cache\eidos-cli-acceptance\portable-input-v5\numerical.py", line 70, in identity
+    require(installed.is_relative_to(prefix) and installed.read_bytes() == content,
+  File "C:\Users\Administrator\.cache\eidos-cli-acceptance\portable-input-v5\numerical.py", line 32, in require
+    raise RuntimeError(message)
+RuntimeError: Installed wheel member differs: framework/cli.py

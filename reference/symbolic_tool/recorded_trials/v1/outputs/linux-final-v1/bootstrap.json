@@ -1,0 +1,5 @@
+{
+  "bootstrap_seconds": 18.04520369900274,
+  "network": "none",
+  "installed": "contourpy==1.4.0\ncycler==0.12.1\neidos @ file:///input/eidos-0.4.11-py3-none-any.whl#sha256=752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a\nfonttools==4.67.0\niniconfig==2.3.1\nkiwisolver==1.5.1\nmatplotlib==3.11.2\nmpmath==1.3.0\nnumpy==2.5.4\npackaging==26.3\npillow==13.0.0\npip==25.0.1\npluggy==1.7.0\nPygments==2.21.0\npyparsing==3.3.3\npytest==9.1.1\npython-dateutil==2.9.0.post0\nPyYAML==6.0.3\nsix==1.17.0\nsympy==1.14.0"
+}

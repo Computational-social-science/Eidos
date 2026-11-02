@@ -1,0 +1,16 @@
+{
+  "files": {
+    "derivative.py": "5125de581f27a718c730c7629e513947a54f09ef12cfb307e0bea1f4f1cc789f",
+    "eidos-0.4.11-py3-none-any.whl": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
+    "oracle.py": "caf92a6b58562d5974466ed670bd9c31a82ed1afb2b9bd916b9e050b8e1e352a",
+    "protocol.md": "0f6e02f1f22748e8936e0457ac2173021cfbd7b4ec8c96d67b9ce72743cdec09",
+    "pyproject.toml": "1937d97842471148f92092e62edee2970d2be300b2f8d4d4fb29340ea8ebf12f",
+    "qualification.py": "bf5d6f669128152217c39c568aee170450496eff9dc6ed26e02da5cc649cae6b",
+    "response.json": "173cbf478e059a16fb9fe8ed2b5f4ba5213b4f034240c47b6c9154e10999e13a",
+    "sdk_identity.py": "1ef28f679b885c3525d737a235c4f034be0e1c0c1463be7a2ce732b6a3cfb73e",
+    "test_derivative.py": "aace38e7eeebb46082b2a19d7e283a526bc9e4d65847bf70ce00dc7ffd9c8870",
+    "uv.lock": "ed9aa450a69c48446e848cd7c878f3f0348f4efdb2a0b9599fc9c39a3f5b68b3"
+  },
+  "hash_policy": "raw bytes; text normalized UTF-8/LF at preparation",
+  "schema": "eidos.symbolic-input.v1"
+}

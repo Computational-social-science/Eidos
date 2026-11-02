@@ -1,0 +1,28 @@
+Downloading pip (1.7MiB)
+ Downloaded pip
+Installed 1 package in 133ms
+Collecting sympy==1.14.0
+  Using cached sympy-1.14.0-py3-none-any.whl.metadata (12 kB)
+Collecting mpmath==1.3.0
+  Using cached mpmath-1.3.0-py3-none-any.whl.metadata (8.6 kB)
+Collecting pytest==9.1.1
+  Using cached pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+Collecting iniconfig==2.3.0
+  Using cached iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+Collecting pluggy==1.7.0
+  Using cached pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+Collecting pygments==2.21.0
+  Using cached pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+Using cached sympy-1.14.0-py3-none-any.whl (6.3 MB)
+Using cached mpmath-1.3.0-py3-none-any.whl (536 kB)
+Using cached pytest-9.1.1-py3-none-any.whl (386 kB)
+Using cached iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+Using cached pluggy-1.7.0-py3-none-any.whl (27 kB)
+Using cached pygments-2.21.0-py3-none-any.whl (1.3 MB)
+Saved c:\users\administrator\.cache\eidos-symbolic-v1\linux-wheels\sympy-1.14.0-py3-none-any.whl
+Saved c:\users\administrator\.cache\eidos-symbolic-v1\linux-wheels\mpmath-1.3.0-py3-none-any.whl
+Saved c:\users\administrator\.cache\eidos-symbolic-v1\linux-wheels\pytest-9.1.1-py3-none-any.whl
+Saved c:\users\administrator\.cache\eidos-symbolic-v1\linux-wheels\iniconfig-2.3.0-py3-none-any.whl
+Saved c:\users\administrator\.cache\eidos-symbolic-v1\linux-wheels\pluggy-1.7.0-py3-none-any.whl
+Saved c:\users\administrator\.cache\eidos-symbolic-v1\linux-wheels\pygments-2.21.0-py3-none-any.whl
+Successfully downloaded sympy mpmath pytest iniconfig pluggy pygments

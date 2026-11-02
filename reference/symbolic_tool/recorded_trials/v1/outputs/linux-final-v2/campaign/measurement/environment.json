@@ -1,0 +1,295 @@
+{
+  "all_installed_metadata_requirements_met": true,
+  "complete_study_lock_versions_met": true,
+  "dependencies": [
+    [
+      "contourpy",
+      "1.4.0"
+    ],
+    [
+      "cycler",
+      "0.12.1"
+    ],
+    [
+      "eidos",
+      "0.4.11"
+    ],
+    [
+      "fonttools",
+      "4.67.0"
+    ],
+    [
+      "iniconfig",
+      "2.3.1"
+    ],
+    [
+      "kiwisolver",
+      "1.5.1"
+    ],
+    [
+      "matplotlib",
+      "3.11.2"
+    ],
+    [
+      "mpmath",
+      "1.3.0"
+    ],
+    [
+      "numpy",
+      "2.5.4"
+    ],
+    [
+      "packaging",
+      "26.3"
+    ],
+    [
+      "pillow",
+      "13.0.0"
+    ],
+    [
+      "pip",
+      "25.0.1"
+    ],
+    [
+      "pluggy",
+      "1.7.0"
+    ],
+    [
+      "pygments",
+      "2.21.0"
+    ],
+    [
+      "pyparsing",
+      "3.3.3"
+    ],
+    [
+      "pytest",
+      "9.1.1"
+    ],
+    [
+      "python-dateutil",
+      "2.9.0.post0"
+    ],
+    [
+      "pyyaml",
+      "6.0.3"
+    ],
+    [
+      "six",
+      "1.17.0"
+    ],
+    [
+      "sympy",
+      "1.14.0"
+    ]
+  ],
+  "dependency_metadata_sha256_lf": {
+    "contourpy": {
+      "METADATA": "40450acd747b288a5db999c435e1e921ffee0a38c7884a80cd46934c8004568f",
+      "RECORD": "ee900676db4518b979e38727a8f8a8d26d79ff85d812458354fdd25add978f2e"
+    },
+    "cycler": {
+      "METADATA": "23289e19b76f1e01394227696e6af2b6cd1ce79e89731209bf9195148b18ed36",
+      "RECORD": "f8dc9a6733a66042c10bf714ecf9591bfddd1c772ca09088dfdca9acf871ac99"
+    },
+    "eidos": {
+      "METADATA": "436c5b56ddce2a6dc68a5e31c3891e16d060fdd976e34e1de07ba3b7817210bd",
+      "RECORD": "bd99b001792c042e447c19b67653eadebb9ee694e61c5fb473d3689f7adcb69a"
+    },
+    "fonttools": {
+      "METADATA": "33dec14bec601b457a07a6550086cb6725b5aaedc3a881f9fa7a84d3841ddcfe",
+      "RECORD": "a6d87d9c2ec1b0b604f95a2fa797b7004f39b9c144470e2a0cae6169a042bbc0"
+    },
+    "iniconfig": {
+      "METADATA": "47c2c35d936f5c649d8074c6464719a42966a67b5cebad01e3e5784cf090cfb6",
+      "RECORD": "2ea0d36a47a94a42e3a5987bb4fad6f861689e4328fac7f1f07b9da82dc12912"
+    },
+    "kiwisolver": {
+      "METADATA": "f07b7b6c0c9c2a624c8a31f931e16712f2cf3490e7dfd51643d68e9d42d4b2c9",
+      "RECORD": "0a9bb0a1caa2f2db4c3c87a676c86187c7514e0c50b5b37111abd4fbc5227be3"
+    },
+    "matplotlib": {
+      "METADATA": "e5f532226d1025af2dd15ff951df27391f66d46403b8244ea61e6b8eb3e4d806",
+      "RECORD": "11863031a3841c73e491a27d3f4986520e00379b3eff22c756393f4da775c5f7"
+    },
+    "mpmath": {
+      "METADATA": "44b66ea444b9c0d19ae94815d356bf047ae6b680c19268b5c265687cd6a81406",
+      "RECORD": "98750bf09ab626059be2cd3aaa538eacb69bcaa508890257cb98157002fb9d7e"
+    },
+    "numpy": {
+      "METADATA": "e2b909d6a37d76c2bc130f528d7fed0c517322bce16dc7846b6a6df30e200403",
+      "RECORD": "e9e6de5142024d30f227ac5e1a89822bf7234f6925f219528c8d174bb15565a0"
+    },
+    "packaging": {
+      "METADATA": "70fdb89fc4d4a9a043bf7372b8972bcc883fddff34ab55e9cf80d73875384763",
+      "RECORD": "8c69191044e577ab83c6b2990bc6fd7cfb441e6027ef5bb9e1c49c1dce2cedce"
+    },
+    "pillow": {
+      "METADATA": "dba7fdfe24e302f46bae562f55d66cc367c0618abae9894a1ebec93dc8f0e511",
+      "RECORD": "2db40583f669b0146d71ef921eabe3cda738b93d8fe6c085c437cefbbfc106bf"
+    },
+    "pip": {
+      "METADATA": "4fa7318cf30f979db7cec45c12cbbc2b4f88a15f12eefbf59a6291d0a03af926",
+      "RECORD": "f61e93e7cdad7d91a359130d7d100c579ff995d26f55966c3712cf16a8ed922b"
+    },
+    "pluggy": {
+      "METADATA": "20ac8237e37f1d6e7e75500cd663015177ba80c1a1a595ff6bae18a539ff8a2c",
+      "RECORD": "5f7716e6ebe648e8f3d5b29226072ff12764d65b26ef1f4ceccef99a9be2402f"
+    },
+    "pygments": {
+      "METADATA": "1dde075570136774c706bf0009183a793fe0ee262e4a5590cc6eff8453eedd43",
+      "RECORD": "e87b02fa36f8ed1f5076555f01d86911253c55561c29f91308a3f01ea74e7101"
+    },
+    "pyparsing": {
+      "METADATA": "f2ca34052d720622d300023472ef8ae94fe5b57d69acbb28a8667f6dd0e13497",
+      "RECORD": "d8b29a09cebab09e73f6fd6e3221f219f8cc6ab6458b03e934c7170ed6b58f10"
+    },
+    "pytest": {
+      "METADATA": "c5d032518012789cabc870d46589aca3aeda36cf9fa4399ee88bda3d10438451",
+      "RECORD": "b0c725f7e50cd8213a2c3815ffcfdf2dc72a7edb675e9b0ab6d53030b66c8172"
+    },
+    "python-dateutil": {
+      "METADATA": "a9d436da322be808332f98d88325998e87cb693a678a9969feb4cfad729a6e93",
+      "RECORD": "3a5a516e7d1224330a241cfe307142e35faa14b3738c62cac931c71b4ba8dd9d"
+    },
+    "pyyaml": {
+      "METADATA": "03c3b415ed38d09faedc49360e930769b40c58f68585e6de00e2e4916a858d34",
+      "RECORD": "28040c4176cf65f466ef862f7a6532ecb3265b9e84db181e43c5e275efdad49e"
+    },
+    "six": {
+      "METADATA": "562042078c2752549f6d8a7c86dbc5dd708088a7be6d80672ec7b07100b72468",
+      "RECORD": "bca2421b394ae3f68e3d1e382607bf181b14f891ad1626aeedb9fc98f9525f4e"
+    },
+    "sympy": {
+      "METADATA": "b756c2fbfd5be05ac5bdb0ebca61f55618f30f633ed92d88a5687429313a7595",
+      "RECORD": "c154d9efc9cecf63cd7c6de9d566521dcf551e8035e80197848c426407947722"
+    }
+  },
+  "installed_module": "/tmp/venv/lib/python3.12/site-packages/framework/numerical_programs/__init__.py",
+  "module_count": 45,
+  "prefix": "/tmp/venv",
+  "runtime": {
+    "device": "CPU",
+    "executable": "/tmp/venv/bin/python",
+    "implementation": "CPython",
+    "platform": "Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "python_version": "3.12.16"
+  },
+  "sdk_version": "0.4.11",
+  "source_sha256_canonical_lf": {
+    "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+    "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+    "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+    "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+    "framework/command_inputs.py": "e739c36eff434bdf38dc2604b6d10a43f66336d17eae491334cdde1033a94823",
+    "framework/config.py": "ea7c01f6a2f822024199fcc22cc3e371e57594a969666daa08c87dcc59b41044",
+    "framework/decision.py": "d6663f573a03685941c06a75cae7685fb68195cbf8f5a733a759360fe601892b",
+    "framework/diagnosis/__init__.py": "f004baafbf88dcc623255d3adea5318dd1d5d65a9ad526d86fd0e2225586c4e4",
+    "framework/executable_package.py": "a2d9d135dfa0c0884f21b58a52fee11158f604e52e35c000009fb66ce7c85f03",
+    "framework/gates/__init__.py": "c22dfe47eff927815d1a3e201070040a74b0f69f866b472a546ff1db5052a93e",
+    "framework/inference/__init__.py": "58a89874bd025e87defc40476b041c8e7296c375c97fd6048f1de8df62db8140",
+    "framework/inference/gguf.py": "4cc04cd656bde30ba8679b33a41739c86e89a70e1c7046874a40fbc0864d1267",
+    "framework/inference/llama_cpp.py": "03fac820b5665dcf12c4e2749a0fe929b04f292f1bae86a3a7a97e6398fc7a30",
+    "framework/lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
+    "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
+    "framework/numerical_programs/__init__.py": "eb59e849b6458789d07b5c0e46abaa317efc465b569a426c02205d6aa427748b",
+    "framework/numerical_programs/_compiler.py": "53d2b1e6a76a6dd93571408e74d0da2d8b50c34e3e82a4454f2722a9e503576b",
+    "framework/numerical_programs/_json.py": "efb83e3de30eb390cb13a4ff5b99db8e66383a46843c765615e5abe639cb1123",
+    "framework/numerical_programs/_language.py": "7a7f773d34d837368136b911e7fa0a43970423ee7f1b5d01e43896b50a649373",
+    "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
+    "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
+    "framework/quarto_bridge/__init__.py": "09c1830a16d651b14f6baf14a73143d8c0403b9d614c1540a46019eac9832af2",
+    "framework/quarto_bridge/_delivery.py": "548024950a54b038bc34d431090c78a0518ac787eaec053c32ec0b5def2b9568",
+    "framework/quarto_bridge/_figure_job.py": "e2ed211aef594b2d2e3c9ee77527f8fa059507de8d50ba050314cb3b6030c951",
+    "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+    "framework/reproduction/__init__.py": "3b722d0beab94990afec2de6f04408f3e520695e7f780d63c697592eca235071",
+    "framework/reproduction/_numeric.py": "5424d8d0c4fbafa4fc2472d0dc347ec541ffed34a6f3aaf3612e3b08f7e03a18",
+    "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+    "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
+    "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
+    "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+    "framework/surrogate/__init__.py": "1fbb528b20f80f3bf28893aa1df1cdfb041217ce4122ffe74e3d1c98556e29ad",
+    "framework/surrogate/demo.py": "8e3104db0efd6fe84feb656711cbb1f22eb0ba53c7b59bddd831fae7886132b3",
+    "framework/tracking/__init__.py": "e648cdf8e511a8c4725f6d732212d2660f49a4682bfd840aea08451b756bb942",
+    "framework/tracking/_worker.py": "bce9fa56d8f05ecab350e3689bb35c19773ad9aa283c42b6fc5ad5c6190a9b54",
+    "framework/updates.py": "e92b282d0fb5691a043cd8131c2d0ab620a3e80f8b5200e58022c339da75d711",
+    "framework/validity/__init__.py": "9f3ed867db4d14e6d37a012a1dcbf661a4525dddd2b5880a67489cede076d572",
+    "framework/validity/lean_audit.py": "9d396ec4ff6a8472d7348a3893b006d1e64794355e1eada8e9f65ae9eb32a1eb",
+    "framework/verifiers/__init__.py": "8e8086c9ca734be2b002593c7b751a909e86d2edf4fef209b2f10fe9865dc78c",
+    "framework/verifiers/citations.py": "dafb09dc5233fb71408a8d62e7bc5365e41afa389e4710446719adbf86a54380",
+    "framework/verifiers/extract_s4.py": "df0ffaa4359127c20e6354529eb850ad6e5d2cbd3cd0be708b5f13107b800a8a",
+    "framework/verifiers/numerics.py": "a45240cb251abca05780e47b029aa769eddccf12053e83d834c2446befaa1243",
+    "framework/verifiers/pointers.py": "d28fe077bbd34642eea88d8cf7f977deb376c13ad593ed0583d0c282875b8001",
+    "framework/verifiers/stats.py": "23e42eb09698aee95425531f97443f7e9531048acf6ce8a8f71c6b032976bfd8",
+    "framework/verifiers/support.py": "8416c27e1c67c2da4983bd5043d40a7b00759b70c2032e31043589e42ee72aa8"
+  },
+  "source_sha256_raw": {
+    "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+    "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+    "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+    "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+    "framework/command_inputs.py": "e739c36eff434bdf38dc2604b6d10a43f66336d17eae491334cdde1033a94823",
+    "framework/config.py": "f95e0aad47be973cc700d8070fe2156b9ea1b1726ffbd2eb4424b13ec6313434",
+    "framework/decision.py": "d6663f573a03685941c06a75cae7685fb68195cbf8f5a733a759360fe601892b",
+    "framework/diagnosis/__init__.py": "4dff84a0a23564c65222f84daaeef60dc0ba2cf73bd88f084d0e4b66d1d905f7",
+    "framework/executable_package.py": "a2d9d135dfa0c0884f21b58a52fee11158f604e52e35c000009fb66ce7c85f03",
+    "framework/gates/__init__.py": "c22dfe47eff927815d1a3e201070040a74b0f69f866b472a546ff1db5052a93e",
+    "framework/inference/__init__.py": "ff04da862499308b3685d71297c1c65a03631d18afe6896063cdd22236162693",
+    "framework/inference/gguf.py": "1522a0ba9d61f489c9fcb320c48c64dd925610c617f113e8429d32a688028ddf",
+    "framework/inference/llama_cpp.py": "6a3fe624adc64cb990c9c86434c6dcb4278b1331c0406e81f056dc51d4dfd74e",
+    "framework/lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
+    "framework/model_ab.py": "1307faaddfe307ec845e4ee4744e81533916cafb3dbff039083fbe340c63f6c4",
+    "framework/numerical_programs/__init__.py": "eb59e849b6458789d07b5c0e46abaa317efc465b569a426c02205d6aa427748b",
+    "framework/numerical_programs/_compiler.py": "53d2b1e6a76a6dd93571408e74d0da2d8b50c34e3e82a4454f2722a9e503576b",
+    "framework/numerical_programs/_json.py": "efb83e3de30eb390cb13a4ff5b99db8e66383a46843c765615e5abe639cb1123",
+    "framework/numerical_programs/_language.py": "7a7f773d34d837368136b911e7fa0a43970423ee7f1b5d01e43896b50a649373",
+    "framework/project.py": "d994403b2481634e409c9f26cef65a487334ab4328490ea4064559afb43b26c2",
+    "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
+    "framework/quarto_bridge/__init__.py": "f647bd933e97d73590c853d2f3e30be177c7ca5522eb63a9220af62217835584",
+    "framework/quarto_bridge/_delivery.py": "548024950a54b038bc34d431090c78a0518ac787eaec053c32ec0b5def2b9568",
+    "framework/quarto_bridge/_figure_job.py": "e2ed211aef594b2d2e3c9ee77527f8fa059507de8d50ba050314cb3b6030c951",
+    "framework/recovery.py": "e005716a9776d43d4163cc0595488cffc495810fb877a9392b66c24a2f45dd29",
+    "framework/reproduction/__init__.py": "9f22d6e2f84280b9b39bff69314282ea2c79a1429d4d9e57c00d7c785fc9b005",
+    "framework/reproduction/_numeric.py": "5424d8d0c4fbafa4fc2472d0dc347ec541ffed34a6f3aaf3612e3b08f7e03a18",
+    "framework/services.py": "a1ea1f58feb90fe234c9e8d2d3d97c299c6bb45fed1ec0e7909ce6651195eab3",
+    "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
+    "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
+    "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+    "framework/surrogate/__init__.py": "f44e6befa9c1e27dda6947d011fe35dc42113808aad95d73e07feaefba2e8ab6",
+    "framework/surrogate/demo.py": "1411c686ed61e30e73edd24d36ef8fd59a2dede0a545c2b6873c3f10cd9c6136",
+    "framework/tracking/__init__.py": "5bdee114e507650b662e9342afa36d9d0d9b7dfa070a870bad4a9a52517ff19e",
+    "framework/tracking/_worker.py": "bce9fa56d8f05ecab350e3689bb35c19773ad9aa283c42b6fc5ad5c6190a9b54",
+    "framework/updates.py": "63af55655b8a8a65e062f3d7c0d93a271486f0a6c962305f6baece7f856c91ed",
+    "framework/validity/__init__.py": "f908c064b12819cb875d99b101bb4e6b9f01fababf7515f33520a5d6b8de2b3f",
+    "framework/validity/lean_audit.py": "9d396ec4ff6a8472d7348a3893b006d1e64794355e1eada8e9f65ae9eb32a1eb",
+    "framework/verifiers/__init__.py": "8e8086c9ca734be2b002593c7b751a909e86d2edf4fef209b2f10fe9865dc78c",
+    "framework/verifiers/citations.py": "20c97defc19ba08c7e67de31263076ae33e2bd52757645d999bb781875439c29",
+    "framework/verifiers/extract_s4.py": "4914fd8072f607176a82777aeb1a028d82690f306cc6ac41121be548e84eb098",
+    "framework/verifiers/numerics.py": "3422a047f11985a9541605011f83de2c5eeb7fe8d4c9376d2cf4d5d394ba2d9a",
+    "framework/verifiers/pointers.py": "b93b5d2f012f98c98eca806522e29f44d59786bb0c750ce996dbb4c1a75d397d",
+    "framework/verifiers/stats.py": "38e4c0ad62f872734dd8a828f33c7b1147690499a3f47a7aba77fb94fcbf37a3",
+    "framework/verifiers/support.py": "462dfdc62c2ea79b78d7f7fd1ac4c529c3cb9e3ec124a4fd4e501a91f1b54280"
+  },
+  "symbolic_licenses": {
+    "mpmath": {
+      "license_files_sha256": {
+        "mpmath-1.3.0.dist-info/LICENSE": "c26cae81da4508e5e249985777a33821f183223ebb74d7f8cfbf90fe7eef2fb7"
+      },
+      "metadata_license": "BSD"
+    },
+    "sympy": {
+      "license_files_sha256": {
+        "sympy-1.14.0.dist-info/licenses/AUTHORS": "82b1038521b0696c63c90b31ed4a0a2c9c4c16871c648b157b07ca44b6f18f8d",
+        "sympy-1.14.0.dist-info/licenses/LICENSE": "07a5e9819f727b4986ad2829c7a29a6320d42575f720eb24d71b7fef573a0286",
+        "sympy/parsing/latex/LICENSE.txt": "007bc30a58fa40a996e772047120de4eaf31f5110e4f9c3b5f93fcdfbe2eaca1"
+      },
+      "metadata_license": "BSD"
+    }
+  },
+  "symbolic_versions": {
+    "mpmath": "1.3.0",
+    "sympy": "1.14.0"
+  },
+  "wheel_name": "eidos-0.4.11-py3-none-any.whl",
+  "wheel_sha256": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a"
+}

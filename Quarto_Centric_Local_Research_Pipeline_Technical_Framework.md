@@ -485,3 +485,32 @@ Initial public wheel/image bootstrap is outside the offline claim. This qualifie
 same-host Linux source replay, with 79 archived evidence files and no new model
 inference, resident-service restart or CRON. Independent-machine/installed-wheel
 acceptance, generative model portability, live tool choice and RSI remain open.
+
+## Free symbolic derivative checkpoint (2026-11-02)
+
+An isolated SymPy 1.14.0 reference adapter now derives the first derivative from
+the saved local-model T1 forward, using the immutable installed Eidos 0.4.11 SDK.
+Actual Windows and network-disabled Linux retain the original forward and pass
+23/23 joint public controls; the original supplied derivative remains 0/23. Each
+platform also passes 16 softplus and 8 square points, 20 tests and nine actual
+integrity/timeout controls. The complete lock, wheel/45 framework modules,
+license files, interpreter/platform, source/input/output hashes and owned Linux
+container removal are recorded in a 170-file raw archive. Failed namespace,
+stale-wheel and noexec-tmpfs attempts remain explicitly archived.
+
+Review identified domain holes hidden by CAS cancellation, floating predicate
+threshold drift and count-only evidence acceptance. The adapter checks original
+selected boundary intermediates, restricts thresholds to literals, checks both
+represented dtypes and independently replays full programs, point/reference
+values, refusal inventory and environment identities. A correct symbolic
+derivative is still subject to independent numerical acceptance without an
+absolute gradient floor; these checks do not prove whole-domain correctness.
+
+This is a free local external-tool result, with no model inference, credentials,
+Gemini/paid API, hosted fallback, CRON or resident-service changes. The adapter
+remains reference source and is not promoted into the released SDK. Live local
+model tool selection, independent sealed transfer, new-machine execution,
+GPU/vector/higher-order derivation, scientific novelty and RSI remain open.
+See the [English report](https://github.com/Computational-social-science/Eidos/blob/main/docs/SYMBOLIC-GRADIENT-TOOL-2026-11-02.md),
+[evidence summary](https://github.com/Computational-social-science/Eidos/blob/main/docs/SYMBOLIC-GRADIENT-TOOL-2026-11-02.json)
+and updated [RSI plan](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-OPTIMIZATION-PLAN.md).

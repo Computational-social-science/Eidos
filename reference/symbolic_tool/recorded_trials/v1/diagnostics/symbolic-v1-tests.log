@@ -1,0 +1,79 @@
+..............F.                                                         [100%]
+================================== FAILURES ===================================
+______________________ test_generated_budget_is_enforced ______________________
+
+    def test_generated_budget_is_enforced():
+        # The input fits; differentiating every distinct factor exceeds output bounds.
+        terms = ['log1p(x+' + str(i) + ')' for i in range(1, 16)]
+        with pytest.raises(Refused):
+>           derive(compile_formulas('*'.join(terms), '0'))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+E:\2026-AI4S\Eidos\reference\symbolic_tool\test_derivative.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:50: in compile_formulas
+    program[name] = lower(tree.body)
+                    ^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:30: in lower
+    return {'op': _BINARY[type(node.op)], 'args': [lower(node.left, depth+1), lower(node.right, depth+1)]}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:30: in lower
+    return {'op': _BINARY[type(node.op)], 'args': [lower(node.left, depth+1), lower(node.right, depth+1)]}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:30: in lower
+    return {'op': _BINARY[type(node.op)], 'args': [lower(node.left, depth+1), lower(node.right, depth+1)]}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:30: in lower
+    return {'op': _BINARY[type(node.op)], 'args': [lower(node.left, depth+1), lower(node.right, depth+1)]}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:30: in lower
+    return {'op': _BINARY[type(node.op)], 'args': [lower(node.left, depth+1), lower(node.right, depth+1)]}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:30: in lower
+    return {'op': _BINARY[type(node.op)], 'args': [lower(node.left, depth+1), lower(node.right, depth+1)]}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:30: in lower
+    return {'op': _BINARY[type(node.op)], 'args': [lower(node.left, depth+1), lower(node.right, depth+1)]}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:30: in lower
+    return {'op': _BINARY[type(node.op)], 'args': [lower(node.left, depth+1), lower(node.right, depth+1)]}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:30: in lower
+    return {'op': _BINARY[type(node.op)], 'args': [lower(node.left, depth+1), lower(node.right, depth+1)]}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:30: in lower
+    return {'op': _BINARY[type(node.op)], 'args': [lower(node.left, depth+1), lower(node.right, depth+1)]}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:30: in lower
+    return {'op': _BINARY[type(node.op)], 'args': [lower(node.left, depth+1), lower(node.right, depth+1)]}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:30: in lower
+    return {'op': _BINARY[type(node.op)], 'args': [lower(node.left, depth+1), lower(node.right, depth+1)]}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:30: in lower
+    return {'op': _BINARY[type(node.op)], 'args': [lower(node.left, depth+1), lower(node.right, depth+1)]}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:30: in lower
+    return {'op': _BINARY[type(node.op)], 'args': [lower(node.left, depth+1), lower(node.right, depth+1)]}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:37: in lower
+    return {'op': node.func.id, 'args': [lower(value, depth+1) for value in node.args]}
+                                         ^^^^^^^^^^^^^^^^^^^^^
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:30: in lower
+    return {'op': _BINARY[type(node.op)], 'args': [lower(node.left, depth+1), lower(node.right, depth+1)]}
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+node = <ast.Name object at 0x000001AAA92C7050>, depth = 17
+
+    def lower(node, depth=1):
+        nonlocal count
+        count += 1
+        if depth > MAX_DEPTH or count > MAX_NODES:
+>           raise ValueError('Formula exceeds its combined node/depth budget')
+E           ValueError: Formula exceeds its combined node/depth budget
+
+venv\Lib\site-packages\framework\numerical_programs\_compiler.py:22: ValueError
+=========================== short test summary info ===========================
+FAILED E:\2026-AI4S\Eidos\reference\symbolic_tool\test_derivative.py::test_generated_budget_is_enforced
+1 failed, 15 passed in 6.24s

@@ -1,0 +1,84 @@
+"""Public controls for the isolated symbolic adapter; no hosted models."""
+import json
+from pathlib import Path
+import sys
+
+import numpy as np
+import pytest
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from derivative import Refused, derive  # noqa: E402
+from framework.numerical_programs import compile_formulas, parse_program  # noqa: E402
+
+
+def test_polynomial_ignores_supplied_gradient():
+    source = compile_formulas('x*x', '-999')
+    result = derive(source)
+    assert result.to_dict()['loss'] == source.to_dict()['loss']
+    for dtype in (np.float32, np.float64):
+        for value in (-2, -0.0, 0, 2):
+            loss, gradient = result.evaluate(dtype(value))
+            assert gradient == dtype(2*value)
+            assert loss == dtype(value*value)
+            assert gradient.dtype == np.dtype(dtype)
+
+
+@pytest.mark.parametrize('loss', [
+    'where(x<=0,x,x+1)', 'where(x<=0,-x,x)',
+    'where(x<=0,1/x,1/x)', 'where(x<=x+1,x,x*x)',
+])
+def test_bad_boundary_is_refused(loss):
+    with pytest.raises(Refused):
+        derive(compile_formulas(loss, '0'))
+
+
+def test_softplus_retains_stable_forward_and_passes_tail():
+    source = compile_formulas('where(x<=0,log1p(exp(x)),x+log1p(exp(-x)))', '0')
+    result = derive(source)
+    assert result.to_dict()['loss'] == source.to_dict()['loss']
+    assert result.evaluate(np.float32(100))[1] == np.float32(1)
+    assert result.evaluate(np.float32(-80))[1] > 0
+
+
+def test_stable_primitive_derivatives():
+    result = derive(compile_formulas('log(-expm1(-x))', '0'))
+    assert 'expm1' in json.dumps(result.to_dict()['gradient'])
+    assert result.evaluate(np.float64(1e-100))[1] > 1e99
+
+
+@pytest.mark.parametrize('source', ['x', {'loss': 'x'}, None, 1])
+def test_unvalidated_input_is_refused(source):
+    with pytest.raises(TypeError):
+        derive(source)
+
+
+@pytest.mark.parametrize('payload', [
+    '{"loss":{"const":NaN},"gradient":{"const":0}}',
+    '{"loss":{"input":"x"},"loss":{"const":1},"gradient":{"const":0}}',
+    '{"loss":{"op":"__import__","args":[]},"gradient":{"const":0}}',
+])
+def test_untrusted_payload_is_rejected(payload):
+    with pytest.raises(ValueError):
+        parse_program(payload)
+
+
+def test_generated_budget_is_enforced():
+    # The input fits; differentiating every distinct factor exceeds output bounds.
+    terms = ['log1p(x+' + str(i) + ')' for i in range(1, 16)]
+    def balanced(values):
+        if len(values) == 1:
+            return values[0]
+        middle = len(values)//2
+        return '(' + balanced(values[:middle]) + '*' + balanced(values[middle:]) + ')'
+    source = compile_formulas(balanced(terms), '0')
+    with pytest.raises(Refused):
+        derive(source)
+
+
+def test_runtime_wrong_dtype_and_domain_are_rejected():
+    result = derive(compile_formulas('log(x)', '0'))
+    for value in (1.0, np.float16(1), np.array([1.0])):
+        with pytest.raises((ValueError, TypeError)):
+            result.evaluate(value)
+    with pytest.raises(FloatingPointError):
+        result.evaluate(np.float64(-1))

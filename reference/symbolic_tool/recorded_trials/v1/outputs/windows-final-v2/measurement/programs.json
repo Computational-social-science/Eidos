@@ -1,0 +1,521 @@
+{
+  "before": {
+    "gradient": {
+      "args": [
+        {
+          "args": [
+            {
+              "input": "x"
+            },
+            {
+              "const": 0.6931471805599453
+            }
+          ],
+          "op": "le"
+        },
+        {
+          "args": [
+            {
+              "args": [
+                {
+                  "input": "x"
+                }
+              ],
+              "op": "exp"
+            },
+            {
+              "args": [
+                {
+                  "const": 1.0
+                }
+              ],
+              "op": "neg"
+            }
+          ],
+          "op": "div"
+        },
+        {
+          "args": [
+            {
+              "args": [
+                {
+                  "input": "x"
+                }
+              ],
+              "op": "exp"
+            },
+            {
+              "args": [
+                {
+                  "const": 1.0
+                }
+              ],
+              "op": "neg"
+            }
+          ],
+          "op": "div"
+        }
+      ],
+      "op": "where"
+    },
+    "loss": {
+      "args": [
+        {
+          "args": [
+            {
+              "input": "x"
+            },
+            {
+              "const": 0.6931471805599453
+            }
+          ],
+          "op": "le"
+        },
+        {
+          "args": [
+            {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "args": [
+                        {
+                          "input": "x"
+                        }
+                      ],
+                      "op": "neg"
+                    }
+                  ],
+                  "op": "expm1"
+                }
+              ],
+              "op": "neg"
+            }
+          ],
+          "op": "log"
+        },
+        {
+          "args": [
+            {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "args": [
+                        {
+                          "input": "x"
+                        }
+                      ],
+                      "op": "neg"
+                    }
+                  ],
+                  "op": "exp"
+                }
+              ],
+              "op": "neg"
+            }
+          ],
+          "op": "log1p"
+        }
+      ],
+      "op": "where"
+    }
+  },
+  "derived": {
+    "gradient": {
+      "args": [
+        {
+          "args": [
+            {
+              "input": "x"
+            },
+            {
+              "const": 0.6931471805599453
+            }
+          ],
+          "op": "le"
+        },
+        {
+          "args": [
+            {
+              "const": -1.0
+            },
+            {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "const": 1.0
+                    },
+                    {
+                      "args": [
+                        {
+                          "args": [
+                            {
+                              "const": -1.0
+                            },
+                            {
+                              "input": "x"
+                            }
+                          ],
+                          "op": "mul"
+                        }
+                      ],
+                      "op": "expm1"
+                    }
+                  ],
+                  "op": "div"
+                },
+                {
+                  "args": [
+                    {
+                      "args": [
+                        {
+                          "const": -1.0
+                        },
+                        {
+                          "input": "x"
+                        }
+                      ],
+                      "op": "mul"
+                    }
+                  ],
+                  "op": "exp"
+                }
+              ],
+              "op": "mul"
+            }
+          ],
+          "op": "mul"
+        },
+        {
+          "args": [
+            {
+              "args": [
+                {
+                  "const": 1.0
+                },
+                {
+                  "args": [
+                    {
+                      "const": 1.0
+                    },
+                    {
+                      "args": [
+                        {
+                          "const": -1.0
+                        },
+                        {
+                          "args": [
+                            {
+                              "args": [
+                                {
+                                  "const": -1.0
+                                },
+                                {
+                                  "input": "x"
+                                }
+                              ],
+                              "op": "mul"
+                            }
+                          ],
+                          "op": "exp"
+                        }
+                      ],
+                      "op": "mul"
+                    }
+                  ],
+                  "op": "add"
+                }
+              ],
+              "op": "div"
+            },
+            {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "const": -1.0
+                    },
+                    {
+                      "input": "x"
+                    }
+                  ],
+                  "op": "mul"
+                }
+              ],
+              "op": "exp"
+            }
+          ],
+          "op": "mul"
+        }
+      ],
+      "op": "where"
+    },
+    "loss": {
+      "args": [
+        {
+          "args": [
+            {
+              "input": "x"
+            },
+            {
+              "const": 0.6931471805599453
+            }
+          ],
+          "op": "le"
+        },
+        {
+          "args": [
+            {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "args": [
+                        {
+                          "input": "x"
+                        }
+                      ],
+                      "op": "neg"
+                    }
+                  ],
+                  "op": "expm1"
+                }
+              ],
+              "op": "neg"
+            }
+          ],
+          "op": "log"
+        },
+        {
+          "args": [
+            {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "args": [
+                        {
+                          "input": "x"
+                        }
+                      ],
+                      "op": "neg"
+                    }
+                  ],
+                  "op": "exp"
+                }
+              ],
+              "op": "neg"
+            }
+          ],
+          "op": "log1p"
+        }
+      ],
+      "op": "where"
+    }
+  },
+  "softplus": {
+    "gradient": {
+      "args": [
+        {
+          "args": [
+            {
+              "input": "x"
+            },
+            {
+              "const": 0.0
+            }
+          ],
+          "op": "le"
+        },
+        {
+          "args": [
+            {
+              "args": [
+                {
+                  "const": 1.0
+                },
+                {
+                  "args": [
+                    {
+                      "const": 1.0
+                    },
+                    {
+                      "args": [
+                        {
+                          "input": "x"
+                        }
+                      ],
+                      "op": "exp"
+                    }
+                  ],
+                  "op": "add"
+                }
+              ],
+              "op": "div"
+            },
+            {
+              "args": [
+                {
+                  "input": "x"
+                }
+              ],
+              "op": "exp"
+            }
+          ],
+          "op": "mul"
+        },
+        {
+          "args": [
+            {
+              "const": 1.0
+            },
+            {
+              "args": [
+                {
+                  "const": -1.0
+                },
+                {
+                  "args": [
+                    {
+                      "args": [
+                        {
+                          "const": 1.0
+                        },
+                        {
+                          "args": [
+                            {
+                              "const": 1.0
+                            },
+                            {
+                              "args": [
+                                {
+                                  "args": [
+                                    {
+                                      "const": -1.0
+                                    },
+                                    {
+                                      "input": "x"
+                                    }
+                                  ],
+                                  "op": "mul"
+                                }
+                              ],
+                              "op": "exp"
+                            }
+                          ],
+                          "op": "add"
+                        }
+                      ],
+                      "op": "div"
+                    },
+                    {
+                      "args": [
+                        {
+                          "args": [
+                            {
+                              "const": -1.0
+                            },
+                            {
+                              "input": "x"
+                            }
+                          ],
+                          "op": "mul"
+                        }
+                      ],
+                      "op": "exp"
+                    }
+                  ],
+                  "op": "mul"
+                }
+              ],
+              "op": "mul"
+            }
+          ],
+          "op": "add"
+        }
+      ],
+      "op": "where"
+    },
+    "loss": {
+      "args": [
+        {
+          "args": [
+            {
+              "input": "x"
+            },
+            {
+              "const": 0.0
+            }
+          ],
+          "op": "le"
+        },
+        {
+          "args": [
+            {
+              "args": [
+                {
+                  "input": "x"
+                }
+              ],
+              "op": "exp"
+            }
+          ],
+          "op": "log1p"
+        },
+        {
+          "args": [
+            {
+              "input": "x"
+            },
+            {
+              "args": [
+                {
+                  "args": [
+                    {
+                      "args": [
+                        {
+                          "input": "x"
+                        }
+                      ],
+                      "op": "neg"
+                    }
+                  ],
+                  "op": "exp"
+                }
+              ],
+              "op": "log1p"
+            }
+          ],
+          "op": "add"
+        }
+      ],
+      "op": "where"
+    }
+  },
+  "square": {
+    "gradient": {
+      "args": [
+        {
+          "const": 2.0
+        },
+        {
+          "input": "x"
+        }
+      ],
+      "op": "mul"
+    },
+    "loss": {
+      "args": [
+        {
+          "input": "x"
+        },
+        {
+          "input": "x"
+        }
+      ],
+      "op": "mul"
+    }
+  }
+}

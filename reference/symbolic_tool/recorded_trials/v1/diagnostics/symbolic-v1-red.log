@@ -1,0 +1,14 @@
+
+=================================== ERRORS ====================================
+_____________________ ERROR collecting test_derivative.py _____________________
+ImportError while importing test module 'E:\2026-AI4S\Eidos\reference\symbolic_tool\test_derivative.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+E:\2026-AI4S\Eidos\reference\symbolic_tool\test_derivative.py:10: in <module>
+    from derivative import Refused, derive  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'derivative'
+=========================== short test summary info ===========================
+ERROR E:\2026-AI4S\Eidos\reference\symbolic_tool\test_derivative.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.65s

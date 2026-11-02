@@ -1,0 +1,42 @@
+{
+  "files": {
+    "environment.json": "fd30a4d79bf719d514b5663e08f4a08e32f1c45e0976db72756534c2d17cf250",
+    "points.json": "a44de9490b902db34a8d4d7962aa183edfd0bcb292b5a82a17233c3850730154",
+    "programs.json": "5b50d8e84bae7c73d57d7c4fa04fd6ab27f41fbdb0c8d4d38398c31fa7572700"
+  },
+  "manifest_sha256": "9dd32ea69e97dc5ede0c10011d8a4982f7649646605f31283ebc86593cc8714a",
+  "new_model_inference": false,
+  "observed_at": "2026-11-02T00:07:14.160508+00:00",
+  "origin": "external_free_symbolic_tool",
+  "refusals": [
+    {
+      "formula": "where(x<=0,x,x+1)",
+      "reason": "Boundary continuity not proved"
+    },
+    {
+      "formula": "where(x<=0,-x,x)",
+      "reason": "Boundary differentiability not proved"
+    },
+    {
+      "formula": "where(x<=0,1/x,1/x)",
+      "reason": "Original selected boundary intermediate is not finite and real"
+    },
+    {
+      "formula": "where(x<=x+1,x,x*x)",
+      "reason": "Variable threshold syntax is not supported"
+    },
+    {
+      "formula": "where(x<=0,(x*x)/x,x)",
+      "reason": "Original selected boundary intermediate is not finite and real"
+    },
+    {
+      "formula": "where(x<=x-x,x,x)",
+      "reason": "Variable threshold syntax is not supported"
+    }
+  ],
+  "schema": "eidos.symbolic-result.v1",
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "status": "PASS",
+  "unchanged_forward": true,
+  "wall_seconds": 1.065984999993816
+}

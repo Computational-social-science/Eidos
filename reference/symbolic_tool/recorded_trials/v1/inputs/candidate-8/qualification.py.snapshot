@@ -1,0 +1,442 @@
+"""Owned, timed reference experiment; no inference, paid API or resident service.
+
+Prepare a self-contained pinned input bundle, then execute its actual installed
+SDK in a child interpreter with -I. Hashes are local integrity evidence, not
+remote attestation or a hostile-code sandbox.
+"""
+from __future__ import annotations
+
+import argparse
+from datetime import datetime, timezone
+import hashlib
+from importlib.metadata import distribution
+import json
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+import tomllib
+
+sys.dont_write_bytecode = True
+
+RESPONSE_SHA = '173cbf478e059a16fb9fe8ed2b5f4ba5213b4f034240c47b6c9154e10999e13a'
+WHEEL_SHA = '752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a'
+CODE = ('derivative.py', 'oracle.py', 'sdk_identity.py', 'qualification.py', 'offline.py',
+        'test_derivative.py', 'pyproject.toml', 'uv.lock')
+REQUIRED = {*CODE, 'protocol.md', 'response.json', 'eidos-0.4.11-py3-none-any.whl'}
+REFUSALS = ('where(x<=0,x,x+1)', 'where(x<=0,-x,x)',
+            'where(x<=0,1/x,1/x)', 'where(x<=x+1,x,x*x)',
+            'where(x<=0,(x*x)/x,x)', 'where(x<=x-x,x,x)',
+            'where(x<=(10000000000000000+1)-10000000000000000,x*x,2*x-1)',
+            'where(x<=log(2),x,x)')
+
+
+def digest(body):
+    return hashlib.sha256(body).hexdigest()
+
+
+def encoded(value):
+    return (json.dumps(value, sort_keys=True, indent=2, allow_nan=False)+'\n').encode()
+
+
+def strict(raw):
+    def pairs(items):
+        result = {}
+        for key, value in items:
+            if key in result:
+                raise ValueError('Duplicate JSON key')
+            result[key] = value
+        return result
+    def reject(value):
+        raise ValueError('Nonfinite JSON constant: '+value)
+    return json.loads(raw, object_pairs_hook=pairs, parse_constant=reject)
+
+
+def inventory(folder, names):
+    result = {}
+    for name in names:
+        if '/' in name or '\\' in name or name in {'.', '..'}:
+            raise ValueError('Only flat bundle member names are allowed')
+        path = folder/name
+        if path.is_symlink() or not path.is_file():
+            raise ValueError('Missing or nonregular member: '+name)
+        result[name] = digest(path.read_bytes())
+    return result
+
+
+def validate_bundle(folder, expected):
+    if {p.name for p in folder.iterdir()} != REQUIRED | {'manifest.json'}:
+        raise ValueError('Unexpected bundle members')
+    raw = (folder/'manifest.json').read_bytes()
+    if digest(raw) != expected:
+        raise ValueError('Input manifest changed')
+    manifest = strict(raw)
+    if (set(manifest) != {'schema', 'hash_policy', 'files'}
+            or manifest['schema'] != 'eidos.symbolic-input.v1'
+            or manifest['hash_policy'] != 'raw bytes; text normalized UTF-8/LF at preparation'
+            or set(manifest['files']) != REQUIRED):
+        raise ValueError('Input manifest schema/inventory differs')
+    actual = inventory(folder, REQUIRED)
+    if actual != manifest['files']:
+        raise ValueError('Input bundle member changed')
+    if actual['response.json'] != RESPONSE_SHA or actual['eidos-0.4.11-py3-none-any.whl'] != WHEEL_SHA:
+        raise ValueError('Saved candidate or qualified wheel differs')
+    return manifest
+
+
+def prepare(root, folder):
+    folder.mkdir(parents=True, exist_ok=False)
+    source = root/'reference/symbolic_tool'
+    for name in CODE:
+        raw = (source/name).read_bytes().decode('utf-8-sig').replace('\r\n', '\n').encode()
+        (folder/name).write_bytes(raw)
+    (folder/'protocol.md').write_bytes((root/'.Codex/evals/symbolic-gradient-tool.md').read_bytes()
+                                     .decode('utf-8-sig').replace('\r\n', '\n').encode())
+    shutil.copyfile(root/'reference/rsi_bootstrap/recorded_trials/rsi-retrieval-feedback-v1/'
+                    'retrieval-feedback-1/response.json', folder/'response.json')
+    shutil.copyfile(root/'reference/sdk_process_acceptance/eidos-0.4.11-py3-none-any.whl',
+                    folder/'eidos-0.4.11-py3-none-any.whl')
+    raw = encoded({'schema': 'eidos.symbolic-input.v1',
+                   'hash_policy': 'raw bytes; text normalized UTF-8/LF at preparation',
+                   'files': inventory(folder, REQUIRED)})
+    (folder/'manifest.json').write_bytes(raw)
+    validate_bundle(folder, digest(raw))
+    return digest(raw)
+
+
+def expected_measurement(folder):
+    sys.path.insert(0, str(folder))
+    import numpy as np
+    from derivative import derive
+    import oracle
+    from framework.numerical_programs import compile_formulas, parse_program
+    response = strict((folder/'response.json').read_bytes())
+    candidate = strict(response['choices'][0]['message']['content'])
+    original = parse_program(json.dumps(candidate['program'], allow_nan=False))
+    derived = derive(original)
+    programs = {'before': original.to_dict(), 'derived': derived.to_dict()}
+    points = {name: [oracle.assess(program, x, 'log1mexp') for x in oracle.inputs()]
+              for name, program in [('before', original), ('derived', derived)]}
+    for method, formula, values in (
+        ('square', 'x*x', [-2, -0.0, 0, 2]),
+        ('softplus', 'where(x<=0,log1p(exp(x)),x+log1p(exp(-x)))',
+         [-80, -20, -.1, 0, .1, 20, 80, 100]),
+    ):
+        program = derive(compile_formulas(formula, '0'))
+        programs[method] = program.to_dict()
+        points[method] = [oracle.assess(program, np.asarray(x, dtype=dtype), method)
+                          for dtype in (np.float32, np.float64) for x in values]
+    return programs, points
+
+
+def environment_identity(folder):
+    sys.path.insert(0, str(folder))
+    import sympy
+    import mpmath
+    import sdk_identity
+    result = sdk_identity.identity(folder/'eidos-0.4.11-py3-none-any.whl', '0.4.11')
+    if result['module_count'] != 45 or result['wheel_sha256'] != WHEEL_SHA:
+        raise ValueError('Qualified SDK identity differs')
+    lock = tomllib.loads((folder/'uv.lock').read_text(encoding='utf-8'))
+    expected_versions = {p['name']: p['version'] for p in lock['package']
+                         if 'virtual' not in p['source']
+                         and (p['name'] != 'colorama' or sys.platform == 'win32')}
+    actual_versions = dict(result['dependencies'])
+    # pip is a bootstrap utility in the public image venv, outside the study lock.
+    actual_versions.pop('pip', None)
+    if actual_versions != expected_versions:
+        raise ValueError('Installed dependency versions differ from the complete study lock')
+    result['complete_study_lock_versions_met'] = True
+    for module in (sympy, mpmath):
+        if not Path(module.__file__).resolve().is_relative_to(Path(sys.prefix).resolve()):
+            raise ValueError('Symbolic dependency imported outside the virtual environment')
+    result['symbolic_versions'] = {'sympy': sympy.__version__, 'mpmath': mpmath.__version__}
+    if result['symbolic_versions'] != {'sympy': '1.14.0', 'mpmath': '1.3.0'}:
+        raise ValueError('Symbolic dependency versions differ')
+    result['symbolic_licenses'] = {}
+    for name in ('sympy', 'mpmath'):
+        dist = distribution(name)
+        files = {str(p): digest(Path(dist.locate_file(p)).read_bytes())
+                 for p in dist.files or [] if 'license' in str(p).lower()}
+        if not files:
+            raise ValueError('Missing dependency license files')
+        result['symbolic_licenses'][name] = {
+            'metadata_license': dist.metadata.get('License'), 'license_files_sha256': files}
+    return result
+
+
+def refusal_report(folder):
+    sys.path.insert(0, str(folder))
+    from derivative import Refused, derive
+    from framework.numerical_programs import compile_formulas
+    result = []
+    for formula in REFUSALS:
+        try:
+            derive(compile_formulas(formula, '0'))
+        except Refused as error:
+            result.append({'formula': formula, 'reason': str(error)})
+        else:
+            raise ValueError('Required boundary refusal was accepted')
+    return result
+
+
+def verify_receipt(output, manifest_sha, folder):
+    validate_bundle(folder, manifest_sha)
+    names = {'points.json', 'programs.json', 'environment.json', 'record.json'}
+    before = {name: (output/name).read_bytes() for name in names}
+    record = strict(before['record.json'])
+    if (record.get('status') != 'PASS' or record.get('manifest_sha256') != manifest_sha
+            or record.get('schema') != 'eidos.symbolic-result.v1'
+            or record.get('origin') != 'external_free_symbolic_tool'
+            or record.get('new_model_inference') is not False
+            or record.get('scientific_rsi') != 'NOT_DEMONSTRATED'
+            or record.get('unchanged_forward') is not True
+            or len(record.get('refusals', [])) != len(REFUSALS)
+            or set(record.get('files', {})) != {'points.json', 'programs.json', 'environment.json'}
+            or inventory(output, record['files']) != record['files']
+            or {p.name for p in output.iterdir()} != {*record['files'], 'record.json'}):
+        raise ValueError('Receipt/payload/inventory differs')
+    points = strict(before['points.json'])
+    validate_points(points)
+    # Rebuild every program and re-execute each represented input against the
+    # independent Decimal oracle. Never treat self-reported passed flags as truth.
+    expected_programs, expected_points = expected_measurement(folder)
+    if (encoded(strict(before['programs.json'])) != encoded(expected_programs)
+            or encoded(points) != encoded(expected_points)):
+        raise ValueError('Recorded programs/points differ from independent replay')
+    if encoded(strict(before['environment.json'])) != encoded(environment_identity(folder)):
+        raise ValueError('Recorded environment differs from the installed runtime')
+    if encoded(record['refusals']) != encoded(refusal_report(folder)):
+        raise ValueError('Recorded boundary refusals differ from replay')
+    validate_bundle(folder, manifest_sha)
+    if ({p.name for p in output.iterdir()} != names
+            or any((output/name).read_bytes() != body for name, body in before.items())):
+        raise ValueError('Receipt or payload changed during verification')
+    return record
+
+
+def validate_points(points):
+    counts = {name: sum(row['passed'] for row in rows) for name, rows in points.items()}
+    lengths = {name: len(rows) for name, rows in points.items()}
+    if counts != {'before': 0, 'derived': 23, 'softplus': 16, 'square': 8} or lengths != {
+            'before': 23, 'derived': 23, 'softplus': 16, 'square': 8}:
+        raise ValueError('Point receipt does not meet the fixed contract')
+    if not all(row['loss_passed'] and not row['gradient_passed'] for row in points['before']):
+        raise ValueError('Original forward/gradient result differs')
+
+
+def worker(folder, output, expected):
+    started = time.perf_counter()
+    manifest = validate_bundle(folder, expected)
+    if Path(__file__).resolve() != (folder/'qualification.py').resolve():
+        raise ValueError('Worker must run the pinned bundle driver')
+    sys.path.insert(0, str(folder))  # Only this pinned tool directory; never checkout root.
+    import numpy as np
+    from derivative import derive
+    import oracle
+    from framework.numerical_programs import compile_formulas, parse_program
+
+    environment = environment_identity(folder)
+    response = strict((folder/'response.json').read_bytes())
+    choices = response['choices']
+    if not isinstance(choices, list) or len(choices) != 1:
+        raise ValueError('Require a single saved response')
+    candidate = strict(choices[0]['message']['content'])
+    original = parse_program(json.dumps(candidate['program'], allow_nan=False))
+    derived = derive(original)
+    if derived.to_dict()['loss'] != original.to_dict()['loss']:
+        raise ValueError('Forward changed')
+    points = {name: [oracle.assess(program, x, 'log1mexp') for x in oracle.inputs()]
+              for name, program in [('before', original), ('derived', derived)]}
+    programs = {'before': original.to_dict(), 'derived': derived.to_dict()}
+    for method, formula, values in (
+        ('square', 'x*x', [-2, -0.0, 0, 2]),
+        ('softplus', 'where(x<=0,log1p(exp(x)),x+log1p(exp(-x)))',
+         [-80, -20, -.1, 0, .1, 20, 80, 100]),
+    ):
+        program = derive(compile_formulas(formula, '0'))
+        programs[method] = program.to_dict()
+        points[method] = [oracle.assess(program, np.asarray(x, dtype=dtype), method)
+                          for dtype in (np.float32, np.float64) for x in values]
+    refusals = refusal_report(folder)
+    if validate_bundle(folder, expected) != manifest:
+        raise ValueError('Input changed during evaluation')
+    if environment_identity(folder) != environment:
+        raise ValueError('Installed environment changed')
+    validate_points(points)
+    output.mkdir(parents=True, exist_ok=False)
+    payloads = {'points.json': encoded(points), 'programs.json': encoded(programs),
+                'environment.json': encoded(environment)}
+    for name, body in payloads.items():
+        (output/name).write_bytes(body)
+    validate_bundle(folder, expected)
+    record = {'schema': 'eidos.symbolic-result.v1', 'status': 'PASS',
+              'observed_at': datetime.now(timezone.utc).isoformat(),
+              'manifest_sha256': expected, 'wall_seconds': time.perf_counter()-started,
+              'new_model_inference': False, 'scientific_rsi': 'NOT_DEMONSTRATED',
+              'origin': 'external_free_symbolic_tool', 'unchanged_forward': True,
+              'refusals': refusals, 'files': {k: digest(v) for k, v in payloads.items()}}
+    (output/'record.json').write_bytes(encoded(record))
+    verify_receipt(output, expected, folder)
+
+
+def invoke(folder, output, expected, timeout=120, sleep_control=False):
+    args = [sys.executable, '-I', '-B', str(folder/'qualification.py'), 'worker',
+            '--bundle', str(folder), '--output', str(output), '--manifest-sha', expected]
+    if sleep_control:
+        args += ['--sleep-control']
+    return run_owned(args, folder.parent, timeout)
+
+
+def run_owned(args, cwd, timeout):
+    from framework.subprocesses import run_tree
+    import framework.subprocesses as processes
+    if (not sys.flags.isolated or sys.prefix == sys.base_prefix
+            or not Path(processes.__file__).resolve().is_relative_to(Path(sys.prefix).resolve())):
+        raise ValueError('Owned execution requires -I and the installed SDK virtual environment')
+    result = run_tree(args, cwd=cwd, timeout=timeout)
+    return subprocess.CompletedProcess(args, result.returncode,
+                                       result.stdout.encode(), result.stderr.encode())
+
+
+def campaign(folder, output, expected):
+    validate_bundle(folder, expected)
+    output.mkdir(parents=True, exist_ok=False)
+    started = time.perf_counter()
+    def remaining():
+        seconds = 180-(time.perf_counter()-started)
+        if seconds <= 0:
+            raise TimeoutError('Campaign total deadline exceeded')
+        return min(120, seconds)
+    record = {'status': 'FAIL', 'manifest_sha256': expected, 'worker_deadline_seconds': 120,
+              'campaign_deadline_seconds': 180,
+              'controls': {}, 'new_model_inference': False, 'scientific_rsi': 'NOT_DEMONSTRATED'}
+    try:
+        run = invoke(folder, output/'measurement', expected, timeout=remaining())
+        (output/'stdout.log').write_bytes(run.stdout)
+        (output/'stderr.log').write_bytes(run.stderr)
+        if run.returncode:
+            raise RuntimeError('Measurement worker failed; see retained stderr')
+        verify_receipt(output/'measurement', expected, folder)
+        for member, label in [('response.json', 'input_mutation'),
+                              ('qualification.py', 'driver_mutation')]:
+            with tempfile.TemporaryDirectory(prefix='eidos-symbolic-mutation-') as temp:
+                mutated = Path(temp)/'bundle'
+                shutil.copytree(folder, mutated)
+                with (mutated/member).open('ab') as stream:
+                    stream.write(b'\n# mutation\n' if member.endswith('.py') else b' ')
+                rejected = invoke(mutated, Path(temp)/'must-not-exist', expected,
+                                  timeout=remaining())
+                (output/(label+'.log')).write_bytes(rejected.stdout+rejected.stderr)
+                if rejected.returncode == 0 or (Path(temp)/'must-not-exist').exists():
+                    raise RuntimeError('Mutated input accepted')
+                if b'Input bundle member changed' not in rejected.stderr:
+                    raise RuntimeError('Negative worker failed for an unexpected reason')
+                record['controls'][label] = True
+        with tempfile.TemporaryDirectory(prefix='eidos-symbolic-receipt-') as temp:
+            mutated = Path(temp)/'result'
+            shutil.copytree(output/'measurement', mutated)
+            (mutated/'points.json').write_bytes(b'{}')
+            try:
+                verify_receipt(mutated, expected, folder)
+            except ValueError:
+                record['controls']['receipt_mutation'] = True
+            else:
+                raise RuntimeError('Mutated receipt payload accepted')
+        for label in ('duplicate_points_rehashed', 'wrong_program_rehashed', 'integer_bool_rehashed',
+                      'environment_rehashed', 'refusals_resealed'):
+            with tempfile.TemporaryDirectory(prefix='eidos-symbolic-rehash-') as temp:
+                mutated = Path(temp)/'result'
+                shutil.copytree(output/'measurement', mutated)
+                name = ('environment.json' if label == 'environment_rehashed' else
+                        'programs.json' if label == 'wrong_program_rehashed' else 'points.json')
+                value = strict((mutated/name).read_bytes())
+                if label == 'environment_rehashed':
+                    value = {}
+                elif label == 'wrong_program_rehashed':
+                    value['derived']['gradient'] = {'const': 0.0}
+                elif label == 'duplicate_points_rehashed':
+                    value['derived'] = [value['derived'][0]]*23
+                elif label == 'integer_bool_rehashed':
+                    value['derived'][0]['passed'] = 1
+                (mutated/name).write_bytes(encoded(value))
+                receipt = strict((mutated/'record.json').read_bytes())
+                receipt['files'][name] = digest((mutated/name).read_bytes())
+                if label == 'refusals_resealed':
+                    receipt['refusals'] = [{}]*len(REFUSALS)
+                (mutated/'record.json').write_bytes(encoded(receipt))
+                try:
+                    verify_receipt(mutated, expected, folder)
+                except ValueError:
+                    record['controls'][label] = True
+                else:
+                    raise RuntimeError('Rehashed scientific mismatch accepted: '+label)
+        try:
+            invoke(folder, output/'timeout-must-not-exist', expected,
+                   timeout=min(2, remaining()), sleep_control=True)
+        except subprocess.TimeoutExpired:
+            record['controls']['actual_timeout'] = (
+                (output/'timeout-started.txt').is_file()
+                and not (output/'timeout-must-not-exist').exists())
+        else:
+            raise RuntimeError('Timeout control did not time out')
+        tests = run_owned([sys.executable, '-I', '-B', '-m', 'pytest', '-p', 'no:cacheprovider',
+                           '-c', str(folder/'pyproject.toml'), str(folder/'test_derivative.py'), '-q'],
+                          folder.parent, remaining())
+        (output/'pytest.log').write_bytes(tests.stdout+tests.stderr)
+        if tests.returncode or not all(record['controls'].values()):
+            raise RuntimeError('Regression/control failure')
+        validate_bundle(folder, expected)
+        verify_receipt(output/'measurement', expected, folder)
+        remaining()
+        record.update(status='PASS', pytest_returncode=tests.returncode,
+                      seed='not applicable; deterministic differentiation and replay')
+    except Exception as error:
+        record['error'] = type(error).__name__+': '+str(error)
+        raise
+    finally:
+        record['wall_seconds'] = time.perf_counter()-started
+        (output/'campaign.json').write_bytes(encoded(record))
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('mode', choices=['prepare', 'worker', 'campaign', 'run', 'verify'])
+    parser.add_argument('--root', type=Path)
+    parser.add_argument('--bundle', type=Path, required=True)
+    parser.add_argument('--output', type=Path)
+    parser.add_argument('--manifest-sha')
+    parser.add_argument('--sleep-control', action='store_true')
+    args = parser.parse_args()
+    folder = args.bundle.resolve()
+    if args.mode == 'prepare':
+        print(prepare(args.root.resolve(), folder))
+    elif args.mode == 'worker':
+        if args.sleep_control:
+            (args.output.resolve().parent/'timeout-started.txt').write_text('worker reached sleep control\n')
+            time.sleep(10)  # Deliberate child process timeout; never touches resident services.
+        worker(folder, args.output.resolve(), args.manifest_sha)
+    elif args.mode == 'campaign':
+        campaign(folder, args.output.resolve(), args.manifest_sha)
+    elif args.mode == 'run':
+        validate_bundle(folder, args.manifest_sha)
+        if args.output.exists():
+            raise FileExistsError('Output must be a new directory')
+        result = run_owned([sys.executable, '-I', '-B', str(folder/'qualification.py'), 'campaign',
+                            '--bundle', str(folder), '--output', str(args.output.resolve()),
+                            '--manifest-sha', args.manifest_sha], folder.parent, 180)
+        args.output.mkdir(parents=True, exist_ok=True)
+        (args.output/'parent-stdout.log').write_bytes(result.stdout)
+        (args.output/'parent-stderr.log').write_bytes(result.stderr)
+        if result.returncode:
+            raise SystemExit(result.returncode)
+    else:
+        validate_bundle(folder, args.manifest_sha)
+        verify_receipt(args.output.resolve(), args.manifest_sha, folder)
+        print('PASS')
+
+
+if __name__ == '__main__':
+    main()

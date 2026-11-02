@@ -1,0 +1,140 @@
+"""Public-image, owned, network-disabled Linux qualification controller."""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+import tomllib
+import uuid
+
+IMAGE = ('public.ecr.aws/docker/library/python@sha256:'
+         'e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337')
+
+
+def call(args, timeout=30):
+    return subprocess.run(args, capture_output=True, text=True, encoding='utf-8', timeout=timeout,
+                          creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
+
+
+def checked(args, timeout=30):
+    result = call(args, timeout)
+    if result.returncode:
+        raise RuntimeError(str(args[:3])+': '+result.stderr[-1800:])
+    return result.stdout.strip()
+
+
+def inside(manifest):
+    """Dependency bootstrap has its own limit; scientific worker stays offline."""
+    started = time.monotonic()
+    lock = tomllib.loads(Path('/input/uv.lock').read_text(encoding='utf-8'))
+    allowed = {w['hash'].removeprefix('sha256:') for p in lock['package'] for w in p.get('wheels', [])}
+    for wheel in Path('/wheels').glob('*.whl'):
+        if hashlib.sha256(wheel.read_bytes()).hexdigest() not in allowed:
+            raise ValueError('Offline wheel artifact is outside the pinned study lock: '+wheel.name)
+    constraints = '\n'.join(p['name']+'=='+p['version'] for p in lock['package']
+                            if 'virtual' not in p['source'] and p['name'] != 'colorama')+'\n'
+    Path('/tmp/constraints.txt').write_text(constraints, encoding='utf-8')
+    checked([sys.executable, '-I', '-m', 'venv', '/tmp/venv'], 30)
+    python = '/tmp/venv/bin/python'
+    command = [python, '-I', '-m', 'pip', 'install', '--no-index', '--find-links', '/wheels',
+               '--constraint', '/tmp/constraints.txt',
+               '/input/eidos-0.4.11-py3-none-any.whl', 'sympy==1.14.0', 'mpmath==1.3.0', 'pytest==9.1.1']
+    installation = call(command, 60)
+    Path('/out/install.log').write_text(installation.stdout+installation.stderr, encoding='utf-8')
+    if installation.returncode:
+        raise RuntimeError('Offline dependency bootstrap failed')
+    Path('/out/pip-check.log').write_text(checked([python, '-I', '-m', 'pip', 'check']), encoding='utf-8')
+    Path('/out/bootstrap.json').write_text(json.dumps({
+        'bootstrap_seconds': time.monotonic()-started, 'network': 'none',
+        'installed': checked([python, '-I', '-m', 'pip', 'freeze', '--all'])}, indent=2)+'\n')
+    result = call([python, '-I', '-B', '/input/qualification.py', 'run', '--bundle', '/input',
+                   '--output', '/out/campaign', '--manifest-sha', manifest], 190)
+    Path('/out/controller-stdout.log').write_text(result.stdout, encoding='utf-8')
+    Path('/out/controller-stderr.log').write_text(result.stderr, encoding='utf-8')
+    if result.returncode:
+        raise RuntimeError('Offline qualification failed')
+
+
+def run(bundle, wheels, output, manifest):
+    output.mkdir(parents=True, exist_ok=False)
+    owner = uuid.uuid4().hex
+    name = 'eidos-symbolic-'+owner[:12]
+    image_id = json.loads(checked(['docker', 'image', 'inspect', IMAGE]))[0]['Id']
+    record = {'status': 'FAIL', 'owner': owner, 'image_reference': IMAGE, 'image_id': image_id,
+              'manifest_sha256': manifest, 'cleanup_verified': False,
+              'wheelhouse_sha256': {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                                   for p in sorted(wheels.glob('*.whl'))}}
+    cid = None
+    def owned():
+        data = json.loads(checked(['docker', 'container', 'inspect', cid]))[0]
+        if (data['Id'] != cid or data['Image'] != image_id
+                or data['Config']['Labels'].get('eidos.symbolic.owner') != owner):
+            raise RuntimeError('Owned container identity differs; cleanup refused')
+        return data
+    try:
+        cid = checked(['docker', 'create', '--name', name, '--network', 'none', '--read-only',
+                       '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges',
+                       '--label', 'eidos.symbolic.owner='+owner, '--tmpfs', '/tmp:rw,size=1073741824',
+                       '--mount', 'type=bind,source='+str(bundle)+',target=/input,readonly',
+                       '--mount', 'type=bind,source='+str(wheels)+',target=/wheels,readonly',
+                       '--mount', 'type=bind,source='+str(output)+',target=/out',
+                       image_id, 'python', '-I', '/input/offline.py', '--inside', '--manifest-sha', manifest])
+        data = owned()
+        record['container_id'] = cid
+        record['observed_settings'] = {
+            'network': data['HostConfig']['NetworkMode'], 'readonly_rootfs': data['HostConfig']['ReadonlyRootfs'],
+            'mounts': data['Mounts'], 'tmpfs': data['HostConfig']['Tmpfs'],
+            'cap_drop': data['HostConfig']['CapDrop'], 'security_opt': data['HostConfig']['SecurityOpt']}
+        if (data['HostConfig']['NetworkMode'] != 'none' or not data['HostConfig']['ReadonlyRootfs']
+                or any(m['RW'] for m in data['Mounts'] if m['Destination'] in {'/input', '/wheels'})):
+            raise RuntimeError('Offline/read-only settings differ')
+        result = call(['docker', 'start', '--attach', cid], 260)
+        (output/'docker-stdout.log').write_text(result.stdout, encoding='utf-8')
+        (output/'docker-stderr.log').write_text(result.stderr, encoding='utf-8')
+        data = owned()
+        record['terminal_state'] = data['State']
+        campaign = json.loads((output/'campaign/campaign.json').read_bytes())
+        if (result.returncode or data['State']['Running'] or data['State']['ExitCode'] != 0
+                or campaign['status'] != 'PASS' or campaign['manifest_sha256'] != manifest):
+            raise RuntimeError('Offline run did not meet the contract')
+        record['status'] = 'PASS'
+    except Exception as error:
+        record['error'] = type(error).__name__+': '+str(error)
+        raise
+    finally:
+        if cid is not None:
+            try:
+                owned()
+                checked(['docker', 'rm', '--force', cid])
+                removed = call(['docker', 'container', 'inspect', cid])
+                record['cleanup_verified'] = removed.returncode != 0 and 'no such container' in removed.stderr.lower()
+                if not record['cleanup_verified']:
+                    raise RuntimeError('Owned container removal not proved')
+            except Exception as error:
+                record.update(status='FAIL', cleanup_error=type(error).__name__+': '+str(error))
+        (output/'container.json').write_text(json.dumps(record, indent=2)+'\n', encoding='utf-8')
+    if record['status'] != 'PASS' or not record['cleanup_verified']:
+        raise RuntimeError('Container qualification or cleanup failed')
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--inside', action='store_true')
+    parser.add_argument('--manifest-sha', required=True)
+    parser.add_argument('--bundle', type=Path)
+    parser.add_argument('--wheels', type=Path)
+    parser.add_argument('--output', type=Path)
+    args = parser.parse_args()
+    if args.inside:
+        inside(args.manifest_sha)
+    else:
+        run(args.bundle.resolve(), args.wheels.resolve(), args.output.resolve(), args.manifest_sha)
+
+
+if __name__ == '__main__':
+    main()

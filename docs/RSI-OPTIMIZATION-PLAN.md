@@ -513,3 +513,31 @@ delivery, tracking, self-check and bounded recovery contracts. Only after a real
 candidate completes the full chain should the project attempt sealed transfer,
 then a second improvement generation under the original RSI gates. The broader
 functional-completeness and RSI objectives remain open.
+
+## 13. Executed free symbolic-tool checkpoint
+
+The proposed differentiation compatibility experiment has now executed on native
+Windows and network-disabled Linux using an isolated SymPy 1.14.0 adapter and the
+unchanged installed Eidos 0.4.11 SDK. It derives from the saved T1 forward alone,
+preserves that forward and passes 23/23 joint public controls; the original
+model's supplied derivative remains 0/23. Each platform also passes 16 softplus
+and 8 square points, 20 tests and nine integrity/timeout controls. See the
+[report](SYMBOLIC-GRADIENT-TOOL-2026-11-02.md) and
+[bound evidence](SYMBOLIC-GRADIENT-TOOL-2026-11-02.json).
+
+Review exposed CAS-cancelled domain holes, floating threshold drift and
+count-only receipt acceptance. The reference tool now checks original selected
+boundary intermediates, conservatively refuses nonliteral thresholds, admits
+boundaries using both represented dtypes and replays full programs, point values,
+refusals and environment identities. Offline wheel hashes and the entire installed
+study closure are pinned. Measured namespace/import/bootstrap failures are
+retained; they were not reported as successful experiments.
+
+This closes a bounded tool-derivation gap, not seed competence or RSI. The adapter
+remains isolated reference source; the released SDK still accepts supplied
+gradients and has no new automatic-derivative API. No model inference occurred.
+Next, preregister and execute live local-model tool selection under the finite,
+matched assistance/budget policy in section 12. Keep this public case outside
+sealed transfer. Independent evaluation and improvement-procedure evidence must
+precede any G3/G4 or recursive-improvement claim. Continue keyless local execution,
+with explicit free dependency/model licenses and no hosted fallback.

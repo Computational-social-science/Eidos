@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/tmp/eidos-symbolic-mutation-mw2a_8fx/bundle/qualification.py", line 448, in <module>
+    main()
+  File "/tmp/eidos-symbolic-mutation-mw2a_8fx/bundle/qualification.py", line 426, in main
+    worker(folder, args.output.resolve(), args.manifest_sha)
+  File "/tmp/eidos-symbolic-mutation-mw2a_8fx/bundle/qualification.py", line 238, in worker
+    manifest = validate_bundle(folder, expected)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/eidos-symbolic-mutation-mw2a_8fx/bundle/qualification.py", line 84, in validate_bundle
+    raise ValueError('Input bundle member changed')
+ValueError: Input bundle member changed

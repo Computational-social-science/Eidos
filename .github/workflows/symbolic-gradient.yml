@@ -1,0 +1,70 @@
+name: symbolic-gradient-reference
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'reference/symbolic_tool/**'
+      - '.Codex/evals/symbolic-gradient-tool.md'
+      - '.github/workflows/symbolic-gradient.yml'
+      - 'reference/sdk_process_acceptance/eidos-0.4.11-py3-none-any.whl'
+  pull_request:
+    paths:
+      - 'reference/symbolic_tool/**'
+      - '.Codex/evals/symbolic-gradient-tool.md'
+      - '.github/workflows/symbolic-gradient.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reference:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      UV_PROJECT_ENVIRONMENT: ${{ runner.temp }}/symbolic-venv
+      UV_PYTHON: '3.12'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: '0.12.17'
+      - name: Verify committed raw evidence before replay
+        shell: python
+        run: |
+          import hashlib, json, pathlib
+          root = pathlib.Path.cwd()
+          summary = json.loads((root/'docs/SYMBOLIC-GRADIENT-TOOL-2026-11-02.json').read_bytes())
+          manifest_path = root/summary['archive_manifest']
+          if hashlib.sha256(manifest_path.read_bytes()).hexdigest() != summary['archive_manifest_sha256']:
+              raise SystemExit('Archive manifest changed')
+          manifest = json.loads(manifest_path.read_bytes())
+          files = {p.relative_to(manifest_path.parent).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in manifest_path.parent.rglob('*') if p.is_file() and p != manifest_path}
+          if files != manifest['files']:
+              raise SystemExit('Archived evidence changed')
+      - name: Install frozen isolated study dependencies
+        run: uv sync --frozen --project reference/symbolic_tool --extra dev
+      - name: Execute installed SDK from outside checkout
+        shell: python
+        run: |
+          import os, pathlib, subprocess
+          root = pathlib.Path(os.environ['GITHUB_WORKSPACE'])
+          temporary = pathlib.Path(os.environ['RUNNER_TEMP'])
+          python = pathlib.Path(os.environ['UV_PROJECT_ENVIRONMENT']) / ('Scripts/python.exe' if os.name == 'nt' else 'bin/python')
+          bundle, output = temporary/'symbolic-input', temporary/'symbolic-output'
+          digest = subprocess.check_output([str(python), '-I', '-B', str(root/'reference/symbolic_tool/qualification.py'), 'prepare', '--root', str(root), '--bundle', str(bundle)], cwd=temporary, text=True).strip()
+          subprocess.run([str(python), '-I', '-B', str(bundle/'qualification.py'), 'run', '--bundle', str(bundle), '--output', str(output), '--manifest-sha', digest], cwd=temporary, check=True)
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: symbolic-${{ matrix.os }}
+          path: ${{ runner.temp }}/symbolic-output
+          if-no-files-found: warn

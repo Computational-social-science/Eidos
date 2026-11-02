@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/input/qualification.py", line 448, in <module>
+    main()
+  File "/input/qualification.py", line 428, in main
+    campaign(folder, args.output.resolve(), args.manifest_sha)
+  File "/input/qualification.py", line 327, in campaign
+    raise RuntimeError('Measurement worker failed; see retained stderr')
+RuntimeError: Measurement worker failed; see retained stderr

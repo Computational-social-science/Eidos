@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "C:\Users\Administrator\.cache\eidos-symbolic-v1\candidate-2\qualification.py", line 392, in <module>
+    main()
+  File "C:\Users\Administrator\.cache\eidos-symbolic-v1\candidate-2\qualification.py", line 377, in main
+    result = run_owned([sys.executable, '-I', str(folder/'qualification.py'), 'campaign',
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\.cache\eidos-symbolic-v1\candidate-2\qualification.py", line 254, in run_owned
+    or not Path(framework.__file__).resolve().is_relative_to(Path(sys.prefix).resolve())):
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 1162, in __init__
+    super().__init__(*args)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\pathlib.py", line 373, in __init__
+    raise TypeError(
+TypeError: argument should be a str or an os.PathLike object where __fspath__ returns a str, not 'NoneType'

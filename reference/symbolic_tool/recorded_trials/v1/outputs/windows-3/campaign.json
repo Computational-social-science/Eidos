@@ -1,0 +1,20 @@
+{
+  "campaign_deadline_seconds": 180,
+  "controls": {
+    "actual_timeout": true,
+    "driver_mutation": true,
+    "duplicate_points_rehashed": true,
+    "input_mutation": true,
+    "integer_bool_rehashed": true,
+    "receipt_mutation": true,
+    "wrong_program_rehashed": true
+  },
+  "manifest_sha256": "9dd32ea69e97dc5ede0c10011d8a4982f7649646605f31283ebc86593cc8714a",
+  "new_model_inference": false,
+  "pytest_returncode": 0,
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "seed": "not applicable; deterministic differentiation and replay",
+  "status": "PASS",
+  "wall_seconds": 7.435044400015613,
+  "worker_deadline_seconds": 120
+}

@@ -1,0 +1,2 @@
+# Frozen experiment logs are evidence, unlike ordinary runtime logs.
+!recorded_trials/**/*.log

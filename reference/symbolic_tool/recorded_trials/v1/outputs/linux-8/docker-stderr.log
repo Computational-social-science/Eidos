@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/input/offline.py", line 140, in <module>
+    main()
+  File "/input/offline.py", line 134, in main
+    inside(args.manifest_sha)
+  File "/input/offline.py", line 38, in inside
+    raise ValueError('Offline wheel artifact is outside the pinned study lock: '+wheel.name)
+ValueError: Offline wheel artifact is outside the pinned study lock: iniconfig-2.3.0-py3-none-any.whl

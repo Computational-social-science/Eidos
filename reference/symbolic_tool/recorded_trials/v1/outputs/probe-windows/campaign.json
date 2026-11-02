@@ -1,0 +1,16 @@
+{
+  "controls": {
+    "actual_timeout": true,
+    "driver_mutation": true,
+    "input_mutation": true,
+    "receipt_mutation": true
+  },
+  "manifest_sha256": "00aa8bfd570e576a08021efab934e9ec3bdcecf202c916c9520715859d565322",
+  "new_model_inference": false,
+  "pytest_returncode": 0,
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "seed": "not applicable; deterministic differentiation and replay",
+  "status": "PASS",
+  "wall_seconds": 2.559776200010674,
+  "worker_deadline_seconds": 120
+}

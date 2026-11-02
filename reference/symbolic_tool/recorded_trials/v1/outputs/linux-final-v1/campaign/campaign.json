@@ -1,0 +1,11 @@
+{
+  "campaign_deadline_seconds": 180,
+  "controls": {},
+  "error": "RuntimeError: Measurement worker failed; see retained stderr",
+  "manifest_sha256": "b378d549778527fef38289fa531c6c66e4ff805bbdae3306d7e0497c6388b4df",
+  "new_model_inference": false,
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "status": "FAIL",
+  "wall_seconds": 0.488536061020568,
+  "worker_deadline_seconds": 120
+}

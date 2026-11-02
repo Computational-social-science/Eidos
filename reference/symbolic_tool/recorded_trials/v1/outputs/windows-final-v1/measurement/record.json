@@ -1,0 +1,50 @@
+{
+  "files": {
+    "environment.json": "5a1d3814400e16b52ef84953c9d504f987ad6397ed4221fd6a166c12c5efa549",
+    "points.json": "a44de9490b902db34a8d4d7962aa183edfd0bcb292b5a82a17233c3850730154",
+    "programs.json": "5b50d8e84bae7c73d57d7c4fa04fd6ab27f41fbdb0c8d4d38398c31fa7572700"
+  },
+  "manifest_sha256": "b378d549778527fef38289fa531c6c66e4ff805bbdae3306d7e0497c6388b4df",
+  "new_model_inference": false,
+  "observed_at": "2026-11-02T00:13:01.983620+00:00",
+  "origin": "external_free_symbolic_tool",
+  "refusals": [
+    {
+      "formula": "where(x<=0,x,x+1)",
+      "reason": "Boundary continuity not proved"
+    },
+    {
+      "formula": "where(x<=0,-x,x)",
+      "reason": "Boundary differentiability not proved"
+    },
+    {
+      "formula": "where(x<=0,1/x,1/x)",
+      "reason": "Original selected boundary intermediate is not finite and real"
+    },
+    {
+      "formula": "where(x<=x+1,x,x*x)",
+      "reason": "Variable threshold syntax is not supported"
+    },
+    {
+      "formula": "where(x<=0,(x*x)/x,x)",
+      "reason": "Original selected boundary intermediate is not finite and real"
+    },
+    {
+      "formula": "where(x<=x-x,x,x)",
+      "reason": "Variable threshold syntax is not supported"
+    },
+    {
+      "formula": "where(x<=(10000000000000000+1)-10000000000000000,x*x,2*x-1)",
+      "reason": "Only literal thresholds are qualified; expression rounding can move a boundary"
+    },
+    {
+      "formula": "where(x<=log(2),x,x)",
+      "reason": "Only literal thresholds are qualified; expression rounding can move a boundary"
+    }
+  ],
+  "schema": "eidos.symbolic-result.v1",
+  "scientific_rsi": "NOT_DEMONSTRATED",
+  "status": "PASS",
+  "unchanged_forward": true,
+  "wall_seconds": 1.2922193999984302
+}

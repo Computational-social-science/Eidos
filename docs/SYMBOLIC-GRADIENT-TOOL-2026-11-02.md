@@ -137,6 +137,19 @@ Replay instructions and the adapter are in the
 The added CI workflow reruns native Windows/Linux qualification after public
 dependency bootstrap; it makes no offline-network claim.
 
+The first remote workflow definition failed before creating jobs because
+`runner.temp` was referenced in job-level environment scope. That delivery
+failure is retained at
+[run 41367372083](https://github.com/Computational-social-science/Eidos/actions/runs/41367372083).
+The path is now defined in step environment scope. Actual remote job execution,
+in addition to local review and paired host measurements, is required before
+claiming that CI replay works.
+The official [actionlint 1.7.12](https://github.com/rhysd/actionlint/releases/tag/v1.7.12)
+binary, verified against its published archive checksum, rejects the original
+definition and accepts the correction. Its separate
+[static-validation record](https://github.com/Computational-social-science/Eidos/blob/main/reference/symbolic_tool/ci_validation/record.json)
+does not replace execution of the actual GitHub jobs.
+
 ## Next acceptance boundary
 
 Use this qualified local tool in one finite **live local-model tool-selection**

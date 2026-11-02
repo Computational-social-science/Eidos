@@ -1,0 +1,23 @@
+{
+  "schema": "eidos.symbolic-ci-static.v1",
+  "status": "PASS",
+  "origin": "official actionlint CLI",
+  "tool": {
+    "version": "1.7.12",
+    "url": "https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_windows_amd64.zip",
+    "archive_sha256": "6e7241b51e6817ea6a047693d8e6fed13b31819c9a0dd6c5a726e1592d22f6e9",
+    "executable_sha256": "54ca21be3de4c7cfa26914aa8b61bd76bf573ef3caac5f80d110558cdf241718",
+    "checksums_sha256": "433028cf0ba3c42163ea1a668dedce30fcdbe84fe912b1a5e288c006eab8a4f5"
+  },
+  "optional_shellcheck_pyflakes": "disabled; workflow/context validation only",
+  "original_commit": "7ba32aaaebb8136037e463dfd20726e2e919a4b3",
+  "original_workflow_sha256_lf": "3b94c310c894351781de16471028cb19c7e20aca5508ccabd0ae80ef9b509f95",
+  "corrected_workflow_sha256_lf": "1b5e34be770f49dcd054f3c6ed05f0a6e18ccf414aec83bf6ea9ebbefcc7d420",
+  "invalid_returncode": 1,
+  "corrected_returncode": 0,
+  "files_sha256_lf": {
+    "invalid.stdout.txt": "9f25ea2a9dccfb1e6a68e258867f913bcd9e3e0b621cb98361bc3c0646b5cdb4",
+    "corrected.stdout.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "scope": "Static workflow validation and a known invalid control; not remote job execution or scientific qualification."
+}

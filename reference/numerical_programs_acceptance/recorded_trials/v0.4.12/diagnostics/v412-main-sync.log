@@ -1,0 +1,7 @@
+   Building eidos @ file:///E:/2026-AI4S/Eidos
+      Built eidos @ file:///E:/2026-AI4S/Eidos
+Prepared 1 package in 4.13s
+Uninstalled 1 package in 6ms
+Installed 1 package in 8ms
+ - eidos==0.4.11 (from file:///E:/2026-AI4S/Eidos)
+ + eidos==0.4.12 (from file:///E:/2026-AI4S/Eidos)

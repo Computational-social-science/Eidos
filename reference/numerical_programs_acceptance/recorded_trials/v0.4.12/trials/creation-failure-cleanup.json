@@ -1,0 +1,16 @@
+[
+  {
+    "kind": "tracking",
+    "owner": "23cf9a25a22847278f171585e9efceeb",
+    "docker_ps_exit": 0,
+    "owned_container_ids": [],
+    "residual_absence_observed": true
+  },
+  {
+    "kind": "recovery",
+    "owner": "583fb0c7e0b040d8bd7514feece201f8",
+    "docker_ps_exit": 0,
+    "owned_container_ids": [],
+    "residual_absence_observed": true
+  }
+]

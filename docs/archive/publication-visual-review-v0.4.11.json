@@ -1,0 +1,460 @@
+{
+  "generated": "2026-11-01T22:09:31.037294+00:00",
+  "assessor": "Codex: all 36 pages compared pixel-for-pixel with the inspected v0.4.10 baseline; both changed PDF/Word pages visually inspected in full.",
+  "scope": "Rendered PDF and Word pages only; web layout is a separate browser check. Manuscript spacing permits whitespace before intact figures/tables.",
+  "submission_ready": false,
+  "baseline_tag": "v0.4.10",
+  "reports": [
+    {
+      "path": "site/reports/numerics/report.pdf",
+      "sha256": "38d43391b3b652127fa0b34be27e3f58c3eee3c56ec16aac593c7fa8a4b41884",
+      "pages_inspected": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "renderer": "Poppler",
+      "page_png_sha256": [
+        "5a721d8c8fd6a3d94bcab23258f40790add2b7d7d586e0f37119d068c54b03c2",
+        "c1a9b7b1a1fc742f7f495f3013849949db782a330cbafc180ecb059e37286f93",
+        "7330dfc4b56904a66d0540d7fef5de8f3238c39410e1bba9c56242eefb53584d",
+        "36112ba1d8923ecfcec10ec2b1ffe23f6585dc6e3fbeb5211ffdf987c5842af9",
+        "1b7f9c95ac2ce92fd2b7f9b6bc12e7abbad1844d47140655dfda0fc0f55724a3",
+        "bd6926b80f8392ede3fcfb8d6c63d9fc0ba7b25b771ef3cbe8cd802b20eb6606",
+        "24ff6bdaa07a0c44ed082d597bafa57427592b3944003568befd45255cf183f7",
+        "0b573e692c9475cd69b1c9a44d24a1c909bfb1bc0b7a755db0f101760b523996"
+      ],
+      "outcome": "PASS",
+      "checked": [
+        "no text/figure overlap or clipping",
+        "legible plots and equations",
+        "complete short tables",
+        "figure with full legend",
+        "consistent type and line numbering",
+        "page numbers",
+        "all unfavorable outcomes retained"
+      ]
+    },
+    {
+      "path": "site/reports/numerics/report.docx",
+      "sha256": "cc4fdb03a502c5b1c007bb04acfc754f24a7c9b3b56ff3dee61bb11bfbb5b39e",
+      "pages_inspected": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "renderer": "Bundled render_docx.py PNG pipeline; native Microsoft Word read-only conversion adapter",
+      "page_png_sha256": [
+        "0dcd5ed98eb7c949f3024a07aa8d77035f5f33e67221fb367e9400b09f8fb2e0",
+        "c2d48c7ecf64838f4f50d276850c828c1ad7bc57ad7492893ad15e74c8567ec2",
+        "8946a42950d26320a80d1ee961f599d7a9db9c27f856c0ec5a80e06044b472f4",
+        "485d553f9b0551d9df6a967100a216baad21a72cd6437af4e1989d30519e82b2",
+        "60daad8f065666a94411181e944267429d48c4e5a0607a74b29cf6f5376696cd",
+        "0a34d0446aff5cddea46960e72a3cd0b906f542c5efeaa20c588bc3ecb553214",
+        "074e610ad1a31061ae005fbbd5d047b029b775ba0ad05ce20bc5a3fb0fae0d94",
+        "28a98683e1b77adeb2f67f715ee8d08c4e9b66a43551c9ce7f0e8f3295aa4552"
+      ],
+      "outcome": "PASS",
+      "checked": [
+        "no text/figure overlap or clipping",
+        "legible plots and equations",
+        "complete short tables",
+        "figure with full legend",
+        "consistent type and line numbering",
+        "page numbers",
+        "all unfavorable outcomes retained"
+      ]
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.pdf",
+      "sha256": "8ba60f4b18c44d41355bc3ff885e736160b7bdce203ce351ae152268abae8218",
+      "pages_inspected": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "renderer": "Poppler",
+      "page_png_sha256": [
+        "d49e2576ea7c17c64114ab5227c193b5a57d8ce146f73659ea5e4e2b58a63823",
+        "5ee6e5dc094dbe163b78d88d39287c6ce28d06f9cf79c358dac1e6a6d1f0ad85",
+        "03db1841d6244ddd5d835a09658dda42771088a46c9697a5e59b4eba08821c2a",
+        "81fcf286ec87f50120b26fb795ef94bfc4690dcf046661073487938348c536f5",
+        "bf4a77fe2a75e7c782af5a544030c8b7e4a0ecad86287506b8f22311f8dd497c",
+        "1f044f919c129411a0e375c007b7d9ec5d4e99140c88e1723859592b8283bf00"
+      ],
+      "outcome": "PASS",
+      "checked": [
+        "no text/figure overlap or clipping",
+        "legible plots and equations",
+        "complete short tables",
+        "figure with full legend",
+        "consistent type and line numbering",
+        "page numbers",
+        "all unfavorable outcomes retained"
+      ]
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.docx",
+      "sha256": "ba60dc5dcac4763413c9d6c9bf90dd0c6a84e9961388b084cd5cd295e9a55588",
+      "pages_inspected": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "renderer": "Bundled render_docx.py PNG pipeline; native Microsoft Word read-only conversion adapter",
+      "page_png_sha256": [
+        "552012e4253fb06d93a66f02bcad4003264e8c03bfc51fc4de112d6f7c25a998",
+        "f117ca065013b2b8af627b9b73af6b46b83e8258130622f8f49003621ec5f86b",
+        "063fb55728bc9ad0413a74a3a1a84349eb7797c31c02c3be8cfbc6f057be0d3d",
+        "f6e0eb972ea245922c46dab77c0d64780f181f68076182f33b8d9356106c6187",
+        "64675ed72cec97f450f70aef14e8b79471f50a9f64fb71a08ad4625524f3be2e",
+        "9e7af8ffd4f74f0466d2964e14d5fb0892d6c7d533a1e64d39d95c9bdbfcb622"
+      ],
+      "outcome": "PASS",
+      "checked": [
+        "no text/figure overlap or clipping",
+        "legible plots and equations",
+        "complete short tables",
+        "figure with full legend",
+        "consistent type and line numbering",
+        "page numbers",
+        "all unfavorable outcomes retained"
+      ]
+    },
+    {
+      "path": "site/reports/hpaf-metric/report.pdf",
+      "sha256": "e02cd7f22e9ed75d63dd0d39ad1cbf942b8d9023d6844ed1d75d0d8f02d1f1dd",
+      "pages_inspected": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "renderer": "Poppler",
+      "page_png_sha256": [
+        "0fee8e3b51b87999012b89a556836e75c05c6963234e116491d19f2f0f9fea9e",
+        "1ade27d67fe123841fd7186ec84286152dcda8c793632407c66101d7b99c6ad2",
+        "dd7ec1da75a4f57c49d03b89de61b7a7eb307534a735824121baa8c854d2f0bb",
+        "d328074ae6d4dd9e90b86cc7c443d9ab4f21e200a8c61899e2bd0db4c6aeb051"
+      ],
+      "outcome": "PASS",
+      "checked": [
+        "no text/figure overlap or clipping",
+        "legible plots and equations",
+        "complete short tables",
+        "figure with full legend",
+        "consistent type and line numbering",
+        "page numbers",
+        "all unfavorable outcomes retained"
+      ]
+    },
+    {
+      "path": "site/reports/hpaf-metric/report.docx",
+      "sha256": "28c706a02d4488708edee8d6b1cec86c52a5f77fca81a9c45bb9f8c722c909cb",
+      "pages_inspected": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "renderer": "Bundled render_docx.py PNG pipeline; native Microsoft Word read-only conversion adapter",
+      "page_png_sha256": [
+        "be5958b0a759be553d8e9781b2c6186e120fd59e82c569f16e0d8799244787d8",
+        "578df384afc51d28616f1ee5ac420b24520f6d81cd9baedb80a1adb1c6942f4f",
+        "7f06915abc4dec23c383bcfaa646142ad96deef2013d6e46d057aae873f3f264",
+        "83ff41afc66b45c783ac1a952611824f16e1d71832e48a0f00f3278661787c53"
+      ],
+      "outcome": "PASS",
+      "checked": [
+        "no text/figure overlap or clipping",
+        "legible plots and equations",
+        "complete short tables",
+        "figure with full legend",
+        "consistent type and line numbering",
+        "page numbers",
+        "all unfavorable outcomes retained"
+      ]
+    }
+  ],
+  "page_comparison": [
+    {
+      "path": "site/reports/numerics/report.pdf",
+      "page": 1,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/numerics/report.pdf",
+      "page": 2,
+      "pixel_identical": false,
+      "difference_bbox": [
+        159,
+        413,
+        922,
+        432
+      ],
+      "changed_region_review": "Full page visually inspected: Eidos 0.4.11 version line is legible, with valid wrapping and no overlap or clipping."
+    },
+    {
+      "path": "site/reports/numerics/report.pdf",
+      "page": 3,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/numerics/report.pdf",
+      "page": 4,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/numerics/report.pdf",
+      "page": 5,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/numerics/report.pdf",
+      "page": 6,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/numerics/report.pdf",
+      "page": 7,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/numerics/report.pdf",
+      "page": 8,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/numerics/report.docx",
+      "page": 1,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/numerics/report.docx",
+      "page": 2,
+      "pixel_identical": false,
+      "difference_bbox": [
+        1251,
+        675,
+        1264,
+        696
+      ],
+      "changed_region_review": "Full page visually inspected: Eidos 0.4.11 version line is legible, with valid wrapping and no overlap or clipping."
+    },
+    {
+      "path": "site/reports/numerics/report.docx",
+      "page": 3,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/numerics/report.docx",
+      "page": 4,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/numerics/report.docx",
+      "page": 5,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/numerics/report.docx",
+      "page": 6,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/numerics/report.docx",
+      "page": 7,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/numerics/report.docx",
+      "page": 8,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.pdf",
+      "page": 1,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.pdf",
+      "page": 2,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.pdf",
+      "page": 3,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.pdf",
+      "page": 4,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.pdf",
+      "page": 5,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.pdf",
+      "page": 6,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.docx",
+      "page": 1,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.docx",
+      "page": 2,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.docx",
+      "page": 3,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.docx",
+      "page": 4,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.docx",
+      "page": 5,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/softmax-matrix/report.docx",
+      "page": 6,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/hpaf-metric/report.pdf",
+      "page": 1,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/hpaf-metric/report.pdf",
+      "page": 2,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/hpaf-metric/report.pdf",
+      "page": 3,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/hpaf-metric/report.pdf",
+      "page": 4,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/hpaf-metric/report.docx",
+      "page": 1,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/hpaf-metric/report.docx",
+      "page": 2,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/hpaf-metric/report.docx",
+      "page": 3,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    },
+    {
+      "path": "site/reports/hpaf-metric/report.docx",
+      "page": 4,
+      "pixel_identical": true,
+      "difference_bbox": null,
+      "changed_region_review": null
+    }
+  ],
+  "identical_pages": 34
+}

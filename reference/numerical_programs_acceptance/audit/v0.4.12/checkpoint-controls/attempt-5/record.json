@@ -1,0 +1,45 @@
+{
+  "schema": "eidos.candidate-checkpoint-controls.v1",
+  "status": "PASS",
+  "controls": [
+    {
+      "case": "wrong-platform",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "Installed tracking identity differs",
+      "prior_checkpoint_unchanged": true
+    },
+    {
+      "case": "stale-source",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "Recovery source differs",
+      "prior_checkpoint_unchanged": true
+    },
+    {
+      "case": "empty-source",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "Recovery source inventory differs",
+      "prior_checkpoint_unchanged": true
+    },
+    {
+      "case": "missing-source",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "Recovery source inventory differs",
+      "prior_checkpoint_unchanged": true
+    },
+    {
+      "case": "mid-read-mutation",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "Checkpoint input changed before publication",
+      "prior_checkpoint_unchanged": true
+    }
+  ],
+  "mutations": "Only candidate cache receipt files; all original bytes restored",
+  "post_restore_checkpoint": "PASS",
+  "generator_sha256_raw": "f52fefe95762af2ab2af8796753f469b9c2c01b58820bb4306b5ccda6bc8e5be",
+  "test_sha256_raw": "591299b9e4981a97ab629f587151a3da8e7f6ad45cc624b70f2adaeb88b4dd0f"
+}

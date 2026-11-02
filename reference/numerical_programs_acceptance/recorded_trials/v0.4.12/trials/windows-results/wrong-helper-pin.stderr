@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "C:\Users\Administrator\.cache\eidos-sdk-v412\input\shell.py", line 124, in <module>
+    main()
+  File "C:\Users\Administrator\.cache\eidos-sdk-v412\input\shell.py", line 107, in main
+    require(sha(body) == args.identity_sha256, 'Identity helper input pin differs')
+  File "C:\Users\Administrator\.cache\eidos-sdk-v412\input\shell.py", line 23, in require
+    raise RuntimeError(message)
+RuntimeError: Identity helper input pin differs

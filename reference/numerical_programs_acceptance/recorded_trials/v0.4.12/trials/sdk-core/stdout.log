@@ -1,0 +1,39 @@
+Looking in links: /input/wheels
+Ignoring contourpy: markers 'python_full_version < "3.12"' don't match your environment
+Ignoring numpy: markers 'python_full_version < "3.12"' don't match your environment
+Processing /input/wheels/contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (from -r /input/core.txt (line 77))
+Processing /input/wheels/cycler-0.12.1-py3-none-any.whl (from -r /input/core.txt (line 149))
+Processing /input/wheels/fonttools-4.67.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from -r /input/core.txt (line 153))
+Processing /input/wheels/kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from -r /input/core.txt (line 213))
+Processing /input/wheels/matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from -r /input/core.txt (line 338))
+Processing /input/wheels/numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (from -r /input/core.txt (line 470))
+Processing /input/wheels/packaging-26.3-py3-none-any.whl (from -r /input/core.txt (line 541))
+Processing /input/wheels/pillow-13.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (from -r /input/core.txt (line 545))
+Processing /input/wheels/pyparsing-3.3.3-py3-none-any.whl (from -r /input/core.txt (line 630))
+Processing /input/wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl (from -r /input/core.txt (line 634))
+Processing /input/wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (from -r /input/core.txt (line 638))
+Processing /input/wheels/six-1.17.0-py2.py3-none-any.whl (from -r /input/core.txt (line 688))
+Installing collected packages: six, pyyaml, pyparsing, pillow, packaging, numpy, kiwisolver, fonttools, cycler, python-dateutil, contourpy, matplotlib
+Successfully installed contourpy-1.4.0 cycler-0.12.1 fonttools-4.67.0 kiwisolver-1.5.1 matplotlib-3.11.2 numpy-2.5.4 packaging-26.3 pillow-13.0.0 pyparsing-3.3.3 python-dateutil-2.9.0.post0 pyyaml-6.0.3 six-1.17.0
+Looking in links: /input/wheels
+Processing /input/eidos-0.4.12-py3-none-any.whl
+Requirement already satisfied: pyyaml>=6.0 in ./eidos-v412-fresh/lib/python3.12/site-packages (from eidos==0.4.12) (6.0.3)
+Requirement already satisfied: numpy>=1.26 in ./eidos-v412-fresh/lib/python3.12/site-packages (from eidos==0.4.12) (2.5.4)
+Requirement already satisfied: matplotlib>=3.8 in ./eidos-v412-fresh/lib/python3.12/site-packages (from eidos==0.4.12) (3.11.2)
+Requirement already satisfied: contourpy>=1.0.1 in ./eidos-v412-fresh/lib/python3.12/site-packages (from matplotlib>=3.8->eidos==0.4.12) (1.4.0)
+Requirement already satisfied: cycler>=0.10 in ./eidos-v412-fresh/lib/python3.12/site-packages (from matplotlib>=3.8->eidos==0.4.12) (0.12.1)
+Requirement already satisfied: fonttools>=4.28.2 in ./eidos-v412-fresh/lib/python3.12/site-packages (from matplotlib>=3.8->eidos==0.4.12) (4.67.0)
+Requirement already satisfied: kiwisolver>=1.3.1 in ./eidos-v412-fresh/lib/python3.12/site-packages (from matplotlib>=3.8->eidos==0.4.12) (1.5.1)
+Requirement already satisfied: packaging>=20.0 in ./eidos-v412-fresh/lib/python3.12/site-packages (from matplotlib>=3.8->eidos==0.4.12) (26.3)
+Requirement already satisfied: pillow>=9 in ./eidos-v412-fresh/lib/python3.12/site-packages (from matplotlib>=3.8->eidos==0.4.12) (13.0.0)
+Requirement already satisfied: pyparsing>=3 in ./eidos-v412-fresh/lib/python3.12/site-packages (from matplotlib>=3.8->eidos==0.4.12) (3.3.3)
+Requirement already satisfied: python-dateutil>=2.7 in ./eidos-v412-fresh/lib/python3.12/site-packages (from matplotlib>=3.8->eidos==0.4.12) (2.9.0.post0)
+Requirement already satisfied: six>=1.5 in ./eidos-v412-fresh/lib/python3.12/site-packages (from python-dateutil>=2.7->matplotlib>=3.8->eidos==0.4.12) (1.17.0)
+Installing collected packages: eidos
+Successfully installed eidos-0.4.12
+No broken requirements found.
+sdk 6 controls PASS
+quarto 15 controls PASS
+reproduction 18 controls PASS
+Installed SDK module inventory: 45
+numerical: 23 log1mexp +16 softplus +12 refusals and wrong-gradient/buffer/underflow controls PASS

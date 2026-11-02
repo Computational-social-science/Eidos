@@ -1,0 +1,180 @@
+.....FFFF                                                                [100%]
+================================== FAILURES ===================================
+_ test_override_binds_absolute_executable_before_cwd_changes[relative-win32] __
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F629329970>
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2271/test_override_binds_absolute_e0')
+platform = 'win32', configuration = 'relative'
+
+    @pytest.mark.parametrize('platform', ['win32', 'linux'])
+    @pytest.mark.parametrize('configuration', ['relative', 'expanded'])
+    def test_override_binds_absolute_executable_before_cwd_changes(monkeypatch, tmp_path, platform, configuration):
+        windows(monkeypatch, tmp_path)
+        monkeypatch.setattr(recovery, 'sys', SimpleNamespace(platform=platform))
+        directory = tmp_path/'Git with spaces';directory.mkdir()
+        executable = directory/'bash.exe';executable.touch()
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.setenv('EIDOS_SHELL_ROOT', str(directory))
+        value = str(Path('Git with spaces')/'bash.exe') if configuration == 'relative' else '$EIDOS_SHELL_ROOT/bash.exe'
+        monkeypatch.setenv('EIDOS_BASH', value)
+        probes = []
+        def probe(path):
+            probes.append(path)
+            return Path(path) == executable
+        monkeypatch.setattr(recovery, '_msys_shell', probe)
+>       result = recovery._shell()
+                 ^^^^^^^^^^^^^^^^^
+
+E:\2026-AI4S\Eidos\tests\test_recovery_shell.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _shell() -> str:
+        """Select a shell whose drive paths match _msys; WSL is not MSYS.
+    
+        A detached Windows Startup process need not inherit the terminal's SHELL or
+        Git PATH. An explicit EIDOS_BASH is strict; ordinary discovery may skip WSL.
+        This dialect probe is compatibility checking, not executable attestation.
+        """
+        override = os.environ.get('EIDOS_BASH')
+        shell = os.environ.get('SHELL', '')
+        if sys.platform != 'win32':
+            if override:
+                if not Path(override).is_file():
+                    raise OSError('EIDOS_BASH does not name an existing executable')
+                return override
+            return shell if shell and Path(shell).is_file() else shutil.which('bash') or 'bash'
+        if override:
+            if not _msys_shell(override):
+>               raise OSError('EIDOS_BASH must name a working MSYS/Git Bash executable')
+E               OSError: EIDOS_BASH must name a working MSYS/Git Bash executable
+
+E:\2026-AI4S\Eidos\framework\recovery.py:392: OSError
+_ test_override_binds_absolute_executable_before_cwd_changes[relative-linux] __
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F629329AF0>
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2271/test_override_binds_absolute_e1')
+platform = 'linux', configuration = 'relative'
+
+    @pytest.mark.parametrize('platform', ['win32', 'linux'])
+    @pytest.mark.parametrize('configuration', ['relative', 'expanded'])
+    def test_override_binds_absolute_executable_before_cwd_changes(monkeypatch, tmp_path, platform, configuration):
+        windows(monkeypatch, tmp_path)
+        monkeypatch.setattr(recovery, 'sys', SimpleNamespace(platform=platform))
+        directory = tmp_path/'Git with spaces';directory.mkdir()
+        executable = directory/'bash.exe';executable.touch()
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.setenv('EIDOS_SHELL_ROOT', str(directory))
+        value = str(Path('Git with spaces')/'bash.exe') if configuration == 'relative' else '$EIDOS_SHELL_ROOT/bash.exe'
+        monkeypatch.setenv('EIDOS_BASH', value)
+        probes = []
+        def probe(path):
+            probes.append(path)
+            return Path(path) == executable
+        monkeypatch.setattr(recovery, '_msys_shell', probe)
+        result = recovery._shell()
+>       assert Path(result).is_absolute() and Path(result) == executable
+E       AssertionError: assert (False)
+E        +  where False = is_absolute()
+E        +    where is_absolute = WindowsPath('Git with spaces/bash.exe').is_absolute
+E        +      where WindowsPath('Git with spaces/bash.exe') = Path('Git with spaces\\bash.exe')
+
+E:\2026-AI4S\Eidos\tests\test_recovery_shell.py:82: AssertionError
+_ test_override_binds_absolute_executable_before_cwd_changes[expanded-win32] __
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F62932BB30>
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2271/test_override_binds_absolute_e2')
+platform = 'win32', configuration = 'expanded'
+
+    @pytest.mark.parametrize('platform', ['win32', 'linux'])
+    @pytest.mark.parametrize('configuration', ['relative', 'expanded'])
+    def test_override_binds_absolute_executable_before_cwd_changes(monkeypatch, tmp_path, platform, configuration):
+        windows(monkeypatch, tmp_path)
+        monkeypatch.setattr(recovery, 'sys', SimpleNamespace(platform=platform))
+        directory = tmp_path/'Git with spaces';directory.mkdir()
+        executable = directory/'bash.exe';executable.touch()
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.setenv('EIDOS_SHELL_ROOT', str(directory))
+        value = str(Path('Git with spaces')/'bash.exe') if configuration == 'relative' else '$EIDOS_SHELL_ROOT/bash.exe'
+        monkeypatch.setenv('EIDOS_BASH', value)
+        probes = []
+        def probe(path):
+            probes.append(path)
+            return Path(path) == executable
+        monkeypatch.setattr(recovery, '_msys_shell', probe)
+>       result = recovery._shell()
+                 ^^^^^^^^^^^^^^^^^
+
+E:\2026-AI4S\Eidos\tests\test_recovery_shell.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _shell() -> str:
+        """Select a shell whose drive paths match _msys; WSL is not MSYS.
+    
+        A detached Windows Startup process need not inherit the terminal's SHELL or
+        Git PATH. An explicit EIDOS_BASH is strict; ordinary discovery may skip WSL.
+        This dialect probe is compatibility checking, not executable attestation.
+        """
+        override = os.environ.get('EIDOS_BASH')
+        shell = os.environ.get('SHELL', '')
+        if sys.platform != 'win32':
+            if override:
+                if not Path(override).is_file():
+                    raise OSError('EIDOS_BASH does not name an existing executable')
+                return override
+            return shell if shell and Path(shell).is_file() else shutil.which('bash') or 'bash'
+        if override:
+            if not _msys_shell(override):
+>               raise OSError('EIDOS_BASH must name a working MSYS/Git Bash executable')
+E               OSError: EIDOS_BASH must name a working MSYS/Git Bash executable
+
+E:\2026-AI4S\Eidos\framework\recovery.py:392: OSError
+_ test_override_binds_absolute_executable_before_cwd_changes[expanded-linux] __
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F62932AF90>
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2271/test_override_binds_absolute_e3')
+platform = 'linux', configuration = 'expanded'
+
+    @pytest.mark.parametrize('platform', ['win32', 'linux'])
+    @pytest.mark.parametrize('configuration', ['relative', 'expanded'])
+    def test_override_binds_absolute_executable_before_cwd_changes(monkeypatch, tmp_path, platform, configuration):
+        windows(monkeypatch, tmp_path)
+        monkeypatch.setattr(recovery, 'sys', SimpleNamespace(platform=platform))
+        directory = tmp_path/'Git with spaces';directory.mkdir()
+        executable = directory/'bash.exe';executable.touch()
+        monkeypatch.chdir(tmp_path)
+        monkeypatch.setenv('EIDOS_SHELL_ROOT', str(directory))
+        value = str(Path('Git with spaces')/'bash.exe') if configuration == 'relative' else '$EIDOS_SHELL_ROOT/bash.exe'
+        monkeypatch.setenv('EIDOS_BASH', value)
+        probes = []
+        def probe(path):
+            probes.append(path)
+            return Path(path) == executable
+        monkeypatch.setattr(recovery, '_msys_shell', probe)
+>       result = recovery._shell()
+                 ^^^^^^^^^^^^^^^^^
+
+E:\2026-AI4S\Eidos\tests\test_recovery_shell.py:81: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    def _shell() -> str:
+        """Select a shell whose drive paths match _msys; WSL is not MSYS.
+    
+        A detached Windows Startup process need not inherit the terminal's SHELL or
+        Git PATH. An explicit EIDOS_BASH is strict; ordinary discovery may skip WSL.
+        This dialect probe is compatibility checking, not executable attestation.
+        """
+        override = os.environ.get('EIDOS_BASH')
+        shell = os.environ.get('SHELL', '')
+        if sys.platform != 'win32':
+            if override:
+                if not Path(override).is_file():
+>                   raise OSError('EIDOS_BASH does not name an existing executable')
+E                   OSError: EIDOS_BASH does not name an existing executable
+
+E:\2026-AI4S\Eidos\framework\recovery.py:387: OSError
+=========================== short test summary info ===========================
+FAILED tests/test_recovery_shell.py::test_override_binds_absolute_executable_before_cwd_changes[relative-win32]
+FAILED tests/test_recovery_shell.py::test_override_binds_absolute_executable_before_cwd_changes[relative-linux]
+FAILED tests/test_recovery_shell.py::test_override_binds_absolute_executable_before_cwd_changes[expanded-win32]
+FAILED tests/test_recovery_shell.py::test_override_binds_absolute_executable_before_cwd_changes[expanded-linux]
+4 failed, 5 passed in 0.39s

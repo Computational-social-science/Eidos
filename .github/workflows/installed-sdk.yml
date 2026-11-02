@@ -1,0 +1,84 @@
+name: installed-sdk
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  core:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: '0.12.17'
+      - name: Export frozen normal core dependencies
+        run: uv export --frozen --no-dev --no-emit-project --output-file core-requirements-ci.txt
+      - name: Check wheel/source and frozen evidence before installation
+        shell: python
+        run: |
+          import hashlib, json, pathlib, tomllib, zipfile
+          root = pathlib.Path.cwd()
+          version = tomllib.loads((root/'pyproject.toml').read_text(encoding='utf-8'))['project']['version']
+          wheel = root/f'reference/sdk_process_acceptance/eidos-{version}-py3-none-any.whl'
+          canonical = lambda raw: raw.decode('utf-8-sig').replace('\r\n', '\n').encode()
+          with zipfile.ZipFile(wheel) as z:
+              packaged = {n: hashlib.sha256(canonical(z.read(n))).hexdigest() for n in z.namelist() if n.startswith('framework/') and n.endswith('.py')}
+          source = {p.relative_to(root).as_posix(): hashlib.sha256(canonical(p.read_bytes())).hexdigest() for p in (root/'framework').rglob('*.py')}
+          if packaged != source:
+              raise SystemExit('Shipped wheel does not match framework source')
+          folder = root/f'reference/numerical_programs_acceptance/recorded_trials/v{version}'
+          manifest = json.loads((folder/'manifest.json').read_bytes())
+          if hashlib.sha256(wheel.read_bytes()).hexdigest() != manifest['wheel_sha256']:
+              raise SystemExit('Wheel differs from recorded candidate')
+          actual = {p.relative_to(folder).as_posix(): {'sha256': hashlib.sha256(p.read_bytes()).hexdigest(), 'size': p.stat().st_size} for p in folder.rglob('*') if p.is_file() and p != folder/'manifest.json'}
+          expected = {name: {'sha256': value['sha256'], 'size': value['size']} for name, value in manifest['files'].items()}
+          if actual != expected:
+              raise SystemExit('Frozen archive member inventory or bytes differ')
+      - name: Install and execute outside checkout
+        shell: python
+        run: |
+          import hashlib, json, os, pathlib, subprocess, sys, tomllib
+          root = pathlib.Path(os.environ['GITHUB_WORKSPACE'])
+          temporary = pathlib.Path(os.environ['RUNNER_TEMP'])
+          version = tomllib.loads((root/'pyproject.toml').read_text(encoding='utf-8'))['project']['version']
+          wheel = root/f'reference/sdk_process_acceptance/eidos-{version}-py3-none-any.whl'
+          prefix, output = temporary/'sdk-core-venv', temporary/'sdk-core-results'
+          subprocess.run([sys.executable, '-m', 'venv', str(prefix)], check=True)
+          python = prefix/('Scripts/python.exe' if os.name == 'nt' else 'bin/python')
+          subprocess.run([str(python), '-I', '-m', 'pip', 'install', '--require-hashes', '-r', str(root/'core-requirements-ci.txt')], cwd=temporary, check=True)
+          subprocess.run([str(python), '-I', '-m', 'pip', 'install', '--no-deps', str(wheel)], cwd=temporary, check=True)
+          subprocess.run([str(python), '-I', '-m', 'pip', 'check'], cwd=temporary, check=True)
+          output.mkdir()
+          identity = root/'reference/numerical_programs_acceptance/check.py'
+          identity_sha = hashlib.sha256(identity.read_bytes()).hexdigest()
+          cases = [('numerical', identity, ['--wheel', str(wheel), '--expected-version', version]), ('shell', root/'reference/recovery_shell_acceptance/check.py', ['--wheel', str(wheel), '--expected-version', version, '--identity-driver', str(identity), '--identity-sha256', identity_sha]), ('lifecycle', root/'reference/sdk_process_acceptance/check.py', [])]
+          for name, driver, arguments in cases:
+              result = subprocess.run([str(python), '-I', '-X', 'utf8', str(driver), *arguments], cwd=temporary, capture_output=True, timeout=180)
+              (output/(name+'.json')).write_bytes(result.stdout)
+              (output/(name+'.stderr')).write_bytes(result.stderr)
+              if result.returncode:
+                  raise SystemExit(name+' failed: '+result.stderr.decode('utf-8', errors='replace'))
+              value = json.loads(result.stdout)
+              identity_value = value['identity'] if name == 'shell' else value
+              if identity_value['sdk_version'] != version:
+                  raise SystemExit('Wrong installed version')
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: installed-sdk-${{ matrix.os }}
+          path: ${{ runner.temp }}/sdk-core-results
+          if-no-files-found: warn

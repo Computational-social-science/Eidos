@@ -1,0 +1,495 @@
+"""Verified Quarto deliveries and programmatic manuscript construction."""
+
+from __future__ import annotations
+
+from datetime import datetime, timezone
+import json
+import os
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+from typing import Any, Dict, List
+import yaml
+
+from framework.artifacts import atomic_output, output_lock
+from framework import subprocesses as processes
+from . import _delivery
+
+
+class QuartoBridge:
+    """Render fresh artifacts, then publish a checksum receipt under one writer lock."""
+
+    def __init__(self, config: Dict[str, Any] | None = None):
+        self.config = config or {}
+        self.project_root = Path(self.config.get("project_root", ".")).resolve()
+        self.manuscript_dir = (
+            self.project_root / self.config.get("manuscript_dir", "manuscript")
+        ).resolve()
+        self.output_dir = (
+            self.project_root / self.config.get("output_dir", "outputs")
+        ).resolve()
+        self.quarto_config = self.config.get("quarto", {})
+        self.timeout = self.quarto_config.get("timeout", 300)
+        self.probe_timeout = self.quarto_config.get("probe_timeout", 30)
+        for value in (self.timeout, self.probe_timeout):
+            processes.validate_timeout(value)
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+        self.quarto_version = None
+        self.quarto_diagnostics = []
+        self.quarto_available = self._check_quarto()
+
+    def _check_quarto(self) -> bool:
+        for candidate in dict.fromkeys(self._quarto_candidates()):
+            try:
+                result = processes.run_tree(
+                    [str(candidate), "--version"],
+                    cwd=self.project_root,
+                    timeout=self.probe_timeout,
+                )
+                version = result.stdout.strip()
+                if result.returncode == 0 and re.fullmatch(
+                    r"\d+\.\d+\.\d+(?:[-+][^\s]+)?", version
+                ):
+                    self.quarto_cmd = str(candidate)
+                    self.quarto_version = version
+                    return True
+                self.quarto_diagnostics.append(
+                    "candidate did not report a Quarto version"
+                )
+            except (OSError, subprocess.TimeoutExpired) as exc:
+                self.quarto_diagnostics.append(str(exc)[-300:])
+        self.quarto_cmd = None
+        return False
+
+    def _quarto_candidates(self):
+        """Ordered candidates, all derived from environment or the home directory."""
+        env = os.environ.get("QUARTO_BIN")
+        if env:
+            yield env
+        found = shutil.which("quarto")
+        if found:
+            yield found
+        home = Path.home()
+        for rel in (
+            ".workbuddy-ai/binaries/quarto/bin/quarto.exe",
+            "AppData/Local/Programs/Quarto/bin/quarto.exe",
+            ".local/bin/quarto",
+            "opt/quarto/bin/quarto",
+        ):
+            path = home / rel
+            if path.is_file():
+                yield str(path)
+        program_files = os.environ.get("PROGRAMFILES")
+        if program_files:
+            path = Path(program_files) / "Quarto" / "bin" / "quarto.exe"
+            if path.is_file():
+                yield str(path)
+
+    def _inputs(self, figure: Path | None = None) -> dict[str, str]:
+        paths = [figure or self.manuscript_dir / "index.qmd"]
+        # This is an explicit source/config inventory, not an automatic census of
+        # every transitive data/code dependency executed by a manuscript.
+        for directory in (() if figure else (self.project_root, self.manuscript_dir)):
+            for name in (
+                "_quarto.yml",
+                "_quarto.yaml",
+                "_metadata.yml",
+                "_metadata.yaml",
+            ):
+                path = directory / name
+                if path.exists():
+                    paths.append(path)
+        key = "figure_inputs" if figure else "render_inputs"
+        declared = self.config.get(key, [])
+        if not isinstance(declared, list) or not all(
+            isinstance(p, str) for p in declared
+        ):
+            raise ValueError(key + " must be project-relative file names")
+        for name in declared:
+            path = Path(name)
+            if path.is_absolute() or ".." in path.parts:
+                raise ValueError("render input escapes the project")
+            paths.append(self.project_root / path)
+        result = {}
+        for path in paths:
+            _delivery.regular_file(path, self.project_root)
+            result[path.relative_to(self.project_root).as_posix()] = _delivery.digest(
+                path
+            )
+        return result
+
+    def render(self, format: str = "all", no_freeze: bool = False) -> Dict[str, Any]:
+        """Publish HTML/PDF/DOCX only after fresh complete artifacts pass checks.
+
+        A failed batch retains the previous publication. File envelopes and input
+        hashes do not establish scientific validity or publication acceptance.
+        no_freeze requests execution and refreshes the computation cache.
+        """
+        if format not in {"all", "html", "pdf", "docx"}:
+            raise ValueError("format must be all, html, pdf or docx")
+        if not isinstance(no_freeze, bool):
+            raise ValueError("no_freeze must be a boolean")
+        if not self.quarto_available:
+            return {"success": False, "error": "Quarto unavailable", "formats": {}}
+        formats = ["pdf", "docx", "html"] if format == "all" else [format]
+        results = {}
+        try:
+            with output_lock(self.output_dir):
+                inputs = self._inputs()
+                with tempfile.TemporaryDirectory(prefix="eidos-quarto-") as temporary:
+                    files = {}
+                    for fmt in formats:
+                        folder = Path(temporary) / fmt
+                        folder.mkdir()
+                        target = folder / ("index." + fmt)
+                        cmd = [
+                            self.quarto_cmd,
+                            "render",
+                            "index.qmd",
+                            "--to",
+                            fmt,
+                            "--output",
+                            target.name,
+                            "--output-dir",
+                            str(folder),
+                            "--no-execute-daemon",
+                        ]
+                        if no_freeze:
+                            cmd += ["--execute", "--cache-refresh"]
+                        row = {"success": False, "published": False}
+                        results[fmt] = row
+                        try:
+                            result = processes.run_tree(
+                                cmd, cwd=self.manuscript_dir, timeout=self.timeout
+                            )
+                            row.update(
+                                stdout=result.stdout[-2000:],
+                                stderr=result.stderr[-2000:],
+                                exit_code=result.returncode,
+                            )
+                            if result.returncode != 0:
+                                raise ValueError(
+                                    "Quarto exited with " + str(result.returncode)
+                                )
+                            _delivery.validate(target, fmt, folder)
+                            for source in sorted(folder.rglob("*")):
+                                if source.is_symlink():
+                                    raise ValueError("linked staged output")
+                                if source.is_file():
+                                    _delivery.regular_file(source, folder)
+                                    name = source.relative_to(folder).as_posix()
+                                    if name in files and _delivery.digest(
+                                        files[name]
+                                    ) != _delivery.digest(source):
+                                        raise ValueError(
+                                            "conflicting output resources: " + name
+                                        )
+                                    files[name] = source
+                            row.update(
+                                rendered=True,
+                                sha256=_delivery.digest(target),
+                                bytes=target.stat().st_size,
+                            )
+                        except (OSError, ValueError, subprocess.TimeoutExpired) as exc:
+                            row["error"] = str(exc)
+                            if isinstance(exc, subprocess.TimeoutExpired):
+                                row["exit_code"] = 124
+                                for key, value in (
+                                    ("stdout", exc.stdout),
+                                    ("stderr", exc.stderr),
+                                ):
+                                    row[key] = (
+                                        value.decode("utf-8", "replace")
+                                        if isinstance(value, bytes)
+                                        else value or ""
+                                    )[-2000:]
+                    if not all(row.get("rendered") for row in results.values()):
+                        return {
+                            "success": False,
+                            "formats": results,
+                            "output_dir": str(self.output_dir),
+                            "error": "Incomplete render batch; previous delivery retained",
+                        }
+                    if self._inputs() != inputs:
+                        raise ValueError("declared inputs changed during rendering")
+                    names = list(files)
+                    folded = [name.casefold() for name in names]
+                    if len(set(folded)) != len(folded) or any(
+                        a.startswith(b + "/") for a in folded for b in folded if a != b
+                    ):
+                        raise ValueError("nonportable output resource collision")
+                    outputs = {
+                        name: _delivery.digest(source) for name, source in files.items()
+                    }
+                    input_paths = {
+                        (self.project_root / name).resolve() for name in inputs
+                    }
+                    if any(
+                        (self.output_dir / name).resolve() in input_paths
+                        for name in [*files, "render-manifest.json"]
+                    ):
+                        raise ValueError("delivery would overwrite a declared input")
+                    receipt = {
+                        "schema": 1,
+                        "generated": datetime.now(timezone.utc).isoformat(),
+                        "inputs": inputs,
+                        "outputs": outputs,
+                        "formats": formats,
+                        "quarto_version": self.quarto_version,
+                        "quarto_command": self.quarto_cmd,
+                        "scope": "Fresh file-format envelopes and declared input integrity; not scientific or journal qualification.",
+                    }
+
+                    def verify_inputs():
+                        if self._inputs() != inputs:
+                            raise ValueError(
+                                "declared inputs changed before publication"
+                            )
+
+                    _delivery.publish(
+                        files,
+                        self.output_dir,
+                        "render-manifest.json",
+                        (json.dumps(receipt, indent=2) + "\n").encode("utf-8"),
+                        outputs,
+                        verify_inputs,
+                    )
+                    for fmt, row in results.items():
+                        row.update(
+                            success=True,
+                            published=True,
+                            path=str(self.output_dir / ("index." + fmt)),
+                        )
+                    return {
+                        "success": True,
+                        "formats": results,
+                        "output_dir": str(self.output_dir),
+                        "manifest": str(self.output_dir / "render-manifest.json"),
+                    }
+        except (OSError, ValueError, TimeoutError) as exc:
+            return {
+                "success": False,
+                "formats": results,
+                "output_dir": str(self.output_dir),
+                "error": str(exc),
+            }
+
+    def render_figure(
+        self, figure_script: Path, output_format: str = "pdf"
+    ) -> Dict[str, Any]:
+        """Run a trusted Python/Matplotlib script and deliver its single open figure."""
+        if output_format not in {"pdf", "svg", "png"}:
+            raise ValueError("figure format must be pdf, svg or png")
+        script = Path(figure_script)
+        if not script.is_absolute():
+            script = self.project_root / script
+        folder = self.output_dir / "figures"
+        timeout = self.quarto_config.get("figure_timeout", 120)
+        processes.validate_timeout(timeout)
+        try:
+            _delivery.regular_file(script, self.project_root)
+            with (
+                output_lock(folder),
+                tempfile.TemporaryDirectory(prefix="eidos-figure-") as temporary,
+            ):
+                inputs = self._inputs(script)
+                source_hash = _delivery.digest(script)
+                target = Path(temporary) / (script.stem + "." + output_format)
+                helper = Path(__file__).with_name("_figure_job.py")
+                env = dict(os.environ, MPLBACKEND="Agg")
+                done = processes.run_tree(
+                    [
+                        sys.executable,
+                        "-I",
+                        "-X",
+                        "utf8",
+                        str(helper),
+                        str(script),
+                        str(target),
+                        str(self.project_root),
+                    ],
+                    cwd=self.project_root,
+                    timeout=timeout,
+                    env=env,
+                )
+                if done.returncode != 0:
+                    return {
+                        "success": False,
+                        "stdout": done.stdout,
+                        "stderr": done.stderr,
+                        "exit_code": done.returncode,
+                    }
+                _delivery.validate(target, output_format, Path(temporary))
+                if self._inputs(script) != inputs:
+                    raise ValueError("declared figure inputs changed during execution")
+                checksum = _delivery.digest(target)
+                receipt = {
+                    "script": script.relative_to(self.project_root).as_posix(),
+                    "script_sha256": source_hash,
+                    "inputs": inputs,
+                    "sha256": checksum,
+                    "format": output_format,
+                    "dpi": 600,
+                    "scope": "Single Matplotlib artifact; scientific content and journal style require separate review.",
+                }
+                input_paths = {(self.project_root / name).resolve() for name in inputs}
+                if any(
+                    (folder / name).resolve() in input_paths
+                    for name in (target.name, target.name + ".json")
+                ):
+                    raise ValueError(
+                        "figure publication would overwrite a declared input"
+                    )
+
+                def verify_script():
+                    if self._inputs(script) != inputs:
+                        raise ValueError(
+                            "declared figure inputs changed before publication"
+                        )
+
+                _delivery.publish(
+                    {target.name: target},
+                    folder,
+                    target.name + ".json",
+                    (json.dumps(receipt, indent=2) + "\n").encode(),
+                    {target.name: checksum},
+                    verify_script,
+                )
+                return {
+                    "success": True,
+                    "path": str(folder / target.name),
+                    "sha256": checksum,
+                    "stdout": done.stdout,
+                    "stderr": done.stderr,
+                }
+        except subprocess.TimeoutExpired as exc:
+            tail = lambda value: (
+                value.decode("utf-8", "replace")
+                if isinstance(value, bytes)
+                else value or ""
+            )[-2000:]
+            return {
+                "success": False,
+                "error": str(exc),
+                "exit_code": 124,
+                "stdout": tail(exc.stdout),
+                "stderr": tail(exc.stderr),
+            }
+        except (OSError, ValueError, TimeoutError) as exc:
+            return {"success": False, "error": str(exc)}
+
+    def build_executable_package(self, output_name: str = None) -> Dict[str, Any]:
+        """Export an explicitly declared delivery; generation does not verify execution."""
+        from framework.executable_package import build
+
+        name = (
+            output_name
+            or f"research_package_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        )
+        return build(
+            self.project_root,
+            self.output_dir,
+            name,
+            self.config.get("executable_package"),
+        )
+
+
+class QuartoManuscriptBuilder:
+    """Helper for programmatic manuscript construction"""
+
+    def __init__(self, manuscript_dir: Path):
+        self.manuscript_dir = Path(manuscript_dir)
+        self.sections = []
+        self.metadata = {}
+
+    def set_metadata(self, **kwargs):
+        """Set manuscript metadata"""
+        self.metadata.update(kwargs)
+
+    def add_section(self, title: str, content: str, level: int = 1):
+        """Add a section to the manuscript"""
+        header = "#" * level + " " + title
+        self.sections.append(f"{header}\n\n{content}\n")
+
+    def add_figure(self, caption: str, path: str, label: str = None):
+        """Add a figure reference"""
+        label_str = f" {{#{label}}}" if label else ""
+        self.sections.append(f"![{caption}]({path}){label_str}\n")
+
+    def add_table(
+        self, caption: str, data: List[List], headers: List = None, label: str = None
+    ):
+        """Add a table"""
+        if not data:
+            return
+        width = len(data[0])
+        if not width or any(len(row) != width for row in data):
+            raise ValueError("table rows must have the same positive width")
+        if headers is not None and len(headers) != width:
+            raise ValueError("table headers must match row width")
+
+        def cell(value):
+            text = re.sub(
+                r"(\\*)\|",
+                lambda match: "\\" * (2 * len(match[1]) + 1) + "|",
+                str(value),
+            )
+            return text.replace("\r\n", "\n").replace("\r", "\n").replace("\n", "<br>")
+
+        headings = headers if headers is not None else [""] * width
+        header_row = "| " + " | ".join(cell(value) for value in headings) + " |"
+        sep_row = "| " + " | ".join(["---"] * width) + " |"
+
+        rows = []
+        for row in data:
+            rows.append("| " + " | ".join(cell(c) for c in row) + " |")
+
+        label_str = f" {{#{label}}}" if label else ""
+        table = (
+            f"\n{header_row}\n{sep_row}\n"
+            + "\n".join(rows)
+            + f"\n\n: {caption}{label_str}\n"
+        )
+        self.sections.append(table)
+
+    def add_citation(self, key: str):
+        """Add citation reference"""
+        self.sections.append(f"[@{key}]")
+
+    def build(self, output_path: Path = None) -> Path:
+        """Build the complete manuscript QMD file"""
+        if output_path is None:
+            output_path = self.manuscript_dir / "index.qmd"
+
+        # Build front matter
+        front_matter = (
+            "---\n"
+            + yaml.safe_dump(self.metadata, allow_unicode=True, sort_keys=False)
+            + "---\n\n"
+        )
+
+        # Build body
+        body = "\n\n".join(self.sections)
+
+        # Add references section
+        body += "\n\n# References\n\n::: {#refs}\n:::\n"
+
+        content = front_matter + "\n" + body
+        Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+        with atomic_output(Path(output_path)) as temporary:
+            temporary.write_text(content, encoding="utf-8")
+        return output_path
+
+    def render(self, format: str = "pdf", **kwargs) -> Dict[str, Any]:
+        """Render manuscript via Quarto"""
+        qmd_path = self.build()
+        bridge = QuartoBridge(
+            {
+                "project_root": str(self.manuscript_dir.resolve().parent),
+                "manuscript_dir": str(self.manuscript_dir.resolve()),
+            }
+        )
+        return bridge.render(format=format, **kwargs)

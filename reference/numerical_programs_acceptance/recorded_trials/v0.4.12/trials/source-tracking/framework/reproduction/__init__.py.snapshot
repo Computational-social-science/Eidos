@@ -1,0 +1,797 @@
+"""Paper2Agent deliveries are toolboxes, and a toolbox is not evidence.
+
+Paper2Agent (MIT, Nature 2026) converts a paper and its code into an MCP server plus a paper skill.
+Its value to this framework is narrow and specific: it can produce an **independent execution** of a
+published method, which is the only thing that can turn "the paper reports 0.927" into "we ran it and
+got 0.927". Everything else about it — the prose, the tutorials, the tools — helps do work and proves
+nothing.
+
+So this module does not wrap the engine. It consumes a delivery under contract:
+
+* `check_delivery()` refuses an incomplete tree. A conversion that did not produce a skill and an MCP
+  entry point is not a delivery, and registering it would be the same defect as citing a paper we
+  never read.
+* `run_spec()` executes one reproduction spec — a command, the statistic it should produce, and a
+  tolerance — and records observed versus expected.
+* the record is what Gate S reads. A claim that cites a reproduced method without a `MATCH` record is
+  blocked, not passed.
+
+Nothing here trusts the agent's own report of success. The number is compared, or the verdict is
+`UNRUN`.
+"""
+
+from __future__ import annotations
+
+import datetime
+import json
+import shlex
+import hashlib
+import os
+import shutil
+import sys
+
+from framework import subprocesses as processes
+from framework.artifacts import atomic_output, output_lock
+from framework.command_inputs import python_entry
+from . import _numeric
+import subprocess
+from pathlib import Path
+
+MATCH = "MATCH"
+MISMATCH = "MISMATCH"
+UNRUN = "UNRUN"
+
+#: What a Paper2Agent delivery must contain to be registrable. The combined output contract is
+#: `dist/<project>-agent/{skill/<paper>/, mcp/<repo>-mcp/}`; single-mode runs keep one of them.
+REQUIRED_SKILL = ("SKILL.md",)
+REQUIRED_MCP = ("USAGE.md",)
+
+
+def _now() -> str:
+    return datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+
+
+def check_delivery(root: str | Path) -> dict:
+    """Validate a delivery tree. Returns findings; an empty `problems` list means registrable."""
+    root = Path(root)
+    problems: list[str] = []
+    if not root.is_dir():
+        return {
+            "root": str(root),
+            "problems": [f"{root} is not a directory"],
+            "ok": False,
+        }
+
+    skill = next((p for p in root.rglob("SKILL.md")), None)
+    usage = next((p for p in root.rglob("USAGE.md")), None)
+    if skill is None:
+        problems.append("no SKILL.md: the paper skill is missing")
+    if usage is None:
+        problems.append(
+            "no USAGE.md: the MCP server has no delivery instructions, so it cannot be run"
+        )
+
+    # A delivery that carries a test/verification report is easier to trust, but its absence is not a
+    # refusal: the check that matters is running the thing, which `run_spec` does.
+    reports = [
+        p.name
+        for p in root.rglob("*")
+        if p.is_file()
+        and p.suffix.lower() in (".json", ".md")
+        and "verif" in p.name.lower()
+    ]
+    return {
+        "root": str(root),
+        "skill": str(skill) if skill else None,
+        "usage": str(usage) if usage else None,
+        "reports": reports[:5],
+        "problems": problems,
+        "ok": not problems,
+    }
+
+
+def compare(
+    expected: float | int,
+    observed: float | int,
+    tolerance: float | int = 1e-3,
+    relative: bool = False,
+) -> tuple[str, float | int | None]:
+    """Compare exact represented values; delta_exact in run records is authoritative.
+
+    Invalid numeric domains raise ValueError. The diagnostic delta is an exact
+    integer where possible, otherwise a float or None outside its finite range.
+    """
+    detail = _numeric.comparison(expected, observed, tolerance, relative)
+    return detail["verdict"], detail["delta"]
+
+
+def _bytes_hash(body: bytes) -> str:
+    return hashlib.sha256(body).hexdigest()
+
+
+def _canonical(value) -> bytes:
+    return json.dumps(
+        value,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+        allow_nan=False,
+    ).encode("utf-8")
+
+
+def _runner_hashes() -> dict:
+    base = Path(__file__).resolve().parents[1]
+    return {
+        name: _bytes_hash(
+            (base / name)
+            .read_bytes()
+            .decode("utf-8-sig")
+            .replace("\r\n", "\n")
+            .encode()
+        )
+        for name in (
+            "reproduction/__init__.py",
+            "reproduction/_numeric.py",
+            "command_inputs.py",
+            "subprocesses.py",
+            "_process_tree.py",
+            "_windows_job.py",
+            "_posix_job.py",
+        )
+    }
+
+
+def _inputs(root: Path, names: list[str]) -> dict:
+    result = {}
+    for name in names:
+        path = root / name
+        if (
+            Path(name).is_absolute()
+            or ".." in Path(name).parts
+            or not path.is_file()
+            or not path.resolve().is_relative_to(root)
+            or path.is_symlink()
+            or any(p.is_symlink() for p in path.parents if p.is_relative_to(root))
+        ):
+            raise ValueError("missing, linked or external declared input: " + name)
+        result[Path(name).as_posix()] = _bytes_hash(path.read_bytes())
+    return result
+
+
+def _moment(value):
+    if not isinstance(value, str):
+        raise ValueError("timestamp must be an ISO string with timezone")
+    try:
+        parsed = datetime.datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise ValueError("invalid timestamp") from exc
+    if parsed.tzinfo is None:
+        raise ValueError("timestamp must include a timezone")
+    return parsed.astimezone(datetime.timezone.utc)
+
+
+def _tool_path(command, root):
+    value = command[0]
+    path = Path(value)
+    if path.is_absolute() or "/" in value or "\\" in value:
+        return Path(os.path.abspath(root / path))
+    found = shutil.which(value)
+    return Path(os.path.abspath(found)) if found else None
+
+
+def _tool_binding(command, root):
+    path = _tool_path(command, root)
+    if path is None or not path.is_file():
+        raise FileNotFoundError(
+            "command executable unavailable; use an explicit project-relative path or PATH tool"
+        )
+    return {"path": str(path), "sha256": _bytes_hash(path.read_bytes())}
+
+
+def _preflight(spec: dict, cwd, timeout):
+    if not isinstance(spec, dict):
+        raise ValueError("spec must be a mapping")
+    processes.validate_timeout(timeout)
+    _numeric.settings(
+        spec.get("expected"), spec.get("tolerance", 1e-3), spec.get("relative", False)
+    )
+    command = spec.get("command")
+    if isinstance(command, str):
+        if os.name == "nt":
+            raise ValueError(
+                "Windows commands require an argv list; shell quoting is not portable"
+            )
+        command = shlex.split(command)
+    if (
+        not isinstance(command, list)
+        or not command
+        or not command[0]
+        or not all(isinstance(arg, str) and "\0" not in arg for arg in command)
+    ):
+        raise ValueError("command must be a nonempty argv list")
+    command = list(command)
+    if command[0] in ("python", "python3"):
+        command[0] = sys.executable
+    root = Path(cwd or spec.get("cwd") or Path.cwd()).resolve()
+    if not root.is_dir():
+        raise ValueError("cwd must be an existing directory")
+    tool = _tool_path(command, root)
+    if tool is not None:
+        # Keep the virtualenv symlink spelling: resolving it can silently select
+        # the base interpreter and a different site-packages environment.
+        command[0] = str(tool)
+    selector = spec.get("json_path", "value")
+    if (
+        not isinstance(selector, str)
+        or not selector
+        or any(not p for p in selector.split("."))
+    ):
+        raise ValueError("json_path must be a nonempty dotted selector")
+    names = spec.get("inputs", [])
+    if not isinstance(names, list) or not all(isinstance(n, str) and n for n in names):
+        raise ValueError("inputs must be project-relative filenames")
+    names = list(names)
+    declarations = sorted(set(names))
+    entry = python_entry(command, names, "reproduction")
+    if entry is not None:
+        script = root / entry
+        if script.is_symlink() or any(parent.is_symlink() for parent in script.parents):
+            raise ValueError("entry script must not use symlinks")
+        if not script.resolve().is_relative_to(root):
+            raise ValueError("entry script must be inside the project")
+        names.append(script.resolve().relative_to(root).as_posix())
+    for name in ("pyproject.toml", "uv.lock"):
+        if (root / name).is_file():
+            names.append(name)
+    names = sorted(set(names))
+    inputs = _inputs(root, names)
+    registered = spec.get("registered_at")
+    if registered is not None:
+        if _moment(registered) > datetime.datetime.now(datetime.timezone.utc):
+            raise ValueError("registered_at is in the future")
+    contract = {
+        "paper": spec.get("paper"),
+        "tool": spec.get("tool"),
+        "command": command,
+        "expected": spec["expected"],
+        "tolerance": spec.get("tolerance", 1e-3),
+        "relative": spec.get("relative", False),
+        "json_path": selector,
+        "inputs": names,
+        "input_declarations": declarations,
+        "registered_at": registered,
+        "timeout": timeout,
+        "seed": spec.get("seed"),
+        "seed_declared": "seed" in spec,
+        "seed_reason": spec.get("seed_reason"),
+        "data_version": spec.get("data_version"),
+        "config_version": spec.get("config_version"),
+    }
+    _canonical(contract)
+    return contract, root, inputs
+
+
+def _seal(record: dict) -> dict:
+    record["record_sha256"] = _bytes_hash(
+        _canonical({k: v for k, v in record.items() if k != "record_sha256"})
+    )
+    return record
+
+
+def _tail(value):
+    return value.decode("utf-8", "replace") if isinstance(value, bytes) else value or ""
+
+
+def _source_spec(spec, source_file, kind="scalar"):
+    if source_file is None:
+        return None
+    path = Path(source_file).absolute()
+    if path.is_symlink() or not path.is_file():
+        raise ValueError("source spec must be a regular file")
+    body = path.read_bytes()
+    if _canonical(_numeric.loads(body.decode("utf-8-sig"))) != _canonical(spec):
+        raise ValueError("supplied specification differs from source spec file")
+    return {"path": str(path), "sha256": _bytes_hash(body), "kind": kind}
+
+
+def _verify_source(source):
+    if not isinstance(source, dict) or not all(
+        isinstance(source.get(key), str) and source[key]
+        for key in ("path", "sha256", "kind")
+    ):
+        raise ValueError("invalid source specification binding")
+    path = Path(source["path"])
+    if (
+        path.is_symlink()
+        or not path.is_file()
+        or _bytes_hash(path.read_bytes()) != source["sha256"]
+    ):
+        raise ValueError("source specification changed or missing")
+
+
+def _execute(contract, root, inputs, timeout, source=None):
+    started = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    record = {
+        "schema": 2,
+        "kind": "scalar",
+        "paper": contract["paper"],
+        "tool": contract["tool"],
+        "contract": contract,
+        "command": contract["command"],
+        "expected": contract["expected"],
+        "tolerance": contract["tolerance"],
+        "relative": contract["relative"],
+        "json_path": contract["json_path"],
+        "registered_at": contract["registered_at"],
+        "started_at": started,
+        "verdict": UNRUN,
+        "binding": {
+            "inputs": inputs,
+            "spec_sha256": _bytes_hash(_canonical(contract)),
+            "runner_sha256": _runner_hashes(),
+            "cwd": str(root),
+        },
+        "scope": "Trusted command output, exact represented-value comparison and declared input integrity; not signed execution attestation or scientific truth.",
+    }
+    try:
+        if source is not None:
+            record["binding"]["source_spec"] = source
+            _verify_source(source)
+        executable = _tool_binding(contract["command"], root)
+        record["binding"]["executable"] = executable
+        result = processes.run_tree(contract["command"], cwd=root, timeout=timeout)
+        record.update(
+            stdout=result.stdout, stderr=result.stderr, exit_code=result.returncode
+        )
+        if result.returncode != 0:
+            record["reason"] = (
+                "command exited " + str(result.returncode) + ": " + result.stderr[-300:]
+            )
+        else:
+            if source is not None:
+                _verify_source(source)
+            if _tool_binding(contract["command"], root) != executable:
+                raise ValueError("command executable changed during execution")
+            if _inputs(root, list(inputs)) != inputs:
+                raise ValueError("declared inputs changed during execution")
+            observed = _numeric.output_value(result.stdout, contract["json_path"])
+            record.update(
+                observed=observed,
+                **_numeric.comparison(
+                    contract["expected"],
+                    observed,
+                    contract["tolerance"],
+                    contract["relative"],
+                ),
+            )
+    except subprocess.TimeoutExpired as exc:
+        record.update(
+            exit_code=124,
+            stdout=_tail(exc.stdout),
+            stderr=_tail(exc.stderr),
+            reason="execution timeout",
+        )
+    except (OSError, ValueError) as exc:
+        record["reason"] = str(exc)
+        record["verdict"] = UNRUN
+    record["ts"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    return _seal(record)
+
+
+def run_spec(
+    spec: dict,
+    cwd: str | Path | None = None,
+    timeout: float = 900.0,
+    *,
+    source_file=None,
+) -> dict:
+    """Execute a validated scalar spec in an owned lifetime and record its evidence."""
+    source = _source_spec(spec, source_file)
+    contract, root, inputs = _preflight(spec, cwd, timeout)
+    return _execute(contract, root, inputs, timeout, source)
+
+
+def _safe_name(paper: str) -> str:
+    text = str(paper or "unknown")
+    safe = "".join(ch if ch.isalnum() or ch in "-_." else "_" for ch in text)[:100]
+    if (
+        safe != text
+        or safe.casefold() != safe
+        or safe.startswith(".")
+        or len(safe.encode("utf-8")) > 160
+        or safe in ("", ".", "..")
+        or safe.split(".")[0].upper()
+        in {
+            "CON",
+            "PRN",
+            "AUX",
+            "NUL",
+            *[f"COM{i}" for i in range(1, 10)],
+            *[f"LPT{i}" for i in range(1, 10)],
+        }
+    ):
+        prefix = (
+            safe.casefold().strip(".").encode("utf-8")[:160].decode("utf-8", "ignore")
+            or "paper"
+        )
+        if prefix.split(".")[0].upper() in {
+            "CON",
+            "PRN",
+            "AUX",
+            "NUL",
+            *[f"COM{i}" for i in range(1, 10)],
+            *[f"LPT{i}" for i in range(1, 10)],
+        }:
+            prefix = "paper-" + prefix
+        safe = prefix + "--" + _bytes_hash(text.encode())[:16]
+    return safe + ".json"
+
+
+def record_path(paper: str, out_dir: str | Path) -> Path:
+    return Path(out_dir) / _safe_name(paper)
+
+
+def write(record: dict, out_dir: str | Path) -> Path:
+    """Write strict JSON atomically, preserving prior distinct records by content hash."""
+    path = record_path(record.get("paper"), out_dir)
+    body = (
+        json.dumps(record, indent=2, ensure_ascii=False, allow_nan=False).encode(
+            "utf-8"
+        )
+        + b"\n"
+    )
+    with output_lock(path.parent):
+        if path.exists():
+            previous = path.read_bytes()
+            saved = _numeric.loads(previous.decode("utf-8"))
+            if not isinstance(saved, dict) or saved.get("paper") != record.get("paper"):
+                raise ValueError("refusing to overwrite another paper identity")
+            if previous != body:
+                archive = path.parent / "history" / (_bytes_hash(previous) + ".json")
+                if not archive.exists():
+                    with atomic_output(archive) as temporary:
+                        temporary.write_bytes(previous)
+        with atomic_output(path) as temporary:
+            temporary.write_bytes(body)
+    return path
+
+
+def load(paper: str, out_dir: str | Path) -> dict | None:
+    path = record_path(paper, out_dir)
+    if not path.is_file():
+        return None
+    value = _numeric.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(value, dict):
+        raise ValueError("reproduction record must be a mapping")
+    return value
+
+
+def _bundle_specs(bundle):
+    if (
+        not isinstance(bundle, dict)
+        or not isinstance(bundle.get("specs"), list)
+        or not bundle["specs"]
+        or not all(isinstance(spec, dict) for spec in bundle["specs"])
+    ):
+        raise ValueError("bundle requires a nonempty list of spec mappings")
+    return [
+        {
+            **spec,
+            "paper": bundle.get("paper"),
+            **{
+                k: bundle[k]
+                for k in (
+                    "registered_at",
+                    "seed",
+                    "seed_reason",
+                    "data_version",
+                    "config_version",
+                )
+                if k in bundle
+            },
+        }
+        for spec in bundle["specs"]
+    ]
+
+
+def run_set(
+    bundle: dict,
+    cwd: str | Path | None = None,
+    timeout: float = 900.0,
+    *,
+    source_file=None,
+) -> dict:
+    """Preflight the entire declared inventory before launching any spec."""
+    if (
+        not isinstance(bundle, dict)
+        or not isinstance(bundle.get("specs"), list)
+        or not bundle["specs"]
+    ):
+        raise ValueError("bundle has no specs")
+    if not all(isinstance(spec, dict) for spec in bundle["specs"]):
+        raise ValueError("every bundle spec must be a mapping")
+    source = _source_spec(bundle, source_file, "set")
+    specs = _bundle_specs(bundle)
+    prepared = [_preflight(spec, cwd, timeout) for spec in specs]
+    records = [
+        _execute(
+            contract,
+            root,
+            inputs,
+            timeout,
+            {**source, "index": index} if source is not None else None,
+        )
+        for index, (contract, root, inputs) in enumerate(prepared)
+    ]
+    verdicts = [record["verdict"] for record in records]
+    verdict = (
+        MATCH
+        if all(v == MATCH for v in verdicts)
+        else MISMATCH if MISMATCH in verdicts else UNRUN
+    )
+    return _seal(
+        {
+            "schema": 2,
+            "kind": "set",
+            "paper": bundle.get("paper"),
+            "verdict": verdict,
+            "specs": records,
+            "spec_count": len(records),
+            "registered_at": bundle.get("registered_at"),
+            "timeout": timeout,
+            "source_spec": source,
+            "spec_inventory": [contract for contract, root, inputs in prepared],
+            "counts": {v: verdicts.count(v) for v in (MATCH, MISMATCH, UNRUN)},
+            "started_at": records[0]["started_at"],
+            "ts": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        }
+    )
+
+
+def validate_record(
+    record: dict,
+    root: Path,
+    paper: str,
+    *,
+    require_source: bool = False,
+    _parent_source: dict | None = None,
+) -> list[str]:
+    """Recompute stored results; caller must still establish trust in execution/data."""
+    errors = []
+    try:
+        if (
+            not isinstance(record, dict)
+            or type(record.get("schema")) is not int
+            or record.get("schema") != 2
+        ):
+            raise ValueError(
+                "legacy reproduction record lacks verifiable execution fields; replay required"
+            )
+        if record.get("paper") != paper:
+            raise ValueError("record paper identity differs")
+        if record.get("record_sha256") != _bytes_hash(
+            _canonical({k: v for k, v in record.items() if k != "record_sha256"})
+        ):
+            raise ValueError("record checksum mismatch")
+        if record.get("kind") == "set":
+            specs = record.get("specs")
+            if (
+                not isinstance(specs, list)
+                or not specs
+                or not all(isinstance(child, dict) for child in specs)
+                or type(record.get("spec_count")) is not int
+                or len(specs) != record.get("spec_count")
+            ):
+                raise ValueError("missing or incomplete spec inventory")
+            inventory = record.get("spec_inventory")
+            if (
+                not isinstance(inventory, list)
+                or len(inventory) != len(specs)
+                or any(
+                    child.get("contract") != expected
+                    for child, expected in zip(specs, inventory)
+                )
+            ):
+                raise ValueError("spec results differ from declared inventory")
+            source = record.get("source_spec")
+            if require_source and source is None:
+                raise ValueError(
+                    "original bundle source file required for scientific qualification"
+                )
+            if source is not None:
+                _verify_source(source)
+                payload = _numeric.loads(
+                    Path(source["path"]).read_text(encoding="utf-8-sig")
+                )
+                originals = _bundle_specs(payload)
+                if (
+                    source.get("kind") != "set"
+                    or len(originals) != len(specs)
+                    or payload.get("paper") != paper
+                ):
+                    raise ValueError(
+                        "source bundle inventory or paper identity differs"
+                    )
+                for index, (spec, child) in enumerate(zip(originals, specs)):
+                    expected, _, _ = _preflight(spec, root, record.get("timeout"))
+                    if not isinstance(child.get("binding"), dict):
+                        raise ValueError("invalid child input binding")
+                    if _canonical(expected) != _canonical(
+                        child.get("contract")
+                    ) or child.get("binding", {}).get("source_spec") != {
+                        **source,
+                        "index": index,
+                    }:
+                        raise ValueError(
+                            "source bundle items are missing, duplicated or reordered"
+                        )
+            for index, child in enumerate(specs):
+                errors.extend(
+                    validate_record(
+                        child,
+                        root,
+                        paper,
+                        require_source=require_source,
+                        _parent_source={**source, "index": index} if source else None,
+                    )
+                )
+            verdicts = [child.get("verdict") for child in specs]
+            expected = (
+                MATCH
+                if all(v == MATCH for v in verdicts)
+                else MISMATCH if MISMATCH in verdicts else UNRUN
+            )
+            if expected != record.get("verdict") or record.get("counts") != {
+                v: verdicts.count(v) for v in (MATCH, MISMATCH, UNRUN)
+            }:
+                raise ValueError("aggregate verdict/counts differ from spec records")
+            return errors
+        if (
+            record.get("kind") != "scalar"
+            or type(record.get("exit_code")) is not int
+            or record.get("exit_code") != 0
+        ):
+            raise ValueError("execution did not complete successfully")
+        contract = record["contract"]
+        binding = record["binding"]
+        if not isinstance(contract, dict) or not isinstance(binding, dict):
+            raise ValueError("invalid contract or input binding")
+        if binding.get("cwd") != str(Path(root).resolve()):
+            raise ValueError("record execution directory differs from project")
+        if contract.get("paper") != paper or record.get("tool") != contract.get("tool"):
+            raise ValueError("record and contract identity differ")
+        if require_source and binding.get("source_spec") is None:
+            raise ValueError(
+                "original specification source file required for scientific qualification"
+            )
+        checked, _, _ = _preflight(
+            {**contract, "inputs": contract.get("input_declarations")},
+            root,
+            contract.get("timeout"),
+        )
+        if _canonical(checked) != _canonical(contract):
+            raise ValueError("noncanonical or incomplete reproduction contract")
+        if (
+            binding["spec_sha256"] != _bytes_hash(_canonical(contract))
+            or binding["runner_sha256"] != _runner_hashes()
+        ):
+            raise ValueError("spec or comparison implementation changed")
+        if _inputs(Path(root).resolve(), contract["inputs"]) != binding["inputs"]:
+            raise ValueError("declared input changed or missing")
+        if _tool_binding(contract["command"], Path(root).resolve()) != binding.get(
+            "executable"
+        ):
+            raise ValueError("command executable changed or missing")
+        if record["command"] != contract["command"]:
+            raise ValueError("record command differs")
+        for key in ("expected", "tolerance", "relative", "json_path", "registered_at"):
+            if record.get(key) != contract.get(key) or type(
+                record.get(key)
+            ) is not type(contract.get(key)):
+                raise ValueError("record " + key + " differs from spec")
+        if not isinstance(record.get("stdout"), str) or not isinstance(
+            record.get("stderr"), str
+        ):
+            raise ValueError("invalid captured output fields")
+        if binding.get("source_spec") is not None:
+            source = binding["source_spec"]
+            _verify_source(source)
+            payload = _numeric.loads(
+                Path(source["path"]).read_text(encoding="utf-8-sig")
+            )
+            if source.get("kind") == "set":
+                if source != _parent_source:
+                    raise ValueError(
+                        "a bundle child cannot qualify a paper without its complete parent set"
+                    )
+                inventory = _bundle_specs(payload)
+                index = source.get("index")
+                if type(index) is not int or not 0 <= index < len(inventory):
+                    raise ValueError("invalid source spec index")
+                payload = inventory[index]
+            elif source.get("kind") != "scalar":
+                raise ValueError("invalid source spec kind")
+            expected_contract, _, _ = _preflight(payload, root, contract["timeout"])
+            if _canonical(expected_contract) != _canonical(contract):
+                raise ValueError(
+                    "record contract differs from original source specification"
+                )
+        observed = _numeric.output_value(record["stdout"], contract["json_path"])
+        if (
+            type(record.get("observed")) is not type(observed)
+            or record["observed"] != observed
+        ):
+            raise ValueError("observed value differs from recorded output")
+        detail = _numeric.comparison(
+            contract["expected"], observed, contract["tolerance"], contract["relative"]
+        )
+        for key, value in detail.items():
+            if _canonical(record.get(key)) != _canonical(value):
+                raise ValueError("recorded " + key + " differs from recomputation")
+        seed = contract.get("seed")
+        if not contract.get("seed_declared") or not (
+            type(seed) is int
+            or (
+                seed is None
+                and isinstance(contract.get("seed_reason"), str)
+                and contract["seed_reason"].strip()
+            )
+        ):
+            raise ValueError(
+                "declared integer seed or null with seed_reason required for scientific use"
+            )
+        if any(
+            not isinstance(contract.get(k), str) or not contract[k].strip()
+            for k in ("data_version", "config_version")
+        ):
+            raise ValueError(
+                "data_version and config_version required for scientific use"
+            )
+        start, end = _moment(record["started_at"]), _moment(record["ts"])
+        registered = _moment(record["registered_at"])
+        if registered > start or start > end:
+            raise ValueError(
+                "registration is after the run or execution times are inverted"
+            )
+    except (ValueError, TypeError, KeyError, OSError) as exc:
+        errors.append(str(exc))
+    return errors
+
+
+def record_dependencies(record: dict) -> list[str]:
+    """Declared receipt dependencies only; caller enforces its project/external allowlist."""
+    paths = []
+    pending = [record]
+    while pending:
+        item = pending.pop()
+        if not isinstance(item, dict) or item.get("schema") != 2:
+            continue
+        if item.get("kind") == "set":
+            children = item.get("specs")
+            if not isinstance(children, list) or not all(
+                isinstance(c, dict) for c in children
+            ):
+                raise ValueError("invalid reproduction set dependencies")
+            pending.extend(children)
+            source = item.get("source_spec")
+            if source is not None:
+                if not isinstance(source, dict):
+                    raise ValueError("invalid reproduction source dependency")
+                paths.append(source.get("path"))
+        elif item.get("kind") == "scalar":
+            binding = item.get("binding")
+            if not isinstance(binding, dict) or not isinstance(
+                binding.get("inputs"), dict
+            ):
+                raise ValueError("invalid reproduction dependency binding")
+            paths.extend(binding["inputs"])
+            for key in ("source_spec", "executable"):
+                if binding.get(key) is not None:
+                    if not isinstance(binding[key], dict):
+                        raise ValueError("invalid reproduction file dependency")
+                    paths.append(binding[key].get("path"))
+        else:
+            raise ValueError("invalid reproduction dependency kind")
+    if not all(isinstance(p, str) and p for p in paths):
+        raise ValueError("invalid reproduction dependency path")
+    return sorted(set(paths))

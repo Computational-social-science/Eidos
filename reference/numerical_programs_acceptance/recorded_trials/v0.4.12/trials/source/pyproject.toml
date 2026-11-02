@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eidos"
+version = "0.4.12"
+description = "Global reusable research pipeline: Quarto + BootLoops + complementary quality gates"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "pyyaml>=6.0",
+    # framework/__init__.py imports numpy, and the site builders need matplotlib: a "core" that
+    # cannot import itself is not core. Both were missing from the declaration, so a fresh clone
+    # on a machine without them failed at collection.
+    "numpy>=1.26",
+    "matplotlib>=3.8",
+]
+
+[project.optional-dependencies]
+# The core dependency closure is declared above. Everything below is opt-in.
+tracking = ["mlflow>=3.17.2", "dvc>=3.67.1"]
+semantic = ["inspect-ai>=0.3", "deepeval>=1.0", "ragas>=0.2"]
+all = [
+    "mlflow>=3.17.2",
+    "dvc>=3.67.1",
+    "inspect-ai>=0.3",
+    "deepeval>=1.0",
+    "ragas>=0.2",
+]
+dev = ["pytest>=7.0", "coverage>=7.0"]
+# Browser audits and screenshot capture are optional: the tests that need them skip without them.
+browser = ["playwright>=1.40", "pillow>=10"]
+# Paper-to-agent validation has its own optional, reproducible environment.
+agent = ["fastmcp==4.0.3"]
+# Deterministic verifiers (P0 of the ScienceRSI integration plan). proofpath is a CLI, installed
+# with `uv tool install git+https://github.com/Yigtwxx/proofpath`, not a Python dependency.
+verifiers = ["academic-research-kernel>=2.2"]
+
+[tool.setuptools.packages.find]
+include = ["framework*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

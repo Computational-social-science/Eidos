@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "E:\2026-AI4S\Eidos\.scratch\quality\record_v412_candidate.py", line 93, in <module>
+    require(type(value.get('source_sha256_lf')) is dict
+  File "E:\2026-AI4S\Eidos\.scratch\quality\v410_receipt_guards.py", line 27, in require
+    if not value: raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Recovery source inventory differs

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "<string>", line 16, in <module>
+  File "<frozen runpy>", line 286, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "E:\2026-AI4S\Eidos\.scratch\quality\record_v412_candidate.py", line 12, in <module>
+    import v410_receipt_guards as legacy
+ModuleNotFoundError: No module named 'v410_receipt_guards'

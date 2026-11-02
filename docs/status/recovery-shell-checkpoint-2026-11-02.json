@@ -1,0 +1,51 @@
+{
+  "scope": "unreleased source recovery checkpoint; not a qualified new wheel",
+  "tests": {
+    "passed": 1200,
+    "failed": 0,
+    "skipped": 6,
+    "errors": 0
+  },
+  "coverage": 75,
+  "source_sha256": "b747f51fc7e50bc83151a9d0f9f4e387d8ec95222c3e3994d10ea59a46778d47",
+  "source_stable": true,
+  "initial_chain_measurement": {
+    "total": 11,
+    "pass": 9,
+    "skip": 2,
+    "fail": 0
+  },
+  "monitor": {
+    "seq": 17948,
+    "overall": "OK",
+    "stale": false
+  },
+  "signals": {
+    "decision_service": "OK",
+    "runtime_18434": "OK",
+    "quarto": "OK",
+    "dvc": "OK",
+    "mlflow": "OK",
+    "chains_failed": "OK",
+    "chains_duration": "OK",
+    "chains_age": "OK",
+    "consumers": "OK",
+    "consumer_verdicts": "OK",
+    "consumer_snapshot": "OK",
+    "scheduler": "OK",
+    "scheduler_failures": "OK",
+    "self_audit": "OK",
+    "render_chain": "OK",
+    "render_age": "OK",
+    "consumer_evidence_age": "OK"
+  },
+  "scoped_tests_passed": 49,
+  "budget_reset": false,
+  "new_cron": false,
+  "post_recovery_chains": {
+    "total": 11,
+    "pass": 10,
+    "skip": 1,
+    "fail": 0
+  }
+}

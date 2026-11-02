@@ -1,13 +1,9 @@
 {
-  "generated": "2026-11-01T22:09:31.037294+00:00",
-  "assessor": "Codex: all 36 pages compared pixel-for-pixel with the inspected v0.4.10 baseline; both changed PDF/Word pages visually inspected in full.",
-  "scope": "Rendered PDF and Word pages only; web layout is a separate browser check. Manuscript spacing permits whitespace before intact figures/tables.",
-  "submission_ready": false,
-  "baseline_tag": "v0.4.10",
+  "baseline_tag": "v0.4.11",
   "reports": [
     {
       "path": "site/reports/numerics/report.pdf",
-      "sha256": "38d43391b3b652127fa0b34be27e3f58c3eee3c56ec16aac593c7fa8a4b41884",
+      "sha256": "9c64569a62200e880e92d5e3cbb0c0aef80f0f2b3d8e499015ab59ce45eeb120",
       "pages_inspected": [
         1,
         2,
@@ -21,7 +17,7 @@
       "renderer": "Poppler",
       "page_png_sha256": [
         "5a721d8c8fd6a3d94bcab23258f40790add2b7d7d586e0f37119d068c54b03c2",
-        "c1a9b7b1a1fc742f7f495f3013849949db782a330cbafc180ecb059e37286f93",
+        "c59e4c86d55e235fc6e0f798a065e6881c5e4290bda6e7d929cdee77df2d9052",
         "7330dfc4b56904a66d0540d7fef5de8f3238c39410e1bba9c56242eefb53584d",
         "36112ba1d8923ecfcec10ec2b1ffe23f6585dc6e3fbeb5211ffdf987c5842af9",
         "1b7f9c95ac2ce92fd2b7f9b6bc12e7abbad1844d47140655dfda0fc0f55724a3",
@@ -42,7 +38,7 @@
     },
     {
       "path": "site/reports/numerics/report.docx",
-      "sha256": "cc4fdb03a502c5b1c007bb04acfc754f24a7c9b3b56ff3dee61bb11bfbb5b39e",
+      "sha256": "a057173800f3ac1536b30c363bd1ac10322ceae772d5713c81aa1fb469638d69",
       "pages_inspected": [
         1,
         2,
@@ -56,7 +52,7 @@
       "renderer": "Bundled render_docx.py PNG pipeline; native Microsoft Word read-only conversion adapter",
       "page_png_sha256": [
         "0dcd5ed98eb7c949f3024a07aa8d77035f5f33e67221fb367e9400b09f8fb2e0",
-        "c2d48c7ecf64838f4f50d276850c828c1ad7bc57ad7492893ad15e74c8567ec2",
+        "345f387169d643942758f3b3ea72fce478e91dbf63c6678af14b7c114f72c5b3",
         "8946a42950d26320a80d1ee961f599d7a9db9c27f856c0ec5a80e06044b472f4",
         "485d553f9b0551d9df6a967100a216baad21a72cd6437af4e1989d30519e82b2",
         "60daad8f065666a94411181e944267429d48c4e5a0607a74b29cf6f5376696cd",
@@ -192,269 +188,37 @@
       ]
     }
   ],
-  "page_comparison": [
-    {
-      "path": "site/reports/numerics/report.pdf",
-      "page": 1,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
+  "changes": [
     {
       "path": "site/reports/numerics/report.pdf",
       "page": 2,
-      "pixel_identical": false,
-      "difference_bbox": [
+      "png": ".scratch\\quality\\v412-visual\\pdf-numerics\\page-2.png",
+      "bbox": [
         159,
         413,
         922,
         432
       ],
-      "changed_region_review": "Full page visually inspected: Eidos 0.4.11 version line is legible, with valid wrapping and no overlap or clipping."
-    },
-    {
-      "path": "site/reports/numerics/report.pdf",
-      "page": 3,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/numerics/report.pdf",
-      "page": 4,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/numerics/report.pdf",
-      "page": 5,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/numerics/report.pdf",
-      "page": 6,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/numerics/report.pdf",
-      "page": 7,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/numerics/report.pdf",
-      "page": 8,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/numerics/report.docx",
-      "page": 1,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
+      "changed_region_review": "PASS: version label and resulting inline spacing; no clipping, overlap or pagination change"
     },
     {
       "path": "site/reports/numerics/report.docx",
       "page": 2,
-      "pixel_identical": false,
-      "difference_bbox": [
+      "png": ".scratch\\quality\\v412-visual\\word-numerics\\page-2.png",
+      "bbox": [
         1251,
         675,
         1264,
-        696
+        695
       ],
-      "changed_region_review": "Full page visually inspected: Eidos 0.4.11 version line is legible, with valid wrapping and no overlap or clipping."
-    },
-    {
-      "path": "site/reports/numerics/report.docx",
-      "page": 3,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/numerics/report.docx",
-      "page": 4,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/numerics/report.docx",
-      "page": 5,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/numerics/report.docx",
-      "page": 6,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/numerics/report.docx",
-      "page": 7,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/numerics/report.docx",
-      "page": 8,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/softmax-matrix/report.pdf",
-      "page": 1,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/softmax-matrix/report.pdf",
-      "page": 2,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/softmax-matrix/report.pdf",
-      "page": 3,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/softmax-matrix/report.pdf",
-      "page": 4,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/softmax-matrix/report.pdf",
-      "page": 5,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/softmax-matrix/report.pdf",
-      "page": 6,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/softmax-matrix/report.docx",
-      "page": 1,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/softmax-matrix/report.docx",
-      "page": 2,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/softmax-matrix/report.docx",
-      "page": 3,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/softmax-matrix/report.docx",
-      "page": 4,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/softmax-matrix/report.docx",
-      "page": 5,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/softmax-matrix/report.docx",
-      "page": 6,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/hpaf-metric/report.pdf",
-      "page": 1,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/hpaf-metric/report.pdf",
-      "page": 2,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/hpaf-metric/report.pdf",
-      "page": 3,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/hpaf-metric/report.pdf",
-      "page": 4,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/hpaf-metric/report.docx",
-      "page": 1,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/hpaf-metric/report.docx",
-      "page": 2,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/hpaf-metric/report.docx",
-      "page": 3,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
-    },
-    {
-      "path": "site/reports/hpaf-metric/report.docx",
-      "page": 4,
-      "pixel_identical": true,
-      "difference_bbox": null,
-      "changed_region_review": null
+      "changed_region_review": "PASS: version label and resulting inline spacing; no clipping, overlap or pagination change"
     }
   ],
-  "identical_pages": 34
+  "new_pages_compared": 16,
+  "unchanged_artifact_pages_retained": 20,
+  "submission_ready": false,
+  "generated": "2026-11-02T10:45:39.118899+00:00",
+  "assessor": "Codex: 16 regenerated numerical PDF/Word pages compared with the inspected v0.4.11 baseline; both changed page 2 images visually inspected in full. The other 20 pages retain their inspected baseline because their four manuscript artifacts are byte-identical.",
+  "scope": "Technical rendered-page review; 14 regenerated pages pixel-identical, two inspected changed pages carry the version label. No new journal submission readiness or scientific finding.",
+  "identical_regenerated_pages": 14
 }

@@ -19,7 +19,7 @@ The local .python-version selects Python 3.12. Do not assume .venv is usable: ex
 
 The default EIDOS research pipeline must be reusable with local models and without Gemini, paid model APIs, subscriptions or mandatory service credentials. Do not silently fall back to a hosted provider. Public source with a required paid backend does not satisfy this requirement. Keep imported research components isolated, pin their code and dependency/data/model licenses, and qualify a keyless local execution path before advertising support. GPU acceleration may be optional; document a feasible CPU baseline and unmet prerequisites. Recorded-response replay is not live-model qualification.
 
-Sync from uv.lock with `uv sync --frozen --extra dev --extra tracking --extra verifiers --extra browser`. Preserve pins when reconciling declarations; do not run a blanket upgrade. Use `uv lock --check` to detect drift. The core environment deliberately excludes generic LLM-evaluation extras until a consumer needs them.
+Sync from uv.lock with `uv sync --frozen --extra dev --extra tracking --extra verifiers --extra browser --extra agent`. Preserve the installed Paper2Agent dependency when refreshing this full research environment. Preserve pins when reconciling declarations; do not run a blanket upgrade. Use `uv lock --check` to detect drift. The core environment deliberately excludes generic LLM-evaluation extras until a consumer needs them.
 
 ## Verification
 

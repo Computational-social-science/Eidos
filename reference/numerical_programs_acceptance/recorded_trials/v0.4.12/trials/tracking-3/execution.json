@@ -1,0 +1,140 @@
+{
+  "kind": "tracking",
+  "owner": "9afe87a9577848de87ff7a97c25145f5",
+  "image_reference": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
+  "image_id": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
+  "started": "2026-11-02T09:38:37.892002+00:00",
+  "command": [
+    "/opt/tracking/bin/python",
+    "-I",
+    "/input/tracking-bootstrap.py"
+  ],
+  "status": "PASS",
+  "controller_sha256": "985e1a273c06b8a2f695f9cc6078972d822eaa7a5de63aec373e6f9347aebdbc",
+  "input_sha256": {
+    "tracking-bootstrap.py": "181f374cb0171464f4064c0260d8a5371a70ecf3fada01099aaed6544e1bdc3c"
+  },
+  "attempt": 3,
+  "before": {
+    "Id": "8174ee1d806581b8b9889ce9887ce445be864f06daf64f7ef5e9f0894f31a535",
+    "Image": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
+    "State": {
+      "Status": "created",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "0001-01-01T00:00:00Z",
+      "FinishedAt": "0001-01-01T00:00:00Z"
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\input-tracking",
+        "Destination": "/input",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\tracking-3",
+        "Destination": "/out",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\source-tracking",
+        "Destination": "/source",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ],
+    "network": "none",
+    "readonly_rootfs": true,
+    "tmpfs": {
+      "/root/.cache": "rw,nosuid,nodev,size=536870912,mode=1777",
+      "/tmp": "rw,exec,nosuid,nodev,size=2147483648,mode=1777"
+    },
+    "command": [
+      "/opt/tracking/bin/python",
+      "-I",
+      "/input/tracking-bootstrap.py"
+    ],
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges"
+    ]
+  },
+  "after": {
+    "Id": "8174ee1d806581b8b9889ce9887ce445be864f06daf64f7ef5e9f0894f31a535",
+    "Image": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
+    "State": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-11-02T09:38:40.286899495Z",
+      "FinishedAt": "2026-11-02T09:39:50.791709673Z"
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\input-tracking",
+        "Destination": "/input",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\tracking-3",
+        "Destination": "/out",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\source-tracking",
+        "Destination": "/source",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ],
+    "network": "none",
+    "readonly_rootfs": true,
+    "tmpfs": {
+      "/root/.cache": "rw,nosuid,nodev,size=536870912,mode=1777",
+      "/tmp": "rw,exec,nosuid,nodev,size=2147483648,mode=1777"
+    },
+    "command": [
+      "/opt/tracking/bin/python",
+      "-I",
+      "/input/tracking-bootstrap.py"
+    ],
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges"
+    ]
+  },
+  "cleanup_verified": true,
+  "finished": "2026-11-02T09:39:53.677736+00:00"
+}

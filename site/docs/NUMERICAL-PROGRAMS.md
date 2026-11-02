@@ -96,7 +96,7 @@ source/runtime qualification remain distinct from scientific authority and RSI.
 
 ## Installed evidence and replay
 
-The [v0.4.11 receipt](NUMERICAL-PROGRAMS-ACCEPTANCE.json) binds the wheel, all
+The [v0.4.12 candidate receipt](NUMERICAL-PROGRAMS-ACCEPTANCE.json) binds the wheel, all
 45 framework modules, metadata/RECORD, actual environments, independent numerical
 controls and full current source audit. The
 [standalone checker and replay instructions](https://github.com/Computational-social-science/Eidos/tree/main/reference/numerical_programs_acceptance)

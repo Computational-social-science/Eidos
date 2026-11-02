@@ -1,6 +1,6 @@
 # Eidos：可复核科研流水线技术框架
 
-**实现基线：0.4.11（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
+**实现基线：0.4.12（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
 
 运行部署边界：核查发现现存监控及两条旧链路循环仍使用全局 Python 3.14；本地启动配置已选择项目 Python 3.12，但受控停止/重启被自动审批以 blocked by policy 拒绝，未执行、未改道终止。新增调度循环源码已补 OS 生命周期锁、单次 tick 互斥、隐藏子进程树超时清理及原子心跳；这些规则不会追溯应用到旧进程。运行迁移仍为 PENDING，不能以网页可访问或源码测试通过替代实际部署验收。详见 docs/MONITOR-RUNTIME-MIGRATION-2026-11-01.json。
 
@@ -193,7 +193,7 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。
 
 <!-- self-audit:start -->
-本轮验收：1194 passed、2 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 75%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
+本轮验收：1206 passed、2 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 75%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
 <!-- self-audit:end -->
 
 既有 CUDA 16 项已独立通过；本轮未修改数值后端。
@@ -514,3 +514,67 @@ GPU/vector/higher-order derivation, scientific novelty and RSI remain open.
 See the [English report](https://github.com/Computational-social-science/Eidos/blob/main/docs/SYMBOLIC-GRADIENT-TOOL-2026-11-02.md),
 [evidence summary](https://github.com/Computational-social-science/Eidos/blob/main/docs/SYMBOLIC-GRADIENT-TOOL-2026-11-02.json)
 and updated [RSI plan](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-OPTIMIZATION-PLAN.md).
+
+## Windows recovery source repair in progress (2026-11-02)
+
+A real monitor outage exposed selection of WSL Bash for an MSYS drive path.
+The new source probes actual translated-file access with an owned hidden bounded
+process, discovers installed Git Bash independently of the terminal environment,
+and refuses incompatible shells before reserving a service attempt. Forty-nine
+scoped controls pass. The unchanged recovery loop subsequently started the local
+decision backend/front end after cooldown and verified both health endpoints;
+fresh monitor samples returned OK. No retry history was reset or paid API used.
+
+This is unreleased source qualification, separate from the immutable 0.4.11
+wheel. Full source audit, new package/installed replay, version/evidence updates
+and exact-commit CI remain publication prerequisites. See the
+[incident record](https://github.com/Computational-social-science/Eidos/blob/main/docs/RECOVERY-SHELL-2026-11-02.md).
+
+The [0.4.12 candidate checkpoint](docs/RELEASE-CANDIDATE-0.4.12.md) now records
+dual-platform installed-wheel replay, 55 scoped recovery controls and a final
+source audit of 1,206 passes, six skips and 75% framework coverage. Its 645 raw
+payloads retain failed attempts and negative fixtures. Current receipt aliases
+have subsequently been refreshed from those measured results. The candidate
+remains unpublished until rendered artifacts, version history, normal commits
+and exact-final-commit CI are synchronized. Source, installed
+candidate, published release and resident service identities remain distinct.
+
+At 18:26 Asia/Shanghai, an independent Edge browser recheck confirmed HTTP 200
+for both the homepage and dashboard, no JavaScript errors and a live sequence
+advance from 18,334 to 18,336 over 22 seconds. The final sample was 2.8 seconds
+old with overall OK and stale=false; 17 services were up and none down.
+The existing monitor and self-healing services were retained without a restart
+or new CRON. This operational check is recorded in
+`docs/status/monitor-recheck-2026-11-02.json`; release publication remains pending.
+
+## Downstream reuse and feedback architecture (2026-11-02)
+
+The default deployment direction is a pinned EIDOS SDK in each independent
+research environment, with thin Agent/MCP entry points and one optional local
+dashboard. Ordinary projects retain their repositories and data; forks serve
+framework modification. The current SDK accepts an explicit external registry,
+but the existing monitor still reads this checkout's registry and status files.
+Installing a wheel does not deploy the complete monitor or enroll a project.
+Per-project command interpreters must be explicit when the central interpreter
+differs; package versions, running worker identity and scientific verdicts remain
+separate observations.
+
+The [English integration architecture and implementation plan](docs/PROJECT_INTEGRATION.md#downstream-reuse-architecture-and-implementation-plan-2026-11-02)
+specifies DETECTED -> TRIAGED -> REPRODUCED -> PATCH_CANDIDATE ->
+INDEPENDENTLY_VALIDATED -> RELEASED -> DOWNSTREAM_VERIFIED. Preserve original
+failures, add rejecting regression cases, validate independently and replay the
+new immutable dependency at the originating project before closing feedback.
+Generic installed CLI/init, incident export, distributed worker ingestion and a
+general EIDOS Agent remain planned. Improve on events with finite budgets and
+retained self-check/self-healing; do not equate automatic source changes with
+scientific RSI or reintroduce external CRON research runs.
+
+The release-aggregation review reproduced and closed acceptance of an incomplete
+recovery source inventory. Five actual checkpoint mutation refusals and four
+alias-input refusals pass; an injected third-write failure restores all seven
+previous aliases. The independent numerical PDF/Word comparison retains the
+original pagination: 14 of 16 regenerated pages are pixel-identical and both
+changed second pages were inspected; the other 20 manuscript pages belong to
+byte-identical retained artifacts. Technical production checks pass without
+asserting journal submission readiness. Version history and GitHub publication
+are still pending.

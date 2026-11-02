@@ -84,10 +84,10 @@ See [STOP](https://arxiv.org/abs/2310.02304v3) and
 | Self-check and recovery | Bounded recovery contracts and disposable-service crash/recovery controls | Production model-service migration, logon/reboot acceptance or a clean 24-hour observation |
 | Recursive loop | Execution, provenance, checking and update-governance components exist | A demonstrated EIDOS-generated C0 -> C1 -> C2 scientific-improvement campaign |
 
-Read the scoped evidence in [RSI readiness](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-READINESS-2026-11-01.md),
-[functional completeness](https://github.com/Computational-social-science/Eidos/blob/main/docs/FUNCTIONAL_COMPLETENESS.md),
-[model authority](https://github.com/Computational-social-science/Eidos/blob/main/docs/MODEL-TASK-QUALITY.md),
-[model capacity and pilot](https://github.com/Computational-social-science/Eidos/blob/main/docs/LOCAL-MODEL-CAPACITY-2026-11-01.md), and the
+Read the scoped evidence in [RSI readiness](RSI-READINESS-2026-11-01.md),
+[functional completeness](FUNCTIONAL_COMPLETENESS.md),
+[model authority](MODEL-TASK-QUALITY.md),
+[model capacity and pilot](LOCAL-MODEL-CAPACITY-2026-11-01.md), and the
 [published baseline](https://github.com/Computational-social-science/Eidos/releases/tag/v0.4.10).
 The release verification is a publication-time observation; later documentation
 commits may advance `main` without changing the frozen tag.
@@ -97,26 +97,26 @@ an experimental objective. Autonomous scientific RSI remains unproven; the
 current evidence does not establish that it is impossible either.
 
 Execution has started with a public numerical-oracle calibration and a C0
-specification. See the [dated execution record](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-EXECUTION-2026-11-01.md)
+specification. See the [dated execution record](RSI-EXECUTION-2026-11-01.md)
 for measured results and remaining gates; no model or sealed-task result is
 implied by this checkpoint.
 
-Subsequent [real-model development trials](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-C0-MODEL-TRIALS-2026-11-01.md)
+Subsequent [real-model development trials](RSI-C0-MODEL-TRIALS-2026-11-01.md)
 completed runtime checks but rejected both responses before numerical grading.
 Structured-output reliability is the next measured bottleneck; no promotion followed.
 
-The [subsequent decoder study](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-C0-DECODER-STUDY-2026-11-02.md) obtained two
+The [subsequent decoder study](RSI-C0-DECODER-STUDY-2026-11-02.md) obtained two
 structurally admissible programs; both failed all 23 joint numerical development
 points. This motivated the local method-retrieval and feedback experiment.
-See the [component assembly selection](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-COMPONENT-ASSEMBLY-2026-11-02.md).
+See the [component assembly selection](RSI-COMPONENT-ASSEMBLY-2026-11-02.md).
 
-A [configured local CPU CLI](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-LOCAL-RUNTIME-2026-11-02.md) now supplies a
+A [configured local CPU CLI](RSI-LOCAL-RUNTIME-2026-11-02.md) now supplies a
 source-checkout prerequisite for that experiment. Its first real ScienceRSI
 trial met runtime acceptance and rejected the 0/23 candidate, with 124 scoped
 tests passing. This is not clean-machine/GPU portability, an installed-wheel
 runtime, sealed acceptance or improvement of the improver.
 
-The completed [retrieval/feedback comparison](https://github.com/Computational-social-science/Eidos/blob/main/docs/RSI-RETRIEVAL-FEEDBACK-2026-11-02.md)
+The completed [retrieval/feedback comparison](RSI-RETRIEVAL-FEEDBACK-2026-11-02.md)
 ran three proposals per arm under equal ceilings and retained all failures.
 Both arms remained at 0/23 joint points. Treatment recovered the known forward
 method (23/23) but still produced incorrect derivatives (0/23). Repeated answers
@@ -126,7 +126,7 @@ feedback-policy comparison. Do not quietly repair a model proposal or count
 externally encoded methods as EIDOS-generated C1/C2. Additional local-model
 qualification and independent sealed acceptance remain required.
 
-The [deterministic method compiler](https://github.com/Computational-social-science/Eidos/blob/main/docs/NUMERICAL-METHOD-COMPILER-2026-11-02.md)
+The [deterministic method compiler](NUMERICAL-METHOD-COMPILER-2026-11-02.md)
 now provides a tested source-checkout tool path. Actual CLI replay retained the
 original T1 at 0/23 and compiled a separately attributed known method passing
 23/23, with fresh-reader acceptance and 248 combined controls. No inference or
@@ -134,7 +134,7 @@ automatic differentiation occurred. Next qualify bounded local tool selection
 and assistance attribution, then the anti-stagnation feedback policy. This is
 not a new installed-wheel capability or EIDOS-generated C1/C2.
 
-The [offline Linux source replay](https://github.com/Computational-social-science/Eidos/blob/main/docs/METHOD-OFFLINE-PORTABILITY-2026-11-02.md)
+The [offline Linux source replay](METHOD-OFFLINE-PORTABILITY-2026-11-02.md)
 has now completed in a fresh NumPy+pip venv, using a public pinned image/wheel,
 network-disabled execution and an actual wrong-input-pin control. All expected
 CLI/reader outcomes and owned cleanup were checked, with 304 combined controls.
@@ -393,7 +393,7 @@ Operational migration is a parallel deployment requirement, not a reason to
 declare the scientific experiment passed or to remove self-healing. Earlier
 stop/restart actions were rejected by automatic approval review with `blocked
 by policy`; no more specific reason was provided. They were not bypassed.
-See [scheduling policy](https://github.com/Computational-social-science/Eidos/blob/main/docs/SCHEDULING-POLICY.md).
+See [scheduling policy](SCHEDULING-POLICY.md).
 
 ## 9. Evidence records and promotion rules
 
@@ -475,8 +475,8 @@ consensus that two generations prove RSI or that bootstrap alone creates it.
 
 The v0.4.11 numerical-program SDK is now an executed implementation milestone,
 not only a source-checkout prototype. Its
-[contract](https://github.com/Computational-social-science/Eidos/blob/main/docs/NUMERICAL-PROGRAMS.md) and
-[installed receipt](https://github.com/Computational-social-science/Eidos/blob/main/docs/NUMERICAL-PROGRAMS-ACCEPTANCE.json) bind the actual wheel,
+[contract](NUMERICAL-PROGRAMS.md) and
+[installed receipt](NUMERICAL-PROGRAMS-ACCEPTANCE.json) bind the actual wheel,
 all 45 framework modules, normal core dependencies and fresh Windows/offline
 Linux measurements. The public controls comprise 23 log1mexp and 16 softplus
 points, explicit wrong-gradient rejection and parser/execution boundaries.
@@ -522,8 +522,8 @@ unchanged installed Eidos 0.4.11 SDK. It derives from the saved T1 forward alone
 preserves that forward and passes 23/23 joint public controls; the original
 model's supplied derivative remains 0/23. Each platform also passes 16 softplus
 and 8 square points, 20 tests and nine integrity/timeout controls. See the
-[report](https://github.com/Computational-social-science/Eidos/blob/main/docs/SYMBOLIC-GRADIENT-TOOL-2026-11-02.md) and
-[bound evidence](https://github.com/Computational-social-science/Eidos/blob/main/docs/SYMBOLIC-GRADIENT-TOOL-2026-11-02.json).
+[report](SYMBOLIC-GRADIENT-TOOL-2026-11-02.md) and
+[bound evidence](SYMBOLIC-GRADIENT-TOOL-2026-11-02.json).
 
 Review exposed CAS-cancelled domain holes, floating threshold drift and
 count-only receipt acceptance. The reference tool now checks original selected
@@ -541,3 +541,43 @@ matched assistance/budget policy in section 12. Keep this public case outside
 sealed transfer. Independent evaluation and improvement-procedure evidence must
 precede any G3/G4 or recursive-improvement claim. Continue keyless local execution,
 with explicit free dependency/model licenses and no hosted fallback.
+
+## 14. Recovery prerequisite under source qualification
+
+A real outage exposed a detached Windows shell-selection gap: PATH resolved to
+WSL while the recovery script used MSYS drive paths. The monitor listener was
+restored, and a source repair now probes actual translated-path access instead
+of trusting the executable name or OSTYPE. Forty-nine scoped controls pass.
+The existing recovery loop subsequently restored both decision-service endpoints
+after its unchanged cooldown; the monitor reports fresh OK samples.
+
+See the [incident and acceptance limits](RECOVERY-SHELL-2026-11-02.md).
+This is operational repair, not RSI evidence. The source change is not covered
+by the immutable 0.4.11 wheel's acceptance. A fresh source audit, new package,
+installed Windows/Linux replay, version/evidence synchronization and exact-commit
+CI must precede release. Keep the original failure and old wheel records intact.
+
+The subsequent [0.4.12 candidate checkpoint](RELEASE-CANDIDATE-0.4.12.md)
+records installed Windows/offline Linux replay of the repaired path selection,
+normal core, delivery, reproduction and tracking boundaries. The final source
+audit has 1,206 passing tests, six explicit skips and 75% framework coverage;
+the scoped recovery suite has 55 passes. A 645-payload raw archive preserves
+successful controls, failed environment attempts and negative fixtures. Candidate
+receipt aggregation now rejects wrong platforms, stale source bindings and input
+mutation during assembly, with actual cache-file mutation controls. Publication
+and exact-final-commit CI remain pending, and no RSI gate is promoted by this
+operational improvement.
+
+## 15. Downstream reuse and evidence-backed improvement
+
+The [integration architecture and staged plan](PROJECT_INTEGRATION.md#downstream-reuse-architecture-and-implementation-plan-2026-11-02)
+defines a pinned project SDK, thin Agent/MCP entry points, one optional local
+dashboard and a downstream-to-core incident lifecycle. Prioritize an installed
+CLI/workspace boundary and reproducible feedback over another orchestration
+framework. Source repair is accepted only after independent checks and replay in
+the originating downstream project. Keep project environments/version identities
+separate; do not silently upgrade every project or call operational repair RSI.
+The generic initializer, feedback CLI, worker event ingestion and research Agent
+remain planned interfaces. Existing case-specific Paper2Agent support is not a
+general EIDOS Agent. All default paths retain local/free operation and finite
+event-triggered work without external CRON or hosted fallback.

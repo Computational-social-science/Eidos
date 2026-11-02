@@ -1,0 +1,47 @@
+"""Actual -I host-site leakage and optimization refusal; owned temporary .pth only."""
+from pathlib import Path
+import json
+import os
+import subprocess
+
+root=Path.cwd()
+cache=Path('C:/Users/Administrator/.cache/eidos-sdk-v412')
+python=cache/'windows-core/Scripts/python.exe'
+driver=cache/'input/numerical.py'
+wheel=cache/'input/eidos-0.4.12-py3-none-any.whl'
+folder=cache/'installed-negatives-v2'
+folder.mkdir(exist_ok=False)
+command=[str(python),'-I',str(driver),'--wheel',str(wheel),'--expected-version','0.4.12']
+rows=[]
+
+def refusal(label,argv,message):
+    run=subprocess.run(argv,cwd=folder,capture_output=True,text=True,encoding='utf-8',timeout=30,
+                       creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
+    (folder/(label+'.stdout')).write_text(run.stdout,encoding='utf-8')
+    (folder/(label+'.stderr')).write_text(run.stderr,encoding='utf-8')
+    if run.returncode==0 or run.stdout.strip() or message not in run.stderr:
+        raise RuntimeError('Broken qualification accepted: '+label)
+    rows.append({'case':label,'exit_code':run.returncode,'stdout_empty':True,'rejected':True,
+                 'expected_message':message})
+
+for mode in ('-O','-OO'):
+    refusal(mode,[str(python),'-I',mode,*command[2:]],'Qualification requires')
+external=folder/'external-distributions'
+info=external/'eidos_host_leak_control-1.0.dist-info'
+info.mkdir(parents=True)
+(info/'METADATA').write_text('Metadata-Version: 2.1\nName: eidos-host-leak-control\nVersion: 1.0\n')
+(info/'RECORD').write_text('')
+pth=cache/'windows-core/Lib/site-packages/eidos_host_leak_control.pth'
+created=False
+try:
+    with pth.open('x',encoding='utf-8') as stream:
+        created=True
+        stream.write(str(external)+'\n')
+    refusal('host-distribution-leak',command,'Host distributions leaked into the virtual environment')
+finally:
+    if created and pth.exists() and pth.read_text(encoding='utf-8')==str(external)+'\n':
+        pth.unlink()
+if pth.exists():
+    raise RuntimeError('Owned .pth cleanup was not proven')
+(folder/'summary.json').write_text(json.dumps({'controls':rows,'owned_pth_removed':True},indent=2)+'\n')
+print('3 actual installed-environment refusal controls PASS; owned .pth removed')

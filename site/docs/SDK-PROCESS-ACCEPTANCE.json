@@ -1,8 +1,8 @@
 {
-  "generated": "2026-11-01T22:22:54.503563+00:00",
+  "generated": "2026-11-02T10:51:15.657439+00:00",
   "scope": "Installed SDK project-command execution and its OS ownership scopes; not every SDK subprocess path or general scientific validity.",
-  "wheel": "reference/sdk_process_acceptance/eidos-0.4.11-py3-none-any.whl",
-  "wheel_sha256": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
+  "wheel": "reference/sdk_process_acceptance/eidos-0.4.12-py3-none-any.whl",
+  "wheel_sha256": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
   "driver": "reference/sdk_process_acceptance/check.py",
   "driver_sha256": "1c47047026769a78b1fc5bd7cc4371532c671911eee977bde1823125e5f0f262",
   "source_sha256_canonical_lf": {
@@ -18,7 +18,7 @@
     "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
     "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
     "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
-    "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+    "framework/recovery.py": "46e3426ac28988905a2ecebe728cb4a6515803c07fc56feb0dd08b4beebb5563",
     "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
     "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
     "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
@@ -55,12 +55,12 @@
   "windows": {
     "status": "PASS",
     "result": {
-      "generated": "2026-11-01T21:53:37.028880+00:00",
+      "generated": "2026-11-02T09:28:28.610893+00:00",
       "platform": "win32",
       "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
-      "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\windows venv\\Scripts\\python.exe",
-      "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\windows venv\\Lib\\site-packages\\framework\\project.py",
-      "sdk_version": "0.4.11",
+      "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\windows-core\\Scripts\\python.exe",
+      "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\windows-core\\Lib\\site-packages\\framework\\project.py",
+      "sdk_version": "0.4.12",
       "optimization_level": 0,
       "module_sha256": {
         "_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
@@ -111,7 +111,7 @@
         ],
         [
           "eidos",
-          "0.4.11"
+          "0.4.12"
         ],
         [
           "fonttools",
@@ -136,10 +136,6 @@
         [
           "pillow",
           "13.0.0"
-        ],
-        [
-          "pip",
-          "24.0"
         ],
         [
           "pyparsing",
@@ -180,7 +176,7 @@
         "framework/quarto_bridge/__init__.py": "09c1830a16d651b14f6baf14a73143d8c0403b9d614c1540a46019eac9832af2",
         "framework/quarto_bridge/_delivery.py": "548024950a54b038bc34d431090c78a0518ac787eaec053c32ec0b5def2b9568",
         "framework/quarto_bridge/_figure_job.py": "e2ed211aef594b2d2e3c9ee77527f8fa059507de8d50ba050314cb3b6030c951",
-        "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+        "framework/recovery.py": "46e3426ac28988905a2ecebe728cb4a6515803c07fc56feb0dd08b4beebb5563",
         "framework/reproduction/__init__.py": "3b722d0beab94990afec2de6f04408f3e520695e7f780d63c697592eca235071",
         "framework/reproduction/_numeric.py": "5424d8d0c4fbafa4fc2472d0dc347ec541ffed34a6f3aaf3612e3b08f7e03a18",
         "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
@@ -208,12 +204,12 @@
   "linux": {
     "status": "PASS",
     "result": {
-      "generated": "2026-11-01T21:58:30.647121+00:00",
+      "generated": "2026-11-02T09:27:40.958257+00:00",
       "platform": "linux",
       "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
-      "executable": "/tmp/eidos-v411-fresh/bin/python",
-      "installed_module": "/tmp/eidos-v411-fresh/lib/python3.12/site-packages/framework/project.py",
-      "sdk_version": "0.4.11",
+      "executable": "/tmp/eidos-v412-fresh/bin/python",
+      "installed_module": "/tmp/eidos-v412-fresh/lib/python3.12/site-packages/framework/project.py",
+      "sdk_version": "0.4.12",
       "optimization_level": 0,
       "module_sha256": {
         "_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
@@ -263,7 +259,7 @@
         ],
         [
           "eidos",
-          "0.4.11"
+          "0.4.12"
         ],
         [
           "fonttools",
@@ -332,7 +328,7 @@
         "framework/quarto_bridge/__init__.py": "09c1830a16d651b14f6baf14a73143d8c0403b9d614c1540a46019eac9832af2",
         "framework/quarto_bridge/_delivery.py": "548024950a54b038bc34d431090c78a0518ac787eaec053c32ec0b5def2b9568",
         "framework/quarto_bridge/_figure_job.py": "e2ed211aef594b2d2e3c9ee77527f8fa059507de8d50ba050314cb3b6030c951",
-        "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+        "framework/recovery.py": "46e3426ac28988905a2ecebe728cb4a6515803c07fc56feb0dd08b4beebb5563",
         "framework/reproduction/__init__.py": "3b722d0beab94990afec2de6f04408f3e520695e7f780d63c697592eca235071",
         "framework/reproduction/_numeric.py": "5424d8d0c4fbafa4fc2472d0dc347ec541ffed34a6f3aaf3612e3b08f7e03a18",
         "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
@@ -526,17 +522,22 @@
     }
   ],
   "lineage": {
-    "previous_release": "v0.4.10",
-    "previous_record": "archive/sdk-process-acceptance-v0.4.10.json",
-    "previous_wheel_sha256": "68faf443a36d668325b96145971db2ce7bbcb8ae3b8e03b074c2c2b2ea47d9eb",
+    "previous_release": "v0.4.11",
+    "previous_record": "archive/sdk-process-acceptance-v0.4.11.json",
+    "previous_wheel_sha256": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
     "earlier": {
-      "previous_release": "v0.4.9",
-      "previous_record": "archive/sdk-process-acceptance-v0.4.9.json",
-      "previous_wheel_sha256": "ccb6c15bec83e79a3aaab8c5c653ea4a525cffa44223cdc2dd7cbdcef3a0c187",
-      "original_defect_baseline": {
-        "previous_release": "v0.4.7",
-        "previous_record": "archive/sdk-process-acceptance-v0.4.7.json",
-        "previous_wheel_sha256": "7f796c47af76ae9ba933777d6bbee0fea7ea598e1d3b06687590f84445edb1e9"
+      "previous_release": "v0.4.10",
+      "previous_record": "archive/sdk-process-acceptance-v0.4.10.json",
+      "previous_wheel_sha256": "68faf443a36d668325b96145971db2ce7bbcb8ae3b8e03b074c2c2b2ea47d9eb",
+      "earlier": {
+        "previous_release": "v0.4.9",
+        "previous_record": "archive/sdk-process-acceptance-v0.4.9.json",
+        "previous_wheel_sha256": "ccb6c15bec83e79a3aaab8c5c653ea4a525cffa44223cdc2dd7cbdcef3a0c187",
+        "original_defect_baseline": {
+          "previous_release": "v0.4.7",
+          "previous_record": "archive/sdk-process-acceptance-v0.4.7.json",
+          "previous_wheel_sha256": "7f796c47af76ae9ba933777d6bbee0fea7ea598e1d3b06687590f84445edb1e9"
+        }
       }
     }
   },
@@ -578,5 +579,8 @@
         "message": "Qualification requires active assertions; omit -O/-OO."
       }
     ]
-  }
+  },
+  "historical_fields": [
+    "broken_controls"
+  ]
 }

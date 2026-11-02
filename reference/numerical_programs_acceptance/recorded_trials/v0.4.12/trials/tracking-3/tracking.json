@@ -1,0 +1,1271 @@
+{
+  "kind": "eidos.installed-tracking-acceptance",
+  "schema": 1,
+  "generated": "2026-11-02T09:39:50.764729+00:00",
+  "platform": "linux",
+  "executable": "/opt/tracking/bin/python",
+  "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
+  "optimization_level": 0,
+  "status": "PASS",
+  "sdk_version": "0.4.12",
+  "wheel_sha256": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
+  "wheel_payload_binding": "Full raw payload and METADATA/WHEEL against installed files and RECORD; installer archive SHA-256 checked when present.",
+  "source_sha256_canonical_lf": {
+    "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
+    "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+    "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
+    "framework/executable_package.py": "a2d9d135dfa0c0884f21b58a52fee11158f604e52e35c000009fb66ce7c85f03",
+    "framework/command_inputs.py": "e739c36eff434bdf38dc2604b6d10a43f66336d17eae491334cdde1033a94823",
+    "framework/lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
+    "framework/updates.py": "e92b282d0fb5691a043cd8131c2d0ab620a3e80f8b5200e58022c339da75d711",
+    "framework/config.py": "ea7c01f6a2f822024199fcc22cc3e371e57594a969666daa08c87dcc59b41044",
+    "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
+    "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+    "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+    "framework/recovery.py": "46e3426ac28988905a2ecebe728cb4a6515803c07fc56feb0dd08b4beebb5563",
+    "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
+    "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+    "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+    "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+    "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
+    "framework/decision.py": "d6663f573a03685941c06a75cae7685fb68195cbf8f5a733a759360fe601892b",
+    "framework/diagnosis/__init__.py": "f004baafbf88dcc623255d3adea5318dd1d5d65a9ad526d86fd0e2225586c4e4",
+    "framework/tracking/__init__.py": "e648cdf8e511a8c4725f6d732212d2660f49a4682bfd840aea08451b756bb942",
+    "framework/tracking/_worker.py": "bce9fa56d8f05ecab350e3689bb35c19773ad9aa283c42b6fc5ad5c6190a9b54",
+    "framework/validity/__init__.py": "9f3ed867db4d14e6d37a012a1dcbf661a4525dddd2b5880a67489cede076d572",
+    "framework/validity/lean_audit.py": "9d396ec4ff6a8472d7348a3893b006d1e64794355e1eada8e9f65ae9eb32a1eb",
+    "framework/quarto_bridge/__init__.py": "09c1830a16d651b14f6baf14a73143d8c0403b9d614c1540a46019eac9832af2",
+    "framework/quarto_bridge/_figure_job.py": "e2ed211aef594b2d2e3c9ee77527f8fa059507de8d50ba050314cb3b6030c951",
+    "framework/quarto_bridge/_delivery.py": "548024950a54b038bc34d431090c78a0518ac787eaec053c32ec0b5def2b9568",
+    "framework/verifiers/pointers.py": "d28fe077bbd34642eea88d8cf7f977deb376c13ad593ed0583d0c282875b8001",
+    "framework/verifiers/__init__.py": "8e8086c9ca734be2b002593c7b751a909e86d2edf4fef209b2f10fe9865dc78c",
+    "framework/verifiers/numerics.py": "a45240cb251abca05780e47b029aa769eddccf12053e83d834c2446befaa1243",
+    "framework/verifiers/stats.py": "23e42eb09698aee95425531f97443f7e9531048acf6ce8a8f71c6b032976bfd8",
+    "framework/verifiers/extract_s4.py": "df0ffaa4359127c20e6354529eb850ad6e5d2cbd3cd0be708b5f13107b800a8a",
+    "framework/verifiers/citations.py": "dafb09dc5233fb71408a8d62e7bc5365e41afa389e4710446719adbf86a54380",
+    "framework/verifiers/support.py": "8416c27e1c67c2da4983bd5043d40a7b00759b70c2032e31043589e42ee72aa8",
+    "framework/surrogate/__init__.py": "1fbb528b20f80f3bf28893aa1df1cdfb041217ce4122ffe74e3d1c98556e29ad",
+    "framework/surrogate/demo.py": "8e3104db0efd6fe84feb656711cbb1f22eb0ba53c7b59bddd831fae7886132b3",
+    "framework/gates/__init__.py": "c22dfe47eff927815d1a3e201070040a74b0f69f866b472a546ff1db5052a93e",
+    "framework/inference/__init__.py": "58a89874bd025e87defc40476b041c8e7296c375c97fd6048f1de8df62db8140",
+    "framework/inference/llama_cpp.py": "03fac820b5665dcf12c4e2749a0fe929b04f292f1bae86a3a7a97e6398fc7a30",
+    "framework/inference/gguf.py": "4cc04cd656bde30ba8679b33a41739c86e89a70e1c7046874a40fbc0864d1267",
+    "framework/reproduction/__init__.py": "3b722d0beab94990afec2de6f04408f3e520695e7f780d63c697592eca235071",
+    "framework/reproduction/_numeric.py": "5424d8d0c4fbafa4fc2472d0dc347ec541ffed34a6f3aaf3612e3b08f7e03a18",
+    "framework/numerical_programs/__init__.py": "eb59e849b6458789d07b5c0e46abaa317efc465b569a426c02205d6aa427748b",
+    "framework/numerical_programs/_compiler.py": "53d2b1e6a76a6dd93571408e74d0da2d8b50c34e3e82a4454f2722a9e503576b",
+    "framework/numerical_programs/_language.py": "7a7f773d34d837368136b911e7fa0a43970423ee7f1b5d01e43896b50a649373",
+    "framework/numerical_programs/_json.py": "efb83e3de30eb390cb13a4ff5b99db8e66383a46843c765615e5abe639cb1123"
+  },
+  "protocol_sha256_lf": {
+    "test_tracking_contract.py": "496deb4dd6261ba1fb5c1a4b085b00d3d859c9c945341658e619f05ec61ca6aa",
+    "test_tracking_dvc.py": "9320600d1908ab97c39bc9479f4e6009a054c3cdb66d214dbc5cfc5f0f3abb7f",
+    "test_tracking_protocol.py": "c8cf5de2052d6965dae9aec11fd20296231b9b0fd9487ccd662b6ad300442a8f"
+  },
+  "driver_sha256_lf": "f93a8743b688536e02202bcaa050321f8bd085121c0f14d221d95fb684659057",
+  "cases": [
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_constructor_preserves_ambient_tracking_store",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_two_runs_interleave_without_becoming_fluent_runs",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_metrics_target_passed_run_even_with_nested_fluent_run",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_ending_passed_run_does_not_end_ambient_run",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_another_tracker_does_not_redirect_existing_tracker",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_foreign_experiment_run_refused",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_convenience_uses_origin_without_creating_default_store",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_terminal_run_refuses_further_writes",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_reloaded_run_preserves_status_and_git_metadata",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_artifacts_and_tags_target_the_requested_run",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_actual_model_roundtrip_and_registry_preserve_ambient_run",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_invalid_metric_batch_does_not_partially_write[nan]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_invalid_metric_batch_does_not_partially_write[inf]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_invalid_metric_batch_does_not_partially_write[True]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_invalid_metric_batch_does_not_partially_write[0.5]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_foreign_store_run_refused_before_mutation",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_model_target_override_and_invalid_end_status_refused",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_detached_convenience_run_requires_explicit_binding",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_relative_uri_custom_project_model_and_name_roundtrip",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_run_record_remains_json_serializable",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_separate_trackers_cannot_write_after_concurrent_termination",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_invalid_configuration_does_not_create_store[enable_dvc-false]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_invalid_configuration_does_not_create_store[model_timeout_s-nan]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_invalid_configuration_does_not_create_store[tracking_lock_timeout_s-0]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_invalid_configuration_does_not_create_store[mlflow_uri-sqlite://]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_invalid_configuration_does_not_create_store[mlflow_uri-sqlite:///:memory:]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_invalid_configuration_does_not_create_store[mlflow_uri-sqlite+pysqlite:///:memory:]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_contract",
+      "case": "test_run_ownership_coordinates_actual_separate_process",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_dvc",
+      "case": "test_actual_registered_hash_and_content_addressed_url",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_dvc",
+      "case": "test_changed_data_rejected_even_when_stat_cache_would_look_unchanged",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_dvc",
+      "case": "test_remove_tracking_keeps_original_data",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_dvc",
+      "case": "test_directory_version_is_not_a_status_word",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_dvc",
+      "case": "test_outside_target_refused_before_command[../outside.csv]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_dvc",
+      "case": "test_outside_target_refused_before_command[outside1]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_dvc",
+      "case": "test_utf8_named_pipeline_stages_have_stable_list_contract",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_dvc",
+      "case": "test_dataset_artifact_matches_tracked_bytes_and_explicit_run",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_dvc",
+      "case": "test_replaced_metadata_refuses_upload[md5-00000000000000000000000000000000]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_dvc",
+      "case": "test_replaced_metadata_refuses_upload[path-another-dataset.txt]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_dvc",
+      "case": "test_replaced_metadata_refuses_upload[size-True]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_dvc",
+      "case": "test_duplicate_stage_refused_but_yaml_merge_preserved",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_protocol",
+      "case": "test_empty_or_unbound_worker_response_refused[None]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_protocol",
+      "case": "test_empty_or_unbound_worker_response_refused[payload1]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_protocol",
+      "case": "test_empty_or_unbound_worker_response_refused[payload2]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_protocol",
+      "case": "test_source_change_refuses_an_otherwise_successful_worker",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_protocol",
+      "case": "test_duplicate_yaml_refused_without_disabling_merges",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_protocol",
+      "case": "test_template_snapshot_and_utf8_atomic_roundtrip",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_protocol",
+      "case": "test_remote_tracking_locator_is_not_changed_into_a_local_path[databricks]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_protocol",
+      "case": "test_remote_tracking_locator_is_not_changed_into_a_local_path[databricks-uc]",
+      "accepted": true
+    },
+    {
+      "class": "protocol.test_tracking_protocol",
+      "case": "test_remote_tracking_locator_is_not_changed_into_a_local_path[https://tracking.example.invalid]",
+      "accepted": true
+    }
+  ],
+  "source_only_deselected": 2,
+  "dependencies": [
+    {
+      "name": "aiohappyeyeballs",
+      "version": "2.7.1",
+      "metadata_sha256_lf": "e68d1bf48aec9dcc2767343dedec25e12860085cba180e10bc3d3bdd031602ba",
+      "record_sha256_lf": "a007883ffd38971b15e3987fc5e3d72359aed78f10c0d6cb8755462fb0cf69c0"
+    },
+    {
+      "name": "aiohttp",
+      "version": "3.14.5",
+      "metadata_sha256_lf": "50b29a2268649f7ce5b22c0a41b60896d246fee58e2a74b468f66848e469834c",
+      "record_sha256_lf": "b8e53208751f8cc2770ece905b9d7b07db4104363de28efb515c3f4931a8682a"
+    },
+    {
+      "name": "aiohttp-retry",
+      "version": "2.9.1",
+      "metadata_sha256_lf": "355be725077a85e501445482f12d404794ed4ce0d4478266a18de0ac929f9308",
+      "record_sha256_lf": "250bff4f36f450308e0d3730a463ce652d77c563f89735dfbefe450b41bd8a13"
+    },
+    {
+      "name": "aiosignal",
+      "version": "1.4.0",
+      "metadata_sha256_lf": "09247ef1da8bc696728d47130e702e4307f6f7d101d6c485bff9f3a71ce7008d",
+      "record_sha256_lf": "ae83b967ebb0b6a06239aa7e552a6826d1697557dade413de0c1becd927527f3"
+    },
+    {
+      "name": "alembic",
+      "version": "1.20.1",
+      "metadata_sha256_lf": "a7251d864147d4676f916be5888c1a2252a4f1db87a70cdf1d9b1dfa322cbe4e",
+      "record_sha256_lf": "173bb4434be55f3da80e44aef1f7cb59a0dd200c62ea337fc55130afdf74a27f"
+    },
+    {
+      "name": "amqp",
+      "version": "5.4.1",
+      "metadata_sha256_lf": "706dad66e87741a38699dcdd0121432d8cafbfad1080bd35e6527aa65cdb89fa",
+      "record_sha256_lf": "06d3f24b7fd5febae9e5abfecd529f9e2735f8f88acafe3f350694244d281cc7"
+    },
+    {
+      "name": "annotated-doc",
+      "version": "0.0.5",
+      "metadata_sha256_lf": "8c24d70c5d9153d22123353a906042fd7603df2d15c2196290b0f8a962558c46",
+      "record_sha256_lf": "d0183be2a86b24c0b53c8c29be4be91f5efb42e587721c452bd3208dea5dbb2f"
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.8.0",
+      "metadata_sha256_lf": "614985b278f601b8ef863f82783b991cc3ada4b89f592eb71c7c48c5f2ef2298",
+      "record_sha256_lf": "32d25d8860ed8fb965af8c175f9f6d4579e6ab83de779f8fbd23b393e84fdbbb"
+    },
+    {
+      "name": "antlr4-python3-runtime",
+      "version": "4.9.3",
+      "metadata_sha256_lf": "bf325e5155318385a2fcc4680742da710bbadf13a3d1c0979a98b3487980f261",
+      "record_sha256_lf": "d8913654ca7910c1a3cf069e18653f13c239b626ec22b985600646403b1c1151"
+    },
+    {
+      "name": "anyio",
+      "version": "4.15.1",
+      "metadata_sha256_lf": "043aecb571af7189e8a6c528f5d8e32545f1b2cdfaaf761d51e6d5b67ea3ca81",
+      "record_sha256_lf": "a6d76bf9fd7090d84b32341bd775fd3781ae57cb1a82588715dffc15d0440b42"
+    },
+    {
+      "name": "appdirs",
+      "version": "1.4.4",
+      "metadata_sha256_lf": "9394d57d730d2861d37e9db09ba109293b86c0636ea104794ea4201fc8b01bc3",
+      "record_sha256_lf": "b726d877f3250bec10dd40e609ef0165c73542f1e11c19871ae71390fa7e8f48"
+    },
+    {
+      "name": "asyncssh",
+      "version": "2.24.1",
+      "metadata_sha256_lf": "93533c150cf2a78ccce7a29878dca63814cf436a0dc11b758f51dfd3c51681fe",
+      "record_sha256_lf": "8d245dec0ab2415eb8950ad28226065600557cfdb4e567697089a7d040f6926f"
+    },
+    {
+      "name": "atpublic",
+      "version": "9.0.0",
+      "metadata_sha256_lf": "5e87408297d97e675d396ef458ec480c5c86ba83a01dbf13855f14a4c515970d",
+      "record_sha256_lf": "089400189ae859a3d2fbca71bfaa817b15680634509a2727f15de54f5029dc38"
+    },
+    {
+      "name": "attrs",
+      "version": "26.1.0",
+      "metadata_sha256_lf": "4cd40e690f23bf37cbcad34efd6758e062df1df07c86833f7e3ce95bf1fa38cc",
+      "record_sha256_lf": "071534c04bc814d25033e64ee581691f69228019f6a53c621dff58c5c9c6ceec"
+    },
+    {
+      "name": "billiard",
+      "version": "4.3.1",
+      "metadata_sha256_lf": "2752eb8cc15af540aa749500902977d45ad6a07472ccaadfe6ca0212d141de72",
+      "record_sha256_lf": "b108b48a2585f4401b5fb9c9054e53b5450b104436b8fb0e6c8d1bc3d5566a98"
+    },
+    {
+      "name": "blinker",
+      "version": "1.9.0",
+      "metadata_sha256_lf": "b8846233cc238db1e40ad6c2c93bdcb54dfb200664d2411ee64c4095dd5dbf30",
+      "record_sha256_lf": "2f7cd51ea403010fd80cdcab7e4113707681e7085f8af65a1340129cd842d736"
+    },
+    {
+      "name": "cachetools",
+      "version": "7.2.5",
+      "metadata_sha256_lf": "bf0bb3489f093ab0740631ee4ec4d4e0df4de2e30032a1839adbc69eaa078541",
+      "record_sha256_lf": "18f289dde898e095e4e75ce871aab78c95d64e498af2c19456d1fbbc4be0e025"
+    },
+    {
+      "name": "celery",
+      "version": "5.6.3",
+      "metadata_sha256_lf": "a8d540ef32a8e271b8434d12e272f4ba8e439a224c0769d1c1e20f617021518e",
+      "record_sha256_lf": "c15cb51314e620da51da47fbebb241c1b79b06bd81ed2dc820ce83c84b8cbb33"
+    },
+    {
+      "name": "certifi",
+      "version": "2026.10.23",
+      "metadata_sha256_lf": "e463e38f7fe7da36a11e6d3fecc5dfa5b97be8c8022620400750d79ae7d842bc",
+      "record_sha256_lf": "69c39a43aac5972ec0730cadc7c74d5eaceb9c2e8a3c8083d992fc5ab4099aca"
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1",
+      "metadata_sha256_lf": "558bafb9093a8e790175d9ecff9688382981d744877dad86fd6770db0f4dc918",
+      "record_sha256_lf": "05c1fa7404eb6d4685dfe9d94d4d7a52828c55a65990d35eac98f02c926025f7"
+    },
+    {
+      "name": "charset-normalizer",
+      "version": "3.5.2",
+      "metadata_sha256_lf": "89ce6362bb7be88558f4be99a98f5d1b4da93d19cd0323e5ee0bac05cf883dfb",
+      "record_sha256_lf": "956ab3e7a63c966ae6f9876bbb8c075ab880c457fff6fdb086c5b71953554cea"
+    },
+    {
+      "name": "click",
+      "version": "8.3.3",
+      "metadata_sha256_lf": "fec8e14fbfd9298932b1ea9b589b5003c780715d8278325d70dad7ffdda94826",
+      "record_sha256_lf": "6f8835c57ceb46ff22657912dfa4380b5e31f175335c262eb4c668290d5df810"
+    },
+    {
+      "name": "click-didyoumean",
+      "version": "0.3.1",
+      "metadata_sha256_lf": "19838d4ca895af23289c19b67590694068d59d03ffb1eb101637ea2db7fd0275",
+      "record_sha256_lf": "2678783abd5a32282e9f73ceb65acb34af60e6fb8cbaacea047f41bfec81c224"
+    },
+    {
+      "name": "click-plugins",
+      "version": "1.1.1.2",
+      "metadata_sha256_lf": "c80a7c96f421277fd4e9db73a74cdf875f35aa7b58b484412ecfbf327e4a3c6c",
+      "record_sha256_lf": "9b59dbba60aaee9ed094f0cf61c5fa7a14e0bb60265367556c0007e37ce0cd63"
+    },
+    {
+      "name": "click-repl",
+      "version": "0.4.1",
+      "metadata_sha256_lf": "b141075a77ee744e505a63696bc91f4d0307c902cb796c865f82181b37e7e0d0",
+      "record_sha256_lf": "e3a5bab8f8af641d8b32cc8005d32020f61033506562bf49f951ba8a86fc1486"
+    },
+    {
+      "name": "cloudpickle",
+      "version": "3.1.2",
+      "metadata_sha256_lf": "3d0263bfe9ee4f23b244bdcaff73acbe7a1957ebf82743b6ae42693adc48d721",
+      "record_sha256_lf": "58abc8a0e093e739283a14d6720cbbc2cb06f8738117d0882dc1b6db3451cb9a"
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6",
+      "metadata_sha256_lf": "7baed29eb50c3b29bdb33ff84e3177bf1bc05784f7685ecdcaa4471c7dd810cc",
+      "record_sha256_lf": "1d43c2e24fdd444914557dedb7d7c463a2a67aae22a396aa6d93b81972b9da87"
+    },
+    {
+      "name": "configobj",
+      "version": "5.0.9",
+      "metadata_sha256_lf": "10c1ebbe69c3b8805b61ab9ddc8aa4eb93ccf929f0db8d5959f0782c6e3bf9a5",
+      "record_sha256_lf": "98c355f4d9d8d536428eeb3ee4e4a7088d5828e3fbe2d75072b233f0b3e65614"
+    },
+    {
+      "name": "contourpy",
+      "version": "1.4.0",
+      "metadata_sha256_lf": "40450acd747b288a5db999c435e1e921ffee0a38c7884a80cd46934c8004568f",
+      "record_sha256_lf": "f84f3ba560b3deb69bfc272fd81a363681824727500dcaa757784841a7bb2a54"
+    },
+    {
+      "name": "coverage",
+      "version": "7.17.0",
+      "metadata_sha256_lf": "463fb0250232412b60ca9a95798df8e50ae2814fe7052760d7a33e4a8a9ad4db",
+      "record_sha256_lf": "ef179f6ca083bd0fb72acbd4468acd8016aad708f0f8e7537689430f26a65e29"
+    },
+    {
+      "name": "cryptography",
+      "version": "50.0.2",
+      "metadata_sha256_lf": "047cfc71226409de4318b360aef15c63a2adf609731e3dcf7fe932f14ea042ee",
+      "record_sha256_lf": "5754233035091108fbe76b2bd94dfc9ea98e3057b5b536f9b4689e27614f132e"
+    },
+    {
+      "name": "cycler",
+      "version": "0.12.1",
+      "metadata_sha256_lf": "23289e19b76f1e01394227696e6af2b6cd1ce79e89731209bf9195148b18ed36",
+      "record_sha256_lf": "56f2db789b595ec1db971ca643c361237d6fe316fc74b34afe117e0ac791347a"
+    },
+    {
+      "name": "databricks-sdk",
+      "version": "0.157.0",
+      "metadata_sha256_lf": "bc0e5d975253da9b1caa89af7951bd7dd99f356ce442d069bd0c518dc8210fb3",
+      "record_sha256_lf": "fb4425c5b1698c68c4a73a58e4c6aa322335822eacd82376b29d5ed1314456dd"
+    },
+    {
+      "name": "dictdiffer",
+      "version": "0.10.0",
+      "metadata_sha256_lf": "9cdb997b4e2a9d1e02d42fe654ff6897d8952898a2a5233f36ad2c285decb814",
+      "record_sha256_lf": "88e683641882aaeb0ebfa02344d5ff2853f620a4c797bd87d683851b2a55c8a7"
+    },
+    {
+      "name": "diskcache",
+      "version": "5.6.3",
+      "metadata_sha256_lf": "6fc70cff43a3c6666531e6c268e90059fb93ae58aed708163c0ceecab24dbaef",
+      "record_sha256_lf": "3c533fdb4314f88959f9edb09a9a4d21af153031b2d6bcd603e3fd7c03351042"
+    },
+    {
+      "name": "distro",
+      "version": "1.9.0",
+      "metadata_sha256_lf": "31632ab2de5591131091b3397bdcdf797718579d85a75186f06839dd0c09e81d",
+      "record_sha256_lf": "08fec44e2f961295583d7feb2e877bd9c0bff72f07432104fbfb597cba96226b"
+    },
+    {
+      "name": "docker",
+      "version": "7.2.0",
+      "metadata_sha256_lf": "8f7ef7a09bf45e724742b4f3fafd448c168eb151ed575ac93a1215c8bf2bd9e6",
+      "record_sha256_lf": "d902603966ddd05bab8a2131de440942d0c63a8d6eadd401f042269c1f65e379"
+    },
+    {
+      "name": "dpath",
+      "version": "2.2.0",
+      "metadata_sha256_lf": "89b13be0f2ebdacf3e272374de70f3196cb6cbb2d58fed4a37964599928f673f",
+      "record_sha256_lf": "521ed2ca928b644ab136c104bfda1025a04c6cc6d1c024d9dc1025404012eaa1"
+    },
+    {
+      "name": "dulwich",
+      "version": "1.2.19",
+      "metadata_sha256_lf": "16df8d722c7a0256502fc9f00bb34b2a53bc6cf61e987e7bd0dd797894b73c1f",
+      "record_sha256_lf": "d6e6030a11efe46e99c7cce20e4eda342c13dfc3c87ac24442cde66a591d23c2"
+    },
+    {
+      "name": "dvc",
+      "version": "3.67.1",
+      "metadata_sha256_lf": "15f19daba54bc385f141493ca8f56426877ad9b26cc8e07fea95b5d2177cb001",
+      "record_sha256_lf": "22256113dbb06a5c450daa7f673ac799ac5bba048d1be9cefa5a0c974ff9d98a"
+    },
+    {
+      "name": "dvc-data",
+      "version": "3.18.3",
+      "metadata_sha256_lf": "ed20266c7e5331054608fe95bc3b193dce9815563c03b0b9bfbbcbd9d41dc199",
+      "record_sha256_lf": "63f2d3d9098dac96d01a5bdb8a936b321df5e696691a5c82d9b9248bef72d844"
+    },
+    {
+      "name": "dvc-http",
+      "version": "2.32.0",
+      "metadata_sha256_lf": "c130e7976b0371a382ca70d090b227c55e3ab8946c1c1282e62e43527961fb75",
+      "record_sha256_lf": "a5cc24f65c900c478043c3d9a1193604f2b439ec8fb74798f85364df96cd24ac"
+    },
+    {
+      "name": "dvc-objects",
+      "version": "5.2.0",
+      "metadata_sha256_lf": "371efc364cd453fe108941bc1e5200e8525ff1d41a32c1ca2010b932a717ca84",
+      "record_sha256_lf": "0bf38c5a56e1cae87c999f7a7c39dbfc651626ea37accb1a1948eb3d2c60a1fa"
+    },
+    {
+      "name": "dvc-render",
+      "version": "1.0.2",
+      "metadata_sha256_lf": "70b26cef25fb120e22a8200a310b737c214df9f3f4acb6be6f8a87b82f16613c",
+      "record_sha256_lf": "7d7ac99fca94db2c5b1496e844e053393c560a063594a59f0796d40f5988015c"
+    },
+    {
+      "name": "dvc-studio-client",
+      "version": "0.23.0",
+      "metadata_sha256_lf": "c8bcb27387ba8fb0ff9c08c3bcdd41545a12b54be6323e32a920309571b25206",
+      "record_sha256_lf": "dbf9eb0685cc269cf7afb681eca9bf3e9612c6b73ebd2b3d059882d12afdeec5"
+    },
+    {
+      "name": "dvc-task",
+      "version": "0.40.2",
+      "metadata_sha256_lf": "82d03aca2ebf8ce489012882a0517264d3650133eca8abd07014d4c4f9af5dfe",
+      "record_sha256_lf": "eafa99ec968fab8f93dcdef3585ddb754acc5b7d7e0ab6724c95300c5cfde21a"
+    },
+    {
+      "name": "eidos",
+      "version": "0.4.12",
+      "metadata_sha256_lf": "e7468f41fd8af84526677261c808fff2f2b3d855c2fa619981832f14ff6e5418",
+      "record_sha256_lf": "7ec0368c9a1b5276b5034448638b65892e79655d93481603df9cf043268e271a"
+    },
+    {
+      "name": "entrypoints",
+      "version": "0.4.2",
+      "metadata_sha256_lf": "b16911e7c8d0ff444cef937517d00368a746b9a1d1898e04199af55e438f2522",
+      "record_sha256_lf": "95c16c715c25d6d34cc7ed6d17fc51cd2b4c48b6b639e36dd38f2fa31041dd88"
+    },
+    {
+      "name": "fastapi",
+      "version": "0.162.0",
+      "metadata_sha256_lf": "71eccf0418f121959670e72e343ec964105ea0190783e5048eef970a539c4e63",
+      "record_sha256_lf": "704789de8669e5ed17d15a6fe0e906e6ab2cb354e8bd24fc5c48e489fac27441"
+    },
+    {
+      "name": "filelock",
+      "version": "4.2.4",
+      "metadata_sha256_lf": "d99c0f72a7ab84c924b734018a28a5001505fe0f96280c4462b864313edddb50",
+      "record_sha256_lf": "52a66bdce18a628615237b6a25db1c4e81eb153ac08c401b76fb22cdfdfa225d"
+    },
+    {
+      "name": "flask",
+      "version": "3.1.3",
+      "metadata_sha256_lf": "aa6760ed6f545704474d70733e4a63a7f1481e376973edc896a13d02a7224c7c",
+      "record_sha256_lf": "39f5c7802750d8ba966abd7a3c8d7cda87254a6fbb5ccb6de2e5244897fbc08a"
+    },
+    {
+      "name": "flask-cors",
+      "version": "6.0.5",
+      "metadata_sha256_lf": "56749f8570ce500214425f2f94787be35fad6376e1943cbb53d732fc611123ae",
+      "record_sha256_lf": "66fb40b6552755a40fce1a51496e92dcbb7d4ff4e79f76cf9eda05debd77d08a"
+    },
+    {
+      "name": "flatten-dict",
+      "version": "0.5.0",
+      "metadata_sha256_lf": "fd5c669c44e1085bfcae71f21bac256ce91f097efb6186bfeed17a92926d8625",
+      "record_sha256_lf": "0701e0935d4ff06d408749266ed925a4982719c5f5d9132020226320d0215353"
+    },
+    {
+      "name": "flufl-lock",
+      "version": "9.2.0",
+      "metadata_sha256_lf": "f0cf522c69d293cb71206c431a36e604559aead29d0fad29d10cb5a03b087b2a",
+      "record_sha256_lf": "f1ae543ef19f86a5d534a825acb468a93ffd0837cde03f605736f3ccbdd4f36a"
+    },
+    {
+      "name": "fonttools",
+      "version": "4.67.0",
+      "metadata_sha256_lf": "33dec14bec601b457a07a6550086cb6725b5aaedc3a881f9fa7a84d3841ddcfe",
+      "record_sha256_lf": "8cf65fa829da52c14342710c1a3a82db87e5dfa95d45de2b9876917502204889"
+    },
+    {
+      "name": "frozenlist",
+      "version": "1.8.0",
+      "metadata_sha256_lf": "946c22dc9f7e2c76f2d698f00a4306dbe49a820e2b3f1a0e22fe5286cbec35f1",
+      "record_sha256_lf": "aa09b9c8cb2145ced563846cf5b3833ab8c22cee138303d4e4669c3b98e22e58"
+    },
+    {
+      "name": "fsspec",
+      "version": "2026.6.0",
+      "metadata_sha256_lf": "20c85c024a69a059237c3a7985d381a3745017ae1d634c554b0c5901dde81095",
+      "record_sha256_lf": "84ba4a606ba2373047c55ddc281eb7872705764709334929a06b74e509e367df"
+    },
+    {
+      "name": "funcy",
+      "version": "2.1",
+      "metadata_sha256_lf": "bb0ca35d720ffbfa5f2ac7af8288081d4256e8a05b05d5c83a74280eb78357ad",
+      "record_sha256_lf": "c81522c223bbf9e25b9f7e32f9103d7d728dbb16ca5fd1c9e38de9ef55fb85f6"
+    },
+    {
+      "name": "gitdb",
+      "version": "4.0.12",
+      "metadata_sha256_lf": "9670d2dc866039d6b7c91f52cd81c7f224cd7467f7685c7c29e6c4691d1bf3d9",
+      "record_sha256_lf": "f390fc38753bcf416c7c5cbd274d0a7443fe58df6a6c65cbecf2f69755ebdebc"
+    },
+    {
+      "name": "gitpython",
+      "version": "3.2.1",
+      "metadata_sha256_lf": "c6c9f42caa1546c24692c3dd9fb3f774208f629a97395351a0fbd54684744536",
+      "record_sha256_lf": "786a55e295bc679f66349f93247c0e7ac82f58e025d7a4ea17e6dbb8144f7ed6"
+    },
+    {
+      "name": "google-auth",
+      "version": "2.62.0",
+      "metadata_sha256_lf": "7f89925f9bab6feb1a5bd97b19902fffb9f0ad00aa24b24423b9163ae6655c2e",
+      "record_sha256_lf": "79a8d1ca205adb4235815d6b640c5ddfa7561e2065759715b46635ad1102bd37"
+    },
+    {
+      "name": "grandalf",
+      "version": "0.8",
+      "metadata_sha256_lf": "d43a45e7993d8c109bb253e305029781fcf0b158d21543b168e6e1ef22b2a46e",
+      "record_sha256_lf": "4d6346d396aa1b25094961b31ada5d2b9285c56ac17fcbbffd9f0f5283289e76"
+    },
+    {
+      "name": "graphene",
+      "version": "3.4.3",
+      "metadata_sha256_lf": "ddd8d4e90c4321e6c07b3937c93acad3fab876b293c5fd20af7e65c2874a6e80",
+      "record_sha256_lf": "1a24aa5c9c6a5bb6100fbdff88fc1f759de7a90822f7789a823729722a58065a"
+    },
+    {
+      "name": "graphql-core",
+      "version": "3.2.13",
+      "metadata_sha256_lf": "8016287adf1f5c4a146b5eae2629ecd194de38c5137168b4714c66902e674657",
+      "record_sha256_lf": "def0d902be3654d3f34fc5d31476dec3ae73a84123840a354d1013e4089459c1"
+    },
+    {
+      "name": "graphql-relay",
+      "version": "3.2.0",
+      "metadata_sha256_lf": "3027b56f7a7988117635ba48fc4815b7026e8b13a1963bcd992f2584ba1ff022",
+      "record_sha256_lf": "a6d9fa36f7edadf1990f8177705bb04debc23ceec3510e9246aafdcdc3e86293"
+    },
+    {
+      "name": "gto",
+      "version": "1.10.1",
+      "metadata_sha256_lf": "b016b3df2092b460bc3c7cf0ace07965e8ba986b077e4d73f89ba1b7b9a9beb1",
+      "record_sha256_lf": "e77106b882288c96b59d0e15a3313ed8196c949c39f15526ceb3e2fbc6956de5"
+    },
+    {
+      "name": "gunicorn",
+      "version": "26.2.0",
+      "metadata_sha256_lf": "c415031aa66f1c111b97c5d410a05e570649a3226cb349c5ef0e18ebb9ac16c5",
+      "record_sha256_lf": "c028630da18479aebf1e74d6190671bf6c1e80a38893cfe40cbaa3494aca4ed8"
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0",
+      "metadata_sha256_lf": "28f326098ac09fcba79b8f180f96087c841fe2456215cb7b872a9c7d5cd19d64",
+      "record_sha256_lf": "fa83fcec506310ef27455d776ed1b5a86b14746f2c48bc7fd29f41d2320630ea"
+    },
+    {
+      "name": "huey",
+      "version": "3.5.3",
+      "metadata_sha256_lf": "3ace6ad5738487dd0534880ece60ced8b8817936d6ddfa95f16e9601d86be33a",
+      "record_sha256_lf": "e1049a806b02f75e04cb55672fcefe92d5afda3e316574db8cfde12c8ccd8af2"
+    },
+    {
+      "name": "hydra-core",
+      "version": "1.3.8",
+      "metadata_sha256_lf": "298c9c480f3227b2e8d2535fa4146f5cc84455e33bcfefa081bb88e7cce5ef52",
+      "record_sha256_lf": "3f8e86355efc847e338ce1f5c7ff3efcc1dbb22a80c5b8ee400f0cbe6bbda30b"
+    },
+    {
+      "name": "idna",
+      "version": "3.20",
+      "metadata_sha256_lf": "dbd8c14c1e4ca1e0c9824a6dbc7cbbf78884f38eb52d91148cd3025f671e4b85",
+      "record_sha256_lf": "f6eb32f5de409d4b9efb54fb0f44ccc47db730c05af64b20cc6090f50482edaa"
+    },
+    {
+      "name": "importlib-metadata",
+      "version": "9.1.0",
+      "metadata_sha256_lf": "9b09ee204dfe77ce2380dff485f5a7cc342cac342bc7944bc6770aef26821b3c",
+      "record_sha256_lf": "e4bf9a60b58e75ed1e7b9f7d9fea89d019a053ebd980b161ca47a899d444e9c9"
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.1",
+      "metadata_sha256_lf": "47c2c35d936f5c649d8074c6464719a42966a67b5cebad01e3e5784cf090cfb6",
+      "record_sha256_lf": "719ff94002bb5d256d32d1169d069851c03e0d770a973a70dd39b4873d0425f5"
+    },
+    {
+      "name": "iterative-telemetry",
+      "version": "0.0.10",
+      "metadata_sha256_lf": "3764ea73225ba3e2bed41e0bf23b17962981a3ed6f9a8091cedc0da03a2b75c9",
+      "record_sha256_lf": "a179dfd6e308430d715fb4bb97bb6194d81b496e5c6392dadc82064bdc17c073"
+    },
+    {
+      "name": "itsdangerous",
+      "version": "2.2.0",
+      "metadata_sha256_lf": "d2b934fb56708a1b94e439f0255c0f5a8108e3258ec827b18a1dc9c991db9611",
+      "record_sha256_lf": "7099a8d34454ef4f4d1ae5df8e9ba4fee6b80b60cde272490d47c75baba5da78"
+    },
+    {
+      "name": "jinja2",
+      "version": "3.1.6",
+      "metadata_sha256_lf": "68c5548fb67c4132a13898d9b31ec50c6bea2abdd915d921f214355c3a6499c8",
+      "record_sha256_lf": "1addd73160817f42334fdcf62e6a904e575c70f085a45f1aad07e1acf58db763"
+    },
+    {
+      "name": "joblib",
+      "version": "1.6.0",
+      "metadata_sha256_lf": "c5fd6509906c5795fd6724d97bc1709d1f266b78aff92c0156d6cf5ad7c045e3",
+      "record_sha256_lf": "bd9e92f17b6b19106f3e25c47808e20ce8f4ab7c1dcdd7a13bc118ac1267bfcc"
+    },
+    {
+      "name": "kiwisolver",
+      "version": "1.5.1",
+      "metadata_sha256_lf": "f07b7b6c0c9c2a624c8a31f931e16712f2cf3490e7dfd51643d68e9d42d4b2c9",
+      "record_sha256_lf": "6217431f6f93805167423ae1c030452e098f80d5f64013dd71d3cca646086fcb"
+    },
+    {
+      "name": "kombu",
+      "version": "5.6.2",
+      "metadata_sha256_lf": "31e8fed35c0aa0b216085d395be1c8b328bb053a1fef39818394edf5ee34031b",
+      "record_sha256_lf": "511cc88bbb5718ca83c450db2beecf6eef5e9e73ddc64b731c096b332ac64d67"
+    },
+    {
+      "name": "mako",
+      "version": "1.4.3",
+      "metadata_sha256_lf": "39ea65f21e706265428ea6f2925520f419a10f0113a59318192ed38175d8838b",
+      "record_sha256_lf": "f053d91e08efcf049fdf7a6def3147932d83d0dde5305d4910315b073b940f14"
+    },
+    {
+      "name": "markdown-it-py",
+      "version": "4.2.0",
+      "metadata_sha256_lf": "72c36ff516755443b1ecb61e17b2567a990230b49a504b0eb0c42d5f82448a9c",
+      "record_sha256_lf": "b77710de542ebe757b2b3b845805b60b0833ce495f4f0f9e41a84e0f9b075d99"
+    },
+    {
+      "name": "markupsafe",
+      "version": "3.0.4",
+      "metadata_sha256_lf": "66767d76388ece15d49d50dafb655891ef5d868715e7128e7f7d737a70b353c4",
+      "record_sha256_lf": "02703d6e134e1e24e64dced626ea59326510758cb8c417f55889bac8557535a1"
+    },
+    {
+      "name": "matplotlib",
+      "version": "3.11.2",
+      "metadata_sha256_lf": "e5f532226d1025af2dd15ff951df27391f66d46403b8244ea61e6b8eb3e4d806",
+      "record_sha256_lf": "6ca0a6c950f80b667ac0db67ccd0bae9e08529f4e6529915656bf3bc82faa1a6"
+    },
+    {
+      "name": "mdurl",
+      "version": "0.1.2",
+      "metadata_sha256_lf": "b53b29d48f499367053fda3c81e7ce27d2558380ebbf83e66023b02eb7ddd25d",
+      "record_sha256_lf": "737c5e7bdcbefcffd7dfa80fd3a59e9600c74a570880a29e926c4bc9603d32b8"
+    },
+    {
+      "name": "mlflow",
+      "version": "3.17.2",
+      "metadata_sha256_lf": "0d922981faee4de01a5982fe977776c3f61c5c6d574d3258b2b57782f4f0c4c5",
+      "record_sha256_lf": "924ac85b3d4f8ad9278cc8c283cc8772ecab862180bff151b997bac696035ce7"
+    },
+    {
+      "name": "mlflow-skinny",
+      "version": "3.17.2",
+      "metadata_sha256_lf": "e9fb9b23e51670afbad21e027db32db0dc66214448426f10a85a52a63d2c5cfa",
+      "record_sha256_lf": "0919abbe67c1f4a79ced7ab6a16a16089dd78a6b1d163a6aaf1517d97a5762af"
+    },
+    {
+      "name": "mlflow-tracing",
+      "version": "3.17.2",
+      "metadata_sha256_lf": "9763e119faf5680f562179b30ef59ca800f7aa5ff97b85e025b756b0ebfb2f05",
+      "record_sha256_lf": "e57f675d919799b428cb04ca2eea4f881915f2f33307f15b08ccf28dd3e13eb9"
+    },
+    {
+      "name": "multidict",
+      "version": "7.2.1",
+      "metadata_sha256_lf": "679ab105e4019e3f8923f30b19ea5cbf358e21d8a1832ea3f2b6755112ac9276",
+      "record_sha256_lf": "bb7024df8c211c8db8e4680f08fea8ea710cbe52586dd140b52ff99f29a3dda3"
+    },
+    {
+      "name": "narwhals",
+      "version": "2.27.1",
+      "metadata_sha256_lf": "5962ef236f36fe34aff21a837a0698386dcb1f0de54462aa18b73698e6ef1a4f",
+      "record_sha256_lf": "de0042901b3c941827f412834fac3f572108ee9a857d7e5a4f3c7ee12c282863"
+    },
+    {
+      "name": "networkx",
+      "version": "3.7",
+      "metadata_sha256_lf": "ffcf42a343af6ffc54ff9cc4c09cf9638cd73b131370f395abd11b630186c90c",
+      "record_sha256_lf": "8baed0c3230e96a48562cb8b2c205362e23ac79168c28de3b204184d598164e2"
+    },
+    {
+      "name": "numpy",
+      "version": "2.5.4",
+      "metadata_sha256_lf": "e2b909d6a37d76c2bc130f528d7fed0c517322bce16dc7846b6a6df30e200403",
+      "record_sha256_lf": "c9b78401d0ff9e5670f2bdc09c8dc99354383a84e8f243e03988930f3e3b5a6c"
+    },
+    {
+      "name": "omegaconf",
+      "version": "2.3.1",
+      "metadata_sha256_lf": "24dc07ea1b801810c63c386cc47376727a774cce4493bfddf6454fe8335eb84e",
+      "record_sha256_lf": "ae3f2937b61c23209dc935052322c73d83567d03c602de91639c54348d2db0d1"
+    },
+    {
+      "name": "opentelemetry-api",
+      "version": "1.45.1",
+      "metadata_sha256_lf": "5bc71e90cb421be92a43bf5ad5b0f25dccfa2a24ddceaa2877779879962a4c9e",
+      "record_sha256_lf": "2cb1a6ef68670da89d5fff287dcf74de52124b96ee1e1b2c55628d79cee08fa5"
+    },
+    {
+      "name": "opentelemetry-proto",
+      "version": "1.45.1",
+      "metadata_sha256_lf": "fb0c27d4250fd7f73926884d7788c3cdb8577a1c3485e3f73ebbd23f5ac6d30a",
+      "record_sha256_lf": "f9a89083230c77c0bf49aaef0c81800cd89cbe6d5bc72200cc8acfa216331aa2"
+    },
+    {
+      "name": "opentelemetry-sdk",
+      "version": "1.45.1",
+      "metadata_sha256_lf": "0a353d0fa633a7ece2b51f6f2dd3f64f75563d0d8bc8716480489fc2f9476e34",
+      "record_sha256_lf": "5325df189661361c28ecb2bcc64b0375ea7ab6f47c63090722d8ca09e2066b4e"
+    },
+    {
+      "name": "opentelemetry-semantic-conventions",
+      "version": "0.66b1",
+      "metadata_sha256_lf": "0b21fb9e6e2c2c79b61c110c3235757606fc2d2d11eaa22840f2f66794efd61c",
+      "record_sha256_lf": "7648d517a2d1b5d05dad75a99865c2f41e9ca43422aba77506e5d833d08e9ba6"
+    },
+    {
+      "name": "orjson",
+      "version": "3.13.0",
+      "metadata_sha256_lf": "4b64a33cb3c47299ae9afe9919c67fb5159e89d086857a4fe74c727044c98612",
+      "record_sha256_lf": "562dc7cf03e8d5f88fd2fa5db0f4da0542d76cb5e26e85d217035b4ee12d31b0"
+    },
+    {
+      "name": "packaging",
+      "version": "26.3",
+      "metadata_sha256_lf": "70fdb89fc4d4a9a043bf7372b8972bcc883fddff34ab55e9cf80d73875384763",
+      "record_sha256_lf": "5de8ea71c96d768936032ff40fee8788b9df2907d23c959e0635c04f3eeafab1"
+    },
+    {
+      "name": "pandas",
+      "version": "3.1.0",
+      "metadata_sha256_lf": "b2b43910a5ef734a08be961df9c484f4664ad9ec2fa5a08294d0edfa08bcdd4b",
+      "record_sha256_lf": "bfec112335956348195732568af0aa4e3490356b92b7ef53321d3ff201db308c"
+    },
+    {
+      "name": "pathspec",
+      "version": "1.1.1",
+      "metadata_sha256_lf": "68de3f158b6592f086e78754c962092f32a761944ab66a660c0d62ad79c4b69b",
+      "record_sha256_lf": "9068327ffc401be95ada820bda419ae6fb1a29b288e34bd17658cfb188c5982a"
+    },
+    {
+      "name": "pillow",
+      "version": "13.0.0",
+      "metadata_sha256_lf": "dba7fdfe24e302f46bae562f55d66cc367c0618abae9894a1ebec93dc8f0e511",
+      "record_sha256_lf": "8bcb594e3b3b8cd1c41272cae1aead58aef13d374635cea89466b1aa6f17e991"
+    },
+    {
+      "name": "pip",
+      "version": "25.0.1",
+      "metadata_sha256_lf": "4fa7318cf30f979db7cec45c12cbbc2b4f88a15f12eefbf59a6291d0a03af926",
+      "record_sha256_lf": "3bb8d662710d532d24ebab31633b218a41551127951c569e6eeb8f6636ee5d01"
+    },
+    {
+      "name": "platformdirs",
+      "version": "4.13.5",
+      "metadata_sha256_lf": "b42a0ee84bde8921b95c6c1e84e7675d34e67c5a61170ebcf7b44e394b64a768",
+      "record_sha256_lf": "34f45fcfa923ab44b73abae3514a655de2d2442dfa112ad03e604e57c3e02a56"
+    },
+    {
+      "name": "pluggy",
+      "version": "1.7.0",
+      "metadata_sha256_lf": "20ac8237e37f1d6e7e75500cd663015177ba80c1a1a595ff6bae18a539ff8a2c",
+      "record_sha256_lf": "c73214eaed1cbfdf1d8aaa151c957038a754e81c6a4cee2d6a9e3789e65dd578"
+    },
+    {
+      "name": "prettytable",
+      "version": "3.18.0",
+      "metadata_sha256_lf": "271a5357524f01c8ce05af4ecd0d9fb8ea969e774f80aa2dcaa1d39005255558",
+      "record_sha256_lf": "a9dbb531d3f5866d1e8732c510ef9009535c6386601a5cca1b3306dfaef960f6"
+    },
+    {
+      "name": "prompt-toolkit",
+      "version": "3.0.53",
+      "metadata_sha256_lf": "d04994e4401b88abf884ca54fb3b85e50a8b4fb1fde1ed7eb3ece9d8bf5459a9",
+      "record_sha256_lf": "b92bd01e475375adf599c170e4a77c235cd9f3b19346595057a3c3679ffe7bd1"
+    },
+    {
+      "name": "propcache",
+      "version": "0.5.4",
+      "metadata_sha256_lf": "6ed3bac0ad43050ceaf8bd09878ba3d673c94c4da0d4498f903f86c36cc6fb57",
+      "record_sha256_lf": "94c442a5e79c84730f0c3bcc7a603a8250e63a918c5224c2ed7af8f416186b56"
+    },
+    {
+      "name": "protobuf",
+      "version": "7.36.2",
+      "metadata_sha256_lf": "445916389cc3a87d5f815d763192372a17a221339d474cb661523157bf07d61c",
+      "record_sha256_lf": "d398ae03862eab49c2ac744b9a44ed14521a31b2d1789baa45504028780f47aa"
+    },
+    {
+      "name": "psutil",
+      "version": "7.2.2",
+      "metadata_sha256_lf": "525f8ba78523cf7bc3759d62a105e7c57fd679ea702402b9449fb0746aa0217f",
+      "record_sha256_lf": "9c132f7c6bb8f3074284fd64e67c6d3a9bd9e4e751882b8ba48a0c82edeaac24"
+    },
+    {
+      "name": "pyarrow",
+      "version": "25.0.1",
+      "metadata_sha256_lf": "12ed8d0988a6f7153fec923ee47b7fc1d6134463a86b1b89fa36f24c250163ff",
+      "record_sha256_lf": "652681e5af12ef81c485946ab7cb703ad75e6de23e07c9eb98dc62f1d37aa632"
+    },
+    {
+      "name": "pyasn1",
+      "version": "0.6.4",
+      "metadata_sha256_lf": "a092d99fad1e3744d6aa26eef2598e8ee2343ea403137ca73d06dccef19d70e2",
+      "record_sha256_lf": "40dda389d2719f29f690fc708b9502bce565575396ec505c0a84a79ae0f79f02"
+    },
+    {
+      "name": "pyasn1-modules",
+      "version": "0.4.2",
+      "metadata_sha256_lf": "162666d75297dfcdd0116cbeab134d78fab808b8a66bfa5c1d74832d9b754771",
+      "record_sha256_lf": "47c4d530a98bd8327c0991aaf7c5979dc0516e40a02d1c6ed6218bf6c76b9221"
+    },
+    {
+      "name": "pycparser",
+      "version": "3.12",
+      "metadata_sha256_lf": "ad8db5fe2b0e0a3b0e8419fe5041b80be92470a40b06bd9c1462a0a8bb637c92",
+      "record_sha256_lf": "db66bc80384e6fa1411c81531d5acd40567fbe161774ca6718379052e5b501c0"
+    },
+    {
+      "name": "pydantic",
+      "version": "2.14.1",
+      "metadata_sha256_lf": "4d4c8e8d5e6a27d5208f0d7949f25628e6747133034969d4d1399b1ad5394036",
+      "record_sha256_lf": "0a773819f5bdbf0bd9959ae2b05772d2beab57a19d91d8fb63aa05b043fcbafe"
+    },
+    {
+      "name": "pydantic-core",
+      "version": "2.50.1",
+      "metadata_sha256_lf": "ae6817764b603fa2300cd31b9566ecc33476df46163c4150fffc353121a166f2",
+      "record_sha256_lf": "56ff3f46c4480a3255d61b6d23f80e1c0ecef19267a9bd2379c65c3f0a5e810b"
+    },
+    {
+      "name": "pydantic-settings",
+      "version": "2.16.1",
+      "metadata_sha256_lf": "893e79ff20ee1cfea0e778956505d65be9b0555c601a6e4ebb513f1ee707cb1c",
+      "record_sha256_lf": "95254933b590dacd4d6358d149b35f0553386bbc198b7f88fb7d1bdd424e32f8"
+    },
+    {
+      "name": "pydot",
+      "version": "4.0.1",
+      "metadata_sha256_lf": "ccff72ac79446d01743370f6be3b3e4d656e96b5fa0bfff57af8fc30968a4191",
+      "record_sha256_lf": "77171cf2a59caa7fd058c09c2d27c9ca6bdb832fcf92fa61c00b925bc142dc9f"
+    },
+    {
+      "name": "pygit2",
+      "version": "1.20.1",
+      "metadata_sha256_lf": "6181381e3131dfbec70a7edfa7e491339259b5190eecb12f54a088e27762627e",
+      "record_sha256_lf": "2c791b134962181570c4897b21c6328e3aa7bf742a6173e066fc44ecb194526c"
+    },
+    {
+      "name": "pygments",
+      "version": "2.21.0",
+      "metadata_sha256_lf": "1dde075570136774c706bf0009183a793fe0ee262e4a5590cc6eff8453eedd43",
+      "record_sha256_lf": "91466271abf4f0db62b5ac570398468e09491dee84439b53ad4c88c5886d1b17"
+    },
+    {
+      "name": "pygtrie",
+      "version": "2.6.2",
+      "metadata_sha256_lf": "56bf61715ef78cabdd9a37ad12549aca13174a86da3131258a6d36e6b79f712a",
+      "record_sha256_lf": "fa3b84ecde996dbda9c0122a8d1de43cc90cf2a3f5f860e440ec5a151b33b19c"
+    },
+    {
+      "name": "pyparsing",
+      "version": "3.3.3",
+      "metadata_sha256_lf": "f2ca34052d720622d300023472ef8ae94fe5b57d69acbb28a8667f6dd0e13497",
+      "record_sha256_lf": "e47fdd5fa35eee627c872b540fde5a72267ff3c04bc7ef98d249fb46dce79ac0"
+    },
+    {
+      "name": "pytest",
+      "version": "9.1.1",
+      "metadata_sha256_lf": "c5d032518012789cabc870d46589aca3aeda36cf9fa4399ee88bda3d10438451",
+      "record_sha256_lf": "8182dbce4db99ef4c7a52fcd80a9aef6a57140af9e551acfa56349185487762d"
+    },
+    {
+      "name": "python-dateutil",
+      "version": "2.9.0.post0",
+      "metadata_sha256_lf": "a9d436da322be808332f98d88325998e87cb693a678a9969feb4cfad729a6e93",
+      "record_sha256_lf": "485473d3f6ef7760608ce10f98394283bdf165e76f2016289dc9e116996d660b"
+    },
+    {
+      "name": "python-dotenv",
+      "version": "1.2.4",
+      "metadata_sha256_lf": "87cfee6042412d48df1100ea7822684988c3f2b79de7a250f4717f4df3026d6f",
+      "record_sha256_lf": "d2e456be0aff5876c588f05547c1bc1cb0fbd5b4d1a27c38ae19f3d5402545ae"
+    },
+    {
+      "name": "pyyaml",
+      "version": "6.0.3",
+      "metadata_sha256_lf": "03c3b415ed38d09faedc49360e930769b40c58f68585e6de00e2e4916a858d34",
+      "record_sha256_lf": "05fc51f58555b5e19e3e6a7d32627cd54fb3384fa9fd8c98f3402e178235b6df"
+    },
+    {
+      "name": "requests",
+      "version": "2.34.2",
+      "metadata_sha256_lf": "8c384ba3e979480faae2859d3c5e6c1276dd2c3616e322e124d52c8cfc556f27",
+      "record_sha256_lf": "7bba0196a873a09fd85f983bc50ee47c430a4edd6e7ba3cbc8a0cce21c3cd215"
+    },
+    {
+      "name": "rich",
+      "version": "14.3.4",
+      "metadata_sha256_lf": "efb5f04704b438de828e9e44d88b9f5ab91f6006acf55a7b40911ea43c230a41",
+      "record_sha256_lf": "7c979402163456dde8d0bc0edbe22a15784ba96f6d8bbf9f7bb7b55c0bc6aa2b"
+    },
+    {
+      "name": "ruamel-yaml",
+      "version": "0.19.1",
+      "metadata_sha256_lf": "1ecd311518266882ede8804686f758255d6dff89a71a646bb6970a69615e39f6",
+      "record_sha256_lf": "954bde8f57275f064fde111d20202dd501eafd34b76c5155221400f85cc9cc74"
+    },
+    {
+      "name": "scikit-learn",
+      "version": "1.9.1",
+      "metadata_sha256_lf": "32e503c710a61e4e04be4edb450f9f8141233ac6af3f3db59a877667538fa4ec",
+      "record_sha256_lf": "a4f4bef158a4e5d6f735ea1956f1f31a803481bd48b454bfd5f102e679c0bb56"
+    },
+    {
+      "name": "scipy",
+      "version": "1.18.1",
+      "metadata_sha256_lf": "6d1ebfbce110009e25e8249fea05e21c0449735144e9bd8df1a52931f957c1ea",
+      "record_sha256_lf": "3d2096cf2966fbeec7f0bd2035484f619d0a49a53c97630d8f6216cb52ef20c2"
+    },
+    {
+      "name": "scmrepo",
+      "version": "3.6.2",
+      "metadata_sha256_lf": "1ce08df5fdcf975bac8cf8da5995467cfac49f0a7d6a12621208967b409219e9",
+      "record_sha256_lf": "7b0df219a7f78ddbafb2e4a8c5d5d5288f711c060be48f33e0184548fed5c4a3"
+    },
+    {
+      "name": "semver",
+      "version": "3.1.0",
+      "metadata_sha256_lf": "739ffce2897c9a145c73ac0539a76368b392dfa0ffb20e0503fb1e5963f1481d",
+      "record_sha256_lf": "3789f6a3ed54f80411992ce4cb155baa86a70fdf29421c40345a05dfa81e8f10"
+    },
+    {
+      "name": "setuptools",
+      "version": "84.2.1",
+      "metadata_sha256_lf": "24939b84ead30ff4581918c8d5a95aafd377f6a8afc61f30ea18358a8786bfa4",
+      "record_sha256_lf": "009d282bebe7a71998963944709e1cd9994f5497fba14eea290eb4cf7ec24d05"
+    },
+    {
+      "name": "shortuuid",
+      "version": "1.0.13",
+      "metadata_sha256_lf": "76f39eb41b4bb36f8e36682178ff470d36153c9a49e6d451db0ae9e4a81f5819",
+      "record_sha256_lf": "fd6e1919ec4f31bbe204b6919ac25a3b43a0f4f98d4be1cf5942576590c9f2cc"
+    },
+    {
+      "name": "shtab",
+      "version": "1.13.0",
+      "metadata_sha256_lf": "2eacb9a16469f9c36230305c3ad1b489f978077e8fc312c5603ef737e1734ba1",
+      "record_sha256_lf": "a8374d2f5c5c366a23b6457a2cc5f73aafcbd6dd1be083fe5bcf6e8d8f430b9e"
+    },
+    {
+      "name": "six",
+      "version": "1.17.0",
+      "metadata_sha256_lf": "562042078c2752549f6d8a7c86dbc5dd708088a7be6d80672ec7b07100b72468",
+      "record_sha256_lf": "15fbe6d7ed6c0da64d32aefabc11ada6b97507a61496c0f56173a8e865f2d5f3"
+    },
+    {
+      "name": "skops",
+      "version": "0.16.0",
+      "metadata_sha256_lf": "aedf6fbced70041644f64e5887eafe3d2122f0bfbf8365140ff458eab8dc5977",
+      "record_sha256_lf": "4a576341bfee81177b10e9e28833fac2440486506d2c5ed3f16ea0b0cc9e2e5a"
+    },
+    {
+      "name": "smmap",
+      "version": "5.0.3",
+      "metadata_sha256_lf": "761d62d78dbca38efb80f17b95a5aef5224d8288aedf980ca99c453db95047b9",
+      "record_sha256_lf": "9cbd24f720988800afba37d30f47a0a82b294c5e5e251b2869e698edbf029091"
+    },
+    {
+      "name": "sqlalchemy",
+      "version": "2.1.6",
+      "metadata_sha256_lf": "f174fb2a052ac3679f399ba9e73b5bd5a8bd1f69a78b1460aebc90eb7ebdda50",
+      "record_sha256_lf": "0dc66efcd6c206b18e916aa35f71d0be27239095515b48a34260f77bfa034c06"
+    },
+    {
+      "name": "sqlparse",
+      "version": "0.6.0",
+      "metadata_sha256_lf": "e6602750b4216135d9a788ac53c4caaf9f4534f9f8347ba73f92e37509b1b24f",
+      "record_sha256_lf": "e3560516debbcd2860fe6803fb5988f23725edbe2f614815986af94d6da73759"
+    },
+    {
+      "name": "sqltrie",
+      "version": "0.11.3",
+      "metadata_sha256_lf": "dd3e94d13d7fe6a0959fc7a8b300872e398bc95ee1a48102b2d6a97f60d09b25",
+      "record_sha256_lf": "2698b5e55f4f283bbd94c9ee9336f4db333cc5440d11ac80024bb31d0d306219"
+    },
+    {
+      "name": "starlette",
+      "version": "1.10.0",
+      "metadata_sha256_lf": "82f72dde2c5c3c55d45d9461adce5e30973481f7f3e10b59e497bbc5b8abf598",
+      "record_sha256_lf": "ddbb429e353d55c18b858c7253fc15e9a9a0fab0d08e62691fbc914564eec02d"
+    },
+    {
+      "name": "tabulate",
+      "version": "0.9.0",
+      "metadata_sha256_lf": "f2802aade2612091b45951f265af29174f90c3236f68cc8ccdeb646941e62969",
+      "record_sha256_lf": "e2011c34f23520bdffe190e3e7a65626e4c2d69327ee1fbb1dcb3b324dfcc624"
+    },
+    {
+      "name": "threadpoolctl",
+      "version": "3.7.0",
+      "metadata_sha256_lf": "09b19e721560cd12246402d44e53c1ede5194b8398ef60822f02cab86ccf8d1f",
+      "record_sha256_lf": "1c1dc08bca4b1a3786c4bf1cdfbd5717786bffa286c1d1cc0b8238e5441b9337"
+    },
+    {
+      "name": "tomlkit",
+      "version": "0.15.2",
+      "metadata_sha256_lf": "a2e59805b99c14685196efea6e2f17438853c9f18658a9b98370a883abcb2963",
+      "record_sha256_lf": "4c8d347c8ef21f10554a796da1f0295b39e305a91a87edd1076dec0e750c9001"
+    },
+    {
+      "name": "tqdm",
+      "version": "4.70.1",
+      "metadata_sha256_lf": "a5da70b966afea3a759716041bad7187f2ece02c22348cf9e7c0a512bbf15f57",
+      "record_sha256_lf": "a2bf9ee29d476614d4a1bce6f2e3e904d12e14b302cc819b27dd8d6ddd0d0464"
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.16.0",
+      "metadata_sha256_lf": "b05084ca1d50879865178d9fff9fabeab61bdfb1f361bfbde95421ffc8f9be46",
+      "record_sha256_lf": "b2b29b17130655534d101b05b9a37c58b63c51a0d9fa09dfd0a3e3a6881d6a23"
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.4",
+      "metadata_sha256_lf": "bad3d9e6342ef6750cf5128ec942327b8bebdce0b6e4d6f67cb15b27ae5118da",
+      "record_sha256_lf": "10b95fa603fd228affa1e3a53ad980bdab4f7363bebabb36d67419864e7a1448"
+    },
+    {
+      "name": "tzdata",
+      "version": "2026.5",
+      "metadata_sha256_lf": "e0780e8b6dc8882ce87e871a9d4589d59cb05a0c2d64f58b1ba62cde1ee91f6a",
+      "record_sha256_lf": "2e58c5a297a1586fba4816dec166c22ab8b15884420c55836101a438028430fc"
+    },
+    {
+      "name": "tzlocal",
+      "version": "5.4.5",
+      "metadata_sha256_lf": "1ea55a3c219a76d8ebd7ec8a746d239c3b8b1a55e52d2a13329adca48d2f9d37",
+      "record_sha256_lf": "ee3f6b2e22947087b034a98310ffaa891ce938f1a8a2fe7aebadb45851fbb422"
+    },
+    {
+      "name": "urllib3",
+      "version": "2.8.0",
+      "metadata_sha256_lf": "10898c620e8007c030e07fa5622b68358a43010025dfbd78a1cb797699de2bb4",
+      "record_sha256_lf": "452e7f733959ed7b6588ade3fa51306b6c8893dee7b780d7f5c3346d8cb6ec9d"
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.54.0",
+      "metadata_sha256_lf": "9399e5ddda3d26e842d6fb5420c38b0857aac568d53badbdc224b3a21339efa8",
+      "record_sha256_lf": "cfcc5e91df54b334e8f2286ccb53f22050174b9f4219b7520de28bd9e45eb416"
+    },
+    {
+      "name": "vine",
+      "version": "5.1.0",
+      "metadata_sha256_lf": "a6be4e234ab2fe203167db9972d95766e94569c6cb2119cce7fc2e4ebdc9410f",
+      "record_sha256_lf": "c5c693491af93f4b8cabf42904d63e2dda45ee627b14559f92864be42c4273ce"
+    },
+    {
+      "name": "voluptuous",
+      "version": "0.16.0",
+      "metadata_sha256_lf": "1cfbc47174719f747fb3c15621e7715281f6a1520af6d34781c727c89340de5e",
+      "record_sha256_lf": "38acdedc3e2e271ad1cf959f87895c47a0cf43b4e708648466db533b79f3ca17"
+    },
+    {
+      "name": "wcwidth",
+      "version": "0.9.4",
+      "metadata_sha256_lf": "180d42f593e4840a9672498f42d83709e85f43da2ad8c7c11e3a1c7622c74da5",
+      "record_sha256_lf": "9b462957e3c6d68e4989e43920901e37cee6b0c8cf7a91d0f989840dc339d900"
+    },
+    {
+      "name": "werkzeug",
+      "version": "3.1.9",
+      "metadata_sha256_lf": "9f04352e946ecb0883fbf379994c1cacf6720a124acdd7fd59029a889f4eebba",
+      "record_sha256_lf": "9e327a85ec01ff8395077933012e911f19a8ffbf6fe02baa23df2b925ecaa08e"
+    },
+    {
+      "name": "yarl",
+      "version": "1.25.1",
+      "metadata_sha256_lf": "fd6baa258a11c4d7e7008272a69180d4d34aa04a6a5afda36ac5e55aa0aa4f41",
+      "record_sha256_lf": "6a521c2a1843a8a6c97e289a75bc8c7ce7c42866eb6b8b9ea12909822c960ce9"
+    },
+    {
+      "name": "zc-lockfile",
+      "version": "4.0",
+      "metadata_sha256_lf": "5992371efe6fbb22d6ad8acb492e9521f7619514305210c03e306edd25ecd177",
+      "record_sha256_lf": "81ac195450d08a91cc48708a9ba3dad846d21df5d205cb2e1fa4a091413af525"
+    },
+    {
+      "name": "zipp",
+      "version": "4.1.2",
+      "metadata_sha256_lf": "f84611a1ae509959f8a60875c24ff61793a67ca575cb5fdfa98076d3531bdbf9",
+      "record_sha256_lf": "0b7bb6335c11d9735f36285e6725f5417a4734f795f2d3ac3ee5cad03aca3a2d"
+    }
+  ],
+  "scope": "Same-host installed-wheel tracking with local SQLite/DVC and trusted synthetic sklearn models; no live service migration, distributed store or new-machine certificate."
+}

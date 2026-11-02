@@ -1,12 +1,12 @@
 {
   "schema": 1,
   "kind": "eidos.tracking-integrity-acceptance",
-  "generated": "2026-11-01T22:22:54.503563+00:00",
+  "generated": "2026-11-02T10:51:15.657439+00:00",
   "status": "PASS",
-  "version": "0.4.11",
+  "version": "0.4.12",
   "release_qualification": "Installed candidate qualification; exact-final-commit CI and release assets are separate.",
-  "wheel": "reference/sdk_process_acceptance/eidos-0.4.11-py3-none-any.whl",
-  "wheel_sha256": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
+  "wheel": "reference/sdk_process_acceptance/eidos-0.4.12-py3-none-any.whl",
+  "wheel_sha256": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
   "driver": "reference/tracking_acceptance/check.py",
   "driver_sha256_lf": "f93a8743b688536e02202bcaa050321f8bd085121c0f14d221d95fb684659057",
   "before": {
@@ -73,14 +73,14 @@
   "windows": {
     "kind": "eidos.installed-tracking-acceptance",
     "schema": 1,
-    "generated": "2026-11-01T22:02:53.679797+00:00",
+    "generated": "2026-11-02T09:32:16.561221+00:00",
     "platform": "win32",
-    "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\tracking venv\\Scripts\\python.exe",
+    "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\windows-tracking\\Scripts\\python.exe",
     "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
     "optimization_level": 0,
     "status": "PASS",
-    "sdk_version": "0.4.11",
-    "wheel_sha256": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
+    "sdk_version": "0.4.12",
+    "wheel_sha256": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
     "wheel_payload_binding": "Full raw payload and METADATA/WHEEL against installed files and RECORD; installer archive SHA-256 checked when present.",
     "source_sha256_canonical_lf": {
       "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
@@ -92,7 +92,7 @@
       "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
       "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
       "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
-      "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+      "framework/recovery.py": "46e3426ac28988905a2ecebe728cb4a6515803c07fc56feb0dd08b4beebb5563",
       "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
       "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
       "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
@@ -412,7 +412,7 @@
         "name": "alembic",
         "version": "1.20.1",
         "metadata_sha256_lf": "a7251d864147d4676f916be5888c1a2252a4f1db87a70cdf1d9b1dfa322cbe4e",
-        "record_sha256_lf": "a6fe05d9306ddad06409defdfb7398227c666fb990e2caba17bdac8feca777d1"
+        "record_sha256_lf": "94224cc9387b3cd38e9a50f5fb81478564852a40b4f611f718adc20135496e88"
       },
       {
         "name": "amqp",
@@ -436,7 +436,7 @@
         "name": "antlr4-python3-runtime",
         "version": "4.9.3",
         "metadata_sha256_lf": "bf325e5155318385a2fcc4680742da710bbadf13a3d1c0979a98b3487980f261",
-        "record_sha256_lf": "b88066c60f4b193f0d8daf062bda5743506cb4604b363393b5c0fd68c617ccf8"
+        "record_sha256_lf": "8c95e5f1d8da90cf73c9a38107e1f8c71e2472a471d1a237d61a92a1cebf7a9b"
       },
       {
         "name": "anyio",
@@ -490,7 +490,7 @@
         "name": "celery",
         "version": "5.6.3",
         "metadata_sha256_lf": "a8d540ef32a8e271b8434d12e272f4ba8e439a224c0769d1c1e20f617021518e",
-        "record_sha256_lf": "0f2515448c3592bc2e1c066d4d697eb06ea069ea1f8b67460563fd3917d030d3"
+        "record_sha256_lf": "100cb54364313f5cebcdac8755fc2bfd08f693a0660a81a8c17fe7dd0a9b31f1"
       },
       {
         "name": "certifi",
@@ -502,13 +502,13 @@
         "name": "cffi",
         "version": "2.1.1",
         "metadata_sha256_lf": "558bafb9093a8e790175d9ecff9688382981d744877dad86fd6770db0f4dc918",
-        "record_sha256_lf": "6ec5a0b82451f07b48838d1986ac09e79d9a722302ab9aff9a66858317cc091b"
+        "record_sha256_lf": "4b173066669658ce039fbb46309bc711f548d03f403a9c31cc1eb54b60865dd8"
       },
       {
         "name": "charset-normalizer",
         "version": "3.5.2",
         "metadata_sha256_lf": "89ce6362bb7be88558f4be99a98f5d1b4da93d19cd0323e5ee0bac05cf883dfb",
-        "record_sha256_lf": "59e5d0accc1dd1ff9dc297ac79a2a59bc2cc80177b17c114c0d218ef251938dd"
+        "record_sha256_lf": "0e59e4989db6799a4ed336c2824373d906881a552197237747d57221fe451709"
       },
       {
         "name": "click",
@@ -562,7 +562,7 @@
         "name": "coverage",
         "version": "7.17.0",
         "metadata_sha256_lf": "463fb0250232412b60ca9a95798df8e50ae2814fe7052760d7a33e4a8a9ad4db",
-        "record_sha256_lf": "544cbf78e8b38c05c92f461b638c649776c485b922b6d2d462b5bed064737879"
+        "record_sha256_lf": "cc14666782b9fcd06f9a1f6099b905841f6fe39125f435c16224737dac2765d2"
       },
       {
         "name": "cryptography",
@@ -598,7 +598,7 @@
         "name": "distro",
         "version": "1.9.0",
         "metadata_sha256_lf": "31632ab2de5591131091b3397bdcdf797718579d85a75186f06839dd0c09e81d",
-        "record_sha256_lf": "32da1d9d9a9785bd488de78f6c358db13b99fd053993cd0dce520d784128f4fe"
+        "record_sha256_lf": "ecf672bc88557a80d0fe22edac75662a3cbf6fd57c56ac68c59fce42a0c07564"
       },
       {
         "name": "docker",
@@ -616,19 +616,19 @@
         "name": "dulwich",
         "version": "1.2.19",
         "metadata_sha256_lf": "16df8d722c7a0256502fc9f00bb34b2a53bc6cf61e987e7bd0dd797894b73c1f",
-        "record_sha256_lf": "b6ad78bca5980f56178250d565eb4bf94fc3e036e6c0802b4c3f58eb1af05138"
+        "record_sha256_lf": "aafbc49ac66a0dbab9bdd9b8ae53eae6027964265e521867f1a9268983677a5d"
       },
       {
         "name": "dvc",
         "version": "3.67.1",
         "metadata_sha256_lf": "15f19daba54bc385f141493ca8f56426877ad9b26cc8e07fea95b5d2177cb001",
-        "record_sha256_lf": "be2b6f9ee978cc078397ac1074ab26f3271d0e03674b9440aa96073c6695f9e1"
+        "record_sha256_lf": "955611e33f8e14dda81b7c4263600aaa47195f0ae9c00349f67d22f976360550"
       },
       {
         "name": "dvc-data",
         "version": "3.18.3",
         "metadata_sha256_lf": "ed20266c7e5331054608fe95bc3b193dce9815563c03b0b9bfbbcbd9d41dc199",
-        "record_sha256_lf": "9413d129efd8338def9b44ad2b57170b1d946beedc42253fd32660aa5375b3e2"
+        "record_sha256_lf": "76e0d92550ec579f204b65eb3f54a0f370db9aab13047a5a6973fa0797b04e90"
       },
       {
         "name": "dvc-http",
@@ -662,9 +662,9 @@
       },
       {
         "name": "eidos",
-        "version": "0.4.11",
-        "metadata_sha256_lf": "436c5b56ddce2a6dc68a5e31c3891e16d060fdd976e34e1de07ba3b7817210bd",
-        "record_sha256_lf": "11c8b7809b0e45f9c310c350b130d73aa7ad9c5dcad4dd11157b4f9598d648af"
+        "version": "0.4.12",
+        "metadata_sha256_lf": "e7468f41fd8af84526677261c808fff2f2b3d855c2fa619981832f14ff6e5418",
+        "record_sha256_lf": "75a40e0b469692cfbf7eec70ebbc3705155ba19eb207f218765a3b7d189c5912"
       },
       {
         "name": "entrypoints",
@@ -676,7 +676,7 @@
         "name": "fastapi",
         "version": "0.162.0",
         "metadata_sha256_lf": "71eccf0418f121959670e72e343ec964105ea0190783e5048eef970a539c4e63",
-        "record_sha256_lf": "79b44fc5015bbe1a754f9739b5ba110aaa0253a3509e06f13004f5079c102943"
+        "record_sha256_lf": "3345f70eb93b4679e810e48f0a493f3353c10f503f2e2c3134777159e3d2c76e"
       },
       {
         "name": "filelock",
@@ -688,7 +688,7 @@
         "name": "flask",
         "version": "3.1.3",
         "metadata_sha256_lf": "aa6760ed6f545704474d70733e4a63a7f1481e376973edc896a13d02a7224c7c",
-        "record_sha256_lf": "fefd324bd9b8f4a4a006052fff3631d52cd9ded83efca1fe6c471404837249aa"
+        "record_sha256_lf": "c90d141493a47bf7d2fe2b9121f9ed74e5200297e0c94c5bdf20816b9ca30b06"
       },
       {
         "name": "flask-cors",
@@ -712,7 +712,7 @@
         "name": "fonttools",
         "version": "4.67.0",
         "metadata_sha256_lf": "33dec14bec601b457a07a6550086cb6725b5aaedc3a881f9fa7a84d3841ddcfe",
-        "record_sha256_lf": "cfe3867d548cbc9d83dbcef7bd6b7d726d9e0f8e8e5a9edf55283fdac694ec07"
+        "record_sha256_lf": "ef936acde32cc176fd8370ecef4429723b2851708b15eff3819ad1df376f4875"
       },
       {
         "name": "frozenlist",
@@ -778,7 +778,7 @@
         "name": "gto",
         "version": "1.10.1",
         "metadata_sha256_lf": "b016b3df2092b460bc3c7cf0ace07965e8ba986b077e4d73f89ba1b7b9a9beb1",
-        "record_sha256_lf": "27335432f10c338c04b944155e13b058562f2139ca443e7e8a5ada5a067f52db"
+        "record_sha256_lf": "fa29ae4c93a7b09a9538cbce60fb940927a1ec3cad94a8d65f765a4b024c6095"
       },
       {
         "name": "h11",
@@ -790,7 +790,7 @@
         "name": "huey",
         "version": "3.5.3",
         "metadata_sha256_lf": "3ace6ad5738487dd0534880ece60ced8b8817936d6ddfa95f16e9601d86be33a",
-        "record_sha256_lf": "6218fc867ea00c6faaf6039e51c2e65a09a2f1731116862bc980734ae6bb40cd"
+        "record_sha256_lf": "e7439a6fd1e543c8927dfc5f69e70a823350233037d2f851b91071e49c3b4a87"
       },
       {
         "name": "hydra-core",
@@ -802,7 +802,7 @@
         "name": "idna",
         "version": "3.20",
         "metadata_sha256_lf": "dbd8c14c1e4ca1e0c9824a6dbc7cbbf78884f38eb52d91148cd3025f671e4b85",
-        "record_sha256_lf": "b82badbf7452c2e08b7a53d7750a4c56ef71c3bffdcd296c523b4a2b334f970d"
+        "record_sha256_lf": "191925f877352eaa8e4fb711fcfebc675e58326eaf0ceecd632e593afa45986b"
       },
       {
         "name": "importlib-metadata",
@@ -856,13 +856,13 @@
         "name": "mako",
         "version": "1.4.3",
         "metadata_sha256_lf": "39ea65f21e706265428ea6f2925520f419a10f0113a59318192ed38175d8838b",
-        "record_sha256_lf": "180ad4e6df96b0a8640b4100ce08121f52ab7beb839761157c24fd44a00cf6fb"
+        "record_sha256_lf": "c4fff545a2f3f9c60e8b57733fcd867461f23756d18116b75f1ef0ffdfd68d1a"
       },
       {
         "name": "markdown-it-py",
         "version": "4.2.0",
         "metadata_sha256_lf": "72c36ff516755443b1ecb61e17b2567a990230b49a504b0eb0c42d5f82448a9c",
-        "record_sha256_lf": "7030c53502d1e34979916558f413aa70d8ea4b5958abfb62a6969c6a6f859cd3"
+        "record_sha256_lf": "1e93960fb719cfd3e20634fe0f1498ac39c86899519ad13a7b05023713b863ac"
       },
       {
         "name": "markupsafe",
@@ -886,13 +886,13 @@
         "name": "mlflow",
         "version": "3.17.2",
         "metadata_sha256_lf": "0d922981faee4de01a5982fe977776c3f61c5c6d574d3258b2b57782f4f0c4c5",
-        "record_sha256_lf": "fc94d952497e2d6ec15d779edf088ce6fdd3bee687c79161790aaf84e48c7965"
+        "record_sha256_lf": "d3483b0fd47d1e5646a33a5b21e05896b06b8c1b7427d15750574cd614568edb"
       },
       {
         "name": "mlflow-skinny",
         "version": "3.17.2",
         "metadata_sha256_lf": "e9fb9b23e51670afbad21e027db32db0dc66214448426f10a85a52a63d2c5cfa",
-        "record_sha256_lf": "f5d5a71435481554f036eddbae4ce60878dfd0b0233ad01e71ff8849f3b9bccb"
+        "record_sha256_lf": "25090c3fdb321f506d9973c606376695645cebc423ba6989272613e8d039e9df"
       },
       {
         "name": "mlflow-tracing",
@@ -922,7 +922,7 @@
         "name": "numpy",
         "version": "2.5.4",
         "metadata_sha256_lf": "e2b909d6a37d76c2bc130f528d7fed0c517322bce16dc7846b6a6df30e200403",
-        "record_sha256_lf": "6fb80a0b59664d47e6ac61c087d68373a072c8e1063ff6a9fc7356309e99243d"
+        "record_sha256_lf": "6132797f192e394ad417e4ea698c6be1e6eadc93a271918dc2840c1885b29444"
       },
       {
         "name": "omegaconf",
@@ -1084,7 +1084,7 @@
         "name": "pygments",
         "version": "2.21.0",
         "metadata_sha256_lf": "1dde075570136774c706bf0009183a793fe0ee262e4a5590cc6eff8453eedd43",
-        "record_sha256_lf": "684eb3111c115c6a1d0799db93898ecd2762db64fb54f1ced8b9c624f203a2c2"
+        "record_sha256_lf": "dd74bd9e1398be893fcfd2e1e68f71f813d6290aaacdd1e1ffb00acf72a5b382"
       },
       {
         "name": "pygtrie",
@@ -1102,7 +1102,7 @@
         "name": "pytest",
         "version": "9.1.1",
         "metadata_sha256_lf": "c5d032518012789cabc870d46589aca3aeda36cf9fa4399ee88bda3d10438451",
-        "record_sha256_lf": "ac84ebc2f1040461e902cfde0ed79f35fb21d7faacb86c18a1da1e546b651c80"
+        "record_sha256_lf": "14e1cfad47ff650518be3c67fc10ae8342320f22b72a23cca5f61a218ac48908"
       },
       {
         "name": "python-dateutil",
@@ -1114,13 +1114,13 @@
         "name": "python-dotenv",
         "version": "1.2.4",
         "metadata_sha256_lf": "87cfee6042412d48df1100ea7822684988c3f2b79de7a250f4717f4df3026d6f",
-        "record_sha256_lf": "1ff7c4832015356354f13c1d8e6f5b979261fdb2257db512c18ea36420aa95e5"
+        "record_sha256_lf": "b398e9adac83d79ae091cc22a60d294a75e3cc500b3f6f5423b566cd95b8c2f0"
       },
       {
         "name": "pywin32",
         "version": "312",
         "metadata_sha256_lf": "7b0ffc7aaed4258c6b2a0ef67d984d55a9169d9bbd1a0a8ace2a35542a75a519",
-        "record_sha256_lf": "065a202d061db6b91852db63fecbb496441a891de30f83d01ec50949a7376528"
+        "record_sha256_lf": "a083c18ab5c43c06fcfbf12525729c839dce2c497269aa515591d63026abc7b4"
       },
       {
         "name": "pyyaml",
@@ -1168,7 +1168,7 @@
         "name": "semver",
         "version": "3.1.0",
         "metadata_sha256_lf": "739ffce2897c9a145c73ac0539a76368b392dfa0ffb20e0503fb1e5963f1481d",
-        "record_sha256_lf": "aaabd4ba6b7ab93d331ed69a5eb198ee395fc59e37af5249e2568c296deead1e"
+        "record_sha256_lf": "2c853a39010f22fa099adf778421c7d1e042d4f37631b45c292d4077531e240c"
       },
       {
         "name": "setuptools",
@@ -1180,13 +1180,13 @@
         "name": "shortuuid",
         "version": "1.0.13",
         "metadata_sha256_lf": "76f39eb41b4bb36f8e36682178ff470d36153c9a49e6d451db0ae9e4a81f5819",
-        "record_sha256_lf": "1e9e78182b0c0ec81c379ca0a11b8a79c1e653dcb83abe1a65abdb1c9df33d06"
+        "record_sha256_lf": "2b12ffeb9611b19fc81156d52ca7f22b2a45a3ff84c66db3d182114b83c001e2"
       },
       {
         "name": "shtab",
         "version": "1.13.0",
         "metadata_sha256_lf": "2eacb9a16469f9c36230305c3ad1b489f978077e8fc312c5603ef737e1734ba1",
-        "record_sha256_lf": "2aba4307409ceb07c3fbe403061da68f3d1e82d24da1989081b1205ee410bd90"
+        "record_sha256_lf": "7fe4012e57db1f125d48b160a8351e1517fa05efb184857e3e17486d73776569"
       },
       {
         "name": "six",
@@ -1216,7 +1216,7 @@
         "name": "sqlparse",
         "version": "0.6.0",
         "metadata_sha256_lf": "e6602750b4216135d9a788ac53c4caaf9f4534f9f8347ba73f92e37509b1b24f",
-        "record_sha256_lf": "7805ded73f645ff25abb3e0a6fafa727b74ead45dce3d5c17987b6d98545b5cc"
+        "record_sha256_lf": "9440eb00bc048c6675e17871a52c178a8f7f4f1730167f65601634d31e804d27"
       },
       {
         "name": "sqltrie",
@@ -1234,7 +1234,7 @@
         "name": "tabulate",
         "version": "0.9.0",
         "metadata_sha256_lf": "f2802aade2612091b45951f265af29174f90c3236f68cc8ccdeb646941e62969",
-        "record_sha256_lf": "ac217d5a7b0e891e2b6edfe9fae9731c56e92d4df4420398f06a88c394e12d9f"
+        "record_sha256_lf": "80b3b19b3c45eab9d945da2b7b43da1f88a63eec32c0ee1866d77c1a0f4d9cd8"
       },
       {
         "name": "threadpoolctl",
@@ -1252,7 +1252,7 @@
         "name": "tqdm",
         "version": "4.70.1",
         "metadata_sha256_lf": "a5da70b966afea3a759716041bad7187f2ece02c22348cf9e7c0a512bbf15f57",
-        "record_sha256_lf": "334acef30393bdf67a8cdd241e6768b2fe3b2608a8b16d332fdcb7b0152243ed"
+        "record_sha256_lf": "36e0f0c30c257fedd30db051537a51bd08fcc5bf1bedacfda0199b6bac9f3024"
       },
       {
         "name": "typing-extensions",
@@ -1288,7 +1288,7 @@
         "name": "uvicorn",
         "version": "0.54.0",
         "metadata_sha256_lf": "9399e5ddda3d26e842d6fb5420c38b0857aac568d53badbdc224b3a21339efa8",
-        "record_sha256_lf": "2f44ff53f98025764512a5977915ad95e83efee7d15cb6b6ed5b6d8d27243c76"
+        "record_sha256_lf": "da461b1ca878bf44c651ef2c039598370dc16780f632e3f9b8a2ba53b8fb274c"
       },
       {
         "name": "vine",
@@ -1306,7 +1306,7 @@
         "name": "waitress",
         "version": "3.0.2",
         "metadata_sha256_lf": "103a993b671c333c467cdafe1d1af460093d30846adb889a9f9fd980476df77a",
-        "record_sha256_lf": "4b5e020ed2b5200bdbe9e63a22ddb15fa2000e89397c98e80c430115b87022d8"
+        "record_sha256_lf": "b5b67d1f0df70823b125ab4696e77225737e6888ef1781f3dc0e8032bf461249"
       },
       {
         "name": "wcwidth",
@@ -1344,14 +1344,14 @@
   "linux": {
     "kind": "eidos.installed-tracking-acceptance",
     "schema": 1,
-    "generated": "2026-11-01T22:05:12.750619+00:00",
+    "generated": "2026-11-02T09:39:50.764729+00:00",
     "platform": "linux",
     "executable": "/opt/tracking/bin/python",
     "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
     "optimization_level": 0,
     "status": "PASS",
-    "sdk_version": "0.4.11",
-    "wheel_sha256": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
+    "sdk_version": "0.4.12",
+    "wheel_sha256": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
     "wheel_payload_binding": "Full raw payload and METADATA/WHEEL against installed files and RECORD; installer archive SHA-256 checked when present.",
     "source_sha256_canonical_lf": {
       "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
@@ -1365,7 +1365,7 @@
       "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
       "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
       "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
-      "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+      "framework/recovery.py": "46e3426ac28988905a2ecebe728cb4a6515803c07fc56feb0dd08b4beebb5563",
       "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
       "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
       "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
@@ -1933,9 +1933,9 @@
       },
       {
         "name": "eidos",
-        "version": "0.4.11",
-        "metadata_sha256_lf": "436c5b56ddce2a6dc68a5e31c3891e16d060fdd976e34e1de07ba3b7817210bd",
-        "record_sha256_lf": "bd99b001792c042e447c19b67653eadebb9ee694e61c5fb473d3689f7adcb69a"
+        "version": "0.4.12",
+        "metadata_sha256_lf": "e7468f41fd8af84526677261c808fff2f2b3d855c2fa619981832f14ff6e5418",
+        "record_sha256_lf": "7ec0368c9a1b5276b5034448638b65892e79655d93481603df9cf043268e271a"
       },
       {
         "name": "entrypoints",
@@ -2614,7 +2614,7 @@
   },
   "linux_execution": {
     "network": "none",
-    "image": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
+    "image": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
     "workspace": "Private tmpfs only; no disk performance or persistence claim.",
     "exit_code": 0,
     "command": [
@@ -2626,49 +2626,27 @@
       "/root/.cache": "rw,nosuid,nodev,size=536870912,mode=1777",
       "/tmp": "rw,exec,nosuid,nodev,size=2147483648,mode=1777"
     },
-    "receipt_sha256": "595524ac502a0620222ab05d88675b63ce6db8d6829bd5127249af1291839dd8",
+    "receipt_sha256": "bb0e68a91341aed0aa47e6c4eb99ebfe4a04b19a78bf4dea2ab3c089be2daa28",
     "controller": {
       "kind": "tracking",
-      "owner": "cc7a8a0974644f25829c2656ee181f7c",
-      "image_reference": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
-      "image_id": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
-      "started": "2026-11-01T22:04:25.437731+00:00",
+      "owner": "9afe87a9577848de87ff7a97c25145f5",
+      "image_reference": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
+      "image_id": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
+      "started": "2026-11-02T09:38:37.892002+00:00",
       "command": [
         "/opt/tracking/bin/python",
         "-I",
         "/input/tracking-bootstrap.py"
       ],
       "status": "PASS",
-      "controller_sha256": "4a1da1d623afe3a6ec1a847d5b989d18c038f5f84132032b16e1019cb58d2ef5",
+      "controller_sha256": "985e1a273c06b8a2f695f9cc6078972d822eaa7a5de63aec373e6f9347aebdbc",
       "input_sha256": {
-        "bootstrap.py": "ab7b3b458b604081d55ab68ddef7ae0fd74f7abfd5fd502fba49aa349357c656",
-        "core.txt": "e8fa2b18e9b178fbc5f606273f5db876c2289198e88dd5b210c85f834280a5ac",
-        "eidos-0.4.11-py3-none-any.whl": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
-        "numerical-check.py": "11e515a4d17259f56d8effd0aca0c933965b01f683cd73ba9a6920f4a53297db",
-        "quarto-check.py": "f0efe362c24aa1b680d57f2716aced4214cd9967005e0a27a21bc8c065af2b2f",
-        "recovery-bootstrap.py": "73c311e4ad884f5dded934a6cd576f6fbd34df91be7c889e1ac65697aa5bd757",
-        "recovery-negative.py": "94df88801eaefb37f2c3f24575c6b17563c742328182727bb1487f08273dafdc",
-        "reproduction-check.py": "16c34435bf7b9e1f6a3c8c59d83458a5b3ada5d4b064581183dbcb43f5a0ea0f",
-        "run.py": "f63ade2199e791218cd9d033bf51b08b722c1051f6d4b3f2ce1a74c816aea1fb",
-        "sdk-check.py": "1c47047026769a78b1fc5bd7cc4371532c671911eee977bde1823125e5f0f262",
-        "tracking-bootstrap.py": "76ec1407f7226da2e64d772d48da55b9a0dfda10cbd68446ceece1b656a899f9",
-        "wheels/contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "875f42444c9cf48d56f724f2637e60d0f73b3b12c9041e1484580a233edf9591",
-        "wheels/cycler-0.12.1-py3-none-any.whl": "85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30",
-        "wheels/fonttools-4.67.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "eb3c98cac93aac4b9f6e3ce2008325340b234cc9b0338ca6b513f31962a1e278",
-        "wheels/kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "34633ecf50d16187ab8e5528b7a2530f2feb4e23f300db4672538b51cfc5cd38",
-        "wheels/matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "df4f7784aca81a94f254c0a2767d592ee25f407e488f5fa7203e51093fb6ca27",
-        "wheels/numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "fbde6962867ee75b48b0ee29b2b9372ec5d617799dbaf38e82dc0596f2f7738a",
-        "wheels/packaging-26.3-py3-none-any.whl": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
-        "wheels/pillow-13.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "42d63be3af4f9b951b199b0a9d23365d37ab14687e6d77b74940432c8515c4ca",
-        "wheels/pyparsing-3.3.3-py3-none-any.whl": "ece8c00a69cf01b45d0b1dedabb469c90d8caf996d4fda40f147627a122849a4",
-        "wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
-        "wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
-        "wheels/six-1.17.0-py2.py3-none-any.whl": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
+        "tracking-bootstrap.py": "181f374cb0171464f4064c0260d8a5371a70ecf3fada01099aaed6544e1bdc3c"
       },
-      "attempt": 1,
+      "attempt": 3,
       "before": {
-        "Id": "9224132d3b2af8cf4507fee257464b4aca5be37933d040d659d3b5a608c5899c",
-        "Image": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
+        "Id": "8174ee1d806581b8b9889ce9887ce445be864f06daf64f7ef5e9f0894f31a535",
+        "Image": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
         "State": {
           "Status": "created",
           "Running": false,
@@ -2685,7 +2663,7 @@
         "Mounts": [
           {
             "Type": "bind",
-            "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\input",
+            "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\input-tracking",
             "Destination": "/input",
             "Mode": "",
             "RW": false,
@@ -2693,7 +2671,7 @@
           },
           {
             "Type": "bind",
-            "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\tracking",
+            "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\tracking-3",
             "Destination": "/out",
             "Mode": "",
             "RW": true,
@@ -2701,7 +2679,7 @@
           },
           {
             "Type": "bind",
-            "Source": "E:\\2026-AI4S\\Eidos",
+            "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\source-tracking",
             "Destination": "/source",
             "Mode": "",
             "RW": false,
@@ -2727,8 +2705,8 @@
         ]
       },
       "after": {
-        "Id": "9224132d3b2af8cf4507fee257464b4aca5be37933d040d659d3b5a608c5899c",
-        "Image": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
+        "Id": "8174ee1d806581b8b9889ce9887ce445be864f06daf64f7ef5e9f0894f31a535",
+        "Image": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
         "State": {
           "Status": "exited",
           "Running": false,
@@ -2739,13 +2717,13 @@
           "Pid": 0,
           "ExitCode": 0,
           "Error": "",
-          "StartedAt": "2026-11-01T22:04:27.910563063Z",
-          "FinishedAt": "2026-11-01T22:05:12.790247035Z"
+          "StartedAt": "2026-11-02T09:38:40.286899495Z",
+          "FinishedAt": "2026-11-02T09:39:50.791709673Z"
         },
         "Mounts": [
           {
             "Type": "bind",
-            "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\input",
+            "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\input-tracking",
             "Destination": "/input",
             "Mode": "",
             "RW": false,
@@ -2753,7 +2731,7 @@
           },
           {
             "Type": "bind",
-            "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\tracking",
+            "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\tracking-3",
             "Destination": "/out",
             "Mode": "",
             "RW": true,
@@ -2761,7 +2739,7 @@
           },
           {
             "Type": "bind",
-            "Source": "E:\\2026-AI4S\\Eidos",
+            "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\source-tracking",
             "Destination": "/source",
             "Mode": "",
             "RW": false,
@@ -2787,7 +2765,7 @@
         ]
       },
       "cleanup_verified": true,
-      "finished": "2026-11-01T22:05:15.303026+00:00"
+      "finished": "2026-11-02T09:39:53.677736+00:00"
     }
   },
   "ordinary_overlay_attempt": {
@@ -2804,7 +2782,7 @@
       "error": "TimeoutExpired: Command '['/opt/tracking/bin/python', '-I', '-X', 'utf8', '-m', 'pytest', '-q', '/tmp/eidos-installed-tracking-zklqdcfl/protocol', '--rootdir=/tmp/eidos-installed-tracking-zklqdcfl', '--basetemp=/tmp/eidos-installed-tracking-zklqdcfl/pytest-tmp', '--override-ini=addopts=', '--junitxml=/tmp/eidos-installed-tracking-zklqdcfl/junit.xml', '-k', 'not optional_dependency_is_skipped_before_spawning']' timed out after 900 seconds"
     },
     "receipt_sha256": "64f1a27fff3414f9264d00a66600ae05534239f1a4d98be0307ca2bf03748ae8",
-    "scope": "Retained v0.4.10 failure; no new v0.4.11 ordinary-overlay PASS is claimed."
+    "scope": "Retained v0.4.10 failure; no new v0.4.12 ordinary-overlay PASS is claimed."
   },
   "windows_negative_controls": [
     {
@@ -2813,7 +2791,7 @@
       "expected_outcome": true,
       "receipt_status": "FAIL",
       "prior_pass_retained_as_history": false,
-      "receipt_sha256": "def76bc98210ae6b36400d16110e9ac664140937b79d49cc6883b2981ff11c57"
+      "receipt_sha256": "36ff7d66435ae08a02494526272ac19ae7f48366ec1bf39e00e21895efd95809"
     },
     {
       "case": "-O",
@@ -2821,7 +2799,7 @@
       "expected_outcome": true,
       "receipt_status": "PASS",
       "prior_pass_retained_as_history": true,
-      "receipt_sha256": "555e3b70fb135a3e9a22446312a146e6e3119faf327613684a730e81842d0760"
+      "receipt_sha256": "e3c3ef7f472676eeeae00eaac10bad77e3b4ba0cd65aa4f10959957e8f321dd3"
     },
     {
       "case": "-OO",
@@ -2829,14 +2807,14 @@
       "expected_outcome": true,
       "receipt_status": "PASS",
       "prior_pass_retained_as_history": true,
-      "receipt_sha256": "555e3b70fb135a3e9a22446312a146e6e3119faf327613684a730e81842d0760"
+      "receipt_sha256": "e3c3ef7f472676eeeae00eaac10bad77e3b4ba0cd65aa4f10959957e8f321dd3"
     },
     {
       "case": "same-code-wrong-metadata",
       "exit_code": 1,
       "expected_outcome": true,
       "receipt_status": "FAIL",
-      "receipt_sha256": "41854dd1b2deeb5083d17443a6acbac9a4be7fc208fa3c7b0bf255de5be63a35"
+      "receipt_sha256": "87826aab305add46e9f478fee2a5ae0ce04b3e2391979833462296087eb965ac"
     }
   ],
   "harness_control_suite": {
@@ -2845,9 +2823,9 @@
   },
   "full_source_audit": {
     "path": "docs/SELF_AUDIT.json",
-    "sha256": "9b2393b11cb87f7d54bcac9a55fb5725c6bfd3c620e8e96ea4cc349331d88d1a",
+    "sha256": "5052ceaac8d0ef5b61c93e7a335c41ab6a5223cf3234760991fdbb803bd6f2bf",
     "tests": {
-      "passed": 1194,
+      "passed": 1206,
       "failed": 0,
       "skipped": 6,
       "errors": 0
@@ -2855,15 +2833,20 @@
     "coverage_total": 75,
     "stable": true
   },
-  "read_only_reviews": [
-    "code-reviewer APPROVE",
-    "python-reviewer APPROVE"
-  ],
   "limits": [
     "Same-host controlled local SQLite/DVC and trusted model fixtures, not distributed stores or unseen models.",
     "No power-loss, durability, legacy process migration, new-machine, reboot/logon or clean24h certificate.",
     "The first overlay-filesystem Linux run and separate diagnostic are retained separately; tmpfs scope is explicit.",
     "Parent-process coverage does not instrument isolated workers."
   ],
-  "previous_record": "archive/tracking-acceptance-v0.4.10.json"
+  "previous_record": "archive/tracking-acceptance-v0.4.11.json",
+  "historical_read_only_reviews": [
+    "code-reviewer APPROVE",
+    "python-reviewer APPROVE"
+  ],
+  "historical_fields": [
+    "before",
+    "ordinary_overlay_attempt",
+    "harness_control_suite"
+  ]
 }

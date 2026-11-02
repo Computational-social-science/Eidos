@@ -1,0 +1,425 @@
+"""Independent false-MATCH and execution/receipt controls for paper reproduction."""
+
+from __future__ import annotations
+import json
+import math
+from pathlib import Path
+import sys
+import time
+import pytest
+from framework import reproduction as r
+from framework.validity import ScientificValidityGate
+
+
+@pytest.mark.parametrize(
+    "args",
+    [
+        (math.inf, 1, 0.001, True),
+        (1, 100, math.inf, False),
+        (1, 1, -1, False),
+        (True, 1, 0, False),
+        (1, True, 0, False),
+        ("1", 1, 0, False),
+        (1, 1, True, False),
+        (1, 1, 0, "false"),
+        (1, math.nan, 0, False),
+    ],
+)
+def test_invalid_comparison_inputs_are_refused(args):
+    with pytest.raises(ValueError):
+        r.compare(*args)
+
+
+@pytest.mark.parametrize(
+    "expected,observed",
+    [(2**53, 2**53 + 1), (2**53 + 1, float(2**53)), (10**100, 10**100 + 1)],
+)
+def test_represented_integer_difference_is_not_rounded_away(expected, observed):
+    verdict, delta = r.compare(expected, observed, 0)
+    assert verdict == r.MISMATCH and delta == 1
+
+
+def test_relative_comparison_preserves_tiny_values_and_no_absolute_floor():
+    assert r.compare(1e-300, 2e-300, 0.1, True)[0] == r.MISMATCH
+    assert r.compare(0, math.ulp(0), 0.1, True)[0] == r.MISMATCH
+    assert r.compare(1.0, math.nextafter(1.0, 2.0), 0)[0] == r.MISMATCH
+
+
+def test_comparator_agrees_with_an_independent_decimal_oracle():
+    from decimal import Decimal, localcontext
+    import random
+
+    rng = random.Random(20261101)
+    values = [
+        0,
+        1,
+        -1,
+        2**53,
+        2**53 + 1,
+        10**100,
+        10**4000,
+        math.ulp(0),
+        -math.ulp(0),
+        1e-300,
+        1e300,
+        sys.float_info.max,
+        math.nextafter(1.0, 2.0),
+    ]
+    values += [rng.uniform(-100, 100) for _ in range(20)]
+    with localcontext() as context:
+        context.prec = 20000
+        for _ in range(512):
+            expected, observed = rng.choices(values, k=2)
+            tolerance = rng.choice([0, 1e-300, 1e-3, 1, 2, 10**4000])
+            relative = bool(rng.getrandbits(1))
+            distance = abs(Decimal(observed) - Decimal(expected))
+            limit = Decimal(tolerance) * (abs(Decimal(expected)) if relative else 1)
+            assert r.compare(expected, observed, tolerance, relative)[0] == (
+                r.MATCH if distance <= limit else r.MISMATCH
+            )
+
+
+def spec(tmp_path, body='print("{\\"value\\":1}")'):
+    script = tmp_path / "worker.py"
+    script.write_text(body + "\n", encoding="utf-8")
+    return {
+        "paper": "controlled-paper",
+        "command": [sys.executable, str(script)],
+        "expected": 1,
+        "registered_at": "2026-10-26T00:00:00+00:00",
+        "inputs": ["worker.py"],
+        "seed": None,
+        "seed_reason": "deterministic fixture",
+        "data_version": "fixture-v1",
+        "config_version": "scalar-v2",
+    }
+
+
+@pytest.mark.parametrize(
+    "change",
+    [
+        {"expected": math.inf},
+        {"tolerance": math.inf},
+        {"relative": "false"},
+        {"expected": True},
+    ],
+)
+def test_invalid_spec_is_rejected_before_command(tmp_path, change):
+    value = spec(
+        tmp_path, 'from pathlib import Path;Path("started").touch();print("{}")'
+    )
+    value.update(change)
+    with pytest.raises(ValueError):
+        r.run_spec(value, cwd=tmp_path)
+    assert not (tmp_path / "started").exists()
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        '{"value":NaN}',
+        '{"value":Infinity}',
+        '{"value":1,"value":2}',
+        '{"value":true}',
+        '{"value":"1"}',
+        '{"value":1e999}',
+        '{"value":1,"other":1e999}',
+    ],
+)
+def test_invalid_or_ambiguous_output_cannot_match(tmp_path, text):
+    value = spec(tmp_path, "print(" + repr(text) + ")")
+    record = r.run_spec(value, cwd=tmp_path)
+    assert record["verdict"] == r.UNRUN, record
+    json.dumps(record, allow_nan=False)
+
+
+def test_mutating_declared_input_is_unrun(tmp_path):
+    value = spec(
+        tmp_path,
+        'from pathlib import Path;Path("data.txt").write_text("changed");print("{\\"value\\":1}")',
+    )
+    (tmp_path / "data.txt").write_text("original")
+    value["inputs"].append("data.txt")
+    record = r.run_spec(value, cwd=tmp_path)
+    assert record["verdict"] == r.UNRUN, record
+
+
+def test_receipt_recomputes_value_and_invalidates_input_changes(tmp_path):
+    value = spec(tmp_path)
+    source = tmp_path / "spec.json"
+    source.write_text(json.dumps(value), encoding="utf-8")
+    record = r.run_spec(value, cwd=tmp_path, source_file=source)
+    assert record["verdict"] == r.MATCH, record
+    out = tmp_path / "artifacts/reproduction"
+    r.write(record, out)
+    findings, blocked = ScientificValidityGate(tmp_path)._reproduction_verdict(
+        "C", "controlled-paper"
+    )
+    assert not findings and not blocked, (findings, blocked)
+    (tmp_path / "worker.py").write_text('print("new code")')
+    findings, blocked = ScientificValidityGate(tmp_path)._reproduction_verdict(
+        "C", "controlled-paper"
+    )
+    assert findings or blocked
+
+
+def test_saved_match_label_cannot_override_mismatch(tmp_path):
+    value = spec(tmp_path, 'print("{\\"value\\":2}")')
+    record = r.run_spec(value, cwd=tmp_path)
+    assert record["verdict"] == r.MISMATCH
+    record["verdict"] = r.MATCH
+    r.write(record, tmp_path / "artifacts/reproduction")
+    findings, blocked = ScientificValidityGate(tmp_path)._reproduction_verdict(
+        "C", "controlled-paper"
+    )
+    assert findings or blocked
+
+
+def test_set_preflights_every_spec_before_any_execution(tmp_path):
+    good = spec(
+        tmp_path,
+        'from pathlib import Path;Path("started").touch();print("{\\"value\\":1}")',
+    )
+    bad = {**good, "tolerance": math.inf}
+    with pytest.raises(ValueError):
+        r.run_set({"paper": "p", "specs": [good, bad]}, cwd=tmp_path)
+    assert not (tmp_path / "started").exists()
+
+
+def test_timeout_closes_descendants_and_keeps_both_streams(tmp_path):
+    leaf = "import time;from pathlib import Path;time.sleep(1.5);Path('late').touch()"
+    body = (
+        "import subprocess,sys,time\nsubprocess.Popen([sys.executable,'-c',"
+        + repr(leaf)
+        + "])\nprint('out-before-timeout',flush=True)\nprint('err-before-timeout',file=sys.stderr,flush=True)\ntime.sleep(6)"
+    )
+    value = spec(tmp_path, body)
+    record = r.run_spec(value, cwd=tmp_path, timeout=0.8)
+    assert record["verdict"] == r.UNRUN and record["exit_code"] == 124, record
+    assert (
+        "out-before-timeout" in record["stdout"]
+        and "err-before-timeout" in record["stderr"]
+    )
+    time.sleep(1.7)
+    assert not (tmp_path / "late").exists()
+
+
+@pytest.mark.parametrize(
+    "prefix",
+    [
+        '{"value":2,\n "other":0}',
+        '{"value":0,"value":2}',
+        '{"value":NaN}',
+        '{"value":2}',
+    ],
+)
+def test_multiple_or_invalid_json_results_are_never_selected_favorably(
+    tmp_path, prefix
+):
+    value = spec(tmp_path, "print(" + repr(prefix + '\n{"value":1}') + ")")
+    assert r.run_spec(value, cwd=tmp_path)["verdict"] == r.UNRUN
+
+
+@pytest.mark.parametrize("options", [["-I"], ["-X", "utf8"], ["-IB", "-Wignore"]])
+def test_python_options_still_bind_the_direct_entry(tmp_path, options):
+    value = spec(tmp_path)
+    value.pop("inputs")
+    value["command"] = [sys.executable, *options, value["command"][1]]
+    record = r.run_spec(value, cwd=tmp_path)
+    assert record["verdict"] == r.MATCH, record
+    assert "worker.py" in record["binding"]["inputs"]
+    assert not r.validate_record(record, tmp_path, value["paper"])
+    (tmp_path / "worker.py").write_text('print("changed code")')
+    assert r.validate_record(record, tmp_path, value["paper"])
+
+
+def test_large_derived_exact_threshold_does_not_hit_decimal_conversion_limit(tmp_path):
+    assert r.compare(10**4000, 0, 10**4000, True)[0] == r.MATCH
+    value = spec(tmp_path)
+    value.update(expected=10**4000, tolerance=10**4000, relative=True)
+    record = r.run_spec(value, cwd=tmp_path)
+    assert record["verdict"] == r.MATCH, record
+    json.dumps(record, allow_nan=False)
+
+
+def test_source_spec_file_changes_revoke_a_record(tmp_path):
+    value = spec(tmp_path)
+    source = tmp_path / "spec.json"
+    source.write_text(json.dumps(value))
+    record = r.run_spec(value, cwd=tmp_path, source_file=source)
+    assert record["verdict"] == r.MATCH and not r.validate_record(
+        record, tmp_path, value["paper"]
+    ), record
+    value["expected"] = 2
+    source.write_text(json.dumps(value))
+    assert r.validate_record(record, tmp_path, value["paper"])
+
+
+def test_source_file_must_actually_describe_the_supplied_spec(tmp_path):
+    value = spec(tmp_path)
+    source = tmp_path / "spec.json"
+    source.write_text(json.dumps({**value, "expected": 2}))
+    with pytest.raises(ValueError):
+        r.run_spec(value, cwd=tmp_path, source_file=source)
+
+
+def test_dropping_a_set_result_is_refused_even_after_resealing(tmp_path):
+    value = spec(tmp_path)
+    bundle = {
+        "paper": value["paper"],
+        "registered_at": value["registered_at"],
+        "seed": None,
+        "seed_reason": "deterministic fixture",
+        "data_version": "fixture-v1",
+        "config_version": "set-v2",
+        "specs": [value, value],
+    }
+    record = r.run_set(bundle, cwd=tmp_path)
+    assert record["verdict"] == r.MATCH and not r.validate_record(
+        record, tmp_path, value["paper"]
+    ), record
+    record["specs"].pop()
+    record["spec_count"] = 1
+    record["counts"]["MATCH"] = 1
+    r._seal(record)
+    assert r.validate_record(record, tmp_path, value["paper"])
+
+
+@pytest.mark.parametrize(
+    "paper",
+    [
+        "a/b",
+        "a?b",
+        "CON",
+        "CON.foo",
+        "NUL.txt",
+        "COM1.result",
+        "..",
+        "Foo",
+        "foo",
+        "中" * 100,
+    ],
+)
+def test_record_names_are_portable_and_round_trip_without_aliasing(tmp_path, paper):
+    record = {"paper": paper, "verdict": r.UNRUN}
+    path = r.write(record, tmp_path)
+    assert len(path.name.encode("utf-8")) <= 255
+    assert r.load(paper, tmp_path) == record
+
+
+def test_distinct_unsafe_paper_ids_do_not_overwrite_each_other(tmp_path):
+    for paper in ("a/b", "a?b", "Foo", "foo"):
+        r.write({"paper": paper, "verdict": r.UNRUN}, tmp_path)
+    assert len(list(tmp_path.glob("*.json"))) == 4
+    for paper in ("a/b", "a?b", "Foo", "foo"):
+        assert r.load(paper, tmp_path)["paper"] == paper
+
+
+def test_complete_set_cannot_be_trimmed_to_success_after_resealing(tmp_path):
+    value = spec(tmp_path)
+    bundle = {
+        "paper": value["paper"],
+        "registered_at": value["registered_at"],
+        "specs": [value, {**value, "expected": 2}],
+    }
+    source = tmp_path / "bundle.json"
+    source.write_text(json.dumps(bundle), encoding="utf-8")
+    record = r.run_set(bundle, cwd=tmp_path, source_file=source)
+    assert record["verdict"] == r.MISMATCH
+    assert not r.validate_record(record, tmp_path, value["paper"], require_source=True)
+    record["specs"].pop()
+    record["spec_inventory"].pop()
+    record["spec_count"] = 1
+    record["counts"] = {r.MATCH: 1, r.MISMATCH: 0, r.UNRUN: 0}
+    record["verdict"] = r.MATCH
+    r._seal(record)
+    assert r.validate_record(record, tmp_path, value["paper"], require_source=True)
+
+
+def test_extracting_a_successful_child_cannot_qualify_a_mismatching_bundle(tmp_path):
+    value = spec(tmp_path)
+    bundle = {
+        "paper": value["paper"],
+        "registered_at": value["registered_at"],
+        "specs": [value, {**value, "expected": 2}],
+    }
+    source = tmp_path / "bundle.json"
+    source.write_text(json.dumps(bundle), encoding="utf-8")
+    record = r.run_set(bundle, cwd=tmp_path, source_file=source)
+    assert record["verdict"] == r.MISMATCH
+    r.write(record["specs"][0], tmp_path / "artifacts/reproduction")
+    findings, blocked = ScientificValidityGate(tmp_path)._reproduction_verdict(
+        "C", value["paper"]
+    )
+    assert not findings and blocked
+
+
+def test_relabelled_paper_is_refused_even_with_a_fresh_checksum(tmp_path):
+    value = spec(tmp_path)
+    source = tmp_path / "spec.json"
+    source.write_text(json.dumps(value), encoding="utf-8")
+    record = r.run_spec(value, cwd=tmp_path, source_file=source)
+    record["paper"] = "another-paper"
+    r._seal(record)
+    assert r.validate_record(record, tmp_path, "another-paper", require_source=True)
+
+
+def test_in_memory_diagnostic_is_not_a_registered_scientific_record(tmp_path):
+    value = spec(tmp_path)
+    record = r.run_spec(value, cwd=tmp_path)
+    assert not r.validate_record(record, tmp_path, value["paper"])
+    assert r.validate_record(record, tmp_path, value["paper"], require_source=True)
+
+
+@pytest.mark.parametrize("source", [[], {}, {"path": False}, "invalid"])
+def test_malformed_source_binding_blocks_without_crashing(tmp_path, source):
+    value = spec(tmp_path)
+    record = r.run_spec(value, cwd=tmp_path)
+    record["binding"]["source_spec"] = source
+    r._seal(record)
+    assert r.validate_record(record, tmp_path, value["paper"], require_source=True)
+
+
+@pytest.mark.parametrize("binding", [[], None])
+def test_malformed_child_binding_returns_errors(tmp_path, binding):
+    value = spec(tmp_path)
+    bundle = {"paper": value["paper"], "specs": [value]}
+    source = tmp_path / "bundle.json"
+    source.write_text(json.dumps(bundle), encoding="utf-8")
+    record = r.run_set(bundle, cwd=tmp_path, source_file=source)
+    record["specs"][0]["binding"] = binding
+    r._seal(record["specs"][0])
+    r._seal(record)
+    assert r.validate_record(record, tmp_path, value["paper"], require_source=True)
+
+
+def test_cli_show_revalidates_current_inputs_instead_of_trusting_a_saved_match(
+    tmp_path, capsys
+):
+    from tools.reproduction_check import main
+
+    value = spec(tmp_path)
+    source = tmp_path / "spec.json"
+    source.write_text(json.dumps(value), encoding="utf-8")
+    out = tmp_path / "receipts"
+    assert main(["run", str(source), "--cwd", str(tmp_path), "--out", str(out)]) == 0
+    capsys.readouterr()
+    args = ["show", value["paper"], "--cwd", str(tmp_path), "--out", str(out)]
+    assert main(args) == 0
+    assert json.loads(capsys.readouterr().out)["qualification"] == r.MATCH
+    (tmp_path / "worker.py").write_text("changed", encoding="utf-8")
+    assert main(args) == 1
+    shown = json.loads(capsys.readouterr().out)
+    assert shown["stored_record"]["verdict"] == r.MATCH
+    assert shown["qualification"] == "BLOCKED" and shown["validation_errors"]
+
+
+def test_cli_invalid_spec_returns_error_before_launch(tmp_path, capsys):
+    from tools.reproduction_check import main
+
+    value = spec(tmp_path, 'from pathlib import Path;Path("started").touch()')
+    value["relative"] = "false"
+    source = tmp_path / "spec.json"
+    source.write_text(json.dumps(value), encoding="utf-8")
+    assert main(["run", str(source), "--cwd", str(tmp_path)]) == 2
+    assert "ERROR:" in capsys.readouterr().err and not (tmp_path / "started").exists()

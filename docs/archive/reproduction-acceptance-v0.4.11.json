@@ -1,0 +1,356 @@
+{
+  "generated": "2026-11-01T22:22:54.503563+00:00",
+  "scope": "Installed-wheel direct reproduction numeric/execution/receipt boundaries; benign controlled stubs, not paper training or signed attestation.",
+  "wheel": "reference/sdk_process_acceptance/eidos-0.4.11-py3-none-any.whl",
+  "wheel_sha256": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
+  "driver": "reference/reproduction_acceptance/check.py",
+  "driver_sha256": "16c34435bf7b9e1f6a3c8c59d83458a5b3ada5d4b064581183dbcb43f5a0ea0f",
+  "source_inventory": "SDK-PROCESS-ACCEPTANCE.json#source_sha256_canonical_lf",
+  "windows": {
+    "status": "PASS",
+    "result": {
+      "generated": "2026-11-01T21:54:06.202191+00:00",
+      "platform": "win32",
+      "sdk_version": "0.4.11",
+      "optimization_level": 0,
+      "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+      "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\windows venv\\Scripts\\python.exe",
+      "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\windows venv\\Lib\\site-packages\\framework\\reproduction\\__init__.py",
+      "source_sha256_canonical_lf": {
+        "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+        "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+        "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+        "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+        "framework/command_inputs.py": "e739c36eff434bdf38dc2604b6d10a43f66336d17eae491334cdde1033a94823",
+        "framework/config.py": "ea7c01f6a2f822024199fcc22cc3e371e57594a969666daa08c87dcc59b41044",
+        "framework/decision.py": "d6663f573a03685941c06a75cae7685fb68195cbf8f5a733a759360fe601892b",
+        "framework/diagnosis/__init__.py": "f004baafbf88dcc623255d3adea5318dd1d5d65a9ad526d86fd0e2225586c4e4",
+        "framework/executable_package.py": "a2d9d135dfa0c0884f21b58a52fee11158f604e52e35c000009fb66ce7c85f03",
+        "framework/gates/__init__.py": "c22dfe47eff927815d1a3e201070040a74b0f69f866b472a546ff1db5052a93e",
+        "framework/inference/__init__.py": "58a89874bd025e87defc40476b041c8e7296c375c97fd6048f1de8df62db8140",
+        "framework/inference/gguf.py": "4cc04cd656bde30ba8679b33a41739c86e89a70e1c7046874a40fbc0864d1267",
+        "framework/inference/llama_cpp.py": "03fac820b5665dcf12c4e2749a0fe929b04f292f1bae86a3a7a97e6398fc7a30",
+        "framework/lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
+        "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
+        "framework/numerical_programs/__init__.py": "eb59e849b6458789d07b5c0e46abaa317efc465b569a426c02205d6aa427748b",
+        "framework/numerical_programs/_compiler.py": "53d2b1e6a76a6dd93571408e74d0da2d8b50c34e3e82a4454f2722a9e503576b",
+        "framework/numerical_programs/_json.py": "efb83e3de30eb390cb13a4ff5b99db8e66383a46843c765615e5abe639cb1123",
+        "framework/numerical_programs/_language.py": "7a7f773d34d837368136b911e7fa0a43970423ee7f1b5d01e43896b50a649373",
+        "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
+        "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
+        "framework/quarto_bridge/__init__.py": "09c1830a16d651b14f6baf14a73143d8c0403b9d614c1540a46019eac9832af2",
+        "framework/quarto_bridge/_delivery.py": "548024950a54b038bc34d431090c78a0518ac787eaec053c32ec0b5def2b9568",
+        "framework/quarto_bridge/_figure_job.py": "e2ed211aef594b2d2e3c9ee77527f8fa059507de8d50ba050314cb3b6030c951",
+        "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+        "framework/reproduction/__init__.py": "3b722d0beab94990afec2de6f04408f3e520695e7f780d63c697592eca235071",
+        "framework/reproduction/_numeric.py": "5424d8d0c4fbafa4fc2472d0dc347ec541ffed34a6f3aaf3612e3b08f7e03a18",
+        "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+        "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
+        "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
+        "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+        "framework/surrogate/__init__.py": "1fbb528b20f80f3bf28893aa1df1cdfb041217ce4122ffe74e3d1c98556e29ad",
+        "framework/surrogate/demo.py": "8e3104db0efd6fe84feb656711cbb1f22eb0ba53c7b59bddd831fae7886132b3",
+        "framework/tracking/__init__.py": "e648cdf8e511a8c4725f6d732212d2660f49a4682bfd840aea08451b756bb942",
+        "framework/tracking/_worker.py": "bce9fa56d8f05ecab350e3689bb35c19773ad9aa283c42b6fc5ad5c6190a9b54",
+        "framework/updates.py": "e92b282d0fb5691a043cd8131c2d0ab620a3e80f8b5200e58022c339da75d711",
+        "framework/validity/__init__.py": "9f3ed867db4d14e6d37a012a1dcbf661a4525dddd2b5880a67489cede076d572",
+        "framework/validity/lean_audit.py": "9d396ec4ff6a8472d7348a3893b006d1e64794355e1eada8e9f65ae9eb32a1eb",
+        "framework/verifiers/__init__.py": "8e8086c9ca734be2b002593c7b751a909e86d2edf4fef209b2f10fe9865dc78c",
+        "framework/verifiers/citations.py": "dafb09dc5233fb71408a8d62e7bc5365e41afa389e4710446719adbf86a54380",
+        "framework/verifiers/extract_s4.py": "df0ffaa4359127c20e6354529eb850ad6e5d2cbd3cd0be708b5f13107b800a8a",
+        "framework/verifiers/numerics.py": "a45240cb251abca05780e47b029aa769eddccf12053e83d834c2446befaa1243",
+        "framework/verifiers/pointers.py": "d28fe077bbd34642eea88d8cf7f977deb376c13ad593ed0583d0c282875b8001",
+        "framework/verifiers/stats.py": "23e42eb09698aee95425531f97443f7e9531048acf6ce8a8f71c6b032976bfd8",
+        "framework/verifiers/support.py": "8416c27e1c67c2da4983bd5043d40a7b00759b70c2032e31043589e42ee72aa8"
+      },
+      "cases": [
+        {
+          "case": "512 comparisons against independent Decimal arithmetic",
+          "accepted": true
+        },
+        {
+          "case": "nonfinite and mistyped domains refused",
+          "accepted": true
+        },
+        {
+          "case": "one-unit integer error above binary64 exact range rejected",
+          "accepted": true
+        },
+        {
+          "case": "executed source-bound MATCH and S12 positive control",
+          "accepted": true
+        },
+        {
+          "case": "declared data changes invalidate an existing MATCH",
+          "accepted": true
+        },
+        {
+          "case": "reject duplicate output",
+          "accepted": true
+        },
+        {
+          "case": "reject nan output",
+          "accepted": true
+        },
+        {
+          "case": "reject overflow output",
+          "accepted": true
+        },
+        {
+          "case": "reject boolean output",
+          "accepted": true
+        },
+        {
+          "case": "reject multiple output",
+          "accepted": true
+        },
+        {
+          "case": "reject multiline-prefix output",
+          "accepted": true
+        },
+        {
+          "case": "invalid spec refused before launch",
+          "accepted": true
+        },
+        {
+          "case": "complete bundle preserves the mismatching result",
+          "accepted": true
+        },
+        {
+          "case": "successful child cannot qualify the complete paper",
+          "accepted": true
+        },
+        {
+          "case": "trimmed and resealed bundle rejected against original inventory",
+          "accepted": true
+        },
+        {
+          "case": "input mutation during execution is UNRUN",
+          "accepted": true
+        },
+        {
+          "case": "owned timeout closes descendants and retains both streams",
+          "accepted": true
+        },
+        {
+          "case": "portable paper identities round trip without overwriting",
+          "accepted": true
+        }
+      ],
+      "oracle_comparisons": 512,
+      "seed": 20261101,
+      "scope": "Installed SDK numeric and receipt boundary with benign stubs; not paper training, signed attestation, service migration or new-machine qualification."
+    },
+    "installation": "Fresh non-editable venv; complete hash-locked normal core dependencies, normal wheel install and pip check."
+  },
+  "linux": {
+    "status": "PASS",
+    "result": {
+      "generated": "2026-11-01T21:58:43.633269+00:00",
+      "platform": "linux",
+      "sdk_version": "0.4.11",
+      "optimization_level": 0,
+      "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
+      "executable": "/tmp/eidos-v411-fresh/bin/python",
+      "installed_module": "/tmp/eidos-v411-fresh/lib/python3.12/site-packages/framework/reproduction/__init__.py",
+      "source_sha256_canonical_lf": {
+        "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+        "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+        "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+        "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+        "framework/command_inputs.py": "e739c36eff434bdf38dc2604b6d10a43f66336d17eae491334cdde1033a94823",
+        "framework/config.py": "ea7c01f6a2f822024199fcc22cc3e371e57594a969666daa08c87dcc59b41044",
+        "framework/decision.py": "d6663f573a03685941c06a75cae7685fb68195cbf8f5a733a759360fe601892b",
+        "framework/diagnosis/__init__.py": "f004baafbf88dcc623255d3adea5318dd1d5d65a9ad526d86fd0e2225586c4e4",
+        "framework/executable_package.py": "a2d9d135dfa0c0884f21b58a52fee11158f604e52e35c000009fb66ce7c85f03",
+        "framework/gates/__init__.py": "c22dfe47eff927815d1a3e201070040a74b0f69f866b472a546ff1db5052a93e",
+        "framework/inference/__init__.py": "58a89874bd025e87defc40476b041c8e7296c375c97fd6048f1de8df62db8140",
+        "framework/inference/gguf.py": "4cc04cd656bde30ba8679b33a41739c86e89a70e1c7046874a40fbc0864d1267",
+        "framework/inference/llama_cpp.py": "03fac820b5665dcf12c4e2749a0fe929b04f292f1bae86a3a7a97e6398fc7a30",
+        "framework/lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
+        "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
+        "framework/numerical_programs/__init__.py": "eb59e849b6458789d07b5c0e46abaa317efc465b569a426c02205d6aa427748b",
+        "framework/numerical_programs/_compiler.py": "53d2b1e6a76a6dd93571408e74d0da2d8b50c34e3e82a4454f2722a9e503576b",
+        "framework/numerical_programs/_json.py": "efb83e3de30eb390cb13a4ff5b99db8e66383a46843c765615e5abe639cb1123",
+        "framework/numerical_programs/_language.py": "7a7f773d34d837368136b911e7fa0a43970423ee7f1b5d01e43896b50a649373",
+        "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
+        "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
+        "framework/quarto_bridge/__init__.py": "09c1830a16d651b14f6baf14a73143d8c0403b9d614c1540a46019eac9832af2",
+        "framework/quarto_bridge/_delivery.py": "548024950a54b038bc34d431090c78a0518ac787eaec053c32ec0b5def2b9568",
+        "framework/quarto_bridge/_figure_job.py": "e2ed211aef594b2d2e3c9ee77527f8fa059507de8d50ba050314cb3b6030c951",
+        "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+        "framework/reproduction/__init__.py": "3b722d0beab94990afec2de6f04408f3e520695e7f780d63c697592eca235071",
+        "framework/reproduction/_numeric.py": "5424d8d0c4fbafa4fc2472d0dc347ec541ffed34a6f3aaf3612e3b08f7e03a18",
+        "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+        "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
+        "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
+        "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+        "framework/surrogate/__init__.py": "1fbb528b20f80f3bf28893aa1df1cdfb041217ce4122ffe74e3d1c98556e29ad",
+        "framework/surrogate/demo.py": "8e3104db0efd6fe84feb656711cbb1f22eb0ba53c7b59bddd831fae7886132b3",
+        "framework/tracking/__init__.py": "e648cdf8e511a8c4725f6d732212d2660f49a4682bfd840aea08451b756bb942",
+        "framework/tracking/_worker.py": "bce9fa56d8f05ecab350e3689bb35c19773ad9aa283c42b6fc5ad5c6190a9b54",
+        "framework/updates.py": "e92b282d0fb5691a043cd8131c2d0ab620a3e80f8b5200e58022c339da75d711",
+        "framework/validity/__init__.py": "9f3ed867db4d14e6d37a012a1dcbf661a4525dddd2b5880a67489cede076d572",
+        "framework/validity/lean_audit.py": "9d396ec4ff6a8472d7348a3893b006d1e64794355e1eada8e9f65ae9eb32a1eb",
+        "framework/verifiers/__init__.py": "8e8086c9ca734be2b002593c7b751a909e86d2edf4fef209b2f10fe9865dc78c",
+        "framework/verifiers/citations.py": "dafb09dc5233fb71408a8d62e7bc5365e41afa389e4710446719adbf86a54380",
+        "framework/verifiers/extract_s4.py": "df0ffaa4359127c20e6354529eb850ad6e5d2cbd3cd0be708b5f13107b800a8a",
+        "framework/verifiers/numerics.py": "a45240cb251abca05780e47b029aa769eddccf12053e83d834c2446befaa1243",
+        "framework/verifiers/pointers.py": "d28fe077bbd34642eea88d8cf7f977deb376c13ad593ed0583d0c282875b8001",
+        "framework/verifiers/stats.py": "23e42eb09698aee95425531f97443f7e9531048acf6ce8a8f71c6b032976bfd8",
+        "framework/verifiers/support.py": "8416c27e1c67c2da4983bd5043d40a7b00759b70c2032e31043589e42ee72aa8"
+      },
+      "cases": [
+        {
+          "case": "512 comparisons against independent Decimal arithmetic",
+          "accepted": true
+        },
+        {
+          "case": "nonfinite and mistyped domains refused",
+          "accepted": true
+        },
+        {
+          "case": "one-unit integer error above binary64 exact range rejected",
+          "accepted": true
+        },
+        {
+          "case": "executed source-bound MATCH and S12 positive control",
+          "accepted": true
+        },
+        {
+          "case": "declared data changes invalidate an existing MATCH",
+          "accepted": true
+        },
+        {
+          "case": "reject duplicate output",
+          "accepted": true
+        },
+        {
+          "case": "reject nan output",
+          "accepted": true
+        },
+        {
+          "case": "reject overflow output",
+          "accepted": true
+        },
+        {
+          "case": "reject boolean output",
+          "accepted": true
+        },
+        {
+          "case": "reject multiple output",
+          "accepted": true
+        },
+        {
+          "case": "reject multiline-prefix output",
+          "accepted": true
+        },
+        {
+          "case": "invalid spec refused before launch",
+          "accepted": true
+        },
+        {
+          "case": "complete bundle preserves the mismatching result",
+          "accepted": true
+        },
+        {
+          "case": "successful child cannot qualify the complete paper",
+          "accepted": true
+        },
+        {
+          "case": "trimmed and resealed bundle rejected against original inventory",
+          "accepted": true
+        },
+        {
+          "case": "input mutation during execution is UNRUN",
+          "accepted": true
+        },
+        {
+          "case": "owned timeout closes descendants and retains both streams",
+          "accepted": true
+        },
+        {
+          "case": "portable paper identities round trip without overwriting",
+          "accepted": true
+        }
+      ],
+      "oracle_comparisons": 512,
+      "seed": 20261101,
+      "scope": "Installed SDK numeric and receipt boundary with benign stubs; not paper training, signed attestation, service migration or new-machine qualification."
+    },
+    "installation": "Fresh non-editable venv; complete hash-locked normal core dependencies, normal wheel install and pip check.",
+    "image": "sha256:bc384f41896ee75c8001a4a17a4830869b6b9b47a23dfd5df038384f2bc755be",
+    "network": "none",
+    "execution": "NUMERICAL-PROGRAMS-ACCEPTANCE.json#additional_sdk_linux_execution"
+  },
+  "initial_red": {
+    "version": "0.4.7",
+    "cases": [
+      {
+        "case": "infinite expected relative",
+        "verdict": "MATCH"
+      },
+      {
+        "case": "infinite tolerance",
+        "verdict": "MATCH"
+      },
+      {
+        "case": "large integer one-unit error",
+        "verdict": "MATCH"
+      }
+    ],
+    "wheel_sha256": "7f796c47af76ae9ba933777d6bbee0fea7ea598e1d3b06687590f84445edb1e9",
+    "scope": "Preserved installed v0.4.7, isolated outside checkout; deliberate defect probes.",
+    "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-047-7693kim4\\venv with spaces\\Lib\\site-packages\\framework\\reproduction\\__init__.py",
+    "source_sha256_canonical_lf": "484a9c4eb5bc35722b1413685890c79caa59296aed5699a3e9891cac50c17c58"
+  },
+  "limitations": [
+    "Metadata and hashes are coherence checks, not independently witnessed preregistration or signed execution",
+    "Only declared dependencies are followed; arbitrary imports, remote state and installed-package closure are not discovered",
+    "Old monitor/loops still require runtime migration; no clean-24h acceptance"
+  ],
+  "optimization_controls": {
+    "windows": [
+      {
+        "mode": "-O",
+        "exit_code": 1,
+        "stdout_empty": true,
+        "rejected": true,
+        "message": "Qualification requires active assertions; omit -O/-OO."
+      },
+      {
+        "mode": "-OO",
+        "exit_code": 1,
+        "stdout_empty": true,
+        "rejected": true,
+        "message": "Qualification requires active assertions; omit -O/-OO."
+      }
+    ],
+    "linux": [
+      {
+        "mode": "-O",
+        "exit_code": 1,
+        "stdout_empty": true,
+        "rejected": true,
+        "message": "Qualification requires active assertions; omit -O/-OO."
+      },
+      {
+        "mode": "-OO",
+        "exit_code": 1,
+        "stdout_empty": true,
+        "rejected": true,
+        "message": "Qualification requires active assertions; omit -O/-OO."
+      }
+    ]
+  },
+  "lineage": {
+    "previous_release": "v0.4.10",
+    "previous_record": "archive/reproduction-acceptance-v0.4.10.json",
+    "previous_wheel_sha256": "68faf443a36d668325b96145971db2ce7bbcb8ae3b8e03b074c2c2b2ea47d9eb",
+    "earlier": {
+      "previous_release": "v0.4.9",
+      "previous_record": "archive/reproduction-acceptance-v0.4.9.json",
+      "previous_wheel_sha256": "ccb6c15bec83e79a3aaab8c5c653ea4a525cffa44223cdc2dd7cbdcef3a0c187"
+    }
+  }
+}

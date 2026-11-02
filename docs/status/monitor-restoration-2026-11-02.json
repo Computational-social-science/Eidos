@@ -1,0 +1,20 @@
+{
+  "observed_at": "2026-11-02T08:28:16.733279+00:00",
+  "commit": "dace1f9fb2fcff0ba171eb47d86edc73f1f1adf9",
+  "incident": "8765 refused connections; no listener or live previous supervisor",
+  "action": "Started existing hidden monitor launcher via Win32_Process.Create; existing Startup entry unchanged",
+  "launcher_pid": 23508,
+  "page_http": 200,
+  "browser": "installed Microsoft Edge headless",
+  "browser_javascript_errors": [],
+  "seq_before": 17838,
+  "seq_after": 17863,
+  "stale": false,
+  "overall": "ALARM",
+  "remaining_faults": [
+    "decision_service"
+  ],
+  "runtime_18434": "OK",
+  "decision_failure": "WSL bash cannot resolve /e/2026-AI4S/decision-service/scripts/serve.sh; Git Bash executable exists",
+  "scope": "Operational recovery record, not scientific qualification; no source or recovery budget changed"
+}

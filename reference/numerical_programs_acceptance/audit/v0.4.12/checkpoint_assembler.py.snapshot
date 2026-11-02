@@ -1,0 +1,151 @@
+"""Cross-check executed candidate cases; keep release publication explicitly pending."""
+from pathlib import Path
+import hashlib
+import io
+import json
+import sys
+import zipfile
+
+root=Path.cwd();sys.path.insert(0,str(root))
+from tools.record_self_audit import input_state
+from framework.artifacts import atomic_output
+import v410_receipt_guards as legacy
+import v412_receipt_guards as numerical_guard
+
+cache=Path('C:/Users/Administrator/.cache/eidos-sdk-v412')
+archive=root/'reference/numerical_programs_acceptance/recorded_trials/v0.4.12'
+sha=lambda b:hashlib.sha256(b).hexdigest()
+inputs={}
+def raw(path):
+    path=Path(path).resolve();body=path.read_bytes()
+    if path in inputs:
+        legacy.require(inputs[path]==body,'Input changed during checkpoint assembly')
+    inputs[path]=body
+    return body
+def read(path):
+    return json.loads(raw(path))
+require=legacy.require
+assembly_sources={
+    'reference/numerical_programs_acceptance/audit/v0.4.12/checkpoint_assembler.py.snapshot':Path(__file__),
+    'reference/numerical_programs_acceptance/audit/v0.4.12/legacy_guards.py.snapshot':Path(legacy.__file__),
+    'reference/numerical_programs_acceptance/audit/v0.4.12/numerical_guards.py.snapshot':Path(numerical_guard.__file__)}
+assembly_hashes={}
+for published,private in assembly_sources.items():
+    body=raw(private)
+    require(raw(root/published)==body,'Published checkpoint source differs')
+    assembly_hashes[published]=sha(body)
+wheel=root/'reference/sdk_process_acceptance/eidos-0.4.12-py3-none-any.whl'
+wheel_sha=sha(raw(wheel))
+with zipfile.ZipFile(io.BytesIO(raw(wheel))) as z:
+    modules={n:sha(z.read(n).decode('utf-8-sig').replace('\r\n','\n').encode())
+             for n in z.namelist() if n.startswith('framework/') and n.endswith('.py')}
+source={p.relative_to(root).as_posix():sha(p.read_text(encoding='utf-8-sig').encode())
+        for p in (root/'framework').rglob('*.py')}
+require(source==modules and len(modules)==45,'Candidate source/wheel mismatch')
+audit=read(root/'docs/SELF_AUDIT.json')
+require(audit['stability']['stable'] is True and audit['tests']['failed']==audit['tests']['errors']==0,
+        'Source audit failed')
+require(input_state()==audit['stability']['before']==audit['stability']['after'],'Source audit is stale')
+manifest=read(archive/'manifest.json')
+require({p.relative_to(archive).as_posix() for p in archive.rglob('*') if p.is_file()}
+        ==set(manifest['files'])|{'manifest.json'},'Archive inventory differs')
+for name,item in manifest['files'].items():
+    body=raw(archive/name)
+    require(sha(body)==item['sha256'] and len(body)==item['size'],'Archive bytes differ: '+name)
+results={}
+for platform,folder in [('windows',cache/'windows-delivery'),('linux',cache/'sdk-core/results')]:
+    for case in ('sdk','quarto','reproduction'):
+        value=read(folder/(case+'.json'))
+        legacy.lifecycle(value,case,platform)
+        require(value['sdk_version']=='0.4.12' and value['source_sha256_canonical_lf']==modules,
+                'Installed delivery identity mismatch')
+        results[platform+'_'+case]={'cases':len(value['cases']),'sha256_raw':sha((folder/(case+'.json')).read_bytes())}
+for platform,folder,file in [('windows',cache/'windows-results','numerical.json'),
+                             ('linux',cache/'linux-core-1','numerical.stdout')]:
+    value=read(folder/file)
+    numerical_guard.numerical(value,platform,modules,wheel_sha,
+        sha((root/'reference/numerical_programs_acceptance/check.py').read_text(encoding='utf-8-sig').encode()))
+    results[platform+'_numerical']={'joint_log1mexp':23,'joint_softplus':16,'refusals':12,
+                                  'sha256_raw':sha((folder/file).read_bytes())}
+for platform,path in [('windows',cache/'windows-tracking.json'),('linux',cache/'tracking-3/tracking.json')]:
+    value=read(path)
+    require(value['status']=='PASS' and value['sdk_version']=='0.4.12'
+            and value['platform']=={'windows':'win32','linux':'linux'}[platform]
+            and value['source_sha256_canonical_lf']==modules and value['wheel_sha256']==wheel_sha,
+            'Installed tracking identity differs')
+    require(value['driver_sha256_lf']==sha(raw(root/'reference/tracking_acceptance/check.py')
+            .decode('utf-8-sig').replace('\r\n','\n').encode()),'Tracking driver differs')
+    for name,digest in value['protocol_sha256_lf'].items():
+        source_path=(root/'tests'/name).resolve()
+        require(source_path.is_relative_to((root/'tests').resolve()),'Protocol escaped tests directory')
+        require(sha(raw(source_path).decode('utf-8-sig').replace('\r\n','\n').encode())==digest,
+                'Tracking protocol differs')
+    require(len(value['cases'])==49 and len({(r['class'],r['case']) for r in value['cases']})==49
+            and all(r['accepted'] is True for r in value['cases']),'Tracking case inventory differs')
+    results[platform+'_tracking']={'cases':49,'sha256_raw':sha(path.read_bytes())}
+for platform,path in [('windows',cache/'windows-recovery.json'),('linux',cache/'recovery-2/recovery.json')]:
+    value=read(path);legacy.recovery(value,platform)
+    expected_sources={'framework/recovery.py','framework/services.py','tools/watch_pipeline.py',
+        'framework/artifacts.py','framework/subprocesses.py','framework/_process_tree.py',
+        'framework/_windows_job.py','framework/_posix_job.py','tools/owned_workspace.py',
+        'pyproject.toml','uv.lock','reference/recovery_acceptance/check.py',
+        'reference/recovery_acceptance/service.py'}
+    require(type(value.get('source_sha256_lf')) is dict
+            and set(value['source_sha256_lf'])==expected_sources,'Recovery source inventory differs')
+    for name,digest in value['source_sha256_lf'].items():
+        source_path=(root/name).resolve()
+        require(source_path.is_relative_to(root.resolve()),'Recovery source escaped repository')
+        require(sha(raw(source_path).decode('utf-8-sig').replace('\r\n','\n').encode())==digest,
+                'Recovery source differs')
+    results[platform+'_source_recovery']={'cases':13,'sha256_raw':sha(path.read_bytes()),'scope':'source, not installed service migration'}
+for platform,path in [('windows',cache/'windows-results/shell.json'),('linux',cache/'linux-core-1/shell.stdout')]:
+    value=read(path);identity=value['identity']
+    snapshot_folder='input' if platform=='windows' else 'input-linux'
+    archived_driver=raw(archive/'trials'/snapshot_folder/'shell.py.snapshot')
+    archived_identity=raw(archive/'trials'/snapshot_folder/'numerical.py.snapshot')
+    canonical=lambda b:b.decode('utf-8-sig').replace('\r\n','\n').encode()
+    require(sha(archived_driver)==value['driver_sha256_raw']
+            and sha(archived_identity)==value['identity_driver_sha256_raw']
+            and canonical(archived_driver)==canonical(raw(root/'reference/recovery_shell_acceptance/check.py'))
+            and canonical(archived_identity)==canonical(raw(root/'reference/numerical_programs_acceptance/check.py')),
+            'Shell driver/helper source binding differs')
+    require(value['status']=='PASS' and identity['sdk_version']=='0.4.12'
+            and value['platform']=={'windows':'win32','linux':'linux'}[platform]
+            and identity['wheel_sha256']==wheel_sha and identity['source_sha256_canonical_lf']==modules,
+            'Installed shell identity differs')
+    require(len(value['controls']['checks'])==4 and len(set(value['controls']['checks']))==4
+            and value['controls']['real_model_services_touched'] is False,'Shell cases differ')
+    results[platform+'_shell']={'cases':4,'sha256_raw':sha(path.read_bytes())}
+for name in ('sdk-core','tracking-3','recovery-2','build-tracking'):
+    controller=read(cache/name/'execution.json')
+    require(controller['status']=='PASS' and controller['cleanup_verified'] is True,
+            'Unqualified controller or failed cleanup')
+linux=read(cache/'linux-core-1/container.json')
+require(linux['status']=='PASS' and linux['cleanup_verified'] is True,'Public Linux replay failed')
+require(linux['observed_settings']['network']=='none' and linux['observed_settings']['readonly_rootfs'] is True,
+        'Public Linux isolation differs')
+numerical_guard.installed_negatives(read(cache/'installed-negatives-v2/summary.json'))
+legacy.negative(read(cache/'controls-final/summary.json'),'tracking')
+for path in (cache/'windows-recovery-controls/summary.json',cache/'recovery-2/recovery-controls/summary.json'):
+    legacy.negative(read(path),'recovery')
+record={'schema':'eidos.candidate-release-checkpoint.v1','version':'0.4.12',
+        'status':'CANDIDATE_TESTS_PASS_RELEASE_PENDING','wheel':wheel.relative_to(root).as_posix(),
+        'wheel_sha256':wheel_sha,'source_module_count':len(modules),'source_sha256_canonical_lf':modules,
+        'source_audit':{'tests':audit['tests'],'coverage':audit['coverage_total'],'chains':audit['chains'],
+                        'state':audit['stability']['after']},'results':results,
+        'archive':archive.relative_to(root).as_posix(),'archive_manifest_sha256':sha((archive/'manifest.json').read_bytes()),
+        'archived_payloads':len(manifest['files']),'free_reuse':{'gemini_api':False,'paid_model_api':False,'mandatory_service_key':False},
+        'checkpoint_assembly_sources_sha256_raw':assembly_hashes,
+        'pending':['current receipt alias/history refresh','publication rendering and inspection','source and metadata commits','exact final commit CI','tag and GitHub release asset publication'],
+        'limits':['Source service recovery and installed wheel controls have different scopes.',
+                  'Windows Quarto is actual; Linux delivery uses controlled CLI plus actual Matplotlib/Poppler.',
+                  'Known-case tool results do not qualify model reasoning, scientific novelty or RSI.']}
+target=root/'docs/RELEASE-CANDIDATE-0.4.12.json'
+require(input_state()==audit['stability']['before']==audit['stability']['after'],'Source/environment changed during assembly')
+require({p.relative_to(archive).as_posix() for p in archive.rglob('*') if p.is_file()}
+        ==set(manifest['files'])|{'manifest.json'},'Archive inventory changed during assembly')
+for path,body in inputs.items():
+    require(path.read_bytes()==body,'Checkpoint input changed before publication')
+with atomic_output(target) as temporary:
+    temporary.write_bytes((json.dumps(record,indent=2)+'\n').encode())
+print('Verified candidate checkpoint; release remains pending. Archived payloads:',record['archived_payloads'])

@@ -1,6 +1,6 @@
 # Recovery acceptance and its limits
 
-Version 0.4.11 retains the recovery repairs introduced in 0.4.9, preserving resident diagnosis, self-check, bounded automatic
+The 0.4.12 candidate retains the recovery repairs introduced in 0.4.9, preserving resident diagnosis, self-check, bounded automatic
 recovery and explicit recovery controls after the two external Eidos CRON jobs
 were retired. Removing schedules did not remove these functions. The existing
 Startup entry remains. The [retirement record](CRON-RETIREMENT-2026-11-01.json)
@@ -14,7 +14,7 @@ final checker is copied into a detached checkout of `c12acdd617f1bac1d2449d2cb98
 for the before measurement. Imported module locations and source hashes are
 checked, so the old checkout cannot silently use the repaired package.
 
-| Control | Before: c12acdd | After: 0.4.11 replay |
+| Control | Before: c12acdd | After: 0.4.12 replay |
 |---|---|---|
 | Crash, sustained detection, actual process launch and endpoint verification | Works in the bounded fixture | Preserved |
 | Missing/throttled route reported healthy | 404, 405, 410 and 429 incorrectly accepted | Rejected |

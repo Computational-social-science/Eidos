@@ -1,0 +1,7 @@
+/opt/tracking/bin/python: can't open file '/source/reference/tracking_acceptance/check.py': [Errno 2] No such file or directory
+Traceback (most recent call last):
+  File "/input/tracking-bootstrap.py", line 6, in <module>
+    subprocess.run([python,'-I','/source/reference/tracking_acceptance/check.py',
+  File "/usr/local/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/opt/tracking/bin/python', '-I', '/source/reference/tracking_acceptance/check.py', '--source', '/source', '--wheel', '/source/reference/sdk_process_acceptance/eidos-0.4.12-py3-none-any.whl', '--expected-version', '0.4.12', '--out', '/out/tracking.json']' returned non-zero exit status 2.

@@ -1,0 +1,40 @@
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import sys
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--source',type=Path,required=True)
+parser.add_argument('--positive',type=Path,required=True)
+parser.add_argument('--out',type=Path,required=True)
+args = parser.parse_args()
+sys.path.insert(0,str(args.source))
+from framework.subprocesses import run_tree
+
+body = args.positive.read_bytes()
+if json.loads(body)['status'] != 'PASS':
+    raise RuntimeError('Missing actual positive')
+args.out.mkdir(exist_ok=False)
+driver = args.source / 'reference/recovery_acceptance/check.py'
+controls=[]
+for label, flags in [('worker-failure',['--fault-worker']),('json-list',['--fault-worker-json','list']),
+                     ('json-empty',['--fault-worker-json','empty']),('json-checks-null',['--fault-worker-json','checks-null'])]:
+    destination=args.out/(label+'.json')
+    destination.write_bytes(body)
+    run=run_tree([sys.executable,str(driver),*flags,'--out',str(destination)],cwd=args.out,timeout=45)
+    result=json.loads(destination.read_text(encoding='utf-8'))
+    if run.returncode == 0 or result['status'] != 'FAIL' or not any(row['passed'] is False for row in result['checks']):
+        raise RuntimeError('Invalid worker evidence retained PASS')
+    controls.append({'case':label,'exit_code':run.returncode,'prior_status':'PASS','final_status':'FAIL',
+                     'source_sha256_lf':result['source_sha256_lf'],
+                     'receipt_sha256':hashlib.sha256(destination.read_bytes()).hexdigest()})
+for mode in ['-O','-OO']:
+    destination=args.out/(mode+'.json')
+    destination.write_bytes(body)
+    run=run_tree([sys.executable,mode,str(driver),'--out',str(destination)],cwd=args.out,timeout=30)
+    if run.returncode == 0 or destination.read_bytes() != body or 'Qualification requires' not in run.stderr:
+        raise RuntimeError('Optimized interpreter was qualified')
+    controls.append({'case':mode,'exit_code':run.returncode,'rejected':True,'prior_receipt_unchanged':True})
+(args.out/'summary.json').write_text(json.dumps(controls,indent=2)+'\n',encoding='utf-8')
+print(sys.platform, '6 invalid-worker/optimization recovery controls accepted')

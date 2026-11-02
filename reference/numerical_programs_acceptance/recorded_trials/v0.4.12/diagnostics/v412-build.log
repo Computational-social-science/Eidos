@@ -1,0 +1,166 @@
+Building wheel...
+C:\Users\Administrator\AppData\Local\uv\cache\builds-v0\.tmpb4toa9\Lib\site-packages\setuptools\config\_apply_pyprojecttoml.py:82: SetuptoolsDeprecationWarning: `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  corresp(dist, value, root_dir)
+running egg_info
+writing eidos.egg-info\PKG-INFO
+writing dependency_links to eidos.egg-info\dependency_links.txt
+writing requirements to eidos.egg-info\requires.txt
+writing top-level names to eidos.egg-info\top_level.txt
+reading manifest file 'eidos.egg-info\SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'eidos.egg-info\SOURCES.txt'
+C:\Users\Administrator\AppData\Local\uv\cache\builds-v0\.tmpb4toa9\Lib\site-packages\setuptools\config\_apply_pyprojecttoml.py:82: SetuptoolsDeprecationWarning: `project.license` as a TOML table is deprecated
+!!
+
+        ********************************************************************************
+        Please use a simple string containing a SPDX expression for `project.license`. You can also use `project.license-files`. (Both options available on setuptools>=77.0.0).
+
+        By 2027-Feb-18, you need to update your project and remove deprecated calls
+        or your builds will no longer be supported.
+
+        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.
+        ********************************************************************************
+
+!!
+  corresp(dist, value, root_dir)
+running bdist_wheel
+running build
+running build_py
+copying framework\recovery.py -> build\lib\framework
+running egg_info
+writing eidos.egg-info\PKG-INFO
+writing dependency_links to eidos.egg-info\dependency_links.txt
+writing requirements to eidos.egg-info\requires.txt
+writing top-level names to eidos.egg-info\top_level.txt
+reading manifest file 'eidos.egg-info\SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'eidos.egg-info\SOURCES.txt'
+installing to build\bdist.win-amd64\wheel
+running install
+running install_lib
+creating build\bdist.win-amd64\wheel
+creating build\bdist.win-amd64\wheel\framework
+copying build\lib\framework\decision.py -> build\bdist.win-amd64\wheel\.\framework
+copying build\lib\framework\project.py -> build\bdist.win-amd64\wheel\.\framework
+copying build\lib\framework\updates.py -> build\bdist.win-amd64\wheel\.\framework
+copying build\lib\framework\model_ab.py -> build\bdist.win-amd64\wheel\.\framework
+copying build\lib\framework\config.py -> build\bdist.win-amd64\wheel\.\framework
+copying build\lib\framework\stable_numerics.py -> build\bdist.win-amd64\wheel\.\framework
+copying build\lib\framework\stable_numerics_torch.py -> build\bdist.win-amd64\wheel\.\framework
+copying build\lib\framework\provenance.py -> build\bdist.win-amd64\wheel\.\framework
+copying build\lib\framework\subprocesses.py -> build\bdist.win-amd64\wheel\.\framework
+copying build\lib\framework\artifacts.py -> build\bdist.win-amd64\wheel\.\framework
+copying build\lib\framework\executable_package.py -> build\bdist.win-amd64\wheel\.\framework
+copying build\lib\framework\_windows_job.py -> build\bdist.win-amd64\wheel\.\framework
+creating build\bdist.win-amd64\wheel\framework\diagnosis
+copying build\lib\framework\diagnosis\__init__.py -> build\bdist.win-amd64\wheel\.\framework\diagnosis
+creating build\bdist.win-amd64\wheel\framework\gates
+copying build\lib\framework\gates\__init__.py -> build\bdist.win-amd64\wheel\.\framework\gates
+creating build\bdist.win-amd64\wheel\framework\inference
+copying build\lib\framework\inference\gguf.py -> build\bdist.win-amd64\wheel\.\framework\inference
+copying build\lib\framework\inference\__init__.py -> build\bdist.win-amd64\wheel\.\framework\inference
+copying build\lib\framework\inference\llama_cpp.py -> build\bdist.win-amd64\wheel\.\framework\inference
+creating build\bdist.win-amd64\wheel\framework\quarto_bridge
+copying build\lib\framework\quarto_bridge\__init__.py -> build\bdist.win-amd64\wheel\.\framework\quarto_bridge
+copying build\lib\framework\quarto_bridge\_delivery.py -> build\bdist.win-amd64\wheel\.\framework\quarto_bridge
+copying build\lib\framework\quarto_bridge\_figure_job.py -> build\bdist.win-amd64\wheel\.\framework\quarto_bridge
+creating build\bdist.win-amd64\wheel\framework\tracking
+copying build\lib\framework\tracking\__init__.py -> build\bdist.win-amd64\wheel\.\framework\tracking
+copying build\lib\framework\tracking\_worker.py -> build\bdist.win-amd64\wheel\.\framework\tracking
+creating build\bdist.win-amd64\wheel\framework\validity
+copying build\lib\framework\validity\lean_audit.py -> build\bdist.win-amd64\wheel\.\framework\validity
+copying build\lib\framework\validity\__init__.py -> build\bdist.win-amd64\wheel\.\framework\validity
+creating build\bdist.win-amd64\wheel\framework\surrogate
+copying build\lib\framework\surrogate\__init__.py -> build\bdist.win-amd64\wheel\.\framework\surrogate
+copying build\lib\framework\surrogate\demo.py -> build\bdist.win-amd64\wheel\.\framework\surrogate
+creating build\bdist.win-amd64\wheel\framework\verifiers
+copying build\lib\framework\verifiers\stats.py -> build\bdist.win-amd64\wheel\.\framework\verifiers
+copying build\lib\framework\verifiers\citations.py -> build\bdist.win-amd64\wheel\.\framework\verifiers
+copying build\lib\framework\verifiers\__init__.py -> build\bdist.win-amd64\wheel\.\framework\verifiers
+copying build\lib\framework\verifiers\support.py -> build\bdist.win-amd64\wheel\.\framework\verifiers
+copying build\lib\framework\verifiers\pointers.py -> build\bdist.win-amd64\wheel\.\framework\verifiers
+copying build\lib\framework\verifiers\extract_s4.py -> build\bdist.win-amd64\wheel\.\framework\verifiers
+copying build\lib\framework\verifiers\numerics.py -> build\bdist.win-amd64\wheel\.\framework\verifiers
+creating build\bdist.win-amd64\wheel\framework\reproduction
+copying build\lib\framework\reproduction\__init__.py -> build\bdist.win-amd64\wheel\.\framework\reproduction
+copying build\lib\framework\reproduction\_numeric.py -> build\bdist.win-amd64\wheel\.\framework\reproduction
+copying build\lib\framework\_process_tree.py -> build\bdist.win-amd64\wheel\.\framework
+copying build\lib\framework\_posix_job.py -> build\bdist.win-amd64\wheel\.\framework
+copying build\lib\framework\command_inputs.py -> build\bdist.win-amd64\wheel\.\framework
+copying build\lib\framework\services.py -> build\bdist.win-amd64\wheel\.\framework
+copying build\lib\framework\lock_compatibility.py -> build\bdist.win-amd64\wheel\.\framework
+creating build\bdist.win-amd64\wheel\framework\numerical_programs
+copying build\lib\framework\numerical_programs\_json.py -> build\bdist.win-amd64\wheel\.\framework\numerical_programs
+copying build\lib\framework\numerical_programs\_language.py -> build\bdist.win-amd64\wheel\.\framework\numerical_programs
+copying build\lib\framework\numerical_programs\_compiler.py -> build\bdist.win-amd64\wheel\.\framework\numerical_programs
+copying build\lib\framework\numerical_programs\__init__.py -> build\bdist.win-amd64\wheel\.\framework\numerical_programs
+copying build\lib\framework\recovery.py -> build\bdist.win-amd64\wheel\.\framework
+running install_egg_info
+Copying eidos.egg-info to build\bdist.win-amd64\wheel\.\eidos-0.4.12-py3.12.egg-info
+running install_scripts
+creating build\bdist.win-amd64\wheel\eidos-0.4.12.dist-info\WHEEL
+creating 'E:\\2026-AI4S\\Eidos\\.scratch\\quality\\v412-dist\\.tmp-mtvmtt3u\\eidos-0.4.12-py3-none-any.whl' and adding 'build\\bdist.win-amd64\\wheel' to it
+adding 'eidos-0.4.12.dist-info/licenses/LICENSE'
+adding 'framework/_posix_job.py'
+adding 'framework/_process_tree.py'
+adding 'framework/_windows_job.py'
+adding 'framework/artifacts.py'
+adding 'framework/command_inputs.py'
+adding 'framework/config.py'
+adding 'framework/decision.py'
+adding 'framework/executable_package.py'
+adding 'framework/lock_compatibility.py'
+adding 'framework/model_ab.py'
+adding 'framework/project.py'
+adding 'framework/provenance.py'
+adding 'framework/recovery.py'
+adding 'framework/services.py'
+adding 'framework/stable_numerics.py'
+adding 'framework/stable_numerics_torch.py'
+adding 'framework/subprocesses.py'
+adding 'framework/updates.py'
+adding 'framework/diagnosis/__init__.py'
+adding 'framework/gates/__init__.py'
+adding 'framework/inference/__init__.py'
+adding 'framework/inference/gguf.py'
+adding 'framework/inference/llama_cpp.py'
+adding 'framework/numerical_programs/__init__.py'
+adding 'framework/numerical_programs/_compiler.py'
+adding 'framework/numerical_programs/_json.py'
+adding 'framework/numerical_programs/_language.py'
+adding 'framework/quarto_bridge/__init__.py'
+adding 'framework/quarto_bridge/_delivery.py'
+adding 'framework/quarto_bridge/_figure_job.py'
+adding 'framework/reproduction/__init__.py'
+adding 'framework/reproduction/_numeric.py'
+adding 'framework/surrogate/__init__.py'
+adding 'framework/surrogate/demo.py'
+adding 'framework/tracking/__init__.py'
+adding 'framework/tracking/_worker.py'
+adding 'framework/validity/__init__.py'
+adding 'framework/validity/lean_audit.py'
+adding 'framework/verifiers/__init__.py'
+adding 'framework/verifiers/citations.py'
+adding 'framework/verifiers/extract_s4.py'
+adding 'framework/verifiers/numerics.py'
+adding 'framework/verifiers/pointers.py'
+adding 'framework/verifiers/stats.py'
+adding 'framework/verifiers/support.py'
+adding 'eidos-0.4.12.dist-info/METADATA'
+adding 'eidos-0.4.12.dist-info/WHEEL'
+adding 'eidos-0.4.12.dist-info/top_level.txt'
+adding 'eidos-0.4.12.dist-info/RECORD'
+removing build\bdist.win-amd64\wheel
+Successfully built .scratch\quality\v412-dist\eidos-0.4.12-py3-none-any.whl

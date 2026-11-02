@@ -1,0 +1,36 @@
+.........FF                                                              [100%]
+================================== FAILURES ===================================
+______________ test_posix_relative_path_discovery_is_also_bound _______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D54EEE3E00>
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2274/test_posix_relative_path_disco0')
+
+    def test_posix_relative_path_discovery_is_also_bound(monkeypatch, tmp_path):
+        windows(monkeypatch, tmp_path)
+        monkeypatch.setattr(recovery, 'sys', SimpleNamespace(platform='linux'))
+        directory = tmp_path/'bin';directory.mkdir()
+        executable = directory/'bash';executable.touch();monkeypatch.chdir(tmp_path)
+        monkeypatch.setattr(recovery.shutil, 'which', lambda name: 'bin/bash')
+>       assert recovery._shell() == str(executable)
+E       AssertionError: assert 'bin/bash' == 'C:\\Users\\A...o0\\bin\\bash'
+E         
+E         - C:\Users\Administrator\AppData\Local\Temp\pytest-of-Administrator\pytest-2274\test_posix_relative_path_disco0\bin\bash
+E         + bin/bash
+
+E:\2026-AI4S\Eidos\tests\test_recovery_shell.py:95: AssertionError
+______________ test_posix_missing_bash_is_refused_before_launch _______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D54EF02390>
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2274/test_posix_missing_bash_is_ref0')
+
+    def test_posix_missing_bash_is_refused_before_launch(monkeypatch, tmp_path):
+        windows(monkeypatch, tmp_path)
+        monkeypatch.setattr(recovery, 'sys', SimpleNamespace(platform='linux'))
+>       with pytest.raises(OSError, match='Bash'):
+E       Failed: DID NOT RAISE OSError
+
+tests\test_recovery_shell.py:101: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_recovery_shell.py::test_posix_relative_path_discovery_is_also_bound
+FAILED tests/test_recovery_shell.py::test_posix_missing_bash_is_refused_before_launch
+2 failed, 9 passed in 0.41s

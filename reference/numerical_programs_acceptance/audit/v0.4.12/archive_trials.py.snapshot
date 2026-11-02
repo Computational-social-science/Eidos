@@ -1,0 +1,67 @@
+"""Freeze measured candidate evidence; do not promote current release aliases."""
+from pathlib import Path
+import hashlib
+import json
+import shutil
+
+root = Path.cwd()
+cache = Path('C:/Users/Administrator/.cache/eidos-sdk-v412')
+archive = root/'reference/numerical_programs_acceptance/recorded_trials/v0.4.12'
+archive.mkdir(parents=True, exist_ok=False)
+sha = lambda raw: hashlib.sha256(raw).hexdigest()
+files = {}
+external = {}
+
+def copy(source, relative):
+    raw = source.read_bytes()
+    destination = archive/relative
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_bytes(raw)
+    if destination.read_bytes() != raw:
+        raise RuntimeError('Archive publication mismatch')
+    files[relative] = {'sha256': sha(raw), 'size': len(raw)}
+
+folders = ['input', 'input-linux', 'input-sdk', 'input-tracking', 'input-recovery',
+           'windows-results', 'windows-delivery', 'linux-core-1', 'sdk-core',
+           'build-tracking', 'tracking', 'tracking-2', 'tracking-3', 'recovery', 'recovery-2',
+           'windows-recovery-controls', 'windows-recovery-input', 'installed-negatives-v2',
+           'controls-final', 'source', 'source-tracking']
+for name in folders:
+    source = cache/name
+    if not source.is_dir():
+        raise RuntimeError('Missing measured evidence folder: '+name)
+    for path in sorted(source.rglob('*')):
+        if '__pycache__' in path.parts or not path.is_file():
+            continue
+        relative = 'trials/'+path.relative_to(cache).as_posix()
+        if path.suffix == '.whl' and 'same-code-wrong-metadata' not in path.parts:
+            external[relative] = {'sha256': sha(path.read_bytes()), 'size': path.stat().st_size,
+                                  'reason': 'Own wheel already versioned; dependency artifact pinned by frozen requirements.'}
+            continue
+        if path.suffix == '.py':
+            relative += '.snapshot'
+        copy(path, relative)
+for name in ('windows-tracking.json', 'windows-recovery.json', 'source-snapshot.json',
+             'source-tracking-snapshot.json', 'creation-failure-cleanup.json', 'linux-controller-source.json'):
+    copy(cache/name, 'trials/'+name)
+controllers = ['run_v412_linux.py', 'run_v412_linux_buildtracking.py',
+               'run_v412_linux_before_source_arg.py', 'v412_installed_negatives.py',
+               'tracking_v412_negative.py']
+for name in controllers:
+    copy(root/'.scratch/quality'/name, 'controllers/'+name+'.snapshot')
+copy(root/'reference/symbolic_tool/offline.py', 'controllers/reused_offline.py.snapshot')
+copy(root/'docs/SELF_AUDIT.json', 'source-audit/SELF_AUDIT.json')
+for name in ('v412-main-sync.log', 'v412-build.log', 'v412-export.log',
+             'v412-tracking-deps.log', 'v412-tracking-deps-public.log', 'v412-source-audit.log',
+             'recovery-shell-paths-red.log', 'recovery-shell-posix-red.log'):
+    copy(root/'.scratch/quality'/name, 'diagnostics/'+name)
+manifest = {'schema': 'eidos.raw-release-trials.v1', 'version': '0.4.12',
+            'scope': 'Candidate observations; alias assembly/publication still pending',
+            'files': files, 'external_artifacts': external,
+            'wheel': 'reference/sdk_process_acceptance/eidos-0.4.12-py3-none-any.whl',
+            'wheel_sha256': sha((root/'reference/sdk_process_acceptance/eidos-0.4.12-py3-none-any.whl').read_bytes())}
+(archive/'manifest.json').write_text(json.dumps(manifest, indent=2)+'\n', encoding='utf-8', newline='\n')
+for name, item in files.items():
+    if sha((archive/name).read_bytes()) != item['sha256']:
+        raise RuntimeError('Archived evidence changed')
+print('Frozen', len(files), 'measured payloads;', len(external), 'external binary references. No release aliases changed.')

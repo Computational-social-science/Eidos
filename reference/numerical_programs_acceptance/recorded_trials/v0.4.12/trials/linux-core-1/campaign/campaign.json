@@ -1,0 +1,22 @@
+{
+  "schema": "eidos.installed-core-replay.v1",
+  "status": "PASS",
+  "observed_at": "2026-11-02T09:16:10.845817+00:00",
+  "version": "0.4.12",
+  "manifest_sha256": "411e0a3fc439287729721281527d0301e22b2090bb4f25bd49c669cd4e5ce4c4",
+  "cases": {
+    "shell": {
+      "status": "PASS",
+      "stdout_sha256": "14e273effe68c31cbd10ee095a005253f76bc99f4542274f96b07d6c40a881c8"
+    },
+    "numerical": {
+      "status": "PASS",
+      "stdout_sha256": "abb5b9f12e2edf035b47db5f2f37260e0e2d3f55dc321cae6f45b786924d1172"
+    },
+    "lifecycle": {
+      "status": "PASS",
+      "stdout_sha256": "ab27fe7d4c558b55a2a6ddc820ca1e97c867690a4c9b677637511e4fe6785083"
+    }
+  },
+  "limits": "Finite core/shell controls only; not a model, tracking, manuscript or hostile-code qualification."
+}

@@ -1,0 +1,7 @@
+{
+  "wrong_helper_pin_refused": true,
+  "extra_installed_module_refused": true,
+  "extra_module_removed": true,
+  "post_control_full_identity_and_fixture_replay": "PASS",
+  "scope": "Only the new candidate venv was mutated; no host/service sources changed."
+}

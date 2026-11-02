@@ -1,0 +1,87 @@
+"""Controlled cache-only receipt mutations; no project/service source mutation."""
+from pathlib import Path
+import argparse
+import hashlib
+import json
+import subprocess
+import sys
+
+from framework.subprocesses import run_tree
+
+root=Path.cwd().resolve();cache=Path('C:/Users/Administrator/.cache/eidos-sdk-v412').resolve()
+script=root/'.scratch/quality/record_v412_candidate.py'
+generator_before=script.read_bytes()
+test_before=Path(__file__).read_bytes()
+candidate=root/'docs/RELEASE-CANDIDATE-0.4.12.json'
+before_candidate=candidate.read_bytes()
+parser=argparse.ArgumentParser();parser.add_argument('--attempt',type=int,default=1)
+args=parser.parse_args()
+if args.attempt<1:raise ValueError('Attempt must be positive')
+output=cache/('checkpoint-controls' if args.attempt==1 else 'checkpoint-controls-'+str(args.attempt));output.mkdir(exist_ok=False)
+rows=[]
+
+
+def capture(label, command, expected):
+    result=run_tree(command,cwd=root,timeout=30)
+    (output/(label+'.stdout')).write_text(result.stdout,encoding='utf-8',newline='\n')
+    (output/(label+'.stderr')).write_text(result.stderr,encoding='utf-8',newline='\n')
+    if result.returncode==0:
+        raise RuntimeError('Checkpoint accepted invalid evidence: '+label)
+    if expected not in result.stderr:
+        raise RuntimeError('Refusal control failed for an unexpected cause: '+label)
+    if candidate.read_bytes()!=before_candidate:
+        raise RuntimeError('Rejected evidence altered candidate checkpoint')
+    rows.append({'case':label,'rejected':True,'exit_code':result.returncode,
+                 'expected_cause':expected,'prior_checkpoint_unchanged':True})
+
+
+for label,relative,field,value,message in [
+    ('wrong-platform','tracking-3/tracking.json','platform','win32','Installed tracking identity differs'),
+    ('stale-source','recovery-2/recovery.json','source_sha256_lf',None,'Recovery source differs'),
+    ('empty-source','recovery-2/recovery.json','source_sha256_lf',{},'Recovery source inventory differs'),
+    ('missing-source','recovery-2/recovery.json','source_sha256_lf',None,'Recovery source inventory differs')]:
+    path=(cache/relative).resolve()
+    if not path.is_relative_to(cache):raise RuntimeError('Unowned mutation target')
+    before=path.read_bytes();record=json.loads(before)
+    if label=='stale-source':record[field]['framework/recovery.py']='0'*64
+    elif label=='missing-source':del record[field]['framework/recovery.py']
+    else:record[field]=value
+    try:
+        path.write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8')
+        capture(label,[sys.executable,str(script)],message)
+    finally:path.write_bytes(before)
+
+victim=cache/'windows-tracking.json'
+before_victim=victim.read_bytes()
+hook='''from pathlib import Path
+import json,runpy,sys
+sys.path[0]=str(Path(SCRIPT).parent)
+original=Path.read_bytes
+victim=Path(VICTIM)
+trigger=Path(TRIGGER)
+changed=False
+def read(path):
+ global changed
+ body=original(path)
+ if path.resolve()==trigger.resolve() and not changed:
+  changed=True
+  value=json.loads(original(victim));value['controlled_mid_read_mutation']=True
+  victim.write_bytes((json.dumps(value)+'\\n').encode())
+ return body
+Path.read_bytes=read
+runpy.run_path(SCRIPT,run_name='__main__')
+'''.replace('VICTIM',repr(str(victim))).replace('TRIGGER',repr(str(cache/'recovery-2/recovery.json'))).replace('SCRIPT',repr(str(script)))
+try:
+    capture('mid-read-mutation',[sys.executable,'-c',hook],'Checkpoint input changed before publication')
+finally:victim.write_bytes(before_victim)
+positive=run_tree([sys.executable,str(script)],cwd=root,timeout=30)
+if positive.returncode:raise RuntimeError('Restored input replay failed: '+positive.stderr)
+if script.read_bytes()!=generator_before or Path(__file__).read_bytes()!=test_before:
+    raise RuntimeError('Control generator/test source changed during execution')
+record={'schema':'eidos.candidate-checkpoint-controls.v1','status':'PASS','controls':rows,
+        'mutations':'Only candidate cache receipt files; all original bytes restored',
+        'post_restore_checkpoint':'PASS',
+        'generator_sha256_raw':hashlib.sha256(generator_before).hexdigest(),
+        'test_sha256_raw':hashlib.sha256(test_before).hexdigest()}
+(output/'record.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8',newline='\n')
+print('PASS:',len(rows),'actual receipt-mutation refusals, old checkpoint preserved, final restored replay passed.')

@@ -1,0 +1,28 @@
+{
+  "observed_local": "2026-11-02T18:26:29+0800",
+  "home": {
+    "status": 200,
+    "title": "Eidos v0.4.12 \u2014 assembly and status",
+    "body_chars": 4274
+  },
+  "dashboard_status": 200,
+  "browser": "installed Microsoft Edge headless",
+  "javascript_errors": [],
+  "before": {
+    "seq": 18334,
+    "overall": "OK",
+    "stale": false,
+    "age_s": 10.9
+  },
+  "after": {
+    "seq": 18336,
+    "overall": "OK",
+    "stale": false,
+    "age_s": 2.8
+  },
+  "sequence_advanced": true,
+  "live_text": [
+    "Live sample \u00b7 18:26:25 HKT \u00b7 seq 18336 \u00b7 polling every 10 s while visible; historical records retain their own timestamps."
+  ],
+  "scope": "Operational browser recheck only; not scientific or release qualification"
+}

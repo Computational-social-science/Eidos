@@ -1,0 +1,138 @@
+{
+  "kind": "recovery",
+  "owner": "7feaa366ccca4e44b379185f12373c10",
+  "image_reference": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
+  "image_id": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
+  "started": "2026-11-02T09:33:44.316184+00:00",
+  "command": [
+    "/opt/tracking/bin/python",
+    "/input/recovery-bootstrap.py"
+  ],
+  "status": "PASS",
+  "controller_sha256": "985e1a273c06b8a2f695f9cc6078972d822eaa7a5de63aec373e6f9347aebdbc",
+  "input_sha256": {
+    "recovery-bootstrap.py": "73c311e4ad884f5dded934a6cd576f6fbd34df91be7c889e1ac65697aa5bd757",
+    "recovery-negative.py": "94df88801eaefb37f2c3f24575c6b17563c742328182727bb1487f08273dafdc"
+  },
+  "attempt": 2,
+  "before": {
+    "Id": "1691710dbc8180424a5dc911b9646d083a56897b24e02c886ccbf70745b8f382",
+    "Image": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
+    "State": {
+      "Status": "created",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "0001-01-01T00:00:00Z",
+      "FinishedAt": "0001-01-01T00:00:00Z"
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\input-recovery",
+        "Destination": "/input",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\recovery-2",
+        "Destination": "/out",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\source",
+        "Destination": "/source",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ],
+    "network": "none",
+    "readonly_rootfs": true,
+    "tmpfs": {
+      "/root/.cache": "rw,nosuid,nodev,size=536870912,mode=1777",
+      "/tmp": "rw,exec,nosuid,nodev,size=2147483648,mode=1777"
+    },
+    "command": [
+      "/opt/tracking/bin/python",
+      "/input/recovery-bootstrap.py"
+    ],
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges"
+    ]
+  },
+  "after": {
+    "Id": "1691710dbc8180424a5dc911b9646d083a56897b24e02c886ccbf70745b8f382",
+    "Image": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
+    "State": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-11-02T09:33:48.842204034Z",
+      "FinishedAt": "2026-11-02T09:34:00.869924958Z"
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\input-recovery",
+        "Destination": "/input",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\recovery-2",
+        "Destination": "/out",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\source",
+        "Destination": "/source",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ],
+    "network": "none",
+    "readonly_rootfs": true,
+    "tmpfs": {
+      "/root/.cache": "rw,nosuid,nodev,size=536870912,mode=1777",
+      "/tmp": "rw,exec,nosuid,nodev,size=2147483648,mode=1777"
+    },
+    "command": [
+      "/opt/tracking/bin/python",
+      "/input/recovery-bootstrap.py"
+    ],
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges"
+    ]
+  },
+  "cleanup_verified": true,
+  "finished": "2026-11-02T09:34:03.308792+00:00"
+}

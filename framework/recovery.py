@@ -345,17 +345,78 @@ def port_listening(port: int) -> bool | None:
         return None
 
 
-def _shell() -> str:
-    """The POSIX shell this host actually has, not the one PATH happens to name.
+def _msys_shell(path: str) -> bool:
+    """Probe actual drive-path access in an owned, hidden, finite child process.
 
-    `bash` on PATH here can be WSL's, whose filesystem is not this one: it answers "no such
-    file" for a path the caller can see. SHELL, when set by the harness, is git-bash.
+    OSTYPE is insufficient: this host's Git Bash reports 'cygwin'. The contract
+    is whether the translated path to this existing module can actually be read.
     """
-    shell = os.environ.get("SHELL", "")
-    if shell and "system32" not in shell.lower() and Path(shell).is_file():
-        return shell
-    found = shutil.which("bash") or "bash"
-    return found
+    if not Path(path).is_file():
+        return False
+    resolved = Path(path).resolve()
+    if resolved.name.lower() == 'wsl.exe' or (
+            resolved.name.lower() == 'bash.exe'
+            and any(part.lower() in {'system32', 'sysnative'} for part in resolved.parts)):
+        return False  # Do not start a WSL distribution just to reject its dialect.
+    from .subprocesses import run_tree
+    environment = os.environ.copy()
+    for name in ('BASH_ENV', 'ENV'):
+        environment.pop(name, None)
+    try:
+        result = run_tree([path, '--noprofile', '--norc', '-c',
+                           'test -r "$1" && printf "eidos-drive-path-ok"',
+                           'eidos-shell-probe', _msys(Path(__file__).resolve())],
+                          cwd=ROOT, timeout=5, env=environment)
+    except (OSError, subprocess.SubprocessError):
+        return False
+    return result.returncode == 0 and result.stdout == 'eidos-drive-path-ok'
+
+
+def _shell_path(value: str) -> str:
+    """Bind expanded configuration to one executable before service cwd changes."""
+    return str(Path(os.path.expandvars(os.path.expanduser(value))).resolve())
+
+
+def _shell() -> str:
+    """Select a shell whose drive paths match _msys; WSL is not MSYS.
+
+    A detached Windows Startup process need not inherit the terminal's SHELL or
+    Git PATH. An explicit EIDOS_BASH is strict; ordinary discovery may skip WSL.
+    This dialect probe is compatibility checking, not executable attestation.
+    """
+    override = os.environ.get('EIDOS_BASH')
+    override = _shell_path(override) if override else None
+    shell = os.environ.get('SHELL', '')
+    shell = _shell_path(shell) if shell else ''
+    if sys.platform != 'win32':
+        if override:
+            if not Path(override).is_file():
+                raise OSError('EIDOS_BASH does not name an existing executable')
+            return override
+        if shell and Path(shell).is_file():
+            return shell
+        found = shutil.which('bash')
+        if not found:
+            raise OSError('No Bash found; install Bash or configure EIDOS_BASH')
+        return _shell_path(found)
+    if override:
+        if not _msys_shell(override):
+            raise OSError('EIDOS_BASH must name a working MSYS/Git Bash executable')
+        return override
+    candidates = [shell] if shell else []
+    for variable in ('ProgramFiles', 'ProgramFiles(x86)', 'LOCALAPPDATA'):
+        base = os.environ.get(variable)
+        if base:
+            prefix = Path(base)/'Programs' if variable == 'LOCALAPPDATA' else Path(base)
+            candidates += [str(prefix/'Git'/'bin'/'bash.exe'), str(prefix/'Git'/'usr'/'bin'/'bash.exe')]
+    found = shutil.which('bash')
+    if found:
+        candidates.append(found)
+    for candidate in dict.fromkeys(candidates):
+        candidate = _shell_path(candidate)
+        if _msys_shell(candidate):
+            return candidate
+    raise OSError('No working MSYS/Git Bash found; install Git for Windows or configure EIDOS_BASH')
 
 
 #: Which endpoints must answer is declared once, in framework.services: the monitor and the
@@ -478,23 +539,24 @@ def _execute(plan_: RecoveryPlan) -> dict:
     if not allowed:
         _log(plan_.service, plan_.action, "skipped", False, reason=why)
         return {"ok": False, "skipped": True, "service": plan_.service, "reason": why}
-    row = _read_state().get(plan_.service) or {}
-    _note(plan_.service, last_attempt=time.time(), in_flight=True, pending=True, streak=0,
-          attempts=int(row.get("attempts", 0)) + 1, attempt_id=uuid.uuid4().hex)
-    _checkpoint_state()  # if this fails, Popen must not run; later failures retain intent
-
     spec = ACTIONS[plan_.service]
     base = (ROOT.parent if spec.get("root") == "repo"
             else Path(os.environ[spec["env_root"]]))
     script = base / Path(*spec["script"])
     if spec.get("kind") == "bash":
-        # A login shell so PATH matches what an operator gets: a bare `bash` from a service
-        # process has a thinner environment and the launcher quietly fails.
-        cmd = [_shell(), _msys(script)]
+        try:
+            cmd = [_shell(), _msys(script)]
+        except OSError as exc:
+            _log(plan_.service, plan_.action, 'refused', False, reason=str(exc))
+            return {'ok': False, 'attempted': False, 'service': plan_.service, 'error': str(exc)}
         cwd = script.parent.parent
     else:
         cmd = [sys.executable, str(script)]
         cwd = None
+    row = _read_state().get(plan_.service) or {}
+    _note(plan_.service, last_attempt=time.time(), in_flight=True, pending=True, streak=0,
+          attempts=int(row.get("attempts", 0)) + 1, attempt_id=uuid.uuid4().hex)
+    _checkpoint_state()  # if this fails, Popen must not run; later failures retain intent
     # Lifetime belongs to the service supervisor. Console/group flags are separate:
     # DETACHED_PROCESS made the venv redirector create a visible console for its child.
     flags = 0

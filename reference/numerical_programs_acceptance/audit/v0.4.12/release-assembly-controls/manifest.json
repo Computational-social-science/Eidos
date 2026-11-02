@@ -1,0 +1,53 @@
+{
+  "scope": "Actual alias-assembly controls; separate from frozen runtime trial archive",
+  "files": {
+    "empty-source.stderr": {
+      "sha256": "74481cbdf9a5a2a78ed31a3dbaa561b9015f543e9f9a4d846981c0aec4987466",
+      "size": 786
+    },
+    "empty-source.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "missing-tracking-protocol.stderr": {
+      "sha256": "63aaf0518da8355435ee3f1ba1fea92f66339fd8e8f4e39007ec58b17de0b0df",
+      "size": 483
+    },
+    "missing-tracking-protocol.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "record.json": {
+      "sha256": "598b470f363f9cf566a6acd069299a29895b04777d6dc0b9e4d28a6a4f6789cc",
+      "size": 1371
+    },
+    "third-write-rollback.stderr": {
+      "sha256": "a5692e3ab63a320c40867dc08f0c40da49a7fe2c91999f51e7fcf88968584834",
+      "size": 656
+    },
+    "third-write-rollback.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "wrong-controller.stderr": {
+      "sha256": "d5d6218bb92ab5e4503fa83f05c97fcc1178d04dc988b73b723a4484e74ad49b",
+      "size": 608
+    },
+    "wrong-controller.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "wrong-platform.stderr": {
+      "sha256": "7108491b327fd8df29a53c9e608f76b4234663180c03b3464346a32149d1f99d",
+      "size": 570
+    },
+    "wrong-platform.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "controls.py.snapshot": {
+      "sha256": "bdf0f5114ce4459afdc88c768959cda8811f9fb80d9e2b313356aa915b943799",
+      "size": 4044
+    }
+  }
+}

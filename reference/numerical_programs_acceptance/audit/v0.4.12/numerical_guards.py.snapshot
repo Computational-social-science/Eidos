@@ -1,0 +1,52 @@
+"""Independent declared inventories for candidate receipt assembly."""
+import numpy as np
+
+
+def require(value,message):
+    if not value:raise ValueError(message)
+
+
+def numerical(value,platform,modules,wheel_sha,driver_sha):
+    require(value.get('platform')=={'windows':'win32','linux':'linux'}[platform]
+        and type(value.get('optimization_level')) is int and value['optimization_level']==0,
+        'Wrong numerical platform or optimization mode')
+    require(value.get('status')=='PASS' and value.get('sdk_version')=='0.4.12'
+        and value.get('wheel_sha256')==wheel_sha and value.get('driver_sha256_lf')==driver_sha
+        and value.get('source_sha256_canonical_lf')==modules
+        and value.get('all_installed_metadata_requirements_met') is True,'Wrong numerical identity')
+    expected={'log1mexp':set(),'softplus':set()}
+    for dtype,small,tail in [(np.float32,[1e-30,1e-12,1e-8,1e-5,.1],[1,20,50,80]),
+                            (np.float64,[1e-100,1e-16,1e-12,1e-8,.1],[1,20,50,80,600])]:
+        cutoff=np.log(np.asarray(2,dtype=dtype))
+        values=[*small,np.nextafter(cutoff,dtype(-np.inf)),np.nextafter(cutoff,dtype(np.inf)),*tail]
+        for x in values:expected['log1mexp'].add((np.dtype(dtype).name,float(dtype(x)).hex()))
+        for x in [-80,-20,-.1,0,.1,20,80,100]:
+            expected['softplus'].add((np.dtype(dtype).name,float(dtype(x)).hex()))
+    controls=value['controls']
+    for method,keys in expected.items():
+        rows=controls[method]
+        require(type(rows) is list and len(rows)==len(keys),'Wrong numerical point inventory')
+        require(all(type(r.get('represented_input')) is float and r.get('method')==method
+                    and r.get('passed') is True for r in rows),'Mistyped numerical point')
+        actual={(r['dtype'],r['represented_input'].hex()) for r in rows}
+        require(actual==keys,'Missing, duplicated or changed numerical point')
+    wrong=controls['wrong_gradient']
+    require(wrong['passed'] is False and wrong['method']=='log1mexp' and wrong['dtype']=='float64'
+        and type(wrong['represented_input']) is float and wrong['represented_input'].hex()==float(1e-12).hex(),
+        'Wrong-gradient negative differs')
+    names={'candidate Python import','invalid unused branch syntax','duplicate JSON','inexact binary64 integer',
+        'source byte budget','JSON nesting budget','ordinary constructor','nonfinite predicate intermediate',
+        'Python float input','masked input','vector input','nonfinite input'}
+    rows=controls['refusals']
+    require(type(rows) is list and len(rows)==len(names) and {r['case'] for r in rows}==names
+        and all(r.get('accepted') is True for r in rows),'Wrong numerical refusal inventory')
+    require(controls['buffer_signed_zero_and_serialization']=='PASS'
+        and controls['finite_underflow_is_not_certification']=='PASS','Missing numerical value controls')
+
+
+def installed_negatives(value):
+    rows=value['controls']
+    require(value.get('owned_pth_removed') is True and type(rows) is list and len(rows)==3
+        and {r['case'] for r in rows}=={'-O','-OO','host-distribution-leak'}
+        and all(type(r.get('exit_code')) is int and r['exit_code']!=0 and r.get('rejected') is True
+                and r.get('stdout_empty') is True for r in rows),'Wrong installed negative controls')

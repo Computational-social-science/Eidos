@@ -1,0 +1,18 @@
+"""New venv, normal complete core install and -I acceptance, without network."""
+from pathlib import Path
+import subprocess
+import sys
+import venv
+
+prefix = Path('/tmp/eidos-v412-fresh')
+if prefix.exists():
+    raise RuntimeError('Fresh environment already exists')
+venv.EnvBuilder(with_pip=True).create(prefix)
+python = str(prefix/'bin/python')
+subprocess.run([python,'-I','-m','pip','install','--no-index','--find-links','/input/wheels',
+                '--require-hashes','-r','/input/core.txt'],check=True)
+subprocess.run([python,'-I','-m','pip','install','--no-index','--find-links','/input/wheels',
+                '/input/eidos-0.4.12-py3-none-any.whl'],check=True)
+subprocess.run([python,'-I','-m','pip','check'],check=True)
+args = ['--only-numerical'] if '--only-numerical' in sys.argv else []
+subprocess.run([python,'-I','/input/run.py','--out','/out/results',*args],check=True)

@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\Users\Administrator\.cache\eidos-sdk-v412\input\shell.py", line 124, in <module>
+    main()
+  File "C:\Users\Administrator\.cache\eidos-sdk-v412\input\shell.py", line 109, in main
+    before = identity(args.wheel, args.expected_version)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\.cache\eidos-sdk-v412\input\numerical.py", line 79, in identity
+    require(actual == expected and 'framework/numerical_programs/__init__.py' in actual,
+  File "C:\Users\Administrator\.cache\eidos-sdk-v412\input\numerical.py", line 32, in require
+    raise RuntimeError(message)
+RuntimeError: Full framework inventory differs

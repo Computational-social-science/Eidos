@@ -1,0 +1,63 @@
+{
+  "chains": {
+    "total": 11,
+    "pass": 10,
+    "skip": 1,
+    "fail": 0
+  },
+  "tests_collected": 1208,
+  "tests": {
+    "passed": 1206,
+    "failed": 0,
+    "skipped": 6,
+    "errors": 0
+  },
+  "stability": {
+    "stable": true,
+    "before": {
+      "source_sha256": "a307c91fdbbc394cf2092b3d0157da333dd0a6949c52d3680192ef34e20117b3",
+      "distribution_sha256": "ac666fe5613c14cf60e67437f81f2e15c76a5338e0ec398703a99bcbd0376587"
+    },
+    "after": {
+      "source_sha256": "a307c91fdbbc394cf2092b3d0157da333dd0a6949c52d3680192ef34e20117b3",
+      "distribution_sha256": "ac666fe5613c14cf60e67437f81f2e15c76a5338e0ec398703a99bcbd0376587"
+    },
+    "collection_after": 1208,
+    "execution": {
+      "reported_items": 1208,
+      "collection_level_skips": 4
+    },
+    "deselection_detected": false,
+    "collected_ids": 1208,
+    "unique_ids": 1208,
+    "recollected_ids": 1208,
+    "scope": "Framework/tools/tests Python sources, project version/lock/README/claims, installed distribution names+versions, collected test IDs"
+  },
+  "skip_reasons": [
+    "SKIPPED [1] tests\\test_grokking_torch.py:3: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_softmax_matrix_torch.py:4: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_softmax_training_torch.py:5: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_stable_numerics_torch.py:6: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_audit_stray.py:213: POSIX FIFO control; exercised on Linux",
+    "SKIPPED [1] tests\\test_process_nested_lifecycle.py:19: POSIX delayed cleanup handoff"
+  ],
+  "diagnostics": {},
+  "coverage_total": 75,
+  "coverage_scope": "framework; unexecuted modules included; tests and tools excluded",
+  "gate_s": {
+    "fixture_status": "PASS"
+  },
+  "self_gate_s": {
+    "status": "PASS",
+    "findings": [],
+    "open_objections": 0
+  },
+  "exit_codes": {
+    "chains": 0,
+    "gate_s": 0,
+    "self_gate_s": 0,
+    "test_collection": 0,
+    "test_collection_after": 0,
+    "tests": 0
+  }
+}

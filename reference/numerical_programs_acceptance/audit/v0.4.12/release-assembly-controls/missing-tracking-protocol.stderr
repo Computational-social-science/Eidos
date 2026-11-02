@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "E:\2026-AI4S\Eidos\.scratch\quality\record_v412_acceptances.py", line 257, in <module>
+    require(set(value['protocol_sha256_lf'])=={'test_tracking_contract.py','test_tracking_dvc.py','test_tracking_protocol.py'},
+  File "E:\2026-AI4S\Eidos\.scratch\quality\record_v412_acceptances.py", line 25, in require
+    if not ok:raise RuntimeError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Tracking source inventory differs

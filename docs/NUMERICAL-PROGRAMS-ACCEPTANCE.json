@@ -1,11 +1,11 @@
 {
   "schema": 1,
   "kind": "eidos.numerical-programs-sdk-qualification",
-  "generated": "2026-11-01T22:22:54.503563+00:00",
+  "generated": "2026-11-02T10:51:15.657439+00:00",
   "status": "PASS",
-  "version": "0.4.11",
-  "wheel": "reference/sdk_process_acceptance/eidos-0.4.11-py3-none-any.whl",
-  "wheel_sha256": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
+  "version": "0.4.12",
+  "wheel": "reference/sdk_process_acceptance/eidos-0.4.12-py3-none-any.whl",
+  "wheel_sha256": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
   "driver": "reference/numerical_programs_acceptance/check.py",
   "driver_sha256_lf": "11e515a4d17259f56d8effd0aca0c933965b01f683cd73ba9a6920f4a53297db",
   "source_sha256_canonical_lf": {
@@ -21,7 +21,7 @@
     "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
     "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
     "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
-    "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+    "framework/recovery.py": "46e3426ac28988905a2ecebe728cb4a6515803c07fc56feb0dd08b4beebb5563",
     "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
     "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
     "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
@@ -59,17 +59,17 @@
     "schema": 1,
     "kind": "eidos.numerical-programs-installed-acceptance",
     "status": "PASS",
-    "generated": "2026-11-01T21:54:07.237748+00:00",
+    "generated": "2026-11-02T09:09:45.613530+00:00",
     "platform": "win32",
     "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
-    "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\windows venv\\Scripts\\python.exe",
+    "executable": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\windows-core\\Scripts\\python.exe",
     "optimization_level": 0,
     "driver_sha256_lf": "11e515a4d17259f56d8effd0aca0c933965b01f683cd73ba9a6920f4a53297db",
-    "sdk_version": "0.4.11",
-    "wheel_sha256": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
-    "wheel_name": "eidos-0.4.11-py3-none-any.whl",
-    "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\windows venv\\Lib\\site-packages\\framework\\numerical_programs\\__init__.py",
-    "prefix": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\windows venv",
+    "sdk_version": "0.4.12",
+    "wheel_sha256": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
+    "wheel_name": "eidos-0.4.12-py3-none-any.whl",
+    "installed_module": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\windows-core\\Lib\\site-packages\\framework\\numerical_programs\\__init__.py",
+    "prefix": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\windows-core",
     "source_sha256_raw": {
       "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
       "framework/command_inputs.py": "e739c36eff434bdf38dc2604b6d10a43f66336d17eae491334cdde1033a94823",
@@ -80,7 +80,7 @@
       "framework/model_ab.py": "1307faaddfe307ec845e4ee4744e81533916cafb3dbff039083fbe340c63f6c4",
       "framework/project.py": "d994403b2481634e409c9f26cef65a487334ab4328490ea4064559afb43b26c2",
       "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
-      "framework/recovery.py": "e005716a9776d43d4163cc0595488cffc495810fb877a9392b66c24a2f45dd29",
+      "framework/recovery.py": "bac8173839a32cc181d293cc839258cad3a748f5e7d2f2379a3dbf0c2bfd1d44",
       "framework/services.py": "a1ea1f58feb90fe234c9e8d2d3d97c299c6bb45fed1ec0e7909ce6651195eab3",
       "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
       "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
@@ -130,7 +130,7 @@
       "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
       "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
       "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
-      "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+      "framework/recovery.py": "46e3426ac28988905a2ecebe728cb4a6515803c07fc56feb0dd08b4beebb5563",
       "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
       "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
       "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
@@ -176,7 +176,7 @@
       ],
       [
         "eidos",
-        "0.4.11"
+        "0.4.12"
       ],
       [
         "fonttools",
@@ -203,10 +203,6 @@
         "13.0.0"
       ],
       [
-        "pip",
-        "24.0"
-      ],
-      [
         "pyparsing",
         "3.3.3"
       ],
@@ -226,59 +222,55 @@
     "dependency_metadata_sha256_lf": {
       "contourpy": {
         "METADATA": "40450acd747b288a5db999c435e1e921ffee0a38c7884a80cd46934c8004568f",
-        "RECORD": "5e7be19578a1ad786f5999a3b589d8be0a833543b2b9248d0870bddaa8dccc9b"
+        "RECORD": "75b3d1aef0429b0d06ed277a2479d1a9912d12cec63541107a98241e31190b61"
       },
       "cycler": {
         "METADATA": "23289e19b76f1e01394227696e6af2b6cd1ce79e89731209bf9195148b18ed36",
-        "RECORD": "56f2db789b595ec1db971ca643c361237d6fe316fc74b34afe117e0ac791347a"
+        "RECORD": "6a1f88e3de3e6e5b0c61e56f9b151b0266817f8bbaeb93c4cc7854123602bf1d"
       },
       "eidos": {
-        "METADATA": "436c5b56ddce2a6dc68a5e31c3891e16d060fdd976e34e1de07ba3b7817210bd",
-        "RECORD": "eb26da1cb243918706eba5e4127e84a8bd08ae634a77bd0b542d28a886e2311c"
+        "METADATA": "e7468f41fd8af84526677261c808fff2f2b3d855c2fa619981832f14ff6e5418",
+        "RECORD": "75a40e0b469692cfbf7eec70ebbc3705155ba19eb207f218765a3b7d189c5912"
       },
       "fonttools": {
         "METADATA": "33dec14bec601b457a07a6550086cb6725b5aaedc3a881f9fa7a84d3841ddcfe",
-        "RECORD": "6f8847c733710b8176d66d5d6b5db2cfb666f71e2e28d1091022001722c32462"
+        "RECORD": "697126aa1f30397b2f953ac8ccd14f31fd46084956679875d0b709f783ccb606"
       },
       "kiwisolver": {
         "METADATA": "f07b7b6c0c9c2a624c8a31f931e16712f2cf3490e7dfd51643d68e9d42d4b2c9",
-        "RECORD": "4197479ce9662e937a1b9c86f5069fb667c860798a0f1acf00c7dbf22e121a28"
+        "RECORD": "485c0ee02589c44fa4f7e5554acc9793ad34a50178111a2589219673f4897333"
       },
       "matplotlib": {
         "METADATA": "e5f532226d1025af2dd15ff951df27391f66d46403b8244ea61e6b8eb3e4d806",
-        "RECORD": "e8474d77c71b7754a21509ed2730611df7dbb5daf79079ab02cfcfa828516e57"
+        "RECORD": "8727b0d15d820b3bdb7459f366cd8a8dc5f7b2ae67930e418453e38bb43b3d79"
       },
       "numpy": {
         "METADATA": "e2b909d6a37d76c2bc130f528d7fed0c517322bce16dc7846b6a6df30e200403",
-        "RECORD": "59e676df071f64a7602afcb2de79f2d0d761245d0c14499b1f0aeb0453228c3f"
+        "RECORD": "595efeac1bd2a44003a30194a5edd72f793f9fa5466f9d326f6c014e02c2481e"
       },
       "packaging": {
         "METADATA": "70fdb89fc4d4a9a043bf7372b8972bcc883fddff34ab55e9cf80d73875384763",
-        "RECORD": "5de8ea71c96d768936032ff40fee8788b9df2907d23c959e0635c04f3eeafab1"
+        "RECORD": "1b6077bce1f95afd4256796ac33e38f9a72b44b39d1578064a79ba0dabd2dfbf"
       },
       "pillow": {
         "METADATA": "dba7fdfe24e302f46bae562f55d66cc367c0618abae9894a1ebec93dc8f0e511",
-        "RECORD": "17fb37aa332c258da32f56b0b48585877f7640035b6256fe2f6045610b99c7f4"
-      },
-      "pip": {
-        "METADATA": "90d11f277fd5868da679ee257c97656dde511c8aac7d025231407e6ce90839e2",
-        "RECORD": "0d139c1f033005362261e39923d132f2d9d68d7e94c3bbd1613a3a58fd1fa736"
+        "RECORD": "f533bea9a86414c10a67f8a6fa90cecbd71414cb30fc3d0523b99a79f2217548"
       },
       "pyparsing": {
         "METADATA": "f2ca34052d720622d300023472ef8ae94fe5b57d69acbb28a8667f6dd0e13497",
-        "RECORD": "e47fdd5fa35eee627c872b540fde5a72267ff3c04bc7ef98d249fb46dce79ac0"
+        "RECORD": "a9f578e73d139ded4a1b8b4e035a2d1f800340734b61b1f1a475e5f0b908ca46"
       },
       "python-dateutil": {
         "METADATA": "a9d436da322be808332f98d88325998e87cb693a678a9969feb4cfad729a6e93",
-        "RECORD": "485473d3f6ef7760608ce10f98394283bdf165e76f2016289dc9e116996d660b"
+        "RECORD": "5caf17a69db270a2d864898f33e650db7835982b3b61de006bae323bf000f62b"
       },
       "pyyaml": {
         "METADATA": "03c3b415ed38d09faedc49360e930769b40c58f68585e6de00e2e4916a858d34",
-        "RECORD": "c55b91c92f924915927c027b1ffc40d102325d0ad29b4c89f0534ac977024f56"
+        "RECORD": "fc5aaa80028c47ff8e5766b534ddac5f4c0ca917af4cfa0016bba48b44ea0f20"
       },
       "six": {
         "METADATA": "562042078c2752549f6d8a7c86dbc5dd708088a7be6d80672ec7b07100b72468",
-        "RECORD": "15fbe6d7ed6c0da64d32aefabc11ada6b97507a61496c0f56173a8e865f2d5f3"
+        "RECORD": "50f97f2f8cea7c8582b0c7b9ce4b33d1bc3a2e104610378c60a686c3052b83e8"
       }
     },
     "all_installed_metadata_requirements_met": true,
@@ -900,7 +892,7 @@
       "buffer_signed_zero_and_serialization": "PASS",
       "finite_underflow_is_not_certification": "PASS"
     },
-    "elapsed_seconds": 0.35899999999674037,
+    "elapsed_seconds": 0.31300000000010186,
     "limits": [
       "Same-host CPU scalar controls; no new-machine, GPU, vector, AD or whole-domain guarantee.",
       "Known external methods and supplied derivatives; no model, discovery or RSI qualification.",
@@ -911,24 +903,24 @@
     "schema": 1,
     "kind": "eidos.numerical-programs-installed-acceptance",
     "status": "PASS",
-    "generated": "2026-11-01T21:57:57.584944+00:00",
+    "generated": "2026-11-02T09:15:51.593200+00:00",
     "platform": "linux",
     "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
-    "executable": "/tmp/eidos-v411-fresh/bin/python",
+    "executable": "/tmp/candidate/bin/python",
     "optimization_level": 0,
     "driver_sha256_lf": "11e515a4d17259f56d8effd0aca0c933965b01f683cd73ba9a6920f4a53297db",
-    "sdk_version": "0.4.11",
-    "wheel_sha256": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
-    "wheel_name": "eidos-0.4.11-py3-none-any.whl",
-    "installed_module": "/tmp/eidos-v411-fresh/lib/python3.12/site-packages/framework/numerical_programs/__init__.py",
-    "prefix": "/tmp/eidos-v411-fresh",
+    "sdk_version": "0.4.12",
+    "wheel_sha256": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
+    "wheel_name": "eidos-0.4.12-py3-none-any.whl",
+    "installed_module": "/tmp/candidate/lib/python3.12/site-packages/framework/numerical_programs/__init__.py",
+    "prefix": "/tmp/candidate",
     "source_sha256_raw": {
       "framework/updates.py": "63af55655b8a8a65e062f3d7c0d93a271486f0a6c962305f6baece7f856c91ed",
       "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
       "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
       "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
       "framework/services.py": "a1ea1f58feb90fe234c9e8d2d3d97c299c6bb45fed1ec0e7909ce6651195eab3",
-      "framework/recovery.py": "e005716a9776d43d4163cc0595488cffc495810fb877a9392b66c24a2f45dd29",
+      "framework/recovery.py": "bac8173839a32cc181d293cc839258cad3a748f5e7d2f2379a3dbf0c2bfd1d44",
       "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
       "framework/project.py": "d994403b2481634e409c9f26cef65a487334ab4328490ea4064559afb43b26c2",
       "framework/model_ab.py": "1307faaddfe307ec845e4ee4744e81533916cafb3dbff039083fbe340c63f6c4",
@@ -982,7 +974,7 @@
       "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
       "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
       "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
-      "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+      "framework/recovery.py": "46e3426ac28988905a2ecebe728cb4a6515803c07fc56feb0dd08b4beebb5563",
       "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
       "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
       "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
@@ -1028,7 +1020,7 @@
       ],
       [
         "eidos",
-        "0.4.11"
+        "0.4.12"
       ],
       [
         "fonttools",
@@ -1077,8 +1069,8 @@
     ],
     "dependency_metadata_sha256_lf": {
       "eidos": {
-        "METADATA": "436c5b56ddce2a6dc68a5e31c3891e16d060fdd976e34e1de07ba3b7817210bd",
-        "RECORD": "bd99b001792c042e447c19b67653eadebb9ee694e61c5fb473d3689f7adcb69a"
+        "METADATA": "e7468f41fd8af84526677261c808fff2f2b3d855c2fa619981832f14ff6e5418",
+        "RECORD": "7ec0368c9a1b5276b5034448638b65892e79655d93481603df9cf043268e271a"
       },
       "matplotlib": {
         "METADATA": "e5f532226d1025af2dd15ff951df27391f66d46403b8244ea61e6b8eb3e4d806",
@@ -1098,7 +1090,7 @@
       },
       "fonttools": {
         "METADATA": "33dec14bec601b457a07a6550086cb6725b5aaedc3a881f9fa7a84d3841ddcfe",
-        "RECORD": "178d078b082c7a62ca1dc703fb3dfa14210dadd6e3e05f1f11b6113691891699"
+        "RECORD": "db1c7be4eb20780373db930be32633db408860c4b53ef4ade7b88e5e1c5a2f1a"
       },
       "kiwisolver": {
         "METADATA": "f07b7b6c0c9c2a624c8a31f931e16712f2cf3490e7dfd51643d68e9d42d4b2c9",
@@ -1106,7 +1098,7 @@
       },
       "numpy": {
         "METADATA": "e2b909d6a37d76c2bc130f528d7fed0c517322bce16dc7846b6a6df30e200403",
-        "RECORD": "23cbf23ca4b82c5ff15a9b0819c8b5b7f10ce2ab5ddd7f1b8099fbd325eafe9d"
+        "RECORD": "dd92f00e684694f9d52027d3ff7c11ed6074ec272a500c327c4a6a570ab06a99"
       },
       "packaging": {
         "METADATA": "70fdb89fc4d4a9a043bf7372b8972bcc883fddff34ab55e9cf80d73875384763",
@@ -1130,7 +1122,7 @@
       },
       "pip": {
         "METADATA": "4fa7318cf30f979db7cec45c12cbbc2b4f88a15f12eefbf59a6291d0a03af926",
-        "RECORD": "5fdbe622f81cdf38895166969c1fb14000b4d801c4722b459c81dbe6770c9692"
+        "RECORD": "db9dacedab54feb444de6873890259dd52bc98124a2422151f41cce7456a4260"
       }
     },
     "all_installed_metadata_requirements_met": true,
@@ -1752,7 +1744,7 @@
       "buffer_signed_zero_and_serialization": "PASS",
       "finite_underflow_is_not_certification": "PASS"
     },
-    "elapsed_seconds": 0.18209128399030305,
+    "elapsed_seconds": 0.17032679000021744,
     "limits": [
       "Same-host CPU scalar controls; no new-machine, GPU, vector, AD or whole-domain guarantee.",
       "Known external methods and supplied derivatives; no model, discovery or RSI qualification.",
@@ -1786,175 +1778,102 @@
     "owned_pth_removed": true
   },
   "linux_execution": {
-    "kind": "public-core",
-    "owner": "59d0b06c7adf4afaaa1e6daf39e62fec",
+    "status": "PASS",
+    "owner": "178038cdb56c4e1998e052a1b9272dc6",
     "image_reference": "public.ecr.aws/docker/library/python@sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
     "image_id": "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
-    "started": "2026-11-01T21:57:42.449656+00:00",
-    "command": [
-      "python",
-      "-I",
-      "/input/bootstrap.py",
-      "--only-numerical"
-    ],
-    "status": "PASS",
-    "controller_sha256": "f36a7c715ef93e3e54f57abcb5848477eda0bd390ac2cbc097dfde60807a9c60",
-    "input_sha256": {
-      "bootstrap.py": "ab7b3b458b604081d55ab68ddef7ae0fd74f7abfd5fd502fba49aa349357c656",
-      "core.txt": "e8fa2b18e9b178fbc5f606273f5db876c2289198e88dd5b210c85f834280a5ac",
-      "eidos-0.4.11-py3-none-any.whl": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
-      "numerical-check.py": "11e515a4d17259f56d8effd0aca0c933965b01f683cd73ba9a6920f4a53297db",
-      "quarto-check.py": "f0efe362c24aa1b680d57f2716aced4214cd9967005e0a27a21bc8c065af2b2f",
-      "reproduction-check.py": "16c34435bf7b9e1f6a3c8c59d83458a5b3ada5d4b064581183dbcb43f5a0ea0f",
-      "run.py": "f63ade2199e791218cd9d033bf51b08b722c1051f6d4b3f2ce1a74c816aea1fb",
-      "sdk-check.py": "1c47047026769a78b1fc5bd7cc4371532c671911eee977bde1823125e5f0f262",
-      "tracking-bootstrap.py": "76ec1407f7226da2e64d772d48da55b9a0dfda10cbd68446ceece1b656a899f9",
-      "wheels/contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "875f42444c9cf48d56f724f2637e60d0f73b3b12c9041e1484580a233edf9591",
-      "wheels/cycler-0.12.1-py3-none-any.whl": "85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30",
-      "wheels/fonttools-4.67.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "eb3c98cac93aac4b9f6e3ce2008325340b234cc9b0338ca6b513f31962a1e278",
-      "wheels/kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "34633ecf50d16187ab8e5528b7a2530f2feb4e23f300db4672538b51cfc5cd38",
-      "wheels/matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "df4f7784aca81a94f254c0a2767d592ee25f407e488f5fa7203e51093fb6ca27",
-      "wheels/numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "fbde6962867ee75b48b0ee29b2b9372ec5d617799dbaf38e82dc0596f2f7738a",
-      "wheels/packaging-26.3-py3-none-any.whl": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
-      "wheels/pillow-13.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "42d63be3af4f9b951b199b0a9d23365d37ab14687e6d77b74940432c8515c4ca",
-      "wheels/pyparsing-3.3.3-py3-none-any.whl": "ece8c00a69cf01b45d0b1dedabb469c90d8caf996d4fda40f147627a122849a4",
-      "wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
-      "wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
-      "wheels/six-1.17.0-py2.py3-none-any.whl": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
-    },
-    "attempt": 2,
-    "before": {
-      "Id": "24d8ca66da95e26401b7992e41c5451c97075cd50354cfbf0b84642576ec8ec7",
-      "Image": "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
-      "State": {
-        "Status": "created",
-        "Running": false,
-        "Paused": false,
-        "Restarting": false,
-        "OOMKilled": false,
-        "Dead": false,
-        "Pid": 0,
-        "ExitCode": 0,
-        "Error": "",
-        "StartedAt": "0001-01-01T00:00:00Z",
-        "FinishedAt": "0001-01-01T00:00:00Z"
-      },
-      "Mounts": [
-        {
-          "Type": "bind",
-          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\input",
-          "Destination": "/input",
-          "Mode": "",
-          "RW": false,
-          "Propagation": "rprivate"
-        },
-        {
-          "Type": "bind",
-          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\public-core-2",
-          "Destination": "/out",
-          "Mode": "",
-          "RW": true,
-          "Propagation": "rprivate"
-        }
-      ],
-      "network": "none",
-      "readonly_rootfs": true,
-      "tmpfs": {
-        "/root/.cache": "rw,nosuid,nodev,size=536870912,mode=1777",
-        "/tmp": "rw,exec,nosuid,nodev,size=2147483648,mode=1777"
-      },
-      "command": [
-        "python",
-        "-I",
-        "/input/bootstrap.py",
-        "--only-numerical"
-      ],
-      "cap_drop": [
-        "ALL"
-      ],
-      "security_opt": [
-        "no-new-privileges"
-      ]
-    },
-    "after": {
-      "Id": "24d8ca66da95e26401b7992e41c5451c97075cd50354cfbf0b84642576ec8ec7",
-      "Image": "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
-      "State": {
-        "Status": "exited",
-        "Running": false,
-        "Paused": false,
-        "Restarting": false,
-        "OOMKilled": false,
-        "Dead": false,
-        "Pid": 0,
-        "ExitCode": 0,
-        "Error": "",
-        "StartedAt": "2026-11-01T21:57:47.476020183Z",
-        "FinishedAt": "2026-11-01T21:57:58.520318067Z"
-      },
-      "Mounts": [
-        {
-          "Type": "bind",
-          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\input",
-          "Destination": "/input",
-          "Mode": "",
-          "RW": false,
-          "Propagation": "rprivate"
-        },
-        {
-          "Type": "bind",
-          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\public-core-2",
-          "Destination": "/out",
-          "Mode": "",
-          "RW": true,
-          "Propagation": "rprivate"
-        }
-      ],
-      "network": "none",
-      "readonly_rootfs": true,
-      "tmpfs": {
-        "/root/.cache": "rw,nosuid,nodev,size=536870912,mode=1777",
-        "/tmp": "rw,exec,nosuid,nodev,size=2147483648,mode=1777"
-      },
-      "command": [
-        "python",
-        "-I",
-        "/input/bootstrap.py",
-        "--only-numerical"
-      ],
-      "cap_drop": [
-        "ALL"
-      ],
-      "security_opt": [
-        "no-new-privileges"
-      ]
-    },
+    "manifest_sha256": "411e0a3fc439287729721281527d0301e22b2090bb4f25bd49c669cd4e5ce4c4",
     "cleanup_verified": true,
-    "finished": "2026-11-01T21:58:01.468654+00:00"
+    "wheelhouse_sha256": {
+      "contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "875f42444c9cf48d56f724f2637e60d0f73b3b12c9041e1484580a233edf9591",
+      "cycler-0.12.1-py3-none-any.whl": "85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30",
+      "fonttools-4.67.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "eb3c98cac93aac4b9f6e3ce2008325340b234cc9b0338ca6b513f31962a1e278",
+      "kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "34633ecf50d16187ab8e5528b7a2530f2feb4e23f300db4672538b51cfc5cd38",
+      "matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "df4f7784aca81a94f254c0a2767d592ee25f407e488f5fa7203e51093fb6ca27",
+      "numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "fbde6962867ee75b48b0ee29b2b9372ec5d617799dbaf38e82dc0596f2f7738a",
+      "packaging-26.3-py3-none-any.whl": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
+      "pillow-13.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "42d63be3af4f9b951b199b0a9d23365d37ab14687e6d77b74940432c8515c4ca",
+      "pyparsing-3.3.3-py3-none-any.whl": "ece8c00a69cf01b45d0b1dedabb469c90d8caf996d4fda40f147627a122849a4",
+      "python_dateutil-2.9.0.post0-py2.py3-none-any.whl": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+      "pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
+      "six-1.17.0-py2.py3-none-any.whl": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
+    },
+    "container_id": "48d69907921d77b5dfcd1351070e304674c53b797cac3f05d71565ef11c2c2b0",
+    "observed_settings": {
+      "network": "none",
+      "readonly_rootfs": true,
+      "mounts": [
+        {
+          "Type": "bind",
+          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\input-linux",
+          "Destination": "/input",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\linux-core-1",
+          "Destination": "/out",
+          "Mode": "",
+          "RW": true,
+          "Propagation": "rprivate"
+        },
+        {
+          "Type": "bind",
+          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\linux-wheels",
+          "Destination": "/wheels",
+          "Mode": "",
+          "RW": false,
+          "Propagation": "rprivate"
+        }
+      ],
+      "tmpfs": {
+        "/tmp": "rw,exec,size=1073741824"
+      },
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opt": [
+        "no-new-privileges"
+      ]
+    },
+    "terminal_state": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-11-02T09:15:31.87125984Z",
+      "FinishedAt": "2026-11-02T09:16:10.875585571Z"
+    }
   },
   "additional_sdk_linux_execution": {
     "kind": "sdk-core",
-    "owner": "b4e06c59d62e4f60baf4f216fa8fa5cb",
+    "owner": "caa96fd6909a453782df07a6a780f633",
     "image_reference": "sha256:bc384f41896ee75c8001a4a17a4830869b6b9b47a23dfd5df038384f2bc755be",
     "image_id": "sha256:bc384f41896ee75c8001a4a17a4830869b6b9b47a23dfd5df038384f2bc755be",
-    "started": "2026-11-01T21:58:01.851265+00:00",
+    "started": "2026-11-02T09:27:07.126388+00:00",
     "command": [
       "python",
       "-I",
       "/input/bootstrap.py"
     ],
     "status": "PASS",
-    "controller_sha256": "f36a7c715ef93e3e54f57abcb5848477eda0bd390ac2cbc097dfde60807a9c60",
+    "controller_sha256": "a55b9ea9fc557e2a1307024addbd8a2c54838019ef33aba2e4b523308e1e2158",
     "input_sha256": {
-      "bootstrap.py": "ab7b3b458b604081d55ab68ddef7ae0fd74f7abfd5fd502fba49aa349357c656",
-      "core.txt": "e8fa2b18e9b178fbc5f606273f5db876c2289198e88dd5b210c85f834280a5ac",
-      "eidos-0.4.11-py3-none-any.whl": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
+      "bootstrap.py": "ad3c8f04ea2cedd7d7112c6f8132a880ae8c0d23615987fdc6096a9814798bdd",
+      "core.txt": "ca27b7da8739f5e3f1d14e54a6172b1bc9bb9da9e4344b1103d9216b2378e5de",
+      "eidos-0.4.12-py3-none-any.whl": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
       "numerical-check.py": "11e515a4d17259f56d8effd0aca0c933965b01f683cd73ba9a6920f4a53297db",
       "quarto-check.py": "f0efe362c24aa1b680d57f2716aced4214cd9967005e0a27a21bc8c065af2b2f",
       "reproduction-check.py": "16c34435bf7b9e1f6a3c8c59d83458a5b3ada5d4b064581183dbcb43f5a0ea0f",
-      "run.py": "f63ade2199e791218cd9d033bf51b08b722c1051f6d4b3f2ce1a74c816aea1fb",
+      "run.py": "24fa02f36cf03c24be4d9d83d7ec975abeced8b00bd6b511c174b6a907add837",
       "sdk-check.py": "1c47047026769a78b1fc5bd7cc4371532c671911eee977bde1823125e5f0f262",
-      "tracking-bootstrap.py": "76ec1407f7226da2e64d772d48da55b9a0dfda10cbd68446ceece1b656a899f9",
       "wheels/contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "875f42444c9cf48d56f724f2637e60d0f73b3b12c9041e1484580a233edf9591",
       "wheels/cycler-0.12.1-py3-none-any.whl": "85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30",
       "wheels/fonttools-4.67.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "eb3c98cac93aac4b9f6e3ce2008325340b234cc9b0338ca6b513f31962a1e278",
@@ -1970,7 +1889,7 @@
     },
     "attempt": 1,
     "before": {
-      "Id": "08fa8d4348fa06198b8a1bdf111e058bf3430dc41d1c23c53609e0cda2c064e3",
+      "Id": "b06ad60c286ba4fd9e0fa4a48434d58eded11afc44b704dd3051c97f0cedf344",
       "Image": "sha256:bc384f41896ee75c8001a4a17a4830869b6b9b47a23dfd5df038384f2bc755be",
       "State": {
         "Status": "created",
@@ -1988,7 +1907,7 @@
       "Mounts": [
         {
           "Type": "bind",
-          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\input",
+          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\input-sdk",
           "Destination": "/input",
           "Mode": "",
           "RW": false,
@@ -1996,7 +1915,7 @@
         },
         {
           "Type": "bind",
-          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\sdk-core",
+          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\sdk-core",
           "Destination": "/out",
           "Mode": "",
           "RW": true,
@@ -2022,7 +1941,7 @@
       ]
     },
     "after": {
-      "Id": "08fa8d4348fa06198b8a1bdf111e058bf3430dc41d1c23c53609e0cda2c064e3",
+      "Id": "b06ad60c286ba4fd9e0fa4a48434d58eded11afc44b704dd3051c97f0cedf344",
       "Image": "sha256:bc384f41896ee75c8001a4a17a4830869b6b9b47a23dfd5df038384f2bc755be",
       "State": {
         "Status": "exited",
@@ -2034,13 +1953,13 @@
         "Pid": 0,
         "ExitCode": 0,
         "Error": "",
-        "StartedAt": "2026-11-01T21:58:04.588483522Z",
-        "FinishedAt": "2026-11-01T21:58:45.22790192Z"
+        "StartedAt": "2026-11-02T09:27:10.596869698Z",
+        "FinishedAt": "2026-11-02T09:27:56.104678256Z"
       },
       "Mounts": [
         {
           "Type": "bind",
-          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\input",
+          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\input-sdk",
           "Destination": "/input",
           "Mode": "",
           "RW": false,
@@ -2048,7 +1967,7 @@
         },
         {
           "Type": "bind",
-          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\sdk-core",
+          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\sdk-core",
           "Destination": "/out",
           "Mode": "",
           "RW": true,
@@ -2074,49 +1993,33 @@
       ]
     },
     "cleanup_verified": true,
-    "finished": "2026-11-01T21:58:47.712389+00:00"
+    "finished": "2026-11-02T09:27:59.014573+00:00"
   },
   "tracking_image_build": {
     "kind": "build-tracking",
-    "owner": "30d8eb2a910b498fa381b38658037da8",
-    "image_reference": "sha256:8f137816f3f718fbc84d0e37ff07b3b25690d981ed0658a27a88977a58ee93ec",
-    "image_id": "sha256:8f137816f3f718fbc84d0e37ff07b3b25690d981ed0658a27a88977a58ee93ec",
-    "started": "2026-11-01T22:03:27.266205+00:00",
+    "owner": "f1fb7270cc774256bd5a93ffcd82330b",
+    "image_reference": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
+    "image_id": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
+    "started": "2026-11-02T09:22:11.655183+00:00",
     "command": [
       "/opt/tracking/bin/python",
       "-I",
       "-c",
-      "import subprocess; subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','install','--no-index','/input/eidos-0.4.11-py3-none-any.whl'],check=True); subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','check'],check=True)"
+      "import subprocess; subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','install','--no-index','/input/eidos-0.4.12-py3-none-any.whl'],check=True); subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','check'],check=True)"
     ],
     "status": "PASS",
-    "controller_sha256": "30207a9282d201e96481b1f182159dfddd047bdc6ae05fe83601e8880bfea358",
+    "controller_sha256": "8353d6d093faf0a29353e52188f72c13d6f700d62ba2514cb5323c7245b1662b",
     "input_sha256": {
-      "bootstrap.py": "ab7b3b458b604081d55ab68ddef7ae0fd74f7abfd5fd502fba49aa349357c656",
-      "core.txt": "e8fa2b18e9b178fbc5f606273f5db876c2289198e88dd5b210c85f834280a5ac",
-      "eidos-0.4.11-py3-none-any.whl": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
-      "numerical-check.py": "11e515a4d17259f56d8effd0aca0c933965b01f683cd73ba9a6920f4a53297db",
-      "quarto-check.py": "f0efe362c24aa1b680d57f2716aced4214cd9967005e0a27a21bc8c065af2b2f",
-      "reproduction-check.py": "16c34435bf7b9e1f6a3c8c59d83458a5b3ada5d4b064581183dbcb43f5a0ea0f",
-      "run.py": "f63ade2199e791218cd9d033bf51b08b722c1051f6d4b3f2ce1a74c816aea1fb",
-      "sdk-check.py": "1c47047026769a78b1fc5bd7cc4371532c671911eee977bde1823125e5f0f262",
-      "tracking-bootstrap.py": "76ec1407f7226da2e64d772d48da55b9a0dfda10cbd68446ceece1b656a899f9",
-      "wheels/contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "875f42444c9cf48d56f724f2637e60d0f73b3b12c9041e1484580a233edf9591",
-      "wheels/cycler-0.12.1-py3-none-any.whl": "85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30",
-      "wheels/fonttools-4.67.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "eb3c98cac93aac4b9f6e3ce2008325340b234cc9b0338ca6b513f31962a1e278",
-      "wheels/kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "34633ecf50d16187ab8e5528b7a2530f2feb4e23f300db4672538b51cfc5cd38",
-      "wheels/matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "df4f7784aca81a94f254c0a2767d592ee25f407e488f5fa7203e51093fb6ca27",
-      "wheels/numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "fbde6962867ee75b48b0ee29b2b9372ec5d617799dbaf38e82dc0596f2f7738a",
-      "wheels/packaging-26.3-py3-none-any.whl": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
-      "wheels/pillow-13.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "42d63be3af4f9b951b199b0a9d23365d37ab14687e6d77b74940432c8515c4ca",
-      "wheels/pyparsing-3.3.3-py3-none-any.whl": "ece8c00a69cf01b45d0b1dedabb469c90d8caf996d4fda40f147627a122849a4",
-      "wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
-      "wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
-      "wheels/six-1.17.0-py2.py3-none-any.whl": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
+      "eidos-0.4.12-py3-none-any.whl": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
+      "lifecycle.py": "1c47047026769a78b1fc5bd7cc4371532c671911eee977bde1823125e5f0f262",
+      "manifest.json": "275d011cc4344906dca03ebff79fb24b20653583f11438fe100f66481e11e207",
+      "numerical.py": "11e515a4d17259f56d8effd0aca0c933965b01f683cd73ba9a6920f4a53297db",
+      "shell.py": "f51fab18ced840bbe343d2451ea249c1b660b341892eb7a4a252fc2c4cdc6162"
     },
-    "attempt": 2,
+    "attempt": 1,
     "before": {
-      "Id": "3d743e2c27cd61f74cf6876d3cc751bc33ef0aaef0787730c61a521266449d8b",
-      "Image": "sha256:8f137816f3f718fbc84d0e37ff07b3b25690d981ed0658a27a88977a58ee93ec",
+      "Id": "607f856704e46b52e26259a2bedb2a43f35f72145b58883919ca1f05e5b2a683",
+      "Image": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
       "State": {
         "Status": "created",
         "Running": false,
@@ -2133,7 +2036,7 @@
       "Mounts": [
         {
           "Type": "bind",
-          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\input",
+          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\input",
           "Destination": "/input",
           "Mode": "",
           "RW": false,
@@ -2141,7 +2044,7 @@
         },
         {
           "Type": "bind",
-          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\build-tracking-2",
+          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\build-tracking",
           "Destination": "/out",
           "Mode": "",
           "RW": true,
@@ -2158,7 +2061,7 @@
         "/opt/tracking/bin/python",
         "-I",
         "-c",
-        "import subprocess; subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','install','--no-index','/input/eidos-0.4.11-py3-none-any.whl'],check=True); subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','check'],check=True)"
+        "import subprocess; subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','install','--no-index','/input/eidos-0.4.12-py3-none-any.whl'],check=True); subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','check'],check=True)"
       ],
       "cap_drop": [
         "ALL"
@@ -2168,8 +2071,8 @@
       ]
     },
     "after": {
-      "Id": "3d743e2c27cd61f74cf6876d3cc751bc33ef0aaef0787730c61a521266449d8b",
-      "Image": "sha256:8f137816f3f718fbc84d0e37ff07b3b25690d981ed0658a27a88977a58ee93ec",
+      "Id": "607f856704e46b52e26259a2bedb2a43f35f72145b58883919ca1f05e5b2a683",
+      "Image": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
       "State": {
         "Status": "exited",
         "Running": false,
@@ -2180,13 +2083,13 @@
         "Pid": 0,
         "ExitCode": 0,
         "Error": "",
-        "StartedAt": "2026-11-01T22:03:29.589192548Z",
-        "FinishedAt": "2026-11-01T22:03:31.342694078Z"
+        "StartedAt": "2026-11-02T09:22:14.696021387Z",
+        "FinishedAt": "2026-11-02T09:22:23.012543658Z"
       },
       "Mounts": [
         {
           "Type": "bind",
-          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\input",
+          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\input",
           "Destination": "/input",
           "Mode": "",
           "RW": false,
@@ -2194,7 +2097,7 @@
         },
         {
           "Type": "bind",
-          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v411\\build-tracking-2",
+          "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\build-tracking",
           "Destination": "/out",
           "Mode": "",
           "RW": true,
@@ -2211,7 +2114,7 @@
         "/opt/tracking/bin/python",
         "-I",
         "-c",
-        "import subprocess; subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','install','--no-index','/input/eidos-0.4.11-py3-none-any.whl'],check=True); subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','check'],check=True)"
+        "import subprocess; subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','install','--no-index','/input/eidos-0.4.12-py3-none-any.whl'],check=True); subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','check'],check=True)"
       ],
       "cap_drop": [
         "ALL"
@@ -2220,125 +2123,42 @@
         "no-new-privileges"
       ]
     },
-    "candidate_image_id": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
+    "candidate_image_id": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
     "cleanup_verified": true,
-    "finished": "2026-11-01T22:03:40.360857+00:00"
+    "finished": "2026-11-02T09:23:17.497764+00:00"
   },
   "bootstrap": {
-    "wheel_sha256": "752b5f30e7d225f74799b929bbd22cd28f3396aefb081d862efb1d21ba2d498a",
-    "lock_sha256": "22e6b7afac4f507f9746dbcf07fbc0a1eaa5e03d235efe5a1b91ac377a5c80cc",
-    "build_constraints": [
-      "setuptools==84.2.1 --hash=sha256:ca140b45d5325a9478f880e351484f62fef15f336462e449ca0c03c873d589c2",
-      "wheel==0.48.0 --hash=sha256:3217dcc807155e45db462d7ef2431f5ddda0d7273b700d05a67b271ceb1287ab",
-      "packaging==26.3 --hash=sha256:d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c"
-    ],
-    "uv_version": "uv 0.12.17 (635500036 2026-09-18 x86_64-pc-windows-msvc)",
+    "version": "0.4.12",
+    "files": {
+      "core-requirements.txt": "ca27b7da8739f5e3f1d14e54a6172b1bc9bb9da9e4344b1103d9216b2378e5de",
+      "eidos-0.4.12-py3-none-any.whl": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
+      "lifecycle.py": "1c47047026769a78b1fc5bd7cc4371532c671911eee977bde1823125e5f0f262",
+      "numerical.py": "11e515a4d17259f56d8effd0aca0c933965b01f683cd73ba9a6920f4a53297db",
+      "offline.py": "b1195a215d928fbc3a4de76cf38eaf0b30a48e05ad38b3fff7533f5b4ed3fa8e",
+      "shell.py": "f51fab18ced840bbe343d2451ea249c1b660b341892eb7a4a252fc2c4cdc6162"
+    },
     "wheels": {
-      "linux-wheels/contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": {
-        "sha256": "875f42444c9cf48d56f724f2637e60d0f73b3b12c9041e1484580a233edf9591",
-        "size": 383243
-      },
-      "linux-wheels/cycler-0.12.1-py3-none-any.whl": {
-        "sha256": "85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30",
-        "size": 8321
-      },
-      "linux-wheels/fonttools-4.67.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": {
-        "sha256": "eb3c98cac93aac4b9f6e3ce2008325340b234cc9b0338ca6b513f31962a1e278",
-        "size": 5408233
-      },
-      "linux-wheels/kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": {
-        "sha256": "34633ecf50d16187ab8e5528b7a2530f2feb4e23f300db4672538b51cfc5cd38",
-        "size": 1477929
-      },
-      "linux-wheels/matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": {
-        "sha256": "df4f7784aca81a94f254c0a2767d592ee25f407e488f5fa7203e51093fb6ca27",
-        "size": 9860353
-      },
-      "linux-wheels/numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": {
-        "sha256": "fbde6962867ee75b48b0ee29b2b9372ec5d617799dbaf38e82dc0596f2f7738a",
-        "size": 16727283
-      },
-      "linux-wheels/packaging-26.3-py3-none-any.whl": {
-        "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
-        "size": 129956
-      },
-      "linux-wheels/pillow-13.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": {
-        "sha256": "42d63be3af4f9b951b199b0a9d23365d37ab14687e6d77b74940432c8515c4ca",
-        "size": 7144542
-      },
-      "linux-wheels/pyparsing-3.3.3-py3-none-any.whl": {
-        "sha256": "ece8c00a69cf01b45d0b1dedabb469c90d8caf996d4fda40f147627a122849a4",
-        "size": 126420
-      },
-      "linux-wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl": {
-        "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
-        "size": 229892
-      },
-      "linux-wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl": {
-        "sha256": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
-        "size": 807870
-      },
-      "linux-wheels/six-1.17.0-py2.py3-none-any.whl": {
-        "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
-        "size": 11050
-      },
-      "windows-wheels/contourpy-1.4.0-cp312-cp312-win_amd64.whl": {
-        "sha256": "6e697d94e69f499ff6bebb899cae97a58d5d14f0e1fe9568b43a0248d2f9af8c",
-        "size": 234083
-      },
-      "windows-wheels/cycler-0.12.1-py3-none-any.whl": {
-        "sha256": "85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30",
-        "size": 8321
-      },
-      "windows-wheels/fonttools-4.67.0-cp312-cp312-win_amd64.whl": {
-        "sha256": "2bfab2f5d1d255dec82f4bd082a1c10e77df808e42210890f50a9c30bf91570e",
-        "size": 2497985
-      },
-      "windows-wheels/kiwisolver-1.5.1-cp312-cp312-win_amd64.whl": {
-        "sha256": "06a6917674de9e0fe3f66f5430787f59a9f2ddb64af9b714eaec547e29ef5c19",
-        "size": 70748
-      },
-      "windows-wheels/matplotlib-3.11.2-cp312-cp312-win_amd64.whl": {
-        "sha256": "c5c1c68ee401fc98271263410f0e5ce88285abacf7627132914e8adf3d70ff43",
-        "size": 9349409
-      },
-      "windows-wheels/numpy-2.5.4-cp312-cp312-win_amd64.whl": {
-        "sha256": "a7b1b6353e36a7e50de2973a38d705c88ee93adcf120673cee7f45a4a3fa223a",
-        "size": 12573091
-      },
-      "windows-wheels/packaging-26.3-py3-none-any.whl": {
-        "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
-        "size": 129956
-      },
-      "windows-wheels/pillow-13.0.0-cp312-cp312-win_amd64.whl": {
-        "sha256": "ff3fe9eb621fbb9db4c4be33ab946f6bac5f98ab50ca8d3260503653656c961b",
-        "size": 7272166
-      },
-      "windows-wheels/pyparsing-3.3.3-py3-none-any.whl": {
-        "sha256": "ece8c00a69cf01b45d0b1dedabb469c90d8caf996d4fda40f147627a122849a4",
-        "size": 126420
-      },
-      "windows-wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl": {
-        "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
-        "size": 229892
-      },
-      "windows-wheels/pyyaml-6.0.3-cp312-cp312-win_amd64.whl": {
-        "sha256": "5fcd34e47f6e0b794d17de1b4ff496c00986e1c83f7ab2fb8fcfe9616ff7477b",
-        "size": 154003
-      },
-      "windows-wheels/six-1.17.0-py2.py3-none-any.whl": {
-        "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274",
-        "size": 11050
-      }
+      "contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "875f42444c9cf48d56f724f2637e60d0f73b3b12c9041e1484580a233edf9591",
+      "cycler-0.12.1-py3-none-any.whl": "85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30",
+      "fonttools-4.67.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "eb3c98cac93aac4b9f6e3ce2008325340b234cc9b0338ca6b513f31962a1e278",
+      "kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "34633ecf50d16187ab8e5528b7a2530f2feb4e23f300db4672538b51cfc5cd38",
+      "matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "df4f7784aca81a94f254c0a2767d592ee25f407e488f5fa7203e51093fb6ca27",
+      "numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "fbde6962867ee75b48b0ee29b2b9372ec5d617799dbaf38e82dc0596f2f7738a",
+      "packaging-26.3-py3-none-any.whl": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
+      "pillow-13.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "42d63be3af4f9b951b199b0a9d23365d37ab14687e6d77b74940432c8515c4ca",
+      "pyparsing-3.3.3-py3-none-any.whl": "ece8c00a69cf01b45d0b1dedabb469c90d8caf996d4fda40f147627a122849a4",
+      "python_dateutil-2.9.0.post0-py2.py3-none-any.whl": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+      "pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
+      "six-1.17.0-py2.py3-none-any.whl": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
     }
   },
-  "full_source_audit_sha256": "9b2393b11cb87f7d54bcac9a55fb5725c6bfd3c620e8e96ea4cc349331d88d1a",
-  "archive": "reference/numerical_programs_acceptance/recorded_trials/v0.4.11",
-  "archive_manifest_sha256": "89de10ec018647dba7a1d8b73f8948e3d33b46897c5635832a01ceef78054a20",
+  "full_source_audit_sha256": "5052ceaac8d0ef5b61c93e7a335c41ab6a5223cf3234760991fdbb803bd6f2bf",
+  "archive": "reference/numerical_programs_acceptance/recorded_trials/v0.4.12",
+  "archive_manifest_sha256": "5946ba8394a07fe55245a2f2087b5e6266c9d4c9cae8e9bdc6fc5eff07c7c817",
   "assembly_sources_sha256": {
-    "reference/numerical_programs_acceptance/audit/assembler.py.snapshot": "84d112a5a32ef0ef4007968072a04bd28ef29c87215e1b2cac5d4de9ed934e4f",
-    "reference/numerical_programs_acceptance/audit/inventory_guards.py.snapshot": "ef2af829ffb64dfbf0c007153be2502bb66fa411da91cf4e875ac6a2479ca502",
-    "reference/numerical_programs_acceptance/audit/legacy_guards.py.snapshot": "6e700f8b36334c11961881cb0c4ff4bf868365a39380523656b93e646d68f583"
+    "reference/numerical_programs_acceptance/audit/v0.4.12/release_assembler.py.snapshot": "20f9cf7aa0f4d508329d69878d02c9e1f61e60ad4d190346dd279ab5f54da6c0",
+    "reference/numerical_programs_acceptance/audit/v0.4.12/numerical_guards.py.snapshot": "8261e4e5ab8c2e4d1b042a1293f6e336b05d67c9f597613032b3b4d04bd124b8",
+    "reference/numerical_programs_acceptance/audit/v0.4.12/legacy_guards.py.snapshot": "6e700f8b36334c11961881cb0c4ff4bf868365a39380523656b93e646d68f583"
   },
   "free_reuse": {
     "gemini_api": false,
@@ -2350,7 +2170,7 @@
     "Known external numerical methods and explicitly supplied derivatives; no model or RSI qualification.",
     "Same-host Windows and offline Linux, not new hardware, GPU, vectors, AD or a whole-domain guarantee.",
     "Public dependency bootstrap is separate; Linux qualifier networking was disabled.",
-    "The first public-core controller attempt and first owned-image commit attempt remain retained FAIL records.",
+    "Docker E: bind failures and the incomplete tracking source snapshot remain retained FAIL records.",
     "Dependency METADATA/RECORD stability is not a hostile-process or full dependency-file integrity sandbox."
   ]
 }

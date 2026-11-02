@@ -1,0 +1,20 @@
+{
+  "kind": "recovery",
+  "owner": "583fb0c7e0b040d8bd7514feece201f8",
+  "image_reference": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
+  "image_id": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
+  "started": "2026-11-02T09:31:10.343101+00:00",
+  "command": [
+    "/opt/tracking/bin/python",
+    "/input/recovery-bootstrap.py"
+  ],
+  "status": "FAIL",
+  "controller_sha256": "a55b9ea9fc557e2a1307024addbd8a2c54838019ef33aba2e4b523308e1e2158",
+  "input_sha256": {
+    "recovery-bootstrap.py": "73c311e4ad884f5dded934a6cd576f6fbd34df91be7c889e1ac65697aa5bd757",
+    "recovery-negative.py": "94df88801eaefb37f2c3f24575c6b17563c742328182727bb1487f08273dafdc"
+  },
+  "attempt": 1,
+  "error": "RuntimeError: ['docker', 'create', '--name']: Error response from daemon: invalid mount config for type \"bind\": bind source path does not exist: /run/desktop/mnt/host/e/2026-AI4S/Eidos\n",
+  "finished": "2026-11-02T09:31:10.516816+00:00"
+}

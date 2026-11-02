@@ -60,3 +60,13 @@ site/docs/RECOVERY-LIVE-ACCEPTANCE.json -text whitespace=cr-at-eol
 site/docs/TRACKING-ACCEPTANCE.json -text whitespace=cr-at-eol
 site/docs/CONSUMER-OBSERVATION-ACCEPTANCE.json -text whitespace=cr-at-eol
 *.sh text eol=lf
+
+# Retain the exact published 0.4.11 receipt bytes before refreshing aliases.
+docs/archive/*-v0.4.11.json -text whitespace=cr-at-eol
+site/docs/archive/*-v0.4.11.json -text whitespace=cr-at-eol
+docs/RELEASE-CANDIDATE-*.json -text whitespace=cr-at-eol
+site/docs/RELEASE-CANDIDATE-*.json -text whitespace=cr-at-eol
+# Keep this after generic *.md rules: raw trial snapshots bind exact producer bytes.
+reference/numerical_programs_acceptance/recorded_trials/v0.4.12/** -text
+# Historical source bytes include their original trailing spaces; do not reformat evidence.
+reference/numerical_programs_acceptance/recorded_trials/v0.4.12/**/*.py.snapshot whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof

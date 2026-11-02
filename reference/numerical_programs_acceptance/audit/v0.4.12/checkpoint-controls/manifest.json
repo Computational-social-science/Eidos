@@ -1,0 +1,165 @@
+{
+  "scope": "All five checkpoint-harness attempts and actual pre-fix empty-source acceptance. Attempts 1/2 failed before intended controls; 3/4 passed three refusals; 5 passed five refusals and restored replay. Separate from immutable 645-payload execution archive.",
+  "files": {
+    "controls.py.snapshot": {
+      "sha256": "591299b9e4981a97ab629f587151a3da8e7f6ad45cc624b70f2adaeb88b4dd0f",
+      "size": 4419
+    },
+    "controls-attempt1-4.py.snapshot": {
+      "sha256": "3c07d7544bb379a4856040415ae36b9cecd93247db2bd87ec6ad9601fb69800a",
+      "size": 3894
+    },
+    "empty-source-before-fix.json": {
+      "sha256": "a2604a224744295f0e642853b367103df36d203793bdb1ac35c6b221106b302c",
+      "size": 216
+    },
+    "attempt-1/mid-read-mutation.stderr": {
+      "sha256": "8bd1aec7c134e769d1a24eabc7013b2c353dac13a2c133f6a7a5fb7a03620f77",
+      "size": 415
+    },
+    "attempt-1/mid-read-mutation.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-1/stale-source.stderr": {
+      "sha256": "c93543c3e64236d051baee78c432c9da7b82225fae38f6dad1fc491c831ca67a",
+      "size": 433
+    },
+    "attempt-1/stale-source.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-1/wrong-platform.stderr": {
+      "sha256": "35f9ec2540469bdb207f92de9d692bf15ec0396aca66157ea2b20e470636231c",
+      "size": 423
+    },
+    "attempt-1/wrong-platform.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-2/mid-read-mutation.stderr": {
+      "sha256": "eafbdd2203e23fb759b01c5426f720737c2dc2e3948dd5014949647ac04666fe",
+      "size": 636
+    },
+    "attempt-2/mid-read-mutation.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-2/stale-source.stderr": {
+      "sha256": "c93543c3e64236d051baee78c432c9da7b82225fae38f6dad1fc491c831ca67a",
+      "size": 433
+    },
+    "attempt-2/stale-source.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-2/wrong-platform.stderr": {
+      "sha256": "35f9ec2540469bdb207f92de9d692bf15ec0396aca66157ea2b20e470636231c",
+      "size": 423
+    },
+    "attempt-2/wrong-platform.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-3/mid-read-mutation.stderr": {
+      "sha256": "7cf8a7a29e782de696828ab39881d4d18d01b972e4c7d822616c13811ee9622b",
+      "size": 632
+    },
+    "attempt-3/mid-read-mutation.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-3/record.json": {
+      "sha256": "5bdc9264fb249c46c43e66721f3d21e57962dbf5eb60ac57a0471cf573ef58c7",
+      "size": 981
+    },
+    "attempt-3/stale-source.stderr": {
+      "sha256": "c93543c3e64236d051baee78c432c9da7b82225fae38f6dad1fc491c831ca67a",
+      "size": 433
+    },
+    "attempt-3/stale-source.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-3/wrong-platform.stderr": {
+      "sha256": "35f9ec2540469bdb207f92de9d692bf15ec0396aca66157ea2b20e470636231c",
+      "size": 423
+    },
+    "attempt-3/wrong-platform.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-4/mid-read-mutation.stderr": {
+      "sha256": "cf689ce50adec6635a47697c036061b69f50bcff2544464bec57e788ac557e8f",
+      "size": 632
+    },
+    "attempt-4/mid-read-mutation.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-4/record.json": {
+      "sha256": "88751bb73d5bf61cd62896c95669de5e9f4f3db8b21b0db5633bd9243663639c",
+      "size": 981
+    },
+    "attempt-4/stale-source.stderr": {
+      "sha256": "2254e595e30ad34d6076adfcf3e832c44621e50b60e2ee1dbd739edef4513b07",
+      "size": 433
+    },
+    "attempt-4/stale-source.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-4/wrong-platform.stderr": {
+      "sha256": "93f092fd7cace2955cd1d3df0bd80dad2ccb453c38251cd71fb02c8f4b11dbe5",
+      "size": 423
+    },
+    "attempt-4/wrong-platform.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-5/empty-source.stderr": {
+      "sha256": "da3dec797a3b31bac6d337521b43ae122492021e6cd2008e543bc6bad1985bcb",
+      "size": 406
+    },
+    "attempt-5/empty-source.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-5/mid-read-mutation.stderr": {
+      "sha256": "ed502cd464020bb31ef25478d2f027923ef6af3c3d5b2b94c4d727b4d49fe4b7",
+      "size": 632
+    },
+    "attempt-5/mid-read-mutation.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-5/missing-source.stderr": {
+      "sha256": "da3dec797a3b31bac6d337521b43ae122492021e6cd2008e543bc6bad1985bcb",
+      "size": 406
+    },
+    "attempt-5/missing-source.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-5/record.json": {
+      "sha256": "9355b6dc9fd36680ced8dbaddaa88ebe90d9e39c3d7ecc6792d5ae3ef7274b73",
+      "size": 1365
+    },
+    "attempt-5/stale-source.stderr": {
+      "sha256": "b222d6e7475a9705e7230c06c8d2d848781249b79f29fe0643af1fee02b24774",
+      "size": 433
+    },
+    "attempt-5/stale-source.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "attempt-5/wrong-platform.stderr": {
+      "sha256": "93f092fd7cace2955cd1d3df0bd80dad2ccb453c38251cd71fb02c8f4b11dbe5",
+      "size": 423
+    },
+    "attempt-5/wrong-platform.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    }
+  }
+}

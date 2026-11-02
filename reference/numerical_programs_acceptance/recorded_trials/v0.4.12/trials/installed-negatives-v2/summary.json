@@ -1,0 +1,26 @@
+{
+  "controls": [
+    {
+      "case": "-O",
+      "exit_code": 1,
+      "stdout_empty": true,
+      "rejected": true,
+      "expected_message": "Qualification requires"
+    },
+    {
+      "case": "-OO",
+      "exit_code": 1,
+      "stdout_empty": true,
+      "rejected": true,
+      "expected_message": "Qualification requires"
+    },
+    {
+      "case": "host-distribution-leak",
+      "exit_code": 1,
+      "stdout_empty": true,
+      "rejected": true,
+      "expected_message": "Host distributions leaked into the virtual environment"
+    }
+  ],
+  "owned_pth_removed": true
+}

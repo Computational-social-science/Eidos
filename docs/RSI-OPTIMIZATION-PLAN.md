@@ -541,3 +541,43 @@ matched assistance/budget policy in section 12. Keep this public case outside
 sealed transfer. Independent evaluation and improvement-procedure evidence must
 precede any G3/G4 or recursive-improvement claim. Continue keyless local execution,
 with explicit free dependency/model licenses and no hosted fallback.
+
+## 14. Recovery prerequisite under source qualification
+
+A real outage exposed a detached Windows shell-selection gap: PATH resolved to
+WSL while the recovery script used MSYS drive paths. The monitor listener was
+restored, and a source repair now probes actual translated-path access instead
+of trusting the executable name or OSTYPE. Forty-nine scoped controls pass.
+The existing recovery loop subsequently restored both decision-service endpoints
+after its unchanged cooldown; the monitor reports fresh OK samples.
+
+See the [incident and acceptance limits](RECOVERY-SHELL-2026-11-02.md).
+This is operational repair, not RSI evidence. The source change is not covered
+by the immutable 0.4.11 wheel's acceptance. A fresh source audit, new package,
+installed Windows/Linux replay, version/evidence synchronization and exact-commit
+CI must precede release. Keep the original failure and old wheel records intact.
+
+The subsequent [0.4.12 candidate checkpoint](RELEASE-CANDIDATE-0.4.12.md)
+records installed Windows/offline Linux replay of the repaired path selection,
+normal core, delivery, reproduction and tracking boundaries. The final source
+audit has 1,206 passing tests, six explicit skips and 75% framework coverage;
+the scoped recovery suite has 55 passes. A 645-payload raw archive preserves
+successful controls, failed environment attempts and negative fixtures. Candidate
+receipt aggregation now rejects wrong platforms, stale source bindings and input
+mutation during assembly, with actual cache-file mutation controls. Publication
+and exact-final-commit CI remain pending, and no RSI gate is promoted by this
+operational improvement.
+
+## 15. Downstream reuse and evidence-backed improvement
+
+The [integration architecture and staged plan](PROJECT_INTEGRATION.md#downstream-reuse-architecture-and-implementation-plan-2026-11-02)
+defines a pinned project SDK, thin Agent/MCP entry points, one optional local
+dashboard and a downstream-to-core incident lifecycle. Prioritize an installed
+CLI/workspace boundary and reproducible feedback over another orchestration
+framework. Source repair is accepted only after independent checks and replay in
+the originating downstream project. Keep project environments/version identities
+separate; do not silently upgrade every project or call operational repair RSI.
+The generic initializer, feedback CLI, worker event ingestion and research Agent
+remain planned interfaces. Existing case-specific Paper2Agent support is not a
+general EIDOS Agent. All default paths retain local/free operation and finite
+event-triggered work without external CRON or hosted fallback.

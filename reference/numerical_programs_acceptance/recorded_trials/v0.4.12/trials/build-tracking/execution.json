@@ -1,0 +1,132 @@
+{
+  "kind": "build-tracking",
+  "owner": "f1fb7270cc774256bd5a93ffcd82330b",
+  "image_reference": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
+  "image_id": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
+  "started": "2026-11-02T09:22:11.655183+00:00",
+  "command": [
+    "/opt/tracking/bin/python",
+    "-I",
+    "-c",
+    "import subprocess; subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','install','--no-index','/input/eidos-0.4.12-py3-none-any.whl'],check=True); subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','check'],check=True)"
+  ],
+  "status": "PASS",
+  "controller_sha256": "8353d6d093faf0a29353e52188f72c13d6f700d62ba2514cb5323c7245b1662b",
+  "input_sha256": {
+    "eidos-0.4.12-py3-none-any.whl": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
+    "lifecycle.py": "1c47047026769a78b1fc5bd7cc4371532c671911eee977bde1823125e5f0f262",
+    "manifest.json": "275d011cc4344906dca03ebff79fb24b20653583f11438fe100f66481e11e207",
+    "numerical.py": "11e515a4d17259f56d8effd0aca0c933965b01f683cd73ba9a6920f4a53297db",
+    "shell.py": "f51fab18ced840bbe343d2451ea249c1b660b341892eb7a4a252fc2c4cdc6162"
+  },
+  "attempt": 1,
+  "before": {
+    "Id": "607f856704e46b52e26259a2bedb2a43f35f72145b58883919ca1f05e5b2a683",
+    "Image": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
+    "State": {
+      "Status": "created",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "0001-01-01T00:00:00Z",
+      "FinishedAt": "0001-01-01T00:00:00Z"
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\input",
+        "Destination": "/input",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\build-tracking",
+        "Destination": "/out",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      }
+    ],
+    "network": "none",
+    "readonly_rootfs": false,
+    "tmpfs": {
+      "/root/.cache": "rw,nosuid,nodev,size=536870912,mode=1777",
+      "/tmp": "rw,exec,nosuid,nodev,size=2147483648,mode=1777"
+    },
+    "command": [
+      "/opt/tracking/bin/python",
+      "-I",
+      "-c",
+      "import subprocess; subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','install','--no-index','/input/eidos-0.4.12-py3-none-any.whl'],check=True); subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','check'],check=True)"
+    ],
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges"
+    ]
+  },
+  "after": {
+    "Id": "607f856704e46b52e26259a2bedb2a43f35f72145b58883919ca1f05e5b2a683",
+    "Image": "sha256:9d755652c811b77489d272055e0a59b04bd4e447a732cb219ca0bec40ae2869a",
+    "State": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-11-02T09:22:14.696021387Z",
+      "FinishedAt": "2026-11-02T09:22:23.012543658Z"
+    },
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\input",
+        "Destination": "/input",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\build-tracking",
+        "Destination": "/out",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      }
+    ],
+    "network": "none",
+    "readonly_rootfs": false,
+    "tmpfs": {
+      "/root/.cache": "rw,nosuid,nodev,size=536870912,mode=1777",
+      "/tmp": "rw,exec,nosuid,nodev,size=2147483648,mode=1777"
+    },
+    "command": [
+      "/opt/tracking/bin/python",
+      "-I",
+      "-c",
+      "import subprocess; subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','install','--no-index','/input/eidos-0.4.12-py3-none-any.whl'],check=True); subprocess.run(['/opt/tracking/bin/python','-I','-m','pip','check'],check=True)"
+    ],
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges"
+    ]
+  },
+  "candidate_image_id": "sha256:995728983061ea01cc2c987447ceda0977d725b8e15b5cbee0f361bf8e9323c0",
+  "cleanup_verified": true,
+  "finished": "2026-11-02T09:23:17.497764+00:00"
+}

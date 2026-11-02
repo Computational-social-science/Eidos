@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "E:\2026-AI4S\Eidos\.scratch\quality\record_v412_candidate.py", line 98, in <module>
+    require(sha(raw(source_path).decode('utf-8-sig').replace('\r\n','\n').encode())==digest,
+  File "E:\2026-AI4S\Eidos\.scratch\quality\v410_receipt_guards.py", line 27, in require
+    if not value: raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Recovery source differs

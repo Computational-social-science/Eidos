@@ -47,6 +47,22 @@ def fault():
     return {"svc": {"state": "ALARM", "recovery": {"available": True}}}
 
 
+def test_bad_shell_does_not_reserve_or_launch(isolated, monkeypatch):
+    monkeypatch.setattr(recovery, 'ACTIONS', {
+        'svc': {'root': 'repo', 'script': ('start.sh',), 'kind': 'bash'}})
+    monkeypatch.setattr(recovery, 'preflight', lambda name: {
+        'healthy': False, 'ports': {}, 'conflict': False, 'owned_by_self': False})
+    def unavailable():
+        raise OSError('controlled missing MSYS shell')
+    monkeypatch.setattr(recovery, '_shell', unavailable)
+    monkeypatch.setattr(recovery.subprocess, 'Popen', lambda *a, **k: pytest.fail('unsafe launch'))
+    result = recovery.execute(recovery.RecoveryPlan('svc', 'start', 'test', True))
+    assert result['ok'] is False and result['attempted'] is False
+    assert json.loads(isolated.state.read_text()) == {}
+    events = [json.loads(line) for line in isolated.log.read_text().splitlines()]
+    assert [row['phase'] for row in events] == ['refused']
+
+
 def test_automatic_attempt_preserves_launcher_fields_and_has_one_attempt_row(
     isolated, monkeypatch
 ):

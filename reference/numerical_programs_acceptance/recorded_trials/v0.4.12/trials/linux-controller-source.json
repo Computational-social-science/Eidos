@@ -1,0 +1,6 @@
+{
+  "reused_controller": "reference/symbolic_tool/offline.py",
+  "controller_sha256_raw": "f1542926caf3b16b9f70290f002856c8dec3a45a7e127a1878c5565a43c296f0",
+  "manifest_sha256": "411e0a3fc439287729721281527d0301e22b2090bb4f25bd49c669cd4e5ce4c4",
+  "scope": "Generic owned-container containment reused; no SymPy campaign or result inherited"
+}

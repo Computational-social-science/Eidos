@@ -1,6 +1,6 @@
 # Experiment identity and data provenance
 
-Installed-wheel qualification: v0.4.11 on Windows and offline Linux. Release
+Installed-wheel candidate qualification: v0.4.12 on Windows and offline Linux. Release
 publication and running-service identity are recorded separately.
 Final release tagging still requires exact-commit CI and asset verification.
 The published lifecycle, manuscript and reproduction receipts cover their listed

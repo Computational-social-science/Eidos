@@ -1,0 +1,105 @@
+{
+  "schema": 3,
+  "recorded_at": "2026-11-01T22:22:54.503563+00:00",
+  "status": "CONTROLLED_SOURCE_AND_DISPOSABLE_SERVICE_TESTS_PASS",
+  "version": "0.4.11",
+  "tests_passed": 1194,
+  "scope": "Full current source suite and same-host actual disposable-service recovery; no legacy/model-service migration.",
+  "source_sha256_lf": {
+    "framework/recovery.py": "ccd84f59a2608ba9f601672c85179bc8666bf9eb69752cea517b97baa8efd843",
+    "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+    "tools/watch_pipeline.py": "80bcf5699792cc767daa23788d1a92d4b57af3d43b264e7d040a0f082cae130d",
+    "tools/serve_site.py": "9e55c39a74d104295febc3388b2fa0a7217128354a12f04272b0213a886f4cd4",
+    "tools/audit_chains.py": "b81227fa0a0d0cc01e6d49c56b3233970a517896fbb25982fa22a31cffebd408",
+    "tools/chain_states.py": "5d672528b901f8e08fad06e564b6ef64841785c18c1d606b5b0ab2e2ceb8f964",
+    "tools/site_documents.py": "12194e4f775e9266af8a8192616862433b6e90dab6f4447a49611ff9b9d36337",
+    "tests/test_recovery_control.py": "8a1d4adfb73c5430ceeba9852a63d12f5a7f107dac9b78cba456340c6b19ea10",
+    "tests/test_service_contract.py": "3e9b929a6c9dfcb0b1dfaf9ab24b07d99f95b50166a8267e06237f5fc08981d3",
+    "tests/test_services.py": "52ce2d3e2eaa50e27b9327e5b049f2fdfdc9dcf5e55b01eb39f353c299d70f20",
+    "tests/test_audit_ownership.py": "20d5f88000d488ba3207446e43190b960572916729c110b05447038da8d64d36",
+    "tests/test_dashboard.py": "8bf3958f3a5f72bd2817f8a484ef7ff4b8a25a5c915b7def27b6ae98da27e692",
+    ".github/workflows/ci.yml": "6d742b81553db1bac31731cbe72739195dc151e1e46128363e8973b8eba0d7c5",
+    ".gitattributes": "ac63a86c5547ea4019bd0086eef723950e279e9a618c8f634a7223cd665c4b8f",
+    "reference/recovery_acceptance/check.py": "5f6b9f88f4f8ad74cedc63b4ee435685d60275270297faf8b52671999f625b2a",
+    "reference/recovery_acceptance/service.py": "cc7f7503e9d7779746131f0033c1f08658ec003c45f729d4c2242202f3875e2f",
+    "tools/consumer_observation.py": "91b0699f56bfc6e50ff5bb880e6443d8abe6bf64d43cc7ce0464d4fcfdaba324",
+    "tools/dashboard.py": "6bd694d52921a337bc4965c54bb7dc7999d88e06f6071a1d529817002778a634",
+    "tools/build_site.py": "9f8df5e9a6f3bf2ff104a7d116fc66eb188143e3052b053df887f69164681fe3",
+    "tests/test_consumer_observation.py": "261095948a6271776b477b0a402ec3b4255af84f7b64536d65ce11a9dca7dec0"
+  },
+  "full_self_audit": {
+    "tests_collected": 1196,
+    "tests": {
+      "passed": 1194,
+      "failed": 0,
+      "skipped": 6,
+      "errors": 0
+    },
+    "coverage_total": 75,
+    "chains": {
+      "total": 11,
+      "pass": 10,
+      "skip": 1,
+      "fail": 0
+    },
+    "source_stable": true,
+    "receipt_sha256": "9b2393b11cb87f7d54bcac9a55fb5725c6bfd3c620e8e96ea4cc349331d88d1a"
+  },
+  "paired_live_record": {
+    "path": "docs/RECOVERY-LIVE-ACCEPTANCE.json",
+    "sha256": "6bb2f1d5fceae41ac99c01777856e700c4dec91afe36518667f5d7489e990a7c",
+    "before_source_commit": "c12acdd617f1bac1d2449d2cb98dc7b085a5e404",
+    "after_controls_per_platform": 13,
+    "failure_optimization_controls_per_platform": 6
+  },
+  "historical_record": "docs/archive/core-recovery-acceptance-v0.4.10.json",
+  "read_only_reviews": [
+    {
+      "role": "code-reviewer",
+      "status": "APPROVE"
+    },
+    {
+      "role": "python-reviewer",
+      "status": "APPROVE"
+    }
+  ],
+  "prior_failure_logs": {
+    "service-contract-before.log": "8fbd1fec11290177d5b3ec365c228c6bfd48e34e8ddefdb3b79b4ef113f3145c",
+    "preflight-command-before.log": "f00bee0b2a64045202da654ecdf25ffa3f56f11ce2afb3e2432ac1752bb2a50c",
+    "listener-table-before.log": "e1a830b36cf0123c44e87d7170d4b642d3d80cb0ab42c965999f91174fece1c6"
+  },
+  "preserved": [
+    "three consecutive fault samples",
+    "cooldown and per-incident attempt budget",
+    "durable pre-launch reservation",
+    "auto/manual ownership and idempotent terminal events",
+    "explicit refresh/recovery controls",
+    "resident monitor/Startup and failure history"
+  ],
+  "limits": [
+    "Disposable actual HTTP processes, not real model-service restarts or legacy loaded-process migration.",
+    "Source and installed lifecycle/delivery/reproduction qualify different paths; installed recovery remains unqualified.",
+    "No multi-file reader snapshot, power-loss, reboot/logon, full-duration retry or clean24h guarantee.",
+    "401/403 qualify endpoint presence, not credential or inference success."
+  ],
+  "tests_scope": "Entire current source suite, including preserved recovery controls; this replaces the previous focused-suite count.",
+  "publication_metadata_recheck": {
+    "recorded_at": "2026-11-01T23:23:06.705216+00:00",
+    "previous_record_git": "8c5dce7ef98d7401ca8550c64f290f0a20db101c:docs/CORE-RECOVERY-ACCEPTANCE.json",
+    "previous_record_sha256": "58e042e4231ed450540aa832565767811bbb1f3dabe7609ac87feebaf97b4eaf",
+    "attribute_source": ".gitattributes",
+    "before_sha256_lf": "012a8ff8be0378e275127a07d425c0f591ce809dd2cc2fc01c783ba15aa0d402",
+    "after_sha256_lf": "ac63a86c5547ea4019bd0086eef723950e279e9a618c8f634a7223cd665c4b8f",
+    "canonical_before_snapshot": "reference/numerical_programs_acceptance/audit/publication-attributes-before.snapshot",
+    "permitted_additive_lines": [
+      "reference/numerical_programs_acceptance/audit/** -text whitespace=cr-at-eol",
+      "reference/numerical_programs_acceptance/recorded_trials/**/*.log whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof"
+    ],
+    "archive_members_verified": 127,
+    "archive_manifest_sha256": "89de10ec018647dba7a1d8b73f8948e3d33b46897c5635832a01ceef78054a20",
+    "all_45_framework_modules_unchanged": true,
+    "runtime_source_and_distribution_fingerprint_unchanged": true,
+    "prior_exact_commit_ci": "https://github.com/Computational-social-science/Eidos/actions/runs/41360033388",
+    "scope": "Correct a non-runtime publication-policy binding after exact raw-byte preservation checks. Original numerical, installed, recovery and test measurements are retained; final commit gates/CI remain required."
+  }
+}

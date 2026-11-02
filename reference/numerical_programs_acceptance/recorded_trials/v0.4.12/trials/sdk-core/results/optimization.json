@@ -1,0 +1,50 @@
+{
+  "sdk": [
+    {
+      "mode": "-O",
+      "exit_code": 1,
+      "stdout_empty": true,
+      "rejected": true,
+      "message": "Qualification requires active assertions; omit -O/-OO."
+    },
+    {
+      "mode": "-OO",
+      "exit_code": 1,
+      "stdout_empty": true,
+      "rejected": true,
+      "message": "Qualification requires active assertions; omit -O/-OO."
+    }
+  ],
+  "quarto": [
+    {
+      "mode": "-O",
+      "exit_code": 1,
+      "stdout_empty": true,
+      "rejected": true,
+      "message": "Qualification requires active assertions; omit -O/-OO."
+    },
+    {
+      "mode": "-OO",
+      "exit_code": 1,
+      "stdout_empty": true,
+      "rejected": true,
+      "message": "Qualification requires active assertions; omit -O/-OO."
+    }
+  ],
+  "reproduction": [
+    {
+      "mode": "-O",
+      "exit_code": 1,
+      "stdout_empty": true,
+      "rejected": true,
+      "message": "Qualification requires active assertions; omit -O/-OO."
+    },
+    {
+      "mode": "-OO",
+      "exit_code": 1,
+      "stdout_empty": true,
+      "rejected": true,
+      "message": "Qualification requires active assertions; omit -O/-OO."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "<string>", line 17, in <module>
+  File "<frozen runpy>", line 286, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "E:\2026-AI4S\Eidos\.scratch\quality\record_v412_candidate.py", line 131, in <module>
+    require(path.read_bytes()==body,'Checkpoint input changed before publication')
+  File "E:\2026-AI4S\Eidos\.scratch\quality\v410_receipt_guards.py", line 27, in require
+    if not value: raise ValueError(message)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Checkpoint input changed before publication

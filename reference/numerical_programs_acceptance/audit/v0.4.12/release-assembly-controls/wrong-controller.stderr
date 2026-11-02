@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "E:\2026-AI4S\Eidos\.scratch\quality\record_v412_acceptances.py", line 132, in <module>
+    sdk_execution=execution('sdk-core')
+                  ^^^^^^^^^^^^^^^^^^^^^
+  File "E:\2026-AI4S\Eidos\.scratch\quality\record_v412_acceptances.py", line 74, in execution
+    require(value['controller_sha256'] in controller_digests,'Controller bytes differ')
+  File "E:\2026-AI4S\Eidos\.scratch\quality\record_v412_acceptances.py", line 25, in require
+    if not ok:raise RuntimeError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Controller bytes differ

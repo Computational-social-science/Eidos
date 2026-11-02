@@ -1,0 +1,7 @@
+{
+  "expected": "reject empty source inventory",
+  "actual_exit": 0,
+  "stdout": "Verified candidate checkpoint; release remains pending. Archived payloads: 645\n",
+  "stderr": "",
+  "defect_reproduced": true
+}

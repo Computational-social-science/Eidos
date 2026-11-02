@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "controls": [
+    {
+      "case": "wrong-platform",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "Wrong platform or optimization mode",
+      "all_seven_aliases_preserved": true
+    },
+    {
+      "case": "empty-source",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "Recovery source inventory differs",
+      "all_seven_aliases_preserved": true
+    },
+    {
+      "case": "missing-tracking-protocol",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "Tracking source inventory differs",
+      "all_seven_aliases_preserved": true
+    },
+    {
+      "case": "wrong-controller",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "Controller bytes differ",
+      "all_seven_aliases_preserved": true
+    },
+    {
+      "case": "third-write-rollback",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "controlled third-alias publication failure",
+      "all_seven_aliases_preserved": true
+    }
+  ],
+  "restored_positive_dry_run": "PASS",
+  "assembler_sha256_raw": "20f9cf7aa0f4d508329d69878d02c9e1f61e60ad4d190346dd279ab5f54da6c0",
+  "test_sha256_raw": "bdf0f5114ce4459afdc88c768959cda8811f9fb80d9e2b313356aa915b943799",
+  "scope": "Four actual cache mutations plus failure on third publication write; all seven prior aliases preserved."
+}

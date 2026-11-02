@@ -1,0 +1,330 @@
+{
+  "schema": 1,
+  "kind": "eidos.consumer-verification-clock-acceptance",
+  "version": "0.4.10",
+  "generated": "2026-11-01T12:53:17.550600+00:00",
+  "status": "CONTROLLED_AND_LIVE_OBSERVATIONS_PASS",
+  "scope": "Operational Gate S verification age and rendered state; not a new experiment or time-dependent data freshness certificate.",
+  "comparison": {
+    "baseline_tag": "v0.4.9",
+    "old_dashboard_sha256_lf": "5d6484e0c0fb2c02905ed49e06e6ad3125658b00c81914ca5a2ff6c7454d1e6e",
+    "before_state": "STALE",
+    "after_state": "PASS",
+    "evidence_age_hours": 40,
+    "same_recent_verification": true,
+    "experiment_bytes_unchanged": true,
+    "experiment_mtime_unchanged": true,
+    "experiment_sha256": "7ce8b4aba8b0c926ec20bec9cf9fa789c35c5442c1facac6a7ad6aebf882f557",
+    "live_samples": [
+      {
+        "seq": 14272,
+        "ts": "2026-11-01T09:50:08+00:00",
+        "sample_age_s": 4.8,
+        "overall": "OK",
+        "stale": false
+      },
+      {
+        "seq": 14288,
+        "ts": "2026-11-01T09:54:08+00:00",
+        "sample_age_s": 4.0,
+        "overall": "OK",
+        "stale": false
+      }
+    ],
+    "consumer_transitions": [
+      {
+        "ts": "2026-11-01T06:55:22+00:00",
+        "signal": "consumers",
+        "from": "OK",
+        "to": "UNOBSERVABLE",
+        "value": null,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T06:56:37+00:00",
+        "signal": "consumers",
+        "from": "UNOBSERVABLE",
+        "to": "OK",
+        "value": 23.3271528416872,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T06:57:22+00:00",
+        "signal": "consumers",
+        "from": "OK",
+        "to": "UNOBSERVABLE",
+        "value": null,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T07:01:37+00:00",
+        "signal": "consumers",
+        "from": "UNOBSERVABLE",
+        "to": "OK",
+        "value": 23.4105011247264,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T07:05:22+00:00",
+        "signal": "consumers",
+        "from": "OK",
+        "to": "UNOBSERVABLE",
+        "value": null,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T07:06:52+00:00",
+        "signal": "consumers",
+        "from": "UNOBSERVABLE",
+        "to": "OK",
+        "value": 23.498004647228452,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T07:08:37+00:00",
+        "signal": "consumers",
+        "from": "OK",
+        "to": "UNOBSERVABLE",
+        "value": null,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T07:12:07+00:00",
+        "signal": "consumers",
+        "from": "UNOBSERVABLE",
+        "to": "OK",
+        "value": 23.58549902697404,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T07:14:07+00:00",
+        "signal": "consumers",
+        "from": "OK",
+        "to": "UNOBSERVABLE",
+        "value": null,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T07:17:07+00:00",
+        "signal": "consumers",
+        "from": "UNOBSERVABLE",
+        "to": "OK",
+        "value": 23.668836289445558,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T07:19:07+00:00",
+        "signal": "consumers",
+        "from": "OK",
+        "to": "UNOBSERVABLE",
+        "value": null,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T07:22:22+00:00",
+        "signal": "consumers",
+        "from": "UNOBSERVABLE",
+        "to": "OK",
+        "value": 23.75637693696552,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T07:37:07+00:00",
+        "signal": "consumers",
+        "from": "OK",
+        "to": "ALARM",
+        "value": 24.00216187973817,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T08:01:52+00:00",
+        "signal": "consumers",
+        "from": "ALARM",
+        "to": "UNOBSERVABLE",
+        "value": null,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T08:02:07+00:00",
+        "signal": "consumers",
+        "from": "UNOBSERVABLE",
+        "to": "ALARM",
+        "value": 24.41885814057456,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T08:05:07+00:00",
+        "signal": "consumers",
+        "from": "ALARM",
+        "to": "UNOBSERVABLE",
+        "value": null,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T08:07:22+00:00",
+        "signal": "consumers",
+        "from": "UNOBSERVABLE",
+        "to": "ALARM",
+        "value": 24.506376311381658,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T08:14:52+00:00",
+        "signal": "consumers",
+        "from": "ALARM",
+        "to": "UNOBSERVABLE",
+        "value": null,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T08:15:07+00:00",
+        "signal": "consumers",
+        "from": "UNOBSERVABLE",
+        "to": "ALARM",
+        "value": 24.63551491445965,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T08:51:07+00:00",
+        "signal": "consumers",
+        "from": "ALARM",
+        "to": "UNOBSERVABLE",
+        "value": null,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T08:51:22+00:00",
+        "signal": "consumers",
+        "from": "UNOBSERVABLE",
+        "to": "ALARM",
+        "value": 25.23971114165253,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T08:56:08+00:00",
+        "signal": "consumers",
+        "from": "ALARM",
+        "to": "UNOBSERVABLE",
+        "value": null,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T08:56:23+00:00",
+        "signal": "consumers",
+        "from": "UNOBSERVABLE",
+        "to": "ALARM",
+        "value": 25.3230788850122,
+        "source": "consumer evidence; immutable controls use actual verification time"
+      },
+      {
+        "ts": "2026-11-01T09:44:09+00:00",
+        "signal": "consumers",
+        "from": "ALARM",
+        "to": "OK",
+        "value": 0.8004614625,
+        "source": "current Gate S verification time; original measurement timestamps are retained separately"
+      }
+    ],
+    "production_artifacts": {
+      "reference/demo_onboarding/docs/evidence.json": "0c8cd7640f5a3e926a090e64066bb6662ca32c794d226207350472c42c162756",
+      "reference/demo_quantitative/docs/evidence.json": "cbd72a83bfa78c66fcd16a1894812351893d062d4d47b4a41451f10517c4b6dd",
+      "reference/operator_calibration/docs/evidence.json": "d6be5e48f91d9762c0e30bdf93c1daf5ebd92b002dd2438d1b695d4a7ed835a5",
+      "reference/softmax_training/docs/evidence.json": "9ac802d0171e2a4e39215d1f4cf4b9ffeab5cee9aab7c32e7fce1f8d4904bb7c"
+    }
+  },
+  "production_artifact_digest_policy": "SHA-256 over UTF-8-sig decoded canonical LF; both current files and v0.4.9 Git blobs must match.",
+  "focused_tests": {
+    "passed": 181,
+    "elapsed_seconds": 27.73,
+    "log_sha256": "ea962b9603e50079693e503ab28e9a08f0674955f1b644251dad797f1da7c24d"
+  },
+  "full_source_audit": {
+    "path": "docs/archive/self-audit-v0.4.10.json",
+    "sha256": "9e0930f618f18f3ca06fdd21d9cc6fc617a2feb598b611b62d7eea4eedc0dfdd",
+    "tests": {
+      "passed": 1110,
+      "failed": 0,
+      "skipped": 6,
+      "errors": 0
+    },
+    "coverage_total": 75,
+    "stable": true
+  },
+  "source_sha256_lf": {
+    "tools/consumer_observation.py": "91b0699f56bfc6e50ff5bb880e6443d8abe6bf64d43cc7ce0464d4fcfdaba324",
+    "tools/dashboard.py": "6bd694d52921a337bc4965c54bb7dc7999d88e06f6071a1d529817002778a634",
+    "tools/watch_pipeline.py": "80bcf5699792cc767daa23788d1a92d4b57af3d43b264e7d040a0f082cae130d",
+    "tools/build_site.py": "9f8df5e9a6f3bf2ff104a7d116fc66eb188143e3052b053df887f69164681fe3",
+    "tests/test_consumer_observation.py": "261095948a6271776b477b0a402ec3b4255af84f7b64536d65ce11a9dca7dec0",
+    "tests/test_dashboard_presentation.py": "be7bd5f08b4997d5536777ec6a1bfa785ab628e98d38de0b52ef6cd140afca54",
+    "tests/test_site.py": "2d6e8bba4ccf92630c46585a0c387a72fdf26afb64a353201e20070b4eaeb664",
+    "tests/test_consumer_freshness.py": "a4f9ec9c284716b93fa0eb6f47b80392b4bc36a87c5e01e2e1059eac9cde546c",
+    "tests/test_consumer_snapshot.py": "42188017d67abf8584045bbabfb7c75d92d33d1da24853d4cd539c86cefa2720"
+  },
+  "preserved": [
+    "Original experiment bytes and generation timestamps",
+    "Changed-input snapshot withdrawal",
+    "Unexpected verdict faults",
+    "24-hour verification limit",
+    "Separate seven-day calibration measurement-age signal",
+    "Resident monitor, Startup, self-check, bounded self-healing and manual controls",
+    "Existing alarm history, including observed ALARM-to-OK transition"
+  ],
+  "clock_skew_seconds": 60,
+  "service_stop_or_restart": false,
+  "manual_module_reload": false,
+  "delivery": "Existing website source-loading mechanism; no alarm reset or experimental rerun.",
+  "reviews": [
+    "code-reviewer APPROVE",
+    "python-reviewer APPROVE"
+  ],
+  "limits": [
+    "Bounded same-host observations; not a clean24h or reboot/logon certificate.",
+    "The legacy interpreter/process migration remains separate; the live clock repair is not that migration.",
+    "Fresh verification does not renew underlying measurements or establish scientific correctness."
+  ],
+  "lineage": {
+    "historical_record_git": "v0.4.10:docs/CONSUMER-OBSERVATION-ACCEPTANCE.json",
+    "historical_record_sha256": "3cfcd51b26e0fb061fe1660e25d07a8b48d010089b11038c62721949f2a2aaf3",
+    "historical_controls_and_live_samples_unchanged": true,
+    "note": "The original version, generated time and paired live evidence remain historical; their source-audit path now resolves to its immutable archive."
+  },
+  "current_source_regression": {
+    "version": "0.4.11",
+    "path": "docs/SELF_AUDIT.json",
+    "sha256": "9b2393b11cb87f7d54bcac9a55fb5725c6bfd3c620e8e96ea4cc349331d88d1a",
+    "tests": {
+      "passed": 1194,
+      "failed": 0,
+      "skipped": 6,
+      "errors": 0
+    },
+    "stable": true,
+    "scope": "Full current suite; observation source files above remain unchanged. This does not redate the historical focused test or live measurements."
+  },
+  "current_read_only_observation": {
+    "recorded_at": "2026-11-01T22:26:40.100808+00:00",
+    "endpoint": "http://127.0.0.1:8765/api/status",
+    "samples": [
+      {
+        "seq": 17296,
+        "ts": "2026-11-01T22:26:12+00:00",
+        "overall": "OK",
+        "stale": false,
+        "sample_age_s": 7.3,
+        "consumers_state": "OK"
+      },
+      {
+        "seq": 17297,
+        "ts": "2026-11-01T22:26:27+00:00",
+        "overall": "OK",
+        "stale": false,
+        "sample_age_s": 12.3,
+        "consumers_state": "OK"
+      }
+    ],
+    "service_stop_or_restart": false,
+    "manual_module_reload": false,
+    "scope": "Two advancing fresh OK samples from the existing monitor; no new process migration, reboot/logon or clean24h acceptance."
+  }
+}

@@ -1,8 +1,8 @@
 # Owned project-command execution
 
-The current installed qualification uses the 0.4.12 candidate wheel. This is
-distinct from the last published 0.4.11 release; exact-final-commit CI and new
-release publication remain pending.
+The installed qualification below binds the 0.4.12 wheel. Availability is recorded
+by [GitHub Releases](https://github.com/Computational-social-science/Eidos/releases);
+local qualification alone does not establish exact-final-commit CI or publication.
 
 The public entry is `framework.project.run_command`. All three command kinds
 (`gate`, `test`, `render`) call `framework.subprocesses.run_tree`; the implementation

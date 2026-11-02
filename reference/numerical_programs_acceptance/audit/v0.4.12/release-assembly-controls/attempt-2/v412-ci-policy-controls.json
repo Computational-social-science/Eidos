@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "controls": [
+    {
+      "case": "all-ten",
+      "expected": true,
+      "actual": true
+    },
+    {
+      "case": "missing-workflow",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "case": "missing-job",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "case": "wrong-sha",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "case": "failed-job",
+      "expected": false,
+      "actual": false
+    },
+    {
+      "case": "duplicate-job",
+      "expected": false,
+      "actual": false
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "scope": "Second alias-assembly control campaign including shell receipt binding; publisher fragment controls are not publication/remote-CI evidence.",
+  "files": {
+    "empty-source.stderr": {
+      "sha256": "4217b3fa057be1e8c5811eafe1547c4a36bb939e46eccb7cb547954ac721d75e",
+      "size": 786
+    },
+    "empty-source.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "missing-tracking-protocol.stderr": {
+      "sha256": "97023728a6927f7f80c84a5c3ea3f88033ef86d94652266540d83d3e9ead18c9",
+      "size": 483
+    },
+    "missing-tracking-protocol.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "record.json": {
+      "sha256": "195584aaa65c39154489515f5554367a6fff1a52b2f7ee9ac8efe97f3055f38d",
+      "size": 1593
+    },
+    "third-write-rollback.stderr": {
+      "sha256": "ab55abbe39391321c3439a15c35b10cabf53dae0c9bdbc3b55cb82bed2f24e66",
+      "size": 656
+    },
+    "third-write-rollback.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "wrong-controller.stderr": {
+      "sha256": "540e18198f5dbd572e890b936ea21c02d9cbcf824b9862614b42ce796bfa0d3d",
+      "size": 608
+    },
+    "wrong-controller.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "wrong-platform.stderr": {
+      "sha256": "d7a3317ce217b1b8fe5d731bf7929e38f3a05a28073b9033b227bceb72906b46",
+      "size": 570
+    },
+    "wrong-platform.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "wrong-shell-receipt-binding.stderr": {
+      "sha256": "ec1781e493bcbbcb10b2cec6ac2df739543136b92783413437ed6655dd3db089",
+      "size": 467
+    },
+    "wrong-shell-receipt-binding.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "controls.py.snapshot": {
+      "sha256": "41edaae22ce02945a62041393f64ddfa2c295c2b40c747f5f50b8b4ba059172a",
+      "size": 4660
+    },
+    "publisher.py.snapshot": {
+      "sha256": "bbda0eade4cfd63e5c24e674a0db798daa3ec28b41276329c0491c0a6f5717ee",
+      "size": 35832
+    },
+    "v412-publisher-shell-controls.json": {
+      "sha256": "ec9ec625c9e466ae3533f19e2a27b5ff1368bb5f009171940109d012eb530387",
+      "size": 900
+    },
+    "v412-ci-policy-controls.json": {
+      "sha256": "a7864a01bfb54268f229d16a577b63b72172ad9cea10253282d1c9457bfa635b",
+      "size": 608
+    }
+  }
+}

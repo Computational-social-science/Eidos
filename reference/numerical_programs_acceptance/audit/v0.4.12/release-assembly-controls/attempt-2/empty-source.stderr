@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "E:\2026-AI4S\Eidos\.scratch\quality\record_v412_acceptances.py", line 222, in <module>
+    require(set(value['source_sha256_lf'])=={'framework/recovery.py','framework/services.py','tools/watch_pipeline.py','framework/artifacts.py','framework/subprocesses.py','framework/_process_tree.py','framework/_windows_job.py','framework/_posix_job.py','tools/owned_workspace.py','pyproject.toml','uv.lock','reference/recovery_acceptance/check.py','reference/recovery_acceptance/service.py'},'Recovery source inventory differs')
+  File "E:\2026-AI4S\Eidos\.scratch\quality\record_v412_acceptances.py", line 25, in require
+    if not ok:raise RuntimeError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Recovery source inventory differs

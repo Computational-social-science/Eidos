@@ -60,6 +60,26 @@ require(checkpoint['wheel_sha256']==wheel_sha and checkpoint['source_sha256_cano
         and checkpoint['source_audit']['state']==audit['stability']['after'],'Candidate checkpoint differs')
 for name,digest in checkpoint['checkpoint_assembly_sources_sha256_raw'].items():
     require(sha(raw(root/name))==digest,'Candidate checkpoint assembler binding differs')
+shell_checks={'default discovery without terminal SHELL',
+    'relative override executes unicode/space script after cwd change',
+    'expanded override executes the same absolute binary',
+    'actual missing shell refuses without budget reservation'}
+for platform,folder,file,input_folder in [('windows','windows-results','shell.json','input'),
+                                        ('linux','linux-core-1','shell.stdout','input-linux')]:
+    body=raw(cache/folder/file);value=json.loads(body);identity=value['identity']
+    require(checkpoint['results'][platform+'_shell']['sha256_raw']==sha(body),'Shell checkpoint receipt differs')
+    require(value['status']=='PASS' and value['platform']=={'windows':'win32','linux':'linux'}[platform]
+            and identity['sdk_version']=='0.4.12' and identity['wheel_sha256']==wheel_sha
+            and identity['source_sha256_canonical_lf']==modules and identity['module_count']==45
+            and identity['all_installed_metadata_requirements_met'] is True,'Shell receipt identity differs')
+    require(len(value['controls']['checks'])==4 and set(value['controls']['checks'])==shell_checks
+            and value['controls']['fixture_only'] is True
+            and value['controls']['real_model_services_touched'] is False,'Shell control inventory differs')
+    for member,field,public in [('shell.py','driver_sha256_raw','recovery_shell_acceptance'),
+                                ('numerical.py','identity_driver_sha256_raw','numerical_programs_acceptance')]:
+        require(sha(raw(cache/input_folder/member))==value[field]
+                and canonical(raw(cache/input_folder/member))==canonical(raw(root/'reference'/public/'check.py')),
+                'Shell driver/helper binding differs')
 pending={}
 
 def put(name,data):pending[name]=(json.dumps(data,indent=2)+'\n').encode()

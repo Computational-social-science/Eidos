@@ -1,0 +1,436 @@
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import sys
+import zipfile
+import tomllib
+import urllib.error
+import urllib.parse
+import urllib.request
+
+BASE='https://api.github.com/repos/Computational-social-science/Eidos'
+parser=argparse.ArgumentParser()
+parser.add_argument('mode',choices=['ci','preflight','publish'])
+parser.add_argument('--sha',required=True)
+args=parser.parse_args()
+
+def require(condition,message):
+    if not condition:
+        raise SystemExit(message)
+
+def request(url,data=None,token=None,content_type='application/json',method=None):
+    headers={'User-Agent':'Eidos-release-verification','Accept':'application/vnd.github+json'}
+    if token:
+        headers['Authorization']='Bearer '+token
+    if data is not None:
+        headers['Content-Type']=content_type
+    with urllib.request.urlopen(urllib.request.Request(url,data=data,headers=headers,method=method),timeout=60) as response:
+        return json.load(response)
+
+EXPECTED_JOBS={
+ '.github/workflows/ci.yml':{'test (3.11)','test (3.12)','release-integrity','agent-e2e','audit','browser'},
+ '.github/workflows/installed-sdk.yml':{'core (ubuntu-latest)','core (windows-latest)'},
+ '.github/workflows/symbolic-gradient.yml':{'reference (ubuntu-latest)','reference (windows-latest)'}}
+
+def qualified_ci(rows):
+ if len(rows)!=len(EXPECTED_JOBS) or {r.get('path') for r in rows}!=set(EXPECTED_JOBS):return False
+ return all(r['sha']==args.sha and r['status']=='completed' and r['conclusion']=='success'
+     and len(r['jobs'])==len(EXPECTED_JOBS[r['path']])
+     and {j['name'] for j in r['jobs']}==EXPECTED_JOBS[r['path']]
+     and all(j['status']=='completed' and j['conclusion']=='success' for j in r['jobs']) for r in rows)
+
+if args.mode=='ci':
+ runs=request(BASE+'/actions/runs?head_sha='+args.sha+'&per_page=50')['workflow_runs']
+ latest={}
+ for run in runs:
+  path=run.get('path')
+  if path in EXPECTED_JOBS and run['head_sha']==args.sha and (path not in latest or run['id']>latest[path]['id']):latest[path]=run
+ result=[]
+ for path,run in latest.items():
+  jobs=request(run['jobs_url']+'?per_page=100')['jobs']
+  result.append({'id':run['id'],'path':path,'sha':run['head_sha'],'status':run['status'],
+     'conclusion':run['conclusion'],'url':run['html_url'],
+     'jobs':[{k:j.get(k) for k in ('name','status','conclusion')} for j in jobs]})
+ Path('.scratch/quality/remote-ci-v412.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+ print(json.dumps(result))
+ raise SystemExit(0 if qualified_ci(result) else 2)
+
+origin=subprocess.check_output(['git','remote','get-url','origin'],text=True).strip()
+require(origin in ('https://github.com/Computational-social-science/Eidos.git',
+                   'git@github.com:Computational-social-science/Eidos.git'), 'unexpected origin repository')
+head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+require(head==args.sha,'HEAD does not match delivery SHA')
+if args.mode=='publish':
+    tag=subprocess.check_output(['git','rev-parse','v0.4.12^{}'],text=True).strip()
+    require(tag==args.sha,'local tag does not match delivery SHA')
+    remote_lines=subprocess.check_output(['git','ls-remote','--tags','origin',
+                                         'refs/tags/v0.4.12','refs/tags/v0.4.12^{}'],text=True)
+    remote={ref:sha for sha,ref in (line.split() for line in remote_lines.splitlines())}
+    require(remote.get('refs/tags/v0.4.12^{}')==args.sha,'remote annotated tag targets another commit')
+    require(remote.get('refs/tags/v0.4.12') not in (None,args.sha),'remote tag is not annotated')
+dirty=subprocess.check_output(['git','status','--porcelain','--untracked-files=all'],text=True).splitlines()
+require(all(line[:3]==' M ' and line[3:]=='docs/pipeline.json' for line in dirty),
+        'delivery changes outside the known live pipeline snapshot')
+require(not subprocess.check_output(['git','diff','--cached','--name-only'],text=True).strip(),'staged delivery changes')
+ci=json.loads(Path('.scratch/quality/remote-ci-v412.json').read_text())
+require(qualified_ci(ci),'Exact delivery commit has not passed all ten expected jobs across three workflows')
+def delivery_bytes(name):
+    return subprocess.check_output(['git','show',args.sha+':'+name])
+native_audit=json.loads(delivery_bytes('docs/SELF_AUDIT.json'))
+require(native_audit['stability']['stable'] is True
+        and native_audit['tests']['failed']==native_audit['tests']['errors']==0,'Full source qualification failed')
+state_command=[sys.executable,'-I','-c',
+    "import json,runpy,sys; ns=runpy.run_path('tools/record_self_audit.py'); "
+    "sys.path.insert(0,str(ns['ROOT'])); print(json.dumps(ns['input_state']()))"]
+native_state=json.loads(subprocess.check_output(state_command,text=True,timeout=60))
+require(native_state==native_audit['stability']['before']==native_audit['stability']['after'],
+        'Delivery source/environment differs from the native audit; stale PASS cannot qualify publication')
+report_bodies={f'{case}/{name}':delivery_bytes(f'site/reports/{case}/{name}')
+               for case in ('numerics','softmax-matrix','hpaf-metric') for name in ('report.pdf','report.docx','reproduce.zip')}
+capsule_body=delivery_bytes('reference/package_delivery_acceptance/package.zip')
+qualification=json.loads(delivery_bytes('docs/PACKAGE-ACCEPTANCE.json'))
+require(qualification['archive_sha256']==hashlib.sha256(capsule_body).hexdigest(),'capsule acceptance hash differs')
+require(qualification['docker']['status']=='PASS' and qualification['clean_install']['status']=='PASS','capsule is not qualified')
+with zipfile.ZipFile(__import__('io').BytesIO(capsule_body)) as z:
+    require(tomllib.loads(z.read('pyproject.toml').decode())['project']['version']=='0.4.2','capsule version mismatch')
+    manifest=z.read('package-manifest.json')
+    manifest_hash=hashlib.sha256(manifest).hexdigest()
+    require(qualification['execution']['manifest_sha256']==manifest_hash and qualification['docker']['execution']['manifest_sha256']==manifest_hash,'qualified manifest differs')
+    require(json.loads(manifest)['sha256']['framework/executable_package.py']==hashlib.sha256(delivery_bytes('framework/executable_package.py')).hexdigest(),'qualified generator differs')
+
+metric_acceptance=json.loads(delivery_bytes('docs/INDEPENDENT-LIFECYCLE-ACCEPTANCE.json'))
+require(metric_acceptance['public_archive_sha256']==hashlib.sha256(report_bodies['hpaf-metric/reproduce.zip']).hexdigest(),'metric package differs from acceptance')
+require(metric_acceptance['private_data_distributed'] is False,'metric acceptance privacy scope invalid')
+public_runs=[r for r in metric_acceptance['replays'] if r['kind']=='public']
+require(len(public_runs)==1,'public metric replay is not unique')
+public_metric=public_runs[0]
+metric_archive_digest=hashlib.sha256(report_bodies['hpaf-metric/reproduce.zip']).hexdigest()
+require(public_metric['archive_sha256']==metric_archive_digest==metric_acceptance['public_archive_sha256'],'uploaded metric archive is not the replayed archive')
+require(public_metric['install_exit']==0 and public_metric['replay_exit']==0 and public_metric['records']==235,'metric public replay not qualified')
+with zipfile.ZipFile(__import__('io').BytesIO(report_bodies['hpaf-metric/reproduce.zip'])) as z:
+    require(not any(n.startswith('data/') for n in z.namelist()),'private files in public metric package')
+    metric_manifest=z.read('package-manifest.json')
+    require(hashlib.sha256(metric_manifest).hexdigest()==public_metric['manifest_sha256']==public_metric['execution_record']['manifest_sha256'],'metric manifest differs')
+    declared=json.loads(metric_manifest)['sha256']
+    require(len(z.namelist())==len(set(z.namelist())) and set(z.namelist())==set(declared)|{'package-manifest.json'},'undeclared metric package member')
+    require(all(hashlib.sha256(z.read(name)).hexdigest()==digest for name,digest in declared.items()),'metric package member checksum mismatch')
+
+sdk=json.loads(delivery_bytes('docs/SDK-PROCESS-ACCEPTANCE.json'))
+sdk_body=delivery_bytes(sdk['wheel']);driver_body=delivery_bytes(sdk['driver'])
+require(hashlib.sha256(sdk_body).hexdigest()==sdk['wheel_sha256'],'SDK wheel differs from OS acceptance')
+require(hashlib.sha256(driver_body).hexdigest()==sdk['driver_sha256'],'SDK driver differs from OS acceptance')
+common={'timeout kills inherited descendants','normal exit closes inherited-output descendants','nested SDK scopes','worker code 125 remains research OPEN','missing executable remains SKIP'}
+for platform,extra in [('windows','Windows worker has no console window'),('linux','normal-root handoff survives caller cleanup delay')]:
+    accepted=sdk[platform];require(accepted['status']=='PASS','SDK OS acceptance failed')
+    require(accepted['result']['platform']==('win32' if platform=='windows' else 'linux'),'SDK OS platform mismatch')
+    require(accepted['result']['sdk_version']=='0.4.12','SDK OS installed version mismatch')
+    cases=accepted['result']['cases'];require(len(cases)==6 and {r['case'] for r in cases}==common|{extra},'SDK control inventory differs')
+    for row in cases:
+        if row['case']=='nested SDK scopes':
+            require(row.get('leaked') is False and row.get('negative_control') is False and row.get('expected_outcome') is True,'Nested SDK scope leaked or failed')
+        else:
+            require(row.get('accepted') is True,'SDK acceptance failed')
+require(len(sdk['broken_controls'])==2 and all(c['result']['cases'][0]['leaked'] is True for c in sdk['broken_controls']),'SDK broken controls not reproduced')
+with zipfile.ZipFile(__import__('io').BytesIO(sdk_body)) as z:
+    require(__import__('email').message_from_bytes(z.read('eidos-0.4.12.dist-info/METADATA'))['Version']=='0.4.12','SDK wheel metadata version differs')
+    declared=sdk['source_sha256_canonical_lf']
+    git_sources=set(subprocess.check_output(['git','ls-tree','-r','--name-only',args.sha,'framework'],text=True).splitlines())
+    git_sources={n for n in git_sources if n.endswith('.py')}
+    require(set(declared)==git_sources,'SDK Python source inventory differs')
+    canonical=lambda b:b.decode('utf-8-sig').replace('\r\n','\n').encode()
+    for name,digest in declared.items():
+        require(hashlib.sha256(canonical(z.read(name))).hexdigest()==digest==hashlib.sha256(canonical(delivery_bytes(name))).hexdigest(),'SDK source differs: '+name)
+    for platform in ('windows','linux'):
+        for name,digest in sdk[platform]['result']['module_sha256'].items():
+            require(hashlib.sha256(z.read('framework/'+name)).hexdigest()==digest,'SDK executed helper differs: '+name)
+
+quarto=json.loads(delivery_bytes('docs/QUARTO-DELIVERY-ACCEPTANCE.json'))
+quarto_driver=delivery_bytes(quarto['driver'])
+require(quarto['wheel']==sdk['wheel'] and quarto['wheel_sha256']==sdk['wheel_sha256'],'Quarto acceptance is for another wheel')
+require(quarto['source_inventory']=='SDK-PROCESS-ACCEPTANCE.json#source_sha256_canonical_lf','Quarto source inventory reference differs')
+require(quarto['linux']['image']==sdk['docker_image'] and quarto['linux']['network']==sdk['docker_network']=='none','Quarto Linux container qualification differs')
+require(hashlib.sha256(quarto_driver).hexdigest()==quarto['driver_sha256'],'Quarto driver differs from acceptance')
+qcommon={'reject '+mode+' and preserve previous publication' for mode in ('none','partial','corrupt','mutate','missing-resource')}
+qcommon |= {'complete three-format files, resources and receipt','reject overwriting a declared input',
+ 'reject reserved receipt resource','reject wrong executable version','reject noninteger exit 0.0',
+ "reject noninteger exit __import__('numpy').int64(0)",'reject PDF shell without a document'}
+qcommon |= {'single Matplotlib '+fmt+' with normal CLI exit' for fmt in ('svg','png','pdf')}
+for platform,actual in [('windows',True),('linux',False)]:
+    accepted=quarto[platform];require(accepted['status']=='PASS','Quarto OS acceptance failed')
+    result=accepted['result']
+    require(result['platform']==('win32' if platform=='windows' else 'linux'),'Quarto OS platform mismatch')
+    require(result['executable']==sdk[platform]['result']['executable'] and result['dependencies']==sdk[platform]['result']['dependencies'],'Quarto environment differs from SDK install')
+    require(result['sdk_version']=='0.4.12' and result['real_quarto'] is actual,'Quarto qualification mode/version differs')
+    expected=qcommon | ({'actual Quarto three formats from custom manuscript directory'} if actual else set())
+    require(len(result['cases'])==len(expected) and {r['case'] for r in result['cases']}==expected,'Quarto independent control inventory differs')
+    require(all(c['accepted'] is True for c in result['cases']),'Quarto control rejected')
+
+reproduction=json.loads(delivery_bytes('docs/REPRODUCTION-ACCEPTANCE.json'))
+reproduction_driver=delivery_bytes(reproduction['driver'])
+require(reproduction['wheel']==sdk['wheel'] and reproduction['wheel_sha256']==sdk['wheel_sha256'],'Reproduction qualified another wheel')
+require(reproduction['source_inventory']=='SDK-PROCESS-ACCEPTANCE.json#source_sha256_canonical_lf','Reproduction source inventory differs')
+require(hashlib.sha256(reproduction_driver).hexdigest()==reproduction['driver_sha256'],'Reproduction driver differs')
+require(reproduction['linux']['image']==sdk['docker_image'] and reproduction['linux']['network']=='none','Reproduction container differs')
+expected_cases={
+ '512 comparisons against independent Decimal arithmetic','nonfinite and mistyped domains refused',
+ 'one-unit integer error above binary64 exact range rejected','executed source-bound MATCH and S12 positive control',
+ 'declared data changes invalidate an existing MATCH','reject duplicate output','reject nan output',
+ 'reject overflow output','reject boolean output','reject multiple output','reject multiline-prefix output',
+ 'invalid spec refused before launch','complete bundle preserves the mismatching result',
+ 'successful child cannot qualify the complete paper','trimmed and resealed bundle rejected against original inventory',
+ 'input mutation during execution is UNRUN','owned timeout closes descendants and retains both streams',
+ 'portable paper identities round trip without overwriting'}
+for platform in ('windows','linux'):
+    accepted=reproduction[platform];result=accepted['result']
+    require(accepted['status']=='PASS' and result['sdk_version']=='0.4.12','Reproduction status/version differs')
+    require(result['platform']==('win32' if platform=='windows' else 'linux'),'Reproduction platform differs')
+    require(result['source_sha256_canonical_lf']==sdk['source_sha256_canonical_lf'],'Reproduction executed another source inventory')
+    require(result['oracle_comparisons']==512 and result['seed']==20261101,'Reproduction oracle scope differs')
+    require(len(result['cases'])==18 and {c['case'] for c in result['cases']}==expected_cases,'Reproduction control inventory differs')
+    require(all(c['accepted'] is True for c in result['cases']),'Reproduction control failed')
+previous=json.loads(delivery_bytes('docs/archive/sdk-process-acceptance-v0.4.7.json'))
+red=reproduction['initial_red']
+require(red['version']=='0.4.7' and red['wheel_sha256']==previous['wheel_sha256'],'Original defect control version differs')
+require(red['source_sha256_canonical_lf']==previous['source_sha256_canonical_lf']['framework/reproduction/__init__.py'],'Original defect source differs')
+require(hashlib.sha256(delivery_bytes('reference/sdk_process_acceptance/eidos-0.4.7-py3-none-any.whl')).hexdigest()==red['wheel_sha256'],'Preserved previous wheel differs')
+require(len(red['cases'])==3 and all(c['verdict']=='MATCH' for c in red['cases']),'Original false-MATCH controls absent')
+
+for evidence in (sdk,quarto,reproduction):
+    for platform in ('windows','linux'):
+        require(evidence[platform]['result'].get('optimization_level')==0,'Qualification ran with assertions disabled')
+        guards=evidence['optimization_controls'][platform]
+        require(len(guards)==2 and {g['mode'] for g in guards}=={'-O','-OO'},'Optimization rejection controls missing')
+        require(all(type(g['exit_code']) is int and g['exit_code']!=0 and g['rejected'] is True and g['stdout_empty'] is True for g in guards),'Optimized checker emitted success')
+
+
+core=json.loads(delivery_bytes('docs/CORE-RECOVERY-ACCEPTANCE.json'))
+require(core['version']=='0.4.12' and core['tests_passed']==core['full_self_audit']['tests']['passed']==1206,'core acceptance differs')
+require(hashlib.sha256(delivery_bytes('docs/SELF_AUDIT.json')).hexdigest()==core['full_self_audit']['receipt_sha256'],'self-audit receipt bytes differ')
+require(hashlib.sha256(delivery_bytes('docs/RECOVERY-LIVE-ACCEPTANCE.json')).hexdigest()==core['paired_live_record']['sha256'],'live receipt bytes differ')
+live=json.loads(delivery_bytes('docs/RECOVERY-LIVE-ACCEPTANCE.json'))
+require(live['version']=='0.4.12' and live['status']=='PASS','live recovery acceptance failed')
+for name,digest in core['source_sha256_lf'].items():
+    require(hashlib.sha256(canonical(delivery_bytes(name))).hexdigest()==digest,'core source differs: '+name)
+for platform in ('windows','linux'):
+    after=live['after'][platform]
+    require(after['status']=='PASS' and len(after['checks'])==13 and all(row['passed'] for row in after['checks']),'live control inventory failed')
+    require(len(live['negative_controls'][platform])==6 and all(row['exit_code']!=0 for row in live['negative_controls'][platform]),'live rejection controls missing')
+    for name,digest in after['source_sha256_lf'].items():
+        require(hashlib.sha256(canonical(delivery_bytes(name))).hexdigest()==digest,'live source differs: '+name)
+
+tracking=json.loads(delivery_bytes('docs/TRACKING-ACCEPTANCE.json'))
+tracking_driver=delivery_bytes(tracking['driver'])
+require(tracking['status']=='PASS' and tracking['version']=='0.4.12','Tracking qualification failed')
+require(tracking['wheel']==sdk['wheel'] and tracking['wheel_sha256']==sdk['wheel_sha256'],'Tracking wheel differs')
+require(hashlib.sha256(canonical(tracking_driver)).hexdigest()==tracking['driver_sha256_lf'],'Tracking checker differs')
+require(tracking['full_source_audit']['sha256']==hashlib.sha256(delivery_bytes('docs/SELF_AUDIT.json')).hexdigest(),'Tracking self-audit differs')
+for platform,expected in [('windows','win32'),('linux','linux')]:
+    result=tracking[platform]
+    require(result['status']=='PASS' and result['sdk_version']=='0.4.12' and result['platform']==expected,'Tracking platform differs')
+    require(type(result['optimization_level']) is int and result['optimization_level']==0,'Tracking optimized mode accepted')
+    require(result['source_sha256_canonical_lf']==declared and result['wheel_sha256']==sdk['wheel_sha256'],'Tracking source/wheel differs')
+    require(result['driver_sha256_lf']==tracking['driver_sha256_lf'],'Tracking driver drift')
+    cases=result['cases']
+    require(len(cases)==49 and len({(r['class'],r['case']) for r in cases})==49 and all(r['accepted'] is True for r in cases),'Tracking cases failed/duplicate')
+    for name,digest in result['protocol_sha256_lf'].items():
+        require(hashlib.sha256(canonical(delivery_bytes('tests/'+name))).hexdigest()==digest,'Tracking pinned protocol differs')
+require(tracking['windows']['cases']==tracking['linux']['cases'],'Tracking platform protocols differ')
+execution=tracking['linux_execution']
+require(execution['network']=='none' and type(execution['exit_code']) is int and execution['exit_code']==0,'Linux tracking execution failed')
+require(hashlib.sha256((json.dumps(tracking['linux'],indent=2)+'\n').encode()).hexdigest()==execution['receipt_sha256'],'Embedded Linux result differs from executed receipt')
+require(execution['command']==['/opt/tracking/bin/python','-I','/input/tracking-bootstrap.py'],'Linux tracking command differs')
+require(set(execution['tmpfs'])=={'/tmp','/root/.cache'},'Tmpfs scope differs')
+require(tracking['ordinary_overlay_attempt']['status']=='FAIL' and tracking['ordinary_overlay_attempt']['receipt']['status']=='FAIL','Overlay timeout was hidden')
+require(len(tracking['before']['cases'])==10 and all(row['status']=='FAIL' for row in tracking['before']['cases']),'Paired tracking failures missing')
+require(tracking['before']['commit']=='acdc395f439a96dd5426011cb1b56d3252777ff2','Tracking defect baseline differs')
+old_tracking=subprocess.check_output(['git','show',tracking['before']['commit']+':framework/tracking/__init__.py'])
+require(hashlib.sha256(canonical(old_tracking)).hexdigest()==tracking['before']['source_sha256_lf'],'Tracking before source differs')
+controls=tracking['windows_negative_controls']
+require(len(controls)==4 and {r['case'] for r in controls}=={'runtime-failure','-O','-OO','same-code-wrong-metadata'} and all(type(r['exit_code']) is int and r['exit_code']!=0 and r['expected_outcome'] is True for r in controls),'Tracking rejection controls failed')
+
+observation=json.loads(delivery_bytes('docs/CONSUMER-OBSERVATION-ACCEPTANCE.json'))
+require(observation['version']=='0.4.10' and observation['status']=='CONTROLLED_AND_LIVE_OBSERVATIONS_PASS','Consumer observation acceptance failed')
+require(observation['full_source_audit']['path']=='docs/archive/self-audit-v0.4.10.json','Historical observation audit path differs')
+require(observation['full_source_audit']['sha256']==hashlib.sha256(delivery_bytes(observation['full_source_audit']['path'])).hexdigest(),'Historical observation self-audit differs')
+require(observation['current_source_regression']['version']=='0.4.12' and observation['current_source_regression']['sha256']==hashlib.sha256(delivery_bytes('docs/SELF_AUDIT.json')).hexdigest(),'Current observation regression audit differs')
+historical=subprocess.check_output(['git','show','v0.4.10:docs/CONSUMER-OBSERVATION-ACCEPTANCE.json'])
+require(hashlib.sha256(historical).hexdigest()==observation['lineage']['historical_record_sha256'],'Historical observation record differs')
+new_samples=observation['current_read_only_observation']['samples']
+require(len(new_samples)==2 and new_samples[1]['seq']>new_samples[0]['seq'] and all(r['overall']=='OK' and r['stale'] is False and r['sample_age_s']<45 for r in new_samples),'Current read-only observations differ')
+for name,digest in observation['source_sha256_lf'].items():
+    require(hashlib.sha256(canonical(delivery_bytes(name))).hexdigest()==digest,'Observation source differs: '+name)
+comparison=observation['comparison']
+require(comparison['baseline_tag']=='v0.4.9' and comparison['before_state']=='STALE' and comparison['after_state']=='PASS','Observation paired comparison differs')
+require(comparison['experiment_bytes_unchanged'] is True and comparison['experiment_mtime_unchanged'] is True,'Observation rewrote experiment')
+old_dashboard=subprocess.check_output(['git','show','v0.4.9:tools/dashboard.py'])
+require(hashlib.sha256(canonical(old_dashboard)).hexdigest()==comparison['old_dashboard_sha256_lf'],'Observation baseline source differs')
+expected_artifacts={'reference/'+name+'/docs/evidence.json' for name in ['demo_onboarding','demo_quantitative','operator_calibration','softmax_training']}
+require(set(comparison['production_artifacts'])==expected_artifacts,'Production artifact inventory differs')
+require(observation['production_artifact_digest_policy']=='SHA-256 over UTF-8-sig decoded canonical LF; both current files and v0.4.9 Git blobs must match.','Production digest policy differs')
+for name,digest in comparison['production_artifacts'].items():
+    original=subprocess.check_output(['git','show','v0.4.9:'+name])
+    require(hashlib.sha256(canonical(delivery_bytes(name))).hexdigest()==digest==hashlib.sha256(canonical(original)).hexdigest(),'Production experiment differs from v0.4.9')
+samples=comparison['live_samples']
+require(len(samples)==2 and samples[1]['seq']>samples[0]['seq'] and all(p['overall']=='OK' and p['stale'] is False and p['sample_age_s']<45 for p in samples),'Observation live samples do not qualify')
+require(observation['service_stop_or_restart'] is False and observation['manual_module_reload'] is False,'Observation process-action scope differs')
+
+import v412_receipt_guards as numerical_guards
+numerical=json.loads(delivery_bytes('docs/NUMERICAL-PROGRAMS-ACCEPTANCE.json'))
+numerical_driver=delivery_bytes(numerical['driver'])
+require(numerical['version']=='0.4.12' and numerical['status']=='PASS','Numerical SDK failed')
+require(numerical['wheel']==sdk['wheel'] and numerical['wheel_sha256']==sdk['wheel_sha256'],'Numerical wheel differs')
+require(hashlib.sha256(canonical(numerical_driver)).hexdigest()==numerical['driver_sha256_lf'],'Numerical driver differs')
+require(hashlib.sha256(delivery_bytes('docs/SELF_AUDIT.json')).hexdigest()==numerical['full_source_audit_sha256'],'Numerical audit differs')
+for platform in ('windows','linux'):
+    numerical_guards.numerical(numerical[platform],platform,sdk['source_sha256_canonical_lf'],sdk['wheel_sha256'],numerical['driver_sha256_lf'])
+numerical_guards.installed_negatives(numerical['windows_negative_controls'])
+manifest_body=delivery_bytes(numerical['archive']+'/manifest.json')
+require(hashlib.sha256(manifest_body).hexdigest()==numerical['archive_manifest_sha256'],'Numerical archive manifest differs')
+manifest=json.loads(manifest_body)
+archived=set(subprocess.check_output(['git','ls-tree','-r','--name-only',args.sha,numerical['archive']],text=True).splitlines())
+require(archived=={numerical['archive']+'/'+n for n in manifest['files']}|{numerical['archive']+'/manifest.json'},'Archive Git inventory differs')
+for name,item in manifest['files'].items():
+    payload=delivery_bytes(numerical['archive']+'/'+name)
+    require(len(payload)==item['size'] and hashlib.sha256(payload).hexdigest()==item['sha256'],'Numerical archived payload differs')
+for name,digest in numerical['assembly_sources_sha256'].items():
+    require(hashlib.sha256(delivery_bytes(name)).hexdigest()==digest,'Assembler snapshot differs')
+require(hashlib.sha256(Path(numerical_guards.__file__).read_bytes()).hexdigest()==numerical['assembly_sources_sha256']['reference/numerical_programs_acceptance/audit/v0.4.12/numerical_guards.py.snapshot'],'Loaded release inventory guards differ')
+for name in ('linux_execution','additional_sdk_linux_execution','tracking_image_build'):
+    record=numerical[name]
+    state=record['terminal_state'] if name=='linux_execution' else record['after']['State']
+    settings=record['observed_settings'] if name=='linux_execution' else record['after']
+    require(record['status']=='PASS' and record['cleanup_verified'] is True and settings['network']=='none'
+        and type(state['ExitCode']) is int and state['ExitCode']==0 and state['Running'] is False,'Numerical container execution failed')
+checkpoint_body=delivery_bytes('docs/RELEASE-CANDIDATE-0.4.12.json')
+require(hashlib.sha256(checkpoint_body).hexdigest()==core['installed_shell_checkpoint']['sha256'],'Installed shell checkpoint differs')
+checkpoint=json.loads(checkpoint_body)
+require(checkpoint['version']=='0.4.12' and checkpoint['wheel_sha256']==sdk['wheel_sha256'],'Installed shell wheel differs')
+for key in ('windows_shell','linux_shell'):
+ require(checkpoint['results'][key]['cases']==4,'Installed shell control scope differs')
+shell_checks={'default discovery without terminal SHELL',
+    'relative override executes unicode/space script after cwd change',
+    'expanded override executes the same absolute binary',
+    'actual missing shell refuses without budget reservation'}
+for platform,folder,file,input_folder in [('windows','windows-results','shell.json','input'),
+                                        ('linux','linux-core-1','shell.stdout','input-linux')]:
+ body=delivery_bytes(numerical['archive']+'/trials/'+folder+'/'+file)
+ value=json.loads(body);identity=value['identity']
+ require(checkpoint['results'][platform+'_shell']['sha256_raw']==hashlib.sha256(body).hexdigest(),
+         'Shell checkpoint receipt differs')
+ require(value['status']=='PASS' and value['platform']=={'windows':'win32','linux':'linux'}[platform]
+     and identity['sdk_version']=='0.4.12' and identity['wheel_sha256']==sdk['wheel_sha256']
+     and identity['source_sha256_canonical_lf']==sdk['source_sha256_canonical_lf']
+     and identity['module_count']==45 and identity['all_installed_metadata_requirements_met'] is True,
+         'Shell receipt identity differs')
+ require(len(value['controls']['checks'])==4 and set(value['controls']['checks'])==shell_checks
+     and value['controls']['fixture_only'] is True and value['controls']['real_model_services_touched'] is False,
+         'Shell control inventory differs')
+ for member,field,public in [('shell.py','driver_sha256_raw','recovery_shell_acceptance'),
+                            ('numerical.py','identity_driver_sha256_raw','numerical_programs_acceptance')]:
+  driver=delivery_bytes(numerical['archive']+'/trials/'+input_folder+'/'+member+'.snapshot')
+  require(hashlib.sha256(driver).hexdigest()==value[field]
+      and canonical(driver)==canonical(delivery_bytes('reference/'+public+'/check.py')),
+          'Shell driver/helper binding differs')
+
+if args.mode=='preflight':
+    print('Qualified source, SDK, scientific deliverables and real recovery receipts match the exact commit.')
+    raise SystemExit(0)
+
+credential=subprocess.run(['git','credential','fill'],input='protocol=https\nhost=github.com\n\n',
+                          capture_output=True,text=True,check=True)
+fields=dict(line.split('=',1) for line in credential.stdout.splitlines() if '=' in line)
+token=fields['password']
+try:
+    existing=request(BASE+'/releases/tags/v0.4.12',token=token)
+except urllib.error.HTTPError as exc:
+    if exc.code!=404:
+        raise
+    notes=Path('.scratch/quality/release-notes-v0.4.12.md').read_text(encoding='utf-8')
+    audit=json.loads(Path('docs/SELF_AUDIT.json').read_text(encoding='utf-8'))
+    notes+=(f"\nValidation: {audit['tests']['passed']} project-environment tests passed; "
+            f"{audit['coverage_total']}% framework coverage. Optional modules and skipped chains remain explicit.\n"
+            f"\nDelivery commit: {args.sha}\n\nExact-commit CI: {ci[0]['url']}\n")
+    release={'tag_name':'v0.4.12','target_commitish':args.sha,'name':'EIDOS v0.4.12',
+             'body':notes,'draft':True,'prerelease':False}
+    existing=request(BASE+'/releases',json.dumps(release).encode(),token)
+print(json.dumps({'url':existing['html_url'],'tag':existing['tag_name'],'id':existing['id']}))
+delivered=[]
+for case in ('numerics','softmax-matrix','hpaf-metric'):
+    for extension in ('pdf','docx','zip'):
+        local_name='reproduce.zip' if extension=='zip' else 'report.'+extension
+        path=Path('site/reports')/case/local_name
+        asset_name=f'eidos-{case}-'+local_name
+        body=report_bodies[f'{case}/{local_name}']
+        digest='sha256:'+hashlib.sha256(body).hexdigest()
+        old=next((a for a in existing.get('assets',[]) if a['name']==asset_name),None)
+        if old:
+            require(old.get('digest')==digest,'existing release asset differs: '+asset_name)
+            delivered.append(old['browser_download_url'])
+            continue
+        url=(f"https://uploads.github.com/repos/Computational-social-science/Eidos/releases/{existing['id']}/assets?"
+             +urllib.parse.urlencode({'name':asset_name}))
+        asset=request(url,body,token,'application/octet-stream')
+        require(asset.get('size')==len(body),'uploaded asset size mismatch')
+        if asset.get('digest'):
+            require(asset['digest']==digest,'uploaded asset digest mismatch')
+        delivered.append(asset['browser_download_url'])
+print(json.dumps({'assets':delivered}))
+
+path=Path('reference/package_delivery_acceptance/package.zip')
+asset_name='eidos-executable-delivery-probe-v0.4.2.zip'
+body=capsule_body
+digest='sha256:'+hashlib.sha256(body).hexdigest()
+require(qualification['archive_sha256']==digest.split(':',1)[1],'capsule differs from acceptance record')
+require(qualification['docker']['status']=='PASS' and qualification['clean_install']['status']=='PASS','capsule is not qualified')
+old=next((a for a in existing.get('assets',[]) if a['name']==asset_name),None)
+if old:
+    require(old.get('digest')==digest,'existing capsule differs')
+    asset=old
+else:
+    url=(f"https://uploads.github.com/repos/Computational-social-science/Eidos/releases/{existing['id']}/assets?"+urllib.parse.urlencode({'name':asset_name}))
+    asset=request(url,body,token,'application/octet-stream')
+require(asset.get('size')==len(body),'capsule upload size mismatch')
+if asset.get('digest'):require(asset['digest']==digest,'capsule upload digest mismatch')
+print(json.dumps({'capsule':asset['browser_download_url']}))
+
+sdk_assets=[('eidos-0.4.12-py3-none-any.whl',sdk_body),('eidos-sdk-lifecycle-check.py',driver_body),('eidos-quarto-delivery-check.py',quarto_driver),('eidos-reproduction-check.py',reproduction_driver),
+                        ('eidos-recovery-live-acceptance.json',delivery_bytes('docs/RECOVERY-LIVE-ACCEPTANCE.json')),
+                        ('eidos-core-recovery-acceptance.json',delivery_bytes('docs/CORE-RECOVERY-ACCEPTANCE.json')),('eidos-tracking-check.py',tracking_driver),('eidos-tracking-acceptance.json',delivery_bytes('docs/TRACKING-ACCEPTANCE.json')),('eidos-consumer-observation-acceptance.json',delivery_bytes('docs/CONSUMER-OBSERVATION-ACCEPTANCE.json')),('eidos-numerical-programs-check.py',numerical_driver),('eidos-numerical-programs-acceptance.json',delivery_bytes('docs/NUMERICAL-PROGRAMS-ACCEPTANCE.json'))]
+for asset_name,body in sdk_assets:
+    digest='sha256:'+hashlib.sha256(body).hexdigest()
+    old=next((a for a in existing.get('assets',[]) if a['name']==asset_name),None)
+    if old:
+        require(old.get('digest')==digest,'existing SDK asset differs: '+asset_name);asset=old
+    else:
+        url=f"https://uploads.github.com/repos/Computational-social-science/Eidos/releases/{existing['id']}/assets?"+urllib.parse.urlencode({'name':asset_name})
+        asset=request(url,body,token,'application/octet-stream')
+    require(asset.get('size')==len(body),'SDK asset size differs')
+    if asset.get('digest'):require(asset['digest']==digest,'SDK uploaded digest differs')
+    print(json.dumps({'sdk_asset':asset['browser_download_url']}))
+
+
+def require_complete_release(release, payloads):
+    assets=release.get('assets')
+    require(type(assets) is list and len(assets)==len(payloads)==21,'Release manifest is incomplete')
+    actual={asset['name']:asset for asset in assets}
+    require(len(actual)==len(assets) and set(actual)==set(payloads),'Release asset inventory differs')
+    for name, payload in payloads.items():
+        asset=actual[name]
+        require(type(asset['size']) is int and asset['size']==len(payload)
+                and asset.get('state')=='uploaded'
+                and asset.get('digest')=='sha256:'+hashlib.sha256(payload).hexdigest(),
+                'Release asset bytes/state differ: '+name)
+
+expected_payloads={'eidos-'+name.replace('/','-',1):payload for name,payload in report_bodies.items()}
+expected_payloads['eidos-executable-delivery-probe-v0.4.2.zip']=capsule_body
+expected_payloads.update(sdk_assets)
+completed=request(BASE+'/releases/'+str(existing['id']),token=token)
+require_complete_release(completed,expected_payloads)
+if completed['draft'] is True:
+    completed=request(BASE+'/releases/'+str(existing['id']),
+        json.dumps({'draft':False,'prerelease':False,'make_latest':'true'}).encode(),token,method='PATCH')
+require(completed['draft'] is False and completed['tag_name']=='v0.4.12','Complete release was not published')
+require_complete_release(completed,expected_payloads)
+print(json.dumps({'published':completed['html_url'],'verified_assets':len(expected_payloads),'draft':False}))

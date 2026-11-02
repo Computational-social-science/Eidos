@@ -161,8 +161,10 @@ part of the acceptance record.
 ## Downstream reuse architecture and implementation plan (2026-11-02)
 
 Status: architecture decision and staged implementation plan. Existing interfaces
-and proposed interfaces are distinguished below. The local source/candidate is
-0.4.12; the last published release remains 0.4.11. Installing a wheel does not
+and proposed interfaces are distinguished below. This dated plan uses the
+0.4.12 source/qualification baseline; published availability is recorded by
+[GitHub Releases](https://github.com/Computational-social-science/Eidos/releases).
+Installing a wheel does not
 install the repository's monitor, fixtures, configuration or scientific data.
 
 ### One core, several entry points

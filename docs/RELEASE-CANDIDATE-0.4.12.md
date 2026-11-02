@@ -92,12 +92,19 @@ and input changes during aggregation; the prior checkpoint is preserved and a
 restored positive replay passes. Source bytes for the generator and control are
 captured before execution and rechecked afterward.
 
-The alias assembler separately rejects four mutated inputs and was interrupted
+The alias assembler separately rejects five mutated inputs and was interrupted
 on its third actual publication write. The first two writes rolled back, leaving
 all seven original records unchanged; the restored dry run passed. These controls
 and failed early harness attempts are retained under the versioned audit folder,
 separate from the immutable 645-payload execution archive. Read-only review found
 no remaining blockers within the reviewed aggregation/control scope.
+
+The fifth refusal binds the installed-shell checkpoint to its actual archived
+Windows/Linux receipt bytes. Final publication also checks the exact platform,
+wheel, 45-module inventory, four declared controls and driver/helper identities;
+wrong receipt hashes, platforms, drivers and duplicated cases are refused by
+actual publisher-fragment controls. These are local guard controls, not remote
+CI or publication evidence.
 
 The machine checkpoint's pending list describes its earlier capture stage; it is
 kept unchanged because the current recovery record binds its exact bytes. Receipt
@@ -107,9 +114,13 @@ refresh is now done. This still does not establish release publication or CI.
 
 1. Completed: archive 0.4.11 current-record aliases and assemble new aliases from
    executed 0.4.12 results with current source/wheel/driver/archive bindings.
-2. Regenerate versioned site/reports and inspect any changed publication pages.
-3. Commit implementation and final metadata through the normal repository hooks.
+2. Completed: regenerate versioned site/reports and inspect changed publication pages.
+3. Source committed as `208b12a`; final metadata must pass the normal repository hooks.
 4. Require CI on the exact final commit, then publish a new tag and verified
    GitHub assets. Keep old release tags/assets unchanged.
 
 The broader functional-completeness and scientific RSI objectives remain open.
+
+The actual onboarding rehearsal passed all six checks, including a deliberate
+false claim and a vacuous gate. Version history now records the real source
+commit `208b12a`; it is not evidence of a pushed tag or published release.

@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "scope": "Actual publisher shell-guard fragment; no network/credential/release execution",
+  "source_commit": "208b12a634f99034d3467e28e5d876b4d85cdeee",
+  "publisher_sha256_raw": "bbda0eade4cfd63e5c24e674a0db798daa3ec28b41276329c0491c0a6f5717ee",
+  "controls": [
+    {
+      "case": "positive",
+      "accepted": true
+    },
+    {
+      "case": "wrong-shell-receipt",
+      "rejected": true,
+      "expected_cause": "Shell checkpoint receipt differs"
+    },
+    {
+      "case": "wrong-platform",
+      "rejected": true,
+      "expected_cause": "Shell receipt identity differs"
+    },
+    {
+      "case": "wrong-driver",
+      "rejected": true,
+      "expected_cause": "Shell driver/helper binding differs"
+    },
+    {
+      "case": "duplicate-case",
+      "rejected": true,
+      "expected_cause": "Shell control inventory differs"
+    }
+  ]
+}

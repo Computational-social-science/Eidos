@@ -290,41 +290,46 @@
     "note": "The original version, generated time and paired live evidence remain historical; their source-audit path now resolves to its immutable archive."
   },
   "current_source_regression": {
-    "version": "0.4.11",
+    "version": "0.4.12",
     "path": "docs/SELF_AUDIT.json",
-    "sha256": "9b2393b11cb87f7d54bcac9a55fb5725c6bfd3c620e8e96ea4cc349331d88d1a",
+    "sha256": "5052ceaac8d0ef5b61c93e7a335c41ab6a5223cf3234760991fdbb803bd6f2bf",
     "tests": {
-      "passed": 1194,
+      "passed": 1206,
       "failed": 0,
       "skipped": 6,
       "errors": 0
     },
     "stable": true,
-    "scope": "Full current suite; observation source files above remain unchanged. This does not redate the historical focused test or live measurements."
+    "scope": "Current full source regression; unchanged observation source. Does not redate historical experiments or qualification."
   },
   "current_read_only_observation": {
-    "recorded_at": "2026-11-01T22:26:40.100808+00:00",
+    "recorded_at": "2026-11-02T11:04:17.588758+00:00",
     "endpoint": "http://127.0.0.1:8765/api/status",
     "samples": [
       {
-        "seq": 17296,
-        "ts": "2026-11-01T22:26:12+00:00",
+        "seq": 18486,
+        "ts": "2026-11-02T11:03:55+00:00",
         "overall": "OK",
         "stale": false,
-        "sample_age_s": 7.3,
+        "sample_age_s": 1.2,
         "consumers_state": "OK"
       },
       {
-        "seq": 17297,
-        "ts": "2026-11-01T22:26:27+00:00",
+        "seq": 18487,
+        "ts": "2026-11-02T11:04:11+00:00",
         "overall": "OK",
         "stale": false,
-        "sample_age_s": 12.3,
+        "sample_age_s": 5.9,
         "consumers_state": "OK"
       }
     ],
     "service_stop_or_restart": false,
     "manual_module_reload": false,
-    "scope": "Two advancing fresh OK samples from the existing monitor; no new process migration, reboot/logon or clean24h acceptance."
+    "scope": "Two current advancing healthy observations only; not migration/reboot/logon/clean24h acceptance."
+  },
+  "previous_current_record": {
+    "path": "docs/archive/consumer-observation-acceptance-v0.4.11.json",
+    "sha256": "9b32571d98833821f2d899f25d22739db9cf926b23a3a11feb39984ec9fdb9ec",
+    "git": "v0.4.11:docs/CONSUMER-OBSERVATION-ACCEPTANCE.json"
   }
 }

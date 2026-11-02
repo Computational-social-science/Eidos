@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "<string>", line 16, in <module>
+  File "<frozen runpy>", line 286, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "E:\2026-AI4S\Eidos\.scratch\quality\record_v412_acceptances.py", line 358, in <module>
+    with atomic_output(docs/name) as temporary:temporary.write_bytes(body)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "<string>", line 13, in injected
+RuntimeError: controlled third-alias publication failure

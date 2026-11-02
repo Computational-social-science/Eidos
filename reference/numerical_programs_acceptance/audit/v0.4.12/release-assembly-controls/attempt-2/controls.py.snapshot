@@ -1,0 +1,90 @@
+"""Actual cache mutations and owned publication-failure injection, restoring prior bytes."""
+from pathlib import Path
+import argparse
+import hashlib
+import json
+import sys
+
+from framework.subprocesses import run_tree
+
+root=Path.cwd().resolve()
+cache=Path('C:/Users/Administrator/.cache/eidos-sdk-v412')
+script=root/'.scratch/quality/record_v412_acceptances.py'
+source_before=script.read_bytes()
+test_before=Path(__file__).read_bytes()
+names=['SDK-PROCESS-ACCEPTANCE','QUARTO-DELIVERY-ACCEPTANCE','REPRODUCTION-ACCEPTANCE',
+       'RECOVERY-LIVE-ACCEPTANCE','CORE-RECOVERY-ACCEPTANCE','TRACKING-ACCEPTANCE',
+       'NUMERICAL-PROGRAMS-ACCEPTANCE']
+prior={root/'docs'/(name+'.json'):(root/'docs'/(name+'.json')).read_bytes() for name in names}
+parser=argparse.ArgumentParser()
+parser.add_argument('--attempt',type=int,default=1)
+args=parser.parse_args()
+if args.attempt<1:raise ValueError('Attempt must be positive')
+output=cache/('release-assembly-controls-'+str(args.attempt))
+output.mkdir(exist_ok=False)
+rows=[]
+
+
+def refusal(label,command,cause):
+    result=run_tree(command,cwd=root,timeout=30)
+    (output/(label+'.stdout')).write_text(result.stdout,encoding='utf-8',newline='\n')
+    (output/(label+'.stderr')).write_text(result.stderr,encoding='utf-8',newline='\n')
+    if result.returncode==0 or cause not in result.stderr:
+        raise RuntimeError('Wrong refusal for '+label+': '+result.stderr[-800:])
+    if any(path.read_bytes()!=body for path,body in prior.items()):
+        raise RuntimeError('Rejected assembly changed a current alias: '+label)
+    rows.append({'case':label,'rejected':True,'exit_code':result.returncode,
+                 'expected_cause':cause,'all_seven_aliases_preserved':True})
+
+
+for label,relative,field,value,cause in [
+    ('wrong-platform','windows-delivery/sdk.json','platform','linux','Wrong platform or optimization mode'),
+    ('empty-source','recovery-2/recovery.json','source_sha256_lf',{},'Recovery source inventory differs'),
+    ('missing-tracking-protocol','tracking-3/tracking.json','protocol_sha256_lf',{},'Tracking source inventory differs'),
+    ('wrong-controller','sdk-core/execution.json','controller_sha256','0'*64,'Controller bytes differ')]:
+    path=(cache/relative).resolve()
+    if not path.is_relative_to(cache.resolve()):raise RuntimeError('Unowned mutation target')
+    original=path.read_bytes();data=json.loads(original);data[field]=value
+    try:
+        path.write_text(json.dumps(data),encoding='utf-8')
+        refusal(label,[sys.executable,str(script),'--check'],cause)
+    finally:path.write_bytes(original)
+
+checkpoint=root/'docs/RELEASE-CANDIDATE-0.4.12.json'
+original=checkpoint.read_bytes();value=json.loads(original)
+value['results']['linux_shell']['sha256_raw']='0'*64
+try:
+    checkpoint.write_text(json.dumps(value),encoding='utf-8')
+    refusal('wrong-shell-receipt-binding',[sys.executable,str(script),'--check'],'Shell checkpoint receipt differs')
+finally:checkpoint.write_bytes(original)
+
+hook='''from pathlib import Path
+from contextlib import contextmanager
+import runpy,sys
+sys.path[0]=str(Path(SCRIPT).parent)
+import framework.artifacts as artifacts
+original=artifacts.atomic_output
+calls=0
+@contextmanager
+def injected(path):
+ global calls
+ if Path(path).parent==Path(DOCS):
+  calls+=1
+  if calls==3: raise RuntimeError('controlled third-alias publication failure')
+ with original(path) as target: yield target
+artifacts.atomic_output=injected
+runpy.run_path(SCRIPT,run_name='__main__')
+'''.replace('SCRIPT',repr(str(script))).replace('DOCS',repr(str(root/'docs')))
+refusal('third-write-rollback',[sys.executable,'-c',hook],'controlled third-alias publication failure')
+positive=run_tree([sys.executable,str(script),'--check'],cwd=root,timeout=30)
+if positive.returncode:raise RuntimeError('Restored dry run failed: '+positive.stderr)
+if script.read_bytes()!=source_before or Path(__file__).read_bytes()!=test_before:
+    raise RuntimeError('Assembly/control source changed during execution')
+if any(path.read_bytes()!=body for path,body in prior.items()):
+    raise RuntimeError('Positive dry run altered current aliases')
+record={'status':'PASS','controls':rows,'restored_positive_dry_run':'PASS',
+        'assembler_sha256_raw':hashlib.sha256(source_before).hexdigest(),
+        'test_sha256_raw':hashlib.sha256(test_before).hexdigest(),
+        'scope':'Four cache mutations, one checkpoint shell-binding mutation and third-write failure; all seven prior aliases preserved.'}
+(output/'record.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8',newline='\n')
+print('PASS: five bad-input refusals, actual third-write rollback and restored dry run.')

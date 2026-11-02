@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "kind": "eidos.tracking-integrity-acceptance",
-  "generated": "2026-11-02T10:51:15.657439+00:00",
+  "generated": "2026-11-02T11:03:55.625997+00:00",
   "status": "PASS",
   "version": "0.4.12",
   "release_qualification": "Installed candidate qualification; exact-final-commit CI and release assets are separate.",

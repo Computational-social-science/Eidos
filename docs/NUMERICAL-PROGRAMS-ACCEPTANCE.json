@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "kind": "eidos.numerical-programs-sdk-qualification",
-  "generated": "2026-11-02T10:51:15.657439+00:00",
+  "generated": "2026-11-02T11:03:55.625997+00:00",
   "status": "PASS",
   "version": "0.4.12",
   "wheel": "reference/sdk_process_acceptance/eidos-0.4.12-py3-none-any.whl",
@@ -2156,7 +2156,7 @@
   "archive": "reference/numerical_programs_acceptance/recorded_trials/v0.4.12",
   "archive_manifest_sha256": "5946ba8394a07fe55245a2f2087b5e6266c9d4c9cae8e9bdc6fc5eff07c7c817",
   "assembly_sources_sha256": {
-    "reference/numerical_programs_acceptance/audit/v0.4.12/release_assembler.py.snapshot": "20f9cf7aa0f4d508329d69878d02c9e1f61e60ad4d190346dd279ab5f54da6c0",
+    "reference/numerical_programs_acceptance/audit/v0.4.12/release_assembler.py.snapshot": "7ba5c4c45a72739eabc13f3272f0b87e5857210a195d4c6131b0222c5f1a6e71",
     "reference/numerical_programs_acceptance/audit/v0.4.12/numerical_guards.py.snapshot": "8261e4e5ab8c2e4d1b042a1293f6e336b05d67c9f597613032b3b4d04bd124b8",
     "reference/numerical_programs_acceptance/audit/v0.4.12/legacy_guards.py.snapshot": "6e700f8b36334c11961881cb0c4ff4bf868365a39380523656b93e646d68f583"
   },

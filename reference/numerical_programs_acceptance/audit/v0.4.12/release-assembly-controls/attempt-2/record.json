@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "controls": [
+    {
+      "case": "wrong-platform",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "Wrong platform or optimization mode",
+      "all_seven_aliases_preserved": true
+    },
+    {
+      "case": "empty-source",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "Recovery source inventory differs",
+      "all_seven_aliases_preserved": true
+    },
+    {
+      "case": "missing-tracking-protocol",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "Tracking source inventory differs",
+      "all_seven_aliases_preserved": true
+    },
+    {
+      "case": "wrong-controller",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "Controller bytes differ",
+      "all_seven_aliases_preserved": true
+    },
+    {
+      "case": "wrong-shell-receipt-binding",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "Shell checkpoint receipt differs",
+      "all_seven_aliases_preserved": true
+    },
+    {
+      "case": "third-write-rollback",
+      "rejected": true,
+      "exit_code": 1,
+      "expected_cause": "controlled third-alias publication failure",
+      "all_seven_aliases_preserved": true
+    }
+  ],
+  "restored_positive_dry_run": "PASS",
+  "assembler_sha256_raw": "7ba5c4c45a72739eabc13f3272f0b87e5857210a195d4c6131b0222c5f1a6e71",
+  "test_sha256_raw": "41edaae22ce02945a62041393f64ddfa2c295c2b40c747f5f50b8b4ba059172a",
+  "scope": "Four cache mutations, one checkpoint shell-binding mutation and third-write failure; all seven prior aliases preserved."
+}

@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "E:\2026-AI4S\Eidos\.scratch\quality\record_v412_acceptances.py", line 70, in <module>
+    require(checkpoint['results'][platform+'_shell']['sha256_raw']==sha(body),'Shell checkpoint receipt differs')
+  File "E:\2026-AI4S\Eidos\.scratch\quality\record_v412_acceptances.py", line 25, in require
+    if not ok:raise RuntimeError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Shell checkpoint receipt differs

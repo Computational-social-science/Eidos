@@ -570,11 +570,12 @@ retained self-check/self-healing; do not equate automatic source changes with
 scientific RSI or reintroduce external CRON research runs.
 
 The release-aggregation review reproduced and closed acceptance of an incomplete
-recovery source inventory. Five actual checkpoint mutation refusals and four
+recovery source inventory. Five actual checkpoint mutation refusals and five
 alias-input refusals pass; an injected third-write failure restores all seven
 previous aliases. The independent numerical PDF/Word comparison retains the
 original pagination: 14 of 16 regenerated pages are pixel-identical and both
 changed second pages were inspected; the other 20 manuscript pages belong to
 byte-identical retained artifacts. Technical production checks pass without
-asserting journal submission readiness. Version history and GitHub publication
-are still pending.
+asserting journal submission readiness. Version history now identifies source
+commit `208b12a` after the actual onboarding rehearsal; final metadata checks,
+exact-final-commit CI and GitHub publication remain pending.

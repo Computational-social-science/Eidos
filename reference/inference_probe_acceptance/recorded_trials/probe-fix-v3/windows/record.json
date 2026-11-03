@@ -1,0 +1,2455 @@
+{
+  "schema": "eidos.inference-probe-installed.v1",
+  "status": "PASS",
+  "scope": "Same-host installed private CLI controls; no host Ollama contact, production recovery, real-model research or scientific RSI claim",
+  "driver_sha256": "f13c81ccfd1ca47804f6e29a2fe64a0f4c5ad086955b0f021b4e26f8eac313ba",
+  "fixture_sha256": "b0607bee9af633dd48c77085fe5df9e900ba1afa2833f98aebbef142818b8ade",
+  "wheel_sha256": {
+    "old": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
+    "new": "57f7e6481aa7f706420e3a45ba3052a10c43da58050435167dadfce99cc94b2c"
+  },
+  "identities": {
+    "old": {
+      "before": {
+        "executable": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-old\\Scripts\\python.exe",
+        "prefix": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-old",
+        "version": "0.4.12",
+        "name": "eidos",
+        "distribution_count": 1,
+        "editable": false,
+        "distribution_module": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-old\\Lib\\site-packages\\framework\\inference\\__init__.py",
+        "module": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-old\\Lib\\site-packages\\framework\\inference\\__init__.py",
+        "sdk": {
+          "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+          "framework/command_inputs.py": "e739c36eff434bdf38dc2604b6d10a43f66336d17eae491334cdde1033a94823",
+          "framework/config.py": "f95e0aad47be973cc700d8070fe2156b9ea1b1726ffbd2eb4424b13ec6313434",
+          "framework/decision.py": "d6663f573a03685941c06a75cae7685fb68195cbf8f5a733a759360fe601892b",
+          "framework/executable_package.py": "a2d9d135dfa0c0884f21b58a52fee11158f604e52e35c000009fb66ce7c85f03",
+          "framework/lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
+          "framework/model_ab.py": "1307faaddfe307ec845e4ee4744e81533916cafb3dbff039083fbe340c63f6c4",
+          "framework/project.py": "d994403b2481634e409c9f26cef65a487334ab4328490ea4064559afb43b26c2",
+          "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
+          "framework/recovery.py": "bac8173839a32cc181d293cc839258cad3a748f5e7d2f2379a3dbf0c2bfd1d44",
+          "framework/services.py": "a1ea1f58feb90fe234c9e8d2d3d97c299c6bb45fed1ec0e7909ce6651195eab3",
+          "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
+          "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
+          "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+          "framework/updates.py": "63af55655b8a8a65e062f3d7c0d93a271486f0a6c962305f6baece7f856c91ed",
+          "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+          "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+          "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+          "framework/diagnosis/__init__.py": "4dff84a0a23564c65222f84daaeef60dc0ba2cf73bd88f084d0e4b66d1d905f7",
+          "framework/gates/__init__.py": "c22dfe47eff927815d1a3e201070040a74b0f69f866b472a546ff1db5052a93e",
+          "framework/inference/gguf.py": "1522a0ba9d61f489c9fcb320c48c64dd925610c617f113e8429d32a688028ddf",
+          "framework/inference/llama_cpp.py": "6a3fe624adc64cb990c9c86434c6dcb4278b1331c0406e81f056dc51d4dfd74e",
+          "framework/inference/__init__.py": "ff04da862499308b3685d71297c1c65a03631d18afe6896063cdd22236162693",
+          "framework/numerical_programs/_compiler.py": "53d2b1e6a76a6dd93571408e74d0da2d8b50c34e3e82a4454f2722a9e503576b",
+          "framework/numerical_programs/_json.py": "efb83e3de30eb390cb13a4ff5b99db8e66383a46843c765615e5abe639cb1123",
+          "framework/numerical_programs/_language.py": "7a7f773d34d837368136b911e7fa0a43970423ee7f1b5d01e43896b50a649373",
+          "framework/numerical_programs/__init__.py": "eb59e849b6458789d07b5c0e46abaa317efc465b569a426c02205d6aa427748b",
+          "framework/quarto_bridge/_delivery.py": "548024950a54b038bc34d431090c78a0518ac787eaec053c32ec0b5def2b9568",
+          "framework/quarto_bridge/_figure_job.py": "e2ed211aef594b2d2e3c9ee77527f8fa059507de8d50ba050314cb3b6030c951",
+          "framework/quarto_bridge/__init__.py": "f647bd933e97d73590c853d2f3e30be177c7ca5522eb63a9220af62217835584",
+          "framework/reproduction/_numeric.py": "5424d8d0c4fbafa4fc2472d0dc347ec541ffed34a6f3aaf3612e3b08f7e03a18",
+          "framework/reproduction/__init__.py": "9f22d6e2f84280b9b39bff69314282ea2c79a1429d4d9e57c00d7c785fc9b005",
+          "framework/surrogate/demo.py": "1411c686ed61e30e73edd24d36ef8fd59a2dede0a545c2b6873c3f10cd9c6136",
+          "framework/surrogate/__init__.py": "f44e6befa9c1e27dda6947d011fe35dc42113808aad95d73e07feaefba2e8ab6",
+          "framework/tracking/_worker.py": "bce9fa56d8f05ecab350e3689bb35c19773ad9aa283c42b6fc5ad5c6190a9b54",
+          "framework/tracking/__init__.py": "5bdee114e507650b662e9342afa36d9d0d9b7dfa070a870bad4a9a52517ff19e",
+          "framework/validity/lean_audit.py": "9d396ec4ff6a8472d7348a3893b006d1e64794355e1eada8e9f65ae9eb32a1eb",
+          "framework/validity/__init__.py": "f908c064b12819cb875d99b101bb4e6b9f01fababf7515f33520a5d6b8de2b3f",
+          "framework/verifiers/citations.py": "20c97defc19ba08c7e67de31263076ae33e2bd52757645d999bb781875439c29",
+          "framework/verifiers/extract_s4.py": "4914fd8072f607176a82777aeb1a028d82690f306cc6ac41121be548e84eb098",
+          "framework/verifiers/numerics.py": "3422a047f11985a9541605011f83de2c5eeb7fe8d4c9376d2cf4d5d394ba2d9a",
+          "framework/verifiers/pointers.py": "b93b5d2f012f98c98eca806522e29f44d59786bb0c750ce996dbb4c1a75d397d",
+          "framework/verifiers/stats.py": "38e4c0ad62f872734dd8a828f33c7b1147690499a3f47a7aba77fb94fcbf37a3",
+          "framework/verifiers/support.py": "462dfdc62c2ea79b78d7f7fd1ac4c529c3cb9e3ec124a4fd4e501a91f1b54280",
+          "framework/verifiers/__init__.py": "8e8086c9ca734be2b002593c7b751a909e86d2edf4fef209b2f10fe9865dc78c"
+        },
+        "packages": [
+          [
+            "contourpy",
+            "1.4.0",
+            "40450acd747b288a5db999c435e1e921ffee0a38c7884a80cd46934c8004568f",
+            "9a919bf9742fa8acb943eef720e11c265cfbe34fff179740fee70c05c108433b"
+          ],
+          [
+            "cycler",
+            "0.12.1",
+            "23289e19b76f1e01394227696e6af2b6cd1ce79e89731209bf9195148b18ed36",
+            "cbcbee5f18d75bd4935199b135aa33c3ed62df14991110a35c428883798d7979"
+          ],
+          [
+            "eidos",
+            "0.4.12",
+            "e7468f41fd8af84526677261c808fff2f2b3d855c2fa619981832f14ff6e5418",
+            "75a40e0b469692cfbf7eec70ebbc3705155ba19eb207f218765a3b7d189c5912"
+          ],
+          [
+            "fonttools",
+            "4.67.0",
+            "33dec14bec601b457a07a6550086cb6725b5aaedc3a881f9fa7a84d3841ddcfe",
+            "1782d3fb386579a1b1b8e8ec79263e73b56a5e8ff4637d4c3b464fb722016931"
+          ],
+          [
+            "kiwisolver",
+            "1.5.1",
+            "f07b7b6c0c9c2a624c8a31f931e16712f2cf3490e7dfd51643d68e9d42d4b2c9",
+            "3116e4ed5a372aa5c2f7cc59b78006c82d14bd568d5e99d84327e524a87157c8"
+          ],
+          [
+            "matplotlib",
+            "3.11.2",
+            "e5f532226d1025af2dd15ff951df27391f66d46403b8244ea61e6b8eb3e4d806",
+            "e7fffced6eaa133e17784648e752b6eba0b8c7c9cfa7c2c0ac377665d7882721"
+          ],
+          [
+            "numpy",
+            "2.5.4",
+            "e2b909d6a37d76c2bc130f528d7fed0c517322bce16dc7846b6a6df30e200403",
+            "582abe4b241f6361c9521157a7506ccf7e71c07d26a444f8bf3c7d14e956f66b"
+          ],
+          [
+            "packaging",
+            "26.3",
+            "70fdb89fc4d4a9a043bf7372b8972bcc883fddff34ab55e9cf80d73875384763",
+            "1b8655965b0d83e9a067fd7f84b977bd1e117e0fb9f2874b2572781bdc9e2147"
+          ],
+          [
+            "pillow",
+            "13.0.0",
+            "dba7fdfe24e302f46bae562f55d66cc367c0618abae9894a1ebec93dc8f0e511",
+            "27b08104088adf8fc31197a946ab4175580041ebd9c33e7fa64dde5e57ed9b4b"
+          ],
+          [
+            "pip",
+            "26.3",
+            "ad63a8564cd158c8de9e6a912e92776b4abc56cfa2d8286ef4c35bfb9cb9e439",
+            "e6c2713a9cf06ef9e79267d4ab196283fe24cdfd19ccd9d61d0594c56d91d6d3"
+          ],
+          [
+            "pyparsing",
+            "3.3.3",
+            "f2ca34052d720622d300023472ef8ae94fe5b57d69acbb28a8667f6dd0e13497",
+            "dbc82867d6a4a3b935f9a9f3f2c876e3056dfffb104e1c8b3a3117d90aa21ad3"
+          ],
+          [
+            "python-dateutil",
+            "2.9.0.post0",
+            "a9d436da322be808332f98d88325998e87cb693a678a9969feb4cfad729a6e93",
+            "e15e868a50b9c4e71df17b31369843617780146ac5adb1bbfdcced0ebe501824"
+          ],
+          [
+            "pyyaml",
+            "6.0.3",
+            "03c3b415ed38d09faedc49360e930769b40c58f68585e6de00e2e4916a858d34",
+            "6fef717920e6590ce79f8f922755690f9d1f3199508e9d79baeb382ea4813c9c"
+          ],
+          [
+            "six",
+            "1.17.0",
+            "562042078c2752549f6d8a7c86dbc5dd708088a7be6d80672ec7b07100b72468",
+            "d16e50f347969b1e1919fb0c88bac4b9c644f5305bcfcfb00f72b646dbd4065d"
+          ]
+        ]
+      },
+      "after": {
+        "executable": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-old\\Scripts\\python.exe",
+        "prefix": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-old",
+        "version": "0.4.12",
+        "name": "eidos",
+        "distribution_count": 1,
+        "editable": false,
+        "distribution_module": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-old\\Lib\\site-packages\\framework\\inference\\__init__.py",
+        "module": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-old\\Lib\\site-packages\\framework\\inference\\__init__.py",
+        "sdk": {
+          "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+          "framework/command_inputs.py": "e739c36eff434bdf38dc2604b6d10a43f66336d17eae491334cdde1033a94823",
+          "framework/config.py": "f95e0aad47be973cc700d8070fe2156b9ea1b1726ffbd2eb4424b13ec6313434",
+          "framework/decision.py": "d6663f573a03685941c06a75cae7685fb68195cbf8f5a733a759360fe601892b",
+          "framework/executable_package.py": "a2d9d135dfa0c0884f21b58a52fee11158f604e52e35c000009fb66ce7c85f03",
+          "framework/lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
+          "framework/model_ab.py": "1307faaddfe307ec845e4ee4744e81533916cafb3dbff039083fbe340c63f6c4",
+          "framework/project.py": "d994403b2481634e409c9f26cef65a487334ab4328490ea4064559afb43b26c2",
+          "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
+          "framework/recovery.py": "bac8173839a32cc181d293cc839258cad3a748f5e7d2f2379a3dbf0c2bfd1d44",
+          "framework/services.py": "a1ea1f58feb90fe234c9e8d2d3d97c299c6bb45fed1ec0e7909ce6651195eab3",
+          "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
+          "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
+          "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+          "framework/updates.py": "63af55655b8a8a65e062f3d7c0d93a271486f0a6c962305f6baece7f856c91ed",
+          "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+          "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+          "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+          "framework/diagnosis/__init__.py": "4dff84a0a23564c65222f84daaeef60dc0ba2cf73bd88f084d0e4b66d1d905f7",
+          "framework/gates/__init__.py": "c22dfe47eff927815d1a3e201070040a74b0f69f866b472a546ff1db5052a93e",
+          "framework/inference/gguf.py": "1522a0ba9d61f489c9fcb320c48c64dd925610c617f113e8429d32a688028ddf",
+          "framework/inference/llama_cpp.py": "6a3fe624adc64cb990c9c86434c6dcb4278b1331c0406e81f056dc51d4dfd74e",
+          "framework/inference/__init__.py": "ff04da862499308b3685d71297c1c65a03631d18afe6896063cdd22236162693",
+          "framework/numerical_programs/_compiler.py": "53d2b1e6a76a6dd93571408e74d0da2d8b50c34e3e82a4454f2722a9e503576b",
+          "framework/numerical_programs/_json.py": "efb83e3de30eb390cb13a4ff5b99db8e66383a46843c765615e5abe639cb1123",
+          "framework/numerical_programs/_language.py": "7a7f773d34d837368136b911e7fa0a43970423ee7f1b5d01e43896b50a649373",
+          "framework/numerical_programs/__init__.py": "eb59e849b6458789d07b5c0e46abaa317efc465b569a426c02205d6aa427748b",
+          "framework/quarto_bridge/_delivery.py": "548024950a54b038bc34d431090c78a0518ac787eaec053c32ec0b5def2b9568",
+          "framework/quarto_bridge/_figure_job.py": "e2ed211aef594b2d2e3c9ee77527f8fa059507de8d50ba050314cb3b6030c951",
+          "framework/quarto_bridge/__init__.py": "f647bd933e97d73590c853d2f3e30be177c7ca5522eb63a9220af62217835584",
+          "framework/reproduction/_numeric.py": "5424d8d0c4fbafa4fc2472d0dc347ec541ffed34a6f3aaf3612e3b08f7e03a18",
+          "framework/reproduction/__init__.py": "9f22d6e2f84280b9b39bff69314282ea2c79a1429d4d9e57c00d7c785fc9b005",
+          "framework/surrogate/demo.py": "1411c686ed61e30e73edd24d36ef8fd59a2dede0a545c2b6873c3f10cd9c6136",
+          "framework/surrogate/__init__.py": "f44e6befa9c1e27dda6947d011fe35dc42113808aad95d73e07feaefba2e8ab6",
+          "framework/tracking/_worker.py": "bce9fa56d8f05ecab350e3689bb35c19773ad9aa283c42b6fc5ad5c6190a9b54",
+          "framework/tracking/__init__.py": "5bdee114e507650b662e9342afa36d9d0d9b7dfa070a870bad4a9a52517ff19e",
+          "framework/validity/lean_audit.py": "9d396ec4ff6a8472d7348a3893b006d1e64794355e1eada8e9f65ae9eb32a1eb",
+          "framework/validity/__init__.py": "f908c064b12819cb875d99b101bb4e6b9f01fababf7515f33520a5d6b8de2b3f",
+          "framework/verifiers/citations.py": "20c97defc19ba08c7e67de31263076ae33e2bd52757645d999bb781875439c29",
+          "framework/verifiers/extract_s4.py": "4914fd8072f607176a82777aeb1a028d82690f306cc6ac41121be548e84eb098",
+          "framework/verifiers/numerics.py": "3422a047f11985a9541605011f83de2c5eeb7fe8d4c9376d2cf4d5d394ba2d9a",
+          "framework/verifiers/pointers.py": "b93b5d2f012f98c98eca806522e29f44d59786bb0c750ce996dbb4c1a75d397d",
+          "framework/verifiers/stats.py": "38e4c0ad62f872734dd8a828f33c7b1147690499a3f47a7aba77fb94fcbf37a3",
+          "framework/verifiers/support.py": "462dfdc62c2ea79b78d7f7fd1ac4c529c3cb9e3ec124a4fd4e501a91f1b54280",
+          "framework/verifiers/__init__.py": "8e8086c9ca734be2b002593c7b751a909e86d2edf4fef209b2f10fe9865dc78c"
+        },
+        "packages": [
+          [
+            "contourpy",
+            "1.4.0",
+            "40450acd747b288a5db999c435e1e921ffee0a38c7884a80cd46934c8004568f",
+            "9a919bf9742fa8acb943eef720e11c265cfbe34fff179740fee70c05c108433b"
+          ],
+          [
+            "cycler",
+            "0.12.1",
+            "23289e19b76f1e01394227696e6af2b6cd1ce79e89731209bf9195148b18ed36",
+            "cbcbee5f18d75bd4935199b135aa33c3ed62df14991110a35c428883798d7979"
+          ],
+          [
+            "eidos",
+            "0.4.12",
+            "e7468f41fd8af84526677261c808fff2f2b3d855c2fa619981832f14ff6e5418",
+            "75a40e0b469692cfbf7eec70ebbc3705155ba19eb207f218765a3b7d189c5912"
+          ],
+          [
+            "fonttools",
+            "4.67.0",
+            "33dec14bec601b457a07a6550086cb6725b5aaedc3a881f9fa7a84d3841ddcfe",
+            "1782d3fb386579a1b1b8e8ec79263e73b56a5e8ff4637d4c3b464fb722016931"
+          ],
+          [
+            "kiwisolver",
+            "1.5.1",
+            "f07b7b6c0c9c2a624c8a31f931e16712f2cf3490e7dfd51643d68e9d42d4b2c9",
+            "3116e4ed5a372aa5c2f7cc59b78006c82d14bd568d5e99d84327e524a87157c8"
+          ],
+          [
+            "matplotlib",
+            "3.11.2",
+            "e5f532226d1025af2dd15ff951df27391f66d46403b8244ea61e6b8eb3e4d806",
+            "e7fffced6eaa133e17784648e752b6eba0b8c7c9cfa7c2c0ac377665d7882721"
+          ],
+          [
+            "numpy",
+            "2.5.4",
+            "e2b909d6a37d76c2bc130f528d7fed0c517322bce16dc7846b6a6df30e200403",
+            "582abe4b241f6361c9521157a7506ccf7e71c07d26a444f8bf3c7d14e956f66b"
+          ],
+          [
+            "packaging",
+            "26.3",
+            "70fdb89fc4d4a9a043bf7372b8972bcc883fddff34ab55e9cf80d73875384763",
+            "1b8655965b0d83e9a067fd7f84b977bd1e117e0fb9f2874b2572781bdc9e2147"
+          ],
+          [
+            "pillow",
+            "13.0.0",
+            "dba7fdfe24e302f46bae562f55d66cc367c0618abae9894a1ebec93dc8f0e511",
+            "27b08104088adf8fc31197a946ab4175580041ebd9c33e7fa64dde5e57ed9b4b"
+          ],
+          [
+            "pip",
+            "26.3",
+            "ad63a8564cd158c8de9e6a912e92776b4abc56cfa2d8286ef4c35bfb9cb9e439",
+            "e6c2713a9cf06ef9e79267d4ab196283fe24cdfd19ccd9d61d0594c56d91d6d3"
+          ],
+          [
+            "pyparsing",
+            "3.3.3",
+            "f2ca34052d720622d300023472ef8ae94fe5b57d69acbb28a8667f6dd0e13497",
+            "dbc82867d6a4a3b935f9a9f3f2c876e3056dfffb104e1c8b3a3117d90aa21ad3"
+          ],
+          [
+            "python-dateutil",
+            "2.9.0.post0",
+            "a9d436da322be808332f98d88325998e87cb693a678a9969feb4cfad729a6e93",
+            "e15e868a50b9c4e71df17b31369843617780146ac5adb1bbfdcced0ebe501824"
+          ],
+          [
+            "pyyaml",
+            "6.0.3",
+            "03c3b415ed38d09faedc49360e930769b40c58f68585e6de00e2e4916a858d34",
+            "6fef717920e6590ce79f8f922755690f9d1f3199508e9d79baeb382ea4813c9c"
+          ],
+          [
+            "six",
+            "1.17.0",
+            "562042078c2752549f6d8a7c86dbc5dd708088a7be6d80672ec7b07100b72468",
+            "d16e50f347969b1e1919fb0c88bac4b9c644f5305bcfcfb00f72b646dbd4065d"
+          ]
+        ]
+      }
+    },
+    "new": {
+      "before": {
+        "executable": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-new\\Scripts\\python.exe",
+        "prefix": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-new",
+        "version": "0.5.0",
+        "name": "eidos",
+        "distribution_count": 1,
+        "editable": false,
+        "distribution_module": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-new\\Lib\\site-packages\\framework\\inference\\__init__.py",
+        "module": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-new\\Lib\\site-packages\\framework\\inference\\__init__.py",
+        "sdk": {
+          "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+          "framework/cli.py": "2d88c41229da6eeafe2edaa465f61246001fa37803d51bcd1d92a3f02d9f63dd",
+          "framework/command_inputs.py": "e739c36eff434bdf38dc2604b6d10a43f66336d17eae491334cdde1033a94823",
+          "framework/config.py": "ea7c01f6a2f822024199fcc22cc3e371e57594a969666daa08c87dcc59b41044",
+          "framework/consumer_snapshot.py": "4ce0b0316c4d43784595935e6ac1074ff4d555a76ae532b37909f729e9422ea5",
+          "framework/decision.py": "d6663f573a03685941c06a75cae7685fb68195cbf8f5a733a759360fe601892b",
+          "framework/executable_package.py": "a2d9d135dfa0c0884f21b58a52fee11158f604e52e35c000009fb66ce7c85f03",
+          "framework/lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
+          "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
+          "framework/monitor_registry.py": "3d8bd04a68fb02c819e82e7354eca5a6d71237aa31bd5353eea1f6fb93a87724",
+          "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
+          "framework/project_state.py": "4de987e3939ef701de22c51cd1fb36c4a4b4161777daf6ebdbcd2d862d82cf03",
+          "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
+          "framework/recovery.py": "46e3426ac28988905a2ecebe728cb4a6515803c07fc56feb0dd08b4beebb5563",
+          "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+          "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
+          "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
+          "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+          "framework/updates.py": "e92b282d0fb5691a043cd8131c2d0ab620a3e80f8b5200e58022c339da75d711",
+          "framework/worker_observation.py": "62b2e7782f6318451f74356ee1ee513b190836e3c17581180b12d463103e57d4",
+          "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+          "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+          "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+          "framework/diagnosis/__init__.py": "f004baafbf88dcc623255d3adea5318dd1d5d65a9ad526d86fd0e2225586c4e4",
+          "framework/gates/__init__.py": "c22dfe47eff927815d1a3e201070040a74b0f69f866b472a546ff1db5052a93e",
+          "framework/inference/gguf.py": "4cc04cd656bde30ba8679b33a41739c86e89a70e1c7046874a40fbc0864d1267",
+          "framework/inference/llama_cpp.py": "03fac820b5665dcf12c4e2749a0fe929b04f292f1bae86a3a7a97e6398fc7a30",
+          "framework/inference/__init__.py": "778af5f44ec913e706cc3297e63dbaf27428f7f3ebc5fa6c84ab7fb8416eccc6",
+          "framework/numerical_programs/_compiler.py": "53d2b1e6a76a6dd93571408e74d0da2d8b50c34e3e82a4454f2722a9e503576b",
+          "framework/numerical_programs/_json.py": "efb83e3de30eb390cb13a4ff5b99db8e66383a46843c765615e5abe639cb1123",
+          "framework/numerical_programs/_language.py": "7a7f773d34d837368136b911e7fa0a43970423ee7f1b5d01e43896b50a649373",
+          "framework/numerical_programs/__init__.py": "eb59e849b6458789d07b5c0e46abaa317efc465b569a426c02205d6aa427748b",
+          "framework/quarto_bridge/_delivery.py": "548024950a54b038bc34d431090c78a0518ac787eaec053c32ec0b5def2b9568",
+          "framework/quarto_bridge/_figure_job.py": "e2ed211aef594b2d2e3c9ee77527f8fa059507de8d50ba050314cb3b6030c951",
+          "framework/quarto_bridge/__init__.py": "09c1830a16d651b14f6baf14a73143d8c0403b9d614c1540a46019eac9832af2",
+          "framework/reproduction/_numeric.py": "5424d8d0c4fbafa4fc2472d0dc347ec541ffed34a6f3aaf3612e3b08f7e03a18",
+          "framework/reproduction/__init__.py": "3b722d0beab94990afec2de6f04408f3e520695e7f780d63c697592eca235071",
+          "framework/surrogate/demo.py": "8e3104db0efd6fe84feb656711cbb1f22eb0ba53c7b59bddd831fae7886132b3",
+          "framework/surrogate/__init__.py": "1fbb528b20f80f3bf28893aa1df1cdfb041217ce4122ffe74e3d1c98556e29ad",
+          "framework/tracking/_worker.py": "bce9fa56d8f05ecab350e3689bb35c19773ad9aa283c42b6fc5ad5c6190a9b54",
+          "framework/tracking/__init__.py": "e648cdf8e511a8c4725f6d732212d2660f49a4682bfd840aea08451b756bb942",
+          "framework/validity/lean_audit.py": "9d396ec4ff6a8472d7348a3893b006d1e64794355e1eada8e9f65ae9eb32a1eb",
+          "framework/validity/__init__.py": "7711d70ae02852139b598e17a4bdf3eab2cf2762f440638ed6eb2139d7460eb7",
+          "framework/verifiers/citations.py": "dafb09dc5233fb71408a8d62e7bc5365e41afa389e4710446719adbf86a54380",
+          "framework/verifiers/extract_s4.py": "df0ffaa4359127c20e6354529eb850ad6e5d2cbd3cd0be708b5f13107b800a8a",
+          "framework/verifiers/numerics.py": "a45240cb251abca05780e47b029aa769eddccf12053e83d834c2446befaa1243",
+          "framework/verifiers/pointers.py": "d28fe077bbd34642eea88d8cf7f977deb376c13ad593ed0583d0c282875b8001",
+          "framework/verifiers/stats.py": "23e42eb09698aee95425531f97443f7e9531048acf6ce8a8f71c6b032976bfd8",
+          "framework/verifiers/support.py": "8416c27e1c67c2da4983bd5043d40a7b00759b70c2032e31043589e42ee72aa8",
+          "framework/verifiers/__init__.py": "8e8086c9ca734be2b002593c7b751a909e86d2edf4fef209b2f10fe9865dc78c"
+        },
+        "packages": [
+          [
+            "contourpy",
+            "1.4.0",
+            "40450acd747b288a5db999c435e1e921ffee0a38c7884a80cd46934c8004568f",
+            "9a919bf9742fa8acb943eef720e11c265cfbe34fff179740fee70c05c108433b"
+          ],
+          [
+            "cycler",
+            "0.12.1",
+            "23289e19b76f1e01394227696e6af2b6cd1ce79e89731209bf9195148b18ed36",
+            "cbcbee5f18d75bd4935199b135aa33c3ed62df14991110a35c428883798d7979"
+          ],
+          [
+            "eidos",
+            "0.5.0",
+            "299347a4fcb52fd53814decb8164fe1fa07232eb4510499f54ca3e5e8822a84d",
+            "dc74c2fa81e626fd29aebc7a65ecc1762bc27d5716cbe12cdcef9d0e0b124e7c"
+          ],
+          [
+            "fonttools",
+            "4.67.0",
+            "33dec14bec601b457a07a6550086cb6725b5aaedc3a881f9fa7a84d3841ddcfe",
+            "0f9e7837e2662f04851f485d72e7dd40d925c9ab47d7013e0cb834a1318e0c68"
+          ],
+          [
+            "kiwisolver",
+            "1.5.1",
+            "f07b7b6c0c9c2a624c8a31f931e16712f2cf3490e7dfd51643d68e9d42d4b2c9",
+            "3116e4ed5a372aa5c2f7cc59b78006c82d14bd568d5e99d84327e524a87157c8"
+          ],
+          [
+            "matplotlib",
+            "3.11.2",
+            "e5f532226d1025af2dd15ff951df27391f66d46403b8244ea61e6b8eb3e4d806",
+            "e7fffced6eaa133e17784648e752b6eba0b8c7c9cfa7c2c0ac377665d7882721"
+          ],
+          [
+            "numpy",
+            "2.5.4",
+            "e2b909d6a37d76c2bc130f528d7fed0c517322bce16dc7846b6a6df30e200403",
+            "0ede83e62b1f89781e526656802e685ac96af60138590cc70b4fdf5efa4e34c9"
+          ],
+          [
+            "packaging",
+            "26.3",
+            "70fdb89fc4d4a9a043bf7372b8972bcc883fddff34ab55e9cf80d73875384763",
+            "1b8655965b0d83e9a067fd7f84b977bd1e117e0fb9f2874b2572781bdc9e2147"
+          ],
+          [
+            "pillow",
+            "13.0.0",
+            "dba7fdfe24e302f46bae562f55d66cc367c0618abae9894a1ebec93dc8f0e511",
+            "27b08104088adf8fc31197a946ab4175580041ebd9c33e7fa64dde5e57ed9b4b"
+          ],
+          [
+            "pip",
+            "26.3",
+            "ad63a8564cd158c8de9e6a912e92776b4abc56cfa2d8286ef4c35bfb9cb9e439",
+            "9f10e5a2a239280b8ed2d761dd38f4d2eab3924d7d213b6d62871c71cf8fdcd3"
+          ],
+          [
+            "pyparsing",
+            "3.3.3",
+            "f2ca34052d720622d300023472ef8ae94fe5b57d69acbb28a8667f6dd0e13497",
+            "dbc82867d6a4a3b935f9a9f3f2c876e3056dfffb104e1c8b3a3117d90aa21ad3"
+          ],
+          [
+            "python-dateutil",
+            "2.9.0.post0",
+            "a9d436da322be808332f98d88325998e87cb693a678a9969feb4cfad729a6e93",
+            "e15e868a50b9c4e71df17b31369843617780146ac5adb1bbfdcced0ebe501824"
+          ],
+          [
+            "pyyaml",
+            "6.0.3",
+            "03c3b415ed38d09faedc49360e930769b40c58f68585e6de00e2e4916a858d34",
+            "6fef717920e6590ce79f8f922755690f9d1f3199508e9d79baeb382ea4813c9c"
+          ],
+          [
+            "six",
+            "1.17.0",
+            "562042078c2752549f6d8a7c86dbc5dd708088a7be6d80672ec7b07100b72468",
+            "d16e50f347969b1e1919fb0c88bac4b9c644f5305bcfcfb00f72b646dbd4065d"
+          ]
+        ]
+      },
+      "after": {
+        "executable": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-new\\Scripts\\python.exe",
+        "prefix": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-new",
+        "version": "0.5.0",
+        "name": "eidos",
+        "distribution_count": 1,
+        "editable": false,
+        "distribution_module": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-new\\Lib\\site-packages\\framework\\inference\\__init__.py",
+        "module": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-new\\Lib\\site-packages\\framework\\inference\\__init__.py",
+        "sdk": {
+          "framework/artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+          "framework/cli.py": "2d88c41229da6eeafe2edaa465f61246001fa37803d51bcd1d92a3f02d9f63dd",
+          "framework/command_inputs.py": "e739c36eff434bdf38dc2604b6d10a43f66336d17eae491334cdde1033a94823",
+          "framework/config.py": "ea7c01f6a2f822024199fcc22cc3e371e57594a969666daa08c87dcc59b41044",
+          "framework/consumer_snapshot.py": "4ce0b0316c4d43784595935e6ac1074ff4d555a76ae532b37909f729e9422ea5",
+          "framework/decision.py": "d6663f573a03685941c06a75cae7685fb68195cbf8f5a733a759360fe601892b",
+          "framework/executable_package.py": "a2d9d135dfa0c0884f21b58a52fee11158f604e52e35c000009fb66ce7c85f03",
+          "framework/lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
+          "framework/model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
+          "framework/monitor_registry.py": "3d8bd04a68fb02c819e82e7354eca5a6d71237aa31bd5353eea1f6fb93a87724",
+          "framework/project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
+          "framework/project_state.py": "4de987e3939ef701de22c51cd1fb36c4a4b4161777daf6ebdbcd2d862d82cf03",
+          "framework/provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
+          "framework/recovery.py": "46e3426ac28988905a2ecebe728cb4a6515803c07fc56feb0dd08b4beebb5563",
+          "framework/services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+          "framework/stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
+          "framework/stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
+          "framework/subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+          "framework/updates.py": "e92b282d0fb5691a043cd8131c2d0ab620a3e80f8b5200e58022c339da75d711",
+          "framework/worker_observation.py": "62b2e7782f6318451f74356ee1ee513b190836e3c17581180b12d463103e57d4",
+          "framework/_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+          "framework/_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+          "framework/_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+          "framework/diagnosis/__init__.py": "f004baafbf88dcc623255d3adea5318dd1d5d65a9ad526d86fd0e2225586c4e4",
+          "framework/gates/__init__.py": "c22dfe47eff927815d1a3e201070040a74b0f69f866b472a546ff1db5052a93e",
+          "framework/inference/gguf.py": "4cc04cd656bde30ba8679b33a41739c86e89a70e1c7046874a40fbc0864d1267",
+          "framework/inference/llama_cpp.py": "03fac820b5665dcf12c4e2749a0fe929b04f292f1bae86a3a7a97e6398fc7a30",
+          "framework/inference/__init__.py": "778af5f44ec913e706cc3297e63dbaf27428f7f3ebc5fa6c84ab7fb8416eccc6",
+          "framework/numerical_programs/_compiler.py": "53d2b1e6a76a6dd93571408e74d0da2d8b50c34e3e82a4454f2722a9e503576b",
+          "framework/numerical_programs/_json.py": "efb83e3de30eb390cb13a4ff5b99db8e66383a46843c765615e5abe639cb1123",
+          "framework/numerical_programs/_language.py": "7a7f773d34d837368136b911e7fa0a43970423ee7f1b5d01e43896b50a649373",
+          "framework/numerical_programs/__init__.py": "eb59e849b6458789d07b5c0e46abaa317efc465b569a426c02205d6aa427748b",
+          "framework/quarto_bridge/_delivery.py": "548024950a54b038bc34d431090c78a0518ac787eaec053c32ec0b5def2b9568",
+          "framework/quarto_bridge/_figure_job.py": "e2ed211aef594b2d2e3c9ee77527f8fa059507de8d50ba050314cb3b6030c951",
+          "framework/quarto_bridge/__init__.py": "09c1830a16d651b14f6baf14a73143d8c0403b9d614c1540a46019eac9832af2",
+          "framework/reproduction/_numeric.py": "5424d8d0c4fbafa4fc2472d0dc347ec541ffed34a6f3aaf3612e3b08f7e03a18",
+          "framework/reproduction/__init__.py": "3b722d0beab94990afec2de6f04408f3e520695e7f780d63c697592eca235071",
+          "framework/surrogate/demo.py": "8e3104db0efd6fe84feb656711cbb1f22eb0ba53c7b59bddd831fae7886132b3",
+          "framework/surrogate/__init__.py": "1fbb528b20f80f3bf28893aa1df1cdfb041217ce4122ffe74e3d1c98556e29ad",
+          "framework/tracking/_worker.py": "bce9fa56d8f05ecab350e3689bb35c19773ad9aa283c42b6fc5ad5c6190a9b54",
+          "framework/tracking/__init__.py": "e648cdf8e511a8c4725f6d732212d2660f49a4682bfd840aea08451b756bb942",
+          "framework/validity/lean_audit.py": "9d396ec4ff6a8472d7348a3893b006d1e64794355e1eada8e9f65ae9eb32a1eb",
+          "framework/validity/__init__.py": "7711d70ae02852139b598e17a4bdf3eab2cf2762f440638ed6eb2139d7460eb7",
+          "framework/verifiers/citations.py": "dafb09dc5233fb71408a8d62e7bc5365e41afa389e4710446719adbf86a54380",
+          "framework/verifiers/extract_s4.py": "df0ffaa4359127c20e6354529eb850ad6e5d2cbd3cd0be708b5f13107b800a8a",
+          "framework/verifiers/numerics.py": "a45240cb251abca05780e47b029aa769eddccf12053e83d834c2446befaa1243",
+          "framework/verifiers/pointers.py": "d28fe077bbd34642eea88d8cf7f977deb376c13ad593ed0583d0c282875b8001",
+          "framework/verifiers/stats.py": "23e42eb09698aee95425531f97443f7e9531048acf6ce8a8f71c6b032976bfd8",
+          "framework/verifiers/support.py": "8416c27e1c67c2da4983bd5043d40a7b00759b70c2032e31043589e42ee72aa8",
+          "framework/verifiers/__init__.py": "8e8086c9ca734be2b002593c7b751a909e86d2edf4fef209b2f10fe9865dc78c"
+        },
+        "packages": [
+          [
+            "contourpy",
+            "1.4.0",
+            "40450acd747b288a5db999c435e1e921ffee0a38c7884a80cd46934c8004568f",
+            "9a919bf9742fa8acb943eef720e11c265cfbe34fff179740fee70c05c108433b"
+          ],
+          [
+            "cycler",
+            "0.12.1",
+            "23289e19b76f1e01394227696e6af2b6cd1ce79e89731209bf9195148b18ed36",
+            "cbcbee5f18d75bd4935199b135aa33c3ed62df14991110a35c428883798d7979"
+          ],
+          [
+            "eidos",
+            "0.5.0",
+            "299347a4fcb52fd53814decb8164fe1fa07232eb4510499f54ca3e5e8822a84d",
+            "dc74c2fa81e626fd29aebc7a65ecc1762bc27d5716cbe12cdcef9d0e0b124e7c"
+          ],
+          [
+            "fonttools",
+            "4.67.0",
+            "33dec14bec601b457a07a6550086cb6725b5aaedc3a881f9fa7a84d3841ddcfe",
+            "0f9e7837e2662f04851f485d72e7dd40d925c9ab47d7013e0cb834a1318e0c68"
+          ],
+          [
+            "kiwisolver",
+            "1.5.1",
+            "f07b7b6c0c9c2a624c8a31f931e16712f2cf3490e7dfd51643d68e9d42d4b2c9",
+            "3116e4ed5a372aa5c2f7cc59b78006c82d14bd568d5e99d84327e524a87157c8"
+          ],
+          [
+            "matplotlib",
+            "3.11.2",
+            "e5f532226d1025af2dd15ff951df27391f66d46403b8244ea61e6b8eb3e4d806",
+            "e7fffced6eaa133e17784648e752b6eba0b8c7c9cfa7c2c0ac377665d7882721"
+          ],
+          [
+            "numpy",
+            "2.5.4",
+            "e2b909d6a37d76c2bc130f528d7fed0c517322bce16dc7846b6a6df30e200403",
+            "0ede83e62b1f89781e526656802e685ac96af60138590cc70b4fdf5efa4e34c9"
+          ],
+          [
+            "packaging",
+            "26.3",
+            "70fdb89fc4d4a9a043bf7372b8972bcc883fddff34ab55e9cf80d73875384763",
+            "1b8655965b0d83e9a067fd7f84b977bd1e117e0fb9f2874b2572781bdc9e2147"
+          ],
+          [
+            "pillow",
+            "13.0.0",
+            "dba7fdfe24e302f46bae562f55d66cc367c0618abae9894a1ebec93dc8f0e511",
+            "27b08104088adf8fc31197a946ab4175580041ebd9c33e7fa64dde5e57ed9b4b"
+          ],
+          [
+            "pip",
+            "26.3",
+            "ad63a8564cd158c8de9e6a912e92776b4abc56cfa2d8286ef4c35bfb9cb9e439",
+            "9f10e5a2a239280b8ed2d761dd38f4d2eab3924d7d213b6d62871c71cf8fdcd3"
+          ],
+          [
+            "pyparsing",
+            "3.3.3",
+            "f2ca34052d720622d300023472ef8ae94fe5b57d69acbb28a8667f6dd0e13497",
+            "dbc82867d6a4a3b935f9a9f3f2c876e3056dfffb104e1c8b3a3117d90aa21ad3"
+          ],
+          [
+            "python-dateutil",
+            "2.9.0.post0",
+            "a9d436da322be808332f98d88325998e87cb693a678a9969feb4cfad729a6e93",
+            "e15e868a50b9c4e71df17b31369843617780146ac5adb1bbfdcced0ebe501824"
+          ],
+          [
+            "pyyaml",
+            "6.0.3",
+            "03c3b415ed38d09faedc49360e930769b40c58f68585e6de00e2e4916a858d34",
+            "6fef717920e6590ce79f8f922755690f9d1f3199508e9d79baeb382ea4813c9c"
+          ],
+          [
+            "six",
+            "1.17.0",
+            "562042078c2752549f6d8a7c86dbc5dd708088a7be6d80672ec7b07100b72468",
+            "d16e50f347969b1e1919fb0c88bac4b9c644f5305bcfcfb00f72b646dbd4065d"
+          ]
+        ]
+      }
+    }
+  },
+  "cases": {
+    "old": {
+      "inherited": {
+        "exit": 124,
+        "stdout": "",
+        "stderr": "",
+        "fake_input_sha256": {
+          "list": "04f0f4d4316dcd7907c52280685d73c604acbb46978f1216d4d80602e4571732",
+          "ollama.exe": "fd5c46d73d29ba21b04c844bbaf9096066136526911230645a2a040d23fb612b",
+          "python312.dll": "21700f0bad5769a1b61ea408dc0a140ffd0a356a774c6eb0cc70e574b929d2e2",
+          "python312._pth": "c68c08090b2d169f8daf647ac267666aafe54093bdc2b90e470ecb1919d22ea8"
+        }
+      },
+      "failure": {
+        "exit": 0,
+        "stdout": "{\"available\": false, \"descendant_running_after_probe\": false}\n",
+        "stderr": "",
+        "fake_input_sha256": {
+          "list": "3be7cf9cc301bed136d0e368c14539eb77d608b0f77a4c6bf8e6ee2eb650c37e",
+          "ollama.exe": "fd5c46d73d29ba21b04c844bbaf9096066136526911230645a2a040d23fb612b",
+          "python312.dll": "21700f0bad5769a1b61ea408dc0a140ffd0a356a774c6eb0cc70e574b929d2e2",
+          "python312._pth": "c68c08090b2d169f8daf647ac267666aafe54093bdc2b90e470ecb1919d22ea8"
+        }
+      },
+      "missing": {
+        "exit": 0,
+        "stdout": "{\"available\": false, \"descendant_running_after_probe\": false}\n",
+        "stderr": "",
+        "fake_input_sha256": {}
+      }
+    },
+    "new": {
+      "inherited": {
+        "exit": 0,
+        "stdout": "{\"available\": true, \"descendant_running_after_probe\": false}\n",
+        "stderr": "",
+        "fake_input_sha256": {
+          "list": "04f0f4d4316dcd7907c52280685d73c604acbb46978f1216d4d80602e4571732",
+          "ollama.exe": "fd5c46d73d29ba21b04c844bbaf9096066136526911230645a2a040d23fb612b",
+          "python312.dll": "21700f0bad5769a1b61ea408dc0a140ffd0a356a774c6eb0cc70e574b929d2e2",
+          "python312._pth": "c68c08090b2d169f8daf647ac267666aafe54093bdc2b90e470ecb1919d22ea8"
+        }
+      },
+      "failure": {
+        "exit": 0,
+        "stdout": "{\"available\": false, \"descendant_running_after_probe\": false}\n",
+        "stderr": "",
+        "fake_input_sha256": {
+          "list": "3be7cf9cc301bed136d0e368c14539eb77d608b0f77a4c6bf8e6ee2eb650c37e",
+          "ollama.exe": "fd5c46d73d29ba21b04c844bbaf9096066136526911230645a2a040d23fb612b",
+          "python312.dll": "21700f0bad5769a1b61ea408dc0a140ffd0a356a774c6eb0cc70e574b929d2e2",
+          "python312._pth": "c68c08090b2d169f8daf647ac267666aafe54093bdc2b90e470ecb1919d22ea8"
+        }
+      },
+      "missing": {
+        "exit": 0,
+        "stdout": "{\"available\": false, \"descendant_running_after_probe\": false}\n",
+        "stderr": "",
+        "fake_input_sha256": {}
+      }
+    }
+  },
+  "controller": {
+    "before": {
+      "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+      "executable": "C:\\Users\\Administrator\\.cache\\eidos-monitor-dev-venv\\Scripts\\python.exe",
+      "prefix": "C:\\Users\\Administrator\\.cache\\eidos-monitor-dev-venv",
+      "sdk_origin": "C:\\Users\\Administrator\\.cache\\eidos-worktrees\\shared-monitor\\framework",
+      "sdk": {
+        "artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+        "cli.py": "2d88c41229da6eeafe2edaa465f61246001fa37803d51bcd1d92a3f02d9f63dd",
+        "command_inputs.py": "e739c36eff434bdf38dc2604b6d10a43f66336d17eae491334cdde1033a94823",
+        "config.py": "ea7c01f6a2f822024199fcc22cc3e371e57594a969666daa08c87dcc59b41044",
+        "consumer_snapshot.py": "4ce0b0316c4d43784595935e6ac1074ff4d555a76ae532b37909f729e9422ea5",
+        "decision.py": "d6663f573a03685941c06a75cae7685fb68195cbf8f5a733a759360fe601892b",
+        "executable_package.py": "a2d9d135dfa0c0884f21b58a52fee11158f604e52e35c000009fb66ce7c85f03",
+        "lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
+        "model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
+        "monitor_registry.py": "3d8bd04a68fb02c819e82e7354eca5a6d71237aa31bd5353eea1f6fb93a87724",
+        "project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
+        "project_state.py": "4de987e3939ef701de22c51cd1fb36c4a4b4161777daf6ebdbcd2d862d82cf03",
+        "provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
+        "recovery.py": "46e3426ac28988905a2ecebe728cb4a6515803c07fc56feb0dd08b4beebb5563",
+        "services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+        "stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
+        "stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
+        "subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+        "updates.py": "e92b282d0fb5691a043cd8131c2d0ab620a3e80f8b5200e58022c339da75d711",
+        "worker_observation.py": "62b2e7782f6318451f74356ee1ee513b190836e3c17581180b12d463103e57d4",
+        "_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+        "_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+        "_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+        "diagnosis/__init__.py": "f004baafbf88dcc623255d3adea5318dd1d5d65a9ad526d86fd0e2225586c4e4",
+        "gates/__init__.py": "c22dfe47eff927815d1a3e201070040a74b0f69f866b472a546ff1db5052a93e",
+        "inference/gguf.py": "4cc04cd656bde30ba8679b33a41739c86e89a70e1c7046874a40fbc0864d1267",
+        "inference/llama_cpp.py": "03fac820b5665dcf12c4e2749a0fe929b04f292f1bae86a3a7a97e6398fc7a30",
+        "inference/__init__.py": "778af5f44ec913e706cc3297e63dbaf27428f7f3ebc5fa6c84ab7fb8416eccc6",
+        "numerical_programs/_compiler.py": "53d2b1e6a76a6dd93571408e74d0da2d8b50c34e3e82a4454f2722a9e503576b",
+        "numerical_programs/_json.py": "efb83e3de30eb390cb13a4ff5b99db8e66383a46843c765615e5abe639cb1123",
+        "numerical_programs/_language.py": "7a7f773d34d837368136b911e7fa0a43970423ee7f1b5d01e43896b50a649373",
+        "numerical_programs/__init__.py": "eb59e849b6458789d07b5c0e46abaa317efc465b569a426c02205d6aa427748b",
+        "quarto_bridge/_delivery.py": "548024950a54b038bc34d431090c78a0518ac787eaec053c32ec0b5def2b9568",
+        "quarto_bridge/_figure_job.py": "e2ed211aef594b2d2e3c9ee77527f8fa059507de8d50ba050314cb3b6030c951",
+        "quarto_bridge/__init__.py": "09c1830a16d651b14f6baf14a73143d8c0403b9d614c1540a46019eac9832af2",
+        "reproduction/_numeric.py": "5424d8d0c4fbafa4fc2472d0dc347ec541ffed34a6f3aaf3612e3b08f7e03a18",
+        "reproduction/__init__.py": "3b722d0beab94990afec2de6f04408f3e520695e7f780d63c697592eca235071",
+        "surrogate/demo.py": "8e3104db0efd6fe84feb656711cbb1f22eb0ba53c7b59bddd831fae7886132b3",
+        "surrogate/__init__.py": "1fbb528b20f80f3bf28893aa1df1cdfb041217ce4122ffe74e3d1c98556e29ad",
+        "tracking/_worker.py": "bce9fa56d8f05ecab350e3689bb35c19773ad9aa283c42b6fc5ad5c6190a9b54",
+        "tracking/__init__.py": "e648cdf8e511a8c4725f6d732212d2660f49a4682bfd840aea08451b756bb942",
+        "validity/lean_audit.py": "9d396ec4ff6a8472d7348a3893b006d1e64794355e1eada8e9f65ae9eb32a1eb",
+        "validity/__init__.py": "7711d70ae02852139b598e17a4bdf3eab2cf2762f440638ed6eb2139d7460eb7",
+        "verifiers/citations.py": "dafb09dc5233fb71408a8d62e7bc5365e41afa389e4710446719adbf86a54380",
+        "verifiers/extract_s4.py": "df0ffaa4359127c20e6354529eb850ad6e5d2cbd3cd0be708b5f13107b800a8a",
+        "verifiers/numerics.py": "a45240cb251abca05780e47b029aa769eddccf12053e83d834c2446befaa1243",
+        "verifiers/pointers.py": "d28fe077bbd34642eea88d8cf7f977deb376c13ad593ed0583d0c282875b8001",
+        "verifiers/stats.py": "23e42eb09698aee95425531f97443f7e9531048acf6ce8a8f71c6b032976bfd8",
+        "verifiers/support.py": "8416c27e1c67c2da4983bd5043d40a7b00759b70c2032e31043589e42ee72aa8",
+        "verifiers/__init__.py": "8e8086c9ca734be2b002593c7b751a909e86d2edf4fef209b2f10fe9865dc78c"
+      },
+      "packages": [
+        [
+          "academic-research-kernel",
+          "2.2.0"
+        ],
+        [
+          "aiofile",
+          "3.12.3"
+        ],
+        [
+          "aiohappyeyeballs",
+          "2.7.1"
+        ],
+        [
+          "aiohttp",
+          "3.14.5"
+        ],
+        [
+          "aiohttp-retry",
+          "2.9.1"
+        ],
+        [
+          "aiosignal",
+          "1.4.0"
+        ],
+        [
+          "alembic",
+          "1.20.1"
+        ],
+        [
+          "amqp",
+          "5.4.1"
+        ],
+        [
+          "annotated-doc",
+          "0.0.5"
+        ],
+        [
+          "annotated-types",
+          "0.8.0"
+        ],
+        [
+          "antlr4-python3-runtime",
+          "4.9.3"
+        ],
+        [
+          "anyio",
+          "4.15.1"
+        ],
+        [
+          "appdirs",
+          "1.4.4"
+        ],
+        [
+          "asyncssh",
+          "2.24.1"
+        ],
+        [
+          "atpublic",
+          "9.0.0"
+        ],
+        [
+          "attrs",
+          "26.1.0"
+        ],
+        [
+          "authlib",
+          "1.9.1"
+        ],
+        [
+          "beartype",
+          "0.23.1"
+        ],
+        [
+          "billiard",
+          "4.3.1"
+        ],
+        [
+          "blinker",
+          "1.9.0"
+        ],
+        [
+          "cachetools",
+          "7.2.5"
+        ],
+        [
+          "caio",
+          "0.12.10"
+        ],
+        [
+          "celery",
+          "5.6.3"
+        ],
+        [
+          "certifi",
+          "2026.10.23"
+        ],
+        [
+          "cffi",
+          "2.1.1"
+        ],
+        [
+          "charset-normalizer",
+          "3.5.2"
+        ],
+        [
+          "click",
+          "8.3.3"
+        ],
+        [
+          "click-didyoumean",
+          "0.3.1"
+        ],
+        [
+          "click-plugins",
+          "1.1.1.2"
+        ],
+        [
+          "click-repl",
+          "0.4.1"
+        ],
+        [
+          "cloudpickle",
+          "3.1.2"
+        ],
+        [
+          "colorama",
+          "0.4.6"
+        ],
+        [
+          "configobj",
+          "5.0.9"
+        ],
+        [
+          "contourpy",
+          "1.4.0"
+        ],
+        [
+          "coverage",
+          "7.17.0"
+        ],
+        [
+          "cryptography",
+          "50.0.2"
+        ],
+        [
+          "cycler",
+          "0.12.1"
+        ],
+        [
+          "cyclopts",
+          "5.3.2"
+        ],
+        [
+          "databricks-sdk",
+          "0.157.0"
+        ],
+        [
+          "dictdiffer",
+          "0.10.0"
+        ],
+        [
+          "diskcache",
+          "5.6.3"
+        ],
+        [
+          "distro",
+          "1.9.0"
+        ],
+        [
+          "dnspython",
+          "2.9.1"
+        ],
+        [
+          "docker",
+          "7.2.0"
+        ],
+        [
+          "docstring_parser",
+          "0.18.0"
+        ],
+        [
+          "dpath",
+          "2.2.0"
+        ],
+        [
+          "dulwich",
+          "1.2.19"
+        ],
+        [
+          "dvc",
+          "3.67.1"
+        ],
+        [
+          "dvc-data",
+          "3.18.3"
+        ],
+        [
+          "dvc-http",
+          "2.32.0"
+        ],
+        [
+          "dvc-objects",
+          "5.2.0"
+        ],
+        [
+          "dvc-render",
+          "1.0.2"
+        ],
+        [
+          "dvc-studio-client",
+          "0.23.0"
+        ],
+        [
+          "dvc-task",
+          "0.40.2"
+        ],
+        [
+          "eidos",
+          "0.5.0"
+        ],
+        [
+          "email-validator",
+          "2.3.0"
+        ],
+        [
+          "entrypoints",
+          "0.4.2"
+        ],
+        [
+          "exceptiongroup",
+          "1.3.1"
+        ],
+        [
+          "fastapi",
+          "0.162.0"
+        ],
+        [
+          "fastmcp",
+          "4.0.3"
+        ],
+        [
+          "fastmcp-slim",
+          "4.0.3"
+        ],
+        [
+          "filelock",
+          "4.2.4"
+        ],
+        [
+          "flask",
+          "3.1.3"
+        ],
+        [
+          "flask-cors",
+          "6.0.5"
+        ],
+        [
+          "flatten-dict",
+          "0.5.0"
+        ],
+        [
+          "flufl.lock",
+          "9.2.0"
+        ],
+        [
+          "fonttools",
+          "4.67.0"
+        ],
+        [
+          "formulaic",
+          "1.2.2"
+        ],
+        [
+          "frozenlist",
+          "1.8.0"
+        ],
+        [
+          "fsspec",
+          "2026.6.0"
+        ],
+        [
+          "funcy",
+          "2.1"
+        ],
+        [
+          "gitdb",
+          "4.0.12"
+        ],
+        [
+          "gitpython",
+          "3.2.1"
+        ],
+        [
+          "google-auth",
+          "2.62.0"
+        ],
+        [
+          "grandalf",
+          "0.8"
+        ],
+        [
+          "graphene",
+          "3.4.3"
+        ],
+        [
+          "graphql-core",
+          "3.2.13"
+        ],
+        [
+          "graphql-relay",
+          "3.2.0"
+        ],
+        [
+          "greenlet",
+          "3.5.6"
+        ],
+        [
+          "griffelib",
+          "2.4.1"
+        ],
+        [
+          "gto",
+          "1.10.1"
+        ],
+        [
+          "h11",
+          "0.16.0"
+        ],
+        [
+          "httpcore2",
+          "2.16.0"
+        ],
+        [
+          "httpx2",
+          "2.16.0"
+        ],
+        [
+          "huey",
+          "3.5.3"
+        ],
+        [
+          "hydra-core",
+          "1.3.8"
+        ],
+        [
+          "idna",
+          "3.20"
+        ],
+        [
+          "importlib_metadata",
+          "9.1.0"
+        ],
+        [
+          "iniconfig",
+          "2.3.1"
+        ],
+        [
+          "interface_meta",
+          "2.0.1"
+        ],
+        [
+          "iterative-telemetry",
+          "0.0.10"
+        ],
+        [
+          "itsdangerous",
+          "2.2.0"
+        ],
+        [
+          "jaraco.classes",
+          "3.4.0"
+        ],
+        [
+          "jaraco.context",
+          "6.1.2"
+        ],
+        [
+          "jaraco.functools",
+          "4.6.0"
+        ],
+        [
+          "jinja2",
+          "3.1.6"
+        ],
+        [
+          "joblib",
+          "1.6.0"
+        ],
+        [
+          "joserfc",
+          "1.7.7"
+        ],
+        [
+          "jsonref",
+          "1.1.0"
+        ],
+        [
+          "jsonschema",
+          "4.26.0"
+        ],
+        [
+          "jsonschema-path",
+          "0.5.0"
+        ],
+        [
+          "jsonschema-specifications",
+          "2025.9.1"
+        ],
+        [
+          "keyring",
+          "25.7.0"
+        ],
+        [
+          "kiwisolver",
+          "1.5.1"
+        ],
+        [
+          "kombu",
+          "5.6.2"
+        ],
+        [
+          "mako",
+          "1.4.3"
+        ],
+        [
+          "markdown-it-py",
+          "4.2.0"
+        ],
+        [
+          "markupsafe",
+          "3.0.4"
+        ],
+        [
+          "matplotlib",
+          "3.11.2"
+        ],
+        [
+          "mcp",
+          "2.3.0"
+        ],
+        [
+          "mcp-types",
+          "2.3.0"
+        ],
+        [
+          "mdurl",
+          "0.1.2"
+        ],
+        [
+          "mlflow",
+          "3.17.2"
+        ],
+        [
+          "mlflow-skinny",
+          "3.17.2"
+        ],
+        [
+          "mlflow-tracing",
+          "3.17.2"
+        ],
+        [
+          "more-itertools",
+          "11.2.1"
+        ],
+        [
+          "multidict",
+          "7.2.1"
+        ],
+        [
+          "narwhals",
+          "2.27.1"
+        ],
+        [
+          "networkx",
+          "3.7"
+        ],
+        [
+          "numpy",
+          "2.5.4"
+        ],
+        [
+          "omegaconf",
+          "2.3.1"
+        ],
+        [
+          "openapi-pydantic",
+          "0.6.0"
+        ],
+        [
+          "opentelemetry-api",
+          "1.45.1"
+        ],
+        [
+          "opentelemetry-proto",
+          "1.45.1"
+        ],
+        [
+          "opentelemetry-sdk",
+          "1.45.1"
+        ],
+        [
+          "opentelemetry-semantic-conventions",
+          "0.66b1"
+        ],
+        [
+          "orjson",
+          "3.13.0"
+        ],
+        [
+          "packaging",
+          "26.3"
+        ],
+        [
+          "pandas",
+          "3.1.0"
+        ],
+        [
+          "pathable",
+          "0.6.0"
+        ],
+        [
+          "pathspec",
+          "1.1.1"
+        ],
+        [
+          "patsy",
+          "1.0.3"
+        ],
+        [
+          "pillow",
+          "13.0.0"
+        ],
+        [
+          "platformdirs",
+          "4.13.5"
+        ],
+        [
+          "playwright",
+          "1.64.1"
+        ],
+        [
+          "pluggy",
+          "1.7.0"
+        ],
+        [
+          "prettytable",
+          "3.18.0"
+        ],
+        [
+          "prompt_toolkit",
+          "3.0.53"
+        ],
+        [
+          "propcache",
+          "0.5.4"
+        ],
+        [
+          "protobuf",
+          "7.36.2"
+        ],
+        [
+          "psutil",
+          "7.2.2"
+        ],
+        [
+          "py-key-value-aio",
+          "0.4.6"
+        ],
+        [
+          "pyarrow",
+          "25.0.1"
+        ],
+        [
+          "pyasn1",
+          "0.6.4"
+        ],
+        [
+          "pyasn1_modules",
+          "0.4.2"
+        ],
+        [
+          "pycparser",
+          "3.12"
+        ],
+        [
+          "pydantic",
+          "2.14.1"
+        ],
+        [
+          "pydantic-settings",
+          "2.16.1"
+        ],
+        [
+          "pydantic_core",
+          "2.50.1"
+        ],
+        [
+          "pydot",
+          "4.0.1"
+        ],
+        [
+          "pyee",
+          "14.0.0"
+        ],
+        [
+          "pygit2",
+          "1.20.1"
+        ],
+        [
+          "pygments",
+          "2.21.0"
+        ],
+        [
+          "pygtrie",
+          "2.6.2"
+        ],
+        [
+          "pyjwt",
+          "2.15.1"
+        ],
+        [
+          "pyparsing",
+          "3.3.3"
+        ],
+        [
+          "pyperclip",
+          "1.11.0"
+        ],
+        [
+          "pytest",
+          "9.1.1"
+        ],
+        [
+          "python-dateutil",
+          "2.9.0.post0"
+        ],
+        [
+          "python-dotenv",
+          "1.2.4"
+        ],
+        [
+          "python-multipart",
+          "0.0.32"
+        ],
+        [
+          "pywin32",
+          "312"
+        ],
+        [
+          "pywin32-ctypes",
+          "0.2.3"
+        ],
+        [
+          "pyyaml",
+          "6.0.3"
+        ],
+        [
+          "referencing",
+          "0.37.0"
+        ],
+        [
+          "requests",
+          "2.34.2"
+        ],
+        [
+          "rich",
+          "14.3.4"
+        ],
+        [
+          "rich-rst",
+          "2.2.0"
+        ],
+        [
+          "rpds-py",
+          "2026.9.1"
+        ],
+        [
+          "ruamel.yaml",
+          "0.19.1"
+        ],
+        [
+          "scikit-learn",
+          "1.9.1"
+        ],
+        [
+          "scipy",
+          "1.18.1"
+        ],
+        [
+          "scmrepo",
+          "3.6.2"
+        ],
+        [
+          "semver",
+          "3.1.0"
+        ],
+        [
+          "setuptools",
+          "84.2.1"
+        ],
+        [
+          "shortuuid",
+          "1.0.13"
+        ],
+        [
+          "shtab",
+          "1.13.0"
+        ],
+        [
+          "six",
+          "1.17.0"
+        ],
+        [
+          "skops",
+          "0.16.0"
+        ],
+        [
+          "smmap",
+          "5.0.3"
+        ],
+        [
+          "sqlalchemy",
+          "2.1.6"
+        ],
+        [
+          "sqlparse",
+          "0.6.0"
+        ],
+        [
+          "sqltrie",
+          "0.11.3"
+        ],
+        [
+          "sse-starlette",
+          "3.6.0"
+        ],
+        [
+          "starlette",
+          "1.10.0"
+        ],
+        [
+          "statsmodels",
+          "0.15.0"
+        ],
+        [
+          "tabulate",
+          "0.9.0"
+        ],
+        [
+          "threadpoolctl",
+          "3.7.0"
+        ],
+        [
+          "tomlkit",
+          "0.15.2"
+        ],
+        [
+          "tqdm",
+          "4.70.1"
+        ],
+        [
+          "truststore",
+          "0.10.5"
+        ],
+        [
+          "typing-inspection",
+          "0.4.4"
+        ],
+        [
+          "typing_extensions",
+          "4.16.0"
+        ],
+        [
+          "tzdata",
+          "2026.5"
+        ],
+        [
+          "tzlocal",
+          "5.4.5"
+        ],
+        [
+          "uncalled-for",
+          "0.4.1"
+        ],
+        [
+          "urllib3",
+          "2.8.0"
+        ],
+        [
+          "uvicorn",
+          "0.54.0"
+        ],
+        [
+          "vine",
+          "5.1.0"
+        ],
+        [
+          "voluptuous",
+          "0.16.0"
+        ],
+        [
+          "waitress",
+          "3.0.2"
+        ],
+        [
+          "watchfiles",
+          "1.3.0"
+        ],
+        [
+          "wcwidth",
+          "0.9.4"
+        ],
+        [
+          "websockets",
+          "17.3"
+        ],
+        [
+          "werkzeug",
+          "3.1.9"
+        ],
+        [
+          "wrapt",
+          "2.5.1"
+        ],
+        [
+          "yarl",
+          "1.25.1"
+        ],
+        [
+          "zc.lockfile",
+          "4.0"
+        ],
+        [
+          "zipp",
+          "4.1.2"
+        ]
+      ]
+    },
+    "after": {
+      "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+      "executable": "C:\\Users\\Administrator\\.cache\\eidos-monitor-dev-venv\\Scripts\\python.exe",
+      "prefix": "C:\\Users\\Administrator\\.cache\\eidos-monitor-dev-venv",
+      "sdk_origin": "C:\\Users\\Administrator\\.cache\\eidos-worktrees\\shared-monitor\\framework",
+      "sdk": {
+        "artifacts.py": "515f8fd0f28a4e45122dd676c2762e9b6af1b731e2517d69299961e85d8fbca8",
+        "cli.py": "2d88c41229da6eeafe2edaa465f61246001fa37803d51bcd1d92a3f02d9f63dd",
+        "command_inputs.py": "e739c36eff434bdf38dc2604b6d10a43f66336d17eae491334cdde1033a94823",
+        "config.py": "ea7c01f6a2f822024199fcc22cc3e371e57594a969666daa08c87dcc59b41044",
+        "consumer_snapshot.py": "4ce0b0316c4d43784595935e6ac1074ff4d555a76ae532b37909f729e9422ea5",
+        "decision.py": "d6663f573a03685941c06a75cae7685fb68195cbf8f5a733a759360fe601892b",
+        "executable_package.py": "a2d9d135dfa0c0884f21b58a52fee11158f604e52e35c000009fb66ce7c85f03",
+        "lock_compatibility.py": "d44257e1e7c687d5ca812353a415a38a6087003c9c62a59afee7b3bac58e5d9c",
+        "model_ab.py": "3551c5071d6102f449ed1b03f5de1eaf5c9f3035eb738021f93401cce9e9923e",
+        "monitor_registry.py": "3d8bd04a68fb02c819e82e7354eca5a6d71237aa31bd5353eea1f6fb93a87724",
+        "project.py": "3ef26aefb59457661b72a17dbef50a475262d69ff4116ef09fd968cde3d05f22",
+        "project_state.py": "4de987e3939ef701de22c51cd1fb36c4a4b4161777daf6ebdbcd2d862d82cf03",
+        "provenance.py": "56388e8015ba70be04aa084eadc2ee26f07fb050227cf4a938582a1fafe360e7",
+        "recovery.py": "46e3426ac28988905a2ecebe728cb4a6515803c07fc56feb0dd08b4beebb5563",
+        "services.py": "f5deea2351928b0979ded5243315afd7d4b9ccef27a4511f4959bed1b3b38512",
+        "stable_numerics.py": "8ff4021facf5e60907c77e7c8fae5fe937d14146c995e22d6ddd68cdaa3652de",
+        "stable_numerics_torch.py": "00a52925911c28d8a7965fc02c363ef9d6bdf415f0d9a6a3420166346a567c4a",
+        "subprocesses.py": "260afb064284db7ca2f93c1884a104de1c14bee0c4c60fc7162d21c879e014d6",
+        "updates.py": "e92b282d0fb5691a043cd8131c2d0ab620a3e80f8b5200e58022c339da75d711",
+        "worker_observation.py": "62b2e7782f6318451f74356ee1ee513b190836e3c17581180b12d463103e57d4",
+        "_posix_job.py": "e995fbb9798076253fb873199da34dd1f7c030ecf3b9061e2477349a5979227b",
+        "_process_tree.py": "6318685f417e3d653ac12e7c8e753b88712aa503d09f5b7e81ecc2894c84794a",
+        "_windows_job.py": "457e40bbeea2e05d2f575cf625de4c5af29e20f4aaaa528fc029b44bfc49d2b5",
+        "diagnosis/__init__.py": "f004baafbf88dcc623255d3adea5318dd1d5d65a9ad526d86fd0e2225586c4e4",
+        "gates/__init__.py": "c22dfe47eff927815d1a3e201070040a74b0f69f866b472a546ff1db5052a93e",
+        "inference/gguf.py": "4cc04cd656bde30ba8679b33a41739c86e89a70e1c7046874a40fbc0864d1267",
+        "inference/llama_cpp.py": "03fac820b5665dcf12c4e2749a0fe929b04f292f1bae86a3a7a97e6398fc7a30",
+        "inference/__init__.py": "778af5f44ec913e706cc3297e63dbaf27428f7f3ebc5fa6c84ab7fb8416eccc6",
+        "numerical_programs/_compiler.py": "53d2b1e6a76a6dd93571408e74d0da2d8b50c34e3e82a4454f2722a9e503576b",
+        "numerical_programs/_json.py": "efb83e3de30eb390cb13a4ff5b99db8e66383a46843c765615e5abe639cb1123",
+        "numerical_programs/_language.py": "7a7f773d34d837368136b911e7fa0a43970423ee7f1b5d01e43896b50a649373",
+        "numerical_programs/__init__.py": "eb59e849b6458789d07b5c0e46abaa317efc465b569a426c02205d6aa427748b",
+        "quarto_bridge/_delivery.py": "548024950a54b038bc34d431090c78a0518ac787eaec053c32ec0b5def2b9568",
+        "quarto_bridge/_figure_job.py": "e2ed211aef594b2d2e3c9ee77527f8fa059507de8d50ba050314cb3b6030c951",
+        "quarto_bridge/__init__.py": "09c1830a16d651b14f6baf14a73143d8c0403b9d614c1540a46019eac9832af2",
+        "reproduction/_numeric.py": "5424d8d0c4fbafa4fc2472d0dc347ec541ffed34a6f3aaf3612e3b08f7e03a18",
+        "reproduction/__init__.py": "3b722d0beab94990afec2de6f04408f3e520695e7f780d63c697592eca235071",
+        "surrogate/demo.py": "8e3104db0efd6fe84feb656711cbb1f22eb0ba53c7b59bddd831fae7886132b3",
+        "surrogate/__init__.py": "1fbb528b20f80f3bf28893aa1df1cdfb041217ce4122ffe74e3d1c98556e29ad",
+        "tracking/_worker.py": "bce9fa56d8f05ecab350e3689bb35c19773ad9aa283c42b6fc5ad5c6190a9b54",
+        "tracking/__init__.py": "e648cdf8e511a8c4725f6d732212d2660f49a4682bfd840aea08451b756bb942",
+        "validity/lean_audit.py": "9d396ec4ff6a8472d7348a3893b006d1e64794355e1eada8e9f65ae9eb32a1eb",
+        "validity/__init__.py": "7711d70ae02852139b598e17a4bdf3eab2cf2762f440638ed6eb2139d7460eb7",
+        "verifiers/citations.py": "dafb09dc5233fb71408a8d62e7bc5365e41afa389e4710446719adbf86a54380",
+        "verifiers/extract_s4.py": "df0ffaa4359127c20e6354529eb850ad6e5d2cbd3cd0be708b5f13107b800a8a",
+        "verifiers/numerics.py": "a45240cb251abca05780e47b029aa769eddccf12053e83d834c2446befaa1243",
+        "verifiers/pointers.py": "d28fe077bbd34642eea88d8cf7f977deb376c13ad593ed0583d0c282875b8001",
+        "verifiers/stats.py": "23e42eb09698aee95425531f97443f7e9531048acf6ce8a8f71c6b032976bfd8",
+        "verifiers/support.py": "8416c27e1c67c2da4983bd5043d40a7b00759b70c2032e31043589e42ee72aa8",
+        "verifiers/__init__.py": "8e8086c9ca734be2b002593c7b751a909e86d2edf4fef209b2f10fe9865dc78c"
+      },
+      "packages": [
+        [
+          "academic-research-kernel",
+          "2.2.0"
+        ],
+        [
+          "aiofile",
+          "3.12.3"
+        ],
+        [
+          "aiohappyeyeballs",
+          "2.7.1"
+        ],
+        [
+          "aiohttp",
+          "3.14.5"
+        ],
+        [
+          "aiohttp-retry",
+          "2.9.1"
+        ],
+        [
+          "aiosignal",
+          "1.4.0"
+        ],
+        [
+          "alembic",
+          "1.20.1"
+        ],
+        [
+          "amqp",
+          "5.4.1"
+        ],
+        [
+          "annotated-doc",
+          "0.0.5"
+        ],
+        [
+          "annotated-types",
+          "0.8.0"
+        ],
+        [
+          "antlr4-python3-runtime",
+          "4.9.3"
+        ],
+        [
+          "anyio",
+          "4.15.1"
+        ],
+        [
+          "appdirs",
+          "1.4.4"
+        ],
+        [
+          "asyncssh",
+          "2.24.1"
+        ],
+        [
+          "atpublic",
+          "9.0.0"
+        ],
+        [
+          "attrs",
+          "26.1.0"
+        ],
+        [
+          "authlib",
+          "1.9.1"
+        ],
+        [
+          "beartype",
+          "0.23.1"
+        ],
+        [
+          "billiard",
+          "4.3.1"
+        ],
+        [
+          "blinker",
+          "1.9.0"
+        ],
+        [
+          "cachetools",
+          "7.2.5"
+        ],
+        [
+          "caio",
+          "0.12.10"
+        ],
+        [
+          "celery",
+          "5.6.3"
+        ],
+        [
+          "certifi",
+          "2026.10.23"
+        ],
+        [
+          "cffi",
+          "2.1.1"
+        ],
+        [
+          "charset-normalizer",
+          "3.5.2"
+        ],
+        [
+          "click",
+          "8.3.3"
+        ],
+        [
+          "click-didyoumean",
+          "0.3.1"
+        ],
+        [
+          "click-plugins",
+          "1.1.1.2"
+        ],
+        [
+          "click-repl",
+          "0.4.1"
+        ],
+        [
+          "cloudpickle",
+          "3.1.2"
+        ],
+        [
+          "colorama",
+          "0.4.6"
+        ],
+        [
+          "configobj",
+          "5.0.9"
+        ],
+        [
+          "contourpy",
+          "1.4.0"
+        ],
+        [
+          "coverage",
+          "7.17.0"
+        ],
+        [
+          "cryptography",
+          "50.0.2"
+        ],
+        [
+          "cycler",
+          "0.12.1"
+        ],
+        [
+          "cyclopts",
+          "5.3.2"
+        ],
+        [
+          "databricks-sdk",
+          "0.157.0"
+        ],
+        [
+          "dictdiffer",
+          "0.10.0"
+        ],
+        [
+          "diskcache",
+          "5.6.3"
+        ],
+        [
+          "distro",
+          "1.9.0"
+        ],
+        [
+          "dnspython",
+          "2.9.1"
+        ],
+        [
+          "docker",
+          "7.2.0"
+        ],
+        [
+          "docstring_parser",
+          "0.18.0"
+        ],
+        [
+          "dpath",
+          "2.2.0"
+        ],
+        [
+          "dulwich",
+          "1.2.19"
+        ],
+        [
+          "dvc",
+          "3.67.1"
+        ],
+        [
+          "dvc-data",
+          "3.18.3"
+        ],
+        [
+          "dvc-http",
+          "2.32.0"
+        ],
+        [
+          "dvc-objects",
+          "5.2.0"
+        ],
+        [
+          "dvc-render",
+          "1.0.2"
+        ],
+        [
+          "dvc-studio-client",
+          "0.23.0"
+        ],
+        [
+          "dvc-task",
+          "0.40.2"
+        ],
+        [
+          "eidos",
+          "0.5.0"
+        ],
+        [
+          "email-validator",
+          "2.3.0"
+        ],
+        [
+          "entrypoints",
+          "0.4.2"
+        ],
+        [
+          "exceptiongroup",
+          "1.3.1"
+        ],
+        [
+          "fastapi",
+          "0.162.0"
+        ],
+        [
+          "fastmcp",
+          "4.0.3"
+        ],
+        [
+          "fastmcp-slim",
+          "4.0.3"
+        ],
+        [
+          "filelock",
+          "4.2.4"
+        ],
+        [
+          "flask",
+          "3.1.3"
+        ],
+        [
+          "flask-cors",
+          "6.0.5"
+        ],
+        [
+          "flatten-dict",
+          "0.5.0"
+        ],
+        [
+          "flufl.lock",
+          "9.2.0"
+        ],
+        [
+          "fonttools",
+          "4.67.0"
+        ],
+        [
+          "formulaic",
+          "1.2.2"
+        ],
+        [
+          "frozenlist",
+          "1.8.0"
+        ],
+        [
+          "fsspec",
+          "2026.6.0"
+        ],
+        [
+          "funcy",
+          "2.1"
+        ],
+        [
+          "gitdb",
+          "4.0.12"
+        ],
+        [
+          "gitpython",
+          "3.2.1"
+        ],
+        [
+          "google-auth",
+          "2.62.0"
+        ],
+        [
+          "grandalf",
+          "0.8"
+        ],
+        [
+          "graphene",
+          "3.4.3"
+        ],
+        [
+          "graphql-core",
+          "3.2.13"
+        ],
+        [
+          "graphql-relay",
+          "3.2.0"
+        ],
+        [
+          "greenlet",
+          "3.5.6"
+        ],
+        [
+          "griffelib",
+          "2.4.1"
+        ],
+        [
+          "gto",
+          "1.10.1"
+        ],
+        [
+          "h11",
+          "0.16.0"
+        ],
+        [
+          "httpcore2",
+          "2.16.0"
+        ],
+        [
+          "httpx2",
+          "2.16.0"
+        ],
+        [
+          "huey",
+          "3.5.3"
+        ],
+        [
+          "hydra-core",
+          "1.3.8"
+        ],
+        [
+          "idna",
+          "3.20"
+        ],
+        [
+          "importlib_metadata",
+          "9.1.0"
+        ],
+        [
+          "iniconfig",
+          "2.3.1"
+        ],
+        [
+          "interface_meta",
+          "2.0.1"
+        ],
+        [
+          "iterative-telemetry",
+          "0.0.10"
+        ],
+        [
+          "itsdangerous",
+          "2.2.0"
+        ],
+        [
+          "jaraco.classes",
+          "3.4.0"
+        ],
+        [
+          "jaraco.context",
+          "6.1.2"
+        ],
+        [
+          "jaraco.functools",
+          "4.6.0"
+        ],
+        [
+          "jinja2",
+          "3.1.6"
+        ],
+        [
+          "joblib",
+          "1.6.0"
+        ],
+        [
+          "joserfc",
+          "1.7.7"
+        ],
+        [
+          "jsonref",
+          "1.1.0"
+        ],
+        [
+          "jsonschema",
+          "4.26.0"
+        ],
+        [
+          "jsonschema-path",
+          "0.5.0"
+        ],
+        [
+          "jsonschema-specifications",
+          "2025.9.1"
+        ],
+        [
+          "keyring",
+          "25.7.0"
+        ],
+        [
+          "kiwisolver",
+          "1.5.1"
+        ],
+        [
+          "kombu",
+          "5.6.2"
+        ],
+        [
+          "mako",
+          "1.4.3"
+        ],
+        [
+          "markdown-it-py",
+          "4.2.0"
+        ],
+        [
+          "markupsafe",
+          "3.0.4"
+        ],
+        [
+          "matplotlib",
+          "3.11.2"
+        ],
+        [
+          "mcp",
+          "2.3.0"
+        ],
+        [
+          "mcp-types",
+          "2.3.0"
+        ],
+        [
+          "mdurl",
+          "0.1.2"
+        ],
+        [
+          "mlflow",
+          "3.17.2"
+        ],
+        [
+          "mlflow-skinny",
+          "3.17.2"
+        ],
+        [
+          "mlflow-tracing",
+          "3.17.2"
+        ],
+        [
+          "more-itertools",
+          "11.2.1"
+        ],
+        [
+          "multidict",
+          "7.2.1"
+        ],
+        [
+          "narwhals",
+          "2.27.1"
+        ],
+        [
+          "networkx",
+          "3.7"
+        ],
+        [
+          "numpy",
+          "2.5.4"
+        ],
+        [
+          "omegaconf",
+          "2.3.1"
+        ],
+        [
+          "openapi-pydantic",
+          "0.6.0"
+        ],
+        [
+          "opentelemetry-api",
+          "1.45.1"
+        ],
+        [
+          "opentelemetry-proto",
+          "1.45.1"
+        ],
+        [
+          "opentelemetry-sdk",
+          "1.45.1"
+        ],
+        [
+          "opentelemetry-semantic-conventions",
+          "0.66b1"
+        ],
+        [
+          "orjson",
+          "3.13.0"
+        ],
+        [
+          "packaging",
+          "26.3"
+        ],
+        [
+          "pandas",
+          "3.1.0"
+        ],
+        [
+          "pathable",
+          "0.6.0"
+        ],
+        [
+          "pathspec",
+          "1.1.1"
+        ],
+        [
+          "patsy",
+          "1.0.3"
+        ],
+        [
+          "pillow",
+          "13.0.0"
+        ],
+        [
+          "platformdirs",
+          "4.13.5"
+        ],
+        [
+          "playwright",
+          "1.64.1"
+        ],
+        [
+          "pluggy",
+          "1.7.0"
+        ],
+        [
+          "prettytable",
+          "3.18.0"
+        ],
+        [
+          "prompt_toolkit",
+          "3.0.53"
+        ],
+        [
+          "propcache",
+          "0.5.4"
+        ],
+        [
+          "protobuf",
+          "7.36.2"
+        ],
+        [
+          "psutil",
+          "7.2.2"
+        ],
+        [
+          "py-key-value-aio",
+          "0.4.6"
+        ],
+        [
+          "pyarrow",
+          "25.0.1"
+        ],
+        [
+          "pyasn1",
+          "0.6.4"
+        ],
+        [
+          "pyasn1_modules",
+          "0.4.2"
+        ],
+        [
+          "pycparser",
+          "3.12"
+        ],
+        [
+          "pydantic",
+          "2.14.1"
+        ],
+        [
+          "pydantic-settings",
+          "2.16.1"
+        ],
+        [
+          "pydantic_core",
+          "2.50.1"
+        ],
+        [
+          "pydot",
+          "4.0.1"
+        ],
+        [
+          "pyee",
+          "14.0.0"
+        ],
+        [
+          "pygit2",
+          "1.20.1"
+        ],
+        [
+          "pygments",
+          "2.21.0"
+        ],
+        [
+          "pygtrie",
+          "2.6.2"
+        ],
+        [
+          "pyjwt",
+          "2.15.1"
+        ],
+        [
+          "pyparsing",
+          "3.3.3"
+        ],
+        [
+          "pyperclip",
+          "1.11.0"
+        ],
+        [
+          "pytest",
+          "9.1.1"
+        ],
+        [
+          "python-dateutil",
+          "2.9.0.post0"
+        ],
+        [
+          "python-dotenv",
+          "1.2.4"
+        ],
+        [
+          "python-multipart",
+          "0.0.32"
+        ],
+        [
+          "pywin32",
+          "312"
+        ],
+        [
+          "pywin32-ctypes",
+          "0.2.3"
+        ],
+        [
+          "pyyaml",
+          "6.0.3"
+        ],
+        [
+          "referencing",
+          "0.37.0"
+        ],
+        [
+          "requests",
+          "2.34.2"
+        ],
+        [
+          "rich",
+          "14.3.4"
+        ],
+        [
+          "rich-rst",
+          "2.2.0"
+        ],
+        [
+          "rpds-py",
+          "2026.9.1"
+        ],
+        [
+          "ruamel.yaml",
+          "0.19.1"
+        ],
+        [
+          "scikit-learn",
+          "1.9.1"
+        ],
+        [
+          "scipy",
+          "1.18.1"
+        ],
+        [
+          "scmrepo",
+          "3.6.2"
+        ],
+        [
+          "semver",
+          "3.1.0"
+        ],
+        [
+          "setuptools",
+          "84.2.1"
+        ],
+        [
+          "shortuuid",
+          "1.0.13"
+        ],
+        [
+          "shtab",
+          "1.13.0"
+        ],
+        [
+          "six",
+          "1.17.0"
+        ],
+        [
+          "skops",
+          "0.16.0"
+        ],
+        [
+          "smmap",
+          "5.0.3"
+        ],
+        [
+          "sqlalchemy",
+          "2.1.6"
+        ],
+        [
+          "sqlparse",
+          "0.6.0"
+        ],
+        [
+          "sqltrie",
+          "0.11.3"
+        ],
+        [
+          "sse-starlette",
+          "3.6.0"
+        ],
+        [
+          "starlette",
+          "1.10.0"
+        ],
+        [
+          "statsmodels",
+          "0.15.0"
+        ],
+        [
+          "tabulate",
+          "0.9.0"
+        ],
+        [
+          "threadpoolctl",
+          "3.7.0"
+        ],
+        [
+          "tomlkit",
+          "0.15.2"
+        ],
+        [
+          "tqdm",
+          "4.70.1"
+        ],
+        [
+          "truststore",
+          "0.10.5"
+        ],
+        [
+          "typing-inspection",
+          "0.4.4"
+        ],
+        [
+          "typing_extensions",
+          "4.16.0"
+        ],
+        [
+          "tzdata",
+          "2026.5"
+        ],
+        [
+          "tzlocal",
+          "5.4.5"
+        ],
+        [
+          "uncalled-for",
+          "0.4.1"
+        ],
+        [
+          "urllib3",
+          "2.8.0"
+        ],
+        [
+          "uvicorn",
+          "0.54.0"
+        ],
+        [
+          "vine",
+          "5.1.0"
+        ],
+        [
+          "voluptuous",
+          "0.16.0"
+        ],
+        [
+          "waitress",
+          "3.0.2"
+        ],
+        [
+          "watchfiles",
+          "1.3.0"
+        ],
+        [
+          "wcwidth",
+          "0.9.4"
+        ],
+        [
+          "websockets",
+          "17.3"
+        ],
+        [
+          "werkzeug",
+          "3.1.9"
+        ],
+        [
+          "wrapt",
+          "2.5.1"
+        ],
+        [
+          "yarl",
+          "1.25.1"
+        ],
+        [
+          "zc.lockfile",
+          "4.0"
+        ],
+        [
+          "zipp",
+          "4.1.2"
+        ]
+      ]
+    }
+  }
+}

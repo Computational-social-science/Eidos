@@ -1,0 +1,19 @@
+{
+  "status": "RECOVERED",
+  "scope": "Correction of this session own negative-control fixture; production0.4.12 untouched",
+  "cause": "uv hardlinked wheel METADATA across cached/fresh prefixes; in-place negative mutation affected aliases. Independent prefixes did not imply mutable-file isolation.",
+  "prior_control_record": "wrong-metadata-control.json is withdrawn; its positive_prefixes_untouched field was not valid",
+  "shared_identity": {
+    "inode": 562949958192421,
+    "device": 6925584595767152704,
+    "link_count": 6
+  },
+  "recovered_positive_paths": [
+    "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-final-49df86253c\\env-new\\Lib\\site-packages\\eidos-0.5.0.dist-info\\METADATA",
+    "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\shared-monitor-final-49df86253c\\env-a\\Lib\\site-packages\\eidos-0.5.0.dist-info\\METADATA",
+    "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\shared-monitor-final-49df86253c\\env-b\\Lib\\site-packages\\eidos-0.5.0.dist-info\\METADATA",
+    "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\probe-wheel-trial-4ab202f4a9\\env-new\\Lib\\site-packages\\eidos-0.5.0.dist-info\\METADATA"
+  ],
+  "original_metadata_sha256": "26d82ac4e5695d0fb7e777f49d5697dfe9a3587a5ee640a16f30d8f0cdb275bc",
+  "negative_fixture_detached": true
+}

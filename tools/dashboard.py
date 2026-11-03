@@ -816,12 +816,50 @@ def consumer_strip(pipeline: dict) -> str:
     return "".join(parts)
 
 
+def worker_strip(snapshot: dict | None) -> str:
+    """Escaped worker observations; these cards never invoke consumer gate APIs."""
+    snapshot = snapshot or {}
+    rows = snapshot.get('projects') or []
+    escape = lambda value: html.escape(str(value), quote=True)
+    parts = []
+    if snapshot.get('error'):
+        parts.append('<p class="figure-note">' + escape(snapshot['error']) + '</p>')
+    if snapshot.get('registration_errors'):
+        parts.append('<p class="figure-note">Some project registrations are invalid; inspect the local registry.</p>')
+    if not rows:
+        if not snapshot.get('error'):
+            parts.append('<p class="figure-note">No project workers enrolled. Explicit enrollment is required; CLI use remains independent.</p>')
+        return ''.join(parts)
+    parts.append('<div class="consumer-grid" aria-label="Independent project worker observations">')
+    for row in rows:
+        run, worker = row.get('run') or {}, row.get('worker') or {}
+        state = row.get('monitor_status', 'PENDING')
+        science = row.get('scientific_status', 'UNOBSERVABLE')
+        colour = '#6cbf6e' if state == 'OBSERVED' and science == 'PASS' else '#f0c66a' if state == 'STALE' else '#98a2b3'
+        if state == 'UNAVAILABLE' or science == 'FAIL':
+            colour = '#ff7676'
+        parts.append(
+            f'<article class="consumer-card worker-card" data-worker-id="{escape(row.get("project_id", ""))}"'
+            f' style="--consumer-state:{colour}">'
+            f'<div class="consumer-head"><strong>{escape(row.get("name", "Unknown project"))}</strong>'
+            f'<span class="consumer-state">{escape(state)}</span></div>'
+            f'<p class="consumer-verdict">Execution: {escape(run.get("execution_status", "UNRUN"))} · Science: {escape(science)}</p>'
+            f'<p class="consumer-meta">EIDOS {escape(worker.get("eidos_version", "unobserved"))} · '
+            f'{escape(worker.get("installation_mode", "unknown runtime"))} · {escape(str(row.get("project_id", ""))[:8])}</p>'
+            f'<p class="consumer-meta">Observation: {escape(row.get("observed_at", "unavailable"))}<br>'
+            f'Research run: {escape(run.get("recorded_at", "UNRUN"))}</p>'
+            f'<p class="consumer-meta">{escape(row.get("reason", "Read-only observation; no new research execution"))}</p></article>')
+    parts.append('</div>')
+    return ''.join(parts)
+
+
 CSS = """
 .consumer-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
 .consumer-card{display:flex;flex-direction:column;align-items:stretch;gap:6px;text-align:left;min-width:0;min-height:96px;
   padding:12px 14px;background:#1b2027;border:1px solid #2a3038;border-left:3px solid var(--consumer-state);border-radius:4px;
   font:inherit;color:#e6e8eb;cursor:pointer}
 .consumer-card:hover{border-color:#495365;border-left-color:var(--consumer-state)}
+.worker-card{cursor:default}.worker-card p{margin:0}
 .consumer-card:focus-visible{outline:2px solid #5b8def;outline-offset:3px}
 .consumer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 .consumer-head strong{font-size:12.5px;font-weight:600;overflow-wrap:anywhere}
@@ -1029,6 +1067,11 @@ function updateConsumers(markup) {
     .find(n => n.dataset.consumer === focused)?.focus();
   updateConsumerCounts();
 }
+
+function updateWorkers(markup) {
+  const host = document.getElementById('worker-cards');
+  if (host && typeof markup === 'string') host.innerHTML = markup; // Escaped server-rendered metadata.
+}
 document.addEventListener('click', e => {
   const refresh = e.target.closest('[data-refresh]');
   if (refresh) {
@@ -1162,6 +1205,7 @@ function applySample(d) {
       } else { fl.textContent = ''; fl.style.display = 'none'; }
     }
     updateConsumers(d.consumers_html);
+    updateWorkers(d.workers_html);
     const chains = d.chains || {};
     document.querySelectorAll('g.node.chain').forEach(g => {
       const name = g.dataset.chain;
@@ -1239,6 +1283,7 @@ async function refreshSnapshots() {
   lastSectionsAt = Date.now();
 }
 function markUnavailable(error) {
+  updateWorkers('<p class="figure-note">Worker observations unavailable. Cached scientific acceptance is withdrawn until the connection returns.</p>');
   document.body.classList.add('sample-unavailable');
   const pill = document.getElementById('ov');
   if (pill) { pill.textContent = 'UNAVAILABLE'; pill.className = 'pill UNKNOWN'; }
@@ -1332,6 +1377,17 @@ def build() -> str:
         recoveries = []
     operator = operator_strip(status, recoveries)
     consumers = consumer_strip(pipeline)
+    worker_snapshot = load(ROOT / '.eidos-monitor/observations.json', None)
+    if worker_snapshot:
+        from tools.worker_monitor import stale_view
+        try:
+            stamp = datetime.datetime.fromisoformat(worker_snapshot.get('sampled_at', ''))
+            age = (datetime.datetime.now(datetime.timezone.utc) - stamp).total_seconds()
+        except (ValueError, TypeError):
+            age = float('inf')
+        if age < -30 or age > 90:
+            worker_snapshot = stale_view(worker_snapshot, 'Recorded worker observations are stale')
+    workers = worker_strip(worker_snapshot)
     try:
         cov = json.loads((ROOT / "docs" / "DEMO_COVERAGE.json").read_text(encoding="utf-8"))
         cov = f"{cov.get('demo', 0)}/{cov.get('total', 0)}"
@@ -1416,6 +1472,10 @@ def build() -> str:
       STALE withdraws the cached verdict. Recorded consumer-demonstrated capability coverage: {cov}.
       <a href="/docs/DEMO_COVERAGE.json">Inspect coverage record ↗</a></p>
     <div id="consumer-cards">{consumers}</div></div>
+    <div class="opwrap" id="project-workers"><h3>Research projects — independent workers, one shared view</h3>
+      <p class="figure-note">Read-only observations from explicitly enrolled project environments.
+      Execution, scientific acceptance and observation freshness are separate. Observation does not rerun research.</p>
+      <div id="worker-cards"><!-- worker-observations:start -->{workers}<!-- worker-observations:end --></div></div>
     <div class="opwrap" id="operator-snapshot"><h3>Operators — self-check, then self-heal</h3>
       <p class="figure-note">Rendered snapshot · {stamp} HKT · server snapshots requested every minute while visible.</p>
       <p class="figure-note">Repair phases describe the latest logged attempt, not proof that a current fault has cleared.

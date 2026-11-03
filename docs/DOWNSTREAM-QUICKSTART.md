@@ -1,0 +1,137 @@
+# Reuse EIDOS in an independent research project
+
+Status: 2026-11-03. Stable release: **0.4.12**. The installed project CLI and
+shared-worker protocol below are **unreleased 0.5.0 development**. Installing a
+worker wheel does not install or migrate the complete monitor service.
+
+## Choose an entry point
+
+| Need | Use | Do not assume |
+|---|---|---|
+| Existing stable SDK | A pinned, verified GitHub release wheel and the explicit project registry | A stable `init` or `enroll` command |
+| Trial the simplified project workflow | The qualified development wheel below in a dedicated environment | A published 0.5.0 release or current production adoption |
+| Agent assistance | [The thin project skill](https://github.com/Computational-social-science/Eidos/blob/feature/shared-monitor/adapters/agents/eidos-project/SKILL.md) calling the selected installation | Autonomous scientific acceptance or a qualified general research reasoner |
+| Repair the framework | A separate EIDOS branch/fork and disposable downstream trial environment | Automatic upgrades of existing studies |
+
+Do not run `pip install eidos` from the public index: that name belongs to an
+[unrelated astronomy package](https://pypi.org/project/eidos/). The development
+artifact below retains its existing distribution name for exact evidence replay.
+Public-index publication is blocked until distribution/import/console naming and
+compatibility have been qualified. This guide does not reserve a new package name.
+
+## Trial the installed CLI
+
+Prerequisites: Python 3.11/3.12 and uv. Use a dedicated trial environment unless
+the dependency closure has been checked against the study's lock. Do not replace
+a study's CUDA/PyTorch environment as a side effect of onboarding.
+
+From the matching EIDOS checkout, select the immutable artifact at:
+
+```text
+reference/inference_probe_acceptance/recorded_trials/probe-fix-v3/input/eidos-0.5.0-py3-none-any.whl
+SHA256 57f7e6481aa7f706420e3a45ba3052a10c43da58050435167dadfce99cc94b2c
+```
+
+Its core dependency hash lock is `core-requirements.txt` in the same directory.
+The artifact is an acceptance candidate, not the final source checkout's wheel.
+The controller tools and documentation may have advanced independently. Verify
+the artifact hash and keep the wheel/lock with the trial record.
+
+PowerShell example, substituting actual absolute paths:
+
+```powershell
+$trial = '<new trial environment>'
+$profile = '<matching checkout>/reference/inference_probe_acceptance/recorded_trials/probe-fix-v3/input'
+$project = '<research project>'
+uv venv --python 3.12 $trial
+$workerPy = "$trial/Scripts/python.exe"
+Get-FileHash "$profile/eidos-0.5.0-py3-none-any.whl" -Algorithm SHA256
+uv pip install --link-mode copy --python $workerPy --require-hashes -r "$profile/core-requirements.txt"
+uv pip install --link-mode copy --python $workerPy --no-deps "$profile/eidos-0.5.0-py3-none-any.whl"
+& $workerPy -I -m framework.cli --help
+& $workerPy -I -m framework.cli init --project $project --json
+```
+
+Compare the printed SHA256 with the value above before installation. Public
+dependency bootstrap can use the network; offline replay requires a prepared
+hash-matching wheel cache. A full source checkout is needed to obtain this
+development profile, but is not needed by installed workers at execution time.
+
+Initialization preserves existing research files and creates `.eidos/`. An
+existing `.eidos/` is refused; never delete it just to make initialization pass.
+The starter validator deliberately returns REFUSED. Configure:
+
+- `gate_command`: the real bounded validator, as an argument list;
+- `expects`: the required evidence artifacts, whose content the validator checks;
+- `validity_register` and `validity_document`: project-local claims and report;
+- `validity_inputs`: validator helpers/module source, data manifests and configs;
+- `delivery`: the manuscript and explicitly declared rendering inputs, if needed.
+
+Then use the same selected interpreter:
+
+```powershell
+& $workerPy -I -m framework.cli check --project $project --timeout 900 --json
+& $workerPy -I -m framework.cli status --project $project --json
+& $workerPy -I -m framework.cli report --project $project --format html --json
+& $workerPy -I -m framework.cli feedback --project $project --message '<observed defect>' --out '<new incident.zip>' --json
+```
+
+Rendering needs Quarto; PDF additionally needs TeX and Poppler `pdfinfo`.
+`--execution-only` does not establish scientific acceptance. A successful status
+query can return exit zero while its JSON describes scientific FAIL/STALE/UNRUN;
+consume the structured fields rather than the query exit code. A result is bound
+to declared inputs, not every possible undeclared dependency.
+
+## Optional shared monitor
+
+The development `enroll` command registers a worker with the selected central
+workspace; it does not start an HTTP server or rerun research:
+
+```powershell
+& $workerPy -I -m framework.cli enroll --project $project --python $workerPy --monitor-root '<central EIDOS workspace>' --json
+```
+
+Use this only with a matching candidate controller. The existing 0.4.12 process
+on 8765 has not adopted the new protocol. Do not start a second service on that
+port or silently restart the existing one. See [the actual shared-worker
+acceptance](https://github.com/Computational-social-science/Eidos/blob/feature/shared-monitor/reference/shared_monitor_acceptance/README.md) and its retained
+Windows/Linux raw records for qualified scope.
+
+Each study keeps its own identity, interpreter, pinned version, evidence and run
+history. The central worker cards separate transport, execution, science and
+evidence freshness. Runtime replacement requires an explicit re-enrollment
+decision; source/configuration changes withdraw cached acceptance. Read-only
+observation never invokes a gate or changes a historical run timestamp.
+
+The dashboard is optional: CLI use remains possible without it. Loopback means
+this machine only; remote workers need a separately qualified transport and
+authentication design. Automatic remote exposure is not provided.
+
+## Feedback and updates
+
+The feedback ZIP contains local metadata and the supplied description. It does
+not automatically collect private data/logs, upload an issue, propose a patch or
+close an incident. Supply a sanitized reproducer deliberately when appropriate.
+Existing studies retain release pins until their own replay accepts an upgrade.
+
+The next delivery is the [closed-loop acceptance campaign](REUSE-DELIVERY-PLAN.md),
+including a failed candidate and rollback. A source audit or successful export
+does not close that campaign and does not demonstrate scientific RSI.
+
+Mutable failure-injection environments need copied files, not just distinct
+venv directories: uv hardlinks can alias package files and metadata. The repaired
+probe profile preserves the detected aliasing mistake, restoration and isolated
+atomic negative control. Windows current-wheel qualification is separate from
+the older Linux protocol profile; current repair Linux qualification is open.
+
+
+### Subsequent Linux caller qualification
+
+The missing Linux entry witnesses were traced to a noexec scratch mount. With
+explicit executable private scratch, a fresh network-disabled/read-only-root
+container passed the actual installed old/new probe campaign with unchanged
+input/wheelhouse/SDK/metadata identities and verified owned-container cleanup.
+The final `reference/inference_probe_acceptance/recorded_trials/probe-fix-v3`
+profile supersedes v2 as this caller acceptance; failed attempts and withdrawn
+controls remain preserved. This closes only the availability-probe Linux gap,
+not current-wheel shared UI, new-machine, release/rollback or scientific RSI.

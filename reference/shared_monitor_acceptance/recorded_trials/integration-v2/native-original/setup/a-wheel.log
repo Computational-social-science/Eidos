@@ -1,0 +1,5 @@
+Using Python 3.12.4 environment at: C:\Users\Administrator\.cache\eidos-cli-acceptance\shared-monitor-native-26b0c0fcc4\env-a
+Resolved 1 package in 12ms
+Prepared 1 package in 39ms
+Installed 1 package in 49ms
+ + eidos==0.5.0 (from file:///C:/Users/Administrator/.cache/eidos-cli-acceptance/shared-monitor-probe-input-v2/eidos-0.5.0-py3-none-any.whl)

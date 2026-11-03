@@ -1,0 +1,9 @@
+{
+  "status": "EXPECTED_REJECTION",
+  "scope": "Invalid installed-runtime identity, not a failed repair patch or scientific outcome",
+  "reason": "Installed distribution differs from selected wheel metadata",
+  "before_metadata_sha256": "26d82ac4e5695d0fb7e777f49d5697dfe9a3587a5ee640a16f30d8f0cdb275bc",
+  "changed_metadata_sha256": "af7ff63d229b1f043845a34f86fc2260cb56869d6c1a18580dcab4a746fe1268",
+  "driver_sha256": "f13c81ccfd1ca47804f6e29a2fe64a0f4c5ad086955b0f021b4e26f8eac313ba",
+  "positive_prefixes_untouched": true
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "eidos.inference-probe-acceptance.v1",
+  "status": "PASS_WITH_SCOPE",
+  "scope": "Native Windows installed old/new comparison, complete SDK and dependency metadata before/after, private CLI entry/inner cleanup, current CLI tool smoke; not a release or production-deployed repair",
+  "new_wheel_sha256": "57f7e6481aa7f706420e3a45ba3052a10c43da58050435167dadfce99cc94b2c",
+  "old_wheel_sha256": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
+  "driver_sha256": "f13c81ccfd1ca47804f6e29a2fe64a0f4c5ad086955b0f021b4e26f8eac313ba",
+  "linux_repair_qualified": true,
+  "linux_limit": "Same-host installed private CLI old/new controls only; not shared UI, independent-machine or real model research qualification.",
+  "windows_runtime_binaries": "Fake executable/DLL files remain in local raw trial; their hashes are bound in records. System Python binaries are not redistributed.",
+  "feedback_closed": false,
+  "production_migrated": false,
+  "scientific_rsi": false,
+  "accepted_metadata_control": "windows/wrong-metadata-control-v2.json",
+  "excluded_records": [
+    "withdrawn/first-driver-result.json",
+    "withdrawn/wrong-metadata-control.json"
+  ],
+  "linux_runtime_precondition": "Private scratch tmpfs explicitly executable; prior noexec trials never entered the fake CLI. Rootfs readonly, networking none, capabilities dropped, no-new-privileges and cleanup verified."
+}

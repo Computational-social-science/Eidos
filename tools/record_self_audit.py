@@ -15,6 +15,8 @@ import argparse
 import hashlib
 import importlib.metadata
 import json
+import math
+import os
 import re
 import subprocess
 import sys
@@ -41,29 +43,46 @@ def input_state() -> dict:
 
 
 def _run(cmd: list[str], timeout: int = 900) -> subprocess.CompletedProcess:
-    return subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=timeout,
-                          encoding="utf-8", errors="replace")
+    from framework.subprocesses import run_tree
+    try:
+        return run_tree(cmd,cwd=ROOT,timeout=timeout,
+                        env=dict(os.environ,PYTHONIOENCODING='utf-8'))
+    except subprocess.TimeoutExpired as error:
+        def text(value):
+            return value.decode('utf-8','replace') if isinstance(value,bytes) else value or ''
+        return subprocess.CompletedProcess(cmd,124,text(error.output),
+            text(error.stderr)+f'\nTIMEOUT: audit command exceeded {timeout:g} seconds\n')
 
 
-def execute_tests(command: list[str]) -> tuple[subprocess.CompletedProcess, dict]:
+def execute_tests(command: list[str],timeout: float=900) -> tuple[subprocess.CompletedProcess, dict]:
     """Reconcile actual item reports, excluding module-level collection skips."""
     with tempfile.TemporaryDirectory(prefix='eidos-self-audit-') as directory:
         report=Path(directory)/'tests.xml'
-        run=_run([*command,f'--junitxml={report}'],timeout=900)
+        run=_run([*command,f'--junitxml={report}'],timeout=timeout)
         try:
             cases=list(ET.parse(report).getroot().iter('testcase'))
             collection_skips=0
+            timings=[]
             for case in cases:
                 skipped=case.find('skipped')
                 if (case.get('classname')=='' and skipped is not None
                         and skipped.get('message')=='collection skipped'):
                     collection_skips+=1
-            return run,{'reported_items':len(cases)-collection_skips,'collection_level_skips':collection_skips}
-        except (OSError,ET.ParseError) as exc:
+                    continue
+                if case.get('time') is not None:
+                    seconds=float(case.get('time'))
+                    if not math.isfinite(seconds) or seconds<0:raise ValueError('Invalid item duration')
+                    timings.append({'test':case.get('classname','')+'::'+case.get('name',''),
+                                    'seconds':seconds})
+            return run,{'reported_items':len(cases)-collection_skips,'collection_level_skips':collection_skips,
+                        'slowest_tests':sorted(timings,key=lambda row:row['seconds'],reverse=True)[:20]}
+        except (OSError,ET.ParseError,ValueError,TypeError) as exc:
             return run,{'reported_items':None,'error':type(exc).__name__}
 
 
-def collect() -> dict:
+def collect(test_timeout: float=900) -> dict:
+    from framework.subprocesses import validate_timeout
+    validate_timeout(test_timeout)
     before=input_state()
     chains = _run([sys.executable, "tools/audit_chains.py", "--json", "--ci"])
     if chains.returncode not in (0, 1):
@@ -82,12 +101,12 @@ def collect() -> dict:
     # visible drift, and the gate only refuses a drop larger than one point.
     coverage_total = None
     if _run([sys.executable, "-m", "coverage", "--version"], timeout=120).returncode == 0:
-        executed,execution = execute_tests([sys.executable, "-m", "coverage", "run", "--source=framework", "-m", "pytest", "-q", "-rs"])
+        executed,execution = execute_tests([sys.executable, "-m", "coverage", "run", "--source=framework", "-m", "pytest", "-q", "-rs"],timeout=test_timeout)
         report = _run([sys.executable, "-m", "coverage", "report"], timeout=300)
         m2 = re.search(r"TOTAL\s+\d+\s+\d+\s+(\d+)%", report.stdout)
         coverage_total = int(m2.group(1)) if m2 else None
     else:
-        executed,execution = execute_tests([sys.executable, "-m", "pytest", "-q", "-rs"])
+        executed,execution = execute_tests([sys.executable, "-m", "pytest", "-q", "-rs"],timeout=test_timeout)
     test_output = executed.stdout + executed.stderr
     test_counts = {}
     for label in ("passed", "failed", "skipped", "errors"):
@@ -136,6 +155,7 @@ def collect() -> dict:
                    (("tests", executed), ("test_collection", tests), ("test_collection_after",recollected), ("chains", chains),
                     ("gate_s", gate), ("self_gate_s", self_run)) if run.returncode != 0}
     return {"chains": counts, "tests_collected": collected, "tests": test_counts,
+            'test_timeout_seconds':test_timeout,
             "stability":{'stable':stable,'before':before,'after':after,'collection_after':later_count,
                          'execution':execution,'deselection_detected':deselection,
                          'collected_ids':len(selected),'unique_ids':len(set(selected)),
@@ -227,9 +247,14 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--check", action="store_true",
                     help="compare with the recorded file instead of writing it")
+    ap.add_argument('--test-timeout',type=float,default=900,
+                    help='finite full-suite execution budget in seconds (default: 900); does not deselect tests')
     args = ap.parse_args(argv)
 
     sys.path.insert(0,str(ROOT))
+    from framework.subprocesses import validate_timeout
+    try:validate_timeout(args.test_timeout)
+    except ValueError as error:ap.error(str(error))
     from framework.artifacts import output_lock
     with output_lock(OUT.with_suffix('')):
         return measure(args)
@@ -237,7 +262,7 @@ def main(argv: list[str] | None = None) -> int:
 
 def measure(args) -> int:
 
-    new = collect()
+    new = collect() if args.test_timeout==900 else collect(test_timeout=args.test_timeout)
     failures = measurement_failures(new)
     if failures:
         for failure in failures:

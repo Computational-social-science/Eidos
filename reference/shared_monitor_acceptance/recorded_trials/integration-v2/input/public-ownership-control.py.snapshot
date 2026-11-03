@@ -1,0 +1,45 @@
+"""Controlled scratch witness: a public acceptance entry must preserve prior files."""
+import importlib.util
+import json
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+from unittest.mock import patch
+
+source = Path('C:/Users/Administrator/.cache/eidos-worktrees/shared-monitor')
+sys.path.insert(0, str(source))
+from framework import subprocesses
+
+workspace = Path(tempfile.mkdtemp(prefix='public-monitor-owner-', dir='C:/Users/Administrator/.cache/eidos-cli-acceptance'))
+prior = workspace / 'synthetic_positive/data/evidence.json'
+prior.parent.mkdir(parents=True)
+prior.write_bytes(b'{"owned_prior_data":"preserve"}')
+before = prior.read_bytes()
+identity = Path('C:/Users/Administrator/.cache/eidos-cli-acceptance/shared-monitor-native-26b0c0fcc4/results/a-identity-before.stdout').read_text(encoding='utf-8')
+spec = importlib.util.spec_from_file_location('public_monitor_acceptance', source / 'reference/shared_monitor_acceptance/check.py')
+driver = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(driver)
+calls = []
+
+
+def write_fixture(project):
+    calls.append(str(project))
+    (project / 'data/evidence.json').write_bytes(b'overwritten')
+    raise RuntimeError('unsafe fixture write reached')
+
+
+def run(command, **kwargs):
+    return subprocess.CompletedProcess(command, 0, identity, '')
+
+
+arguments = ['check.py', '--source', str(source), '--workspace', str(workspace), '--wheel',
+             'C:/Users/Administrator/.cache/eidos-cli-acceptance/shared-monitor-probe-input-v2/eidos-0.5.0-py3-none-any.whl']
+with patch.object(sys, 'argv', arguments), patch.object(subprocesses, 'run_tree', run), patch.object(driver.runpy, 'run_path', lambda *args: {'write_project': write_fixture}):
+    try:
+        driver.main()
+    except (ValueError, RuntimeError):
+        pass
+if calls or prior.read_bytes() != before:
+    raise AssertionError('Public entry overwrote an existing acceptance target before refusing')
+print(json.dumps({'status': 'PASS', 'workspace': str(workspace), 'prior_preserved': True}))

@@ -193,7 +193,7 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。
 
 <!-- self-audit:start -->
-本轮验收：1237 passed、2 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 76%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
+本轮验收：1317 passed、2 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 77%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
 <!-- self-audit:end -->
 
 既有 CUDA 16 项已独立通过；本轮未修改数值后端。
@@ -624,3 +624,46 @@ Bootstrap prepares a project; sustained improvement requires independently
 accepted changes to reach downstream users and survive replay. Operational
 recovery, software reliability and scientific RSI have distinct evidence needs.
 No scientific RSI qualification follows from this CLI work.
+
+
+### Reusable-product delivery checkpoint (2026-11-03)
+
+The shared-worker candidate completed its stable-input source audit: 1,309 tests
+passed, six skipped, 77% whole-framework coverage, ten chains passed and one
+skipped. This is the isolated development source, not a new audit of stable
+0.4.12 or evidence that the existing 8765 service has migrated. Frozen installed
+worker profile integration-v2 retains 141 payloads and wheel SHA256
+`63a5af9706b5370cc934c23c1fbac86933dfc2f3aca171b8f63f2d0378751c98`.
+
+English downstream commands and acceptance gates are documented in
+`docs/DOWNSTREAM-QUICKSTART.md` and `docs/REUSE-DELIVERY-PLAN.md`. A thin project
+Agent instruction adapter calls the same core CLI; model behavior, a generic
+MCP, installed monitor packaging and a closed release-to-originating-project
+feedback loop remain separately unqualified. Public PyPI `eidos` is unrelated;
+distribution/import/console naming must be qualified before index publication.
+Existing project locks, production services and external-CRON retirement remain
+unchanged. Engineering repair does not establish scientific RSI.
+
+
+### Renewed installed-probe repair checkpoint (2026-11-03)
+
+A real production inference-check hang was traced to raw subprocess pipe cleanup.
+The candidate now uses the SDK-owned lifetime. Eight private controls and
+independent code/Python reviews pass. The renewed source audit measures 1,317
+passes, six skips, 77% framework coverage, ten passing chains and one skip.
+Current unreleased wheel SHA256: `57f7e6481aa7f706420e3a45ba3052a10c43da58050435167dadfce99cc94b2c`.
+Normal Windows old/new installed controls and current shared-controller HTTP/
+browser replay pass. Linux repair qualification remains open after failed
+attempts. A metadata fault-injection mistake propagated via uv hardlinks; raw
+withdrawn evidence, exact restoration and an atomic isolated control are retained.
+Use copy mode for mutable failure-injection environments. Production0.4.12
+returned OK naturally and was not deployed/restarted by this campaign. See
+`docs/RUNTIME-INCIDENT-INFERENCE-2026-11-03.md`; final publication and the full
+release-to-originating-project feedback/rollback lifecycle remain open.
+
+
+The subsequent probe-fix-v3 campaign also passed the installed availability
+caller on same-host network-disabled Linux, after fixing the diagnostic
+container noexec scratch prerequisite. Old/new entry witnesses, identities and
+owned cleanup are retained. This supersedes the earlier caller-Linux-open
+checkpoint only; production migration and full feedback closure remain open.

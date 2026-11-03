@@ -1,0 +1,5 @@
+{
+  "status": "FAILED_SETUP",
+  "reason": "Container shell rejected CRLF set -eu line before any Python probe. Raw input and cleanup record preserved.",
+  "not_acceptance": true
+}

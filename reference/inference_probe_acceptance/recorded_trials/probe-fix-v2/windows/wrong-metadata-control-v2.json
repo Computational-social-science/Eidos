@@ -1,0 +1,9 @@
+{
+  "status": "EXPECTED_REJECTION",
+  "reason": "Installed distribution differs from selected wheel metadata",
+  "atomic_replacement": true,
+  "negative_metadata_link_count": 1,
+  "positive_installed_identity_before_after_equal": true,
+  "driver_sha256": "f13c81ccfd1ca47804f6e29a2fe64a0f4c5ad086955b0f021b4e26f8eac313ba",
+  "scope": "Isolated metadata control; not a failed repair patch"
+}

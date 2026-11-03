@@ -1,0 +1,58 @@
+{
+  "owner": "546ff65c4d504add9ea62c0dca7a89e2",
+  "output": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\shared-monitor-linux-546ff65c4d",
+  "input_manifest_sha256": "4eb472303c839e3ac0a349d143a9c52fd834c41b7c46e6b909115ff3e27b67a9",
+  "wheel_sha256": "c380014e39a127e38f02f720cac8ddee71ccbd2b80a0034a6cc69538dafcfe50",
+  "container_id": "96ed28af184b14ab1eba1e4c1bbc87f6b03e0939cbd1c2c388a224af7ac6f9d3",
+  "before": {
+    "readonly_root": true,
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "C:/Users/Administrator/.cache/eidos-cli-acceptance/shared-monitor-probe-input",
+        "Destination": "/input",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\shared-monitor-linux-546ff65c4d",
+        "Destination": "/out",
+        "Mode": "",
+        "RW": true,
+        "Propagation": "rprivate"
+      },
+      {
+        "Type": "bind",
+        "Source": "C:/Users/Administrator/.cache/eidos-sdk-v411/linux-wheels",
+        "Destination": "/wheels",
+        "Mode": "",
+        "RW": false,
+        "Propagation": "rprivate"
+      }
+    ],
+    "network": "none",
+    "labels": {
+      "eidos.acceptance.owner": "546ff65c4d504add9ea62c0dca7a89e2"
+    },
+    "image": "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337"
+  },
+  "after": {
+    "state": {
+      "Status": "exited",
+      "Running": false,
+      "Paused": false,
+      "Restarting": false,
+      "OOMKilled": false,
+      "Dead": false,
+      "Pid": 0,
+      "ExitCode": 0,
+      "Error": "",
+      "StartedAt": "2026-11-02T16:02:57.450165482Z",
+      "FinishedAt": "2026-11-02T16:03:32.596910926Z"
+    },
+    "network": "none"
+  },
+  "cleanup_verified": true
+}

@@ -117,3 +117,61 @@ writers are tracked in [the scheduling policy](SCHEDULING-POLICY.md). Source
 changes remove age-only automatic consumer execution, serialize manual and
 background refresh, and reuse matching recent verdicts without renewing their
 check time. Existing old service processes have not been migrated.
+
+
+## Reusable-product checkpoint, 2026-11-03
+
+Stable remains 0.4.12. The unreleased shared-monitor candidate now includes
+project-local CLI, independent worker enrollment, asynchronous read-only
+aggregation and inert desktop/mobile cards. Normal installed Windows workers
+with different dependencies and same-host offline Linux workers have separate
+raw qualification records. The source audit measured 1,309 passes, six skips,
+77% framework coverage, ten passing chains and one skip with stable identities.
+This supersedes the earlier absence of candidate aggregation, not the pending
+production migration or installed-controller qualification.
+
+The thin project Agent skill and English quickstart are available in the
+development branch. They do not establish a general reasoning Agent, new-machine
+installation or scientific RSI. Public package/import/command naming, final
+publication/CI, a fully closed incident-to-release-to-originating-project replay
+with failed-candidate/rollback controls, and held-out research evaluation remain
+open. See the [delivery plan](https://github.com/Computational-social-science/Eidos/blob/feature/shared-monitor/docs/REUSE-DELIVERY-PLAN.md).
+
+
+## Renewed probe-repair checkpoint, 2026-11-03
+
+The earlier 1,309-pass source audit is historical. After the real inherited-pipe
+availability defect and README reorganization, the renewed stable-input audit
+measured **1,317 passed, six skipped, 77% whole-framework coverage, ten passing
+chains and one skip**. Source identity is
+`76db9d342993a8da3dc97ff564ca6a1ff3d52eb221249ef89928ff322fdd5ed1`.
+The current unreleased installed wheel SHA256 is
+`57f7e6481aa7f706420e3a45ba3052a10c43da58050435167dadfce99cc94b2c`.
+
+Actual normal Windows old/new wheel controls reproduce the old defect and verify
+inner cleanup before outer-owner termination. Current-wheel CLI init/refusal/
+status/local-feedback and a new shared-controller desktop/mobile replay pass.
+The initial harness result and a hardlink-contaminated metadata control are
+withdrawn; exact restoration and an isolated atomic v2 control are retained.
+Distinct prefixes do not by themselves establish mutable-file independence; use
+copy mode for fault injection. The existing stable environment remains 0.4.12.
+
+Current-repair Linux qualification remains open after two failed container
+attempts; no valid counterfactual was accepted there. Production later recovered
+OK naturally without deployment or state edits, so it is not evidence that this
+patch was applied. Versioned publication/CI, installed-controller packaging,
+protected production migration and the full feedback release/replay/rollback
+lifecycle remain open. See `RUNTIME-INCIDENT-INFERENCE-2026-11-03.md` and the
+`reference/inference_probe_acceptance` records in the development branch.
+
+
+### Subsequent Linux caller qualification
+
+The missing Linux entry witnesses were traced to a noexec scratch mount. With
+explicit executable private scratch, a fresh network-disabled/read-only-root
+container passed the actual installed old/new probe campaign with unchanged
+input/wheelhouse/SDK/metadata identities and verified owned-container cleanup.
+The final `reference/inference_probe_acceptance/recorded_trials/probe-fix-v3`
+profile supersedes v2 as this caller acceptance; failed attempts and withdrawn
+controls remain preserved. This closes only the availability-probe Linux gap,
+not current-wheel shared UI, new-machine, release/rollback or scientific RSI.

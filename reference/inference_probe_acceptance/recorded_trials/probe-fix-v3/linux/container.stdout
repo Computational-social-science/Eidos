@@ -1,0 +1,41 @@
+Looking in links: /wheels
+Ignoring contourpy: markers 'python_full_version < "3.12"' don't match your environment
+Ignoring numpy: markers 'python_full_version < "3.12"' don't match your environment
+Processing /wheels/contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (from -r /input/core-requirements.txt (line 77))
+Processing /wheels/cycler-0.12.1-py3-none-any.whl (from -r /input/core-requirements.txt (line 149))
+Processing /wheels/fonttools-4.67.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from -r /input/core-requirements.txt (line 153))
+Processing /wheels/kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from -r /input/core-requirements.txt (line 213))
+Processing /wheels/matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from -r /input/core-requirements.txt (line 338))
+Processing /wheels/numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (from -r /input/core-requirements.txt (line 470))
+Processing /wheels/packaging-26.3-py3-none-any.whl (from -r /input/core-requirements.txt (line 541))
+Processing /wheels/pillow-13.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (from -r /input/core-requirements.txt (line 545))
+Processing /wheels/pyparsing-3.3.3-py3-none-any.whl (from -r /input/core-requirements.txt (line 630))
+Processing /wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl (from -r /input/core-requirements.txt (line 634))
+Processing /wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (from -r /input/core-requirements.txt (line 638))
+Processing /wheels/six-1.17.0-py2.py3-none-any.whl (from -r /input/core-requirements.txt (line 688))
+Installing collected packages: six, pyyaml, pyparsing, pillow, packaging, numpy, kiwisolver, fonttools, cycler, python-dateutil, contourpy, matplotlib
+Successfully installed contourpy-1.4.0 cycler-0.12.1 fonttools-4.67.0 kiwisolver-1.5.1 matplotlib-3.11.2 numpy-2.5.4 packaging-26.3 pillow-13.0.0 pyparsing-3.3.3 python-dateutil-2.9.0.post0 pyyaml-6.0.3 six-1.17.0
+Looking in links: /wheels
+Ignoring contourpy: markers 'python_full_version < "3.12"' don't match your environment
+Ignoring numpy: markers 'python_full_version < "3.12"' don't match your environment
+Processing /wheels/contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (from -r /input/core-requirements.txt (line 77))
+Processing /wheels/cycler-0.12.1-py3-none-any.whl (from -r /input/core-requirements.txt (line 149))
+Processing /wheels/fonttools-4.67.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from -r /input/core-requirements.txt (line 153))
+Processing /wheels/kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from -r /input/core-requirements.txt (line 213))
+Processing /wheels/matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (from -r /input/core-requirements.txt (line 338))
+Processing /wheels/numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (from -r /input/core-requirements.txt (line 470))
+Processing /wheels/packaging-26.3-py3-none-any.whl (from -r /input/core-requirements.txt (line 541))
+Processing /wheels/pillow-13.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (from -r /input/core-requirements.txt (line 545))
+Processing /wheels/pyparsing-3.3.3-py3-none-any.whl (from -r /input/core-requirements.txt (line 630))
+Processing /wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl (from -r /input/core-requirements.txt (line 634))
+Processing /wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (from -r /input/core-requirements.txt (line 638))
+Processing /wheels/six-1.17.0-py2.py3-none-any.whl (from -r /input/core-requirements.txt (line 688))
+Installing collected packages: six, pyyaml, pyparsing, pillow, packaging, numpy, kiwisolver, fonttools, cycler, python-dateutil, contourpy, matplotlib
+Successfully installed contourpy-1.4.0 cycler-0.12.1 fonttools-4.67.0 kiwisolver-1.5.1 matplotlib-3.11.2 numpy-2.5.4 packaging-26.3 pillow-13.0.0 pyparsing-3.3.3 python-dateutil-2.9.0.post0 pyyaml-6.0.3 six-1.17.0
+Processing /input/eidos-0.4.12-py3-none-any.whl
+Installing collected packages: eidos
+Successfully installed eidos-0.4.12
+Processing /input/eidos-0.5.0-py3-none-any.whl
+Installing collected packages: eidos
+Successfully installed eidos-0.5.0
+{"status": "PASS", "record": "/tmp/trial/results/record.json", "wheel_sha256": {"old": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7", "new": "57f7e6481aa7f706420e3a45ba3052a10c43da58050435167dadfce99cc94b2c"}}

@@ -1,0 +1,6 @@
+{
+  "status": "PASS",
+  "scope": "Native Windows normal independent prefixes/dependency sets and source-controller HTTP/browser; production migration and new-wheel Linux worker protocol remain unqualified",
+  "wheel_sha256": "57f7e6481aa7f706420e3a45ba3052a10c43da58050435167dadfce99cc94b2c",
+  "hardlink_note": "These completed measurement records predate the later deliberately bad METADATA write. All affected known metadata aliases were restored exactly; see probe profile recovery. Prefix separation is not a mutable-file isolation guarantee. Future trial setup uses copy mode."
+}

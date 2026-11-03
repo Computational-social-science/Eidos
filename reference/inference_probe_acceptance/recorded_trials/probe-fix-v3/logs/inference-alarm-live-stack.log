@@ -1,0 +1,29 @@
+Downloading py-spy (1.8MiB)
+ Downloaded py-spy
+Installed 1 package in 168ms
+Process 42664: "C:\Users\Administrator\AppData\Local\Programs\Python\Python312\python.exe" tools/audit_chains.py --only inference --json
+Python v3.12.4 (C:\Users\Administrator\AppData\Local\Programs\Python\Python312\python.exe)
+
+Thread 53060 (idle): "MainThread"
+    Thread._wait_for_tstate_lock (threading.py:1167)
+    Thread.join (threading.py:1147)
+    Popen._communicate (subprocess.py:1628)
+    Popen.communicate (subprocess.py:1209)
+    run (subprocess.py:559)
+    ModelManager._check_ollama (inference\__init__.py:178)
+    ModelManager.__init__ (inference\__init__.py:168)
+    audit_inference (audit_chains.py:299)
+    _execute (audit_chains.py:446)
+    _owned (audit_chains.py:431)
+    main (audit_chains.py:360)
+    <module> (audit_chains.py:520)
+Thread 55092 (idle): "Thread-1 (_readerthread)"
+    Popen._readerthread (subprocess.py:1599)
+    Thread.run (threading.py:1010)
+    Thread._bootstrap_inner (threading.py:1073)
+    Thread._bootstrap (threading.py:1030)
+Thread 44228 (idle): "Thread-2 (_readerthread)"
+    Popen._readerthread (subprocess.py:1599)
+    Thread.run (threading.py:1010)
+    Thread._bootstrap_inner (threading.py:1073)
+    Thread._bootstrap (threading.py:1030)

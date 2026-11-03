@@ -1,0 +1,10 @@
+{
+  "schema": "eidos.source-audit-profile.v1",
+  "status": "PASS",
+  "source_sha256": "3d195bc4f6944e9d31afcd613ff6bd5ddc5535d130319a477402e8f2f562bbe3",
+  "distribution_sha256": "63382bd04f5171ce3b7386e55ce3cfce89e47f563b793efbb72ab087a2530877",
+  "scope": "Completed source audit; exact frozen source is identified by SDK/tools/tests plus version/lock/README/claims input digest in SELF_AUDIT.json. This is not an installed-controller release or scientific RSI.",
+  "stable_release": "0.4.12",
+  "candidate_version": "0.5.0 development",
+  "publication_blocker": "Release history still points to stable 0.4.12. versioning.py --check refuses this unreleased branch. Resolve during versioned release, not by presenting a development checkpoint as a release."
+}

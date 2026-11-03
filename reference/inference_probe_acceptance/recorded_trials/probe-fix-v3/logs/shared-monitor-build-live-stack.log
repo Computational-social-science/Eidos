@@ -1,0 +1,24 @@
+Process 55208: "C:\Users\Administrator\AppData\Local\Programs\Python\Python312\python.exe" tools/build_site.py --check
+Python v3.12.4 (C:\Users\Administrator\AppData\Local\Programs\Python\Python312\python.exe)
+
+Thread 15908 (idle): "MainThread"
+    Thread._wait_for_tstate_lock (threading.py:1167)
+    Thread.join (threading.py:1151)
+    Popen._communicate (subprocess.py:1628)
+    Popen.communicate (subprocess.py:1209)
+    run (subprocess.py:550)
+    chains (build_site.py:63)
+    collect (build_site.py:225)
+    _build (build_site.py:756)
+    main (build_site.py:746)
+    <module> (build_site.py:795)
+Thread 54736 (idle): "Thread-1 (_readerthread)"
+    Popen._readerthread (subprocess.py:1599)
+    Thread.run (threading.py:1010)
+    Thread._bootstrap_inner (threading.py:1073)
+    Thread._bootstrap (threading.py:1030)
+Thread 27996 (idle): "Thread-2 (_readerthread)"
+    Popen._readerthread (subprocess.py:1599)
+    Thread.run (threading.py:1010)
+    Thread._bootstrap_inner (threading.py:1073)
+    Thread._bootstrap (threading.py:1030)

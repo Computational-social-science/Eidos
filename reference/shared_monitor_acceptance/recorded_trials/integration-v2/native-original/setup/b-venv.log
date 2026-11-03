@@ -1,0 +1,4 @@
+Using CPython 3.12.4 interpreter at: C:\Users\Administrator\.cache\eidos-monitor-dev-venv\Scripts\python.exe
+Creating virtual environment with seed packages at: C:\Users\Administrator\.cache\eidos-cli-acceptance\shared-monitor-native-26b0c0fcc4\env-b
+ + pip==26.2.1
+Activate with: C:\Users\Administrator\.cache\eidos-cli-acceptance\shared-monitor-native-26b0c0fcc4\env-b\Scripts\activate

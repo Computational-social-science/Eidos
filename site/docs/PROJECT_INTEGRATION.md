@@ -60,7 +60,12 @@ alone deliberately leaves scientific status UNRUN/REFUSED. The developer must
 provide a real domain validator: a generic agent cannot invent a passing
 acceptance rule on behalf of the result it proposes. A later enrollment step
 should explicitly attach that workspace to the optional central monitor;
-`eidos monitor` and an enrollment command are not currently delivered.
+`eidos monitor` and an enrollment command are not currently delivered in a
+stable release. The `feature/shared-monitor` development candidate adds `observe` and `enroll`,
+bounded aggregation and dashboard cards. Actual normal Windows/Linux worker
+installations, native HTTP and desktop/mobile UI controls are retained in its
+reference profile. This does not mean the current 8765 process has adopted that
+protocol; installed controller packaging and production migration remain open.
 
 ```text
 research-project/                 central control workspace/
@@ -268,18 +273,24 @@ of scientific gates, execution ownership, evidence binding or recovery.
 | Versioned wheel / future PyPI distribution | Default SDK dependency per research project | Wheels exist; no PyPI publication or ownership of a PyPI name is established here. |
 | Agent instructions plus CLI / future generic MCP adapter | Natural-language entry for an existing local model or coding agent | The Barron Paper2Agent adapter is case-specific. A general EIDOS research agent is not delivered by that adapter. |
 | Central local dashboard | Aggregate independent project observations | Existing monitor reads this checkout's registry and status files. Installing SDKs elsewhere does not auto-register them. |
-| Project template | Minimal claims, validator, report and evidence conventions | Existing bootstrap is repository-based and its default measurement needs the local decision service. A model-free installed initializer remains to be built. |
+| Project template | Minimal claims, validator, report and evidence conventions | The repository bootstrap's default measurement needs the local decision service. A model-free installed initializer exists in the unreleased 0.5.0 candidate; it is not delivered in stable 0.4.12. |
 | GitHub fork | Modify EIDOS itself and contribute patches upstream | Useful for framework development; ordinary scientific projects should depend on a pinned release instead of maintaining a framework fork. |
 | Container | Optional reproducible execution profile | Qualified reference profiles are not a universal production deployment image. |
 
 A distribution name need not equal its Python import namespace. The current
-distribution is named `eidos` and uses the generic `framework` namespace. Before
-public-index publication, verify publisher rights/name availability and evaluate
+distribution is named `eidos` and uses the generic `framework` namespace. The
+[public PyPI `eidos` project](https://pypi.org/project/eidos/), checked on
+2026-11-02, is a different astronomy project linked to
+`ratt-ru/eidos`. Do not advertise `pip install eidos` as installation of this
+repository. A distinct public distribution name is required unless legitimate
+publisher rights are established; no alternative name is reserved by this plan.
+Before public-index publication, verify publisher rights/name availability and evaluate
 an `eidos` import namespace with a documented compatibility transition. Do not
 tell users to run unqualified `pip install eidos` and assume it is this project.
 The installed `eidos init/check/status/report/feedback` entry is being qualified
-in the unreleased 0.5.0 branch. `eidos monitor` and generic enrollment remain
-proposed. Stable 0.4.12 does not provide these new console entry points.
+in the unreleased 0.5.0 branch. `eidos monitor` remains proposed. Explicit
+enrollment has a separate uncommitted prototype, without completed central
+ingestion or deployment. Stable 0.4.12 provides none of these new console entries.
 
 ### What can be used now
 
@@ -464,3 +475,159 @@ Primary distribution references:
 [Python package names and import names](https://packaging.python.org/en/latest/discussions/distribution-package-vs-import-package/),
 [packaging flow](https://packaging.python.org/en/latest/flow/),
 [GitHub fork workflow](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/fork-a-repo?tool=webui).
+
+## Downstream adoption contract and next acceptance campaign
+
+This section is the proposed product contract, not a declaration that the
+shared-monitor and feedback features have shipped. The default user should need
+one verified install, one project initialization and one explicit optional
+monitor enrollment. No EIDOS checkout, model API subscription or framework fork
+should be necessary for routine use. Research-specific validation is still
+required; initialization cannot know the scientific acceptance rule of an
+arbitrary discipline.
+
+### What a project actually reuses
+
+The reusable capability is the executable contract: bounded command ownership,
+declared-output rejection, provenance and input binding, independent verification
+interfaces, reproducible delivery, and retained incident evidence. Domain
+operators and acceptance protocols remain scoped to their qualified tasks. For
+example, the Softmax repair can supply a numerical operator, independent gradient
+checks and broken controls to a new compatible consumer. It cannot certify a new
+backend, dtype, training outcome or scientific claim merely by being imported.
+
+The public interface should hide the installation tree and central file layout.
+An Agent may translate a request into these same versioned operations, explain
+refusals and prepare a repair proposal. It must return the core receipt rather
+than generate a second verdict. A packaged Skill/Agent is an interaction adapter;
+the installed SDK/CLI remains responsible for execution and evidence semantics.
+An MCP adapter is optional when the host already supports these console tools.
+
+Keep heavy capabilities optional. Core setup must not install every local model,
+GPU runtime or all tracking and publication dependencies. An existing study keeps
+its locked environment; dependency conflicts require an explicitly qualified
+worker environment and interpreter, not an automatic replacement of the study's
+PyTorch/CUDA stack. The monitor itself has a separate environment.
+
+### One shared view, independent workers
+
+The target arrangement is:
+
+```text
+study A: source/data/lock + pinned SDK + local validator -- observation --+
+study B: source/data/lock + pinned SDK + local validator -- observation --+--> local monitor
+study C: source/data/lock + pinned SDK + local validator -- observation --+    127.0.0.1:8765
+```
+
+All three can share the same local panel after explicit registration. They do
+not share scientific verdicts or writable run histories. The panel must identify
+each worker's actual runtime/version, evidence age and repair state. A failed
+worker cannot block the others or refresh an old scientific result's timestamp.
+A project remains usable through CLI/CI while the panel is unavailable.
+
+The minimum acceptance campaign uses two distinct noneditable installations,
+different project environments and at least two projects. Exercise the same
+display name with distinct IDs, a worker timeout, a failed scientific run,
+changed runtime pins, source/data mutation and unchanged historical results.
+Require continuing central samples, correct project isolation and no research
+producer execution from read-only observation. Then exercise the actual UI.
+Focused protocol tests alone cannot close this acceptance campaign.
+
+### A closed feedback example
+
+Suppose a downstream validator finds an EIDOS numerical operator returning a
+finite loss but an incorrect derivative. Record the original failing run and
+identities, then build a minimal shareable fixture with an independent reference.
+Retain both the failing old version and a broken candidate. Only a candidate
+passing that reference, unaffected controls and installed replay can be released.
+The originating project then explicitly trials the new immutable version and
+replays its original failure. Close the incident only after that downstream
+verification; a merged PR or a green EIDOS unit suite is insufficient.
+
+Link incident ID -> regression ID -> candidate commit -> validation receipts ->
+release artifact hash -> originating-project replay. The current metadata-only
+feedback ZIP is just the first link. Extend it with project-local references and
+optional sanitized reproduction inputs; do not automatically collect private
+data or upload an issue. Classify scientific negative results separately from
+infrastructure defects. Refused and inconclusive repairs remain visible.
+
+### What sustained evolution means
+
+Retain the resident sampler and bounded, allowlisted operational self-healing.
+Run repair campaigns on actionable incidents or explicit requests, with finite
+budgets and retry ceilings. A healthy idle system need not change source.
+Compatibility-qualified fixes become new releases; existing studies retain
+their version pins until replay succeeds. Do not reinstate external CRON-driven
+research runs or silently update every project to the newest package.
+
+Measure reproducible-defect closure, false acceptance, recurring failures,
+regressions, time and compute to downstream verification. Separately evaluate
+scientific quality on fresh tasks under preregistered, matched budgets and
+independent acceptance. Attribute human/external-assistant contributions. A claim
+of recursive improvement additionally needs successive EIDOS-produced procedures
+to improve their ability to produce further accepted improvements. Self-healing,
+package upgrades and developer-written patches do not establish that result.
+
+Immediate delivery order remains P1 installed CLI qualification/release, P2
+shared-worker dashboard acceptance, P3 one fully closed downstream core-defect
+incident, then P4 a thin Agent adapter. Public PyPI naming and compatibility work
+must precede index publication, but need not delay verified wheel reuse.
+
+
+## Implementation checkpoint, 2026-11-03
+
+The shared-worker source audit completed with 1,309 passing tests, six skips,
+77% whole-framework coverage and ten passing chains with one skip; source and
+installed distribution identities remained stable during measurement. The
+normal installed integration-v2 wheel is bound by SHA256
+`63a5af9706b5370cc934c23c1fbac86933dfc2f3aca171b8f63f2d0378751c98`.
+Actual native Windows/public Unicode-path and network-disabled same-host Linux
+worker trials remain separate from the source audit. Production stays 0.4.12.
+
+The English [downstream quickstart](https://github.com/Computational-social-science/Eidos/blob/feature/shared-monitor/docs/DOWNSTREAM-QUICKSTART.md)
+provides exact candidate installation and project-local commands. The
+[delivery plan](https://github.com/Computational-social-science/Eidos/blob/feature/shared-monitor/docs/REUSE-DELIVERY-PLAN.md)
+defines naming migration, controller packaging, feedback replay and RSI evidence.
+The thin `adapters/agents/eidos-project` instruction adapter calls the same CLI;
+its existence is not end-to-end agent or scientific-reasoning qualification.
+No generic MCP server, public PyPI distribution or completed P3 feedback lifecycle
+is claimed. No existing service is restarted by this checkpoint.
+
+
+## Renewed probe-repair checkpoint, 2026-11-03
+
+The earlier 1,309-pass source audit is historical. After the real inherited-pipe
+availability defect and README reorganization, the renewed stable-input audit
+measured **1,317 passed, six skipped, 77% whole-framework coverage, ten passing
+chains and one skip**. Source identity is
+`76db9d342993a8da3dc97ff564ca6a1ff3d52eb221249ef89928ff322fdd5ed1`.
+The current unreleased installed wheel SHA256 is
+`57f7e6481aa7f706420e3a45ba3052a10c43da58050435167dadfce99cc94b2c`.
+
+Actual normal Windows old/new wheel controls reproduce the old defect and verify
+inner cleanup before outer-owner termination. Current-wheel CLI init/refusal/
+status/local-feedback and a new shared-controller desktop/mobile replay pass.
+The initial harness result and a hardlink-contaminated metadata control are
+withdrawn; exact restoration and an isolated atomic v2 control are retained.
+Distinct prefixes do not by themselves establish mutable-file independence; use
+copy mode for fault injection. The existing stable environment remains 0.4.12.
+
+Current-repair Linux qualification remains open after two failed container
+attempts; no valid counterfactual was accepted there. Production later recovered
+OK naturally without deployment or state edits, so it is not evidence that this
+patch was applied. Versioned publication/CI, installed-controller packaging,
+protected production migration and the full feedback release/replay/rollback
+lifecycle remain open. See `RUNTIME-INCIDENT-INFERENCE-2026-11-03.md` and the
+`reference/inference_probe_acceptance` records in the development branch.
+
+
+### Subsequent Linux caller qualification
+
+The missing Linux entry witnesses were traced to a noexec scratch mount. With
+explicit executable private scratch, a fresh network-disabled/read-only-root
+container passed the actual installed old/new probe campaign with unchanged
+input/wheelhouse/SDK/metadata identities and verified owned-container cleanup.
+The final `reference/inference_probe_acceptance/recorded_trials/probe-fix-v3`
+profile supersedes v2 as this caller acceptance; failed attempts and withdrawn
+controls remain preserved. This closes only the availability-probe Linux gap,
+not current-wheel shared UI, new-machine, release/rollback or scientific RSI.

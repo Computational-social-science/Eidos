@@ -1,0 +1,154 @@
+F..F                                                                     [100%]
+================================== FAILURES ===================================
+_ test_private_probe_closes_descendants_and_reports_cli_outcome[inherited-True] _
+
+args = ['C:\\Users\\Administrator\\.cache\\eidos-ollama-probe-dev-venv\\Scripts\\python.exe', '-X', 'utf8', '-c', 'import sys...ble":ModelManager().ollama_available}),flush=True)', 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\ollama-probe']
+cwd = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2338/test_private_probe_closes_desc0/inherited')
+timeout = 7
+env = {'AGENT_SPAWN_LIMIT': '8', 'APPDATA': 'C:\\Users\\Administrator\\AppData\\Roaming', 'CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS': '1', 'CLAUDE_CODE_SKILL_TIMEOUT': '300', ...}
+
+    def _windows(args: list[str], cwd: Path, timeout: float,
+                 env: Mapping[str, str] | None) -> subprocess.CompletedProcess:
+        helper = Path(__file__).with_name("_windows_job.py")
+        with tempfile.TemporaryDirectory(prefix="eidos-process-status-") as temporary:
+            status = Path(temporary) / "status.json"
+            command = [sys.executable, "-I", "-X", "utf8", str(helper), str(status), *args]
+            try:
+>               result = subprocess.run(command, cwd=cwd, env=env, stdin=subprocess.DEVNULL,
+                                        capture_output=True, text=True, encoding="utf-8",
+                                        errors="replace", timeout=timeout,
+                                        creationflags=subprocess.CREATE_NO_WINDOW)
+
+framework\_process_tree.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\subprocess.py:550: in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\subprocess.py:1209: in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <Popen: returncode: 1 args: ['C:\\Users\\Administrator\\.cache\\eidos-ollama...>
+input = None, endtime = 19337.984, orig_timeout = 7
+
+    def _communicate(self, input, endtime, orig_timeout):
+        # Start reader threads feeding into a list hanging off of this
+        # object, unless they've already been started.
+        if self.stdout and not hasattr(self, "_stdout_buff"):
+            self._stdout_buff = []
+            self.stdout_thread = \
+                    threading.Thread(target=self._readerthread,
+                                     args=(self.stdout, self._stdout_buff))
+            self.stdout_thread.daemon = True
+            self.stdout_thread.start()
+        if self.stderr and not hasattr(self, "_stderr_buff"):
+            self._stderr_buff = []
+            self.stderr_thread = \
+                    threading.Thread(target=self._readerthread,
+                                     args=(self.stderr, self._stderr_buff))
+            self.stderr_thread.daemon = True
+            self.stderr_thread.start()
+    
+        if self.stdin:
+            self._stdin_write(input)
+    
+        # Wait for the reader threads, or time out.  If we time out, the
+        # threads remain reading and the fds left open in case the user
+        # calls communicate again.
+        if self.stdout is not None:
+            self.stdout_thread.join(self._remaining_time(endtime))
+            if self.stdout_thread.is_alive():
+>               raise TimeoutExpired(self.args, orig_timeout)
+E               subprocess.TimeoutExpired: Command '['C:\\Users\\Administrator\\.cache\\eidos-ollama-probe-dev-venv\\Scripts\\python.exe', '-I', '-X', 'utf8', 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\ollama-probe\\framework\\_windows_job.py', 'C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\eidos-process-status-_b5rq_9a\\status.json', 'C:\\Users\\Administrator\\.cache\\eidos-ollama-probe-dev-venv\\Scripts\\python.exe', '-X', 'utf8', '-c', 'import sys,json; sys.path.insert(0,sys.argv[1]); from framework.inference import ModelManager; print(json.dumps({"available":ModelManager().ollama_available}),flush=True)', 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\ollama-probe']' timed out after 7 seconds
+
+..\..\..\AppData\Local\Programs\Python\Python312\Lib\subprocess.py:1630: TimeoutExpired
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2338/test_private_probe_closes_desc0')
+mode = 'inherited', expected = True
+
+    @pytest.mark.parametrize('mode,expected', [('inherited', True), ('failure', False), ('missing', False)])
+    def test_private_probe_closes_descendants_and_reports_cli_outcome(tmp_path, mode, expected):
+        folder = tmp_path / mode
+        fake_ollama(folder, mode)
+        code = ('import sys,json; sys.path.insert(0,sys.argv[1]); '
+                'from framework.inference import ModelManager; '
+                'print(json.dumps({"available":ModelManager().ollama_available}),flush=True)')
+        try:
+>           result = run_tree([sys.executable, '-X', 'utf8', '-c', code, str(ROOT)],
+                              cwd=folder, env=dict(os.environ, PATH=str(folder)), timeout=7)
+
+tests\test_inference_probe_lifetime.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+framework\_process_tree.py:125: in run_tree
+    return _windows(args, cwd, timeout, env) if os.name == "nt" else _posix(args, cwd, timeout, env)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = ['C:\\Users\\Administrator\\.cache\\eidos-ollama-probe-dev-venv\\Scripts\\python.exe', '-X', 'utf8', '-c', 'import sys...ble":ModelManager().ollama_available}),flush=True)', 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\ollama-probe']
+cwd = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2338/test_private_probe_closes_desc0/inherited')
+timeout = 7
+env = {'AGENT_SPAWN_LIMIT': '8', 'APPDATA': 'C:\\Users\\Administrator\\AppData\\Roaming', 'CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS': '1', 'CLAUDE_CODE_SKILL_TIMEOUT': '300', ...}
+
+    def _windows(args: list[str], cwd: Path, timeout: float,
+                 env: Mapping[str, str] | None) -> subprocess.CompletedProcess:
+        helper = Path(__file__).with_name("_windows_job.py")
+        with tempfile.TemporaryDirectory(prefix="eidos-process-status-") as temporary:
+            status = Path(temporary) / "status.json"
+            command = [sys.executable, "-I", "-X", "utf8", str(helper), str(status), *args]
+            try:
+                result = subprocess.run(command, cwd=cwd, env=env, stdin=subprocess.DEVNULL,
+                                        capture_output=True, text=True, encoding="utf-8",
+                                        errors="replace", timeout=timeout,
+                                        creationflags=subprocess.CREATE_NO_WINDOW)
+            except subprocess.TimeoutExpired as exc:
+                # Killing this helper closes its sole Job handle and inherited workers.
+>               raise subprocess.TimeoutExpired(args, timeout, output=exc.output, stderr=exc.stderr) from exc
+E               subprocess.TimeoutExpired: Command '['C:\\Users\\Administrator\\.cache\\eidos-ollama-probe-dev-venv\\Scripts\\python.exe', '-X', 'utf8', '-c', 'import sys,json; sys.path.insert(0,sys.argv[1]); from framework.inference import ModelManager; print(json.dumps({"available":ModelManager().ollama_available}),flush=True)', 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\ollama-probe']' timed out after 7 seconds
+
+framework\_process_tree.py:51: TimeoutExpired
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2338/test_private_probe_closes_desc0')
+mode = 'inherited', expected = True
+
+    @pytest.mark.parametrize('mode,expected', [('inherited', True), ('failure', False), ('missing', False)])
+    def test_private_probe_closes_descendants_and_reports_cli_outcome(tmp_path, mode, expected):
+        folder = tmp_path / mode
+        fake_ollama(folder, mode)
+        code = ('import sys,json; sys.path.insert(0,sys.argv[1]); '
+                'from framework.inference import ModelManager; '
+                'print(json.dumps({"available":ModelManager().ollama_available}),flush=True)')
+        try:
+            result = run_tree([sys.executable, '-X', 'utf8', '-c', code, str(ROOT)],
+                              cwd=folder, env=dict(os.environ, PATH=str(folder)), timeout=7)
+        except subprocess.TimeoutExpired as error:
+>           pytest.fail('availability probe outlived its root because inherited pipes stayed open: ' + str(error))
+E           Failed: availability probe outlived its root because inherited pipes stayed open: Command '['C:\\Users\\Administrator\\.cache\\eidos-ollama-probe-dev-venv\\Scripts\\python.exe', '-X', 'utf8', '-c', 'import sys,json; sys.path.insert(0,sys.argv[1]); from framework.inference import ModelManager; print(json.dumps({"available":ModelManager().ollama_available}),flush=True)', 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\ollama-probe']' timed out after 7 seconds
+
+tests\test_inference_probe_lifetime.py:67: Failed
+_________________ test_probe_does_not_hide_programming_errors _________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001E668191250>
+
+    def test_probe_does_not_hide_programming_errors(monkeypatch):
+        from framework.inference import ModelManager
+        import framework.subprocesses as processes
+    
+        def invalid(*args, **kwargs):
+            raise ValueError('invalid caller configuration')
+    
+        # Keep the pre-fix counterfactual away from the real host CLI as well.
+        monkeypatch.setattr(subprocess, 'run', lambda *a, **kw: subprocess.CompletedProcess(a, 1))
+        monkeypatch.setattr(processes, 'run_tree', invalid)
+>       with pytest.raises(ValueError, match='invalid caller configuration'):
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_inference_probe_lifetime.py:86: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_inference_probe_lifetime.py::test_private_probe_closes_descendants_and_reports_cli_outcome[inherited-True]
+FAILED tests/test_inference_probe_lifetime.py::test_probe_does_not_hide_programming_errors
+2 failed, 2 passed in 7.82s

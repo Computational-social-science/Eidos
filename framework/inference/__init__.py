@@ -172,14 +172,13 @@ class ModelManager:
         self.llama_cpp_port = 18434
     
     def _check_ollama(self) -> bool:
-        """Check if Ollama is available"""
+        """Probe the CLI inside an owned lifetime, including inherited pipes."""
+        from framework.subprocesses import ProcessContainmentError, run_tree
+
         try:
-            from framework.subprocesses import quiet_flags
-            result = subprocess.run(
-                ["ollama", "list"], capture_output=True, text=True, timeout=10, creationflags=quiet_flags()
-            )
+            result = run_tree(["ollama", "list"], cwd=Path.cwd(), timeout=10)
             return result.returncode == 0
-        except Exception:
+        except (OSError, subprocess.TimeoutExpired, ProcessContainmentError):
             return False
     
     def get_model_spec(self, model_name: str) -> Optional[ModelSpec]:

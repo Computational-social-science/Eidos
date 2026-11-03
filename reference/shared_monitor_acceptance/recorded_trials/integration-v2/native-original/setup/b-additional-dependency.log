@@ -1,0 +1,5 @@
+Using Python 3.12.4 environment at: C:\Users\Administrator\.cache\eidos-cli-acceptance\shared-monitor-native-26b0c0fcc4\env-b
+Resolved 2 packages in 869ms
+Installed 2 packages in 1.59s
+ + mpmath==1.3.0
+ + sympy==1.14.0

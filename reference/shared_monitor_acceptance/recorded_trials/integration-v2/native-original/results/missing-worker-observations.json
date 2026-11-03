@@ -1,0 +1,45 @@
+{
+  "schema": "eidos.worker-monitor.v1",
+  "observer_id": "9368024904c94fb78caf6a4fdaed37d3",
+  "seq": 18,
+  "sampled_at": "2026-11-02T16:36:47.352009+00:00",
+  "projects": [
+    {
+      "project_id": "50cc7a7af355483aab7aeffce08678af",
+      "name": "synthetic_positive",
+      "registration_sha256": "7dd904ce732cf55950bc9875bc899845471758559247a80b105a4e05e2ee87e2",
+      "scientific_status": "PASS",
+      "monitor_status": "OBSERVED",
+      "worker": {
+        "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+        "executable": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\shared-monitor-native-26b0c0fcc4\\env-a\\Scripts\\python.exe",
+        "eidos_version": "0.5.0",
+        "distributions_sha256": "5ae5e0ad287b98ff2fc3521d70f33ce3d031edd2866a073d36d64285d7d454b6",
+        "prefix": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\shared-monitor-native-26b0c0fcc4\\env-a",
+        "sdk_source_sha256": "00c1042e056fcf37609ef7e7c42020a31620485ed2a02a3da4df9d30443ab0f1",
+        "sdk_module_count": 50,
+        "installation_mode": "installed"
+      },
+      "observed_at": "2026-11-02T16:36:43.442757+00:00",
+      "run": {
+        "run_id": "ffb4ece003144883835341b27726d34f",
+        "recorded_at": "2026-11-02T16:36:33.631264+00:00",
+        "eidos_version": "0.5.0",
+        "status": "PASS",
+        "execution_status": "PASS",
+        "scientific_status": "PASS",
+        "input_digest": "5f64386f6c1fdbb32aa5ff08e23afa6854cf4e4621ee35a9eb64e54031c3b7e1"
+      }
+    },
+    {
+      "project_id": "65b2961e4d91445e9ee55cf11c0b61bd",
+      "name": "synthetic_negative",
+      "registration_sha256": "cdd99549184e778f124fdfa116ad528e211921bdbe2e47eaf17476fb487a7339",
+      "scientific_status": "UNOBSERVABLE",
+      "monitor_status": "UNAVAILABLE",
+      "reason": "Worker observation failed: ValueError"
+    }
+  ],
+  "registration_errors": [],
+  "scope": "Read-only local worker observations; no research execution or scientific acceptance beyond referenced runs"
+}

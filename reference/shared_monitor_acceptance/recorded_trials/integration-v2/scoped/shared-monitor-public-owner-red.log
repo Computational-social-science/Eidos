@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "C:\Users\Administrator\.cache\eidos-cli-acceptance\public-monitor-entry-ownership-control.py", line 44, in <module>
+    raise AssertionError('Public entry overwrote an existing acceptance target before refusing')
+AssertionError: Public entry overwrote an existing acceptance target before refusing

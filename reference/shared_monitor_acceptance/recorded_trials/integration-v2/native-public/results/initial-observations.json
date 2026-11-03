@@ -1,0 +1,64 @@
+{
+  "schema": "eidos.worker-monitor.v1",
+  "observer_id": "dc42cf12d9434be680fee37fa95af1db",
+  "seq": 18,
+  "sampled_at": "2026-11-02T16:53:52.442706+00:00",
+  "projects": [
+    {
+      "project_id": "7d07835707734c1b850c5389e4bf41ae",
+      "name": "synthetic_negative",
+      "registration_sha256": "82636f96ae7a2ee1ff0981230ae3a53fbd1aa9c2791efb33a612fbb8fdb337ee",
+      "scientific_status": "FAIL",
+      "monitor_status": "OBSERVED",
+      "worker": {
+        "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+        "executable": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\shared monitor \u00b5 2c8a0863\\env-b\\Scripts\\python.exe",
+        "eidos_version": "0.5.0",
+        "distributions_sha256": "27d09642f2eef7675fa7fe7d008d64d22b3e24095d461a20809c4f41c96e20d6",
+        "prefix": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\shared monitor \u00b5 2c8a0863\\env-b",
+        "sdk_source_sha256": "00c1042e056fcf37609ef7e7c42020a31620485ed2a02a3da4df9d30443ab0f1",
+        "sdk_module_count": 50,
+        "installation_mode": "installed"
+      },
+      "observed_at": "2026-11-02T16:53:52.374295+00:00",
+      "run": {
+        "run_id": "95e883f10926488e9f5c71a00f8b5473",
+        "recorded_at": "2026-11-02T16:53:50.002880+00:00",
+        "eidos_version": "0.5.0",
+        "status": "FAIL",
+        "execution_status": "PASS",
+        "scientific_status": "FAIL",
+        "input_digest": "3289135c837a9dc356d25d7251009d69ea972f2c6004eba67f69c5bd73f34b4d"
+      }
+    },
+    {
+      "project_id": "f51de4306eda4ca5abb74b9f97456f7c",
+      "name": "synthetic_positive",
+      "registration_sha256": "68a6e7e3395e7a63e578e2271f28df171dd49501fdab6ff6e9c3c52d4c50a1d9",
+      "scientific_status": "PASS",
+      "monitor_status": "OBSERVED",
+      "worker": {
+        "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+        "executable": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\shared monitor \u00b5 2c8a0863\\env-a\\Scripts\\python.exe",
+        "eidos_version": "0.5.0",
+        "distributions_sha256": "5ae5e0ad287b98ff2fc3521d70f33ce3d031edd2866a073d36d64285d7d454b6",
+        "prefix": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\shared monitor \u00b5 2c8a0863\\env-a",
+        "sdk_source_sha256": "00c1042e056fcf37609ef7e7c42020a31620485ed2a02a3da4df9d30443ab0f1",
+        "sdk_module_count": 50,
+        "installation_mode": "installed"
+      },
+      "observed_at": "2026-11-02T16:53:52.369791+00:00",
+      "run": {
+        "run_id": "66ba6b396610403da52d74b1ce0bb4c3",
+        "recorded_at": "2026-11-02T16:53:41.679939+00:00",
+        "eidos_version": "0.5.0",
+        "status": "PASS",
+        "execution_status": "PASS",
+        "scientific_status": "PASS",
+        "input_digest": "cabe6da619359500e81658e51d94b310a7be2eeb6675856caa26efee18282bd2"
+      }
+    }
+  ],
+  "registration_errors": [],
+  "scope": "Read-only local worker observations; no research execution or scientific acceptance beyond referenced runs"
+}

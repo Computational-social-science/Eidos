@@ -1,0 +1,1 @@
+The first driver result is withdrawn: it did not require both inherited-arm entry witnesses. The original wrong-metadata-control.json is also withdrawn: in-place mutation propagated through uv hardlinks. hardlink-control-recovery.json records restoration; v2 uses atomic replacement and actual positive-identity checks. No withdrawn PASS is acceptance evidence.

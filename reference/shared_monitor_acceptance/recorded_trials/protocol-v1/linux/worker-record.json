@@ -1,0 +1,121 @@
+{
+  "status": "PASS",
+  "observations": [
+    {
+      "project_id": "312f1d5dafda42e48ffc6d5e1c6272d4",
+      "registration": {
+        "schema": "eidos.monitor-registration.v1",
+        "project_id": "312f1d5dafda42e48ffc6d5e1c6272d4",
+        "project_root": "/tmp/studies/a",
+        "name": "same_name",
+        "python": "/tmp/env-a/bin/python",
+        "expected_worker": {
+          "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
+          "executable": "/usr/local/bin/python3.12",
+          "eidos_version": "0.5.0",
+          "distributions_sha256": "1d52a06e34b9c5521e3856ad3d6940bec95a3d81988c666bf6e3c3ae6447d358",
+          "prefix": "/tmp/env-a",
+          "sdk_source_sha256": "a51c4ba7ef0449893ca9087ef7515dcea1e57624ed3eff8790ee4cd903051962",
+          "sdk_module_count": 50,
+          "installation_mode": "installed"
+        },
+        "created_at": "2026-11-02T16:03:27.601766+00:00",
+        "updated_at": "2026-11-02T16:03:27.601766+00:00",
+        "scope": "Explicit local runtime/source binding; no experiment execution or remote attestation"
+      },
+      "observation": {
+        "schema": "eidos.worker-observation.v1",
+        "status": "OBSERVED",
+        "nonce": "d3e7f28d6adf4a6fa2239cf174787ee4",
+        "observed_at": "2026-11-02T16:03:27.913792+00:00",
+        "project": {
+          "id": "312f1d5dafda42e48ffc6d5e1c6272d4",
+          "name": "same_name",
+          "root": "/tmp/studies/a"
+        },
+        "worker": {
+          "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
+          "executable": "/usr/local/bin/python3.12",
+          "eidos_version": "0.5.0",
+          "distributions_sha256": "1d52a06e34b9c5521e3856ad3d6940bec95a3d81988c666bf6e3c3ae6447d358",
+          "sdk_source_sha256": "a51c4ba7ef0449893ca9087ef7515dcea1e57624ed3eff8790ee4cd903051962",
+          "sdk_module_count": 50,
+          "prefix": "/tmp/env-a",
+          "installation_mode": "installed"
+        },
+        "run": {
+          "status": "UNRUN",
+          "scientific_status": "UNRUN",
+          "execution_status": "UNRUN"
+        },
+        "scientific_status": "UNRUN",
+        "binding": {
+          "state": "STABLE",
+          "current_input_digest": "3f0514c77d3ddeb33915b74459ff9a722ca3867a0bed0d8370b829fd053b2f00",
+          "scope": "Before/after observation window, not scientific acceptance"
+        },
+        "scope": "Read-only local source/metadata and cached-verdict observation; no research execution or scientific acceptance beyond the referenced run",
+        "operation": "observe"
+      }
+    },
+    {
+      "project_id": "0d34ccbd5fbe4a27955c03696f4f7916",
+      "registration": {
+        "schema": "eidos.monitor-registration.v1",
+        "project_id": "0d34ccbd5fbe4a27955c03696f4f7916",
+        "project_root": "/tmp/studies/b",
+        "name": "same_name",
+        "python": "/tmp/env-b/bin/python",
+        "expected_worker": {
+          "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
+          "executable": "/usr/local/bin/python3.12",
+          "eidos_version": "0.5.0",
+          "distributions_sha256": "1d52a06e34b9c5521e3856ad3d6940bec95a3d81988c666bf6e3c3ae6447d358",
+          "prefix": "/tmp/env-b",
+          "sdk_source_sha256": "a51c4ba7ef0449893ca9087ef7515dcea1e57624ed3eff8790ee4cd903051962",
+          "sdk_module_count": 50,
+          "installation_mode": "installed"
+        },
+        "created_at": "2026-11-02T16:03:28.652685+00:00",
+        "updated_at": "2026-11-02T16:03:28.652685+00:00",
+        "scope": "Explicit local runtime/source binding; no experiment execution or remote attestation"
+      },
+      "observation": {
+        "schema": "eidos.worker-observation.v1",
+        "status": "OBSERVED",
+        "nonce": "7e311b645ed04405996aadd66c52efd0",
+        "observed_at": "2026-11-02T16:03:28.967189+00:00",
+        "project": {
+          "id": "0d34ccbd5fbe4a27955c03696f4f7916",
+          "name": "same_name",
+          "root": "/tmp/studies/b"
+        },
+        "worker": {
+          "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
+          "executable": "/usr/local/bin/python3.12",
+          "eidos_version": "0.5.0",
+          "distributions_sha256": "1d52a06e34b9c5521e3856ad3d6940bec95a3d81988c666bf6e3c3ae6447d358",
+          "sdk_source_sha256": "a51c4ba7ef0449893ca9087ef7515dcea1e57624ed3eff8790ee4cd903051962",
+          "sdk_module_count": 50,
+          "prefix": "/tmp/env-b",
+          "installation_mode": "installed"
+        },
+        "run": {
+          "status": "UNRUN",
+          "scientific_status": "UNRUN",
+          "execution_status": "UNRUN"
+        },
+        "scientific_status": "UNRUN",
+        "binding": {
+          "state": "STABLE",
+          "current_input_digest": "f8849899285a965123a72bcf5e82306ffc0f703ceafb408cf66ad68c9af685ee",
+          "scope": "Before/after observation window, not scientific acceptance"
+        },
+        "scope": "Read-only local source/metadata and cached-verdict observation; no research execution or scientific acceptance beyond the referenced run",
+        "operation": "observe"
+      }
+    }
+  ],
+  "resolved_entry_negative_exit": 1,
+  "scope": "Two real installed Linux venvs, same core dependencies, isolated project IDs and symlink launch; no aggregator/UI, independent-machine, scientific or RSI acceptance"
+}

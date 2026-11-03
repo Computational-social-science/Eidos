@@ -1,0 +1,72 @@
+modules: 130   hard edges: 65   soft edges: 88
+
+most depended-on (fan-in):
+  framework.artifacts          19 total, 8 hard
+  framework.project            12 total, 4 hard
+  framework.subprocesses       10 total, 6 hard
+  tools.consumer_snapshot       7 total, 1 hard
+  framework.validity            6 total, 3 hard
+  framework.inference.llama_cpp  5 total, 5 hard
+
+widest importers (hard/soft out):
+  tools.audit_chains           0 hard, 11 soft
+  tools.watch_pipeline         2 hard, 9 soft
+  framework.cli                6 hard, 4 soft
+  tools.build_site             2 hard, 8 soft
+  tools.numerics_case          2 hard, 4 soft
+  framework.validity           1 hard, 4 soft
+
+process / network / absolute-path / env:
+  framework._posix_job         subprocess=1 network=0 abs_path=0 env=0
+  framework._process_tree      subprocess=1 network=0 abs_path=0 env=0
+  framework._windows_job       subprocess=1 network=0 abs_path=0 env=0
+  framework.decision           subprocess=0 network=2 abs_path=0 env=2
+  framework.gates              subprocess=1 network=0 abs_path=0 env=1
+  framework.inference          subprocess=1 network=5 abs_path=0 env=4
+  framework.inference.llama_cpp subprocess=0 network=2 abs_path=0 env=1
+  framework.model_ab           subprocess=0 network=0 abs_path=0 env=1
+  framework.monitor_registry   subprocess=1 network=0 abs_path=0 env=1
+  framework.project            subprocess=1 network=0 abs_path=0 env=0
+  framework.quarto_bridge      subprocess=1 network=0 abs_path=0 env=3
+  framework.recovery           subprocess=1 network=3 abs_path=1 env=6
+  framework.reproduction       subprocess=1 network=0 abs_path=0 env=0
+  framework.services           subprocess=0 network=2 abs_path=0 env=0
+  framework.subprocesses       subprocess=1 network=0 abs_path=0 env=0
+  framework.tracking           subprocess=1 network=0 abs_path=0 env=0
+  framework.tracking._worker   subprocess=0 network=0 abs_path=0 env=2
+  framework.updates            subprocess=1 network=2 abs_path=0 env=6
+  framework.validity.lean_audit subprocess=1 network=0 abs_path=0 env=0
+  framework.verifiers.citations subprocess=1 network=0 abs_path=0 env=0
+  tools.audit_chains           subprocess=1 network=0 abs_path=0 env=0
+  tools.audit_coupling         subprocess=0 network=0 abs_path=1 env=0
+  tools.audit_model_readiness  subprocess=0 network=2 abs_path=0 env=0
+  tools.audit_publication      subprocess=1 network=0 abs_path=0 env=0
+  tools.audit_site             subprocess=1 network=0 abs_path=0 env=1
+  tools.build_pipeline         subprocess=1 network=1 abs_path=0 env=2
+  tools.build_site             subprocess=1 network=0 abs_path=0 env=1
+  tools.check_render           subprocess=1 network=0 abs_path=0 env=1
+  tools.contract_snapshot      subprocess=1 network=2 abs_path=0 env=4
+  tools.cron_entry             subprocess=1 network=0 abs_path=0 env=6
+  tools.dashboard              subprocess=0 network=0 abs_path=1 env=0
+  tools.evolution              subprocess=1 network=0 abs_path=0 env=0
+  tools.export_langfuse        subprocess=0 network=2 abs_path=0 env=3
+  tools.grokking_analysis      subprocess=0 network=0 abs_path=0 env=1
+  tools.health                 subprocess=0 network=2 abs_path=0 env=0
+  tools.install_autostart      subprocess=1 network=0 abs_path=0 env=1
+  tools.install_hermes_cron    subprocess=0 network=0 abs_path=0 env=1
+  tools.launch_runtime         subprocess=1 network=0 abs_path=0 env=1
+  tools.measure_sciencersi_load subprocess=1 network=1 abs_path=0 env=2
+  tools.monitor_supervisor     subprocess=1 network=0 abs_path=0 env=1
+  tools.numerics_case          subprocess=1 network=0 abs_path=0 env=1
+  tools.probes                 subprocess=0 network=1 abs_path=0 env=0
+  tools.publication            subprocess=1 network=0 abs_path=0 env=0
+  tools.record_self_audit      subprocess=1 network=0 abs_path=0 env=0
+  tools.refresh_chains         subprocess=1 network=0 abs_path=0 env=0
+  tools.release_gate           subprocess=1 network=0 abs_path=0 env=1
+  tools.serve_model            subprocess=1 network=2 abs_path=0 env=4
+  tools.serve_site             subprocess=1 network=1 abs_path=0 env=0
+  tools.soak_monitor           subprocess=0 network=1 abs_path=0 env=0
+  tools.watch_pipeline         subprocess=0 network=1 abs_path=0 env=3
+  tools.watchdog               subprocess=0 network=0 abs_path=1 env=0
+
+cycles: none

@@ -1,0 +1,11 @@
+{
+  "schema": "eidos.agent-installation.v1",
+  "target": "C:\\Users\\Administrator\\.codex\\skills\\eidos-project",
+  "files_sha256": {
+    "SKILL.md": "c5e79b1e6837b085e8741a80f3db7f5a817896b2b926171c7d04cb9713637ee6",
+    "agents/openai.yaml": "765a799ce9a24868875169101ff8f2697daf433cc278dbe8f67eb7dea4fd0077"
+  },
+  "registry_backup": "C:\\Users\\Administrator\\.agents\\research-environment\\resource-registry.before-eidos-adapter-20261103.json",
+  "status": "PASS",
+  "scope": "Byte-identical instruction adapter installation, no live Agent behavior claim"
+}

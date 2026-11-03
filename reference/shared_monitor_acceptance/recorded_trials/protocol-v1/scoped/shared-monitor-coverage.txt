@@ -1,0 +1,8 @@
+Name                              Stmts   Miss  Cover
+-----------------------------------------------------
+framework\cli.py                    162     17    90%
+framework\monitor_registry.py       103      9    91%
+framework\project_state.py           49      5    90%
+framework\worker_observation.py      55      2    96%
+-----------------------------------------------------
+TOTAL                               369     33    91%

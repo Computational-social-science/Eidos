@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "source_sha256": "76db9d342993a8da3dc97ff564ca6a1ff3d52eb221249ef89928ff322fdd5ed1",
+  "tests_passed": 1317,
+  "tests_skipped": 6,
+  "framework_coverage_percent": 77,
+  "release": false
+}

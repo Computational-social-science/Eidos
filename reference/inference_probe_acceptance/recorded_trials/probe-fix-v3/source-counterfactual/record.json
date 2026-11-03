@@ -1,0 +1,9 @@
+{
+  "scope": "Immutable 0.4.12 source counterfactual, current strengthened private inherited-pipe tests; no host Ollama service used",
+  "source_commit": "7a3d35e85736e3d245f4d9d83f10627a27a4d3d5",
+  "archive_sha256": "6aec894a3e01b48ce80005edbe9ccdc03b7d67b57e4dd6bffc203f3dc17c5bab",
+  "test_sha256": "b0607bee9af633dd48c77085fe5df9e900ba1afa2833f98aebbef142818b8ade",
+  "returncode": 1,
+  "expected_result": "2 failed, 2 passed",
+  "status": "EXPECTED_REJECTION"
+}

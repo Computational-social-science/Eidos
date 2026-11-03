@@ -161,3 +161,117 @@ observations with operational recovery disabled; it is not the deployed monitor.
 General Agent/MCP entry points must call this same tested core. Local/free
 operation, no hosted fallback, no external CRON and no automatic global upgrades
 remain requirements. Scientific RSI still needs separate held-out evidence.
+
+## Shared-worker integration checkpoint (2026-11-03)
+
+`feature/shared-monitor` descends from installed-CLI source checkpoint
+`064ba5b9a43bce753c7573f73a71f956f78a7730`. It remains unreleased and has not
+replaced the running 8765 monitor. The source candidate adds explicit `observe`
+and `enroll`, a read-only bounded worker pool, project/runtime registration pins
+and escaped worker cards in the existing dashboard. Each project keeps its own
+environment, data, receipts and scientific acceptance. Missing/failed workers,
+changed registrations and expired observations cannot retain effective science
+PASS. Observation time never replaces the research run's original timestamp.
+
+The original CLI-to-observer import cycle was reproduced and removed by extracting
+shared project state. Retained RED controls also expose timeout/error disclosure,
+symlinked Linux venv launch, identity/status contradictions, late responses,
+queue starvation, redirected registration parents, special files, nonfinite
+receipt metadata and deep JSON. A first 2,000-level JSON control did not fail on
+this Python; the corrected 10,000-level control produced the actual failure.
+HTTP HTML and JSON now use the same effective worker view, including when
+aggregation fails. A port-bind race was reproduced: no sampler starts before
+the server owns its port. The sampler closes its owned observer on shutdown.
+
+The current 50-module wheel has SHA-256
+`63a5af9706b5370cc934c23c1fbac86933dfc2f3aca171b8f63f2d0378751c98`.
+Actual native Windows normal installations use distinct prefixes and dependency
+sets, with an additional pinned SymPy/mpmath dependency in one worker. Synthetic
+Gate S PASS/FAIL, missing-worker isolation, changed inputs, unchanged run times,
+complete installed identity before/after, ephemeral HTTP HTML/API failure
+agreement and real Chrome 1440/390-pixel controls pass. Worker cards are inert;
+an aborted status feed withdraws displayed acceptance. The preview server is
+closed and does not call the production sampler, scheduler or recovery paths.
+
+An actual network-disabled Linux container installs the same wheel into two
+fresh venvs, aggregates observations and rejects a real FIFO registration while
+retaining valid projects. A legacy blocking-read counterfactual reaches its
+entry marker before an owned timeout. Source, input/wheelhouse, installed
+identities and container isolation are bound; owned container cleanup is verified.
+These are same-host source-monitor controls, not an installed monitor service or
+independent-machine qualification. See the [raw-profile overview](../reference/shared_monitor_acceptance/README.md).
+
+The latest 111 scoped integration/regression checks pass. A separate adjacent
+project/snapshot/validity regression measured 135 passes. Prior 61-case/91%
+coverage belongs to an earlier protocol snapshot. The complete source audit
+with an explicit 1,800-second suite budget completed: 1,309 passed, six skipped,
+77% whole-framework coverage, ten passing chains and one skip. Source and
+distribution identities were stable before/after; see `SELF_AUDIT.json`. This
+qualifies the measured source, not a release or migrated production service. Full downstream
+incident-to-fix-to-release-to-originating-project replay and a generic Agent
+remain separate unfinished requirements.
+
+
+### Public acceptance entry and ownership
+
+The Windows shared-worker profile now has an explicit entry at
+`reference/shared_monitor_acceptance/check.py --source <checkout> --workspace
+<owned-prepared-workspace> --wheel <candidate-wheel>`. Its two worker environments
+live under `env-a` and `env-b`. Controller setup remains a development profile,
+not a dependency imposed on ordinary CLI users. The source checkout and workspace
+must be separate. Existing `results`, `synthetic_positive`, `synthetic_negative`
+or `control` targets, including symlinks, are refused before fixture writes;
+exclusive creation owns the fresh targets. A controlled overwrite witness failed
+before this guard and preserves its original RED and repaired GREEN.
+
+An actual additional replay passed under a fresh path containing spaces
+and Unicode, with independent normal worker installations. The original measured
+private driver is retained with its exact hash; parameterization is a new measured
+entry, not a retroactive change to that driver. Neither this reference controller
+nor its source dashboard is yet an installed monitor distribution.
+
+
+The installation/command boundary and next acceptance gates are in
+[the downstream quickstart](DOWNSTREAM-QUICKSTART.md) and
+[the reusable-product delivery plan](REUSE-DELIVERY-PLAN.md). The project Agent
+instruction adapter is a thin, explicit-invocation resource. Its underlying
+CLI has installed controls; live model/Agent behavior needs separate trials.
+
+
+## Renewed probe-repair checkpoint, 2026-11-03
+
+The earlier 1,309-pass source audit is historical. After the real inherited-pipe
+availability defect and README reorganization, the renewed stable-input audit
+measured **1,317 passed, six skipped, 77% whole-framework coverage, ten passing
+chains and one skip**. Source identity is
+`76db9d342993a8da3dc97ff564ca6a1ff3d52eb221249ef89928ff322fdd5ed1`.
+The current unreleased installed wheel SHA256 is
+`57f7e6481aa7f706420e3a45ba3052a10c43da58050435167dadfce99cc94b2c`.
+
+Actual normal Windows old/new wheel controls reproduce the old defect and verify
+inner cleanup before outer-owner termination. Current-wheel CLI init/refusal/
+status/local-feedback and a new shared-controller desktop/mobile replay pass.
+The initial harness result and a hardlink-contaminated metadata control are
+withdrawn; exact restoration and an isolated atomic v2 control are retained.
+Distinct prefixes do not by themselves establish mutable-file independence; use
+copy mode for fault injection. The existing stable environment remains 0.4.12.
+
+Current-repair Linux qualification remains open after two failed container
+attempts; no valid counterfactual was accepted there. Production later recovered
+OK naturally without deployment or state edits, so it is not evidence that this
+patch was applied. Versioned publication/CI, installed-controller packaging,
+protected production migration and the full feedback release/replay/rollback
+lifecycle remain open. See `RUNTIME-INCIDENT-INFERENCE-2026-11-03.md` and the
+`reference/inference_probe_acceptance` records in the development branch.
+
+
+### Subsequent Linux caller qualification
+
+The missing Linux entry witnesses were traced to a noexec scratch mount. With
+explicit executable private scratch, a fresh network-disabled/read-only-root
+container passed the actual installed old/new probe campaign with unchanged
+input/wheelhouse/SDK/metadata identities and verified owned-container cleanup.
+The final `reference/inference_probe_acceptance/recorded_trials/probe-fix-v3`
+profile supersedes v2 as this caller acceptance; failed attempts and withdrawn
+controls remain preserved. This closes only the availability-probe Linux gap,
+not current-wheel shared UI, new-machine, release/rollback or scientific RSI.

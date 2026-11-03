@@ -1,99 +1,38 @@
-# EIDOS — scientific claims, executable evidence
+# EIDOS — reusable research execution and evidence
 
-**Version 0.5.0** · initial development · local-first · MIT framework
+**Version 0.5.0** · unreleased development candidate · local-first · MIT framework
 
-Development branch: the installed CLI below is under qualification and is not
-part of the published 0.4.12 release. See [development scope](docs/CLI-REUSE-DEVELOPMENT.md).
+Latest published release: [0.4.12](https://github.com/Computational-social-science/Eidos/releases/tag/v0.4.12).
+The version above identifies development source, not a published 0.5.0 product.
+Release-integrity checking still blocks the source/history mismatch.
+[Main-branch CI](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
+is separate from candidate acceptance.
 
-[![CI](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml/badge.svg)](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
+EIDOS helps independent research projects execute bounded work, bind results to
+inputs and environments, check claims against explicit evidence, deliver reports
+and retain diagnosed failures as reusable regressions. A project keeps its own
+repository, data, environment, scientific protocol and manuscript. Routine reuse
+should require a pinned core package and small project-local configuration.
 
-EIDOS connects falsifiable research claims, experiments, independent verification
-and reproducible delivery. Its purpose is to make a result inspectable: what was
-assumed, what ran, which checks could reject it, and which conclusion the evidence
-supports. Diagnosed failures become reusable checks for subsequent projects.
+| Entry point | Availability and boundary |
+|---|---|
+| SDK / release wheel | Published 0.4.12; explicit project registration, execution, verification and delivery |
+| Installed project CLI | Unreleased candidate: init/check/status/report/feedback with retained installed trials |
+| Shared worker observation | Candidate protocol, bounded source collector and UI tested; existing 8765 process not migrated |
+| Thin project Agent skill | Instruction adapter and CLI tool smoke; live Agent reasoning needs separate acceptance |
+| Public PyPI / generic MCP | Not delivered; naming, compatibility and adapter qualification remain open |
+| Complete feedback / scientific RSI | Not established; originating-project release replay and held-out improvement remain open |
 
-Start with the [scientific showcase](index.html),
-[reproduction instructions](#reproduce-the-measured-case), or
-[functional completeness ledger](docs/FUNCTIONAL_COMPLETENESS.md).
-The monitor and website serve different jobs: research interpretation belongs on
-the website; current execution state belongs in the monitor.
+Start with [project integration](docs/PROJECT_INTEGRATION.md), the English
+[installed-candidate quickstart](https://github.com/Computational-social-science/Eidos/blob/feature/shared-monitor/docs/DOWNSTREAM-QUICKSTART.md)
+and [delivery plan](https://github.com/Computational-social-science/Eidos/blob/feature/shared-monitor/docs/REUSE-DELIVERY-PLAN.md).
+Do not run `pip install eidos` from PyPI for this framework: that name belongs to
+an unrelated astronomy package. Exact wheel/hash installation is a separate path.
 
-For a new research repository, see the [downstream deployment decision](docs/PROJECT_INTEGRATION.md#deployment-decision-in-brief):
-pinned SDK/CLI, optional shared dashboard, thin Agent entry points and an explicit
-feedback-to-release-to-project replay loop. The current installed CLI is an
-unreleased candidate; it does not automatically enroll projects in the monitor.
-
-![The scientific argument and measured case](docs/screens/web/index-top.webp)
-
-**Free reuse requirement:** the default research path must run with local models
-and no Gemini API, paid provider or mandatory service key. Saved-case replay
-and the numerical-program API need neither a model service nor a GPU. Public
-dependency/image bootstrap and runtime network isolation are recorded separately.
-
-| Start here | Available path | Evidence boundary |
-|---|---|---|
-| Reproduce the scientific case | [Saved-model CPU acceptance](#reproduce-the-measured-case) | Checks measured artifacts and independent references; does not rerun CUDA training. |
-| Use bounded formula execution | [Numerical-program SDK](docs/NUMERICAL-PROGRAMS.md) | Compile/parse supplied formulas into immutable typed programs. A supplied gradient still needs independent verification. |
-| Inspect the experimental research agent | [RSI plan and trial evidence](docs/RSI-OPTIMIZATION-PLAN.md) | Local proposals failed joint numerical acceptance. External known-method tooling passed its public tests; no autonomous research reasoner or RSI is qualified. |
-
-The [offline source-tool comparison](https://github.com/Computational-social-science/Eidos/blob/main/docs/METHOD-OFFLINE-PORTABILITY-2026-11-02.md)
-preserves both the failed model proposal (0/23) and the separate externally
-supplied method (23/23). Source experiments, installed-package acceptance and
-running-service identity have distinct records in the completeness ledger.
-
-## What has been demonstrated
-
-The current case is **Softmax Collapse and Softmax Cancellation**, based on
-[Barron, Gnanapragasam and Tschannen's paper](https://arxiv.org/html/2610.31642v3).
-The numerical methods belong to those authors. EIDOS reuses the existing
-Paper2Agent conversion and tests the chain from method to scientific conclusion.
-
-| Question | Evidence | Interpretation |
-|---|---|---|
-| Does the arithmetic preserve the intended derivative? | 96 filed float32/float64 cases, independent Decimal references, actual backend qualification and broken controls | The tested numerical mechanisms are repaired within the qualified scope. |
-| Does the implementation affect a system using it? | Saved teacher/student models, equality and parameter-drift checks | A bounded stationarity experiment; numerical correctness and learning outcomes require separate acceptance. |
-| Is generalisation consistently improved? | 36 complete trajectories, 18 paired endpoints, independent final-model and gradient checks | Fixed CE is higher in 5 pairs, lower in 12, tied in 1. The paper's training result is not reproduced. All specified seeds and unfavorable outcomes remain available. |
-
-Open the [measurement report](reports/numerics/report.html),
-[precision/epsilon matrix](reports/softmax-matrix/report.html),
-[paired CSV](reports/softmax-matrix/paired.csv), and
-[academic positioning](docs/ACADEMIC_POSITIONING.md).
-AMP/bfloat16, higher-order backward and other backends require separate qualification.
-These results do not establish universal superiority or autonomous scientific discovery.
-
-## Reproduce the measured case
-
-Prerequisites: Git, [uv](https://docs.astral.sh/uv/) and Python 3.11 or 3.12.
-Use a project environment; a GPU and a local language model are not required for
-saved-model CPU acceptance.
-
-```bash
-git clone https://github.com/Computational-social-science/Eidos.git
-cd Eidos
-uv sync --locked --extra dev --extra verifiers
-uv run --no-sync python -m framework.project check softmax_training
-uv run --no-sync python reference/softmax_matrix/verify.py
-```
-
-The repository includes measured artifacts and saved models. CPU acceptance
-checks those artifacts; it does not rerun CUDA training. Rerunning training needs
-the recorded backend/runtime and the case protocol. The qualified CUDA environment
-is deliberately separate from the framework's core Python environment.
-
-Standalone case downloads:
-
-- [Numerical kernels and stationarity case](reports/numerics/reproduce.zip)
-- [Complete precision/epsilon matrix](reports/softmax-matrix/reproduce.zip)
-
-Both bundles contain checksums and reproduction instructions. The generic Python
-exporter has bounded Windows/offline-container acceptance; the case bundles and
-that acceptance do not qualify remote Binder or every project's runtime.
-A separate HPAF metric-repair lifecycle now has same-host fresh-environment replay:
-1,033 private pairs were independently checked, while the public package replays
-235 benign qualification pairs. See the [repair report](reports/hpaf-metric/report.html)
-and [lifecycle acceptance](docs/INDEPENDENT-LIFECYCLE-ACCEPTANCE.json).
-Private corpora are not distributed; public examples cannot reproduce those private
-findings without data access. New-machine installation remains open in the ledger.
+**Free reuse:** the default path needs no Gemini, paid model API, subscription
+or mandatory credential. Core execution and saved-case verification need neither
+a model service nor a GPU. Optional operators/models/tools retain their own
+licenses and qualification; no silent hosted fallback is permitted.
 
 ## Reuse EIDOS for a project
 
@@ -159,6 +98,98 @@ this numerical delivery probe.
 Its [qualification record](docs/PACKAGE-ACCEPTANCE.json) retains image, source and
 output hashes, the failed default-registry route and successful official ECR override.
 Remote Binder and new-machine/GPU/Quarto qualification remain open.
+
+## Shared dashboard and project isolation
+
+Projects can share one optional [local monitor](http://127.0.0.1:8765/) while
+keeping separate interpreters, pinned versions, IDs, evidence and run histories.
+Read-only worker observation never invokes research gates. Transport, execution,
+science and evidence freshness remain separate; a healthy HTTP service cannot
+establish scientific acceptance. CLI use remains possible without the panel.
+
+The worker wheel, source controller and loaded production process are distinct
+deployment boundaries. Actual Windows workers, different dependency sets,
+HTTP/desktop/mobile controls and same-host offline Linux trials are retained in
+[the shared-worker profile](reference/shared_monitor_acceptance/README.md).
+Packaged-controller, new-machine, remote-worker and production-migration
+acceptance remain open. Loopback means this machine only.
+
+## Agent assistance and feedback
+
+The [project Agent skill](https://github.com/Computational-social-science/Eidos/blob/feature/shared-monitor/adapters/agents/eidos-project/SKILL.md)
+selects an explicit project/interpreter, calls the supported CLI and returns the
+actual structured receipt. It does not duplicate gates or turn a query's exit
+code into scientific PASS. Initialization deliberately leaves a refusing
+validator until the project declares its real protocol. Ordinary studies consume
+pinned packages; forks are useful for core development.
+
+`feedback` exports local metadata without automatically uploading logs, data or
+issues. It is incident capture, not a completed repair. Required closure is:
+
+```text
+incident -> reproducer -> regression -> candidate -> independent validation
+         -> immutable release -> originating-project replay -> closure
+```
+
+Retain failed candidates and rollback evidence. Projects trial upgrades explicitly;
+a patch cannot rewrite its protected acceptance rule. Keep bounded operational
+self-check/recovery and on-demand research without external CRON. Package upgrades
+and developer-written fixes alone do not establish scientific RSI. The
+[completeness ledger](docs/FUNCTIONAL_COMPLETENESS.md) tracks open acceptance.
+
+## What has been demonstrated
+
+The current case is **Softmax Collapse and Softmax Cancellation**, based on
+[Barron, Gnanapragasam and Tschannen's paper](https://arxiv.org/html/2610.31642v3).
+The numerical methods belong to those authors. EIDOS reuses the existing
+Paper2Agent conversion and tests the chain from method to scientific conclusion.
+
+| Question | Evidence | Interpretation |
+|---|---|---|
+| Does the arithmetic preserve the intended derivative? | 96 filed float32/float64 cases, independent Decimal references, actual backend qualification and broken controls | The tested numerical mechanisms are repaired within the qualified scope. |
+| Does the implementation affect a system using it? | Saved teacher/student models, equality and parameter-drift checks | A bounded stationarity experiment; numerical correctness and learning outcomes require separate acceptance. |
+| Is generalisation consistently improved? | 36 complete trajectories, 18 paired endpoints, independent final-model and gradient checks | Fixed CE is higher in 5 pairs, lower in 12, tied in 1. The paper's training result is not reproduced. All specified seeds and unfavorable outcomes remain available. |
+
+Open the [measurement report](reports/numerics/report.html),
+[precision/epsilon matrix](reports/softmax-matrix/report.html),
+[paired CSV](reports/softmax-matrix/paired.csv), and
+[academic positioning](docs/ACADEMIC_POSITIONING.md).
+AMP/bfloat16, higher-order backward and other backends require separate qualification.
+These results do not establish universal superiority or autonomous scientific discovery.
+
+## Reproduce the measured case
+
+Prerequisites: Git, [uv](https://docs.astral.sh/uv/) and Python 3.11 or 3.12.
+Use a project environment; a GPU and a local language model are not required for
+saved-model CPU acceptance.
+
+```bash
+git clone https://github.com/Computational-social-science/Eidos.git
+cd Eidos
+uv sync --locked --extra dev --extra verifiers
+uv run --no-sync python -m framework.project check softmax_training
+uv run --no-sync python reference/softmax_matrix/verify.py
+```
+
+The repository includes measured artifacts and saved models. CPU acceptance
+checks those artifacts; it does not rerun CUDA training. Rerunning training needs
+the recorded backend/runtime and the case protocol. The qualified CUDA environment
+is deliberately separate from the framework's core Python environment.
+
+Standalone case downloads:
+
+- [Numerical kernels and stationarity case](reports/numerics/reproduce.zip)
+- [Complete precision/epsilon matrix](reports/softmax-matrix/reproduce.zip)
+
+Both bundles contain checksums and reproduction instructions. The generic Python
+exporter has bounded Windows/offline-container acceptance; the case bundles and
+that acceptance do not qualify remote Binder or every project's runtime.
+A separate HPAF metric-repair lifecycle now has same-host fresh-environment replay:
+1,033 private pairs were independently checked, while the public package replays
+235 benign qualification pairs. See the [repair report](reports/hpaf-metric/report.html)
+and [lifecycle acceptance](docs/INDEPENDENT-LIFECYCLE-ACCEPTANCE.json).
+Private corpora are not distributed; public examples cannot reproduce those private
+findings without data access. New-machine installation remains open in the ledger.
 
 ## Inspect and verify
 

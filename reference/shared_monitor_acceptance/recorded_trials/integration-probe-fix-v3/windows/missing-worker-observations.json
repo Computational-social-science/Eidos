@@ -1,0 +1,45 @@
+{
+  "schema": "eidos.worker-monitor.v1",
+  "observer_id": "e09b0d302398458eb6ff28b482bf6d15",
+  "seq": 11,
+  "sampled_at": "2026-11-03T06:29:19.026249+00:00",
+  "projects": [
+    {
+      "project_id": "1d7a698f17424a7ab63042fea2b3b5be",
+      "name": "synthetic_negative",
+      "registration_sha256": "8ee815e85a2541238d5cf6c297cd1bcf8a11a42aab17730ddad81641e7547d00",
+      "scientific_status": "UNOBSERVABLE",
+      "monitor_status": "UNAVAILABLE",
+      "reason": "Worker observation failed: ValueError"
+    },
+    {
+      "project_id": "a4c6a988f8484be5953e0946d40d12da",
+      "name": "synthetic_positive",
+      "registration_sha256": "266fea62bf6d16615f873ef8f1c82e34ab9c2c60579659228e15ab128918a416",
+      "scientific_status": "PASS",
+      "monitor_status": "OBSERVED",
+      "worker": {
+        "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+        "executable": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\shared-monitor-final-49df86253c\\env-a\\Scripts\\python.exe",
+        "eidos_version": "0.5.0",
+        "distributions_sha256": "0dc429040727755078b1dda963a2ad4e686019d52e39322889a603df75e87dd3",
+        "prefix": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\shared-monitor-final-49df86253c\\env-a",
+        "sdk_source_sha256": "7453d2bd77f6bcddde26b7541045a11731a574f1ae27a3faf54366caff1e1e6e",
+        "sdk_module_count": 50,
+        "installation_mode": "installed"
+      },
+      "observed_at": "2026-11-03T06:29:16.007131+00:00",
+      "run": {
+        "run_id": "59380d9204484d8baa07f7d9d0e78d94",
+        "recorded_at": "2026-11-03T06:29:11.976799+00:00",
+        "eidos_version": "0.5.0",
+        "status": "PASS",
+        "execution_status": "PASS",
+        "scientific_status": "PASS",
+        "input_digest": "59ec23c7c04f496db87b6f0338e233e3f18cfc20efd33dc4dec9310bed8a3548"
+      }
+    }
+  ],
+  "registration_errors": [],
+  "scope": "Read-only local worker observations; no research execution or scientific acceptance beyond referenced runs"
+}

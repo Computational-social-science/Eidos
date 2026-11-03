@@ -1,0 +1,8 @@
+{
+  ".gitignore": "684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1",
+  "core-requirements.txt": "14992eee3f6a6268e2667df2e089b07809dcc212836ca1585139d575e903d034",
+  "eidos-0.5.0-py3-none-any.whl": "63a5af9706b5370cc934c23c1fbac86933dfc2f3aca171b8f63f2d0378751c98",
+  "numerical.py": "11e515a4d17259f56d8effd0aca0c933965b01f683cd73ba9a6920f4a53297db",
+  "probe.py": "3471ab8ba8d17312c1bdc483770f4f7603576ea659fe7bcbe3e38de9983c32a7",
+  "worker_monitor.py": "7d75e8bfaa22aaa2ecf66525cbf7f326248656d69ab3203ed0d23dac5a3805fa"
+}

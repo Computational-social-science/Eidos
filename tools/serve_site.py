@@ -43,8 +43,44 @@ import watch_pipeline  # noqa: E402
 
 STATE: dict = {"payload": None, "sampled": 0.0, "error": None, "strip": "", "strip_sig": None,
                "consumers_html": "",
+               "worker_observations": None, "worker_sampled": 0.0, "worker_error": None,
                "written": 0.0, "page_sig": None, "interval": 15.0}
 PAGES = {"/": "dashboard.html", "/dashboard.html": "dashboard.html", "/index.html": "index.html"}
+
+
+def refresh_worker_observations(observer) -> None:
+    from tools.worker_monitor import stale_view
+    try:
+        STATE['worker_observations'] = observer.poll()
+        STATE['worker_sampled'] = time.time()
+        STATE['worker_error'] = None
+    except Exception as error:
+        reason = 'Worker aggregation unavailable: ' + type(error).__name__
+        STATE['worker_error'] = reason
+        STATE['worker_observations'] = stale_view(STATE.get('worker_observations'), reason)
+
+
+def worker_view() -> dict | None:
+    from tools.worker_monitor import stale_view
+    value = STATE.get('worker_observations')
+    if value is None:
+        return None
+    age = time.time() - STATE.get('worker_sampled', 0.0)
+    if STATE.get('worker_error') or age < 0 or age > 3 * STATE['interval']:
+        return stale_view(value, STATE.get('worker_error') or 'Central worker observation sample is stale')
+    return value
+
+
+def current_page_html(page: str) -> str:
+    """Render HTTP worker cards from the same effective snapshot as /api/status."""
+    from tools import dashboard
+    start = '<!-- worker-observations:start -->'
+    end = '<!-- worker-observations:end -->'
+    before, found, tail = page.partition(start)
+    previous, finished, after = tail.partition(end)
+    if not found or not finished:
+        return page
+    return before + start + dashboard.worker_strip(worker_view()) + end + after
 
 
 def current_consumer_html() -> str:
@@ -190,50 +226,55 @@ def _reload_if_changed(module, path) -> object:
     return reloaded
 
 
-def sampler(interval: float, page_interval: float) -> None:
+def sampler(interval: float, page_interval: float, stop_event: threading.Event | None = None) -> None:
     import dashboard
 
-    while True:
-        started = time.time()
-        try:
-            note = ensure_scheduler()
-            if "started" in note:
-                print(note, flush=True)
-            # The sampler imported this at start: without a reload a fix to the probe layer is
-            # invisible until a restart, and the monitor keeps reporting the old verdicts.
-            wp = _reload_if_changed(watch_pipeline, ROOT / "tools" / "watch_pipeline.py")
-            payload = wp.sample(append=True)
-            STATE["consumers_html"] = current_consumer_html()
-            STATE["payload"] = payload
-            STATE["sampled"] = time.time()
-            STATE["error"] = None
+    from tools.worker_monitor import WorkerMonitor
+    stop_event = stop_event or threading.Event()
+    with WorkerMonitor(ROOT) as observer:
+        while not stop_event.is_set():
+            started = time.time()
+            try:
+                note = ensure_scheduler()
+                if "started" in note:
+                    print(note, flush=True)
+                # The sampler imported this at start: without a reload a fix to the probe layer is
+                # invisible until a restart, and the monitor keeps reporting the old verdicts.
+                wp = _reload_if_changed(watch_pipeline, ROOT / "tools" / "watch_pipeline.py")
+                payload = wp.sample(append=True)
+                refresh_worker_observations(observer)
+                STATE["consumers_html"] = current_consumer_html()
+                STATE["payload"] = payload
+                STATE["sampled"] = time.time()
+                STATE["error"] = None
 
-            # Changed declarations trigger Gate S reconciliation above. Age alone
-            # must not execute an arbitrary consumer gate (which may run research).
-            # Explicit refresh remains available through the project API.
+                # Changed declarations trigger Gate S reconciliation above. Age alone
+                # must not execute an arbitrary consumer gate (which may run research).
+                # Explicit refresh remains available through the project API.
 
-            timeline = payload.get("timeline") or []
-            sig = (len(timeline), timeline[-1].get("ts") if timeline else None)
-            if sig != STATE["strip_sig"]:
-                STATE["strip"] = dashboard.strip(timeline)
-                STATE["strip_sig"] = sig
+                timeline = payload.get("timeline") or []
+                sig = (len(timeline), timeline[-1].get("ts") if timeline else None)
+                if sig != STATE["strip_sig"]:
+                    STATE["strip"] = dashboard.strip(timeline)
+                    STATE["strip_sig"] = sig
 
-            page_sig = json.dumps(payload.get("chains") or {}, sort_keys=True)
-            if page_sig != STATE["page_sig"] or time.time() - STATE["written"] > page_interval:
-                # Render into memory. Writing the file here made a tracked build artefact
-                # change every minute, so git status was never clean, and an edit to the
-                # builder was silently overwritten by the module this process imported.
-                # Reload the builder before rendering: this process imported it at start, so
-                # without the reload an edit to dashboard.py is invisible until a restart and
-                # the monitor keeps serving the old page.
-                globals()["dashboard"] = importlib.reload(dashboard)
-                STATE["page"] = dashboard.build()
-                STATE["written"] = time.time()
-                STATE["page_sig"] = page_sig
-        except Exception as exc:  # noqa: BLE001 - keep serving, report the failure
-            STATE["error"] = f"{type(exc).__name__}: {exc}"
-            traceback.print_exc()
-        time.sleep(max(interval - (time.time() - started), 1.0))
+                page_sig = json.dumps(payload.get("chains") or {}, sort_keys=True)
+                if page_sig != STATE["page_sig"] or time.time() - STATE["written"] > page_interval:
+                    # Render into memory. Writing the file here made a tracked build artefact
+                    # change every minute, so git status was never clean, and an edit to the
+                    # builder was silently overwritten by the module this process imported.
+                    # Reload the builder before rendering: this process imported it at start, so
+                    # without the reload an edit to dashboard.py is invisible until a restart and
+                    # the monitor keeps serving the old page.
+                    globals()["dashboard"] = importlib.reload(dashboard)
+                    STATE["page"] = dashboard.build()
+                    STATE["written"] = time.time()
+                    STATE["page_sig"] = page_sig
+            except Exception as exc:  # noqa: BLE001 - keep serving, report the failure
+                STATE["error"] = f"{type(exc).__name__}: {exc}"
+                traceback.print_exc()
+            stop_event.wait(max(interval - (time.time() - started), 1.0))
+
 
 
 
@@ -299,7 +340,7 @@ class Handler(SimpleHTTPRequestHandler):
 
     def _html(self, name: str) -> None:
         if name == "dashboard.html" and STATE.get("page"):
-            blob = STATE["page"].encode("utf-8")
+            blob = current_page_html(STATE["page"]).encode("utf-8")
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
             self.send_header("Content-Length", str(len(blob)))
@@ -312,6 +353,8 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_error(404, f"{name} has not been built")
             return
         blob = path.read_bytes()
+        if name == 'dashboard.html':
+            blob = current_page_html(blob.decode('utf-8')).encode('utf-8')
         self.send_response(200)
         self.send_header("Content-Type", "text/html; charset=utf-8")
         self.send_header("Content-Length", str(len(blob)))
@@ -346,6 +389,9 @@ class Handler(SimpleHTTPRequestHandler):
             body["server_error"] = STATE["error"]
             body["strip_html"] = STATE["strip"]        # rendered once per sample, not per request
             body["consumers_html"] = STATE["consumers_html"]
+            from tools import dashboard
+            body['worker_observations'] = worker_view()
+            body['workers_html'] = dashboard.worker_strip(body['worker_observations'])
             self._send(body)
             return
         if clean.startswith("/api/pipeline"):
@@ -411,17 +457,26 @@ def main(argv: list[str] | None = None) -> int:
     except OSError:
         pass
 
+    try:
+        server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
+    except OSError:
+        print(f'[FAIL] cannot own HTTP port 127.0.0.1:{args.port}')
+        return 2
     STATE["interval"] = args.interval
-    threading.Thread(target=sampler, args=(args.interval, args.page_interval),
-                     daemon=True).start()
+    stop_event = threading.Event()
+    sampler_thread = threading.Thread(target=sampler, args=(args.interval, args.page_interval, stop_event), daemon=True)
+    sampler_thread.start()
     threading.Thread(target=stall_watchdog, daemon=True).start()
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
     print(f"serving http://127.0.0.1:{args.port}/  "
           f"(sample every {args.interval:.0f}s, redraw every {args.page_interval:.0f}s)")
     try:
         server.serve_forever()
     except KeyboardInterrupt:
         return 0
+    finally:
+        stop_event.set()
+        server.server_close()
+        sampler_thread.join(timeout=15)
     return 0
 
 

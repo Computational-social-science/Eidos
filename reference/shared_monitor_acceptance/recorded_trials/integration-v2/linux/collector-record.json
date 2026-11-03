@@ -1,0 +1,61 @@
+{
+  "schema": "eidos.worker-monitor.v1",
+  "observer_id": "0015c12b6b85419f8fb04b8d297172a1",
+  "seq": 10,
+  "sampled_at": "2026-11-02T16:37:08.177310+00:00",
+  "projects": [
+    {
+      "project_id": "a02db6e2084a4ee1874b093e565624a7",
+      "name": "same_name",
+      "registration_sha256": "d587a94fd8b700ca1afefc3e1e4e912427da3a0beb1cdce382d0580a27f3aa3b",
+      "scientific_status": "UNRUN",
+      "monitor_status": "OBSERVED",
+      "worker": {
+        "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
+        "executable": "/usr/local/bin/python3.12",
+        "eidos_version": "0.5.0",
+        "distributions_sha256": "1d52a06e34b9c5521e3856ad3d6940bec95a3d81988c666bf6e3c3ae6447d358",
+        "prefix": "/tmp/env-a",
+        "sdk_source_sha256": "00c1042e056fcf37609ef7e7c42020a31620485ed2a02a3da4df9d30443ab0f1",
+        "sdk_module_count": 50,
+        "installation_mode": "installed"
+      },
+      "observed_at": "2026-11-02T16:37:08.089855+00:00",
+      "run": {
+        "status": "UNRUN",
+        "execution_status": "UNRUN",
+        "scientific_status": "UNRUN"
+      }
+    },
+    {
+      "project_id": "d28751189ae74aa893f5b2394d3732d4",
+      "name": "same_name",
+      "registration_sha256": "f1d116a541c7154a941787af4edd4f50915bcb5181cb5ac080ef5ebb942dc7bb",
+      "scientific_status": "UNRUN",
+      "monitor_status": "OBSERVED",
+      "worker": {
+        "python": "3.12.16 (main, Oct 28 2026, 02:01:35) [GCC 12.2.0]",
+        "executable": "/usr/local/bin/python3.12",
+        "eidos_version": "0.5.0",
+        "distributions_sha256": "1d52a06e34b9c5521e3856ad3d6940bec95a3d81988c666bf6e3c3ae6447d358",
+        "prefix": "/tmp/env-b",
+        "sdk_source_sha256": "00c1042e056fcf37609ef7e7c42020a31620485ed2a02a3da4df9d30443ab0f1",
+        "sdk_module_count": 50,
+        "installation_mode": "installed"
+      },
+      "observed_at": "2026-11-02T16:37:08.085759+00:00",
+      "run": {
+        "status": "UNRUN",
+        "execution_status": "UNRUN",
+        "scientific_status": "UNRUN"
+      }
+    }
+  ],
+  "registration_errors": [
+    {
+      "registration": "ffffffffffffffffffffffffffffffff.json",
+      "status": "INVALID"
+    }
+  ],
+  "scope": "Read-only local worker observations; no research execution or scientific acceptance beyond referenced runs"
+}

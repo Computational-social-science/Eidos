@@ -3,8 +3,6 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
-import hashlib
-import importlib.metadata
 import json
 from pathlib import Path
 import re
@@ -17,10 +15,14 @@ import yaml
 from framework.artifacts import atomic_output, output_lock
 from framework.consumer_snapshot import capture_inputs
 from framework.command_inputs import python_entry
-from framework.project import load_project, run_command
+from framework.project import run_command
 from framework.subprocesses import validate_timeout
 
-SCHEMA='eidos.project-workspace.v1'
+from framework.project_state import (
+    SCHEMA, sha as _sha, version as _version,
+    runtime_identity as _runtime_identity, load_workspace as _workspace,
+    cached_status as _status,
+)
 PLACEHOLDER='''"""Replace this placeholder with your independent research validator."""
 import sys
 print("REFUSED: configure a research validator and its expected evidence before acceptance.")
@@ -38,36 +40,6 @@ claiming scientific acceptance. Imported validator helpers and data/configuratio
 manifests belong in validity_inputs. The validator must verify underlying data
 and provenance. `eidos feedback` exports local metadata, never uploads it.
 '''
-
-
-def _sha(body: bytes) -> str:
-    return hashlib.sha256(body).hexdigest()
-
-
-def _version() -> str:
-    return importlib.metadata.version('eidos')
-
-
-def _runtime_identity() -> dict:
-    distributions=sorted((str(d.metadata.get('Name','')).lower(),d.version)
-                         for d in importlib.metadata.distributions())
-    return {'python':sys.version,'executable':str(Path(sys.executable).resolve()),
-            'eidos_version':_version(),
-            'distributions_sha256':_sha(json.dumps(distributions).encode())}
-
-
-def _workspace(project: Path):
-    folder=project/'.eidos'
-    path=folder/'project.yaml'
-    raw=yaml.safe_load(path.read_text(encoding='utf-8'))
-    if not isinstance(raw,dict) or raw.get('schema')!=SCHEMA:
-        raise ValueError('Unsupported project workspace; run eidos init for a new workspace')
-    if not isinstance(raw.get('project_id'),str) or not re.fullmatch('[0-9a-f]{32}',raw['project_id']):
-        raise ValueError('Invalid project identity')
-    spec=load_project(path)
-    if spec.root.resolve()!=project:
-        raise ValueError('Workspace root differs from the selected project')
-    return folder,raw,spec
 
 
 def _initialize(project: Path,name: str | None) -> dict:
@@ -164,29 +136,6 @@ def _check(project: Path,execution_only: bool,timeout: float) -> dict:
     return value
 
 
-def _status(project: Path) -> dict:
-    folder,config,spec=_workspace(project)
-    if not (folder/'latest.json').exists():
-        return {'status':'UNRUN','project':spec.name,'scientific_status':'UNRUN'}
-    pointer=json.loads((folder/'latest.json').read_text(encoding='utf-8'))
-    if not isinstance(pointer,dict):raise ValueError('Invalid latest-run reference')
-    run_id=pointer.get('run_id')
-    if not isinstance(run_id,str) or not re.fullmatch('[0-9a-f]{32}',run_id):
-        raise ValueError('Invalid latest-run reference')
-    body=(folder/'runs'/(run_id+'.json')).read_bytes()
-    if pointer.get('sha256')!=_sha(body):raise ValueError('Stored run bytes differ from the latest-run reference')
-    value=json.loads(body)
-    if not isinstance(value,dict):raise ValueError('Invalid stored run object')
-    if value.get('run_id')!=run_id or value.get('project_id')!=config['project_id']:
-        raise ValueError('Run identity differs from this project')
-    current=capture_inputs(spec)
-    if (not current['digest'] or current['digest']!=value.get('input_digest')
-            or value.get('runtime_identity')!=_runtime_identity()):
-        value.update(previous_status=value['status'],status='STALE',scientific_status='STALE',
-                     reason=current['error'] or 'Declared inputs changed; run eidos check again')
-    return value
-
-
 def _report(project: Path,format: str) -> dict:
     folder,config,spec=_workspace(project)
     delivery=config.get('delivery')
@@ -223,11 +172,16 @@ def _feedback(project: Path,message: str,output: Path) -> dict:
 def main(argv: list[str] | None=None) -> int:
     parser=argparse.ArgumentParser(prog='eidos',description='Project-local research execution, evidence checks and delivery')
     sub=parser.add_subparsers(dest='action',required=True)
-    for action in ['init','check','status','report','feedback']:
+    for action in ['init','check','status','report','feedback','observe','enroll']:
         p=sub.add_parser(action)
         p.add_argument('--project',type=Path,default=Path.cwd())
         p.add_argument('--json',action='store_true')
         if action=='init':p.add_argument('--name')
+        if action=='observe':p.add_argument('--nonce')
+        if action=='enroll':
+            p.add_argument('--monitor-root',type=Path,required=True)
+            p.add_argument('--python',type=Path)
+            p.add_argument('--replace-runtime',action='store_true')
         if action=='check':
             p.add_argument('--execution-only',action='store_true')
             p.add_argument('--timeout',type=float,default=900)
@@ -244,6 +198,13 @@ def main(argv: list[str] | None=None) -> int:
         elif args.action=='status':
             value=_status(project)
             query_succeeded=True
+        elif args.action=='observe':
+            from framework.worker_observation import observe
+            value=observe(project,args.nonce)
+            query_succeeded=True
+        elif args.action=='enroll':
+            from framework.monitor_registry import enroll
+            value=enroll(project,args.monitor_root,args.python,replace_runtime=args.replace_runtime)
         elif args.action=='report':value=_report(project,args.format)
         else:value=_feedback(project,args.message,args.out.resolve())
     except (OSError,ValueError,TypeError,yaml.YAMLError) as error:
@@ -252,10 +213,13 @@ def main(argv: list[str] | None=None) -> int:
     value['operation']=args.action
     if args.json:print(json.dumps(value,allow_nan=False))
     else:
-        print(value['status']+': '+str(value.get('reason') or value.get('path') or value.get('project') or args.action))
+        target=value.get('project')
+        if isinstance(target,dict):target=target.get('name')
+        print(value['status']+': '+str(value.get('reason') or value.get('path') or target or args.action))
         if 'scientific_status' in value:print('Scientific check: '+value['scientific_status'])
-    if args.action=='status' and query_succeeded:return 0
-    return {'PASS':0,'INITIALIZED':0,'EXPORTED':0,'REFUSED':4,'BLOCKED':4,'STALE':3,'OPEN':3}.get(value['status'],1)
+    if args.action in ('status','observe') and query_succeeded:return 0
+    return {'PASS':0,'INITIALIZED':0,'EXPORTED':0,'ENROLLED':0,'ALREADY_ENROLLED':0,
+            'REFUSED':4,'BLOCKED':4,'STALE':3,'OPEN':3}.get(value['status'],1)
 
 
 if __name__=='__main__':raise SystemExit(main())

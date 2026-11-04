@@ -1,0 +1,146 @@
+{
+  "chains": {
+    "total": 11,
+    "pass": 10,
+    "skip": 1,
+    "fail": 0
+  },
+  "tests_collected": 1365,
+  "tests": {
+    "passed": 1363,
+    "failed": 0,
+    "skipped": 6,
+    "errors": 0
+  },
+  "test_timeout_seconds": 1800.0,
+  "stability": {
+    "stable": true,
+    "before": {
+      "source_sha256": "cb4b61aecad38af2615281804626aded33c04525e6399b554aa1f31bee41e3a0",
+      "distribution_sha256": "63382bd04f5171ce3b7386e55ce3cfce89e47f563b793efbb72ab087a2530877"
+    },
+    "after": {
+      "source_sha256": "cb4b61aecad38af2615281804626aded33c04525e6399b554aa1f31bee41e3a0",
+      "distribution_sha256": "63382bd04f5171ce3b7386e55ce3cfce89e47f563b793efbb72ab087a2530877"
+    },
+    "collection_after": 1365,
+    "execution": {
+      "reported_items": 1365,
+      "collection_level_skips": 4,
+      "slowest_tests": [
+        {
+          "test": "tests.test_tracking_contract::test_actual_model_roundtrip_and_registry_preserve_ambient_run",
+          "seconds": 29.63
+        },
+        {
+          "test": "tests.test_robustness::test_no_wrong_register_passes",
+          "seconds": 16.673
+        },
+        {
+          "test": "tests.test_softmax_matrix::test_saved_matrix_accepts_only_complete_bound_evidence",
+          "seconds": 14.3
+        },
+        {
+          "test": "tests.test_tracking_contract::test_relative_uri_custom_project_model_and_name_roundtrip",
+          "seconds": 13.105
+        },
+        {
+          "test": "tests.test_render::test_render_produces_three_formats",
+          "seconds": 11.165
+        },
+        {
+          "test": "tests.test_tracking_contract::test_run_ownership_coordinates_actual_separate_process",
+          "seconds": 11.003
+        },
+        {
+          "test": "tests.test_numerics_case::test_export_contains_reproducible_downloads",
+          "seconds": 10.491
+        },
+        {
+          "test": "tests.test_numerics_case::test_bundle_command_rebuilds_all_displayed_cases",
+          "seconds": 10.335
+        },
+        {
+          "test": "tests.test_tracking_contract::test_foreign_store_run_refused_before_mutation",
+          "seconds": 7.207
+        },
+        {
+          "test": "tests.test_tracking_dvc::test_dataset_artifact_matches_tracked_bytes_and_explicit_run",
+          "seconds": 6.965
+        },
+        {
+          "test": "tests.test_feedback_lifecycle::test_full_receipt_chain_then_closed_status_withdrawn_on_pin_change",
+          "seconds": 6.874
+        },
+        {
+          "test": "tests.test_tracking_dvc::test_actual_registered_hash_and_content_addressed_url",
+          "seconds": 6.353
+        },
+        {
+          "test": "tests.test_feedback_lifecycle::test_two_incidents_serialize_changes_to_one_project_pin",
+          "seconds": 6.168
+        },
+        {
+          "test": "tests.test_decision::test_health_reports_down_without_raising",
+          "seconds": 6.108
+        },
+        {
+          "test": "tests.test_chain_resolution::test_tracker_without_dvc_still_constructs",
+          "seconds": 6.104
+        },
+        {
+          "test": "tests.test_tracking_contract::test_another_tracker_does_not_redirect_existing_tracker",
+          "seconds": 6.066
+        },
+        {
+          "test": "tests.test_feedback_lifecycle::test_failed_post_adoption_replay_restores_exact_prior_pin_and_history",
+          "seconds": 5.847
+        },
+        {
+          "test": "tests.test_site::test_render_has_no_unsubstituted_tokens",
+          "seconds": 5.57
+        },
+        {
+          "test": "tests.test_process_nested_lifecycle::test_outer_deadline_closes_a_nested_sdk_scope",
+          "seconds": 5.535
+        },
+        {
+          "test": "tests.test_project_process_lifecycle::test_timeout_stops_owned_descendants_and_preserves_both_streams[gate]",
+          "seconds": 5.525
+        }
+      ]
+    },
+    "deselection_detected": false,
+    "collected_ids": 1365,
+    "unique_ids": 1365,
+    "recollected_ids": 1365,
+    "scope": "Framework/tools/tests Python sources, project version/lock/README/claims, installed distribution names+versions, collected test IDs"
+  },
+  "skip_reasons": [
+    "SKIPPED [1] tests\\test_grokking_torch.py:3: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_softmax_matrix_torch.py:4: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_softmax_training_torch.py:5: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_stable_numerics_torch.py:6: could not import 'torch': No module named 'torch'",
+    "SKIPPED [1] tests\\test_audit_stray.py:213: POSIX FIFO control; exercised on Linux",
+    "SKIPPED [1] tests\\test_process_nested_lifecycle.py:19: POSIX delayed cleanup handoff"
+  ],
+  "diagnostics": {},
+  "coverage_total": 77,
+  "coverage_scope": "framework; unexecuted modules included; tests and tools excluded",
+  "gate_s": {
+    "fixture_status": "PASS"
+  },
+  "self_gate_s": {
+    "status": "PASS",
+    "findings": [],
+    "open_objections": 0
+  },
+  "exit_codes": {
+    "chains": 0,
+    "gate_s": 0,
+    "self_gate_s": 0,
+    "test_collection": 0,
+    "test_collection_after": 0,
+    "tests": 0
+  }
+}

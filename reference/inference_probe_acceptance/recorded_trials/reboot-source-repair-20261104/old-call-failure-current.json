@@ -1,0 +1,2357 @@
+{
+  "seq": 23667,
+  "ts": "2026-11-04T02:07:37+00:00",
+  "overall": "ALARM",
+  "derived": {
+    "overall": "ALARM",
+    "faults": [
+      "scheduler_failures = DOWN"
+    ],
+    "counts": {
+      "pass": 10,
+      "fail": 0,
+      "skip": 1,
+      "services_up": 16,
+      "services_down": 1
+    }
+  },
+  "signals": {
+    "decision_service": {
+      "value": 1,
+      "reference": 1,
+      "direction": "min",
+      "unit": "up",
+      "source": "127.0.0.1:8090/health + :8081/health",
+      "note": "StartLux-Decision-v1.1-4B-AutoThink-GGUF",
+      "state": "OK",
+      "error": 0.0
+    },
+    "runtime_18434": {
+      "value": 1,
+      "reference": 1,
+      "direction": "min",
+      "unit": "up",
+      "source": "127.0.0.1:18434/v1/models",
+      "note": "auth required",
+      "state": "OK",
+      "error": 0.0
+    },
+    "quarto": {
+      "value": 1,
+      "reference": 1,
+      "direction": "min",
+      "unit": "up",
+      "source": "framework.quarto_bridge",
+      "note": "E:\\2026-AI4S\\tools\\quarto\\bin\\quarto.exe",
+      "state": "OK",
+      "error": 0.0
+    },
+    "dvc": {
+      "value": 1,
+      "reference": 1,
+      "direction": "min",
+      "unit": "up",
+      "source": "python -m dvc",
+      "note": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+      "state": "OK",
+      "error": 0.0
+    },
+    "mlflow": {
+      "value": 1,
+      "reference": 1,
+      "direction": "min",
+      "unit": "up",
+      "source": "python -m mlflow",
+      "note": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+      "state": "OK",
+      "error": 0.0
+    },
+    "chains_failed": {
+      "value": 0,
+      "reference": 0,
+      "direction": "max",
+      "unit": "chains",
+      "source": "docs/traces/latest.json",
+      "note": "0 failed, 1 skipped",
+      "state": "OK",
+      "error": 0.0
+    },
+    "chains_duration": {
+      "value": 14.6,
+      "reference": 180.0,
+      "direction": "max",
+      "unit": "s",
+      "source": "docs/traces/latest.json",
+      "note": "",
+      "state": "OK",
+      "error": -165.4
+    },
+    "chains_age": {
+      "value": 0.02,
+      "reference": 24.0,
+      "direction": "max",
+      "unit": "h",
+      "source": "docs/status/chains.json",
+      "note": "last chain run",
+      "state": "OK",
+      "error": -23.98
+    },
+    "consumers": {
+      "value": 0.1456797438888889,
+      "reference": 24.0,
+      "direction": "max",
+      "unit": "h",
+      "source": "current Gate S verification time; original measurement timestamps are retained separately",
+      "note": "oldest: barron2026_agent; stale: []; unknown: []",
+      "state": "OK",
+      "error": -23.85
+    },
+    "consumer_verdicts": {
+      "value": 0,
+      "reference": 0,
+      "direction": "max",
+      "unit": "projects",
+      "source": "current Gate S verdict compared with each registered expectation",
+      "note": "unexpected: none",
+      "state": "OK",
+      "error": 0.0
+    },
+    "consumer_snapshot": {
+      "value": 0,
+      "reference": 0,
+      "direction": "max",
+      "unit": "snapshots",
+      "source": "registry and declared Gate S inputs; cached verdicts require matching hashes",
+      "note": "reverification required: none",
+      "state": "OK",
+      "error": 0.0
+    },
+    "scheduler": {
+      "value": 1.0,
+      "reference": 30.0,
+      "direction": "max",
+      "unit": "min",
+      "source": "docs/status/scheduler.json",
+      "note": "tick 1265",
+      "state": "OK",
+      "error": -29.0
+    },
+    "scheduler_failures": {
+      "value": 1,
+      "reference": 0,
+      "direction": "max",
+      "unit": "chains",
+      "source": "docs/status/scheduler.json",
+      "note": "inference",
+      "state": "ALARM",
+      "error": 1.0,
+      "diagnosis": {
+        "severity": "low",
+        "category": "methodology",
+        "root_cause": "service:scheduler_failures gate failed (specific cause needs investigation)",
+        "actions": [
+          "Investigate gate failure manually"
+        ]
+      },
+      "recovery": {
+        "available": false,
+        "description": "",
+        "reason": "no recovery action is declared"
+      }
+    },
+    "self_audit": {
+      "value": 1,
+      "reference": 1,
+      "direction": "min",
+      "unit": "gate S",
+      "source": "docs/SELF_AUDIT.json",
+      "note": "PASS",
+      "state": "OK",
+      "error": 0.0
+    },
+    "render_chain": {
+      "value": 1,
+      "reference": 1,
+      "direction": "min",
+      "unit": "up",
+      "source": "docs/RENDER_CHECK.json",
+      "note": "2026-10-31T11:43",
+      "state": "OK",
+      "error": 0.0
+    },
+    "render_age": {
+      "value": 86.4,
+      "reference": 168,
+      "direction": "max",
+      "unit": "h",
+      "source": "docs/RENDER_CHECK.json",
+      "note": "one host",
+      "state": "OK",
+      "error": -81.6
+    },
+    "consumer_evidence_age": {
+      "value": 90.51,
+      "reference": 168,
+      "direction": "max",
+      "unit": "h",
+      "source": "reference/operator_calibration/docs/evidence.json",
+      "note": "calibration measurement",
+      "state": "OK",
+      "error": -77.49
+    }
+  },
+  "chains": {
+    "decision": "PASS",
+    "demo (NO)": "PASS",
+    "diagnosis": "PASS",
+    "gates": "PASS",
+    "gates+project checker": "SKIP",
+    "inference": "PASS",
+    "quarto": "PASS",
+    "registry": "PASS",
+    "surrogate (local NO)": "PASS",
+    "tracking": "PASS",
+    "validity (Gate S)": "PASS"
+  },
+  "chain_meta": {
+    "validity (Gate S)": {
+      "status": "PASS",
+      "ts": 1793757996.0182664,
+      "ms": 114.3,
+      "requires": "pyyaml",
+      "deps": [
+        "yaml"
+      ],
+      "missing": [],
+      "detail": "valid register PASS; overstated count FAIL",
+      "age_s": 61.4
+    },
+    "registry": {
+      "status": "PASS",
+      "ts": 1793757974.7398427,
+      "ms": 54.5,
+      "requires": "nothing",
+      "deps": [],
+      "missing": [],
+      "detail": "12 project(s): barron2026_agent, chain_cmd_fails, chain_no_output, chain_ok, chain_tool_missing, demo_onboarding, demo_quantitative, null_study, operator_calibration, prose_lie, softmax_matrix, softmax_training",
+      "age_s": 82.7
+    },
+    "gates": {
+      "status": "PASS",
+      "ts": 1793757919.425468,
+      "ms": 7.1,
+      "requires": "pyyaml",
+      "deps": [
+        "yaml"
+      ],
+      "missing": [],
+      "detail": "acceptance PASS+FAIL both correct; missing tool -> SKIP",
+      "age_s": 138.0
+    },
+    "gates+project checker": {
+      "status": "SKIP",
+      "ts": 1793757919.425468,
+      "ms": 0.0,
+      "requires": "a project ref checker",
+      "deps": [],
+      "missing": [],
+      "detail": "no --project-checker given",
+      "age_s": 138.0
+    },
+    "diagnosis": {
+      "status": "PASS",
+      "ts": 1793757919.4274683,
+      "ms": 2.0,
+      "requires": "nothing",
+      "deps": [],
+      "missing": [],
+      "detail": "1 diagnosis naming the metric: Result metric below acceptance threshold: acc",
+      "age_s": 138.0
+    },
+    "tracking": {
+      "status": "PASS",
+      "ts": 1793757995.3384144,
+      "ms": 18862.8,
+      "requires": "mlflow + dvc",
+      "deps": [
+        "mlflow",
+        "dvc"
+      ],
+      "missing": [],
+      "detail": "two isolated runs, verified metrics/terminal states and actual DVC content; worker closed",
+      "age_s": 62.1
+    },
+    "quarto": {
+      "status": "PASS",
+      "ts": 1793757974.419457,
+      "ms": 4757.5,
+      "requires": "quarto binary",
+      "deps": [
+        "bin:quarto"
+      ],
+      "missing": [],
+      "detail": "minimal document; quarto=quarto.exe, render ok=True",
+      "age_s": 83.0
+    },
+    "surrogate (local NO)": {
+      "status": "PASS",
+      "ts": 1793757976.221349,
+      "ms": 1224.5,
+      "requires": "numpy",
+      "deps": [
+        "numpy"
+      ],
+      "missing": [],
+      "detail": "19/19 fixed points within 5%, 19 stable; shuffled-label control caught",
+      "age_s": 81.2
+    },
+    "demo (NO)": {
+      "status": "PASS",
+      "ts": 1793757951.096164,
+      "ms": 255.4,
+      "requires": "numpy",
+      "deps": [
+        "numpy"
+      ],
+      "missing": [],
+      "detail": "91 \u03bb points, max relative error 0.0002%",
+      "age_s": 106.4
+    },
+    "decision": {
+      "status": "PASS",
+      "ts": 1793757951.940409,
+      "ms": 844.2,
+      "requires": "StartLux service",
+      "deps": [],
+      "missing": [],
+      "detail": "known answers correct; median 166 ms for 2 questions (n=3, wall clock)",
+      "age_s": 105.5
+    },
+    "inference": {
+      "status": "PASS",
+      "ts": 1793757969.625894,
+      "ms": 17685.5,
+      "requires": "nothing",
+      "deps": [],
+      "missing": [],
+      "detail": "budget and routing contract checked; execution/gates use tools; scientific model stages remain UNQUALIFIED; StartLux is triage only",
+      "age_s": 87.8
+    }
+  },
+  "timeline": [
+    {
+      "ts": "2026-11-04T01:52:52+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:53:07+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:53:22+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:53:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:53:52+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:54:07+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:54:22+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:54:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:54:52+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:55:07+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:55:22+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:55:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:55:52+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:56:07+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:56:22+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:56:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:56:52+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:57:07+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:57:22+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:57:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:57:52+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:58:07+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:58:22+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:58:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:58:52+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:59:07+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:59:22+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:59:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T01:59:53+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:00:07+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:00:22+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:00:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:00:52+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:01:07+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:01:22+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:01:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:01:52+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:02:07+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:02:22+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:02:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:02:52+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:03:07+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:03:22+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:03:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:03:52+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:04:07+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:04:22+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:04:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:04:52+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:05:07+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:05:22+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:05:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:05:52+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:06:07+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:06:22+00:00",
+      "states": {
+        "decision": "RUNNING",
+        "demo (NO)": "RUNNING",
+        "diagnosis": "RUNNING",
+        "gates": "RUNNING",
+        "gates+project checker": "RUNNING",
+        "inference": "RUNNING",
+        "quarto": "RUNNING",
+        "registry": "RUNNING",
+        "surrogate (local NO)": "RUNNING",
+        "tracking": "RUNNING",
+        "validity (Gate S)": "RUNNING"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:06:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      }
+    },
+    {
+      "ts": "2026-11-04T02:06:52+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-11-04T02:07:07+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-11-04T02:07:22+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    },
+    {
+      "ts": "2026-11-04T02:07:37+00:00",
+      "states": {
+        "decision": "PASS",
+        "demo (NO)": "PASS",
+        "diagnosis": "PASS",
+        "gates": "PASS",
+        "gates+project checker": "SKIP",
+        "inference": "PASS",
+        "quarto": "PASS",
+        "registry": "PASS",
+        "surrogate (local NO)": "PASS",
+        "tracking": "PASS",
+        "validity (Gate S)": "PASS"
+      },
+      "repeat": true
+    }
+  ],
+  "live_run": false,
+  "alarms": [
+    {
+      "ts": "2026-11-04T02:06:22+00:00",
+      "signal": "chain:gates+project checker",
+      "from": "SKIP",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:22+00:00",
+      "signal": "chain:inference",
+      "from": "PASS",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:22+00:00",
+      "signal": "chain:quarto",
+      "from": "PASS",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:22+00:00",
+      "signal": "chain:registry",
+      "from": "PASS",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:22+00:00",
+      "signal": "chain:surrogate (local NO)",
+      "from": "PASS",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:22+00:00",
+      "signal": "chain:tracking",
+      "from": "PASS",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:22+00:00",
+      "signal": "chain:validity (Gate S)",
+      "from": "PASS",
+      "to": "RUNNING",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:37+00:00",
+      "signal": "scheduler",
+      "from": "ALARM",
+      "to": "OK",
+      "value": 0.0,
+      "source": "docs/status/scheduler.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:37+00:00",
+      "signal": "scheduler_failures",
+      "from": "OK",
+      "to": "ALARM",
+      "value": 1,
+      "source": "docs/status/scheduler.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:37+00:00",
+      "signal": "chain:decision",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:37+00:00",
+      "signal": "chain:demo (NO)",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:37+00:00",
+      "signal": "chain:diagnosis",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:37+00:00",
+      "signal": "chain:gates",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:37+00:00",
+      "signal": "chain:gates+project checker",
+      "from": "RUNNING",
+      "to": "SKIP",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:37+00:00",
+      "signal": "chain:inference",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:37+00:00",
+      "signal": "chain:quarto",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:37+00:00",
+      "signal": "chain:registry",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:37+00:00",
+      "signal": "chain:surrogate (local NO)",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:37+00:00",
+      "signal": "chain:tracking",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    },
+    {
+      "ts": "2026-11-04T02:06:37+00:00",
+      "signal": "chain:validity (Gate S)",
+      "from": "RUNNING",
+      "to": "PASS",
+      "value": null,
+      "source": "docs/traces/latest.json"
+    }
+  ],
+  "samples": 2000,
+  "history": [
+    {
+      "ts": "2026-11-04T01:57:52+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.13,
+        "consumers": 15.86009531111111,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 598.2,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.24,
+        "consumer_evidence_age": 90.34
+      }
+    },
+    {
+      "ts": "2026-11-04T01:58:07+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.13,
+        "consumers": 15.86425283638889,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 598.4,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.24,
+        "consumer_evidence_age": 90.35
+      }
+    },
+    {
+      "ts": "2026-11-04T01:58:22+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.13,
+        "consumers": 15.868417518333333,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 598.7,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.24,
+        "consumer_evidence_age": 90.35
+      }
+    },
+    {
+      "ts": "2026-11-04T01:58:37+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.14,
+        "consumers": 15.872583903055554,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 598.9,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.25,
+        "consumer_evidence_age": 90.36
+      }
+    },
+    {
+      "ts": "2026-11-04T01:58:52+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.14,
+        "consumers": null,
+        "consumer_verdicts": null,
+        "consumer_snapshot": null,
+        "scheduler": 599.2,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.25,
+        "consumer_evidence_age": 90.36
+      }
+    },
+    {
+      "ts": "2026-11-04T01:59:07+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.15,
+        "consumers": 0.00397491,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 599.4,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.26,
+        "consumer_evidence_age": 90.37
+      }
+    },
+    {
+      "ts": "2026-11-04T01:59:22+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.15,
+        "consumers": 0.008156185833333334,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 599.7,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.26,
+        "consumer_evidence_age": 90.37
+      }
+    },
+    {
+      "ts": "2026-11-04T01:59:37+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.16,
+        "consumers": 0.012297944444444443,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 599.9,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.27,
+        "consumer_evidence_age": 90.37
+      }
+    },
+    {
+      "ts": "2026-11-04T01:59:53+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.16,
+        "consumers": 0.016673903055555557,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 600.2,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.27,
+        "consumer_evidence_age": 90.38
+      }
+    },
+    {
+      "ts": "2026-11-04T02:00:07+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.16,
+        "consumers": 0.020631898333333332,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 600.4,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.27,
+        "consumer_evidence_age": 90.38
+      }
+    },
+    {
+      "ts": "2026-11-04T02:00:22+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.17,
+        "consumers": 0.024806773888888887,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 600.7,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.28,
+        "consumer_evidence_age": 90.39
+      }
+    },
+    {
+      "ts": "2026-11-04T02:00:37+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.17,
+        "consumers": 0.02899671861111111,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 600.9,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.28,
+        "consumer_evidence_age": 90.39
+      }
+    },
+    {
+      "ts": "2026-11-04T02:00:52+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.18,
+        "consumers": 0.033121895,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 601.2,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.29,
+        "consumer_evidence_age": 90.39
+      }
+    },
+    {
+      "ts": "2026-11-04T02:01:07+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.18,
+        "consumers": 0.03730390861111111,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 601.4,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.29,
+        "consumer_evidence_age": 90.4
+      }
+    },
+    {
+      "ts": "2026-11-04T02:01:22+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.18,
+        "consumers": 0.04147951055555555,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 601.7,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.29,
+        "consumer_evidence_age": 90.4
+      }
+    },
+    {
+      "ts": "2026-11-04T02:01:37+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.19,
+        "consumers": 0.04564458222222222,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 601.9,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.3,
+        "consumer_evidence_age": 90.41
+      }
+    },
+    {
+      "ts": "2026-11-04T02:01:52+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.19,
+        "consumers": 0.04980647972222222,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 602.2,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.3,
+        "consumer_evidence_age": 90.41
+      }
+    },
+    {
+      "ts": "2026-11-04T02:02:07+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.2,
+        "consumers": 0.05396568388888889,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 602.4,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.31,
+        "consumer_evidence_age": 90.42
+      }
+    },
+    {
+      "ts": "2026-11-04T02:02:22+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.2,
+        "consumers": 0.05814181861111112,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 602.7,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.31,
+        "consumer_evidence_age": 90.42
+      }
+    },
+    {
+      "ts": "2026-11-04T02:02:37+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.21,
+        "consumers": 0.06230858527777777,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 602.9,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.32,
+        "consumer_evidence_age": 90.42
+      }
+    },
+    {
+      "ts": "2026-11-04T02:02:52+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.21,
+        "consumers": 0.06646002527777778,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 603.2,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.32,
+        "consumer_evidence_age": 90.43
+      }
+    },
+    {
+      "ts": "2026-11-04T02:03:07+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.21,
+        "consumers": 0.07063658833333333,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 603.4,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.32,
+        "consumer_evidence_age": 90.43
+      }
+    },
+    {
+      "ts": "2026-11-04T02:03:22+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.22,
+        "consumers": 0.0748008611111111,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 603.7,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.33,
+        "consumer_evidence_age": 90.44
+      }
+    },
+    {
+      "ts": "2026-11-04T02:03:37+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.22,
+        "consumers": 0.07897375472222222,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 603.9,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.33,
+        "consumer_evidence_age": 90.44
+      }
+    },
+    {
+      "ts": "2026-11-04T02:03:52+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.23,
+        "consumers": 0.08315637083333333,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 604.2,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.34,
+        "consumer_evidence_age": 90.44
+      }
+    },
+    {
+      "ts": "2026-11-04T02:04:07+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.23,
+        "consumers": 0.08728947388888889,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 604.4,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.34,
+        "consumer_evidence_age": 90.45
+      }
+    },
+    {
+      "ts": "2026-11-04T02:04:22+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.23,
+        "consumers": 0.0914574775,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 604.7,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.34,
+        "consumer_evidence_age": 90.45
+      }
+    },
+    {
+      "ts": "2026-11-04T02:04:37+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.24,
+        "consumers": 0.09564117000000001,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 604.9,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.35,
+        "consumer_evidence_age": 90.46
+      }
+    },
+    {
+      "ts": "2026-11-04T02:04:52+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.24,
+        "consumers": 0.0997714561111111,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 605.2,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.35,
+        "consumer_evidence_age": 90.46
+      }
+    },
+    {
+      "ts": "2026-11-04T02:05:07+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.25,
+        "consumers": 0.10395840805555556,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 605.4,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.36,
+        "consumer_evidence_age": 90.47
+      }
+    },
+    {
+      "ts": "2026-11-04T02:05:22+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.25,
+        "consumers": 0.10811560305555555,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 605.7,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.36,
+        "consumer_evidence_age": 90.47
+      }
+    },
+    {
+      "ts": "2026-11-04T02:05:37+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.25,
+        "consumers": 0.1122849863888889,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 605.9,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.37,
+        "consumer_evidence_age": 90.47
+      }
+    },
+    {
+      "ts": "2026-11-04T02:05:52+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.26,
+        "consumers": 0.1164397638888889,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 606.2,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.37,
+        "consumer_evidence_age": 90.48
+      }
+    },
+    {
+      "ts": "2026-11-04T02:06:07+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.26,
+        "consumers": 0.12062199916666666,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 606.4,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.37,
+        "consumer_evidence_age": 90.48
+      }
+    },
+    {
+      "ts": "2026-11-04T02:06:22+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.0,
+        "consumers": 0.1248142675,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 606.7,
+        "scheduler_failures": 0,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.38,
+        "consumer_evidence_age": 90.49
+      }
+    },
+    {
+      "ts": "2026-11-04T02:06:37+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.0,
+        "consumers": 0.1290106325,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 0.0,
+        "scheduler_failures": 1,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.38,
+        "consumer_evidence_age": 90.49
+      }
+    },
+    {
+      "ts": "2026-11-04T02:06:52+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.0,
+        "consumers": 0.13316208555555556,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 0.3,
+        "scheduler_failures": 1,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.39,
+        "consumer_evidence_age": 90.49
+      }
+    },
+    {
+      "ts": "2026-11-04T02:07:07+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.01,
+        "consumers": 0.13735313555555556,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 0.5,
+        "scheduler_failures": 1,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.39,
+        "consumer_evidence_age": 90.5
+      }
+    },
+    {
+      "ts": "2026-11-04T02:07:22+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.01,
+        "consumers": 0.1414941163888889,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 0.8,
+        "scheduler_failures": 1,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.39,
+        "consumer_evidence_age": 90.5
+      }
+    },
+    {
+      "ts": "2026-11-04T02:07:37+00:00",
+      "values": {
+        "decision_service": 1,
+        "runtime_18434": 1,
+        "quarto": 1,
+        "dvc": 1,
+        "mlflow": 1,
+        "chains_failed": 0,
+        "chains_duration": 14.6,
+        "chains_age": 0.02,
+        "consumers": 0.1456797438888889,
+        "consumer_verdicts": 0,
+        "consumer_snapshot": 0,
+        "scheduler": 1.0,
+        "scheduler_failures": 1,
+        "self_audit": 1,
+        "render_chain": 1,
+        "render_age": 86.4,
+        "consumer_evidence_age": 90.51
+      }
+    }
+  ],
+  "consistency": {
+    "ok": true,
+    "note": "17 signals ok"
+  }
+}

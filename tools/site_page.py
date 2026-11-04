@@ -330,7 +330,7 @@ def hero(ctx: dict) -> str:
     after = _demo_number(selected["fixed_gradient"][0]) if selected else "unavailable"
     return f'''<div class="hero">
   <div class="hero-layout"><div>
-  <p class="eyebrow">EIDOS · research infrastructure · pre-release</p>
+  <p class="eyebrow">EIDOS Agent · research infrastructure · pre-release</p>
   <h1>Make scientific claims answerable to evidence.</h1>
   <p class="thesis">An executable research workflow connecting falsifiable claims, experiments,
     independent checks and reproducible delivery. Numerical failures become tested safeguards
@@ -596,7 +596,7 @@ def sec_gates(ctx: dict) -> str:
     <p class="mono">{ctx["nres"]} objections in the framework's own review,
     {ctx["nopen"]} open — parsed from the document, not declared.</p></div>
 </div>
-<div class="card" style="margin-top:10px">{ctx["matrix"]}</div>
+<div class="card" style="margin-top:10px"><div class="tw">{ctx["matrix"]}</div></div>
 <div class="grid2" style="margin-top:10px">
   <div class="card"><h3>Lean 4 audit chain</h3>
     <div class="tw"><table><caption>Two measured runs on real proofs: build, <code>#print axioms</code>, an axiom
@@ -1082,7 +1082,7 @@ def render(ctx: dict) -> str:
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
-<title>EIDOS v{ctx["version"]} — scientific claims, executable evidence</title>
+<title>EIDOS Agent v{ctx["version"]} — scientific claims, executable evidence</title>
 <meta name="description" content="Research infrastructure connecting falsifiable claims, experiments,
 independent verification and reproducible delivery. Explore the Softmax repair, controls and all paired outcomes.">
 <style>{CSS}</style>
@@ -1090,7 +1090,7 @@ independent verification and reproducible delivery. Explore the Softmax repair, 
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="top"><div class="top-in">
-  <span class="brand"><i>●</i>Eidos<span class="ver">v{ctx["version"]}</span></span>
+  <span class="brand"><i>●</i>EIDOS Agent<span class="ver">v{ctx["version"]}</span></span>
   <span class="spacer"></span>
   <span class="hchip">Research preview</span>
   <span class="hchip">{ctx["nchains"]} chains · {ctx["ntests"]} tests</span>

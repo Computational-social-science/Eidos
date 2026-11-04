@@ -1,0 +1,14 @@
+{
+  "schema": "eidos.local-operational-repair.v1",
+  "status": "PASS",
+  "recorded_at": "2026-11-04T02:18:28.605995+00:00",
+  "scope": "Actual local source hotfix and one subsequent resident tick; not installed0.5.0SDK/controller migration,24hsoak,formalincidentclosure or scientificRSI",
+  "source_module_canonical_sha256": "778af5f44ec913e706cc3297e63dbaf27428f7f3ebc5fa6c84ab7fb8416eccc6",
+  "old_timeout_retained": true,
+  "manual_tick_wrapper_print_failure_retained": true,
+  "resident_pid": 39592,
+  "resident_tick": 1267,
+  "cumulative_failures": 31,
+  "observed_seq": 23710,
+  "initial_snapshot_scope": "Before recovery, after targeted source patch; source beforepatch bytes are separately preserved"
+}

@@ -1,0 +1,13 @@
+....................................................................     [100%]
+============================== warnings summary ===============================
+tests/test_release_wheel_binding.py::test_wrong_distribution_or_source_refuses_publication[duplicate]
+  C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\zipfile\__init__.py:1607: UserWarning: Duplicate name: 'framework/example.py'
+    return self._open_to_write(zinfo, force_zip64=force_zip64)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+68 passed, 1 warning in 139.96s (0:02:19)
+Name                    Stmts   Miss  Cover   Missing
+-----------------------------------------------------
+framework\feedback.py     584     97    83%   54, 62, 65, 75, 89, 99, 102, 111, 116, 120-121, 123, 130, 137, 158, 169, 176, 187, 190, 196, 203, 206, 220, 228, 241, 244, 247, 254, 256, 267, 270, 273-274, 288, 300, 306, 313, 316, 318, 327, 346, 372, 389, 396, 410, 424, 427, 429, 432-442, 477, 482, 493, 519, 526, 528, 543, 549, 598, 602, 618, 626, 634, 643, 652, 660, 668, 672, 697, 712, 742, 744, 753, 764, 820, 825, 856-857, 897-898, 934, 939-940, 959, 965, 975-976, 983, 1078, 1082-1083, 1091, 1094
+-----------------------------------------------------
+TOTAL                     584     97    83%

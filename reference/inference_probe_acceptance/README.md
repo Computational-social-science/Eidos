@@ -1,5 +1,14 @@
 # Installed availability-probe repair
 
+The later `recorded_trials/feedback-wheel-windows-v1` profile independently
+repeats the native Windows old/current comparison for the **51-module** naming
+and feedback candidate, SHA256
+`56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c`.
+Both inherited-pipe entry witnesses, inner cleanup, unavailable CLI controls and
+before/after identities pass. Its manifest preserves 24 raw payloads and excludes
+redistribution of system executables/DLLs. The prior Linux result belongs to its
+earlier wheel; it does not qualify this changed artifact automatically.
+
 The [probe-fix-v2 record](recorded_trials/probe-fix-v3/acceptance.json) binds a
 published 0.4.12 wheel and an unreleased repaired 0.5.0 wheel in separate normal
 Windows and same-host network-disabled Linux prefixes. A private CLI reproduces inherited stdout/stderr handles;

@@ -1,0 +1,41 @@
+from __future__ import annotations
+import hashlib, importlib.metadata, json, pathlib, subprocess, sys, traceback, zipfile
+root=pathlib.Path(sys.argv[1]); wheel=root/'wheels/eidos-0.5.0-py3-none-any.whl'
+sha=lambda b:hashlib.sha256(b).hexdigest()
+result={'schema':'eidos.agent-name-acceptance.v1','status':'FAIL','scope':'Native Windows normal core installation; no model or scientific acceptance','commands':[]}
+try:
+    import framework.cli
+    result.update(python=sys.executable,prefix=sys.prefix,sdk_version=importlib.metadata.version('eidos'),module_origin=framework.cli.__file__,wheel_sha256=sha(wheel.read_bytes()))
+    assert pathlib.Path(framework.cli.__file__).is_relative_to(pathlib.Path(sys.prefix))
+    assert result['sdk_version']=='0.5.0'
+    scripts={e.name:e.value for e in importlib.metadata.distribution('eidos').entry_points if e.group=='console_scripts'}
+    assert scripts=={'eidos':'framework.cli:main','eidos-agent':'framework.cli:main'},scripts
+    result['console_scripts']=scripts
+    with zipfile.ZipFile(wheel) as z:
+        members=[n for n in z.namelist() if n.startswith('framework/') and n.endswith('.py')]
+        installed={n:sha((pathlib.Path(sys.prefix)/'Lib/site-packages'/n).read_bytes()) for n in members}
+        assert installed=={n:sha(z.read(n)) for n in members}
+    result['installed_modules']=installed
+    def run(name,args,expected):
+        executable=pathlib.Path(sys.prefix)/'Scripts'/(name+'.exe')
+        p=subprocess.run([str(executable),*args],cwd=root,capture_output=True,text=True,timeout=30)
+        result['commands'].append({'name':name,'arguments':args,'returncode':p.returncode,'stdout':p.stdout,'stderr':p.stderr,'executable_sha256':sha(executable.read_bytes())})
+        assert p.returncode==expected,(args,p.returncode,p.stdout,p.stderr)
+        return p.stdout
+    for name in ('eidos','eidos-agent'):
+        assert 'EIDOS Agent' in run(name,['--help'],0)
+    project=root/'existing study';project.mkdir();(project/'data.bin').write_bytes(b'original data')
+    value=json.loads(run('eidos-agent',['init','--project',str(project),'--json'],0));assert value['status']=='INITIALIZED'
+    assert (project/'data.bin').read_bytes()==b'original data'
+    value=json.loads(run('eidos',['status','--project',str(project),'--json'],0));assert value['status']=='UNRUN'
+    value=json.loads(run('eidos-agent',['check','--project',str(project),'--json'],4));assert value['status']=='REFUSED' and value['scientific_status']=='UNRUN'
+    value=json.loads(run('eidos',['feedback','--project',str(project),'--message','Naming compatibility acceptance; placeholder validator correctly refused','--out',str(root/'feedback.zip'),'--json'],0));assert not value['uploaded']
+    with zipfile.ZipFile(root/'feedback.zip') as z:
+        assert set(z.namelist())=={'feedback.json','manifest.json'}
+    result.update(status='PASS',scientific_status='UNRUN')
+except Exception:
+    result['exception']=traceback.format_exc()
+finally:
+    (root/'result.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
+print(json.dumps({k:v for k,v in result.items() if k not in ('commands','installed_modules')}))
+raise SystemExit(result['status']!='PASS')

@@ -388,7 +388,7 @@ def topology(pipeline, chain_now, durations, signals, trace_ts, evolution=None,
                    f"role='button'><title>{html.escape(module)} · {mod_state} · used by "
                    f"{len(module_users[module])} chains</title>"
                    f"<text x='{m_x + k * col_w}' y='32' font-size='11' "
-                   f"fill='{PALETTE.get(mod_state, '#98a2b3') if mod_state != 'PASS' else PALETTE['PASS']}' "
+                   f"fill='{INK['IDLE'] if mod_state == 'IDLE' else PALETTE.get(mod_state, '#98a2b3')}' "
                    f"font-family='ui-monospace,Consolas,monospace'>"
                    f"{html.escape(name[:12])}</text></g>")
     for k, service in enumerate(services):
@@ -1240,7 +1240,7 @@ function applySample(d) {
       let worst = judged.length ? judged.sort((a, b) => (rank[a] ?? 9) - (rank[b] ?? 9))[0]
                                 : (states.includes('SKIP') ? 'SKIP' : 'IDLE');
       const t = g.querySelector('text');
-      if (t) t.setAttribute('fill', PALETTE[worst] || PALETTE.IDLE);
+      if (t) t.setAttribute('fill', worst === 'IDLE' ? '#e6e8eb' : (PALETTE[worst] || '#98a2b3'));
       const title = g.querySelector('title');
       if (title) title.textContent = `${g.dataset.module} · ${worst} · used by ${users.length} chains`;
     });

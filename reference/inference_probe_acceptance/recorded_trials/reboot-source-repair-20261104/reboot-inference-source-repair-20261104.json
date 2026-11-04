@@ -1,0 +1,24 @@
+{
+  "schema": "eidos.local-source-probe-repair.v1",
+  "scope": "Actual local source ModelManager constructor, not a new release or installed SDK migration",
+  "command": [
+    "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+    "-I",
+    "-X",
+    "utf8",
+    "-c",
+    "import hashlib,importlib.metadata,inspect,json,pathlib,sys,time\nsys.path.insert(0,sys.argv[1])\nfrom framework.inference import ModelManager\nsource=pathlib.Path(inspect.getfile(ModelManager));assert source.resolve()==pathlib.Path(sys.argv[1]).resolve()/'framework/inference/__init__.py'\nstarted=time.monotonic();m=ModelManager()\nprint(json.dumps({'available':m.ollama_available,'elapsed_s':time.monotonic()-started,'source':str(source),'canonical_sha256':hashlib.sha256(source.read_text(encoding='utf-8-sig').replace('\\r\\n','\\n').encode()).hexdigest(),'distribution_version':importlib.metadata.version('eidos')}))\n",
+    "E:\\2026-AI4S\\Eidos"
+  ],
+  "status": "PASS",
+  "returncode": 0,
+  "stdout": "{\"available\": true, \"elapsed_s\": 0.3909999999999627, \"source\": \"E:\\\\2026-AI4S\\\\Eidos\\\\framework\\\\inference\\\\__init__.py\", \"canonical_sha256\": \"778af5f44ec913e706cc3297e63dbaf27428f7f3ebc5fa6c84ab7fb8416eccc6\", \"distribution_version\": \"0.4.12\"}\n",
+  "stderr": "",
+  "observation": {
+    "available": true,
+    "elapsed_s": 0.3909999999999627,
+    "source": "E:\\2026-AI4S\\Eidos\\framework\\inference\\__init__.py",
+    "canonical_sha256": "778af5f44ec913e706cc3297e63dbaf27428f7f3ebc5fa6c84ab7fb8416eccc6",
+    "distribution_version": "0.4.12"
+  }
+}

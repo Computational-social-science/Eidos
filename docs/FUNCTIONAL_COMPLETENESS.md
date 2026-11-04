@@ -175,3 +175,21 @@ The final `reference/inference_probe_acceptance/recorded_trials/probe-fix-v3`
 profile supersedes v2 as this caller acceptance; failed attempts and withdrawn
 controls remain preserved. This closes only the availability-probe Linux gap,
 not current-wheel shared UI, new-machine, release/rollback or scientific RSI.
+
+## EIDOS Agent development checkpoint, 2026-11-04
+
+The product name and additional `eidos-agent` console entry are implemented in
+development. A normal Windows installation matches all 51 SDK modules and both
+console entries. Distribution/import namespace migration remains open. The local
+incident ledger has reviewed source-level rejection, rollback, adoption, replay
+and stale-closure guards; the real published originating-project campaign is
+still open. Unit publication fixtures do not close that campaign.
+
+After the host reboot, Startup selected project Python 3.12 for the existing
+monitor/scheduler. A targeted local source probe fix resolved a real recurrence
+without restarting those services; the old timeout and cumulative failures are
+retained. This supersedes older current-runtime observations about global Python
+loops, but does not deploy the unreleased shared-worker/controller protocol.
+See [the incident](RUNTIME-INCIDENT-INFERENCE-2026-11-03.md),
+[naming ADR](ADR-EIDOS-AGENT-NAMING.md) and
+[feedback contract](FEEDBACK-LIFECYCLE.md).

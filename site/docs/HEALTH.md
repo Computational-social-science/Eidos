@@ -14,7 +14,7 @@ Historical CUDA results retain their original separate qualification scope.
 
 | dimension | measurement | verdict |
 |---|---|---|
-| unit tests | **1319 collected**, 1317 passed; 2 item skips, 4 collection-level optional-module skips (historical separate CUDA qualification: 16 passed) | ✅ |
+| unit tests | **1365 collected**, 1363 passed; 2 item skips, 4 collection-level optional-module skips (historical separate CUDA qualification: 16 passed) | ✅ |
 | coverage of `framework/` | **77%**, source-only scope including unexecuted modules; future no-regression by >1 point | measured |
 | chain audit | **11 chains: 10 PASS, 1 SKIP, 0 FAIL/ERROR** | ✅ |
 | Gate S on the reference fixture | PASS (valid register) and FAIL (mutated copy) | ✅ |

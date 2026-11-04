@@ -1,0 +1,110 @@
+{
+  "schema": "eidos.probe-candidate-evidence.v1",
+  "scope": "Native Windows copy-mode normal old/current-wheel probe comparison; Linux, release, origin replay and production deployment remain separate",
+  "wheel_sha256": {
+    "old": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
+    "new": "56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c"
+  },
+  "excluded_system_binary_suffixes": [
+    ".exe",
+    ".dll"
+  ],
+  "files": {
+    "driver.py.snapshot": {
+      "sha256": "f13c81ccfd1ca47804f6e29a2fe64a0f4c5ad086955b0f021b4e26f8eac313ba",
+      "size": 10752
+    },
+    "eidos-0.4.12-py3-none-any.whl": {
+      "sha256": "8afe9a670c5cf83b750d220b7f6f0a9e4a24233374be3da1a1d1a3282965b3d7",
+      "size": 158435
+    },
+    "eidos-0.5.0-py3-none-any.whl": {
+      "sha256": "56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c",
+      "size": 183586
+    },
+    "fixture.py.snapshot": {
+      "sha256": "b0607bee9af633dd48c77085fe5df9e900ba1afa2833f98aebbef142818b8ade",
+      "size": 6489
+    },
+    "requirements.txt": {
+      "sha256": "71da55ad590ac3f7118413e9fd10a07a7cf8d85380a677366464f2da63e5f172",
+      "size": 56631
+    },
+    "results/new-failure/command.json": {
+      "sha256": "862507ca7aef1192b7cfcf7fe4ac285b811d5a7694aea59ecbf1fef19f094cfc",
+      "size": 120
+    },
+    "results/new-failure/list": {
+      "sha256": "3be7cf9cc301bed136d0e368c14539eb77d608b0f77a4c6bf8e6ee2eb650c37e",
+      "size": 21
+    },
+    "results/new-failure/python312._pth": {
+      "sha256": "c68c08090b2d169f8daf647ac267666aafe54093bdc2b90e470ecb1919d22ea8",
+      "size": 137
+    },
+    "results/new-inherited/client-finished": {
+      "sha256": "3ca81821200f162fddbd1f96e9f75df22060ea27e6007c69f192215b771adaa7",
+      "size": 12
+    },
+    "results/new-inherited/command.json": {
+      "sha256": "5751b6b7391186a679f8589437aba6e9832895a71eb8968ddadb0c1756acb38b",
+      "size": 119
+    },
+    "results/new-inherited/descendant-ready": {
+      "sha256": "21f2fec153d984bf83439bafe23d810a7b308c820190bb3071502809ea4634ca",
+      "size": 5
+    },
+    "results/new-inherited/list": {
+      "sha256": "04f0f4d4316dcd7907c52280685d73c604acbb46978f1216d4d80602e4571732",
+      "size": 532
+    },
+    "results/new-inherited/python312._pth": {
+      "sha256": "c68c08090b2d169f8daf647ac267666aafe54093bdc2b90e470ecb1919d22ea8",
+      "size": 137
+    },
+    "results/new-missing/command.json": {
+      "sha256": "862507ca7aef1192b7cfcf7fe4ac285b811d5a7694aea59ecbf1fef19f094cfc",
+      "size": 120
+    },
+    "results/old-failure/command.json": {
+      "sha256": "862507ca7aef1192b7cfcf7fe4ac285b811d5a7694aea59ecbf1fef19f094cfc",
+      "size": 120
+    },
+    "results/old-failure/list": {
+      "sha256": "3be7cf9cc301bed136d0e368c14539eb77d608b0f77a4c6bf8e6ee2eb650c37e",
+      "size": 21
+    },
+    "results/old-failure/python312._pth": {
+      "sha256": "c68c08090b2d169f8daf647ac267666aafe54093bdc2b90e470ecb1919d22ea8",
+      "size": 137
+    },
+    "results/old-inherited/client-finished": {
+      "sha256": "3ca81821200f162fddbd1f96e9f75df22060ea27e6007c69f192215b771adaa7",
+      "size": 12
+    },
+    "results/old-inherited/command.json": {
+      "sha256": "7863a299094e1712510951e3cd34dd0051fe992507e943cd6f524aff43b922b5",
+      "size": 55
+    },
+    "results/old-inherited/descendant-ready": {
+      "sha256": "8cb41ce74277db4df0dfbec69aa1224f0d33e48de0da4482bc720f040e59f75a",
+      "size": 5
+    },
+    "results/old-inherited/list": {
+      "sha256": "04f0f4d4316dcd7907c52280685d73c604acbb46978f1216d4d80602e4571732",
+      "size": 532
+    },
+    "results/old-inherited/python312._pth": {
+      "sha256": "c68c08090b2d169f8daf647ac267666aafe54093bdc2b90e470ecb1919d22ea8",
+      "size": 137
+    },
+    "results/old-missing/command.json": {
+      "sha256": "862507ca7aef1192b7cfcf7fe4ac285b811d5a7694aea59ecbf1fef19f094cfc",
+      "size": 120
+    },
+    "results/record.json": {
+      "sha256": "3da50992989d3450dd7de3520fda3c0c4ee56c99b82f277cd8310065f3e6b6d6",
+      "size": 79416
+    }
+  }
+}

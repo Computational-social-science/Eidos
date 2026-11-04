@@ -104,8 +104,10 @@ const chain = el({chain: 'gates'});
 chain.querySelector = q => ({circle: dot, title, '[data-chain-age]': age})[q] || null;
 const service = el({service: 'quarto'});
 service.querySelector = q => ({text: header, title: serviceTitle})[q] || null;
+const moduleLabel = el(), moduleTitle = el(), idleModule = el({module: 'framework.unobserved', users: 'not_sampled'});
+idleModule.querySelector = q => ({text: moduleLabel, title: moduleTitle})[q] || null;
 const groups = {'g.node.chain': [chain], '[data-chain-state]': [cell],
-  'g.node.service': [service], '[data-service-state]': [serviceCell]};
+  'g.node.service': [service], '[data-service-state]': [serviceCell], 'g.node.module': [idleModule]};
 const context = vm.createContext({Date, AbortSignal,
   document: {getElementById: k => ids[k] || null, querySelectorAll: q => groups[q] || [],
     addEventListener() {}, body: el()}, location: {protocol: 'file:'},
@@ -117,6 +119,14 @@ context.applySample(d);
 assert.equal(dot.attrs.fill, cell.attrs.fill);
 assert.equal(cell.attrs.fill, '#57ab5a');
 assert.equal(serviceCell.attrs.fill, '#57ab5a');
+const luminance = hex => {
+  const c = hex.slice(1).match(/../g).map(v => parseInt(v, 16) / 255)
+    .map(v => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4);
+  return .2126*c[0] + .7152*c[1] + .0722*c[2];
+};
+const ink = luminance(moduleLabel.attrs.fill), background = luminance(process.argv[3]);
+assert.ok((Math.max(ink, background)+.05)/(Math.min(ink, background)+.05) >= 3,
+  'A live refresh must preserve readable unobserved module labels');
 d.seq = 2; d.chains.gates = 'FAIL'; d.signals.quarto.state = 'UNOBSERVABLE';
 context.applySample(d);
 assert.equal(dot.attrs.fill, '#e5534b'); assert.equal(cell.attrs.fill, '#e5534b');
@@ -137,6 +147,7 @@ d.seq = 1; context.applySample(d); assert.equal(ids.ov.textContent, 'STALE');
   process.stdout.write('state transitions and unavailable transport: PASS');
 })().catch(e => { console.error(e); process.exitCode = 1; });
 ''', encoding='utf-8')
-    result = subprocess.run([node, str(runner), str(client)], capture_output=True,
+    from tools.theme import TOKENS
+    result = subprocess.run([node, str(runner), str(client), TOKENS['bg']], capture_output=True,
                             text=True, timeout=20)
     assert result.returncode == 0, result.stdout + result.stderr

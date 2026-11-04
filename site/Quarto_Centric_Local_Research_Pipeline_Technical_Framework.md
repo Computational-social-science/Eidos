@@ -2,7 +2,7 @@
 
 **实现基线：0.5.0（初期开发编号迁移；旧 4.x 标签完整保留）；同步日期：2026-11-01（Asia/Shanghai）。** 当前状态为 pre-release、有界实证验证。测试、覆盖率与链路状态以 docs/SELF_AUDIT.json、docs/HEALTH.md 为准；功能完备性见 [验收清单](docs/FUNCTIONAL_COMPLETENESS.md)。
 
-运行部署边界：核查发现现存监控及两条旧链路循环仍使用全局 Python 3.14；本地启动配置已选择项目 Python 3.12，但受控停止/重启被自动审批以 blocked by policy 拒绝，未执行、未改道终止。新增调度循环源码已补 OS 生命周期锁、单次 tick 互斥、隐藏子进程树超时清理及原子心跳；这些规则不会追溯应用到旧进程。运行迁移仍为 PENDING，不能以网页可访问或源码测试通过替代实际部署验收。详见 docs/MONITOR-RUNTIME-MIGRATION-2026-11-01.json。
+2026-11-01 历史运行边界：当时核查发现现存监控及两条旧链路循环仍使用全局 Python 3.14；本地启动配置已选择项目 Python 3.12，但受控停止/重启被自动审批以 blocked by policy 拒绝，未执行、未改道终止。新增调度循环源码已补 OS 生命周期锁、单次 tick 互斥、隐藏子进程树超时清理及原子心跳；这些规则不会追溯应用到旧进程。运行迁移仍为 PENDING，不能以网页可访问或源码测试通过替代实际部署验收。详见 docs/MONITOR-RUNTIME-MIGRATION-2026-11-01.json。
 
 运行观察补充：2026-11-01 20:56:04（UTC+8）的旧调度记录捕获 `demo (NO)` 子进程中断，仪表如实进入 ALARM；21:05:43 出现该链新的实际 PASS（91 点），随后仪表恢复 OK，累计失败数 9 及历史告警保留。21:06:04 时观察到的心跳本身是空闲 tick，不能把它当成执行证明，也不能据此推断中断的具体触发者。两个旧全局解释器循环仍存活，迁移状态保持 PENDING。详见 [调度政策与本次观察](docs/SCHEDULING-POLICY.md)。
 
@@ -193,7 +193,7 @@ Consumers 改为桌面三列、中屏两列、手机单列的原生卡片，不�
 相关记录：[质量复核](docs/QUALITY-2026-10-31.md)、[案例说明](docs/CASE-SOFTMAX.md)、[健康](docs/HEALTH.md)、[编排](docs/ORCHESTRATION.md)。
 
 <!-- self-audit:start -->
-本轮验收：1317 passed、2 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 77%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
+本轮验收：1363 passed、2 个用例 skipped、4 个可选模块收集 skipped，框架源码覆盖率 77%，11 条链为 10 PASS/1 SKIP/0 FAIL/ERROR。
 <!-- self-audit:end -->
 
 既有 CUDA 16 项已独立通过；本轮未修改数值后端。
@@ -667,3 +667,27 @@ caller on same-host network-disabled Linux, after fixing the diagnostic
 container noexec scratch prerequisite. Old/new entry witnesses, identities and
 owned cleanup are retained. This supersedes the earlier caller-Linux-open
 checkpoint only; production migration and full feedback closure remain open.
+
+## EIDOS Agent naming checkpoint (2026-11-03)
+
+The selected product name is **EIDOS Agent**. The compatibility SDK still uses
+distribution `eidos` and namespace `framework`. Development source adds the
+`eidos-agent` console alias, without removing `eidos`. A fresh normal copy-mode
+Windows installation matched all 51 SDK modules and passed six real console
+invocations across both aliases. This does not rename the installed stable
+0.4.12 environment or publish `eidos-agent` / `eidos_agent` on a package index.
+See [the naming decision](docs/ADR-EIDOS-AGENT-NAMING.md) and
+[the development feedback contract](docs/FEEDBACK-LIFECYCLE.md). The real
+release/adoption/replay campaign and resident-monitor migration remain open.
+
+## Runtime and branding observation (2026-11-04)
+
+After a real host reboot, the existing Startup configuration selected project
+Python 3.12 for the supervisor, site and scheduler. The earlier global-Python
+resident-loop observations are historical. The old availability caller hung
+again; a targeted local source correction now matches the already qualified
+owned-lifetime probe. The old 900-second ERROR and cumulative 31 failures were
+preserved; a fresh real chain audit and subsequent heartbeat returned the
+monitor to OK. This does not deploy the unreleased worker/controller protocol.
+The local front door now displays EIDOS Agent while retaining the published
+0.4.12 version label. See [the incident record](docs/RUNTIME-INCIDENT-INFERENCE-2026-11-03.md).

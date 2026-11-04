@@ -1,0 +1,232 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+___________ test_missing_details_never_poison_the_readable_journal ____________
+
+case = (<module 'framework.feedback' from 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\framework\\...oi0/evidence'), '943579462912459d8f1292494c6d1793', '52d2f799e27c393380f09819755e19cd45fc49e541009497f77cb86f5b480530')
+
+    def test_missing_details_never_poison_the_readable_journal(case):
+        f,p,_,_,i,_=case;begin(case);before=f.status(p,i)
+        path=receipt(case,'candidate',artifacts={'wheel':wheel('0.5.0')})
+        value=json.loads(path.read_text());value.pop('details');path.write_text(json.dumps(value))
+        with pytest.raises(ValueError):f.record(p,i,path)
+>       after=f.status(p,i)
+              ^^^^^^^^^^^^^
+
+tests\test_feedback_lifecycle.py:878: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+framework\feedback.py:863: in status
+    return _status(project, incident)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+framework\feedback.py:867: in _status
+    folder, journal, context = _load(project.resolve(), incident)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+project = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2371/test_missing_details_never_poi0/study')
+incident = '943579462912459d8f1292494c6d1793'
+
+    def _load(project: Path, incident: str):
+        folder = _directory(project, incident)
+        journal = _json(_read(folder / "journal.json", MAX_JSON))
+        _, config = _workspace(project)
+        if (
+            journal.get("schema") != "eidos.incident-journal.v1"
+            or journal.get("incident_id") != incident
+            or journal.get("project_id") != config["project_id"]
+            or journal.get("project_root") != str(project.resolve())
+        ):
+            raise ValueError("Incident belongs to a different project")
+        if not _hex(journal.get("protocol_sha256")) or not _hex(
+            journal.get("configuration_sha256")
+        ):
+            raise ValueError("Incident genesis digest is invalid")
+        policy = _json(_blob(folder, journal["protocol_sha256"]))
+        context = dict(
+            project_id=config["project_id"],
+            incident_id=incident,
+            protocol_sha256=journal["protocol_sha256"],
+            protocol=policy,
+            state="DETECTED",
+            rejected=[],
+            rolled_back=[],
+            used_runs=[],
+            last_event_at=0.0,
+        )
+        events = journal.get("events")
+        previous = None
+        if not isinstance(events, list) or not 1 <= len(events) <= 256:
+            raise ValueError("Invalid incident event inventory")
+        for number, event in enumerate(events):
+            if (
+                not isinstance(event, dict)
+                or not isinstance(event.get("artifacts"), dict)
+                or not isinstance(event.get("kind"), str)
+                or not _hex(event.get("receipt_sha256"))
+            ):
+                raise ValueError("Invalid incident event shape")
+            context["event_at"] = _moment(event.get("recorded_at"))
+            raw = {k: v for k, v in event.items() if k != "sha256"}
+            if (
+                event.get("sequence") != number
+                or event.get("previous_sha256") != previous
+                or _sha(_encoded(raw)) != event.get("sha256")
+            ):
+                raise ValueError("Incident event chain changed")
+            receipt = _json(_blob(folder, event["receipt_sha256"]))
+            if (
+                receipt.get("schema") != "eidos.repair-receipt.v1"
+                or receipt.get("project_id") != config["project_id"]
+                or receipt.get("incident_id") != incident
+                or receipt.get("protocol_sha256") != journal["protocol_sha256"]
+                or receipt.get("kind") != event["kind"]
+            ):
+                raise ValueError("Incident receipt identity changed")
+            if (
+                not isinstance(receipt.get("artifacts"), dict)
+                or not isinstance(receipt.get("details"), dict)
+                or not all(
+                    isinstance(ref, dict) and _hex(ref.get("sha256"))
+                    for ref in receipt["artifacts"].values()
+                )
+            ):
+>               raise ValueError("Invalid stored receipt shape")
+E               ValueError: Invalid stored receipt shape
+
+framework\feedback.py:642: ValueError
+---------------------------- Captured stdout setup ----------------------------
+{"status": "INITIALIZED", "project": "study", "project_id": "b47bc14e99e54fa4a71186b5a99c3a82", "configuration": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\pytest-of-Administrator\\pytest-2371\\test_missing_details_never_poi0\\study\\.eidos\\project.yaml", "scientific_status": "UNRUN", "schema": "eidos.cli-result.v1", "operation": "init"}
+____________ test_history_ignores_unpublished_atomic_staging_files ____________
+
+case = (<module 'framework.feedback' from 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\framework\\...sh0/evidence'), 'da7c0b53f8084825a629ceda39df1e1e', 'f1e1ac17938b4ebc777a89811b0d36b05e252d30e01e558efd766db600dce126')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001CE2140BE60>
+
+    def test_history_ignores_unpublished_atomic_staging_files(case,monkeypatch):
+        f,p,_,_,i,_=case;candidate=released(case)
+        runs=p/'.eidos/runs';runs.mkdir();staged=runs/('b'*32+'.json')
+        with f.atomic_output(staged) as temporary:
+            temporary.write_bytes(b'committing run')
+            adopt(case,candidate,monkeypatch)
+>       assert f.revert(p,i)['state']=='REVERTED'
+               ^^^^^^^^^^^^^
+
+tests\test_feedback_lifecycle.py:888: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+framework\feedback.py:1107: in revert
+    _advance(context, receipt, artifacts)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+context = {'project_id': '2ef044d224ab4ed8af8833f1bd4dad19', 'incident_id': 'da7c0b53f8084825a629ceda39df1e1e', 'protocol_sha256...f1bd4dad19', 'scope': 'Private software lifecycle qualification', 'required_checks': ['pipe', 'unaffected'], ...}, ...}
+receipt = {'schema': 'eidos.repair-receipt.v1', 'project_id': '2ef044d224ab4ed8af8833f1bd4dad19', 'incident_id': 'da7c0b53f8084825a629ceda39df1e1e', 'protocol_sha256': 'f1e1ac17938b4ebc777a89811b0d36b05e252d30e01e558efd766db600dce126', ...}
+artifacts = {'wheel': b'PK\x03\x04\x14\x00\x00\x00\x00\x00\xb1\x8dc]\xf7r)\x8c\x1c\x00\x00\x00\x1c\x00\x00\x00\x1e\x00\x00\x00eido...er': b'{"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.json":"e516cbac2b97875ec06192364dde8070ade76222f59a83a1d82c5b59f280e537"}\n'}
+
+    def _advance(context: dict, receipt: dict, artifacts: dict) -> None:
+        kind = receipt["kind"]
+        state = context["state"]
+        details = receipt.get("details", {})
+        if not isinstance(details, dict):
+            raise ValueError("Repair receipt details must be an object")
+        allowed = {
+            "triage": ("DETECTED",),
+            "reproduction": ("TRIAGED",),
+            "candidate": ("REPRODUCED", "ROLLED_BACK"),
+            "rejection": ("CANDIDATE",),
+            "validation": ("CANDIDATE",),
+            "rollback": ("REJECTED",),
+            "release": ("VALIDATED",),
+            "adoption": ("RELEASED", "REVERTED"),
+            "replay": ("ADOPTED",),
+            "reversion": ("ADOPTED", "REPLAY_FAILED"),
+        }
+        if kind not in allowed or state not in allowed[kind]:
+            raise ValueError("Repair transition is out of order")
+        if kind == "triage":
+            if details.get("classification") not in (
+                "core",
+                "environment",
+                "downstream",
+                "unknown",
+                "scientific_negative",
+                "unsupported",
+            ):
+                raise ValueError("Unknown incident classification")
+            context.update(state="TRIAGED", classification=details["classification"])
+            return
+        if kind == "reproduction":
+            if context.get("classification") not in ("core", "environment", "downstream"):
+                raise ValueError(
+                    "Unattributed/non-software incident cannot enter a repair campaign"
+                )
+            _wheel(artifacts["wheel"])
+            _check(context, artifacts, False, stage=kind, baseline=True)
+            context.update(state="REPRODUCED", baseline_sha256=_sha(artifacts["wheel"]))
+            return
+        digest = _sha(artifacts["wheel"])
+        identity = _wheel(artifacts["wheel"])
+        if kind == "candidate":
+            if digest == context["baseline_sha256"] or digest in context["rejected"]:
+                raise ValueError(
+                    "Baseline or rejected artifact cannot become a new candidate"
+                )
+            context.update(
+                state="CANDIDATE", candidate_sha256=digest, version=identity["version"]
+            )
+            return
+        if kind == "rollback":
+            before = _json(artifacts["pin_before"])
+            after = _json(artifacts["pin_after"])
+            if (
+                digest != context["baseline_sha256"]
+                or before.get("project_id") != context["project_id"]
+                or after.get("project_id") != context["project_id"]
+                or before.get("artifact_sha256") != context["candidate_sha256"]
+                or after.get("artifact_sha256") != digest
+                or artifacts["history_before"] != artifacts["history_after"]
+            ):
+                raise ValueError(
+                    "Rollback did not restore the baseline and preserve history"
+                )
+            _check(context, artifacts, False, stage=kind, baseline=True)
+            context["rolled_back"].append(context["candidate_sha256"])
+            context["state"] = "ROLLED_BACK"
+            return
+        if digest != context["candidate_sha256"]:
+            raise ValueError("Receipt refers to another candidate")
+        if kind == "adoption":
+            pin = _json(artifacts["pin_after"])
+            _pin(pin, context, identity)
+            if type(details.get("prior_pin_existed")) is not bool or (
+                not details["prior_pin_existed"] and artifacts["pin_before"] != b""
+            ):
+                raise ValueError("Prior pin existence must be preserved explicitly")
+            if _moment(pin["adopted_at"]) < context["last_event_at"]:
+                raise ValueError("Adoption predates the required lifecycle stage")
+            context.update(
+                state="ADOPTED",
+                pin_sha256=_sha(artifacts["pin_after"]),
+                pin=pin,
+                prior_pin_sha256=_sha(artifacts["pin_before"]),
+                history_sha256=_sha(artifacts["history"]),
+                prior_pin_existed=details["prior_pin_existed"],
+            )
+            return
+        if kind == "reversion":
+            if (
+                _sha(artifacts["pin_after"]) != context["prior_pin_sha256"]
+                or _sha(artifacts["history_before"]) != context["history_sha256"]
+            ):
+                raise ValueError(
+                    "Reversion does not restore the actual pre-adoption pin/history"
+                )
+            before = _json(artifacts["history_before"])
+            after = _json(artifacts["history_after"])
+            if any(after.get(key) != value for key, value in before.items()):
+>               raise ValueError("Reversion lost or changed existing run history")
+E               ValueError: Reversion lost or changed existing run history
+
+framework\feedback.py:543: ValueError
+---------------------------- Captured stdout setup ----------------------------
+{"status": "INITIALIZED", "project": "study", "project_id": "2ef044d224ab4ed8af8833f1bd4dad19", "configuration": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\pytest-of-Administrator\\pytest-2371\\test_history_ignores_unpublish0\\study\\.eidos\\project.yaml", "scientific_status": "UNRUN", "schema": "eidos.cli-result.v1", "operation": "init"}
+=========================== short test summary info ===========================
+FAILED tests/test_feedback_lifecycle.py::test_missing_details_never_poison_the_readable_journal
+FAILED tests/test_feedback_lifecycle.py::test_history_ignores_unpublished_atomic_staging_files
+2 failed, 34 deselected in 2.91s

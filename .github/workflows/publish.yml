@@ -1,0 +1,79 @@
+name: publish-qualified-preview
+
+on:
+  push:
+    tags: ['v0.*']
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate immutable tag, source and exact-head CI
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/versioning.py --check
+          python tools/check_publication_record.py
+          head=$(git rev-parse HEAD)
+          version=$(python -c "import tomllib; print(tomllib.load(open('pyproject.toml','rb'))['project']['version'])")
+          test "$RELEASE_TAG" = "v$version"
+          source=$(python -c "import json; print(json.load(open('site/versions.json'))[-1]['source_commit'])")
+          git merge-base --is-ancestor "$source" "$head"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs?head_sha=$head&per_page=100" > /tmp/exact-head-ci.json
+          python - "$head" <<'PY'
+          import json,sys
+          runs=json.load(open('/tmp/exact-head-ci.json'))['workflow_runs']
+          for name in ('ci','installed-sdk'):
+              candidates=[r for r in runs if r['name']==name and r['head_sha']==sys.argv[1]]
+              if not candidates:raise SystemExit('Missing exact-head workflow: '+name)
+              latest=max(candidates,key=lambda r:(r['id'],r.get('run_attempt',1)))
+              if latest['status']!='completed' or latest['conclusion']!='success':
+                  raise SystemExit('Exact-head workflow is not successful: '+name)
+          PY
+          wheel="reference/sdk_process_acceptance/eidos-$version-py3-none-any.whl"
+          python tools/check_release_wheel.py --wheel "$wheel"
+          printf '%s\n' "VERSION=$version" "QUALIFIED_WHEEL=$wheel" >> "$GITHUB_ENV"
+      - name: Stage and verify the qualified bytes before making the release public
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo 'Release already exists; refusing automatic asset replacement' >&2
+            exit 1
+          fi
+          sha256sum "$QUALIFIED_WHEEL" > /tmp/SHA256SUMS.txt
+          gh release create "$RELEASE_TAG" "$QUALIFIED_WHEEL" /tmp/SHA256SUMS.txt \
+            --verify-tag --draft --prerelease --title "EIDOS Agent $VERSION — compatibility preview" \
+            --notes-file "docs/RELEASE-NOTES-$VERSION.md"
+          release_id=$(gh release view "$RELEASE_TAG" --json databaseId --jq '.databaseId')
+          [[ "$release_id" =~ ^[0-9]+$ ]]
+          gh api "repos/$GITHUB_REPOSITORY/releases/$release_id" > /tmp/staged-release.json
+          python - <<'PY'
+          import hashlib,json,os,pathlib
+          release=json.load(open('/tmp/staged-release.json'))
+          if release['draft'] is not True or release['tag_name']!=os.environ['RELEASE_TAG']:
+              raise SystemExit('Unexpected staged release identity/state')
+          paths=[pathlib.Path(os.environ['QUALIFIED_WHEEL']),pathlib.Path('/tmp/SHA256SUMS.txt')]
+          expected={p.name:(p.stat().st_size,'sha256:'+hashlib.sha256(p.read_bytes()).hexdigest()) for p in paths}
+          actual={a['name']:(a['size'],a.get('digest')) for a in release['assets']}
+          if len(release['assets'])!=len(expected) or actual!=expected:
+              raise SystemExit('Staged release assets differ from qualified bytes; draft retained')
+          PY
+          gh release edit "$RELEASE_TAG" --draft=false

@@ -1,0 +1,95 @@
+{
+  "ts": "2026-11-03T23:59:43+08:00",
+  "epoch": 1793721583.0258293,
+  "interval_min": 10,
+  "due": [
+    "demo (NO)",
+    "diagnosis",
+    "gates",
+    "gates+project checker",
+    "inference",
+    "registry",
+    "surrogate (local NO)",
+    "validity (Gate S)"
+  ],
+  "ran": [
+    {
+      "chain": "demo (NO)",
+      "exit": 0,
+      "status": "PASS",
+      "ms": 677.4,
+      "tail": [
+        "91 \u03bb points, max relative error 0.0002%"
+      ]
+    },
+    {
+      "chain": "diagnosis",
+      "exit": 0,
+      "status": "PASS",
+      "ms": 316.1,
+      "tail": [
+        "1 diagnosis naming the metric: Result metric below acceptance threshold: acc"
+      ]
+    },
+    {
+      "chain": "gates",
+      "exit": 0,
+      "status": "PASS",
+      "ms": 334.3,
+      "tail": [
+        "acceptance PASS+FAIL both correct; missing tool -> SKIP"
+      ]
+    },
+    {
+      "chain": "gates+project checker",
+      "exit": 0,
+      "status": "SKIP",
+      "ms": 371.6,
+      "tail": [
+        "no --project-checker given"
+      ]
+    },
+    {
+      "chain": "inference",
+      "exit": 0,
+      "status": "PASS",
+      "ms": 922.1,
+      "tail": [
+        "budget and routing contract checked; execution/gates use tools; scientific model stages remain UNQUALIFIED; StartLux is triage only"
+      ]
+    },
+    {
+      "chain": "registry",
+      "exit": 0,
+      "status": "PASS",
+      "ms": 398.5,
+      "tail": [
+        "12 project(s): barron2026_agent, chain_cmd_fails, chain_no_output, chain_ok, chain_tool_missing, demo_onboarding, demo_quantitative, null_study, operator_calibration, prose_lie, softmax_matrix, softmax_training"
+      ]
+    },
+    {
+      "chain": "surrogate (local NO)",
+      "exit": 0,
+      "status": "PASS",
+      "ms": 1351.4,
+      "tail": [
+        "19/19 fixed points within 5%, 19 stable; shuffled-label control caught"
+      ]
+    },
+    {
+      "chain": "validity (Gate S)",
+      "exit": 0,
+      "status": "PASS",
+      "ms": 365.7,
+      "tail": [
+        "valid register PASS; overstated count FAIL"
+      ]
+    }
+  ],
+  "failed": [],
+  "ticks": 1264,
+  "failures_total": 30,
+  "pid": 38836,
+  "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+  "python_version": "3.12.4"
+}

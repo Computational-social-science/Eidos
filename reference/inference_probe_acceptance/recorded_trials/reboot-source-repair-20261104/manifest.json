@@ -1,0 +1,102 @@
+{
+  "schema": "eidos.operational-repair-evidence.v1",
+  "scope": "Actual local source hotfix and one subsequent resident tick; not installed0.5.0SDK/controller migration,24hsoak,formalincidentclosure or scientificRSI",
+  "files": {
+    "acceptance.json": {
+      "sha256": "30c41adf1a9ae70d6a0bce47ce2a01f8b6d541bd2be71a159deaf77384345d40",
+      "size": 725
+    },
+    "automatic-followup-chains.json": {
+      "sha256": "d18611fec01af145d5ea5d5cc25e5322f72d088fbf0db4d9238656f7bb110b54",
+      "size": 3299
+    },
+    "automatic-followup-current.json": {
+      "sha256": "328860f36cf10309868c96db257550646b97b2ae5e4b7a841f2038d973c1b01c",
+      "size": 64116
+    },
+    "automatic-followup-scheduler.json": {
+      "sha256": "8bf712d7d8f943f173b37bdeb4a7656398c0846abac58c158ccda2b432a066ee",
+      "size": 2334
+    },
+    "before-chains.json": {
+      "sha256": "1b106b18d49ee88a6397751e6cb5b36049c632108976899b2390df322eea720e",
+      "size": 3363
+    },
+    "before-current.json": {
+      "sha256": "68c56229b8616b33f36a7e305f1bc0938d7a5bc5fc8b3b7c71152252dcc67b82",
+      "size": 64468
+    },
+    "before-scheduler.json": {
+      "sha256": "196120bcc6db9c11298684a397b9273be2537ccfa0f23e3c7f9ca68804b96b65",
+      "size": 2332
+    },
+    "inference-before-reboot-repair-20261104.py": {
+      "sha256": "ff04da862499308b3685d71297c1c65a03631d18afe6896063cdd22236162693",
+      "size": 29912
+    },
+    "inference.patch": {
+      "sha256": "a9d57ed81820727d225b84c3e553f4a0439eb1fc97dd34cb846f6a41854ac255",
+      "size": 1081
+    },
+    "local-site-check.json": {
+      "sha256": "fe472e1b2da471deaab10cda22f8e3f48ab490efebcaaebe91d4d5c790e82a5f",
+      "size": 244
+    },
+    "manual-tick.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "manual-tick.stdout": {
+      "sha256": "982ac101889e19889373c3370f2ee4a3bd3770d0b560816597d50a1f350bf8e6",
+      "size": 109
+    },
+    "natural-timeout-chains.json": {
+      "sha256": "150bc941bb66ebb3c215aa6f92864d90f428b634189f03a73dc07e7e6fe36c43",
+      "size": 3294
+    },
+    "natural-timeout-current.json": {
+      "sha256": "96b940e9b81375fe3f9956aae715c3210daef0383f844260aa8316a3b6f88a53",
+      "size": 64348
+    },
+    "natural-timeout-scheduler.json": {
+      "sha256": "9ade9a74ad8e438df76945daeb049faa9e557f49e89ea6512af1dc39a5dddf5b",
+      "size": 3044
+    },
+    "old-call-failure-chains.json": {
+      "sha256": "150bc941bb66ebb3c215aa6f92864d90f428b634189f03a73dc07e7e6fe36c43",
+      "size": 3294
+    },
+    "old-call-failure-current.json": {
+      "sha256": "64adc540694694ad186c87d6a65851bd4a5fcbe73b987167b59e541b12778953",
+      "size": 64377
+    },
+    "old-call-failure-scheduler.json": {
+      "sha256": "9ade9a74ad8e438df76945daeb049faa9e557f49e89ea6512af1dc39a5dddf5b",
+      "size": 3044
+    },
+    "reboot-inference-pyspy-20261104.txt": {
+      "sha256": "c7802a8bd80001dad603bcf1446c162d15e68ab9a810635561067c3c58d395ce",
+      "size": 1216
+    },
+    "reboot-inference-source-repair-20261104.json": {
+      "sha256": "ea5d630b828e6ce65bf883266a0c64def2cc755b82e45e7ca76be36a1f90d8d0",
+      "size": 1603
+    },
+    "recovered-chains.json": {
+      "sha256": "150bc941bb66ebb3c215aa6f92864d90f428b634189f03a73dc07e7e6fe36c43",
+      "size": 3294
+    },
+    "recovered-current.json": {
+      "sha256": "d1cf40a5e22b4b83ab9efe03ea0ce0bbbdec8cbcb343b25462937de6dac35902",
+      "size": 63917
+    },
+    "recovered-scheduler.json": {
+      "sha256": "4fa29ffc5198f12c49925ac2050f2de89290fd96330b1d6c358107b9f8a4f194",
+      "size": 315
+    },
+    "repaired-inference.py.snapshot": {
+      "sha256": "05a096531d55ff0bb6ec020df5b997d72abb0888b912734f892b463d3c88bff7",
+      "size": 29939
+    }
+  }
+}

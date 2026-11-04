@@ -1,0 +1,104 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__________ test_browser_poll_repaints_dependencies_and_fails_closed ___________
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2382/test_browser_poll_repaints_dep0')
+
+    def test_browser_poll_repaints_dependencies_and_fails_closed(tmp_path):
+        """Execute the shipped JS against DOM doubles; exercise transitions, not source strings."""
+        node = shutil.which('node')
+        if not node:
+            pytest.skip('Node.js required to execute the dashboard client contract')
+        client = tmp_path / 'client.js'
+        client.write_text(dash.JS.replace('__PALETTE__', json.dumps(dash.PALETTE)), encoding='utf-8')
+        runner = tmp_path / 'check.cjs'
+        runner.write_text(r'''
+    const vm = require('node:vm'), fs = require('node:fs'), assert = require('node:assert/strict');
+    const el = (dataset = {}) => ({dataset, textContent: '', innerHTML: '', className: '',
+      attrs: {}, style: {}, classList: {add() {}, toggle() {}},
+      setAttribute(k, v) { this.attrs[k] = v; }, addEventListener() {}, querySelector() { return null; }});
+    const ids = Object.fromEntries(['ov','meta','faults','chain-summary','chain-detail','boundary-summary',
+      'live','livetext','observation-note'].map(k => [k, el()]));
+    const dot = el(), cell = el({chainState: 'gates'}), serviceCell = el({serviceState: 'quarto'});
+    const title = el(), age = el(), header = el(), serviceTitle = el();
+    const chain = el({chain: 'gates'});
+    chain.querySelector = q => ({circle: dot, title, '[data-chain-age]': age})[q] || null;
+    const service = el({service: 'quarto'});
+    service.querySelector = q => ({text: header, title: serviceTitle})[q] || null;
+    const moduleLabel = el(), moduleTitle = el(), idleModule = el({module: 'framework.unobserved', users: 'not_sampled'});
+    idleModule.querySelector = q => ({text: moduleLabel, title: moduleTitle})[q] || null;
+    const groups = {'g.node.chain': [chain], '[data-chain-state]': [cell],
+      'g.node.service': [service], '[data-service-state]': [serviceCell], 'g.node.module': [idleModule]};
+    const context = vm.createContext({Date, AbortSignal,
+      document: {getElementById: k => ids[k] || null, querySelectorAll: q => groups[q] || [],
+        addEventListener() {}, body: el()}, location: {protocol: 'file:'},
+      fetch: async () => { throw new Error('connection refused'); }});
+    vm.runInContext(fs.readFileSync(process.argv[2], 'utf8'), context);
+    const d = {ts: new Date().toISOString(), seq: 1, chains: {gates: 'PASS'},
+      chain_meta: {gates: {age_s: 12, detail: 'new sample'}}, signals: {quarto: {state: 'OK'}}};
+    context.applySample(d);
+    assert.equal(dot.attrs.fill, cell.attrs.fill);
+    assert.equal(cell.attrs.fill, '#57ab5a');
+    assert.equal(serviceCell.attrs.fill, '#57ab5a');
+    const luminance = hex => {
+      const c = hex.slice(1).match(/../g).map(v => parseInt(v, 16) / 255)
+        .map(v => v <= .04045 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4);
+      return .2126*c[0] + .7152*c[1] + .0722*c[2];
+    };
+    const ink = luminance(moduleLabel.attrs.fill), background = luminance(process.argv[3]);
+    assert.ok((Math.max(ink, background)+.05)/(Math.min(ink, background)+.05) >= 3,
+      'A live refresh must preserve readable unobserved module labels');
+    d.seq = 2; d.chains.gates = 'FAIL'; d.signals.quarto.state = 'UNOBSERVABLE';
+    context.applySample(d);
+    assert.equal(dot.attrs.fill, '#e5534b'); assert.equal(cell.attrs.fill, '#e5534b');
+    assert.equal(serviceCell.attrs.fill, '#d29922'); assert.equal(header.attrs.fill, '#d29922');
+    assert.match(title.textContent, /FAIL/); assert.equal(age.textContent, '12s');
+    assert.equal(ids.ov.textContent, 'ALARM'); assert.equal(ids['boundary-summary'].textContent, '0/1 observed OK');
+    assert.equal(context.sampleView({...d, signals: {}, chains: {} }).overall, 'UNKNOWN');
+    d.seq = 3; d.chains.gates = 'PASS'; d.signals.quarto.state = 'OK'; context.applySample(d);
+    vm.runInContext('lastAdvanceAt = Date.now() - 46000', context);
+    context.applySample(d);
+    assert.equal(ids.ov.textContent, 'STALE'); assert.equal(ids.live.className, 'off');
+    d.seq = 4; context.applySample(d); assert.equal(ids.ov.textContent, 'OK');
+    d.seq = 1; context.applySample(d); assert.equal(ids.ov.textContent, 'STALE');
+    (async () => {
+      await context.poll();
+      assert.equal(ids.ov.textContent, 'UNAVAILABLE'); assert.equal(ids.live.className, 'off');
+      assert.match(ids['observation-note'].textContent, /cached/);
+      process.stdout.write('state transitions and unavailable transport: PASS');
+    })().catch(e => { console.error(e); process.exitCode = 1; });
+    ''', encoding='utf-8')
+        from tools.theme import TOKENS
+        result = subprocess.run([node, str(runner), str(client), TOKENS['bg']], capture_output=True,
+                                text=True, timeout=20)
+>       assert result.returncode == 0, result.stdout + result.stderr
+E       AssertionError: node:internal/assert/utils:281
+E             throw err;
+E             ^
+E         
+E         AssertionError [ERR_ASSERTION]: A live refresh must preserve readable unobserved module labels
+E             at Object.<anonymous> (C:\Users\Administrator\AppData\Local\Temp\pytest-of-Administrator\pytest-2382\test_browser_poll_repaints_dep0\check.cjs:35:8)
+E             at Module._compile (node:internal/modules/cjs/loader:1554:14)
+E             at Object..js (node:internal/modules/cjs/loader:1706:10)
+E             at Module.load (node:internal/modules/cjs/loader:1289:32)
+E             at Function._load (node:internal/modules/cjs/loader:1108:12)
+E             at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+E             at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+E             at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:170:5)
+E             at node:internal/main/run_main_module:36:49 {
+E           generatedMessage: false,
+E           code: 'ERR_ASSERTION',
+E           actual: false,
+E           expected: true,
+E           operator: '=='
+E         }
+E         
+E         Node.js v22.14.0
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['C:\\nvm4w\\nodejs\\node.EXE', 'C:\\Users\\Administrator\\AppData\\Local\\Temp\\pytest-of-Admin...age: false,\n  code: 'ERR_ASSERTION',\n  actual: false,\n  expected: true,\n  operator: '=='\n}\n\nNode.js v22.14.0\n").returncode
+
+tests\test_dashboard_presentation.py:153: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_dashboard_presentation.py::test_browser_poll_repaints_dependencies_and_fails_closed
+1 failed in 0.43s

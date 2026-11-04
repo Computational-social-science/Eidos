@@ -5,9 +5,9 @@
     "skip": 1,
     "fail": 0
   },
-  "tests_collected": 1319,
+  "tests_collected": 1365,
   "tests": {
-    "passed": 1317,
+    "passed": 1363,
     "failed": 0,
     "skipped": 6,
     "errors": 0
@@ -16,104 +16,104 @@
   "stability": {
     "stable": true,
     "before": {
-      "source_sha256": "76db9d342993a8da3dc97ff564ca6a1ff3d52eb221249ef89928ff322fdd5ed1",
+      "source_sha256": "d02d740d0cde3fc3efe07bafe01be8a651e7a9ef1239ea4e54389d305f224b10",
       "distribution_sha256": "63382bd04f5171ce3b7386e55ce3cfce89e47f563b793efbb72ab087a2530877"
     },
     "after": {
-      "source_sha256": "76db9d342993a8da3dc97ff564ca6a1ff3d52eb221249ef89928ff322fdd5ed1",
+      "source_sha256": "d02d740d0cde3fc3efe07bafe01be8a651e7a9ef1239ea4e54389d305f224b10",
       "distribution_sha256": "63382bd04f5171ce3b7386e55ce3cfce89e47f563b793efbb72ab087a2530877"
     },
-    "collection_after": 1319,
+    "collection_after": 1365,
     "execution": {
-      "reported_items": 1319,
+      "reported_items": 1365,
       "collection_level_skips": 4,
       "slowest_tests": [
         {
           "test": "tests.test_tracking_contract::test_actual_model_roundtrip_and_registry_preserve_ambient_run",
-          "seconds": 17.838
-        },
-        {
-          "test": "tests.test_robustness::test_no_wrong_register_passes",
-          "seconds": 13.719
+          "seconds": 27.174
         },
         {
           "test": "tests.test_softmax_matrix::test_saved_matrix_accepts_only_complete_bound_evidence",
-          "seconds": 13.458
+          "seconds": 25.808
         },
         {
-          "test": "tests.test_tracking_contract::test_relative_uri_custom_project_model_and_name_roundtrip",
-          "seconds": 11.516
-        },
-        {
-          "test": "tests.test_tracking_contract::test_run_ownership_coordinates_actual_separate_process",
-          "seconds": 11.27
+          "test": "tests.test_robustness::test_no_wrong_register_passes",
+          "seconds": 24.807
         },
         {
           "test": "tests.test_render::test_render_produces_three_formats",
-          "seconds": 10.464
-        },
-        {
-          "test": "tests.test_tracking_dvc::test_actual_registered_hash_and_content_addressed_url",
-          "seconds": 7.738
-        },
-        {
-          "test": "tests.test_numerics_case::test_bundle_command_rebuilds_all_displayed_cases",
-          "seconds": 7.438
-        },
-        {
-          "test": "tests.test_tracking_dvc::test_dataset_artifact_matches_tracked_bytes_and_explicit_run",
-          "seconds": 7.121
+          "seconds": 24.304
         },
         {
           "test": "tests.test_tracking_contract::test_another_tracker_does_not_redirect_existing_tracker",
-          "seconds": 7.103
+          "seconds": 16.57
         },
         {
-          "test": "tests.test_decision::test_health_reports_down_without_raising",
-          "seconds": 6.119
+          "test": "tests.test_tracking_contract::test_run_ownership_coordinates_actual_separate_process",
+          "seconds": 14.424
         },
         {
-          "test": "tests.test_tracking_dvc::test_directory_version_is_not_a_status_word",
-          "seconds": 5.674
+          "test": "tests.test_numerics_case::test_bundle_command_rebuilds_all_displayed_cases",
+          "seconds": 13.963
+        },
+        {
+          "test": "tests.test_tracking_contract::test_relative_uri_custom_project_model_and_name_roundtrip",
+          "seconds": 13.883
+        },
+        {
+          "test": "tests.test_tracking_contract::test_model_target_override_and_invalid_end_status_refused",
+          "seconds": 10.445
+        },
+        {
+          "test": "tests.test_tracking_contract::test_two_runs_interleave_without_becoming_fluent_runs",
+          "seconds": 10.409
+        },
+        {
+          "test": "tests.test_numerics_case::test_export_contains_reproducible_downloads",
+          "seconds": 10.135
+        },
+        {
+          "test": "tests.test_tracking_dvc::test_dataset_artifact_matches_tracked_bytes_and_explicit_run",
+          "seconds": 10.093
+        },
+        {
+          "test": "tests.test_tracking_contract::test_ending_passed_run_does_not_end_ambient_run",
+          "seconds": 10.062
         },
         {
           "test": "tests.test_tracking_contract::test_foreign_store_run_refused_before_mutation",
-          "seconds": 5.637
+          "seconds": 9.576
         },
         {
-          "test": "tests.test_process_nested_lifecycle::test_outer_deadline_closes_a_nested_sdk_scope",
-          "seconds": 5.527
+          "test": "tests.test_site::test_render_has_no_unsubstituted_tokens",
+          "seconds": 9.254
         },
         {
-          "test": "tests.test_project_process_lifecycle::test_timeout_stops_owned_descendants_and_preserves_both_streams[test]",
-          "seconds": 5.524
+          "test": "tests.test_site::test_render_does_not_publish_or_overwrite_research_artifacts",
+          "seconds": 8.233
         },
         {
-          "test": "tests.test_project_process_lifecycle::test_timeout_stops_owned_descendants_and_preserves_both_streams[gate]",
-          "seconds": 5.517
+          "test": "tests.test_site::test_render_carries_captions_math_and_the_demo_data",
+          "seconds": 8.113
         },
         {
-          "test": "tests.test_project_process_lifecycle::test_timeout_stops_owned_descendants_and_preserves_both_streams[render]",
-          "seconds": 5.517
+          "test": "tests.test_site::test_demo_is_self_contained",
+          "seconds": 8.103
         },
         {
-          "test": "tests.test_project_process_lifecycle::test_successful_parent_cannot_leave_owned_work_running",
-          "seconds": 5.417
+          "test": "tests.test_site::test_every_section_has_a_nav_entry_and_the_nav_resolves",
+          "seconds": 8.098
         },
         {
-          "test": "tests.test_tracking_dvc::test_replaced_metadata_refuses_upload[md5-00000000000000000000000000000000]",
-          "seconds": 5.221
-        },
-        {
-          "test": "tests.test_tracking_contract::test_reloaded_run_preserves_status_and_git_metadata",
-          "seconds": 5.219
+          "test": "tests.test_site::test_page_states_framework_and_current_consumer_verification",
+          "seconds": 8.056
         }
       ]
     },
     "deselection_detected": false,
-    "collected_ids": 1319,
-    "unique_ids": 1319,
-    "recollected_ids": 1319,
+    "collected_ids": 1365,
+    "unique_ids": 1365,
+    "recollected_ids": 1365,
     "scope": "Framework/tools/tests Python sources, project version/lock/README/claims, installed distribution names+versions, collected test IDs"
   },
   "skip_reasons": [

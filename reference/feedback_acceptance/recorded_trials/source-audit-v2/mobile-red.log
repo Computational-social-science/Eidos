@@ -1,0 +1,3 @@
+[FAIL] 390px: MAIN overflows (367 > 358 px)
+[FAIL] 390px: sec overflows (367 > 358 px)
+[FAIL] 390px: card overflows (366 > 356 px)

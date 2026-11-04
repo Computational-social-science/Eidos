@@ -1,0 +1,35 @@
+{
+  "schema": "eidos.feedback-source-audit.v1",
+  "scope": "Development source/unit/chain qualification; real published incident campaign and production migration remain open",
+  "source_sha256": "cb4b61aecad38af2615281804626aded33c04525e6399b554aa1f31bee41e3a0",
+  "files": {
+    "entrypoints-green.log": {
+      "sha256": "bb484df2abf48850186214d813fe0802f5ba5a2fea7b7f558f62c569ac662fc9",
+      "size": 583
+    },
+    "entrypoints-red.log": {
+      "sha256": "d478bd308242d949eab1392104f911bef4e4021d84379e6ceb99f24137a535e6",
+      "size": 6878
+    },
+    "focused-coverage.log": {
+      "sha256": "e31a788a42f799d1cb0c454a8a9979867f767eafe6df7c292a6876ce8803f02e",
+      "size": 1307
+    },
+    "journal-history-green.log": {
+      "sha256": "d526ab9e072f09a3ccaa62d32a031d3314c2ebaab4b7f0f23e2aa1c854c7752f",
+      "size": 102
+    },
+    "journal-history-red.log": {
+      "sha256": "571b2bb04d9f156b3af2bf75f3fc2d3a4a97c7057e96417e04e4146fe29d051f",
+      "size": 12926
+    },
+    "SELF_AUDIT.json": {
+      "sha256": "00104624d837b5fab5471ccb36a7ab5d04f44bdfad10109d059f5bf4e3b46800",
+      "size": 5148
+    },
+    "source-audit.log": {
+      "sha256": "a5cfc67e90a57aaa612e942130640079e362ed3edd153560ca60ee3138223e9e",
+      "size": 100
+    }
+  }
+}

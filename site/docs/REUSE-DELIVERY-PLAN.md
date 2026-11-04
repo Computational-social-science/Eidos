@@ -65,9 +65,17 @@ remains useful before a public index listing.
 
 ## P3: concrete feedback campaign
 
-Select one real core defect with immutable pre-fix and repaired artifacts. Prefer
-the already reproduced stale-verdict binding defect over inventing a synthetic
-scientific discovery. Preserve the exact failing configuration, validator, input
+The selected product name is **EIDOS Agent**; see
+[the naming decision](ADR-EIDOS-AGENT-NAMING.md). Development source adds an
+`eidos-agent` console alias, while the current compatibility wheel retains
+distribution `eidos` and namespace `framework`. The intended public distribution
+and namespace are a separate migration gate. The local ledger's implemented
+contract and measured limits are in [feedback lifecycle](FEEDBACK-LIFECYCLE.md).
+
+Select one real core defect with immutable pre-fix and repaired artifacts. The
+inherited-pipe inference-availability defect is now independently reproduced in
+installed Windows/Linux controls; it is the candidate for this campaign. Preserve
+the exact failing configuration, validator, input
 versions, expected/actual verdicts and their originating project identity. Obtain
 permission for any private reproducer export; local sanitized evidence is enough
 and no GitHub account is required.

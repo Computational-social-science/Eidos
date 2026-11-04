@@ -631,3 +631,16 @@ The final `reference/inference_probe_acceptance/recorded_trials/probe-fix-v3`
 profile supersedes v2 as this caller acceptance; failed attempts and withdrawn
 controls remain preserved. This closes only the availability-probe Linux gap,
 not current-wheel shared UI, new-machine, release/rollback or scientific RSI.
+
+## Product naming and repair-ledger development checkpoint
+
+Use **EIDOS Agent** as the product name. Distribution `eidos`, namespace
+`framework` and prior receipts remain explicit compatibility identities. New
+source declares an additional `eidos-agent` console entry. The future public
+`eidos-agent` distribution and `eidos_agent` namespace are not delivered merely
+by that alias; see [the naming ADR](ADR-EIDOS-AGENT-NAMING.md).
+
+The [local incident API](FEEDBACK-LIFECYCLE.md) now has source-level rejection,
+rollback, pin adoption, fresh replay and closure guards. Development tests and
+installed console checks are distinct from its still-open real published repair
+campaign and from migration of the resident 8765 monitor.

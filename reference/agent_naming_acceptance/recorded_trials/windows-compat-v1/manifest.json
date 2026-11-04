@@ -1,0 +1,28 @@
+{
+  "schema": "eidos.agent-name-evidence.v1",
+  "scope": "Native Windows normal core installation; no model or scientific acceptance",
+  "wheel_sha256": "56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c",
+  "sdk_modules": 51,
+  "files": {
+    "driver.py.snapshot": {
+      "sha256": "acbf1a2dedd458a1b51ebf1a9337f4ce74fa07d2884fbb60fce634d7cfd1452b",
+      "size": 3198
+    },
+    "eidos-0.5.0-py3-none-any.whl": {
+      "sha256": "56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c",
+      "size": 183586
+    },
+    "feedback.zip": {
+      "sha256": "4ff504c6994dfc218757a8bb649171e656a043ee0e65aff1c28e28f1d1aff338",
+      "size": 693
+    },
+    "requirements.txt": {
+      "sha256": "71da55ad590ac3f7118413e9fd10a07a7cf8d85380a677366464f2da63e5f172",
+      "size": 56631
+    },
+    "result.json": {
+      "sha256": "edcd9acc117b1e665c72afcfeef5ca56606f7e112321f01c7bd472758153e433",
+      "size": 11647
+    }
+  }
+}

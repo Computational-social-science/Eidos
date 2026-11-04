@@ -20,6 +20,7 @@ dependencies = [
 
 [project.scripts]
 eidos = "framework.cli:main"
+eidos-agent = "framework.cli:main"
 
 [project.optional-dependencies]
 # The core dependency closure is declared above. Everything below is opt-in.

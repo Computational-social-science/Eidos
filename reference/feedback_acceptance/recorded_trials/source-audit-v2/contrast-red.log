@@ -1,0 +1,19 @@
+  PASS  document is current
+  PASS  monitor structure
+  PASS  monitor layout
+  PASS  document layout
+  FAIL  both pages, WCAG AA
+         index.html: 682 text nodes, 0 below AA, 0 svg labels below 3:1
+           dashboard.html: 101 text nodes, 0 below AA, 9 svg labels below 3:1
+         [FAIL] dashboard.html 1280px: svg text 1.41:1 'gates'
+         [FAIL] dashboard.html 1280px: svg text 1.41:1 'decision'
+         [FAIL] dashboard.html 1280px: svg text 1.41:1 'diagnosis'
+         [FAIL] dashboard.html 1280px: svg text 1.41:1 'inference'
+         [FAIL] dashboard.html 1280px: svg text 1.41:1 'project'
+         [FAIL] dashboard.html 1280px: svg text 1.41:1 'quarto��br'
+  PASS  both pages execute
+  PASS  visual language
+  PASS  service coverage (diagnosis = mapping = signal)
+  PASS  content invariants
+
+site gate: FAIL (1 of 9)

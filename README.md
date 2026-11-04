@@ -1,4 +1,4 @@
-# EIDOS — reusable research execution and evidence
+# EIDOS Agent — reusable research execution and evidence
 
 **Version 0.5.0** · unreleased development candidate · local-first · MIT framework
 
@@ -7,6 +7,12 @@ The version above identifies development source, not a published 0.5.0 product.
 Release-integrity checking still blocks the source/history mismatch.
 [Main-branch CI](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
 is separate from candidate acceptance.
+
+**Naming:** the product is **EIDOS Agent**. New development source adds the
+`eidos-agent` console alias while preserving `eidos` and `framework`. The intended
+public distribution `eidos-agent` and import namespace `eidos_agent` need a
+separate compatibility qualification; they are not published install commands.
+See the [naming decision](docs/ADR-EIDOS-AGENT-NAMING.md).
 
 EIDOS helps independent research projects execute bounded work, bind results to
 inputs and environments, check claims against explicit evidence, deliver reports

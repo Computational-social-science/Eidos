@@ -21,6 +21,16 @@ compatibility have been qualified. This guide does not reserve a new package nam
 
 ## Trial the installed CLI
 
+The newer **EIDOS Agent** naming/feedback candidate is retained separately at
+`reference/agent_naming_acceptance/recorded_trials/windows-compat-v1/`, with wheel
+SHA256 `56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c`
+and its own `requirements.txt`. Its 51-module normal Windows installation
+qualifies both `eidos-agent` and legacy `eidos` console entries; its installed
+old/new private inference caller comparison also passes. The local incident API
+is documented in [feedback lifecycle](FEEDBACK-LIFECYCLE.md). The prior Linux
+qualification below belongs to its earlier wheel, so the newer artifact is not
+automatically Linux-qualified. Neither artifact is a published 0.5.0 release.
+
 Prerequisites: Python 3.11/3.12 and uv. Use a dedicated trial environment unless
 the dependency closure has been checked against the study's lock. Do not replace
 a study's CUDA/PyTorch environment as a side effect of onboarding.

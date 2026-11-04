@@ -1,0 +1,127 @@
+{
+  "ts": "2026-11-04T10:06:36+08:00",
+  "epoch": 1793757996.055056,
+  "interval_min": 10,
+  "due": [
+    "decision",
+    "demo (NO)",
+    "diagnosis",
+    "gates",
+    "gates+project checker",
+    "inference",
+    "quarto",
+    "registry",
+    "surrogate (local NO)",
+    "tracking",
+    "validity (Gate S)"
+  ],
+  "ran": [
+    {
+      "chain": "decision",
+      "exit": 0,
+      "status": "SKIP",
+      "ms": 6580.7,
+      "tail": [
+        "decision service not running at http://127.0.0.1:8090; start it with decision-service/scripts/serve.ps1 (weights ~4.3 GB, CC BY-NC 4.0)"
+      ]
+    },
+    {
+      "chain": "demo (NO)",
+      "exit": 0,
+      "status": "PASS",
+      "ms": 1009.8,
+      "tail": [
+        "91 \u03bb points, max relative error 0.0002%"
+      ]
+    },
+    {
+      "chain": "diagnosis",
+      "exit": 0,
+      "status": "PASS",
+      "ms": 272.4,
+      "tail": [
+        "1 diagnosis naming the metric: Result metric below acceptance threshold: acc"
+      ]
+    },
+    {
+      "chain": "gates",
+      "exit": 0,
+      "status": "PASS",
+      "ms": 367.0,
+      "tail": [
+        "acceptance PASS+FAIL both correct; missing tool -> SKIP"
+      ]
+    },
+    {
+      "chain": "gates+project checker",
+      "exit": 0,
+      "status": "SKIP",
+      "ms": 307.2,
+      "tail": [
+        "no --project-checker given"
+      ]
+    },
+    {
+      "chain": "inference",
+      "exit": 124,
+      "status": "ERROR",
+      "ms": 900017.2,
+      "tail": [
+        "chain timed out after 900s; owned process tree terminated"
+      ]
+    },
+    {
+      "chain": "quarto",
+      "exit": 0,
+      "status": "PASS",
+      "ms": 55163.0,
+      "tail": [
+        "minimal document; quarto=quarto.exe, render ok=True"
+      ]
+    },
+    {
+      "chain": "registry",
+      "exit": 0,
+      "status": "PASS",
+      "ms": 308.0,
+      "tail": [
+        "12 project(s): barron2026_agent, chain_cmd_fails, chain_no_output, chain_ok, chain_tool_missing, demo_onboarding, demo_quantitative, null_study, operator_calibration, prose_lie, softmax_matrix, softmax_training"
+      ]
+    },
+    {
+      "chain": "surrogate (local NO)",
+      "exit": 0,
+      "status": "PASS",
+      "ms": 1474.6,
+      "tail": [
+        "19/19 fixed points within 5%, 19 stable; shuffled-label control caught"
+      ]
+    },
+    {
+      "chain": "tracking",
+      "exit": 0,
+      "status": "PASS",
+      "ms": 19439.8,
+      "tail": [
+        "two isolated runs, verified metrics/terminal states and actual DVC content; worker closed"
+      ]
+    },
+    {
+      "chain": "validity (Gate S)",
+      "exit": 0,
+      "status": "PASS",
+      "ms": 358.2,
+      "tail": [
+        "valid register PASS; overstated count FAIL"
+      ]
+    }
+  ],
+  "failed": [
+    "inference"
+  ],
+  "ticks": 1265,
+  "failures_total": 31,
+  "pid": 39592,
+  "python": "C:\\Users\\Administrator\\.venvs\\eidos-py312\\Scripts\\python.exe",
+  "python_version": "3.12.4"
+}

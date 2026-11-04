@@ -1,0 +1,117 @@
+{
+  "ts": 1793757019.262644,
+  "chains": {
+    "validity (Gate S)": {
+      "status": "PASS",
+      "ts": 1793721582.9835637,
+      "ms": 78.2,
+      "requires": "pyyaml",
+      "deps": [
+        "yaml"
+      ],
+      "missing": [],
+      "detail": "valid register PASS; overstated count FAIL"
+    },
+    "registry": {
+      "status": "PASS",
+      "ts": 1793721581.270712,
+      "ms": 65.5,
+      "requires": "nothing",
+      "deps": [],
+      "missing": [],
+      "detail": "12 project(s): barron2026_agent, chain_cmd_fails, chain_no_output, chain_ok, chain_tool_missing, demo_onboarding, demo_quantitative, null_study, operator_calibration, prose_lie, softmax_matrix, softmax_training"
+    },
+    "gates": {
+      "status": "PASS",
+      "ts": 1793757018.9499488,
+      "ms": 51.3,
+      "requires": "pyyaml",
+      "deps": [
+        "yaml"
+      ],
+      "missing": [],
+      "detail": "acceptance PASS+FAIL both correct; missing tool -> SKIP"
+    },
+    "gates+project checker": {
+      "status": "SKIP",
+      "ts": 1793757019.262644,
+      "ms": 0.0,
+      "requires": "a project ref checker",
+      "deps": [],
+      "missing": [],
+      "detail": "no --project-checker given"
+    },
+    "diagnosis": {
+      "status": "PASS",
+      "ts": 1793757018.5926216,
+      "ms": 34.3,
+      "requires": "nothing",
+      "deps": [],
+      "missing": [],
+      "detail": "1 diagnosis naming the metric: Result metric below acceptance threshold: acc"
+    },
+    "tracking": {
+      "status": "PASS",
+      "ts": 1793716138.7743056,
+      "ms": 17873.2,
+      "requires": "mlflow + dvc",
+      "deps": [
+        "mlflow",
+        "dvc"
+      ],
+      "missing": [],
+      "detail": "two isolated runs, verified metrics/terminal states and actual DVC content; worker closed"
+    },
+    "quarto": {
+      "status": "PASS",
+      "ts": 1793716119.0392709,
+      "ms": 7534.0,
+      "requires": "quarto binary",
+      "deps": [
+        "bin:quarto"
+      ],
+      "missing": [],
+      "detail": "minimal document; quarto=quarto.exe, render ok=True"
+    },
+    "surrogate (local NO)": {
+      "status": "PASS",
+      "ts": 1793721582.6265588,
+      "ms": 1072.2,
+      "requires": "numpy",
+      "deps": [
+        "numpy"
+      ],
+      "missing": [],
+      "detail": "19/19 fixed points within 5%, 19 stable; shuffled-label control caught"
+    },
+    "demo (NO)": {
+      "status": "PASS",
+      "ts": 1793757018.3029246,
+      "ms": 723.7,
+      "requires": "numpy",
+      "deps": [
+        "numpy"
+      ],
+      "missing": [],
+      "detail": "91 \u03bb points, max relative error 0.0002%"
+    },
+    "decision": {
+      "status": "SKIP",
+      "ts": 1793757017.2985697,
+      "ms": 6284.8,
+      "requires": "StartLux service",
+      "deps": [],
+      "missing": [],
+      "detail": "decision service not running at http://127.0.0.1:8090; start it with decision-service/scripts/serve.ps1 (weights ~4.3 GB, CC BY-NC 4.0)"
+    },
+    "inference": {
+      "status": "PASS",
+      "ts": 1793721580.8795784,
+      "ms": 665.9,
+      "requires": "nothing",
+      "deps": [],
+      "missing": [],
+      "detail": "budget and routing contract checked; execution/gates use tools; scientific model stages remain UNQUALIFIED; StartLux is triage only"
+    }
+  }
+}

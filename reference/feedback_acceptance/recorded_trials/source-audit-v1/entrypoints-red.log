@@ -1,0 +1,75 @@
+......FFFF                                                               [100%]
+================================== FAILURES ===================================
+________ test_missing_or_wrong_console_alias_refuses_publication[None] ________
+
+source = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_missing_or_wrong_console_0')
+entries = None
+
+    @pytest.mark.parametrize("entries", [None, "[console_scripts]\neidos=framework.cli:main\n",
+                                        "[console_scripts]\neidos=framework.cli:main\neidos-agent=other:main\n"])
+    def test_missing_or_wrong_console_alias_refuses_publication(source, entries):
+        from tools.check_release_wheel import errors
+    
+>       assert errors(source, wheel(source, entries=entries))
+E       AssertionError: assert []
+E        +  where [] = <function errors at 0x00000195183558A0>(WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_missing_or_wrong_console_0'), WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_missing_or_wrong_console_0/candidate.whl'))
+E        +    where WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_missing_or_wrong_console_0/candidate.whl') = wheel(WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_missing_or_wrong_console_0'), entries=None)
+
+tests\test_release_wheel_binding.py:68: AssertionError
+_ test_missing_or_wrong_console_alias_refuses_publication[[console_scripts]\neidos=framework.cli:main\n] _
+
+source = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_missing_or_wrong_console_1')
+entries = '[console_scripts]\neidos=framework.cli:main\n'
+
+    @pytest.mark.parametrize("entries", [None, "[console_scripts]\neidos=framework.cli:main\n",
+                                        "[console_scripts]\neidos=framework.cli:main\neidos-agent=other:main\n"])
+    def test_missing_or_wrong_console_alias_refuses_publication(source, entries):
+        from tools.check_release_wheel import errors
+    
+>       assert errors(source, wheel(source, entries=entries))
+E       AssertionError: assert []
+E        +  where [] = <function errors at 0x00000195183558A0>(WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_missing_or_wrong_console_1'), WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_missing_or_wrong_console_1/candidate.whl'))
+E        +    where WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_missing_or_wrong_console_1/candidate.whl') = wheel(WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_missing_or_wrong_console_1'), entries='[console_scripts]\neidos=framework.cli:main\n')
+
+tests\test_release_wheel_binding.py:68: AssertionError
+_ test_missing_or_wrong_console_alias_refuses_publication[[console_scripts]\neidos=framework.cli:main\neidos-agent=other:main\n] _
+
+source = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_missing_or_wrong_console_2')
+entries = '[console_scripts]\neidos=framework.cli:main\neidos-agent=other:main\n'
+
+    @pytest.mark.parametrize("entries", [None, "[console_scripts]\neidos=framework.cli:main\n",
+                                        "[console_scripts]\neidos=framework.cli:main\neidos-agent=other:main\n"])
+    def test_missing_or_wrong_console_alias_refuses_publication(source, entries):
+        from tools.check_release_wheel import errors
+    
+>       assert errors(source, wheel(source, entries=entries))
+E       AssertionError: assert []
+E        +  where [] = <function errors at 0x00000195183558A0>(WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_missing_or_wrong_console_2'), WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_missing_or_wrong_console_2/candidate.whl'))
+E        +    where WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_missing_or_wrong_console_2/candidate.whl') = wheel(WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_missing_or_wrong_console_2'), entries='[console_scripts]\neidos=framework.cli:main\neidos-agent=other:main\n')
+
+tests\test_release_wheel_binding.py:68: AssertionError
+_____________ test_changed_python_requirement_refuses_publication _____________
+
+source = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_changed_python_requiremen0')
+
+    def test_changed_python_requirement_refuses_publication(source):
+        from tools.check_release_wheel import errors
+    
+>       assert errors(source, wheel(source, python=">=3.14"))
+E       AssertionError: assert []
+E        +  where [] = <function errors at 0x00000195183558A0>(WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_changed_python_requiremen0'), WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_changed_python_requiremen0/candidate.whl'))
+E        +    where WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_changed_python_requiremen0/candidate.whl') = wheel(WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2377/test_changed_python_requiremen0'), python='>=3.14')
+
+tests\test_release_wheel_binding.py:74: AssertionError
+============================== warnings summary ===============================
+tests/test_release_wheel_binding.py::test_wrong_distribution_or_source_refuses_publication[duplicate]
+  C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\zipfile\__init__.py:1607: UserWarning: Duplicate name: 'framework/example.py'
+    return self._open_to_write(zinfo, force_zip64=force_zip64)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_release_wheel_binding.py::test_missing_or_wrong_console_alias_refuses_publication[None]
+FAILED tests/test_release_wheel_binding.py::test_missing_or_wrong_console_alias_refuses_publication[[console_scripts]\neidos=framework.cli:main\n]
+FAILED tests/test_release_wheel_binding.py::test_missing_or_wrong_console_alias_refuses_publication[[console_scripts]\neidos=framework.cli:main\neidos-agent=other:main\n]
+FAILED tests/test_release_wheel_binding.py::test_changed_python_requirement_refuses_publication
+4 failed, 6 passed, 1 warning in 0.45s

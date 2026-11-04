@@ -1,0 +1,39 @@
+{
+  "schema": "eidos.feedback-source-audit.v1",
+  "scope": "Final source/unit/chain qualification; live/UI RED and GREEN retained; interrupted audit is not accepted measurement; publication and origin campaign remain open",
+  "source_sha256": "d02d740d0cde3fc3efe07bafe01be8a651e7a9ef1239ea4e54389d305f224b10",
+  "files": {
+    "contrast-red.log": {
+      "sha256": "7d6301abc0dd670b7254877324675418acfb4277f64ec7dd4e0d8626b9474441",
+      "size": 858
+    },
+    "interrupted-audit.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "layout-contrast-green.log": {
+      "sha256": "726a80086497c30c4096324b2c31d200c2e8c646f06f559579b2d03f9bf178b2",
+      "size": 431
+    },
+    "live-contrast-green.log": {
+      "sha256": "d1ee4ba3635532169cee09352a391a03904e317a2b4ed6951662dfa29ec4f487",
+      "size": 101
+    },
+    "live-contrast-red.log": {
+      "sha256": "0315d2415651dfef2b075eb92e18af68792f3d4ba9317664cb1d0aa4174849fb",
+      "size": 7003
+    },
+    "mobile-red.log": {
+      "sha256": "c92b58afb53f955b101ebb85ecc7adb2b78113db67220fd1bb1aa88197ff31eb",
+      "size": 134
+    },
+    "SELF_AUDIT.json": {
+      "sha256": "a8bcfda67f15e940bba92a39e485ada205601deec252bca3797ddb116a506a4b",
+      "size": 5060
+    },
+    "source-audit.log": {
+      "sha256": "a5cfc67e90a57aaa612e942130640079e362ed3edd153560ca60ee3138223e9e",
+      "size": 100
+    }
+  }
+}

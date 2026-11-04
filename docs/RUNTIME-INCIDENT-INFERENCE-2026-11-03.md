@@ -55,3 +55,50 @@ The final `reference/inference_probe_acceptance/recorded_trials/probe-fix-v3`
 profile supersedes v2 as this caller acceptance; failed attempts and withdrawn
 controls remain preserved. This closes only the availability-probe Linux gap,
 not current-wheel shared UI, new-machine, release/rollback or scientific RSI.
+
+## Reboot recurrence and local source repair, 2026-11-04
+
+The host rebooted at 09:48:14 Asia/Shanghai. The existing Startup configuration
+selected the project Python 3.12 runtime for the supervisor, site and scheduler;
+the earlier observations about resident global-Python loops are historical.
+The reboot did not install the unreleased 0.5.0 worker/controller protocol.
+
+The scheduler then stalled in the same old availability caller. A read-only
+py-spy capture of PID 6688 showed `audit_inference -> ModelManager._check_ollama
+-> subprocess.run -> communicate -> Thread.join`, with two pipe-reader threads.
+Heartbeat tick 1264 still referred to the pre-reboot scheduler, while the new
+monitor's sample sequence advanced. This was a real liveness alarm.
+
+The local `framework/inference/__init__.py` was backed up and matched against
+its tracked 0.4.12 source before applying the already qualified owned-lifetime
+probe correction. Its complete canonical bytes match the development source.
+An isolated process importing this explicit local source constructed the actual
+ModelManager in 0.391 seconds. Package metadata remained 0.4.12; this was a
+targeted local source repair rather than a new installed release.
+
+The old in-flight caller was allowed to reach its existing 900-second owner
+budget. The scheduler preserved it as exit 124 / ERROR, duration 900,017.2 ms, and
+increased cumulative failures from 30 to 31. A concurrent first manual chain replay
+hit its own 70-second outer budget waiting on the occupied chain lock; it is not
+accepted as a successful repair check.
+
+The subsequent real full local chain audit used the repaired source, including
+an inference PASS with its normal budget/routing checks. The ordinary manual
+scheduler tick then recorded no work due and a new heartbeat. This heartbeat is
+not execution proof by itself; the preceding audit supplies that evidence.
+Its caller saved stdout/stderr but failed printing decoded text to a GBK
+console; that wrapper failure is retained separately from the actual updated
+scheduler record. Fresh monitor samples subsequently reported OK, with the
+cumulative 31 failures preserved. No existing service was stopped or restarted.
+
+The same resident scheduler PID 39592 subsequently completed its automatic tick
+1267 at 10:16:54, with no failed chains and an inference PASS in 14,627.6 ms.
+This confirms that a later resident tick used the repaired short-lived caller;
+it is stronger than a manual heartbeat alone. Fresh samples remained OK with
+advancing sequence numbers. This single recurrence does not establish a 24-hour
+soak or a complete deployment of the development SDK/controller.
+
+The front door was rebuilt through its source builder as **EIDOS Agent v0.4.12**.
+The retained manuscript publication fingerprints still match. New naming and
+incident APIs remain development capabilities; GitHub release/adoption/origin
+replay closure and the packaged controller migration remain separate gates.

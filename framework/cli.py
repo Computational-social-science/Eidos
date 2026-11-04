@@ -170,7 +170,7 @@ def _feedback(project: Path,message: str,output: Path) -> dict:
 
 
 def main(argv: list[str] | None=None) -> int:
-    parser=argparse.ArgumentParser(prog='eidos',description='Project-local research execution, evidence checks and delivery')
+    parser=argparse.ArgumentParser(prog='eidos-agent',description='EIDOS Agent: project-local research execution, evidence checks and delivery')
     sub=parser.add_subparsers(dest='action',required=True)
     for action in ['init','check','status','report','feedback','observe','enroll']:
         p=sub.add_parser(action)
@@ -189,11 +189,35 @@ def main(argv: list[str] | None=None) -> int:
         if action=='feedback':
             p.add_argument('--message',required=True)
             p.add_argument('--out',type=Path,required=True)
+    incident=sub.add_parser('incident',help='Local hash-bound repair lifecycle; no automatic upload/install')
+    verbs=incident.add_subparsers(dest='incident_action',required=True)
+    for verb in ('create','record','status','adopt','revert','close'):
+        p=verbs.add_parser(verb)
+        p.add_argument('--project',type=Path,default=Path.cwd())
+        p.add_argument('--json',action='store_true')
+        if verb=='create':
+            p.add_argument('--message',required=True)
+            p.add_argument('--protocol',type=Path,required=True)
+            p.add_argument('--feedback-bundle',type=Path)
+        else:p.add_argument('--incident',required=True)
+        if verb=='record':p.add_argument('--receipt',type=Path,required=True)
+        if verb=='adopt':p.add_argument('--python',type=Path,required=True)
     args=parser.parse_args(argv)
     query_succeeded=False
     try:
         project=args.project.resolve()
-        if args.action=='init':value=_initialize(project,args.name)
+        if args.action=='incident':
+            from framework import feedback
+            verb=args.incident_action
+            if verb=='create':value=feedback.create(project,args.message,args.protocol,feedback_bundle=args.feedback_bundle)
+            elif verb=='record':value=feedback.record(project,args.incident,args.receipt)
+            elif verb=='adopt':value=feedback.adopt(project,args.incident,args.python)
+            elif verb=='revert':value=feedback.revert(project,args.incident)
+            elif verb=='close':value=feedback.close(project,args.incident)
+            else:
+                value=feedback.status(project,args.incident)
+                query_succeeded=True
+        elif args.action=='init':value=_initialize(project,args.name)
         elif args.action=='check':value=_check(project,args.execution_only,args.timeout)
         elif args.action=='status':
             value=_status(project)
@@ -210,14 +234,14 @@ def main(argv: list[str] | None=None) -> int:
     except (OSError,ValueError,TypeError,yaml.YAMLError) as error:
         value={'status':'REFUSED','reason':str(error),'scientific_status':'UNRUN'}
     value.setdefault('schema','eidos.cli-result.v1')
-    value['operation']=args.action
+    value['operation']=args.action+'.'+args.incident_action if args.action=='incident' else args.action
     if args.json:print(json.dumps(value,allow_nan=False))
     else:
         target=value.get('project')
         if isinstance(target,dict):target=target.get('name')
         print(value['status']+': '+str(value.get('reason') or value.get('path') or target or args.action))
         if 'scientific_status' in value:print('Scientific check: '+value['scientific_status'])
-    if args.action in ('status','observe') and query_succeeded:return 0
+    if query_succeeded:return 0
     return {'PASS':0,'INITIALIZED':0,'EXPORTED':0,'ENROLLED':0,'ALREADY_ENROLLED':0,
             'REFUSED':4,'BLOCKED':4,'STALE':3,'OPEN':3}.get(value['status'],1)
 

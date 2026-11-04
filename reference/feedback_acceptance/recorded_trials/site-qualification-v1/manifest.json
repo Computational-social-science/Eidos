@@ -1,0 +1,23 @@
+{
+  "schema": "eidos.feedback-site-qualification.v1",
+  "scope": "Current development source pages;9browser/sitegates plus390/1440indexlayout and existing manuscript fingerprints; no production controller migration",
+  "source_sha256": "d02d740d0cde3fc3efe07bafe01be8a651e7a9ef1239ea4e54389d305f224b10",
+  "files": {
+    "dashboard.html.snapshot": {
+      "sha256": "56742f5f0672fa7567926a3d24ced035215410b5a4d5918ddb252067f78d22fd",
+      "size": 65528
+    },
+    "index.html.snapshot": {
+      "sha256": "beb6ae099403c38b78dac6d8bb046f9c2d1a3fdf3ce90ff3bd8faad01beaede9",
+      "size": 217329
+    },
+    "page-gates.log": {
+      "sha256": "dbeb0a2810fe37ddfb088dad559ec17cb828b66e801fb4ce63629a2e6b58d577",
+      "size": 864
+    },
+    "SCREENS.json": {
+      "sha256": "e0b4f8409c51a4229bb5257f04c961138546e3a9d995c0389e18038a408824ef",
+      "size": 2009
+    }
+  }
+}

@@ -1,5 +1,5 @@
 interface:
-  display_name: "EIDOS Project"
+  display_name: "EIDOS Agent"
   short_description: "Use project-local EIDOS checks and evidence receipts"
   default_prompt: "Use $eidos-project to inspect this research project's EIDOS setup and run the requested qualified operation."
 policy:

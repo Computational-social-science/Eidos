@@ -3,7 +3,7 @@ name: eidos-project
 description: Use an installed EIDOS project CLI to initialize research workspaces, check evidence, prepare reports, inspect status and export local feedback. Select an explicit project and interpreter; scientific acceptance remains with the project's validator.
 ---
 
-# EIDOS project adapter
+# EIDOS Agent project adapter
 
 Use the existing versioned core and return its structured receipts. This skill
 does not include a model backend, independent gate implementation or running
@@ -82,6 +82,18 @@ original reproducer and protected acceptance rule. Keep candidate testing,
 release publication, explicit downstream upgrade and originating-project replay
 separate. Close an incident only when the actual release and replay evidence
 justify it; otherwise report the remaining step.
+
+For an installed candidate that advertises `incident`, inspect
+`<worker-python> -I -m framework.cli incident --help` and the matching
+`docs/FEEDBACK-LIFECYCLE.md`. Use its local ledger for an explicitly requested
+repair: seal the origin/protocol before candidate evaluation, preserve the
+feedback incident ID, and record immutable execution/release artifacts. The
+ledger checks receipt integrity, not arbitrary evaluator honesty. Never supply
+invented CI/release or replay receipts. `adopt` and `revert` change the selected
+project's runtime pin and require authorization for that change; neither operation
+installs a package. Closure executes from the actual pinned installed worker
+after fresh originating-project replay. A unit fixture or a recorded proposal
+cannot close a real incident.
 
 Default operation uses local/free resources. If a requested model/operator is
 unavailable or unqualified, report the limit or hand off; never silently call a

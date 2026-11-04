@@ -1,5 +1,55 @@
 # Reuse EIDOS in an independent research project
 
+## Current compatibility delivery, 2026-11-04
+
+The current qualified worker is **EIDOS Agent 0.5.0**, distribution `eidos`,
+import namespace `framework`, consoles `eidos-agent` and `eidos`. Check the
+[actual public release](https://github.com/Computational-social-science/Eidos/releases/tag/v0.5.0)
+before downloading: source preparation or a version record is not publication.
+The exact 51-module wheel passes native Windows and same-host offline Linux
+numerical, lifecycle and recovery-shell acceptance. This supersedes the older
+candidate selection below. The existing resident monitor remains separately on
+0.4.12; installing a worker does not start or migrate it.
+
+Ordinary projects need neither a source fork nor a full checkout at execution
+time. Use Python 3.12 and uv in a new, dedicated runtime directory. Preserve an
+existing study's CUDA/PyTorch environment. Download the published wheel and the
+frozen core requirements from its immutable tag, and verify both hashes before
+installation. PowerShell, substituting actual absolute paths:
+
+```powershell
+$runtime = '<new dedicated runtime directory>'
+$project = '<existing research project root>'
+New-Item -ItemType Directory -Path $runtime -ErrorAction Stop | Out-Null
+$wheel = Join-Path $runtime 'eidos-0.5.0-py3-none-any.whl'
+$requirements = Join-Path $runtime 'core-requirements.txt'
+Invoke-WebRequest 'https://github.com/Computational-social-science/Eidos/releases/download/v0.5.0/eidos-0.5.0-py3-none-any.whl' -OutFile $wheel
+Invoke-WebRequest 'https://raw.githubusercontent.com/Computational-social-science/Eidos/v0.5.0/reference/numerical_programs_acceptance/recorded_trials/v0.5.0/input-linux/core-requirements.txt' -OutFile $requirements
+if ((Get-FileHash $wheel -Algorithm SHA256).Hash -ne '56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c') { throw 'Wheel identity mismatch' }
+if ((Get-FileHash $requirements -Algorithm SHA256).Hash -ne 'ca27b7da8739f5e3f1d14e54a6172b1bc9bb9da9e4344b1103d9216b2378e5de') { throw 'Dependency lock identity mismatch' }
+uv venv --python 3.12 (Join-Path $runtime 'venv')
+$workerPy = Join-Path $runtime 'venv/Scripts/python.exe'
+uv pip install --link-mode copy --python $workerPy --require-hashes -r $requirements
+uv pip install --link-mode copy --python $workerPy --no-deps $wheel
+& $workerPy -I -m framework.cli --help
+& $workerPy -I -m framework.cli init --project $project --json
+```
+
+On Linux use `venv/bin/python`; retain that venv entry rather than resolving its
+base-interpreter symlink. These downloads require public network access; runtime
+qualification itself can be offline. No model service, paid API or credential is
+required for the core path. Initial scientific acceptance is deliberately REFUSED;
+configure the project's own validator and declared inputs before running `check`.
+Use the selected interpreter for `check/status/report/feedback`, as shown below.
+Scientific validators and Quarto/TeX/Poppler prerequisites remain project-owned.
+
+The software repair campaign is documented in [feedback lifecycle](FEEDBACK-LIFECYCLE.md).
+Use actual journal receipts to distinguish VALIDATED, RELEASED, ADOPTED, REPLAYED
+and CLOSED. An installed package or Agent adapter alone cannot close a defect or
+qualify scientific RSI. Public PyPI `eidos` belongs to an unrelated project.
+
+## Historical development checkpoints
+
 Status: 2026-11-03. Stable release: **0.4.12**. The installed project CLI and
 shared-worker protocol below are **unreleased 0.5.0 development**. Installing a
 worker wheel does not install or migrate the complete monitor service.

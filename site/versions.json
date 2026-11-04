@@ -349,5 +349,24 @@
       "blind_spots_open": 0,
       "instruments": 6
     }
+  },
+  {
+    "version": "0.5.0",
+    "date": "2026-11-04",
+    "commit": "6b7f588",
+    "source_commit": "6b7f588",
+    "tag": "v0.5.0",
+    "summary": "Qualified EIDOS Agent project CLI, protected software repair ledger and Windows/Linux installed artifacts; resident-controller migration and scientific RSI remain separate",
+    "schema": 2,
+    "metrics": {
+      "tests": 1365,
+      "coverage": 77,
+      "chains": 11,
+      "open_objections": 0,
+      "decision_ms": 182,
+      "blind_spots_found": 0,
+      "blind_spots_open": 0,
+      "instruments": 6
+    }
   }
 ]

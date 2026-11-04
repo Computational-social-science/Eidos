@@ -1,10 +1,11 @@
 # EIDOS Agent — reusable research execution and evidence
 
-**Version 0.5.0** · unreleased development candidate · local-first · MIT framework
+**Version 0.5.0** · compatibility preview · local-first · MIT framework
 
-Latest published release: [0.4.12](https://github.com/Computational-social-science/Eidos/releases/tag/v0.4.12).
-The version above identifies development source, not a published 0.5.0 product.
-Release-integrity checking still blocks the source/history mismatch.
+Publication state and exact assets: [0.5.0 release record](https://github.com/Computational-social-science/Eidos/releases/tag/v0.5.0).
+The delivery record binds source, exact-head CI, tag and qualified wheel bytes;
+preparation alone does not establish publication. The existing local resident
+monitor has its separate 0.4.12 runtime and is not upgraded by installing a worker.
 [Main-branch CI](https://github.com/Computational-social-science/Eidos/actions/workflows/ci.yml)
 is separate from candidate acceptance.
 
@@ -22,16 +23,16 @@ should require a pinned core package and small project-local configuration.
 
 | Entry point | Availability and boundary |
 |---|---|
-| SDK / release wheel | Published 0.4.12; explicit project registration, execution, verification and delivery |
-| Installed project CLI | Unreleased candidate: init/check/status/report/feedback with retained installed trials |
+| SDK / release wheel | Qualified 0.5.0 compatibility artifact; verify the actual release record before installation |
+| Installed project CLI | init/check/status/report/feedback with retained Windows/Linux installed trials |
 | Shared worker observation | Candidate protocol, bounded source collector and UI tested; existing 8765 process not migrated |
 | Thin project Agent skill | Instruction adapter and CLI tool smoke; live Agent reasoning needs separate acceptance |
 | Public PyPI / generic MCP | Not delivered; naming, compatibility and adapter qualification remain open |
-| Complete feedback / scientific RSI | Not established; originating-project release replay and held-out improvement remain open |
+| Software feedback / scientific RSI | Protected real-origin preparation is VALIDATED; publication/adoption/replay remain pending until actual receipts. Scientific RSI needs separate held-out acceptance |
 
 Start with [project integration](docs/PROJECT_INTEGRATION.md), the English
-[installed-candidate quickstart](https://github.com/Computational-social-science/Eidos/blob/feature/shared-monitor/docs/DOWNSTREAM-QUICKSTART.md)
-and [delivery plan](https://github.com/Computational-social-science/Eidos/blob/feature/shared-monitor/docs/REUSE-DELIVERY-PLAN.md).
+[installed-worker quickstart](docs/DOWNSTREAM-QUICKSTART.md)
+and [delivery plan](docs/REUSE-DELIVERY-PLAN.md).
 Do not run `pip install eidos` from PyPI for this framework: that name belongs to
 an unrelated astronomy package. Exact wheel/hash installation is a separate path.
 

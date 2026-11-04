@@ -5,13 +5,13 @@
   },
   "scale": 2,
   "sources": {
-    "dashboard.html": "56742f5f0672fa7567926a3d24ced035215410b5a4d5918ddb252067f78d22fd",
-    "index.html": "beb6ae099403c38b78dac6d8bb046f9c2d1a3fdf3ce90ff3bd8faad01beaede9"
+    "dashboard.html": "ce70579913ab434fde39305732c927e3b4176a482b5dee992ea3c74d993ab916",
+    "index.html": "6f6c622e6079d793393dc5eac2c51fd3eb6b4f52c63397dbaf0182bbaf1d116f"
   },
   "images": {
     "dashboard-top": {
-      "sha256": "d35ea4272a661ec1bfdd16a0042d642dfff7abb0610bf27ccd00fc2b0a455d1b",
-      "bytes": 264720
+      "sha256": "7c87577d4d750b802b0867208af4cf9e7b41a39637715b1a25899aa24da710b6",
+      "bytes": 263558
     },
     "dashboard-operator": {
       "sha256": "b106c695a7ea8f45e4ff4f622fe261ee9fa5713334f40ea97eb3a9987743b36d",
@@ -22,12 +22,12 @@
       "bytes": 132610
     },
     "dashboard-history": {
-      "sha256": "a8dbea5409a2e75d40d1b8b1f01f78c310a3cbba55055154ee501d3bea0a1441",
-      "bytes": 76743
+      "sha256": "050f79293fa530af5539ca008e9fb27e19365d40b3866634b95aec64eed45e7b",
+      "bytes": 76645
     },
     "index-top": {
-      "sha256": "dddc6f9da60f16ca1cf264145a0313ec8706c8de488067987dfc7662651ba333",
-      "bytes": 419447
+      "sha256": "2ff30f32a94865c24814a55a596764a65b6b3b6a5216a7e1d4d492d74b1828f2",
+      "bytes": 419488
     },
     "index-deps": {
       "sha256": "23050332c90ba5bb279d6a903369d2025134335fa7f482a910668b655232ff2b",
@@ -36,8 +36,8 @@
   },
   "web": {
     "dashboard-top": {
-      "sha256": "422b5b0a0d6fd8e6a570f938e466ef0d8a5320575001a0435a407cb159246ce9",
-      "bytes": 118970
+      "sha256": "4001e92e88af537463900c93ddf56df424e736e47cfd08608c8dff4e013dc357",
+      "bytes": 118868
     },
     "dashboard-operator": {
       "sha256": "09c9270746ff5e895505c750e57edfb6860fd90b9e76098cb1933b5472bf0c18",
@@ -48,12 +48,12 @@
       "bytes": 103486
     },
     "dashboard-history": {
-      "sha256": "970ffb3a3c9bef5a94cd49c6ec4be91f2cff55d5f8e7b4e271974a38432cd69d",
-      "bytes": 33746
+      "sha256": "65e2d51283ec2ea3eb12910941da8ded0b3829ce1dd466068748192e5398a53c",
+      "bytes": 33726
     },
     "index-top": {
-      "sha256": "d6d1525b99f031b0660d65f7d920b285104ea1110a3d41660afdb556812053e8",
-      "bytes": 276070
+      "sha256": "f83185d9a59b0f61501c6758fecc10596a95b3933db18adcdc8038a930fe2cc0",
+      "bytes": 276038
     },
     "index-deps": {
       "sha256": "af7b0562b8e40e2e1defe6b1c266465dc09a98ef8b63b9026a0c9e175ebc7c74",

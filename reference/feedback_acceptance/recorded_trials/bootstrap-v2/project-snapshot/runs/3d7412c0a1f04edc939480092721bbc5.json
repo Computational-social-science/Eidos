@@ -1,0 +1,30 @@
+{
+  "project": "origin",
+  "project_id": "f2e6c1aef6f0410e95d04d6f735ed5de",
+  "status": "REFUSED",
+  "execution_status": "REFUSED",
+  "scientific_status": "UNRUN",
+  "execution": {
+    "name": "origin",
+    "status": "REFUSED",
+    "exit_code": 4,
+    "duration_s": 0.14,
+    "command": [
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-preflight-v2-9144993285\\env-new\\Scripts\\python.exe",
+      ".eidos/validate.py"
+    ],
+    "stdout_tail": "REFUSED: configure a research validator and its expected evidence before acceptance.\n",
+    "stderr_tail": "",
+    "numerics": {}
+  },
+  "input_digest": "5616a4da72eaa4c3d9c0884ced48a0929699ff22226835adf705004521718597",
+  "runtime_identity": {
+    "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+    "executable": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-preflight-v2-9144993285\\env-new\\Scripts\\python.exe",
+    "eidos_version": "0.5.0",
+    "distributions_sha256": "b51f1069fb77e338658c9a39a5a50310f3cab996d7eb74cb4dcd7f783c1dbdd2"
+  },
+  "run_id": "3d7412c0a1f04edc939480092721bbc5",
+  "recorded_at": "2026-11-04T04:46:21.906232+00:00",
+  "eidos_version": "0.5.0"
+}

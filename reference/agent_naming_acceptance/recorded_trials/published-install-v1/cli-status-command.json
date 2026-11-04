@@ -1,0 +1,1 @@
+{"argv": ["C:\\Users\\Administrator\\.venvs\\eidos-agent-0.5.0\\Scripts\\python.exe", "-I", "-X", "utf8", "-m", "framework.cli", "status", "--project", "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\persistent-worker-4c2b84d234\\independent-study", "--json"], "cwd": "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\persistent-worker-4c2b84d234", "exit": 0}

@@ -1,5 +1,5 @@
 {
-  "asof": "2026-11-04T11:34:33+08:00",
+  "asof": "2026-11-04T13:02:31+08:00",
   "version": "0.5.0",
   "state": {
     "chains": {
@@ -51,7 +51,7 @@
     "open_defects": 0
   },
   "evolution": {
-    "mutation_runs": 6,
+    "mutation_runs": 10,
     "runs_with_a_blind_spot": 0,
     "blind_spots_found": 0,
     "blind_spots_open": 0,
@@ -83,6 +83,10 @@
       }
     ],
     "blind_spots_by_run": [
+      0,
+      0,
+      0,
+      0,
       0,
       0,
       0,

@@ -1,0 +1,19 @@
+schema: eidos.project-workspace.v1
+project_id: 797087769e9f41409cf2f4d0ead91095
+name: origin
+root: ..
+gate_command:
+- '{python}'
+- .eidos/validate.py
+exit_statuses:
+  4: REFUSED
+expects: []
+validity_register: analysis/CLAIMS.yaml
+validity_document: docs/REPORT.md
+validity_inputs:
+- .eidos/validate.py
+numerics: optional
+delivery:
+  manuscript_dir: manuscript
+  output_dir: outputs
+  render_inputs: []

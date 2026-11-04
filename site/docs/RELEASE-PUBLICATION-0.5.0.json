@@ -1,0 +1,124 @@
+{
+  "schema": "eidos.release-publication.v1",
+  "product": "EIDOS Agent",
+  "version": "0.5.0",
+  "status": "PUBLISHED",
+  "compatibility": {
+    "distribution": "eidos",
+    "import": "framework",
+    "console_aliases": [
+      "eidos-agent",
+      "eidos"
+    ],
+    "public_index_namespace_migration": "OPEN"
+  },
+  "release": {
+    "id": 433514905,
+    "html_url": "https://github.com/Computational-social-science/Eidos/releases/tag/v0.5.0",
+    "tag_name": "v0.5.0",
+    "draft": false,
+    "prerelease": true,
+    "published_at": "2026-11-04T04:30:41Z"
+  },
+  "source_commit": "6b7f588eadb18970fcb61db72773e9f8d57eac92",
+  "delivery_commit": "045c9e08b1f0aceff2e63a23ab77e121c141c6ae",
+  "annotated_tag_object": "4c602204834ba59257bcc89ad0f48e4d0254f14f",
+  "wheel_sha256": "56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c",
+  "sdk_module_count": 51,
+  "requirements_sha256": "ca27b7da8739f5e3f1d14e54a6172b1bc9bb9da9e4344b1103d9216b2378e5de",
+  "ci": [
+    {
+      "name": "installed-sdk",
+      "id": 41771779510,
+      "head_sha": "045c9e08b1f0aceff2e63a23ab77e121c141c6ae",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Computational-social-science/Eidos/actions/runs/41771779510"
+    },
+    {
+      "name": "ci",
+      "id": 41771779445,
+      "head_sha": "045c9e08b1f0aceff2e63a23ab77e121c141c6ae",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Computational-social-science/Eidos/actions/runs/41771779445"
+    }
+  ],
+  "origin": {
+    "project_id": "68ee60b0915f4bf9b5d067e1df8edac6",
+    "incident_id": "0c2c202832764e7f959864f4638da0da",
+    "state": "CLOSED",
+    "events": 15,
+    "head_sha256": "55c4673d305348c428b02b02e569a9133168dad96eae6c7e3b0742a6e1ca5708",
+    "scientific_status": "UNRUN",
+    "method": "Sealed v1 plus explicit strict publication-identity normalization; original short-proof refusal retained",
+    "profile": "reference/feedback_acceptance/recorded_trials/origin-closed-v1",
+    "profile_manifest_sha256": "62e59fdd4cc2e9f4b32deab65623bee0e1eeda49eb036c856046e2b59b08a373",
+    "payloads": 244
+  },
+  "companion": {
+    "producer_sha256": "67a6ecea197f3c3864fc1b02751040d24586a26853fac66589c6bd5b1f07c033",
+    "normalizer_sha256": "3f0682631b46000d7d0e1c2b7fd607f86501b6bf35da9dcd98b331f784edeb51",
+    "controls_windows": 32,
+    "controls_offline_linux": 32,
+    "rehearsal_state": "CLOSED",
+    "rehearsal_events": 15,
+    "rehearsal_head_sha256": "758728f6a42ddcc6eee8a1db3bddd5eab585da30251023932ce0f4200f8dcfad",
+    "profile": "reference/feedback_acceptance/recorded_trials/freshness-v3",
+    "profile_manifest_sha256": "22c6ae7b12f80a77846d5ff441579fdc3d84691bb4bede7b9577016ea3f28e6b",
+    "distinct_defects_qualified": 1,
+    "source_scope": "Post-release companion; immutable SDK/tag and original v1/v2 profiles unchanged"
+  },
+  "persistent_worker": {
+    "schema": "eidos.persistent-worker-activation.v1",
+    "state": "QUALIFIED_PUBLISHED_CORE",
+    "python": "C:\\Users\\Administrator\\.venvs\\eidos-agent-0.5.0\\Scripts\\python.exe",
+    "version": "0.5.0",
+    "wheel_sha256": "56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c",
+    "requirements_sha256": "ca27b7da8739f5e3f1d14e54a6172b1bc9bb9da9e4344b1103d9216b2378e5de",
+    "release_url": "https://github.com/Computational-social-science/Eidos/releases/tag/v0.5.0",
+    "delivery_head": "045c9e08b1f0aceff2e63a23ab77e121c141c6ae",
+    "qualification": "Fresh Windows normal install: three installed drivers, both console aliases, init/refusal/status/feedback, and actual public download/identity binding",
+    "existing_project_pin_override": false,
+    "resident_service_migration": false,
+    "scientific_rsi": false
+  },
+  "source_audit_snapshot": {
+    "source_sha256": "d02d740d0cde3fc3efe07bafe01be8a651e7a9ef1239ea4e54389d305f224b10",
+    "passed": 1363,
+    "skipped": 6,
+    "coverage_framework": 77,
+    "scope": "Historical stable-input source measurement; current SDK remains byte-identical and exact-head remote CI is separate"
+  },
+  "resident_monitor": {
+    "url": "http://127.0.0.1:8765/",
+    "runtime_baseline": "0.4.12",
+    "python": "C:/Users/Administrator/.venvs/eidos-py312/Scripts/python.exe",
+    "migration_to_worker_protocol": "OPEN",
+    "observation": {
+      "verdict": "OK",
+      "seq": 24343,
+      "age_s": 10.7,
+      "evidence": [],
+      "ts": "2026-11-04T04:56:38+00:00"
+    }
+  },
+  "limits": [
+    "Software-case science remains UNRUN; no scientific RSI or live reasoning qualification",
+    "Installed central controller and production migration remain open",
+    "Remote installed-core CI qualifies its three drivers; full research setup, Quarto/GPU/domain backend and outside-adopter acceptance remain separate",
+    "Frozen tagged v1 producer is case-specific; its generic preparation/short-SHA limitations are addressed by current companion guards; prior failed evidence retained"
+  ],
+  "previous_companion_checkpoint": {
+    "producer_sha256": "5119087c694c6fac936d4fcfa35eebffec8872a3fdb13e08b43114437eabe414",
+    "normalizer_sha256": "3f0682631b46000d7d0e1c2b7fd607f86501b6bf35da9dcd98b331f784edeb51",
+    "controls_windows": 29,
+    "controls_offline_linux": 29,
+    "rehearsal_state": "CLOSED",
+    "rehearsal_events": 15,
+    "rehearsal_head_sha256": "3999dc696b98a11cacfa7525d063310df743a184daa4ccabf4d0770dac422782",
+    "profile": "reference/feedback_acceptance/recorded_trials/bootstrap-v2",
+    "profile_manifest_sha256": "2bac55ca36c1429f13a10fd1bbd499ace2e3572c1c35c47d6e8bd484c5fdc4bd",
+    "distinct_defects_qualified": 1
+  }
+}

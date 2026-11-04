@@ -716,3 +716,43 @@ reversion and fresh successful replay remain pending at this checkpoint. The
 producer will fetch the actual public tag, CI and asset bytes before recording a
 release. Software closure must retain scientific_status UNRUN. The existing
 8765 resident monitor remains on its separately documented 0.4.12 runtime.
+
+## Published worker and actual feedback closure (2026-11-04)
+
+**EIDOS Agent 0.5.0 compatibility preview is published.** Its annotated tag targets
+`045c9e08b1f0aceff2e63a23ab77e121c141c6ae`, with successful exact-head `ci` and
+`installed-sdk` workflows and unchanged qualified wheel SHA256
+`56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c`.
+Distribution `eidos`, namespace `framework` and both console aliases remain the
+explicit compatibility identities. Public PyPI naming/import migration is open.
+
+The actual Eidos origin incident `0c2c202832764e7f959864f4638da0da` is CLOSED with
+fifteen linked events, journal head
+`55c4673d305348c428b02b02e569a9133168dad96eae6c7e3b0742a6e1ca5708`.
+It retains old failure, rejected candidate, physical baseline restoration,
+real publication, project adoption, failed-replay reversion, re-adoption and
+fresh successful replay. Its 244-payload frozen profile retains the original
+short-SHA publication refusal. Closure used sealed v1 plus an explicit reviewed
+identity supplement resolving only the source commit from genuine GitHub ancestry.
+The protected evaluator, protocol and SDK were not changed to obtain acceptance.
+
+The current companion preflight addresses the subsequently demonstrated existing-
+workspace/prerequisite/redirected-origin initialization gaps. Eighteen preparation/recovery/freshness
+and fourteen identity controls pass. A fresh normal-installed current-companion rehearsal also
+closes through actual public release fetching without the supplement, repeating
+the same known defect. This is a software qualification, not a second discovery.
+The measured framework source audit remains its historical 1,363-pass/six-skip,
+77%-coverage snapshot; subsequent hooks and independent remote CI provide their
+own checks. No coverage or scientific result is inferred from packaging success.
+
+This host has a separate normal worker at
+`C:/Users/Administrator/.venvs/eidos-agent-0.5.0/Scripts/python.exe`, qualified
+against actual downloaded release/lock bytes. Existing project pins take
+precedence. The resident 8765 service retains its documented 0.4.12 runtime,
+operational self-check/recovery and on-demand research policy. Installed central
+controller packaging and controlled migration remain separate delivery gates.
+
+Software-case scientific_status remains **UNRUN**. Scientific RSI still requires
+fresh sealed research tasks, independent domain validators and matched budgets.
+See `docs/RELEASE-PUBLICATION-0.5.0.json`, `docs/FEEDBACK-LIFECYCLE.md` and
+`docs/LOCAL-DEPLOYMENT-STATUS-2026-11-04.md` for current evidence and boundaries.

@@ -3,13 +3,19 @@
 ## Current compatibility delivery, 2026-11-04
 
 The current qualified worker is **EIDOS Agent 0.5.0**, distribution `eidos`,
-import namespace `framework`, consoles `eidos-agent` and `eidos`. Check the
+import namespace `framework`, consoles `eidos-agent` and `eidos`. The
 [actual public release](https://github.com/Computational-social-science/Eidos/releases/tag/v0.5.0)
-before downloading: source preparation or a version record is not publication.
+and both required exact-head CI workflows are verified. The public wheel and
+dependency-lock downloads below have also been replayed and hash-checked.
 The exact 51-module wheel passes native Windows and same-host offline Linux
 numerical, lifecycle and recovery-shell acceptance. This supersedes the older
 candidate selection below. The existing resident monitor remains separately on
 0.4.12; installing a worker does not start or migrate it.
+
+On a managed host, use a registered qualified worker for a new project, or create
+a dedicated runtime below. A project's existing runtime pin takes precedence.
+This workstation's distinct resident/worker/source paths are recorded in
+[local deployment status](LOCAL-DEPLOYMENT-STATUS-2026-11-04.md).
 
 Ordinary projects need neither a source fork nor a full checkout at execution
 time. Use Python 3.12 and uv in a new, dedicated runtime directory. Preserve an

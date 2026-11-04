@@ -252,6 +252,7 @@ def receipt(config: dict, kind: str, *, artifacts=None, **details) -> dict:
              'kind': kind, 'details': details, 'artifacts': refs}
     path = folder / (kind + '-' + uuid.uuid4().hex + '.json')
     put(path, value)
+    verify_inputs(config['protected'])
     result = feedback.record(Path(config['project']), config['incident_id'], path)
     put(folder / (path.stem + '-result.json'), result)
     return result
@@ -299,6 +300,41 @@ def baseline_pin(config: dict, arm: str) -> bytes:
                     'selection_scope': 'Explicit on-demand campaign selection, not resident-service migration'})
 
 
+def preparation_inputs(project: Path, workspace: Path, oracle: Path, fixture: Path) -> tuple[dict, dict]:
+    """Refuse existing research workspaces and qualify inputs before side effects.
+
+    Resume uses the existing sealed campaign branch instead. A configured study
+    needs a separate explicit handoff; never replace or run its gate here.
+    """
+    folder = project / '.eidos'
+    if folder.exists() or folder.is_symlink():
+        raise ValueError('Existing EIDOS workspace requires its sealed campaign or an explicit separate handoff')
+    wheels = {arm: str((workspace / 'wheels' / name).resolve()) for arm, name in
+              [('old', 'eidos-0.4.12-py3-none-any.whl'), ('bad', 'eidos-0.5.0.dev0-py3-none-any.whl'),
+               ('new', 'eidos-0.5.0-py3-none-any.whl')]}
+    workers = {arm: workspace / ('env-' + arm) / ('Scripts/python.exe' if os.name == 'nt' else 'bin/python')
+               for arm in wheels}
+    origin = project / 'tools/audit_chains.py'
+    inputs = [Path(__file__).resolve(), Path(__file__).with_name('publication_identity.py').resolve(),
+              oracle, fixture, origin, *(Path(p) for p in wheels.values())]
+    if not all(path.is_file() for path in [*inputs, *workers.values()]):
+        raise ValueError('Missing preparation input; no project has been initialized or checked')
+    if not origin.resolve().is_relative_to(project):
+        raise ValueError('Preparation origin escapes the selected project')
+    if origin.resolve() != Path(os.path.abspath(origin)):
+        raise ValueError('Preparation origin is redirected; the repair ledger requires an ordinary file path')
+    owners = [node for node in ast.parse(origin.read_text(encoding='utf-8-sig')).body
+              if isinstance(node, ast.FunctionDef) and node.name == 'audit_inference']
+    if len(owners) != 1:
+        raise ValueError('Preparation input lacks its unique original audit_inference owner')
+    protected = {str(path): sha(path.read_bytes()) for path in inputs}
+    identity, _, _ = helpers(oracle, fixture)
+    for arm, worker in workers.items():
+        identity(worker, Path(wheels[arm]), workspace)
+    verify_inputs(protected)
+    return wheels, protected
+
+
 def prepare(args) -> dict:
     from framework import feedback
     import yaml
@@ -312,9 +348,11 @@ def prepare(args) -> dict:
             raise ValueError('Resume targets another project or protected evaluator')
         verify_inputs(config['protected'])
         return advance_prepare(config)
+    wheels, protected = preparation_inputs(project, workspace, args.oracle.resolve(), args.fixture.resolve())
     project.mkdir(exist_ok=True)
-    if not (project / '.eidos').exists():
-        cli(project, 'init')
+    initialized = cli(project, 'init')
+    if initialized['result']['status'] != 'INITIALIZED':
+        raise ValueError('Project initialization was refused; no configured research gate will be run')
     if (project / '.eidos/runtime-pin.json').exists():
         raise ValueError('Existing project pin is not a disposable campaign baseline')
     workspace.mkdir(exist_ok=True)
@@ -324,12 +362,7 @@ def prepare(args) -> dict:
     project_id = yaml.safe_load((project / '.eidos/project.yaml').read_bytes())['project_id']
     files = {'tools/audit_chains.py': sha((project / 'tools/audit_chains.py').read_bytes()),
              '.eidos/validate.py': sha((project / '.eidos/validate.py').read_bytes())}
-    wheels = {arm: str((workspace / 'wheels' / name).resolve()) for arm, name in
-              [('old', 'eidos-0.4.12-py3-none-any.whl'), ('bad', 'eidos-0.5.0.dev0-py3-none-any.whl'),
-               ('new', 'eidos-0.5.0-py3-none-any.whl')]}
-    protected = {str(p): sha(p.read_bytes()) for p in
-                 [Path(__file__).resolve(), args.oracle.resolve(), args.fixture.resolve(),
-                  *(Path(p) for p in wheels.values())]}
+    verify_inputs(protected)
     protocol = {'schema': 'eidos.repair-protocol.v1', 'project_id': project_id,
                 'scope': 'Real EIDOS inherited-pipe software defect; private CLI fixtures and original routing oracle; no scientific acceptance',
                 'required_checks': ['inherited_pipe', 'nonzero_cli', 'missing_cli', 'origin_contract'],
@@ -456,12 +489,21 @@ def publication_artifacts(config: dict) -> dict:
              'source_commit': versions[-1]['source_commit'], 'head_commit': head,
              'ci_head': head, 'ci_conclusion': 'success', 'tag': 'v0.5.0',
              'asset_name': 'eidos-0.5.0-py3-none-any.whl'}
+    normalizer_path = Path(__file__).with_name('publication_identity.py')
+    verify_inputs(config['protected'])
+    spec = importlib.util.spec_from_file_location('qualified_publication_identity', normalizer_path)
+    normalizer = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(normalizer)
+    original_proof = proof
+    proof = normalizer.canonical_source(proof, comparison)
     asset = next(a for a in release['assets'] if a['name'] == proof['asset_name'])
     with urllib.request.urlopen(asset['browser_download_url'], timeout=60) as response:
         downloaded = response.read(16 * 1024 * 1024 + 1)
     assert downloaded == Path(config['wheels']['new']).read_bytes(), 'Actual published bytes differ'
     put(remote / proof['asset_name'], downloaded)
-    return {'wheel': downloaded, 'publication': proof, 'release': release, 'ci': ci, 'tag': tag}
+    return {'wheel': downloaded, 'publication': proof, 'release': release, 'ci': ci, 'tag': tag,
+            'normalization_input': original_proof, 'source_resolution': comparison,
+            'normalizer_source': normalizer_path.read_bytes()}
 
 
 def recorded_replays(config: dict) -> list[tuple[dict, dict]]:
@@ -491,6 +533,7 @@ def finish(args) -> dict:
     if state not in ('VALIDATED', 'RELEASED', 'REVERTED', 'ADOPTED', 'REPLAY_FAILED', 'REPLAYED'):
         raise ValueError('Campaign is not ready for publication/adoption: ' + state)
     artifacts = publication_artifacts(config)
+    verify_inputs(config['protected'])
     if state == 'VALIDATED':
         state = receipt(config, 'release', artifacts=artifacts)['state']
     previous = (args.workspace / 'original-pin.json').read_bytes()
@@ -525,6 +568,7 @@ def finish(args) -> dict:
                                                'pin_after': pin.read_bytes()})
             if feedback.status(project, config['incident_id'])['state'] != 'REPLAYED':
                 raise ValueError('Fresh non-injected replay failed')
+    verify_inputs(config['protected'])
     closed = feedback.close(project, config['incident_id'])
     assert closed['state'] == 'CLOSED' and closed['scientific_status'] == 'UNRUN'
     if not (args.workspace / 'closed.json').exists():

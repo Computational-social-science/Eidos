@@ -1,0 +1,5 @@
+Using Python 3.12.4 environment at: env-bad
+Resolved 1 package in 8ms
+Prepared 1 package in 16ms
+Installed 1 package in 50ms
+ + eidos==0.5.0.dev0 (from file:///C:/Users/Administrator/.cache/eidos-cli-acceptance/campaign-preflight-v2-9144993285/wheels/eidos-0.5.0.dev0-py3-none-any.whl)

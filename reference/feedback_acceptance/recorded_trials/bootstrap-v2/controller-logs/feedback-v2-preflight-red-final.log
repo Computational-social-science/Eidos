@@ -1,0 +1,136 @@
+..........FFFF                                                           [100%]
+================================== FAILURES ===================================
+_____ test_existing_scientific_workspace_refuses_without_running_its_gate _____
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2413/test_existing_scientific_works0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000019D4945FB90>
+
+    def test_existing_scientific_workspace_refuses_without_running_its_gate(tmp_path, monkeypatch):
+        module, args = preparation(tmp_path, monkeypatch)
+        folder = args.project / '.eidos'
+        folder.mkdir()
+        original = b'gate_command: [python, expensive_research.py]\n'
+        (folder / 'project.yaml').write_bytes(original)
+        with pytest.raises(ValueError, match='Existing.*workspace'):
+>           module.prepare(args)
+
+E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\test_campaign.py:131: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\campaign.py:321: in prepare
+    record = cli(project, 'check')
+             ^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2413/test_existing_scientific_works0/study'), 'check')
+kwargs = {}
+
+    def unexpected_gate(*args, **kwargs):
+>       raise AssertionError('Research gate executed before preparation was qualified')
+E       AssertionError: Research gate executed before preparation was qualified
+
+E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\test_campaign.py:118: AssertionError
+________ test_missing_preparation_inputs_refuse_before_initialization _________
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2413/test_missing_preparation_input0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000019D4945EC30>
+
+    def test_missing_preparation_inputs_refuse_before_initialization(tmp_path, monkeypatch):
+        module, args = preparation(tmp_path, monkeypatch)
+        (args.project / 'data.bin').write_bytes(b'existing research data')
+        with pytest.raises(ValueError, match='preparation input'):
+>           module.prepare(args)
+
+E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\test_campaign.py:140: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\campaign.py:317: in prepare
+    cli(project, 'init')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2413/test_missing_preparation_input0/study'), 'init')
+kwargs = {}
+
+    def unexpected_gate(*args, **kwargs):
+>       raise AssertionError('Research gate executed before preparation was qualified')
+E       AssertionError: Research gate executed before preparation was qualified
+
+E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\test_campaign.py:118: AssertionError
+_______ test_unqualified_installed_worker_refuses_before_initialization _______
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2413/test_unqualified_installed_wor0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000019D4952A5D0>
+
+    def test_unqualified_installed_worker_refuses_before_initialization(tmp_path, monkeypatch):
+        import os
+        module, args = preparation(tmp_path, monkeypatch)
+        for path in [args.oracle, args.fixture, *(args.workspace / 'wheels' / n for n in
+                     ['eidos-0.4.12-py3-none-any.whl', 'eidos-0.5.0.dev0-py3-none-any.whl', 'eidos-0.5.0-py3-none-any.whl']),
+                     *(args.workspace / ('env-' + arm) / ('Scripts/python.exe' if os.name == 'nt' else 'bin/python')
+                       for arm in ['old', 'bad', 'new'])]:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b'deliberately unqualified input')
+        origin = args.project / 'tools/audit_chains.py'
+        origin.parent.mkdir()
+        origin.write_text('def audit_inference(): pass\n', encoding='utf-8')
+        def reject_identity(*args):
+            raise ValueError('Installed identity mismatch')
+        monkeypatch.setattr(module, 'helpers', lambda *args: (reject_identity, None, None))
+        with pytest.raises(ValueError, match='identity mismatch'):
+>           module.prepare(args)
+
+E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\test_campaign.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\campaign.py:317: in prepare
+    cli(project, 'init')
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2413/test_unqualified_installed_wor0/study'), 'init')
+kwargs = {}
+
+    def unexpected_gate(*args, **kwargs):
+>       raise AssertionError('Research gate executed before preparation was qualified')
+E       AssertionError: Research gate executed before preparation was qualified
+
+E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\test_campaign.py:118: AssertionError
+______ test_refused_initialization_cannot_continue_to_a_configured_gate _______
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2413/test_refused_initialization_ca0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000019D49533410>
+
+    def test_refused_initialization_cannot_continue_to_a_configured_gate(tmp_path, monkeypatch):
+        module, args = preparation(tmp_path, monkeypatch)
+        monkeypatch.setattr(module, 'preparation_inputs', lambda *args: ({}, {}), raising=False)
+        calls = []
+        def refused_init(project, operation):
+            calls.append(operation)
+            assert operation == 'init', 'Configured research gate must not execute'
+            return {'result': {'status': 'REFUSED'}}
+        monkeypatch.setattr(module, 'cli', refused_init)
+        with pytest.raises(ValueError, match='initialization was refused'):
+>           module.prepare(args)
+
+E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\test_campaign.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\campaign.py:321: in prepare
+    record = cli(project, 'check')
+             ^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+project = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2413/test_refused_initialization_ca0/study')
+operation = 'check'
+
+    def refused_init(project, operation):
+        calls.append(operation)
+>       assert operation == 'init', 'Configured research gate must not execute'
+E       AssertionError: Configured research gate must not execute
+E       assert 'check' == 'init'
+E         
+E         - init
+E         + check
+
+E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\test_campaign.py:171: AssertionError
+=========================== short test summary info ===========================
+FAILED E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\test_campaign.py::test_existing_scientific_workspace_refuses_without_running_its_gate
+FAILED E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\test_campaign.py::test_missing_preparation_inputs_refuse_before_initialization
+FAILED E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\test_campaign.py::test_unqualified_installed_worker_refuses_before_initialization
+FAILED E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\v1-control\test_campaign.py::test_refused_initialization_cannot_continue_to_a_configured_gate
+4 failed, 10 passed in 1.01s

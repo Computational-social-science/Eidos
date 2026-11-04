@@ -1,0 +1,125 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+_____ test_input_change_during_publication_refuses_before_release_record ______
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2422/test_input_change_during_publi0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000260D1141160>
+
+    def test_input_change_during_publication_refuses_before_release_record(tmp_path, monkeypatch):
+        module, args, protected = completion(tmp_path, monkeypatch, 'VALIDATED')
+        def changed_publication(config):
+            protected.write_bytes(b'changed during network fetch')
+            return {}
+        def unexpected_release(*args, **kwargs):
+            raise AssertionError('Release recorded with changed protected inputs')
+        monkeypatch.setattr(module, 'publication_artifacts', changed_publication)
+        monkeypatch.setattr(module, 'receipt', unexpected_release)
+        with pytest.raises(ValueError, match='Protected'):
+>           module.finish(args)
+
+reference\feedback_acceptance\test_campaign.py:225: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\campaign.py:535: in finish
+    state = receipt(config, 'release', artifacts=artifacts)['state']
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = ({'project': 'C:\\Users\\Administrator\\AppData\\Local\\Temp\\pytest-of-Administrator\\pytest-2422\\test_input_change_..., 'incident_id': '11111111111111111111111111111111', 'project_id': '22222222222222222222222222222222', ...}, 'release')
+kwargs = {'artifacts': {}}
+
+    def unexpected_release(*args, **kwargs):
+>       raise AssertionError('Release recorded with changed protected inputs')
+E       AssertionError: Release recorded with changed protected inputs
+
+reference\feedback_acceptance\test_campaign.py:221: AssertionError
+____________ test_input_change_before_closure_refuses_before_close ____________
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2422/test_input_change_before_closu0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000260D1213890>
+
+    def test_input_change_before_closure_refuses_before_close(tmp_path, monkeypatch):
+        from framework import feedback
+        module, args, protected = completion(tmp_path, monkeypatch, 'REPLAYED')
+        monkeypatch.setattr(module, 'publication_artifacts', lambda *args: {})
+        def changed_replays(config):
+            protected.write_bytes(b'changed after publication verification')
+            return []
+        def unexpected_close(*args):
+            raise AssertionError('Closed with changed protected inputs')
+        monkeypatch.setattr(module, 'recorded_replays', changed_replays)
+        monkeypatch.setattr(feedback, 'close', unexpected_close)
+        with pytest.raises(ValueError, match='Protected'):
+>           module.finish(args)
+
+reference\feedback_acceptance\test_campaign.py:241: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\campaign.py:568: in finish
+    closed = feedback.close(project, config['incident_id'])
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2422/test_input_change_before_closu0/study'), '11111111111111111111111111111111')
+
+    def unexpected_close(*args):
+>       raise AssertionError('Closed with changed protected inputs')
+E       AssertionError: Closed with changed protected inputs
+
+reference\feedback_acceptance\test_campaign.py:237: AssertionError
+_____ test_input_change_during_fetch_refuses_before_dynamic_helper_import _____
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2422/test_input_change_during_fetch0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000260D12139B0>
+
+    def test_input_change_during_fetch_refuses_before_dynamic_helper_import(tmp_path, monkeypatch):
+        from types import SimpleNamespace
+        import base64
+        module, args, protected = completion(tmp_path, monkeypatch, 'VALIDATED')
+        config = json.loads((args.workspace / 'campaign.json').read_bytes())
+        wheel = args.workspace / 'candidate.whl'
+        wheel.write_bytes(b'candidate')
+        config.update(wheels={'new': str(wheel)}, protocol={'ci_workflows': ['ci', 'installed-sdk']})
+        head, origin = 'b' * 40, 'a' * 40
+        def fetched(url, output):
+            if '/releases/tags/' in url:
+                return {'assets': []}
+            if '/git/ref/tags/' in url:
+                return {'object': {'type': 'commit', 'sha': head}}
+            if '/actions/runs?' in url:
+                return {'workflow_runs': [{'name': name, 'head_sha': head, 'id': i,
+                                          'status': 'completed', 'conclusion': 'success'}
+                                         for i, name in enumerate(['ci', 'installed-sdk'])]}
+            if '/contents/site/versions.json?' in url:
+                return {'content': base64.b64encode(json.dumps([{'version': '0.5.0',
+                                                                 'source_commit': origin[:7]}]).encode()).decode()}
+            if '/compare/' in url:
+                protected.write_bytes(b'changed during ancestry fetch')
+                return {'status': 'ahead', 'base_commit': {'sha': origin},
+                        'merge_base_commit': {'sha': origin}, 'total_commits': 1,
+                        'commits': [{'sha': head}]}
+            raise AssertionError('Unexpected endpoint')
+        def unexpected_import(*args):
+            raise AssertionError('Dynamic helper imported with changed protected inputs')
+        monkeypatch.setattr(module, 'fetch', fetched)
+        monkeypatch.setattr(module, 'importlib', SimpleNamespace(util=SimpleNamespace(spec_from_file_location=unexpected_import)))
+        with pytest.raises(ValueError, match='Protected'):
+>           module.publication_artifacts(config)
+
+reference\feedback_acceptance\test_campaign.py:277: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\campaign.py:492: in publication_artifacts
+    spec = importlib.util.spec_from_file_location('qualified_publication_identity', normalizer_path)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = ('qualified_publication_identity', WindowsPath('C:/Users/Administrator/.cache/eidos-worktrees/feedback-lifecycle/reference/feedback_acceptance/publication_identity.py'))
+
+    def unexpected_import(*args):
+>       raise AssertionError('Dynamic helper imported with changed protected inputs')
+E       AssertionError: Dynamic helper imported with changed protected inputs
+
+reference\feedback_acceptance\test_campaign.py:273: AssertionError
+=========================== short test summary info ===========================
+FAILED reference/feedback_acceptance/test_campaign.py::test_input_change_during_publication_refuses_before_release_record
+FAILED reference/feedback_acceptance/test_campaign.py::test_input_change_before_closure_refuses_before_close
+FAILED reference/feedback_acceptance/test_campaign.py::test_input_change_during_fetch_refuses_before_dynamic_helper_import
+3 failed, 15 deselected in 0.25s

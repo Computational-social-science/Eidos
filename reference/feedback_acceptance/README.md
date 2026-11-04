@@ -1,4 +1,24 @@
-# Local repair lifecycle: source checkpoint
+# Qualified software feedback case and companion producer
+
+The actual Eidos origin incident `0c2c202832764e7f959864f4638da0da` is CLOSED with
+fifteen events. `recorded_trials/origin-closed-v1` retains 244 payloads, including
+the original evaluator, rejected candidate, physical rollback, real release/CI,
+failed-replay reversion and fresh successful replay. Scientific status is UNRUN.
+
+Closure used sealed v1 plus the explicit `publication_identity.py` supplement:
+the original short Git SHA was refused, then resolved from genuine complete
+ancestry without changing any other proof field or acceptance rule. The original
+failed receipt and adapter source/hash remain evidence. The tagged v1 preparation
+entry is restricted to its known-safe fresh-workspace case.
+
+The current companion qualifies inputs/installations before initialization,
+refuses existing configured workspaces and redirected origins, stops on refused
+initialization, and seals/uses the identity helper directly. Eighteen preparation/recovery/freshness
+controls and fourteen identity controls pass. A new normal-installed rehearsal
+reaches CLOSED without the supplement. It repeats the same known defect; this
+does not count as another independent defect or scientific discovery.
+
+## Historical source-audit checkpoints
 
 The implementation contract is in `docs/FEEDBACK-LIFECYCLE.md`. The current
 `recorded_trials/source-audit-v2` profile seals the final stable-input full audit
@@ -29,6 +49,14 @@ SDK negative candidate with its own version and valid RECORD. Prepare a new
 workspace containing `wheels/` and independent copy-mode `env-old`, `env-bad`,
 `env-new` installations using the frozen core requirements. Select the originating
 project and the qualified probe driver/fixture explicitly:
+
+Use current companion files together, including `publication_identity.py`.
+This case-specific rehearsal requires the original `tools/audit_chains.py` owner
+and a fresh `.eidos/` workspace. Existing studies retain their project-owned
+protocol/handoff; a matching sealed campaign can resume. Preserve existing
+metadata rather than deleting it to force preparation. Changed producer inputs
+refuse old-input resumption; historical v1 status remains available through its
+normal pinned worker's `incident status` operation.
 
 ```text
 <env-new-python> -I -X utf8 campaign.py prepare --workspace <workspace> --project <origin> --oracle <inference_probe_acceptance/check.py> --fixture <test_inference_probe_lifetime.py>

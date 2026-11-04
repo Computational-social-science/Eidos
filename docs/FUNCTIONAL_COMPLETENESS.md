@@ -10,7 +10,8 @@ reject unsupported claims → deliver → detect changes and revalidate.
 | Environment | Project Python 3.12, frozen lock, Linux CI 3.11/3.12; `AGENTS.md` | Complete new-machine installation with external Quarto/TeX and optional GPU backend. Inventory alone is insufficient. |
 | Onboarding and registry | Safe bootstrap, isolated shell/registry tests; gate-stage required outputs; real independent HPAF intake and negative controls | The HPAF metric-repair lifecycle now rejects wrong evidence, missing outputs and changed sources/data, with separate fresh Windows replays for 1,033 private and 235 public pairs. Unseen projects and outside adopters remain unqualified; see `docs/INDEPENDENT-LIFECYCLE-ACCEPTANCE.json`. |
 | Scientific gates | `framework/validity/`, fixtures, mutations, `docs/SELF_AUDIT.json` | Structured evidence checks do not establish scientific truth or novelty. Evaluate unseen false acceptances and independent adopters. |
-| Installed project CLI (unreleased 0.5.0) | Model-free init/check/status/report/feedback candidate; 26 synthetic actual-console controls on each of Windows and offline same-host Linux, full installed identity before/after, wrong evidence and stale-input refusals; [profile](https://github.com/Computational-social-science/Eidos/tree/feature/installed-cli/reference/installed_cli_acceptance) | Final publication/CI, new-machine acceptance, explicit central enrollment, project-worker observation and full incident-to-release-to-project replay remain open. This is not a generic Agent or scientific RSI claim. |
+| Installed project CLI (0.5.0 compatibility preview) | Published immutable wheel; both console aliases; normal local Windows/offline Linux controls and independent remote installed-core CI; [current quickstart](DOWNSTREAM-QUICKSTART.md) | Complete new-machine research setup, outside adopters, installed controller and live Agent reasoning remain separate |
+| Software incident repair | Actual Eidos origin CLOSED with fifteen linked events, rejected candidate, real release/CI/asset, failed-replay reversion and fresh replay; explicit identity supplement retained; guarded v2 rehearsal also passes | One known defect under supervised deterministic execution; scientific_status UNRUN. Distinct defects, generic hostile-code isolation and scientific RSI are not established |
 | Numerical capability | Decimal reference, actual CUDA tests, broken controls; `docs/CASE-SOFTMAX.md` | AMP/bfloat16, higher-order backward and other backends remain unqualified. Each needs independent references and broken controls. |
 | Project execution lifetime | SDK-owned Windows Job and Linux owner-pipe guardian; independent installed-wheel controls for normal, timeout, nested and cleanup handoff behavior; `docs/SDK-PROCESS-ACCEPTANCE.json` | Direct reproduction now has installed-wheel numeric/execution/receipt controls; tracking/update/formal/citation/inference paths still need caller-specific migration. This is not a hostile-process sandbox, hard real-time/output-memory bound or running-service migration. |
 | Direct manuscript/figure SDK | Fresh staging, bounded Quarto/Matplotlib workers, file/asset validation, declared-input checks, locked publication and rollback; [contract](QUARTO-DELIVERY.md) | Controlled CLI and actual Quarto qualification are separate. Poppler/TeX are external prerequisites; receipt readers must verify hashes. Transitive undeclared resources, scientific content and journal acceptance remain outside these file-production checks. |
@@ -193,3 +194,15 @@ loops, but does not deploy the unreleased shared-worker/controller protocol.
 See [the incident](RUNTIME-INCIDENT-INFERENCE-2026-11-03.md),
 [naming ADR](ADR-EIDOS-AGENT-NAMING.md) and
 [feedback contract](FEEDBACK-LIFECYCLE.md).
+
+
+## Accepted software delivery, 2026-11-04
+
+The 0.5.0 compatibility preview is actually published and the original Eidos
+software incident closes through fifteen linked events. The first remote-CI and
+publication-identity refusals remain preserved; current preparation and identity
+guards pass their separate controls and fresh rehearsal. The current table above
+supersedes earlier development checkpoints for these software capabilities. The
+resident controller remains 0.4.12, and scientific RSI remains unqualified. See
+[the actual delivery record](RELEASE-PUBLICATION-0.5.0.json) and
+[local deployment boundaries](LOCAL-DEPLOYMENT-STATUS-2026-11-04.md).

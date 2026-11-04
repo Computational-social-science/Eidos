@@ -1,0 +1,158 @@
+[
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\hermes\\bin\\uv.EXE",
+      "venv",
+      "--python",
+      "C:/Users/Administrator/AppData/Local/Programs/Python/Python312/python.exe",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\env-old"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\hermes\\bin\\uv.EXE",
+      "pip",
+      "install",
+      "--offline",
+      "--link-mode",
+      "copy",
+      "--python",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\env-old\\Scripts\\python.exe",
+      "--require-hashes",
+      "--no-deps",
+      "-r",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\core-requirements.txt"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\hermes\\bin\\uv.EXE",
+      "pip",
+      "install",
+      "--offline",
+      "--link-mode",
+      "copy",
+      "--python",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\env-old\\Scripts\\python.exe",
+      "--no-deps",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\wheels\\eidos-0.4.12-py3-none-any.whl"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\hermes\\bin\\uv.EXE",
+      "pip",
+      "check",
+      "--python",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\env-old\\Scripts\\python.exe"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\hermes\\bin\\uv.EXE",
+      "venv",
+      "--python",
+      "C:/Users/Administrator/AppData/Local/Programs/Python/Python312/python.exe",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\env-bad"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\hermes\\bin\\uv.EXE",
+      "pip",
+      "install",
+      "--offline",
+      "--link-mode",
+      "copy",
+      "--python",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\env-bad\\Scripts\\python.exe",
+      "--require-hashes",
+      "--no-deps",
+      "-r",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\core-requirements.txt"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\hermes\\bin\\uv.EXE",
+      "pip",
+      "install",
+      "--offline",
+      "--link-mode",
+      "copy",
+      "--python",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\env-bad\\Scripts\\python.exe",
+      "--no-deps",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\wheels\\eidos-0.5.0.dev0-py3-none-any.whl"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\hermes\\bin\\uv.EXE",
+      "pip",
+      "check",
+      "--python",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\env-bad\\Scripts\\python.exe"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\hermes\\bin\\uv.EXE",
+      "venv",
+      "--python",
+      "C:/Users/Administrator/AppData/Local/Programs/Python/Python312/python.exe",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\env-new"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\hermes\\bin\\uv.EXE",
+      "pip",
+      "install",
+      "--offline",
+      "--link-mode",
+      "copy",
+      "--python",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\env-new\\Scripts\\python.exe",
+      "--require-hashes",
+      "--no-deps",
+      "-r",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\core-requirements.txt"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\hermes\\bin\\uv.EXE",
+      "pip",
+      "install",
+      "--offline",
+      "--link-mode",
+      "copy",
+      "--python",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\env-new\\Scripts\\python.exe",
+      "--no-deps",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\wheels\\eidos-0.5.0-py3-none-any.whl"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "C:\\Users\\Administrator\\AppData\\Local\\hermes\\bin\\uv.EXE",
+      "pip",
+      "check",
+      "--python",
+      "C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\campaign-freshness-9584e7e601\\env-new\\Scripts\\python.exe"
+    ],
+    "exit": 0
+  }
+]

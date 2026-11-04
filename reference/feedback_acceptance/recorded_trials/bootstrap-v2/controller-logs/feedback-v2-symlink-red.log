@@ -1,0 +1,39 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____________ test_redirected_origin_refuses_before_initialization _____________
+
+tmp_path = WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2416/test_redirected_origin_refuses0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000024690B10AA0>
+
+    def test_redirected_origin_refuses_before_initialization(tmp_path, monkeypatch):
+        module, args = preparation(tmp_path, monkeypatch)
+        preparation_files(args)
+        origin = args.project / 'tools/audit_chains.py'
+        target = args.project / 'real-owner.py'
+        origin.rename(target)
+        try:
+            origin.symlink_to(target)
+        except OSError as error:
+            pytest.skip('Symlinks unavailable: ' + str(error))
+        monkeypatch.setattr(module, 'helpers', lambda *args: (lambda *args: {}, None, None))
+        with pytest.raises(ValueError, match='redirected'):
+>           module.prepare(args)
+
+E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\test_campaign.py:181: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\campaign.py:349: in prepare
+    initialized = cli(project, 'init')
+                  ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('C:/Users/Administrator/AppData/Local/Temp/pytest-of-Administrator/pytest-2416/test_redirected_origin_refuses0/study'), 'init')
+kwargs = {}
+
+    def unexpected_gate(*args, **kwargs):
+>       raise AssertionError('Research gate executed before preparation was qualified')
+E       AssertionError: Research gate executed before preparation was qualified
+
+E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\test_campaign.py:118: AssertionError
+=========================== short test summary info ===========================
+FAILED E:\2026-AI4S\Eidos\.scratch\quality\feedback-v2-preflight\test_campaign.py::test_redirected_origin_refuses_before_initialization
+1 failed, 14 deselected in 0.86s

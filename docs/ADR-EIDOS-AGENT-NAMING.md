@@ -14,6 +14,12 @@ not establish autonomous reasoning, an agent graph, or scientific RSI.
 
 ## Compatibility boundary
 
+The 2026-11-04 **0.5.0 compatibility preview** is actually published with the
+additional console alias. Distribution `eidos` and namespace `framework` remain
+unchanged. The GitHub wheel is the qualified installation path; a public-index
+package/import migration is still open. Existing resident 0.4.12 services retain
+their own runtime. See [the delivery record](RELEASE-PUBLICATION-0.5.0.json).
+
 The prior installed SDK development evidence uses distribution `eidos`, import
 namespace `framework` and console `eidos`. The new development source additionally
 declares `eidos-agent` as a console alias for the same implementation. An alias

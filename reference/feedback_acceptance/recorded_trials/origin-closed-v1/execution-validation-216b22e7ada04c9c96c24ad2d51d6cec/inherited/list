@@ -1,0 +1,10 @@
+import subprocess,sys,time
+from pathlib import Path
+child = "from pathlib import Path; import time,os; Path('descendant-ready').write_text(str(os.getpid())); time.sleep(30); Path('late').write_text('escaped')"
+subprocess.Popen([sys.executable, '-c', child])
+deadline = time.monotonic()+5
+while not Path('descendant-ready').exists():
+    if time.monotonic()>deadline: raise RuntimeError('child did not start')
+    time.sleep(.01)
+Path('client-finished').write_text('root exiting')
+print('NAME ID SIZE MODIFIED',flush=True)

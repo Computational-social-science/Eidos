@@ -1,0 +1,5 @@
+Using Python 3.12.4 environment at: C:\Users\Administrator\.venvs\eidos-agent-0.5.0
+Resolved 1 package in 1ms
+Prepared 1 package in 24ms
+Installed 1 package in 53ms
+ + eidos==0.5.0 (from file:///C:/Users/Administrator/.cache/eidos-cli-acceptance/persistent-worker-4c2b84d234/eidos-0.5.0-py3-none-any.whl)

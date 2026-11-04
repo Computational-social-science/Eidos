@@ -1,0 +1,562 @@
+    1: """Trusted, model-free producer for the installed availability repair campaign.
+       
+       Run with the normal candidate interpreter and -I. This producer executes checks;
+       the generic ledger separately verifies integrity. It is not hostile-code sandboxing.
+       """
+    1: from __future__ import annotations
+       
+    1: import argparse
+    1: import ast
+    1: import base64
+    1: import csv
+    1: from contextlib import contextmanager
+    1: from datetime import datetime, timezone
+    1: import hashlib
+    1: import importlib.util
+    1: import io
+    1: import json
+    1: import os
+    1: from pathlib import Path
+    1: import re
+    1: import subprocess
+    1: import sys
+    1: import uuid
+    1: import urllib.request
+    1: import zipfile
+       
+    1: from framework.artifacts import atomic_output, output_lock
+    1: from framework.subprocesses import run_tree
+       
+       
+    1: def sha(body: bytes) -> str:
+  122:     return hashlib.sha256(body).hexdigest()
+       
+       
+    1: def encoded(value) -> bytes:
+   22:     return (json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False) + '\n').encode()
+       
+       
+    1: def put(path: Path, value) -> None:
+   47:     body = value if isinstance(value, bytes) else encoded(value)
+   58:     with path.open('xb') as stream:
+   29:         stream.write(body)
+       
+       
+    1: def replace(path: Path, body: bytes) -> None:
+           with atomic_output(path) as temporary:
+               temporary.write_bytes(body)
+       
+       
+    2: @contextmanager
+    2: def trial_selection(project: Path, previous: bytes, selected: bytes):
+           path = project / '.eidos/runtime-pin.json'
+           with output_lock(project / '.eidos/runtime-pin'):
+               if path.read_bytes() != previous:
+                   raise ValueError('Cannot replace an unrelated project selection')
+               replace(path, selected)
+           try:
+               yield
+           finally:
+               with output_lock(project / '.eidos/runtime-pin'):
+                   actual = path.read_bytes()
+                   if actual == selected:
+                       replace(path, previous)
+                   elif actual != previous:
+                       raise ValueError('Cleanup refused to overwrite an unrelated project selection')
+       
+       
+    2: @contextmanager
+    2: def adopted_guard(project: Path, incident: str):
+    1:     from framework import feedback
+    1:     try:
+    1:         yield
+           except BaseException:
+               if feedback.status(project, incident)['state'] in ('ADOPTED', 'REPLAY_FAILED'):
+                   feedback.revert(project, incident)
+               raise
+       
+       
+    1: def verify_inputs(inputs: dict) -> None:
+   42:     for name, digest in inputs.items():
+   36:         if sha(Path(name).read_bytes()) != digest:
+                   raise ValueError('Protected campaign input changed: ' + name)
+       
+       
+    1: def probe_verdict(row: dict, folder: Path, mode: str) -> str:
+    6:     if mode == 'inherited':
+    8:         if not all((folder / name).is_file() for name in ('descendant-ready', 'client-finished')):
+                   raise ValueError('Both entry witnesses are required; unentered checks are not defects')
+    2:         if row['exit'] == 124:
+                   return 'FAIL'
+    6:     if row['exit'] != 0:
+               raise ValueError('Probe did not finish observably: ' + str(row['exit']))
+    6:     value = json.loads(row['stdout'])
+    6:     expected = {'available': mode == 'inherited', 'descendant_running_after_probe': False}
+    6:     return 'PASS' if value == expected else 'FAIL'
+       
+       
+    1: def origin_verdict(row: dict, folder: Path, inherited: bool) -> str:
+    4:     if inherited:
+    8:         if not all((folder / name).is_file() for name in ('descendant-ready', 'client-finished')):
+                   raise ValueError('Original owner did not reach both entry witnesses')
+    2:         if row['exit'] == 124:
+                   return 'FAIL'
+    4:     if row['exit'] != 0:
+               raise ValueError('Original owner did not execute observably')
+    4:     value = json.loads(row['stdout'])
+    4:     return 'PASS' if value['result'][0] == 'PASS' and value['descendant_running_after_contract'] is False else 'FAIL'
+       
+       
+    1: def helpers(oracle: Path, fixture: Path):
+    2:     spec = importlib.util.spec_from_file_location('qualified_probe_oracle', oracle)
+    2:     module = importlib.util.module_from_spec(spec)
+    2:     spec.loader.exec_module(module)
+    2:     text = fixture.read_text(encoding='utf-8')
+   48:     selected = [n for n in ast.parse(text).body if isinstance(n, ast.FunctionDef)
+   10:                 and n.name in {'fake_ollama', 'process_alive'}]
+    8:     if len(selected) != 2 or any(n.decorator_list or n.args.defaults or any(n.args.kw_defaults) for n in selected):
+               raise ValueError('Unexpected trusted probe fixture')
+    2:     scope = vars(module).copy()
+    2:     exec(compile(ast.Module(body=selected, type_ignores=[]), str(fixture), 'exec'), scope)
+    4:     alive = ast.get_source_segment(text, next(n for n in selected if n.name == 'process_alive'))
+    2:     return module.identity, scope['fake_ollama'], alive
+       
+       
+    1: def command(argv: list[str], cwd: Path, timeout=30, env=None) -> dict:
+   10:     try:
+   10:         p = run_tree(argv, cwd=cwd, timeout=timeout, env=env)
+   10:         return {'argv': argv, 'exit': p.returncode, 'stdout': p.stdout, 'stderr': p.stderr}
+           except subprocess.TimeoutExpired as error:
+               def text(value):
+                   return value.decode('utf-8', 'replace') if isinstance(value, bytes) else value or ''
+               return {'argv': argv, 'exit': 124, 'stdout': text(error.output), 'stderr': text(error.stderr)}
+       
+       
+    1: def cli(project: Path, *args: str) -> dict:
+           row = command([sys.executable, '-I', '-X', 'utf8', '-m', 'framework.cli',
+                          *args, '--project', str(project), '--json'], project)
+           value = json.loads(row['stdout'])
+           if row['exit'] not in (0, 4) or value.get('status') not in {'INITIALIZED', 'EXPORTED', 'REFUSED'}:
+               raise ValueError('Unexpected initialization/check/export result: ' + str(row))
+           return {'command': row, 'result': value}
+       
+       
+    1: def history(project: Path) -> bytes:
+    2:     paths = (project / '.eidos/runs').glob('*.json')
+    6:     return encoded({p.name: sha(p.read_bytes()) for p in sorted(paths)
+    2:                     if re.fullmatch('[0-9a-f]{32}\\.json', p.name)})
+       
+       
+    1: def selected_python(config: dict, arm: str) -> Path:
+    5:     return Path(config['workers'][arm])
+       
+       
+    1: def evaluate(config: dict, arm: str, stage: str, *, fault=False) -> dict:
+    2:     verify_inputs(config['protected'])
+    2:     output = Path(config['workspace']) / ('execution-' + stage + '-' + uuid.uuid4().hex)
+    2:     output.mkdir()
+    2:     identity, fake, alive = helpers(Path(config['oracle']), Path(config['fixture']))
+    2:     worker = selected_python(config, arm)
+    2:     wheel = Path(config['wheels'][arm])
+    2:     before = identity(worker, wheel, output)
+    2:     rows, checks = {}, {}
+    8:     for mode, name in [('inherited', 'inherited_pipe'), ('failure', 'nonzero_cli'), ('missing', 'missing_cli')]:
+    6:         folder = output / mode
+    6:         fake(folder, mode)
+    6:         if fault and mode == 'inherited':
+                   # Prespecified failure control: real CLI exits nonzero after both
+                   # entry witnesses; the fixed acceptance expectation is unchanged.
+    2:             with (folder / 'list').open('a', encoding='utf-8') as stream:
+    1:                 stream.write('\nraise SystemExit(3)\n')
+   22:         inputs = {p.name: sha(p.read_bytes()) for p in folder.iterdir() if p.is_file()}
+   18:         code = ('import json,os\nfrom pathlib import Path\nfrom framework.inference import ModelManager\n'
+   12:                 + alive + '\nvalue=ModelManager().ollama_available\n'
+                       'marker=Path("descendant-ready")\n'
+                       'running=process_alive(int(marker.read_text())) if marker.exists() else False\n'
+                       'print(json.dumps({"available":value,"descendant_running_after_probe":running}),flush=True)')
+   12:         row = command([str(worker), '-I', '-X', 'utf8', '-c', code], folder, 7,
+    6:                       dict(os.environ, PATH=str(folder), PYTHONIOENCODING='utf-8'))
+   22:         assert inputs == {name: sha((folder / name).read_bytes()) for name in inputs}
+    6:         row['input_sha256'] = inputs
+    6:         put(folder / 'command.json', row)
+    6:         verdict = probe_verdict(row, folder, mode)
+    6:         rows[name] = row
+    6:         checks[name] = {'executed': True, 'status': verdict}
+    2:     origin_code = '''import ast,json,os,sys
+       from pathlib import Path
+       body=Path(sys.argv[1]).read_text(encoding='utf-8-sig')
+       nodes=[n for n in ast.parse(body).body if isinstance(n,ast.FunctionDef) and n.name=='audit_inference']
+       assert len(nodes)==1
+       nodes[0].decorator_list=[]
+       scope={};exec(compile(ast.Module(body=nodes,type_ignores=[]),sys.argv[1],'exec'),scope)
+       '''
+    2:     origin_code += alive + '''
+       value=scope['audit_inference']()
+       p=Path('caller-entry-pids.log')
+       pids=p.read_text().splitlines() if p.exists() else []
+       print(json.dumps({'result':value,'descendant_running_after_contract':any(process_alive(int(pid)) for pid in pids)}))
+       '''
+    6:     for mode in ('failure', 'inherited'):
+    4:         folder = output / ('origin-' + mode)
+    4:         fake(folder, mode)
+    4:         if mode == 'inherited':
+    2:             script = folder / 'list'
+    2:             text = script.read_text(encoding='utf-8')
+    4:             text = text.replace("Path('client-finished').write_text('root exiting')",
+    2:                                 "Path('caller-entry-pids.log').open('a').write(Path('descendant-ready').read_text()+'\\n')\n"
+                                       "Path('client-finished').write_text('root exiting')")
+    6:             script.write_text("from pathlib import Path\nPath('descendant-ready').unlink(missing_ok=True)\n"
+    4:                               "Path('client-finished').unlink(missing_ok=True)\n" + text, encoding='utf-8')
+   20:         fake_inputs = {p.name: sha(p.read_bytes()) for p in folder.iterdir() if p.is_file()}
+   12:         row = command([str(worker), '-I', '-X', 'utf8', '-c', origin_code,
+    8:                        str(Path(config['project']) / 'tools/audit_chains.py')], folder, 20,
+    4:                       dict(os.environ, PATH=str(folder), PYTHONIOENCODING='utf-8'))
+   20:         assert fake_inputs == {name: sha((folder / name).read_bytes()) for name in fake_inputs}
+    4:         row['input_sha256'] = fake_inputs
+    4:         put(folder / 'command.json', row)
+    4:         verdict = origin_verdict(row, folder, mode == 'inherited')
+    4:         if mode == 'failure':
+    2:             checks['origin_contract'] = {'executed': True, 'status': verdict}
+    2:         elif verdict != 'PASS':
+                   checks['inherited_pipe']['status'] = 'FAIL'
+    2:     after = identity(worker, wheel, output)
+    2:     assert before == after, 'Installed SDK/dependencies changed during execution'
+    2:     verify_inputs(config['protected'])
+    4:     result = {'schema': 'eidos.repair-check.v1', 'project_id': config['project_id'],
+    2:               'protocol_sha256': config['protocol_sha256'], 'artifact_sha256': sha(wheel.read_bytes()),
+    2:               'run_id': uuid.uuid4().hex, 'recorded_at': datetime.now(timezone.utc).isoformat(),
+    2:               'stage': stage, 'origin_sha256': config['protocol']['origin_sha256'], 'checks': checks,
+    2:               'fault_injection': fault, 'identity_before': before, 'identity_after': after,
+    2:               'raw_execution': str(output), 'producer_sha256': sha(Path(__file__).read_bytes())}
+    2:     if stage == 'replay':
+    2:         result['pin_sha256'] = sha((Path(config['project']) / '.eidos/runtime-pin.json').read_bytes())
+    2:     put(output / 'check.json', result)
+    2:     return result
+       
+       
+    1: def receipt(config: dict, kind: str, *, artifacts=None, **details) -> dict:
+    2:     from framework import feedback
+    2:     folder = Path(config['workspace']) / 'receipts'
+    2:     folder.mkdir(exist_ok=True)
+    2:     refs = {}
+    8:     for role, body in (artifacts or {}).items():
+    8:         raw = body if isinstance(body, bytes) else encoded(body)
+    6:         name = sha(raw) + '.data'
+    6:         path = folder / name
+    6:         if not path.exists():
+    4:             put(path, raw)
+    6:         assert path.read_bytes() == raw
+    6:         refs[role] = {'path': name, 'sha256': sha(raw)}
+    4:     value = {'schema': 'eidos.repair-receipt.v1', 'incident_id': config['incident_id'],
+    2:              'project_id': config['project_id'], 'protocol_sha256': config['protocol_sha256'],
+    2:              'kind': kind, 'details': details, 'artifacts': refs}
+    2:     path = folder / (kind + '-' + uuid.uuid4().hex + '.json')
+    2:     put(path, value)
+    2:     result = feedback.record(Path(config['project']), config['incident_id'], path)
+    2:     put(folder / (path.stem + '-result.json'), result)
+    2:     return result
+       
+       
+    1: def control_wheel(baseline: Path, output: Path) -> None:
+           """A deliberate no-fix control: unchanged old SDK with a distinct dev version."""
+           with zipfile.ZipFile(baseline) as archive:
+               members = {n: archive.read(n) for n in archive.namelist()}
+           old = next(n.rsplit('/', 1)[0] for n in members if n.endswith('.dist-info/METADATA'))
+           new = 'eidos-0.5.0.dev0.dist-info'
+           members = {n.replace(old + '/', new + '/', 1): body for n, body in members.items()
+                      if n != old + '/RECORD'}
+           name = new + '/METADATA'
+           header, separator, body = members[name].partition(b'\r\n\r\n')
+           if not separator:
+               header, separator, body = members[name].partition(b'\n\n')
+           assert separator and len(re.findall(rb'(?m)^Version: 0[.]4[.]12\r?$', header)) == 1
+           header = re.sub(rb'(?m)^(Version: )0[.]4[.]12(\r?)$', rb'\g<1>0.5.0.dev0\2', header)
+           members[name] = header + separator + body
+           record = io.StringIO(newline='')
+           writer = csv.writer(record, lineterminator='\n')
+           for name, body in sorted(members.items()):
+               digest = base64.urlsafe_b64encode(hashlib.sha256(body).digest()).rstrip(b'=').decode()
+               writer.writerow((name, 'sha256=' + digest, len(body)))
+           writer.writerow((new + '/RECORD', '', ''))
+           members[new + '/RECORD'] = record.getvalue().encode()
+           with zipfile.ZipFile(output, 'x', zipfile.ZIP_DEFLATED) as archive:
+               for name, body in sorted(members.items()):
+                   archive.writestr(name, body)
+       
+       
+    1: def baseline_pin(config: dict, arm: str) -> bytes:
+           identity, _, _ = helpers(Path(config['oracle']), Path(config['fixture']))
+           observed = identity(selected_python(config, arm), Path(config['wheels'][arm]), Path(config['workspace']))
+           modules = {n.removeprefix('framework/'): value for n, value in observed['sdk'].items()}
+           packages = [(row[0], row[1]) for row in observed['packages']]
+           return encoded({'schema': 'eidos.project-runtime-pin.v1', 'project_id': config['project_id'],
+                           'incident_id': config['incident_id'], 'version': observed['version'],
+                           'python': str(selected_python(config, arm)), 'prefix': observed['prefix'],
+                           'artifact_sha256': sha(Path(config['wheels'][arm]).read_bytes()),
+                           'sdk_source_sha256': sha(json.dumps(modules, sort_keys=True, separators=(',', ':')).encode()),
+                           'sdk_module_count': len(modules), 'distributions_sha256': sha(json.dumps(packages).encode()),
+                           'adopted_at': datetime.now(timezone.utc).isoformat(),
+                           'selection_scope': 'Explicit on-demand campaign selection, not resident-service migration'})
+       
+       
+    1: def prepare(args) -> dict:
+           from framework import feedback
+           import yaml
+           project, workspace = args.project.resolve(), args.workspace.resolve()
+           expected = workspace / 'env-new' / ('Scripts/python.exe' if os.name == 'nt' else 'bin/python')
+           if Path(os.path.abspath(sys.executable)) != expected:
+               raise ValueError('Run preparation from its selected normal installed candidate interpreter')
+           if (workspace / 'campaign.json').exists():
+               config = json.loads((workspace / 'campaign.json').read_bytes())
+               if config['project'] != str(project) or config['oracle'] != str(args.oracle.resolve()) or config['fixture'] != str(args.fixture.resolve()):
+                   raise ValueError('Resume targets another project or protected evaluator')
+               verify_inputs(config['protected'])
+               return advance_prepare(config)
+           project.mkdir(exist_ok=True)
+           if not (project / '.eidos').exists():
+               cli(project, 'init')
+           if (project / '.eidos/runtime-pin.json').exists():
+               raise ValueError('Existing project pin is not a disposable campaign baseline')
+           workspace.mkdir(exist_ok=True)
+           record = cli(project, 'check')
+           put(workspace / 'initial-refusal.json', record)
+           assert json.loads(history(project)), 'Rollback must preserve nonempty actual run history'
+           project_id = yaml.safe_load((project / '.eidos/project.yaml').read_bytes())['project_id']
+           files = {'tools/audit_chains.py': sha((project / 'tools/audit_chains.py').read_bytes()),
+                    '.eidos/validate.py': sha((project / '.eidos/validate.py').read_bytes())}
+           wheels = {arm: str((workspace / 'wheels' / name).resolve()) for arm, name in
+                     [('old', 'eidos-0.4.12-py3-none-any.whl'), ('bad', 'eidos-0.5.0.dev0-py3-none-any.whl'),
+                      ('new', 'eidos-0.5.0-py3-none-any.whl')]}
+           protected = {str(p): sha(p.read_bytes()) for p in
+                        [Path(__file__).resolve(), args.oracle.resolve(), args.fixture.resolve(),
+                         *(Path(p) for p in wheels.values())]}
+           protocol = {'schema': 'eidos.repair-protocol.v1', 'project_id': project_id,
+                       'scope': 'Real EIDOS inherited-pipe software defect; private CLI fixtures and original routing oracle; no scientific acceptance',
+                       'required_checks': ['inherited_pipe', 'nonzero_cli', 'missing_cli', 'origin_contract'],
+                       'regression_check': 'inherited_pipe', 'require_rejection_control': True,
+                       'ci_workflows': ['ci', 'installed-sdk'], 'origin_files': files,
+                       'origin_sha256': sha(encoded(files)), 'protected_evaluator_inputs': protected,
+                       'seeds': 'Not applicable: deterministic process-lifetime and routing checks'}
+           policy = workspace / 'protocol.json'
+           put(policy, protocol)
+           exported = cli(project, 'feedback', '--message', 'Actual inherited-pipe availability defect; retain original timeout and protected regression', '--out', str(workspace / 'feedback.zip'))
+           put(workspace / 'feedback-export.json', exported)
+           created = feedback.create(project, 'Inherited-pipe availability regression', policy,
+                                     feedback_bundle=workspace / 'feedback.zip')
+           config = {'project': str(project), 'workspace': str(workspace), 'project_id': project_id,
+                     'incident_id': created['incident_id'], 'protocol': protocol, 'protocol_sha256': sha(policy.read_bytes()),
+                     'wheels': wheels, 'workers': {arm: str(workspace / ('env-' + arm) /
+                                  ('Scripts/python.exe' if os.name == 'nt' else 'bin/python')) for arm in wheels},
+                     'protected': protected, 'oracle': str(args.oracle.resolve()), 'fixture': str(args.fixture.resolve())}
+           put(workspace / 'campaign.json', config)
+           return advance_prepare(config)
+       
+       
+    1: def advance_prepare(config: dict) -> dict:
+           from framework import feedback
+           project, workspace = Path(config['project']), Path(config['workspace'])
+           wheels = config['wheels']
+           state = feedback.status(project, config['incident_id'])['state']
+           pin = project / '.eidos/runtime-pin.json'
+           if not (workspace / 'original-pin.json').exists():
+               if state != 'DETECTED' or pin.exists():
+                   raise ValueError('Cannot invent a missing prior pin for an advanced campaign')
+               put(workspace / 'original-pin.json', baseline_pin(config, 'old'))
+           prior = (workspace / 'original-pin.json').read_bytes()
+           with output_lock(project / '.eidos/runtime-pin'):
+               if not pin.exists() and state == 'DETECTED':
+                   replace(pin, prior)
+               saved_bad = workspace / 'bad-pin.json'
+               if state in ('CANDIDATE', 'REJECTED') and saved_bad.exists() and pin.read_bytes() == saved_bad.read_bytes():
+                   # The previous process may have died before its Python finally.
+                   replace(pin, prior)
+                   put(workspace / ('interrupted-selection-restored-' + uuid.uuid4().hex + '.json'),
+                       {'prior_sha256': sha(prior), 'restored_from': sha(saved_bad.read_bytes())})
+               if pin.read_bytes() != prior:
+                   raise ValueError('Campaign must start or resume from its preserved baseline selection')
+           if state == 'DETECTED':
+               state = receipt(config, 'triage', classification='core')['state']
+           if state == 'TRIAGED':
+               result = evaluate(config, 'old', 'reproduction')
+               state = receipt(config, 'reproduction', artifacts={'wheel': Path(wheels['old']).read_bytes(), 'check': result})['state']
+           if not (workspace / 'bad-pin.json').exists():
+               put(workspace / 'bad-pin.json', baseline_pin(config, 'bad'))
+           bad_pin = (workspace / 'bad-pin.json').read_bytes()
+           if state == 'REPRODUCED':
+               state = receipt(config, 'candidate', artifacts={'wheel': Path(wheels['bad']).read_bytes()})['state']
+           if state == 'CANDIDATE' and feedback.status(project, config['incident_id'])['candidate_sha256'] == sha(Path(wheels['bad']).read_bytes()):
+               with trial_selection(project, prior, bad_pin):
+                   result = evaluate(config, 'bad', 'rejection')
+                   state = receipt(config, 'rejection', artifacts={'wheel': Path(wheels['bad']).read_bytes(), 'check': result,
+                                                                  'trial_pin': bad_pin})['state']
+           if state == 'REJECTED':
+               before = history(project)
+               result = evaluate(config, 'old', 'rollback')
+               state = receipt(config, 'rollback', artifacts={'wheel': Path(wheels['old']).read_bytes(), 'check': result,
+                       'pin_before': bad_pin, 'pin_after': pin.read_bytes(), 'history_before': before, 'history_after': history(project)})['state']
+           if state == 'ROLLED_BACK':
+               state = receipt(config, 'candidate', artifacts={'wheel': Path(wheels['new']).read_bytes()})['state']
+           if state == 'CANDIDATE':
+               result = evaluate(config, 'new', 'validation')
+               state = receipt(config, 'validation', artifacts={'wheel': Path(wheels['new']).read_bytes(), 'check': result})['state']
+           if state != 'VALIDATED':
+               raise ValueError('Unexpected prepare/resume lifecycle state: ' + state)
+           try:
+               feedback.close(project, config['incident_id'])
+           except ValueError as error:
+               if not (workspace / 'premature-close-refused.json').exists():
+                   put(workspace / 'premature-close-refused.json', {'status': 'REFUSED', 'reason': str(error)})
+           else:
+               raise ValueError('Unpublished campaign was incorrectly closed')
+           return feedback.status(project, config['incident_id'])
+       
+       
+    1: def fetch(url: str, output: Path) -> dict:
+   12:     request = urllib.request.Request(url, headers={'User-Agent': 'EIDOS-Repair-Qualification',
+    6:                                                   'Accept': 'application/vnd.github+json'})
+   12:     with urllib.request.urlopen(request, timeout=30) as response:
+    6:         body = response.read(1024 * 1024 + 1)
+    6:     if len(body) > 1024 * 1024:
+               raise ValueError('Remote publication record exceeds the bound')
+    6:     put(output, body)
+    6:     return json.loads(body)
+       
+       
+    1: def publication_artifacts(config: dict) -> dict:
+    1:     root = Path(config['workspace']) / 'publication'
+    1:     root.mkdir(exist_ok=True)
+    1:     remote = root / uuid.uuid4().hex
+    1:     remote.mkdir()
+    1:     api = 'https://api.github.com/repos/Computational-social-science/Eidos'
+    1:     release = fetch(api + '/releases/tags/v0.5.0', remote / 'release.json')
+    1:     ref = fetch(api + '/git/ref/tags/v0.5.0', remote / 'ref.json')
+    1:     tag = {'ref': ref}
+    1:     target = ref['object']
+    1:     if target['type'] == 'tag':
+    1:         tag['annotation'] = fetch(api + '/git/tags/' + target['sha'], remote / 'annotation.json')
+    1:         target = tag['annotation']['object']
+    1:     if target['type'] != 'commit':
+               raise ValueError('Published tag does not target a commit')
+    1:     head = target['sha']
+    1:     ci = fetch(api + '/actions/runs?head_sha=' + head + '&per_page=100', remote / 'ci.json')
+    1:     source = fetch(api + '/contents/site/versions.json?ref=' + head, remote / 'history-envelope.json')
+    1:     versions = json.loads(base64.b64decode(source['content']))
+    1:     if versions[-1]['version'] != '0.5.0':
+               raise ValueError('Release source history names another version')
+    3:     for name in config['protocol']['ci_workflows']:
+    8:         runs = [r for r in ci['workflow_runs'] if r['name'] == name and r['head_sha'] == head]
+    4:         latest = max(runs, key=lambda r: (r['id'], r.get('run_attempt', 1))) if runs else None
+    2:         if latest is None or latest['status'] != 'completed' or latest['conclusion'] != 'success':
+                   raise ValueError('Required real remote CI is not successful: ' + name)
+    1:     comparison = fetch(api + '/compare/' + versions[-1]['source_commit'] + '...' + head, remote / 'ancestry.json')
+    1:     if comparison['status'] not in ('identical', 'ahead'):
+               raise ValueError('Release delivery does not descend from its recorded source')
+    2:     proof = {'schema': 'eidos.release-proof.v1', 'published': True,
+    1:              'artifact_sha256': sha(Path(config['wheels']['new']).read_bytes()), 'version': '0.5.0',
+    1:              'source_commit': versions[-1]['source_commit'], 'head_commit': head,
+    1:              'ci_head': head, 'ci_conclusion': 'success', 'tag': 'v0.5.0',
+    1:              'asset_name': 'eidos-0.5.0-py3-none-any.whl'}
+    2:     asset = next(a for a in release['assets'] if a['name'] == proof['asset_name'])
+    2:     with urllib.request.urlopen(asset['browser_download_url'], timeout=60) as response:
+    1:         downloaded = response.read(16 * 1024 * 1024 + 1)
+    1:     assert downloaded == Path(config['wheels']['new']).read_bytes(), 'Actual published bytes differ'
+    1:     put(remote / proof['asset_name'], downloaded)
+    1:     return {'wheel': downloaded, 'publication': proof, 'release': release, 'ci': ci, 'tag': tag}
+       
+       
+    1: def recorded_replays(config: dict) -> list[tuple[dict, dict]]:
+           """Read only after the core has validated this journal and all its blobs."""
+    1:     folder = Path(config['project']) / '.eidos/incidents' / config['incident_id']
+    1:     events = json.loads((folder / 'journal.json').read_bytes())['events']
+    1:     rows = []
+   10:     for index, event in enumerate(events):
+    9:         if event['kind'] != 'replay':
+    9:             continue
+               body = (folder / 'blobs' / event['artifacts']['check']).read_bytes()
+               assert sha(body) == event['artifacts']['check']
+               rows.append((json.loads(body), events[index + 1] if index + 1 < len(events) else {}))
+    1:     return rows
+       
+       
+    1: def finish(args) -> dict:
+    1:     from framework import feedback
+    1:     config = json.loads((args.workspace / 'campaign.json').read_bytes())
+    1:     verify_inputs(config['protected'])
+    1:     project = Path(config['project'])
+    1:     if Path(os.path.abspath(sys.executable)) != selected_python(config, 'new'):
+               raise ValueError('Completion must run from the selected normal installed candidate')
+    1:     state = feedback.status(project, config['incident_id'])['state']
+    1:     if state == 'CLOSED':
+               return feedback.status(project, config['incident_id'])
+    1:     if state not in ('VALIDATED', 'RELEASED', 'REVERTED', 'ADOPTED', 'REPLAY_FAILED', 'REPLAYED'):
+               raise ValueError('Campaign is not ready for publication/adoption: ' + state)
+    1:     artifacts = publication_artifacts(config)
+    1:     if state == 'VALIDATED':
+               state = receipt(config, 'release', artifacts=artifacts)['state']
+    1:     previous = (args.workspace / 'original-pin.json').read_bytes()
+    1:     pin = project / '.eidos/runtime-pin.json'
+    1:     before = history(project)
+    1:     if state == 'REPLAY_FAILED':
+               feedback.revert(project, config['incident_id'])
+               state = 'REVERTED'
+    1:     replays = recorded_replays(config)
+    1:     if replays and not replays[-1][0].get('fault_injection') and any(
+                   row['status'] != 'PASS' for row in replays[-1][0]['checks'].values()):
+               raise ValueError('An actual non-injected replay failed; investigation is required')
+    1:     if state != 'REPLAYED':
+    1:         feedback.adopt(project, config['incident_id'], selected_python(config, 'new'))
+    2:         with adopted_guard(project, config['incident_id']):
+    3:             controlled_reversion = any(check.get('fault_injection') is True and following.get('kind') == 'reversion'
+    1:                                        for check, following in replays)
+    1:             if not controlled_reversion:
+    1:                 result = evaluate(config, 'new', 'replay', fault=True)
+    2:                 receipt(config, 'replay', artifacts={'wheel': artifacts['wheel'], 'check': result,
+    1:                                                    'pin_after': pin.read_bytes()})
+    1:                 assert feedback.status(project, config['incident_id'])['state'] == 'REPLAY_FAILED'
+    1:                 feedback.revert(project, config['incident_id'])
+    1:                 assert pin.read_bytes() == previous
+    1:                 after = json.loads(history(project))
+    3:                 assert all(after.get(k) == v for k, v in json.loads(before).items())
+    2:                 put(args.workspace / ('actual-reversion-' + uuid.uuid4().hex + '.json'),
+    1:                     {'restored_pin_sha256': sha(previous), 'history_before': json.loads(before), 'history_after': after})
+    1:                 feedback.adopt(project, config['incident_id'], selected_python(config, 'new'))
+    1:             result = evaluate(config, 'new', 'replay')
+    2:             receipt(config, 'replay', artifacts={'wheel': artifacts['wheel'], 'check': result,
+    1:                                                'pin_after': pin.read_bytes()})
+    1:             if feedback.status(project, config['incident_id'])['state'] != 'REPLAYED':
+                       raise ValueError('Fresh non-injected replay failed')
+    1:     closed = feedback.close(project, config['incident_id'])
+    1:     assert closed['state'] == 'CLOSED' and closed['scientific_status'] == 'UNRUN'
+    1:     if not (args.workspace / 'closed.json').exists():
+    1:         put(args.workspace / 'closed.json', closed)
+    1:     verify_inputs(config['protected'])
+    1:     return closed
+       
+       
+    1: def main() -> int:
+    1:     parser = argparse.ArgumentParser(description=__doc__)
+    1:     sub = parser.add_subparsers(dest='action', required=True)
+    1:     p = sub.add_parser('control-wheel')
+    1:     p.add_argument('--baseline', type=Path, required=True)
+    1:     p.add_argument('--output', type=Path, required=True)
+    3:     for action in ('prepare', 'finish'):
+    2:         p = sub.add_parser(action)
+    2:         p.add_argument('--workspace', type=Path, required=True)
+    2:         if action == 'prepare':
+    1:             p.add_argument('--project', type=Path, required=True)
+    1:             p.add_argument('--oracle', type=Path, required=True)
+    1:             p.add_argument('--fixture', type=Path, required=True)
+    1:     args = parser.parse_args()
+    1:     if sys.flags.optimize:
+               parser.error('Optimized assertion execution is not qualified')
+    1:     if args.action == 'control-wheel':
+               control_wheel(args.baseline, args.output)
+               result = {'control_wheel_sha256': sha(args.output.read_bytes())}
+           else:
+    2:         result = prepare(args) if args.action == 'prepare' else finish(args)
+    1:     print(json.dumps(result))
+    1:     return 0
+       
+       
+    1: if __name__ == '__main__':
+    1:     raise SystemExit(main())

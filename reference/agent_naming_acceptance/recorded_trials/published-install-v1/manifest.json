@@ -1,0 +1,237 @@
+{
+  "schema": "eidos.persistent-worker-activation.v1",
+  "state": "QUALIFIED_PUBLISHED_CORE",
+  "python": "C:\\Users\\Administrator\\.venvs\\eidos-agent-0.5.0\\Scripts\\python.exe",
+  "version": "0.5.0",
+  "wheel_sha256": "56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c",
+  "requirements_sha256": "ca27b7da8739f5e3f1d14e54a6172b1bc9bb9da9e4344b1103d9216b2378e5de",
+  "release_url": "https://github.com/Computational-social-science/Eidos/releases/tag/v0.5.0",
+  "delivery_head": "045c9e08b1f0aceff2e63a23ab77e121c141c6ae",
+  "qualification": "Fresh Windows normal install: three installed drivers, both console aliases, init/refusal/status/feedback, and actual public download/identity binding",
+  "existing_project_pin_override": false,
+  "resident_service_migration": false,
+  "scientific_rsi": false,
+  "scope": "Actual published-byte binding of fresh normal Windows persistent core; existing project pins and resident services unchanged",
+  "files": {
+    "activation.json": {
+      "sha256": "5f780046fe3c7175a62adcb3487a10b1a6c2102444a2b9e40c51a8890d32ac35",
+      "size": 836
+    },
+    "cli-check-command.json": {
+      "sha256": "9bb0e14eb8b4b7dfe68d16829e9cb7c2763b18402436af2f079ecddfef0c9cec",
+      "size": 374
+    },
+    "cli-check.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "cli-check.stdout": {
+      "sha256": "434438ab92ab49ef055a3741e769e62161fd674b131959f92cd1615f4df379c4",
+      "size": 1104
+    },
+    "cli-feedback-command.json": {
+      "sha256": "d2b860fd39b0899a6108965183f0adfabd309b0d185e62a169f3841442011f29",
+      "size": 569
+    },
+    "cli-feedback.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "cli-feedback.stdout": {
+      "sha256": "e69a2bfaf3e28761a7295aa02c44978667a6779d74b7258b53d91892de000924",
+      "size": 289
+    },
+    "cli-init-command.json": {
+      "sha256": "0c6066c497c99c602fde6458d791761341519482dda738489832eb0c04e9b7b0",
+      "size": 373
+    },
+    "cli-init.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "cli-init.stdout": {
+      "sha256": "7f7d6d07eab21dd3c1b0eec46802d2d413e8b9e53b6ca94db94eefee5d6ea166",
+      "size": 339
+    },
+    "cli-status-command.json": {
+      "sha256": "f2347be7dbdc230398c3c4cb3df181e5a7d1622e5186fe9984ab04cf38d71851",
+      "size": 375
+    },
+    "cli-status.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "cli-status.stdout": {
+      "sha256": "9d51986d844176967019522d2d660b2d9fc4d0602089e34bc2086803981e35f7",
+      "size": 1105
+    },
+    "core-requirements.txt": {
+      "sha256": "ca27b7da8739f5e3f1d14e54a6172b1bc9bb9da9e4344b1103d9216b2378e5de",
+      "size": 56575
+    },
+    "dependencies-command.json": {
+      "sha256": "7578a44860068123ae108db49580929aa1a82fb6e2c6851b94a4f43609e868fb",
+      "size": 473
+    },
+    "dependencies.stderr": {
+      "sha256": "3eab07f1ad358e2c5db2dbedabf8606578a6ff94ff4f4210fa1b7554018df7bd",
+      "size": 382
+    },
+    "dependencies.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "dependency-check-command.json": {
+      "sha256": "9c77dead80b126e6e416624bb48fa53e316b6076af15cad47df7876494a4c5d5",
+      "size": 285
+    },
+    "dependency-check.stderr": {
+      "sha256": "ebfd17e87f7b211fb8594db0c7311e8924d21cc911f559ada279c5b23c30b1d1",
+      "size": 149
+    },
+    "dependency-check.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "eidos-0.5.0-py3-none-any.whl": {
+      "sha256": "56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c",
+      "size": 183586
+    },
+    "eidos-agent-help-command.json": {
+      "sha256": "8db6ce50a9b1c4e277fbc8bf1e55d75903273186ae964e5a295e692a7340e793",
+      "size": 207
+    },
+    "eidos-agent-help.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "eidos-agent-help.stdout": {
+      "sha256": "c8459a16225d50e6ef8ed3e2f08fc921774cc0ac912c3c015cc1e95127b9868c",
+      "size": 478
+    },
+    "eidos-help-command.json": {
+      "sha256": "646edd329a3a633e04587fa6bc45121541b8ad53dfbd0c241b157f676fb43f0c",
+      "size": 201
+    },
+    "eidos-help.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "eidos-help.stdout": {
+      "sha256": "c8459a16225d50e6ef8ed3e2f08fc921774cc0ac912c3c015cc1e95127b9868c",
+      "size": 478
+    },
+    "feedback.zip": {
+      "sha256": "9fec2daf45c907bb5459dae14e6267c65a95b188f9a35373194c688225087415",
+      "size": 686
+    },
+    "independent-study/.eidos/.eidos-export-runs.lock": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "independent-study/.eidos/latest.json": {
+      "sha256": "edb44b8dce408675f622dadc8e5bd130ca67f98c4367dbed9361cef3923032e7",
+      "size": 126
+    },
+    "independent-study/.eidos/project.yaml": {
+      "sha256": "397a048feee5df97448cd19fcd7f21370f6b3ed4bad8111c9d2624fa9e42d60a",
+      "size": 413
+    },
+    "independent-study/.eidos/README.md": {
+      "sha256": "3e9e51392b00026837ec1f3561e00956803f68e3d3b34e2b74c687241796fe67",
+      "size": 651
+    },
+    "independent-study/.eidos/runs/15436083f3a64e8080ed7eee893667bf.json": {
+      "sha256": "001bfd1c445d95d44ed2824eb78072cc804df995528716c8a48bb21abbafe550",
+      "size": 1146
+    },
+    "independent-study/.eidos/validate.py": {
+      "sha256": "db23a998fb9b3a2c053c8ba19e576b0ddad01d2382641c0b86e60c565093b48b",
+      "size": 190
+    },
+    "lifecycle-command.json": {
+      "sha256": "f40506cb66303b1bb5d6d9b087ee2e32fa593b0d0f3c8e6cacb632a9fbec16f4",
+      "size": 330
+    },
+    "lifecycle.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "lifecycle.stdout": {
+      "sha256": "fa3d7a28dc150dd265fddf6443c8aa45d4a6e212bcda5f4f7e8eaac08aaf3bf4",
+      "size": 1647
+    },
+    "numerical-command.json": {
+      "sha256": "b693f678a1c346fcb34050f6997485df3e9441b8539257a613e7a5ee90cd8760",
+      "size": 497
+    },
+    "numerical.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "numerical.stdout": {
+      "sha256": "3c758efe13f898e57bf995dd5a74dbb36ee1c11d91116d17714b031f2a5a403c",
+      "size": 37951
+    },
+    "published/core-requirements.txt": {
+      "sha256": "ca27b7da8739f5e3f1d14e54a6172b1bc9bb9da9e4344b1103d9216b2378e5de",
+      "size": 56575
+    },
+    "published/eidos-0.5.0-py3-none-any.whl": {
+      "sha256": "56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c",
+      "size": 183586
+    },
+    "published/installed-identity.json": {
+      "sha256": "0876bc872946ac2e6642e56a0b48a44557883484c318f89d7f7abeb7d94933d0",
+      "size": 37951
+    },
+    "published/installed-identity.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "published/release.json": {
+      "sha256": "3b51d2570ac0d4015054798f196868247215e4dd9eee8bbb75de34b2c80d9494",
+      "size": 8707
+    },
+    "shell-command.json": {
+      "sha256": "c9c4c9e7b9c47f35538e92720836c84ee543b89cfbe5db402dc5e395435b2d1a",
+      "size": 728
+    },
+    "shell.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "shell.stdout": {
+      "sha256": "f62b0e311e234431d469dccdfd0138aaed3fcb544a49f58bdc1a0b60e6c6115e",
+      "size": 16201
+    },
+    "summary.json": {
+      "sha256": "9a19a6ca4b48925ecdc43da5745441aca5a7a46ba4cb892e9a3247b9babdfb7f",
+      "size": 541
+    },
+    "venv-command.json": {
+      "sha256": "361238325684aa4b9816e5a67e512ba772bd23c1298b4bc3c18e06322e1d2522",
+      "size": 333
+    },
+    "venv.stderr": {
+      "sha256": "b2d990d96237b10faef9d94e31a755b59e152cccc25fde8062a2c312e4b49f44",
+      "size": 272
+    },
+    "venv.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "wheel-command.json": {
+      "sha256": "2b617bbb3bf67c1424ffeae2ffd113a1cfecd45d7ee17a32289924c15293cd3a",
+      "size": 454
+    },
+    "wheel.stderr": {
+      "sha256": "9f5428b7fccdc872453dd3f09804182c4dadf84c3c57122233c8065381ecc790",
+      "size": 305
+    },
+    "wheel.stdout": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    }
+  }
+}

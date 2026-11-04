@@ -1,0 +1,13 @@
+usage: eidos-agent [-h]
+                   {init,check,status,report,feedback,observe,enroll,incident}
+                   ...
+
+EIDOS Agent: project-local research execution, evidence checks and delivery
+
+positional arguments:
+  {init,check,status,report,feedback,observe,enroll,incident}
+    incident            Local hash-bound repair lifecycle; no automatic
+                        upload/install
+
+options:
+  -h, --help            show this help message and exit

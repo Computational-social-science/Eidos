@@ -28,13 +28,21 @@ should require a pinned core package and small project-local configuration.
 | Shared worker observation | Candidate protocol, bounded source collector and UI tested; existing 8765 process not migrated |
 | Thin project Agent skill | Instruction adapter and CLI tool smoke; live Agent reasoning needs separate acceptance |
 | Public PyPI / generic MCP | Not delivered; naming, compatibility and adapter qualification remain open |
-| Software feedback / scientific RSI | Protected real-origin preparation is VALIDATED; publication/adoption/replay remain pending until actual receipts. Scientific RSI needs separate held-out acceptance |
+| Software feedback / scientific RSI | One actual-origin software case is CLOSED through real release/adoption, failed-replay reversion and fresh replay; scientific RSI still needs separate held-out acceptance |
 
 Start with [project integration](docs/PROJECT_INTEGRATION.md), the English
 [installed-worker quickstart](docs/DOWNSTREAM-QUICKSTART.md)
 and [delivery plan](docs/REUSE-DELIVERY-PLAN.md).
 Do not run `pip install eidos` from PyPI for this framework: that name belongs to
 an unrelated astronomy package. Exact wheel/hash installation is a separate path.
+
+The [0.5.0 delivery record](docs/RELEASE-PUBLICATION-0.5.0.json) binds the published
+wheel, exact-head CI and original-project closure. Frozen v1 needed an explicit
+short-to-full Git-identity supplement; its initial refusal is retained. The
+current companion producer qualifies preparation before any project gate and
+normalizes that identity directly. Its fresh isolated rehearsal repeats the same
+known defect; it is not a second independent discovery. See the
+[repair contract](docs/FEEDBACK-LIFECYCLE.md).
 
 **Free reuse:** the default path needs no Gemini, paid model API, subscription
 or mandatory credential. Core execution and saved-case verification need neither

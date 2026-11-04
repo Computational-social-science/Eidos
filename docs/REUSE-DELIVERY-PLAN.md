@@ -1,7 +1,8 @@
 # EIDOS reusable-product and feedback delivery plan
 
-Decision date: 2026-11-03. This document is an implementation/acceptance plan,
-not a statement that every item has shipped. Stable production remains 0.4.12.
+Decision date: 2026-11-03; delivery checkpoint: 2026-11-04. The published worker
+is the 0.5.0 compatibility preview. The existing resident monitor remains 0.4.12.
+This plan distinguishes delivered software from open controller/research gates.
 
 ## Product boundary
 
@@ -12,10 +13,12 @@ and manuscripts remain project-owned. Core, model and scientific capabilities
 have separate qualification records. The default path needs no Gemini, paid API,
 mandatory service account or implicit hosted fallback.
 
-Release-integrity checking currently refuses the candidate because release
-history still ends at 0.4.12 while the development source declares 0.5.0. Keep
-this as a publication blocker; do not append a fictitious release to silence it.
-The versioned release stage must bind the final source/artifacts and actual CI.
+The actual release binds source, exact-head CI, annotated tag and the unchanged
+qualified wheel. The originating Eidos project has a CLOSED fifteen-event
+software incident, with failed candidate/replay and physical rollback/reversion
+preserved. Its first Linux-CI and short-SHA proof refusals remain evidence. See
+the [delivery record](RELEASE-PUBLICATION-0.5.0.json) and
+[current repair contract](FEEDBACK-LIFECYCLE.md). Scientific RSI remains open.
 
 The shared-monitor development source now has a completed stable-input audit:
 1,309 passing tests, six explicit skips, 77% whole-framework coverage and ten
@@ -35,9 +38,9 @@ retains 47 earlier payloads. Neither archive is rewritten with later results.
 
 | Gate | Current checkpoint | Required exit evidence |
 |---|---|---|
-| P1: install and invoke | CLI and installed replay exist; exact old candidates retained | Coherent distribution/import/console names, immutable versioned artifacts, fresh installation, documented compatibility and exact-final-commit CI |
+| P1: install and invoke | Published 0.5.0 compatibility wheel, both aliases, normal Windows/Linux and remote installed-core CI | Full new-machine research setup and future public distribution/import migration remain separate |
 | P2: share observations | Worker protocol, collector and UI implemented; actual candidate controls passed | Publish reviewed source/evidence; qualify installed controller packaging and safe production migration; retain failure isolation and stale-view controls |
-| P3: close one core-defect incident | Metadata-only export exists; complete lifecycle open | Old defect reproduction, failed candidate, independently accepted fix, immutable release, originating-project replay and exercised rollback |
+| P3: close one core-defect incident | Actual Eidos origin CLOSED, fifteen events; sealed v1 plus explicit identity supplement; current guarded v2 also rehearsed | Maintain protected regressions and stale withdrawal; evaluate additional distinct defects and outside adopters |
 | P4: Agent entry | Thin instruction adapter added; deterministic tools independently qualified | Realistic end-to-end adapter trials, wrong-project/version/unsupported-operation refusals, no gate duplication or hosted fallback |
 | P5: measure improvement | Engineering evidence exists | New-machine/adopter qualification and held-out matched-budget research trials; attribute human and external-assistant contributions |
 
@@ -84,7 +87,8 @@ Use an incident ledger with states:
 
 ```text
 DETECTED -> TRIAGED -> REPRODUCED -> CANDIDATE -> VALIDATED -> RELEASED
-         -> DOWNSTREAM_VERIFIED -> CLOSED
+         -> ADOPTED -> REPLAYED -> CLOSED
+                 \-> REPLAY_FAILED -> REVERTED -> ADOPTED
 ```
 
 Candidate rejection, insufficient evidence, deferred work and rollback are
@@ -183,3 +187,19 @@ The final `reference/inference_probe_acceptance/recorded_trials/probe-fix-v3`
 profile supersedes v2 as this caller acceptance; failed attempts and withdrawn
 controls remain preserved. This closes only the availability-probe Linux gap,
 not current-wheel shared UI, new-machine, release/rollback or scientific RSI.
+
+## Next implementation priorities after the accepted P3 case
+
+1. Extend the observed inherited-pipe/cancellation regression to each remaining
+   finite caller: model pull/warm-up, gate commands, citation resolution, Lean and
+   update probes. Require actual entry witnesses, old/bad/fixed controls, deadline
+   behavior and owned-descendant cleanup. Qualify resident inference servers under
+   a separate service lifetime contract.
+2. Package the central controller with an explicit versioned launcher. Qualify an
+   owned shadow instance, single-writer/listener ownership, startup persistence,
+   stale-worker isolation, operational self-check/recovery and rollback before
+   migrating the existing 8765 service. Worker installation alone is insufficient.
+3. Measure research improvement on new sealed tasks under matched budgets, with
+   independent scientific validators and explicit human/external-tool attribution.
+   The same known software defect and its rehearsals count once. Model selection,
+   Agent wording and component assembly need their own observed research outcomes.

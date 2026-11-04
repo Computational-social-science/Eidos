@@ -1,0 +1,14 @@
+{
+  "schema": "eidos.persistent-worker-activation.v1",
+  "state": "QUALIFIED_PUBLISHED_CORE",
+  "python": "C:\\Users\\Administrator\\.venvs\\eidos-agent-0.5.0\\Scripts\\python.exe",
+  "version": "0.5.0",
+  "wheel_sha256": "56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c",
+  "requirements_sha256": "ca27b7da8739f5e3f1d14e54a6172b1bc9bb9da9e4344b1103d9216b2378e5de",
+  "release_url": "https://github.com/Computational-social-science/Eidos/releases/tag/v0.5.0",
+  "delivery_head": "045c9e08b1f0aceff2e63a23ab77e121c141c6ae",
+  "qualification": "Fresh Windows normal install: three installed drivers, both console aliases, init/refusal/status/feedback, and actual public download/identity binding",
+  "existing_project_pin_override": false,
+  "resident_service_migration": false,
+  "scientific_rsi": false
+}

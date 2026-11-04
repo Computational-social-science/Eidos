@@ -1,9 +1,43 @@
 # EIDOS Agent: local repair lifecycle contract
 
-Status: development source, 2026-11-03. This is a deterministic local software
-repair ledger. The published 0.4.12 installation has not acquired this API.
-Publication of a new wheel and a real originating-project release replay remain
-separate acceptance gates. No autonomous scientific RSI is claimed.
+Status: 2026-11-04. The deterministic local software repair ledger ships in the
+published **0.5.0 compatibility preview**. The actual Eidos origin has a CLOSED
+15-event incident, including real publication, adoption, failed-replay reversion
+and fresh successful replay. The legacy resident 0.4.12 installation has not
+acquired the new controller protocol. No autonomous scientific RSI is claimed.
+
+## Current accepted case
+
+Incident `0c2c202832764e7f959864f4638da0da`, project
+`68ee60b0915f4bf9b5d067e1df8edac6`, closes at journal head
+`55c4673d305348c428b02b02e569a9133168dad96eae6c7e3b0742a6e1ca5708`.
+The exact released wheel SHA256 is
+`56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c`.
+The [public release](https://github.com/Computational-social-science/Eidos/releases/tag/v0.5.0)
+targets `045c9e08b1f0aceff2e63a23ab77e121c141c6ae`; both required workflows
+passed that exact commit. Frozen `origin-closed-v1` retains 244 payloads.
+
+The original short-SHA publication proof was correctly refused. An independently
+reviewed supplement resolves only `source_commit` from the genuine complete
+GitHub ancestry response, preserving the original proof, raw response, adapter
+source/hash and the failed attempt. It does not change the protected evaluator,
+protocol, wheel, CI result or acceptance rule. Closure therefore uses **sealed v1
+plus explicit publication-identity normalization**, not unassisted v1.
+
+V1 started with no existing `.eidos/` and ran only the starter refusal validator.
+Its tagged preparation entry is case-specific. The current companion refuses
+existing configured workspaces, missing inputs, unqualified normal installations,
+redirected origin paths and refused initialization before a gate can execute.
+It seals its identity helper and handles full Git identities directly. Eighteen
+preflight/recovery/freshness controls and fourteen identity controls pass. A fresh normal
+Windows rehearsal reaches CLOSED with fifteen events without the supplement;
+this repeats the same known defect and does not add an independent discovery.
+Existing configured studies need an explicit protocol/handoff, or their matching
+sealed campaign; retain their metadata instead of deleting it to force entry.
+
+All these software cases retain scientific_status **UNRUN**. The earlier measured
+source-audit fingerprint and coverage below remain their own historical snapshot;
+exact-head remote CI and installed-worker qualification provide separate evidence.
 
 ## Entry and ownership
 
@@ -162,3 +196,14 @@ The wheel, SDK and sealed campaign producer/policy are unchanged. Frozen raw CI
 annotations, old/new test inputs and actual execution evidence are retained in
 `reference/shared_monitor_acceptance/recorded_trials/venv-entry-ci-v1`.
 Remote CI must pass the new exact delivery head before publication can proceed.
+
+
+### Protected-input freshness extension
+
+The successful frozen v2 rehearsal remains unchanged. A later controlled review
+exposed mutation windows during long publication fetches. The current successor
+rechecks protected inputs before dynamic helper import, before ledger receipt
+publication, after fetching publication evidence and before closure. Three new
+negative controls fail on the predecessor and pass after repair; current controls
+total 32. A separate fresh normal-installed successor rehearsal reaches CLOSED
+with fifteen events. These repetitions qualify one known software defect.

@@ -1,0 +1,30 @@
+{
+  "project": "independent_study",
+  "project_id": "f83b0cc54d374ffe98a30ff52ab054c6",
+  "status": "REFUSED",
+  "execution_status": "REFUSED",
+  "scientific_status": "UNRUN",
+  "execution": {
+    "name": "independent_study",
+    "status": "REFUSED",
+    "exit_code": 4,
+    "duration_s": 0.16,
+    "command": [
+      "C:\\Users\\Administrator\\.venvs\\eidos-agent-0.5.0\\Scripts\\python.exe",
+      ".eidos/validate.py"
+    ],
+    "stdout_tail": "REFUSED: configure a research validator and its expected evidence before acceptance.\n",
+    "stderr_tail": "",
+    "numerics": {}
+  },
+  "input_digest": "20ee4e9556db77fe6423e1d188fdff011759f8d8fc07b43709168ef4ad44796a",
+  "runtime_identity": {
+    "python": "3.12.4 (tags/v3.12.4:8e8a4ba, Jun  6 2024, 19:30:16) [MSC v.1940 64 bit (AMD64)]",
+    "executable": "C:\\Users\\Administrator\\.venvs\\eidos-agent-0.5.0\\Scripts\\python.exe",
+    "eidos_version": "0.5.0",
+    "distributions_sha256": "b51f1069fb77e338658c9a39a5a50310f3cab996d7eb74cb4dcd7f783c1dbdd2"
+  },
+  "run_id": "15436083f3a64e8080ed7eee893667bf",
+  "recorded_at": "2026-11-04T03:48:41.434763+00:00",
+  "eidos_version": "0.5.0"
+}

@@ -1,0 +1,29 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\trace.py", line 748, in <module>
+    main()
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\trace.py", line 736, in main
+    t.runctx(code, globs, globs)
+  File "C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\trace.py", line 450, in runctx
+    exec(cmd, globals, locals)
+  File "C:/Users/Administrator/.cache/eidos-worktrees/feedback-lifecycle/reference/feedback_acceptance/campaign.py", line 562, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:/Users/Administrator/.cache/eidos-worktrees/feedback-lifecycle/reference/feedback_acceptance/campaign.py", line 556, in main
+    result = prepare(args) if args.action == 'prepare' else finish(args)
+                                                            ^^^^^^^^^^^^
+  File "C:/Users/Administrator/.cache/eidos-worktrees/feedback-lifecycle/reference/feedback_acceptance/campaign.py", line 495, in finish
+    state = receipt(config, 'release', artifacts=artifacts)['state']
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:/Users/Administrator/.cache/eidos-worktrees/feedback-lifecycle/reference/feedback_acceptance/campaign.py", line 255, in receipt
+    result = feedback.record(Path(config['project']), config['incident_id'], path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\.cache\eidos-cli-acceptance\campaign-origin-3f51401ddc\env-new\Lib\site-packages\framework\feedback.py", line 830, in record
+    _advance(context, receipt, artifacts)
+  File "C:\Users\Administrator\.cache\eidos-cli-acceptance\campaign-origin-3f51401ddc\env-new\Lib\site-packages\framework\feedback.py", line 580, in _advance
+    proof = _publication(context, artifacts, identity, digest)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Administrator\.cache\eidos-cli-acceptance\campaign-origin-3f51401ddc\env-new\Lib\site-packages\framework\feedback.py", line 389, in _publication
+    raise ValueError(
+ValueError: Publication/CI evidence is missing or bound to another release

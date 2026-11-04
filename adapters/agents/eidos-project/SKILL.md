@@ -7,8 +7,9 @@ description: Use an installed EIDOS project CLI to initialize research workspace
 
 Use the existing versioned core and return its structured receipts. This skill
 does not include a model backend, independent gate implementation or running
-monitor service. The simplified CLI needs an unreleased 0.5.0 candidate; stable
-0.4.12 does not provide this whole interface. Do not install public-index `eidos`:
+monitor service. The simplified CLI uses the qualified 0.5.0 compatibility
+worker; legacy 0.4.12 does not provide this whole interface. Verify the actual
+GitHub release and wheel digest. Do not install public-index `eidos`:
 it belongs to a different project.
 
 ## Select the project and runtime
@@ -18,6 +19,11 @@ the project's qualified interpreter or an explicitly configured worker environme
 Use that exact interpreter for every command; a generic PATH `eidos` may refer to
 another installation. On Linux keep the venv entry path instead of resolving its
 symlink to the base Python executable.
+
+A project-local runtime pin takes precedence over a machine default. Preserve
+its version, interpreter, prefix and artifact digest. On a managed research host,
+consult its current environment registry for a qualified new-project worker;
+never replace an existing project pin as an initialization side effect.
 
 Before action, inspect the selected installation's version/origin and
 `<worker-python> -I -m framework.cli --help`. Match it to the pinned EIDOS wheel
@@ -98,3 +104,10 @@ cannot close a real incident.
 Default operation uses local/free resources. If a requested model/operator is
 unavailable or unqualified, report the limit or hand off; never silently call a
 paid provider. Successful software repair is not a claim of scientific RSI.
+
+For numerical consumers, reuse the project's Softmax Collapse/Cancellation
+qualification and the matching numerical-method contract. Check the actual
+backend, represented dtype and relative derivatives against an independent
+reference, including broken controls. Finite loss or sum-to-one alone cannot
+accept a numerical implementation. Retain unqualified AMP/bfloat16, higher-order
+or domain-training scope explicitly; kernel checks do not certify research claims.

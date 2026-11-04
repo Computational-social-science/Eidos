@@ -1,5 +1,7 @@
 # Installed project CLI development
 
+Historical development acceptance record. Current published worker and installation instructions are in [the downstream quickstart](DOWNSTREAM-QUICKSTART.md); actual 0.5.0 publication and origin closure are in [the delivery record](RELEASE-PUBLICATION-0.5.0.json).
+
 Status: **UNRELEASED** on `feature/installed-cli`, prospective version 0.5.0.
 The stable release remains 0.4.12 at delivery commit
 `7a3d35e85736e3d245f4d9d83f10627a27a4d3d5`. Its ten remote jobs and 21 assets were

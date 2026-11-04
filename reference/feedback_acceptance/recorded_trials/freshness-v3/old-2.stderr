@@ -1,0 +1,5 @@
+Using Python 3.12.4 environment at: env-old
+Resolved 1 package in 9ms
+Prepared 1 package in 21ms
+Installed 1 package in 48ms
+ + eidos==0.4.12 (from file:///C:/Users/Administrator/.cache/eidos-cli-acceptance/campaign-freshness-9584e7e601/wheels/eidos-0.4.12-py3-none-any.whl)

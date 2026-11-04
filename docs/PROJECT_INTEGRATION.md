@@ -1,5 +1,11 @@
 # Project integration
 
+Current worker delivery: **EIDOS Agent 0.5.0 compatibility preview**. Start with
+[the installed-worker quickstart](DOWNSTREAM-QUICKSTART.md) and verify the actual
+[release record](RELEASE-PUBLICATION-0.5.0.json). The originating software repair
+case is CLOSED; domain scientific acceptance remains with the project's validator.
+The legacy resident monitor remains 0.4.12 pending separate controller deployment.
+
 A working repository is registered in EIDOS rather than moved into it. The project
 owns its source, data, scientific acceptance, tests and manuscript; EIDOS owns
 command discovery, invocation, declared-output checks and bound observations.

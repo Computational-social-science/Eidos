@@ -1,0 +1,10 @@
+................................                                         [100%]
+=============================== warnings summary ===============================
+env/lib/python3.12/site-packages/_pytest/cacheprovider.py:469
+  /tmp/env/lib/python3.12/site-packages/_pytest/cacheprovider.py:469: PytestCacheWarning: could not create cache path /input/latest/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/input/latest/pytest-cache-files-0lvi74vi'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+32 passed, 1 warning in 0.54s
+
+{"status": "PASS", "cleanup_verified": true}

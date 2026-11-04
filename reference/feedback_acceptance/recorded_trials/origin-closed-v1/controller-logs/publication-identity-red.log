@@ -1,0 +1,470 @@
+FFFFFFFFFFFFFF                                                           [100%]
+================================== FAILURES ===================================
+____ test_short_identity_expands_without_mutating_any_other_field_or_input ____
+
+    def test_short_identity_expands_without_mutating_any_other_field_or_input():
+        proof, comparison = records()
+        before = deepcopy((proof, comparison))
+>       actual = normalizer().canonical_source(proof, comparison)
+                 ^^^^^^^^^^^^
+
+reference\feedback_acceptance\test_publication_identity.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\test_publication_identity.py:16: in normalizer
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x000001B1CEDD0560>
+path = 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+_____________________ test_complete_identity_is_preserved _____________________
+
+    def test_complete_identity_is_preserved():
+        proof, comparison = records(SOURCE)
+>       assert normalizer().canonical_source(proof, comparison) == proof
+               ^^^^^^^^^^^^
+
+reference\feedback_acceptance\test_publication_identity.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\test_publication_identity.py:16: in normalizer
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x000001B1CED957C0>
+path = 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+_ test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[short] _
+
+fault = 'short'
+
+    @pytest.mark.parametrize('fault', ['short', 'nonhex', 'wrong_base', 'wrong_merge_base',
+                                      'wrong_head', 'truncated', 'diverged', 'missing_commits'])
+    def test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized(fault):
+        proof, comparison = records()
+        if fault == 'short': proof['source_commit'] = 'a' * 6
+        elif fault == 'nonhex': comparison['base_commit']['sha'] = 'z' * 40
+        elif fault == 'wrong_base': comparison['base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_merge_base': comparison['merge_base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_head': comparison['commits'][-1]['sha'] = 'd' * 40
+        elif fault == 'truncated': comparison['total_commits'] = 2
+        elif fault == 'diverged': comparison['status'] = 'diverged'
+        elif fault == 'missing_commits': comparison['commits'] = None
+        with pytest.raises(ValueError):
+>           normalizer().canonical_source(proof, comparison)
+            ^^^^^^^^^^^^
+
+reference\feedback_acceptance\test_publication_identity.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\test_publication_identity.py:16: in normalizer
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x000001B1CED94740>
+path = 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+_ test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[nonhex] _
+
+fault = 'nonhex'
+
+    @pytest.mark.parametrize('fault', ['short', 'nonhex', 'wrong_base', 'wrong_merge_base',
+                                      'wrong_head', 'truncated', 'diverged', 'missing_commits'])
+    def test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized(fault):
+        proof, comparison = records()
+        if fault == 'short': proof['source_commit'] = 'a' * 6
+        elif fault == 'nonhex': comparison['base_commit']['sha'] = 'z' * 40
+        elif fault == 'wrong_base': comparison['base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_merge_base': comparison['merge_base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_head': comparison['commits'][-1]['sha'] = 'd' * 40
+        elif fault == 'truncated': comparison['total_commits'] = 2
+        elif fault == 'diverged': comparison['status'] = 'diverged'
+        elif fault == 'missing_commits': comparison['commits'] = None
+        with pytest.raises(ValueError):
+>           normalizer().canonical_source(proof, comparison)
+            ^^^^^^^^^^^^
+
+reference\feedback_acceptance\test_publication_identity.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\test_publication_identity.py:16: in normalizer
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x000001B1CED958B0>
+path = 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+_ test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[wrong_base] _
+
+fault = 'wrong_base'
+
+    @pytest.mark.parametrize('fault', ['short', 'nonhex', 'wrong_base', 'wrong_merge_base',
+                                      'wrong_head', 'truncated', 'diverged', 'missing_commits'])
+    def test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized(fault):
+        proof, comparison = records()
+        if fault == 'short': proof['source_commit'] = 'a' * 6
+        elif fault == 'nonhex': comparison['base_commit']['sha'] = 'z' * 40
+        elif fault == 'wrong_base': comparison['base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_merge_base': comparison['merge_base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_head': comparison['commits'][-1]['sha'] = 'd' * 40
+        elif fault == 'truncated': comparison['total_commits'] = 2
+        elif fault == 'diverged': comparison['status'] = 'diverged'
+        elif fault == 'missing_commits': comparison['commits'] = None
+        with pytest.raises(ValueError):
+>           normalizer().canonical_source(proof, comparison)
+            ^^^^^^^^^^^^
+
+reference\feedback_acceptance\test_publication_identity.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\test_publication_identity.py:16: in normalizer
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x000001B1CEDD35F0>
+path = 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+_ test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[wrong_merge_base] _
+
+fault = 'wrong_merge_base'
+
+    @pytest.mark.parametrize('fault', ['short', 'nonhex', 'wrong_base', 'wrong_merge_base',
+                                      'wrong_head', 'truncated', 'diverged', 'missing_commits'])
+    def test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized(fault):
+        proof, comparison = records()
+        if fault == 'short': proof['source_commit'] = 'a' * 6
+        elif fault == 'nonhex': comparison['base_commit']['sha'] = 'z' * 40
+        elif fault == 'wrong_base': comparison['base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_merge_base': comparison['merge_base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_head': comparison['commits'][-1]['sha'] = 'd' * 40
+        elif fault == 'truncated': comparison['total_commits'] = 2
+        elif fault == 'diverged': comparison['status'] = 'diverged'
+        elif fault == 'missing_commits': comparison['commits'] = None
+        with pytest.raises(ValueError):
+>           normalizer().canonical_source(proof, comparison)
+            ^^^^^^^^^^^^
+
+reference\feedback_acceptance\test_publication_identity.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\test_publication_identity.py:16: in normalizer
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x000001B1CEDD2C30>
+path = 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+_ test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[wrong_head] _
+
+fault = 'wrong_head'
+
+    @pytest.mark.parametrize('fault', ['short', 'nonhex', 'wrong_base', 'wrong_merge_base',
+                                      'wrong_head', 'truncated', 'diverged', 'missing_commits'])
+    def test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized(fault):
+        proof, comparison = records()
+        if fault == 'short': proof['source_commit'] = 'a' * 6
+        elif fault == 'nonhex': comparison['base_commit']['sha'] = 'z' * 40
+        elif fault == 'wrong_base': comparison['base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_merge_base': comparison['merge_base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_head': comparison['commits'][-1]['sha'] = 'd' * 40
+        elif fault == 'truncated': comparison['total_commits'] = 2
+        elif fault == 'diverged': comparison['status'] = 'diverged'
+        elif fault == 'missing_commits': comparison['commits'] = None
+        with pytest.raises(ValueError):
+>           normalizer().canonical_source(proof, comparison)
+            ^^^^^^^^^^^^
+
+reference\feedback_acceptance\test_publication_identity.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\test_publication_identity.py:16: in normalizer
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x000001B1CEDD0B00>
+path = 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+_ test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[truncated] _
+
+fault = 'truncated'
+
+    @pytest.mark.parametrize('fault', ['short', 'nonhex', 'wrong_base', 'wrong_merge_base',
+                                      'wrong_head', 'truncated', 'diverged', 'missing_commits'])
+    def test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized(fault):
+        proof, comparison = records()
+        if fault == 'short': proof['source_commit'] = 'a' * 6
+        elif fault == 'nonhex': comparison['base_commit']['sha'] = 'z' * 40
+        elif fault == 'wrong_base': comparison['base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_merge_base': comparison['merge_base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_head': comparison['commits'][-1]['sha'] = 'd' * 40
+        elif fault == 'truncated': comparison['total_commits'] = 2
+        elif fault == 'diverged': comparison['status'] = 'diverged'
+        elif fault == 'missing_commits': comparison['commits'] = None
+        with pytest.raises(ValueError):
+>           normalizer().canonical_source(proof, comparison)
+            ^^^^^^^^^^^^
+
+reference\feedback_acceptance\test_publication_identity.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\test_publication_identity.py:16: in normalizer
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x000001B1CEDD2870>
+path = 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+_ test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[diverged] _
+
+fault = 'diverged'
+
+    @pytest.mark.parametrize('fault', ['short', 'nonhex', 'wrong_base', 'wrong_merge_base',
+                                      'wrong_head', 'truncated', 'diverged', 'missing_commits'])
+    def test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized(fault):
+        proof, comparison = records()
+        if fault == 'short': proof['source_commit'] = 'a' * 6
+        elif fault == 'nonhex': comparison['base_commit']['sha'] = 'z' * 40
+        elif fault == 'wrong_base': comparison['base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_merge_base': comparison['merge_base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_head': comparison['commits'][-1]['sha'] = 'd' * 40
+        elif fault == 'truncated': comparison['total_commits'] = 2
+        elif fault == 'diverged': comparison['status'] = 'diverged'
+        elif fault == 'missing_commits': comparison['commits'] = None
+        with pytest.raises(ValueError):
+>           normalizer().canonical_source(proof, comparison)
+            ^^^^^^^^^^^^
+
+reference\feedback_acceptance\test_publication_identity.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\test_publication_identity.py:16: in normalizer
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x000001B1CEDD3B90>
+path = 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+_ test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[missing_commits] _
+
+fault = 'missing_commits'
+
+    @pytest.mark.parametrize('fault', ['short', 'nonhex', 'wrong_base', 'wrong_merge_base',
+                                      'wrong_head', 'truncated', 'diverged', 'missing_commits'])
+    def test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized(fault):
+        proof, comparison = records()
+        if fault == 'short': proof['source_commit'] = 'a' * 6
+        elif fault == 'nonhex': comparison['base_commit']['sha'] = 'z' * 40
+        elif fault == 'wrong_base': comparison['base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_merge_base': comparison['merge_base_commit']['sha'] = 'd' * 40
+        elif fault == 'wrong_head': comparison['commits'][-1]['sha'] = 'd' * 40
+        elif fault == 'truncated': comparison['total_commits'] = 2
+        elif fault == 'diverged': comparison['status'] = 'diverged'
+        elif fault == 'missing_commits': comparison['commits'] = None
+        with pytest.raises(ValueError):
+>           normalizer().canonical_source(proof, comparison)
+            ^^^^^^^^^^^^
+
+reference\feedback_acceptance\test_publication_identity.py:55: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\test_publication_identity.py:16: in normalizer
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x000001B1CEE52540>
+path = 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+____ test_identical_source_and_delivery_accepts_only_that_actual_identity _____
+
+    def test_identical_source_and_delivery_accepts_only_that_actual_identity():
+        proof, comparison = records()
+        comparison.update(status='identical', commits=[], total_commits=0)
+        with pytest.raises(ValueError):
+>           normalizer().canonical_source(proof, comparison)
+            ^^^^^^^^^^^^
+
+reference\feedback_acceptance\test_publication_identity.py:62: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\test_publication_identity.py:16: in normalizer
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x000001B1CEE521E0>
+path = 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+_______________ test_malformed_records_refuse[None-comparison0] _______________
+
+proof = None, comparison = {}
+
+    @pytest.mark.parametrize('proof,comparison', [(None, {}), ({}, []), ({}, {})])
+    def test_malformed_records_refuse(proof, comparison):
+        with pytest.raises(ValueError):
+>           normalizer().canonical_source(proof, comparison)
+            ^^^^^^^^^^^^
+
+reference\feedback_acceptance\test_publication_identity.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\test_publication_identity.py:16: in normalizer
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x000001B1CEE51100>
+path = 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+______________ test_malformed_records_refuse[proof1-comparison1] ______________
+
+proof = {}, comparison = []
+
+    @pytest.mark.parametrize('proof,comparison', [(None, {}), ({}, []), ({}, {})])
+    def test_malformed_records_refuse(proof, comparison):
+        with pytest.raises(ValueError):
+>           normalizer().canonical_source(proof, comparison)
+            ^^^^^^^^^^^^
+
+reference\feedback_acceptance\test_publication_identity.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\test_publication_identity.py:16: in normalizer
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x000001B1CEDD2780>
+path = 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+______________ test_malformed_records_refuse[proof2-comparison2] ______________
+
+proof = {}, comparison = {}
+
+    @pytest.mark.parametrize('proof,comparison', [(None, {}), ({}, []), ({}, {})])
+    def test_malformed_records_refuse(proof, comparison):
+        with pytest.raises(ValueError):
+>           normalizer().canonical_source(proof, comparison)
+            ^^^^^^^^^^^^
+
+reference\feedback_acceptance\test_publication_identity.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+reference\feedback_acceptance\test_publication_identity.py:16: in normalizer
+    spec.loader.exec_module(module)
+<frozen importlib._bootstrap_external>:991: in exec_module
+    ???
+<frozen importlib._bootstrap_external>:1128: in get_code
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <_frozen_importlib_external.SourceFileLoader object at 0x000001B1CEDD2000>
+path = 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+>   ???
+E   FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Administrator\\.cache\\eidos-worktrees\\feedback-lifecycle\\reference\\feedback_acceptance\\publication_identity.py'
+
+<frozen importlib._bootstrap_external>:1186: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED reference/feedback_acceptance/test_publication_identity.py::test_short_identity_expands_without_mutating_any_other_field_or_input
+FAILED reference/feedback_acceptance/test_publication_identity.py::test_complete_identity_is_preserved
+FAILED reference/feedback_acceptance/test_publication_identity.py::test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[short]
+FAILED reference/feedback_acceptance/test_publication_identity.py::test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[nonhex]
+FAILED reference/feedback_acceptance/test_publication_identity.py::test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[wrong_base]
+FAILED reference/feedback_acceptance/test_publication_identity.py::test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[wrong_merge_base]
+FAILED reference/feedback_acceptance/test_publication_identity.py::test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[wrong_head]
+FAILED reference/feedback_acceptance/test_publication_identity.py::test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[truncated]
+FAILED reference/feedback_acceptance/test_publication_identity.py::test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[diverged]
+FAILED reference/feedback_acceptance/test_publication_identity.py::test_unresolved_rebound_or_incomplete_ancestry_cannot_be_canonicalized[missing_commits]
+FAILED reference/feedback_acceptance/test_publication_identity.py::test_identical_source_and_delivery_accepts_only_that_actual_identity
+FAILED reference/feedback_acceptance/test_publication_identity.py::test_malformed_records_refuse[None-comparison0]
+FAILED reference/feedback_acceptance/test_publication_identity.py::test_malformed_records_refuse[proof1-comparison1]
+FAILED reference/feedback_acceptance/test_publication_identity.py::test_malformed_records_refuse[proof2-comparison2]
+14 failed in 0.15s

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="5" time="5.467" timestamp="2026-11-04T03:57:11.552327+00:00" hostname="ce4c45fbea9c"><testcase classname="test_monitor_registry" name="test_enrollment_observes_without_running_research_and_keeps_state_central" time="0.641"><failure message="AssertionError: assert '/tmp/env/bin/python' == '/usr/local/bin/python3.12'&#10;  &#10;  - /usr/local/bin/python3.12&#10;  + /tmp/env/bin/python">tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_enrollment_observes_witho0')
+
+    def test_enrollment_observes_without_running_research_and_keeps_state_central(tmp_path):
+        project=tmp_path/'study';initialise(project,tmp_path)
+        configure(project,['{python}','-c','from pathlib import Path;Path("research-executed").touch()'])
+        monitor=tmp_path/'control'
+        code,value=enroll(project,monitor)
+        assert code==0 and value['status']=='ENROLLED'
+        assert not (project/'research-executed').exists()
+        path=monitor/'.eidos-monitor/registrations'/(value['project_id']+'.json')
+        record=json.loads(path.read_text(encoding='utf-8'))
+        assert record['project_root']==str(project.resolve())
+&gt;       assert record['python']==str(Path(sys.executable).resolve())
+E       AssertionError: assert '/tmp/env/bin/python' == '/usr/local/bin/python3.12'
+E         
+E         - /usr/local/bin/python3.12
+E         + /tmp/env/bin/python
+
+/input/red/test_monitor_registry.py:23: AssertionError</failure></testcase><testcase classname="test_monitor_registry" name="test_repeated_identical_enrollment_is_idempotent" time="1.001" /><testcase classname="test_monitor_registry" name="test_same_display_names_do_not_merge_two_projects" time="1.273" /><testcase classname="test_monitor_registry" name="test_runtime_pin_cannot_silently_change_on_reenrollment" time="1.419" /><testcase classname="test_monitor_registry" name="test_copied_project_id_cannot_replace_another_root_even_with_runtime_flag" time="1.001" /></testsuite></testsuites>

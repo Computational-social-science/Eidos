@@ -147,3 +147,18 @@ The same 51-module wheel also passes the current native Windows and isolated
 Linux numerical/lifecycle/recovery-shell acceptance. Linux additionally checks
 both console aliases and the old/repaired private probe. The current artifact's
 Linux evidence is now independent of the earlier wheel's historical profile.
+
+### First exact-head CI refusal and test-contract correction
+
+The first delivery head `21e26b784604616a96648a615f48aa2747f35e7f` passed the
+Windows/Linux installed-SDK workflow but failed both Linux source suites. The
+registration test incorrectly resolved the venv launch entry to the base Python,
+contrary to the existing SDK and deployment contract. Publication stopped before
+tagging. An independent normal-installed, network-disabled Linux replay retained
+the original one-failure/four-pass result. Correcting the expected launch entry
+and independently asserting the actual worker prefix yields five passes on
+Linux and five on Windows. Both focused independent reviews approve the change.
+The wheel, SDK and sealed campaign producer/policy are unchanged. Frozen raw CI
+annotations, old/new test inputs and actual execution evidence are retained in
+`reference/shared_monitor_acceptance/recorded_trials/venv-entry-ci-v1`.
+Remote CI must pass the new exact delivery head before publication can proceed.

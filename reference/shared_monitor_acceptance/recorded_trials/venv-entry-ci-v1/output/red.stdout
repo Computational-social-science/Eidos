@@ -1,0 +1,36 @@
+F....                                                                    [100%]
+=================================== FAILURES ===================================
+__ test_enrollment_observes_without_running_research_and_keeps_state_central ___
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-0/test_enrollment_observes_witho0')
+
+    def test_enrollment_observes_without_running_research_and_keeps_state_central(tmp_path):
+        project=tmp_path/'study';initialise(project,tmp_path)
+        configure(project,['{python}','-c','from pathlib import Path;Path("research-executed").touch()'])
+        monitor=tmp_path/'control'
+        code,value=enroll(project,monitor)
+        assert code==0 and value['status']=='ENROLLED'
+        assert not (project/'research-executed').exists()
+        path=monitor/'.eidos-monitor/registrations'/(value['project_id']+'.json')
+        record=json.loads(path.read_text(encoding='utf-8'))
+        assert record['project_root']==str(project.resolve())
+>       assert record['python']==str(Path(sys.executable).resolve())
+E       AssertionError: assert '/tmp/env/bin/python' == '/usr/local/bin/python3.12'
+E         
+E         - /usr/local/bin/python3.12
+E         + /tmp/env/bin/python
+
+/input/red/test_monitor_registry.py:23: AssertionError
+=============================== warnings summary ===============================
+env/lib/python3.12/site-packages/_pytest/cacheprovider.py:469
+  /tmp/env/lib/python3.12/site-packages/_pytest/cacheprovider.py:469: PytestCacheWarning: could not create cache path /input/red/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/input/red/pytest-cache-files-exwobvj3'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+env/lib/python3.12/site-packages/_pytest/cacheprovider.py:423
+  /tmp/env/lib/python3.12/site-packages/_pytest/cacheprovider.py:423: PytestCacheWarning: could not create cache path /input/red/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/input/red/pytest-cache-files-zh9aif6d'
+    config.cache.set("cache/lastfailed", self.lastfailed)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED ../input/red/test_monitor_registry.py::test_enrollment_observes_without_running_research_and_keeps_state_central
+1 failed, 4 passed, 2 warnings in 5.55s

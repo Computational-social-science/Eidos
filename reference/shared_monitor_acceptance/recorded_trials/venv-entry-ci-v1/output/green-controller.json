@@ -1,0 +1,126 @@
+{
+  "arm": "green",
+  "owner": "da7e49b4409a4b20a590b03c269e521f",
+  "image": "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+  "before": {
+    "input": {
+      "core-requirements.txt": "ca27b7da8739f5e3f1d14e54a6172b1bc9bb9da9e4344b1103d9216b2378e5de",
+      "eidos-0.5.0-py3-none-any.whl": "56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c",
+      "pytest-version.txt": "a3d449df99a0626d31fce8f5b07445f10f7c665583ff10e99d26adf88fc8dd94",
+      "green/test_installed_cli.py": "4c85f915f96551b528012a43ac5247f2a643d89ced60e727a50f1b92d7bb6c81",
+      "green/test_monitor_registry.py": "3165c41e943a4741550a058b6f358fc18ee5b467e0b6f8cd64e624e4548b5790",
+      "red/test_installed_cli.py": "4c85f915f96551b528012a43ac5247f2a643d89ced60e727a50f1b92d7bb6c81",
+      "red/test_monitor_registry.py": "70b546158dc8a92f2f3020a56fb172d2fd26d5705d08376f938f542169f927bc"
+    },
+    "harness": {
+      "iniconfig-2.3.1-py3-none-any.whl": "9121e2c1fdb355232495be3194c8dfe87ccc2d5dee45947b78e68f499790d7a7",
+      "pluggy-1.7.0-py3-none-any.whl": "7dd7b0d8832ba3cb632c306926ded123429211b83641b35dc5c41ad2d34f9bec",
+      "pygments-2.21.0-py3-none-any.whl": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+      "pytest-9.1.1-py3-none-any.whl": "37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c"
+    },
+    "core": {
+      "contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "875f42444c9cf48d56f724f2637e60d0f73b3b12c9041e1484580a233edf9591",
+      "cycler-0.12.1-py3-none-any.whl": "85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30",
+      "fonttools-4.67.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "eb3c98cac93aac4b9f6e3ce2008325340b234cc9b0338ca6b513f31962a1e278",
+      "kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "34633ecf50d16187ab8e5528b7a2530f2feb4e23f300db4672538b51cfc5cd38",
+      "matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "df4f7784aca81a94f254c0a2767d592ee25f407e488f5fa7203e51093fb6ca27",
+      "numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "fbde6962867ee75b48b0ee29b2b9372ec5d617799dbaf38e82dc0596f2f7738a",
+      "packaging-26.3-py3-none-any.whl": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
+      "pillow-13.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "42d63be3af4f9b951b199b0a9d23365d37ab14687e6d77b74940432c8515c4ca",
+      "pyparsing-3.3.3-py3-none-any.whl": "ece8c00a69cf01b45d0b1dedabb469c90d8caf996d4fda40f147627a122849a4",
+      "python_dateutil-2.9.0.post0-py2.py3-none-any.whl": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+      "pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
+      "six-1.17.0-py2.py3-none-any.whl": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
+    }
+  },
+  "command": [
+    "docker",
+    "run",
+    "--detach",
+    "--name",
+    "eidos-ci-venv-da7e49b4409a",
+    "--label",
+    "eidos.campaign.owner=da7e49b4409a4b20a590b03c269e521f",
+    "--network",
+    "none",
+    "--read-only",
+    "--cap-drop",
+    "ALL",
+    "--security-opt",
+    "no-new-privileges",
+    "--pids-limit",
+    "128",
+    "--memory",
+    "2g",
+    "--cpus",
+    "2",
+    "--tmpfs",
+    "/tmp:rw,exec,size=1g",
+    "--mount",
+    "type=bind,source=C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\ci-venv-5b03544180\\input,target=/input,readonly",
+    "--mount",
+    "type=bind,source=C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\ci-venv-5b03544180\\harness-wheels,target=/harness,readonly",
+    "--mount",
+    "type=bind,source=C:\\Users\\Administrator\\.cache\\eidos-sdk-v412\\input-sdk\\wheels,target=/wheels,readonly",
+    "--mount",
+    "type=bind,source=C:\\Users\\Administrator\\.cache\\eidos-cli-acceptance\\ci-venv-5b03544180\\output,target=/out",
+    "sha256:e697c81897302a4c4333bade000d98038fbb21eb064f8ee1fd42d02ebcd9d337",
+    "sh",
+    "-c",
+    "set -eu\npython -m venv /tmp/env\n/tmp/env/bin/python -m pip install --no-index --require-hashes --find-links=/wheels -r /input/core-requirements.txt\n/tmp/env/bin/python -m pip install --no-index --no-deps /input/eidos-0.5.0-py3-none-any.whl\n/tmp/env/bin/python -m pip install --no-index --find-links=/harness pytest==9.1.1\n/tmp/env/bin/python -m pip check\n/tmp/env/bin/python -I -c 'import json,sys;from pathlib import Path;print(json.dumps({\"executable\":sys.executable,\"resolved\":str(Path(sys.executable).resolve()),\"prefix\":sys.prefix,\"symlink\":Path(sys.executable).is_symlink()}))' > /out/green-worker.json\ncd /tmp\nset +e\nPYTEST_DISABLE_PLUGIN_AUTOLOAD=1 /tmp/env/bin/python -I -m pytest /input/green/test_monitor_registry.py -q --junitxml=/out/green.xml > /out/green.stdout 2>/out/green.stderr\nresult=$?\nset -e\necho \"$result\" > /out/green-exit.txt\ntest \"$result\" = 0\n"
+  ],
+  "container_id": "8e57dc80aab2a1cff233463dff8afa18630934f6418e1b8a592dff9ed50c6846",
+  "state": {
+    "Status": "exited",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "2026-11-04T03:57:59.319028274Z",
+    "FinishedAt": "2026-11-04T03:58:15.688629417Z"
+  },
+  "worker": {
+    "executable": "/tmp/env/bin/python",
+    "resolved": "/usr/local/bin/python3.12",
+    "prefix": "/tmp/env",
+    "symlink": true
+  },
+  "expected_test_exit": 0,
+  "status": "PASS",
+  "cleanup_verified": true,
+  "after": {
+    "input": {
+      "core-requirements.txt": "ca27b7da8739f5e3f1d14e54a6172b1bc9bb9da9e4344b1103d9216b2378e5de",
+      "eidos-0.5.0-py3-none-any.whl": "56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c",
+      "pytest-version.txt": "a3d449df99a0626d31fce8f5b07445f10f7c665583ff10e99d26adf88fc8dd94",
+      "green/test_installed_cli.py": "4c85f915f96551b528012a43ac5247f2a643d89ced60e727a50f1b92d7bb6c81",
+      "green/test_monitor_registry.py": "3165c41e943a4741550a058b6f358fc18ee5b467e0b6f8cd64e624e4548b5790",
+      "red/test_installed_cli.py": "4c85f915f96551b528012a43ac5247f2a643d89ced60e727a50f1b92d7bb6c81",
+      "red/test_monitor_registry.py": "70b546158dc8a92f2f3020a56fb172d2fd26d5705d08376f938f542169f927bc"
+    },
+    "harness": {
+      "iniconfig-2.3.1-py3-none-any.whl": "9121e2c1fdb355232495be3194c8dfe87ccc2d5dee45947b78e68f499790d7a7",
+      "pluggy-1.7.0-py3-none-any.whl": "7dd7b0d8832ba3cb632c306926ded123429211b83641b35dc5c41ad2d34f9bec",
+      "pygments-2.21.0-py3-none-any.whl": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+      "pytest-9.1.1-py3-none-any.whl": "37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c"
+    },
+    "core": {
+      "contourpy-1.4.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "875f42444c9cf48d56f724f2637e60d0f73b3b12c9041e1484580a233edf9591",
+      "cycler-0.12.1-py3-none-any.whl": "85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30",
+      "fonttools-4.67.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "eb3c98cac93aac4b9f6e3ce2008325340b234cc9b0338ca6b513f31962a1e278",
+      "kiwisolver-1.5.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "34633ecf50d16187ab8e5528b7a2530f2feb4e23f300db4672538b51cfc5cd38",
+      "matplotlib-3.11.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl": "df4f7784aca81a94f254c0a2767d592ee25f407e488f5fa7203e51093fb6ca27",
+      "numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "fbde6962867ee75b48b0ee29b2b9372ec5d617799dbaf38e82dc0596f2f7738a",
+      "packaging-26.3-py3-none-any.whl": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c",
+      "pillow-13.0.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl": "42d63be3af4f9b951b199b0a9d23365d37ab14687e6d77b74940432c8515c4ca",
+      "pyparsing-3.3.3-py3-none-any.whl": "ece8c00a69cf01b45d0b1dedabb469c90d8caf996d4fda40f147627a122849a4",
+      "python_dateutil-2.9.0.post0-py2.py3-none-any.whl": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427",
+      "pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc",
+      "six-1.17.0-py2.py3-none-any.whl": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
+    }
+  }
+}

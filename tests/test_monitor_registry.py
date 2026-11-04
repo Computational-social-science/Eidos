@@ -20,7 +20,10 @@ def test_enrollment_observes_without_running_research_and_keeps_state_central(tm
     path=monitor/'.eidos-monitor/registrations'/(value['project_id']+'.json')
     record=json.loads(path.read_text(encoding='utf-8'))
     assert record['project_root']==str(project.resolve())
-    assert record['python']==str(Path(sys.executable).resolve())
+    # Resolving a POSIX venv symlink selects the base interpreter and loses its
+    # environment. Enrollment must retain the launch entry and actual prefix.
+    assert record['python']==str(Path(sys.executable).absolute())
+    assert Path(record['expected_worker']['prefix']).resolve()==Path(sys.prefix).resolve()
     assert record['expected_worker']['eidos_version']=='0.5.0'
     assert not (project/'.eidos/monitor').exists()
 

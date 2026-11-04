@@ -1,0 +1,141 @@
+{
+  "schema": "eidos.venv-entry-ci-correction.v1",
+  "failed_ci_head": "21e26b784604616a96648a615f48aa2747f35e7f",
+  "ci_run": 41769268859,
+  "sdk_wheel_sha256": "56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c",
+  "scope": "Test-only correction preserving real POSIX venv entry and actual prefix; unchanged installed SDK; offline Linux RED 1failed4passed -> GREEN5passed, Windows5passed; owned cleanup verified",
+  "files": {
+    "ci-venv-windows-green.log": {
+      "sha256": "04a3d6499370ee40d6b7b8436bc58320d003531ebc1173b9303d8fd605772662",
+      "size": 101
+    },
+    "download.stderr": {
+      "sha256": "1df0ac9cf2fabce9e126280207fa4b50372c374881f68f73ec2a5730093a8efd",
+      "size": 191
+    },
+    "download.stdout": {
+      "sha256": "005804c0cabc0123b739636b80dbf0b26f4cba40af14f8680ebc933265df3cc3",
+      "size": 1141
+    },
+    "release-v050-ci-failed-126374874517.json": {
+      "sha256": "ea8d557ea39edc91139ad5521923adb2acc0bc004271b7c77c6b3883225bddb1",
+      "size": 3163
+    },
+    "release-v050-ci-failed-126374874600.json": {
+      "sha256": "a7cc5746d975e03493f2dbc0872d16f52771f9c1f2886c5a9c6ff57bce98bd30",
+      "size": 3163
+    },
+    "release-v050-ci-failed-jobs.json": {
+      "sha256": "c841e8045cf1e2b4a5ef5ed958530a2e48e339ee7eff8d1ba4d6a9f007e44f25",
+      "size": 22551
+    },
+    "harness-wheels/iniconfig-2.3.1-py3-none-any.whl": {
+      "sha256": "9121e2c1fdb355232495be3194c8dfe87ccc2d5dee45947b78e68f499790d7a7",
+      "size": 7552
+    },
+    "harness-wheels/pluggy-1.7.0-py3-none-any.whl": {
+      "sha256": "7dd7b0d8832ba3cb632c306926ded123429211b83641b35dc5c41ad2d34f9bec",
+      "size": 27082
+    },
+    "harness-wheels/pygments-2.21.0-py3-none-any.whl": {
+      "sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9",
+      "size": 1250147
+    },
+    "harness-wheels/pytest-9.1.1-py3-none-any.whl": {
+      "sha256": "37a86b45efb9a47a61a36449063e8e18d0cab3161329fc099eb21783169c4f0c",
+      "size": 386536
+    },
+    "input/core-requirements.txt": {
+      "sha256": "ca27b7da8739f5e3f1d14e54a6172b1bc9bb9da9e4344b1103d9216b2378e5de",
+      "size": 56575
+    },
+    "input/eidos-0.5.0-py3-none-any.whl": {
+      "sha256": "56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c",
+      "size": 183586
+    },
+    "input/pytest-version.txt": {
+      "sha256": "a3d449df99a0626d31fce8f5b07445f10f7c665583ff10e99d26adf88fc8dd94",
+      "size": 5
+    },
+    "output/green-container.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "output/green-container.stdout": {
+      "sha256": "db48927c59013311c62c55c5e5e84747fdabb759b1a7c89414cf8c10bc86a957",
+      "size": 2819
+    },
+    "output/green-controller.json": {
+      "sha256": "de45903ce239d056f7a1a47fe001ee09a297e834c8f83996a1f27751b5b61661",
+      "size": 8664
+    },
+    "output/green-exit.txt": {
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "size": 2
+    },
+    "output/green-worker.json": {
+      "sha256": "a1907fa43b37980cd93307e720607c8bc2a5cbd7b4f1458b596b1d93c47cf362",
+      "size": 118
+    },
+    "output/green.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "output/green.stdout": {
+      "sha256": "8eef56e73e81f27b8529314331acc68a19eae286acf79c9e5618ac7b6e9dd1f2",
+      "size": 631
+    },
+    "output/green.xml": {
+      "sha256": "7a089d27ab19215c2ff32477cf3b52ab7cb8ba13bb455eb43622fa57e7daec05",
+      "size": 881
+    },
+    "output/red-container.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "output/red-container.stdout": {
+      "sha256": "db48927c59013311c62c55c5e5e84747fdabb759b1a7c89414cf8c10bc86a957",
+      "size": 2819
+    },
+    "output/red-controller.json": {
+      "sha256": "b58d0bfed0c7fe8f5efca015850950d9cd133a0512cc5e8fa0c0176bc685d760",
+      "size": 8232
+    },
+    "output/red-exit.txt": {
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "size": 2
+    },
+    "output/red-worker.json": {
+      "sha256": "a1907fa43b37980cd93307e720607c8bc2a5cbd7b4f1458b596b1d93c47cf362",
+      "size": 118
+    },
+    "output/red.stderr": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    "output/red.stdout": {
+      "sha256": "ade5738801c774f1f07fb138c20ac146ff84292ec5ac0a3b5f16bfded1184ed9",
+      "size": 2393
+    },
+    "output/red.xml": {
+      "sha256": "799b3f993490d085f32fbef1af0d2f855e576feb466c1f61e65c9f31df4de9c2",
+      "size": 2098
+    },
+    "input/green/test_installed_cli.py": {
+      "sha256": "4c85f915f96551b528012a43ac5247f2a643d89ced60e727a50f1b92d7bb6c81",
+      "size": 16036
+    },
+    "input/green/test_monitor_registry.py": {
+      "sha256": "3165c41e943a4741550a058b6f358fc18ee5b467e0b6f8cd64e624e4548b5790",
+      "size": 3468
+    },
+    "input/red/test_installed_cli.py": {
+      "sha256": "4c85f915f96551b528012a43ac5247f2a643d89ced60e727a50f1b92d7bb6c81",
+      "size": 16036
+    },
+    "input/red/test_monitor_registry.py": {
+      "sha256": "70b546158dc8a92f2f3020a56fb172d2fd26d5705d08376f938f542169f927bc",
+      "size": 3218
+    }
+  }
+}

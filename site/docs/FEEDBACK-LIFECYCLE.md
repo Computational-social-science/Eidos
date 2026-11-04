@@ -121,3 +121,29 @@ inherited-pipe inference defect: immutable old/bad/repaired wheels, protected
 original evaluator, rejected upgrade rollback, real version/CI/release, originating
 project adoption, failed-replay reversion, fresh successful replay and closure.
 Keep that campaign open until all links have actual evidence.
+
+## Deterministic real-origin preparation, 2026-11-04
+
+The producer `reference/feedback_acceptance/campaign.py` now executes the checks
+and generates their receipts. Its rules, fixtures and wheels are hash-sealed
+before evaluation. It exercises the original owner under the actual inherited-
+pipe trigger, as well as lower-level and unaffected routing/CLI controls.
+Missing entry witnesses refuse acceptance rather than fabricating a failed run.
+
+A disposable preflight and the actual Eidos origin both reach VALIDATED with
+eight linked events: old failure, rejected unchanged-SDK candidate, physical
+baseline restoration preserving nonempty run history, and repaired-candidate
+success. Premature closure is refused. Bad-selection exceptions restore prior
+pin bytes using compare-and-swap ownership checks; interrupted selection can be
+recovered without overwriting an unrelated selection. Publication attempts use
+separate directories and completion resumes from validated ledger state.
+
+The actual origin incident is `0c2c202832764e7f959864f4638da0da`. It remains open
+until real publication, adoption, replay, reversion and closure have executed.
+This is an on-demand installed-worker trial; the existing resident monitor and
+scientific experiments keep their own runtime and validation boundaries.
+
+The same 51-module wheel also passes the current native Windows and isolated
+Linux numerical/lifecycle/recovery-shell acceptance. Linux additionally checks
+both console aliases and the old/repaired private probe. The current artifact's
+Linux evidence is now independent of the earlier wheel's historical profile.

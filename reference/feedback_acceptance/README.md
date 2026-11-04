@@ -20,3 +20,32 @@ Immutable old/bad/repaired artifacts, protected evaluator, published exact-head
 CI/release and originating-project adoption/replay/reversion still need their
 own actual lifecycle receipts. Resident production migration and scientific RSI
 remain separate qualifications. Do not reinterpret this source profile as them.
+
+## Real producer
+
+`campaign.py` runs from a normal candidate installation using `-I`; it never
+imports an SDK from the checkout. `control-wheel` creates an explicit unchanged-
+SDK negative candidate with its own version and valid RECORD. Prepare a new
+workspace containing `wheels/` and independent copy-mode `env-old`, `env-bad`,
+`env-new` installations using the frozen core requirements. Select the originating
+project and the qualified probe driver/fixture explicitly:
+
+```text
+<env-new-python> -I -X utf8 campaign.py prepare --workspace <workspace> --project <origin> --oracle <inference_probe_acceptance/check.py> --fixture <test_inference_probe_lifetime.py>
+<env-new-python> -I -X utf8 campaign.py finish --workspace <workspace>
+```
+
+`prepare` seals policy before executing old/bad/repaired artifacts and stops at
+VALIDATED. It retains actual CLI refusal history and refuses premature closure.
+`finish` fetches the actual public release, tag, source history, ancestry, CI and
+asset bytes, then exercises adoption, failed-replay reversion and fresh replay.
+An unsuccessful/unobserved post-adoption probe reverts an unqualified adoption.
+Per-attempt remote directories retain partial fetches, and resume follows the
+core journal state without replaying an already committed release transition.
+Unknown attribution and genuine scientific negative results are not repair PASS.
+
+Use only a dedicated explicit on-demand project selection; these operations do
+not replace the resident monitor's interpreter or run a scientific experiment.
+The native-origin case's scientific status remains UNRUN. No API key, model
+service or paid provider is needed by this producer; publication is the ordinary
+maintainer-authenticated GitHub workflow and subsequent reads are public.

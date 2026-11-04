@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /tmp/trial/env-new/bin/python list "$@"

@@ -691,3 +691,28 @@ preserved; a fresh real chain audit and subsequent heartbeat returned the
 monitor to OK. This does not deploy the unreleased worker/controller protocol.
 The local front door now displays EIDOS Agent while retaining the published
 0.4.12 version label. See [the incident record](docs/RUNTIME-INCIDENT-INFERENCE-2026-11-03.md).
+
+## Real-origin release-candidate checkpoint (2026-11-04)
+
+The deterministic producer now executes the protected inherited-pipe oracle and
+the original `audit_inference` owner. The actual Eidos project incident
+`0c2c202832764e7f959864f4638da0da` reaches VALIDATED with eight linked events.
+The old artifact fails, a deliberately unchanged-SDK candidate is rejected, and
+physical baseline restoration preserves nonempty actual run history. The repaired
+candidate passes; premature closure is refused. Interrupted trial selection and
+unobserved post-adoption checks restore the prior selection without overwriting
+an unrelated pin. Ten producer refusal/recovery controls pass separately.
+
+The exact 51-module wheel, SHA256
+`56d2fe35b1e5ab552fe001ae675e3af4f095e78522fa8fae682f5ea41cfa301c`,
+passes normal installed numerical, lifecycle and recovery-shell qualification on
+Windows and a same-host offline Linux container. Linux also checks both console
+aliases and the old/repaired probe. Frozen profiles and the release-candidate
+record retain raw identities and outcomes. These observations do not qualify a
+new machine, GPU, installed resident controller or scientific RSI.
+
+Publication, exact-delivery-commit CI, originating-project adoption, failed-replay
+reversion and fresh successful replay remain pending at this checkpoint. The
+producer will fetch the actual public tag, CI and asset bytes before recording a
+release. Software closure must retain scientific_status UNRUN. The existing
+8765 resident monitor remains on its separately documented 0.4.12 runtime.

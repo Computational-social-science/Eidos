@@ -77,3 +77,4 @@ lock/snapshots/uv/292c4f4618eadebd26e18912cc5c5be5cca50935fa4e3c27dd4d641e70525d
 # Shared-worker trials retain their original streams and immutable wheel bytes.
 reference/shared_monitor_acceptance/recorded_trials/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
 reference/inference_probe_acceptance/recorded_trials/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
+reference/numerical_programs_acceptance/recorded_trials/v0.5.0/** -text whitespace=cr-at-eol,-blank-at-eol,-blank-at-eof
